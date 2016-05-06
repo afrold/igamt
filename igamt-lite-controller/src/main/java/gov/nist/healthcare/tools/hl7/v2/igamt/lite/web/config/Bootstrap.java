@@ -20,6 +20,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.IGDocumentConverterFromOldToNew;
 
 import java.util.List;
 
@@ -49,6 +50,9 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		IGDocumentConverterFromOldToNew old2New = new IGDocumentConverterFromOldToNew();
+//		old2New.convert();
+		
 		// loadPreloadedIGDocuments();
 		// checkTableNameForAllIGDocuments();
 	}

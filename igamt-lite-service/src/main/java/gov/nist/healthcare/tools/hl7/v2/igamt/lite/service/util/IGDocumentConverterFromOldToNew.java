@@ -47,12 +47,11 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-public class IGDocumentConverterFromOldToNew implements Runnable {
+public class IGDocumentConverterFromOldToNew{
 
 	private static final Logger log = LoggerFactory.getLogger(IGDocumentConverterFromOldToNew.class);
 
-	@Override
-	public void run() {
+	public void convert() {
 
 		MongoOperations mongoOps;
 		try {
@@ -78,7 +77,7 @@ public class IGDocumentConverterFromOldToNew implements Runnable {
 					HL7STANDARD(appPreLib, mongoOps);
 				}else if (appPreLib.getScope().equals(IGDocumentScope.PRELOADED)){
 					PRELOADED(appPreLib, mongoOps);
-				}else {
+				}else if (appPreLib.getScope().equals(IGDocumentScope.USER)){
 					USER(appPreLib, mongoOps);
 				}
 			}
@@ -536,11 +535,5 @@ public class IGDocumentConverterFromOldToNew implements Runnable {
 		mongoOps.insert(dts, "datatype");
 		mongoOps.insert(tabs, "table");
 		mongoOps.insert(app, "igdocument");
-	}
-	
-
-	public static void main(String[] args) {
-		IGDocumentConverterFromOldToNew app = new IGDocumentConverterFromOldToNew();
-		app.run();
 	}
 }
