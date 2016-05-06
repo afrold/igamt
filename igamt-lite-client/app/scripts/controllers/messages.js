@@ -43,7 +43,7 @@ angular.module('igl')
           	}else if(node.type === 'segmentRef'){
           		return $rootScope.segmentsMap[node.ref].fields && $rootScope.segmentsMap[node.ref].fields.length > 0;
           	}else if(node.type === 'field' || node.type === 'component'){
-          		return $rootScope.datatypesMap[node.datatype].components && $rootScope.datatypesMap[node.datatype].components.length > 0;
+                return $rootScope.datatypesMap[node.datatype].components && $rootScope.datatypesMap[node.datatype].components.length > 0;
           	}
           	return false;
           }else {
@@ -113,6 +113,14 @@ angular.module('igl')
         $scope.isVisible = function(node){
           if(node && node != null){
             return FilteringSvc.show(node);
+          } else {
+            return true;
+          }
+        };
+
+        $scope.isVisibleInner = function(node, nodeParent){
+          if(node && node != null && nodeParent && nodeParent != null){
+            return FilteringSvc.showInnerHtml(node, nodeParent);
           } else {
             return true;
           }

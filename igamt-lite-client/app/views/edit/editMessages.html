@@ -445,7 +445,7 @@
 </script>
 
 <script type="text/ng-template" id="MessageFieldViewTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
         <td class="col-xs-2 col-fixed-250">
             <span class="label label-field label-icon" ng-show="node.obj.type === 'field'">F</span>
             <span class="label label-sub-component label-icon" ng-show="node.obj.type === 'subcomponent'">S</span>
@@ -571,7 +571,7 @@
 </script>
 
 <script type="text/ng-template" id="MessageComponentViewTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
         <td class="col-xs-2 col-fixed-250">
         	<span>
 <span class="label label-field label-icon" ng-show="node.obj.type === 'field'">F</span>

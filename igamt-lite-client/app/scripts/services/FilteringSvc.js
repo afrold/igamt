@@ -139,7 +139,6 @@ angular
       });
 
       var validUsages = [];
-      console.log(svc.getUsagesmodel())
       _.each(svc.getUsagesmodel(), function(filterElt){
         validUsages.push(svc.getUsageById[filterElt.id]);
         });
@@ -177,6 +176,32 @@ angular
           }
         }
       }
+    }
+
+  svc.showInnerHtml = function(node, parentNode){
+          var validUsages = [];
+          _.each(svc.getUsagesmodel(), function(filterElt){
+            validUsages.push(svc.getUsageById[filterElt.id]);
+            });
+
+          return svc.filterByUsageWithParent(node, parentNode, validUsages);
+  }
+
+    svc.filterByUsageWithParent = function(node, parentNode, filter){
+//      if (MastermapSvc.getElement(node.id, node.type) !== undefined){
+//        if (MastermapSvc.getUsage(node.id, node.type) !== undefined){
+//          if (node.type === "field" || node.type === "component" ){
+//}
+            if (node.type === "subcomponent"){
+                var showElt = svc.filterByUsage({"id":node.id, "type":"component"}, filter);
+            } else {
+                var showElt = svc.filterByUsage(node, filter);
+            }
+            var showParents = svc.filterByUsage(parentNode, filter);
+
+            return showElt && showParents;
+//        }
+//      }
     }
     return svc;
   });

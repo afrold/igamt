@@ -279,8 +279,7 @@ angular
     svc.getUsage = function (id, type){
       var item = svc.getElement(id, type);
       if (item !== undefined){
-        if (type === "message" || type === "message"){
-          //TBD
+        if (type === "message"){
           return [];
         }
         if (type === "field" || type === "segmentRef" || type === "group" || type === "component"){
@@ -290,11 +289,6 @@ angular
           var sgt = svc.getElement(id, type);
           var rst = [];
           var usg = "";
-//          sgt["group"].forEach(function(elt){
-//            usg = svc.getElementByKey(elt, "group", "usage");
-//            if (rst.indexOf(usg) === -1)
-//              rst.push(usg);
-//          });
           sgt["segmentRef"].forEach(function(elt){
             usg = svc.getElementByKey(elt, "segmentRef", "usage");
             if (rst.indexOf(usg) === -1)
@@ -313,23 +307,21 @@ angular
               }
             });
           });
-/*           tbl["datatype"].forEach(function(elt){
+          tbl["datatype"].forEach(function(elt){
             var usgs = svc.getUsage(elt, "datatype");
             usgs.forEach(function(usg){
               if (rst.indexOf(usg) === -1){
                 rst.push(usg);
               }
             });
-          });*/
+          });
           return rst;
         }
         if (type === "datatype"){
-          // => check sgt and dt
           var dt = svc.getElement(id, type);
           var rst = [];
           var usg = "";
-          if (dt["segment"] !== undefined){
-            dt["segment"].forEach(function(elt){
+          dt["segment"].forEach(function(elt){
               var usgs = svc.getUsage(elt, "segment");
               usgs.forEach(function(usg){
               if (rst.indexOf(usg) === -1){
@@ -337,9 +329,7 @@ angular
               }
               });
             });
-          }
-/*           if (dt["datatype"] != undefined){
-            dt["datatype"].forEach(function(elt){
+          dt["datatype"].forEach(function(elt){
               var usgs = svc.getUsage(elt, "datatype");
               usgs.forEach(function(usg){
               if (rst.indexOf(usg) === -1){
@@ -347,12 +337,24 @@ angular
               }
               });
             });
-          } */
-          return rst;
+            return rst;
+           }
+        if (type === "code"){
+          var cd = svc.getElement(id, type);
+          var rst = [];
+          var usg = "";
+          cd["table"].forEach(function(elt){
+              var usgs = svc.getUsage(elt, "table");
+              usgs.forEach(function(usg){
+              if (rst.indexOf(usg) === -1){
+                rst.push(usg);
+              }
+              });
+            });
+            return rst;
+           }
         }
-      }
-    }
-
+        }
     return svc;
 
   });
