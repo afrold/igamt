@@ -321,7 +321,7 @@ angular.module('igl')
 
         };
 
-        $scope.showSelectFlavorDlg = function (node) {
+        $scope.showSelectDatatypeFlavorDlg = function (node) {
             var modalInstance = $modal.open({
                 templateUrl: 'SelectDatatypeFlavor.html',
                 controller: 'SelectDatatypeFlavorCtrl',
@@ -367,8 +367,9 @@ angular.module('igl')
         $scope.results = [];
         $scope.tmpResults = [].concat($scope.results);
         $scope.currentNode = currentNode;
-        var currentDatatype = $rootScope.datatypesMap[currentNode.datatype];
-        $scope.selection = {scope:currentDatatype != null && currentDatatype ? currentDatatype.scope : null, hl7Version:hl7Version, datatype: null, name:currentDatatype != null && currentDatatype ? currentDatatype.name};
+        $scope.currentDatatype =  $rootScope.datatypesMap[currentNode.datatype];
+        $scope.selection = {scope: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.scope : null, hl7Version:hl7Version, datatype: null, name:$scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name:null};
+
         $scope.datatypeFlavorParams = new ngTreetableParams({
             getNodes: function (parent) {
                 return DatatypeService.getNodes(parent,$scope.selection.datatype);
@@ -377,7 +378,6 @@ angular.module('igl')
                 return DatatypeService.getReadTemplate(node,$scope.selection.datatype);
             }
         });
-
 
         $scope.isRelevant = function (node) {
             var rel = DatatypeService.isRelevant(node);
@@ -430,7 +430,7 @@ angular.module('igl')
             $scope.resultsLoading = true;
             $scope.results = [];
             $scope.tmpResults = [].concat($scope.results);
-            DatatypeService.findFlavors($scope.name, $scope.scope, $scope.hl7Version).then(function (results) {
+            DatatypeService.findFlavors($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (results) {
                 $scope.results = results;
                 $scope.tmpResults = [].concat($scope.results);
                 $scope.resultsLoading = false;

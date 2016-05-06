@@ -149,7 +149,6 @@
                         </div>
                     </div>
 
-
                     <div class="col-md-12">
                         <table tt-table tt-params="messagesParams"
                                class="table table-bordered table-fix-header table-condensed profile-table">
@@ -343,11 +342,7 @@
         	<span>
             	<span class="label label-success label-icon">G</span>
             	<span
-                        tooltip-html="getGroupNodeName(node.obj)"
-                        tooltip-append-to-body="true"
-                        tooltip-class="constraints-tooltip"
-                        ng-bind-html="getGroupNodeName(node.obj)" tooltip-trigger
-                        tooltip-animation="false" tooltip-placement="left"/>
+                       ng-bind="getGroupNodeName(node.obj)"/>
             </span>
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
@@ -482,8 +477,8 @@
             <span>{{node.obj.confLength}}</span>
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <a class="point"
-               ng-click="goToDatatype(datatypesMap[node.obj.datatype])">{{datatypesMap[node.obj.datatype].label}}</a>
+            <span class="point"
+              >{{getDatatypeLabel(node.obj.datatype)}}</span>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>
@@ -564,9 +559,9 @@
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.obj.comment" disabled
+            <p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment"
                       ng-show="node.obj.comment != null && node.obj.comment != ''">
-            </textarea>
+            </p>
         </td>
     </tr>
 </script>
@@ -578,12 +573,8 @@
 <span class="label label-field label-icon" ng-show="node.obj.type === 'field'">F</span>
                   <span class="label label-sub-component label-icon" ng-show="node.obj.type === 'subcomponent'">S</span>
             <span class="label label-component label-icon" ng-show="node.obj.type === 'component'">C</span>
-
                 <span
-                        tooltip-html="getComponentNodeName(node.obj)" tooltip-append-to-body="true"
-                        tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node.obj)"
-                        tooltip-trigger
-                        tooltip-animation="false" tooltip-placement="left">
+                        ng-bind="getComponentNodeName(node.obj)">
 				</span>
             </span>
         </td>
@@ -614,8 +605,7 @@
         </td>
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <a class="point"
-               ng-click="goToDatatype(datatypesMap[node.obj.datatype])">{{datatypesMap[node.obj.datatype].label}}</a>
+            <span class="point">{{getDatatypeLabel(node.obj.datatype)}}</span>
         </td>
         <td class="col-xs-1 col-fixed-130">
             <div>
@@ -697,9 +687,9 @@
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.obj.comment" disabled
+            <p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment"
                       ng-show="node.obj.comment != null && node.obj.comment != ''">
-            </textarea>
+            </p>
         </td>
     </tr>
 </script>
@@ -1388,13 +1378,17 @@
     <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-xs-2 col-fixed-250">
             <span class="label label-segment label-icon">S</span>
-            <a
-                    tooltip-html="getGroupNodeName(node.obj)" tooltip-append-to-body="true"
-                    class="point"
-                    ng-click="goToSegment(node.obj.ref)"
-                    tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node.obj)" tooltip-trigger
-                    tooltip-animation="false" tooltip-placement="left"
-                    ></a>
+            <!--<a-->
+                    <!--tooltip-html="getGroupNodeName(node.obj)" tooltip-append-to-body="true"-->
+                    <!--class="point"-->
+                    <!--ng-click="goToSegment(node.obj.ref)"-->
+                    <!--tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node.obj)" tooltip-trigger-->
+                    <!--tooltip-animation="false" tooltip-placement="left"-->
+
+            <span>
+                {{getSegmentLabel(segmentsMap[node.obj.ref])}}
+            </span>
+
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
             <span ng-bind="node.obj.usage"></span>
@@ -1445,9 +1439,9 @@
         </td>
 
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.obj.comment" disabled
+            <p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment"
                       ng-show="node.obj.comment != null && node.obj.comment != ''">
-            </textarea>
+            </p>
 
         </td>
     </tr>
@@ -1460,12 +1454,10 @@
 
                                            <span class="label label-success label-icon">G</span>
                                               <span
-                                                      tooltip-html="getGroupNodeName(node.obj)"
-                                                      tooltip-append-to-body="true"
-                                                      tooltip-class="constraints-tooltip"
-                                                      ng-bind-html="getGroupNodeName(node.obj)" tooltip-trigger
-                                                      tooltip-animation="false" tooltip-placement="left"
+
+                                                      ng-bind="getGroupNodeName(node.obj)"
                                                       ></span>
+
                                         </span>
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
@@ -1519,9 +1511,9 @@
         </td>
 
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.obj.comment"
-                      ng-show="node.obj.comment !== '' && node.obj.comment !== null" disabled>
-            </textarea>
+            <p class="form-control" style="width:100%;height:100%" ng-bindl="node.obj.comment"
+                      ng-show="node.obj.comment !== '' && node.obj.comment !== null">
+            </p>
         </td>
     </tr>
 </script>
@@ -1536,23 +1528,22 @@
         <div class="row">
             <div class="col-md-12">
                 <h4>Current Segment: {{getLabel(currentSegment)}}</h4>
-
                 <div class="form-inline">
                  <span class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                    <label class="btn  btn-primary btn-sm" ng-click="findFlavors()"
-                           ng-class="{'active':scope === 'USER'}">
+                    <label class="btn  btn-primary btn-sm" ng-click="selection.scope = 'USER'; findFlavors()"
+                           ng-class="{'active':selection.scope === 'USER'}">
                         <input ng-disabled="resultsLoading" type="radio" value="USER"
-                               ng-model="$parent.scope"><i class="fa fa-th-list"></i>MY DATA TYPES
+                               ng-model="selection.scope"><i class="fa fa-th-list"></i>MY DATA TYPES
                     </label>
-                    <label class="btn  btn-primary btn-sm" ng-click="findFlavors()"
-                           ng-class="{'active':scope === 'HL7STANDARD'}">
+                    <label class="btn  btn-primary btn-sm" ng-click="selection.scope = 'HL7STANDARD';findFlavors()"
+                           ng-class="{'active':selection.scope === 'HL7STANDARD'}">
                         <input ng-disabled="resultsLoading" type="radio" value="HL7STANDARD"
-                               ng-model="$parent.scope"><i class="fa fa-th-list"></i>HL7 DATA TYPES
+                               ng-model="selection.scope"><i class="fa fa-th-list"></i>HL7 DATA TYPES
                     </label>
-                    <label class="btn  btn-primary btn-sm" ng-click="findFlavors()"
-                           ng-class="{'active':scope === 'MASTER'}">
+                    <label class="btn  btn-primary btn-sm" ng-click="selection.scope = 'MASTER';findFlavors()"
+                           ng-class="{'active':selection.scope === 'MASTER'}">
                         <input ng-disabled="resultsLoading" type="radio" value="MASTER"
-                               ng-model="$parent.scope"><i class="fa fa-th-list"></i>MASTER DATA TYPES
+                               ng-model="selection.scope"><i class="fa fa-th-list"></i>MASTER DATA TYPES
                     </label>
                 </span>
                 </div>
@@ -1601,7 +1592,7 @@
                                                 </thead>
                                                 <tbody>
                                                 <tr ng-repeat="row in tmpResults | orderBy:'row.ext'"
-                                                    ng-class="{'selected': selectedSegment != null && row.id === selectedSegment.id}">
+                                                    ng-class="{'selected': selection.segment != null && row.id === selection.segment.id}">
                                                     <td>{{$index + 1}}
                                                         <input type="radio" ng-checked="isSelected(row)"
                                                                ng-click="showSegment(row)">
@@ -1640,14 +1631,14 @@
                 </div>
                 <div ng-class="{'col-md-9': !collapsed, 'col-md-11 col-98-5-percent':collapsed}">
                     <!--<div ng-show="!loadingSelection">-->
-                    <!--<div class="" ng-show="selectedSegment != null">-->
+                    <!--<div class="" ng-show="selection.segment != null">-->
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <span> Segment<span ng-show="selectedSegment != null">: {{getLabel(selectedSegment)}}</span>
+                            <span> Segment<span ng-show="selection.segment != null">: {{getLabel(selection.segment)}}</span>
                             </span>
                         <span class="pull-right">
                         <button class="btn btn-primary btn-sm" ng-click="submit()"
-                                ng-disabled="selectedSegment === null"><span><i
+                                ng-disabled="selection.segment === null"><span><i
                                 class="fa fa-play fa-fw">
                             &nbsp; </i>Select</span>
                         </button>
@@ -1669,7 +1660,7 @@
                                        translation-texts="viewSettings.translations"></span>
                             </div>
                             <div class="table-responsive">
-                                <table tt-table tt-params="datatypeFlavorParams"
+                                <table tt-table tt-params="segmentFlavorParams"
                                        class="table table-bordered table-fix-header table-condensed profile-table">
                                     <thead>
                                     <tr class="tbl-header"

@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
+    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc,MastermapSvc) {
 
     	$scope.init = function () {
         };
@@ -29,25 +29,26 @@ angular.module('igl')
         };
 
 
-        $scope.showSelectSegmentFlavorDlg = function (node) {
+        $scope.showSelectSegmentFlavorDlg = function (segmentRef) {
             var modalInstance = $modal.open({
                 templateUrl: 'SelectSegmentFlavor.html',
                 controller: 'SelectSegmentFlavorCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
                     currentNode: function () {
-                        return node;
+                        return segmentRef;
                     },
                     hl7Version: function () {
                         return $rootScope.igdocument.metaData.hl7Version;
                     }
                 }
             });
-            modalInstance.result.then(function (selected) {
-                node.ref = selected.id;
+            modalInstance.result.then(function (segment) {
+                segmentRef.ref = segment.id;
+                MastermapSvc.addSegment(segment.id, [segmentRef.id,segmentRef.type]);
                 //TODO: load master map
-                if (!$rootScope.segmentsMap[node.ref] || $rootScope.segmentsMap[node.ref] == null) {
-                    $rootScope.segmentsMap[node.ref] = selected;
+                if (!$rootScope.segmentsMap[segmentRef.ref] || $rootScope.segmentsMap[segmentRef.ref] == null) {
+                    $rootScope.segmentsMap[segmentRef.ref] = segment;
                 }
                 if ($scope.messagesParams)
                     $scope.messagesParams.refresh();
@@ -153,30 +154,26 @@ angular.module('igl')
         $scope.resultsLoading = null;
         $scope.results = [];
         $scope.tmpResults = [].concat($scope.results);
-        $scope.selectedSegment = null;
-        $scope.hl7Version = hl7Version;
         $scope.currentNode = currentNode;
-        $scope.currentSegment = $rootScope.datatypesMap[currentNode.datatype];
-        $scope.scope = $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.scope : null;
-        $scope.name = $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.name : null;
+        $scope.currentSegment =  $rootScope.segmentsMap[currentNode.ref];
+        $scope.selection = {scope: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.scope : null, hl7Version:hl7Version, segment: null, name:$scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.name:null};
 
 
         $scope.segmentFlavorParams = new ngTreetableParams({
             getNodes: function (parent) {
-                return SegmentService.getNodes(parent,$scope.selectedSegment);
+                return SegmentService.getNodes(parent,$scope.selection.segment);
             },
             getTemplate: function (node) {
-                return SegmentService.getTemplate(node,$scope.selectedSegment);
+                return SegmentService.getTemplate(node,$scope.selection.segment);
             }
         });
-
 
         $scope.findFlavors = function () {
             $scope.resultsError = null;
             $scope.resultsLoading = true;
             $scope.results = [];
             $scope.tmpResults = [].concat($scope.results);
-            SegmentService.findFlavors($scope.name, $scope.scope, $scope.hl7Version).then(function (results) {
+            SegmentService.findFlavors($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (results) {
                 $scope.results = results;
                 $scope.tmpResults = [].concat($scope.results);
                 $scope.resultsLoading = false;
@@ -186,27 +183,18 @@ angular.module('igl')
             });
         };
 
-        $scope.isSegmentSubDT = function (component) {
-            return SegmentService.isSegmentSubDT(component,$scope.selectedSegment);
-        };
-
-        $scope.isSelected = function (segment) {
-            return  $scope.selectedSegment != null && segment != null && $scope.selectedSegment.id == segment.id;
-        };
-
         $scope.showSegment = function (segment) {
-
             if (segment && segment != null) {
                 $scope.segmentError = null;
                 $scope.loadingSelection = true;
-                SegmentService.getOne(segment.id).then(function (result) {
-                    $scope.selectedSegment = segment;
-                    $scope.selectedSegment["type"] = "segment";
-                    $scope.tableWidth = null;
-                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
-                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
-                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
+               SegmentService.getOne(segment.id).then(function (result) {
+                    $scope.selection.segment = segment;
+                    $scope.selection.segment["type"] = "segment";
+                    $rootScope.tableWidth = null;
+                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 890);
                     $scope.loadingSelection = false;
                     if ($scope.segmentFlavorParams)
                         $scope.segmentFlavorParams.refresh();
@@ -217,6 +205,69 @@ angular.module('igl')
                 });
             }
         };
+
+        $scope.validateLabel = function (label, name) {
+            if (label && !label.startsWith(name)) {
+                return false;
+            }
+            return true;
+        };
+
+        $scope.findDTByComponentId = function (componentId) {
+            return $rootScope.parentsMap && $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId] : null;
+        };
+
+        $scope.isSub = function (component) {
+            return $scope.isSubDT(component);
+        };
+
+        $scope.isSubDT = function (component) {
+            return component.type === 'component' && $rootScope.parentsMap && $rootScope.parentsMap[component.id] && $rootScope.parentsMap[component.id].type === 'component';
+        };
+
+        $scope.hasChildren = function (node) {
+            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype) && $rootScope.getDatatype(node.datatype).components && $rootScope.getDatatype(node.datatype).components.length > 0));
+        };
+
+        $scope.isRelevant = function (node) {
+            return SegmentService.isRelevant(node);
+        };
+
+        $scope.isBranch = function (node) {
+            SegmentService.isBranch(node);
+        };
+
+        $scope.isVisible = function (node) {
+            return SegmentService.isVisible(node);
+        };
+
+        $scope.children = function (node) {
+            return SegmentService.getNodes(node);
+        };
+
+        $scope.getParent = function (node) {
+            return SegmentService.getParent(node);
+        };
+
+        $scope.getSegmentLevelConfStatements = function (element) {
+            return SegmentService.getSegmentLevelConfStatements(element);
+        };
+
+        $scope.getSegmentLevelPredicates = function (element) {
+            return SegmentService.getSegmentLevelPredicates(element);
+        };
+
+
+        $scope.isChildSelected = function (component) {
+            return  $scope.selectedChildren.indexOf(component) >= 0;
+        };
+
+        $scope.isChildNew = function (component) {
+            return component && component != null && component.status === 'DRAFT';
+        };
+
+
+
 
         $scope.submit = function () {
             $modalInstance.close($scope.selectedSegment);

@@ -426,8 +426,8 @@
                     <!--ng-class="{ 'igl-has-error has-feedback' : innerForm.datatype.$invalid}"-->
                     <!--ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">-->
                     <!--</select>-->
-                    <a ng-click="showSelectFlavorDlg(node)">
-                        {{getLabel(datatypesMap[node.datatype])}}
+                    <a ng-click="showSelectDatatypeFlavorDlg(node)">
+                        {{getDatatypeLabel(datatypesMap[node.datatype])}}
                     </a>
                 </div>
                 <!--<div ng-show="node.datatype === null || datatypesMap[node.datatype] === null || !datatypesMap[node.datatype]">-->
@@ -562,17 +562,16 @@
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
-                {{::getLabel(datatypesMap[node.datatype])}}
+                {{::getDatatypeLabel(datatypesMap[node.datatype])}}
             </div>
         </td>
 
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>
                 <div ng-show="node.table != undefined  && node.table !== null">
-                    <a ng-click="goToTable(tablesMap[node.table])"
-                       class="point">
+                    <span>
                         {{::tablesMap[node.table].bindingIdentifier}}
-                    </a>
+                    </span>
                 </div>
             </div>
         </td>
@@ -605,9 +604,9 @@
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
 
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment"
+            <span class="form-control" style="width:100%;height:100%" ng-model="node.comment"
                       ng-show="node.comment !== '' && node.comment !== null" disabled>
-            </textarea>
+            </span>
         </td>
     </tr>
 </script>
@@ -651,7 +650,7 @@
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
                 <a ng-click="goToDatatype(datatypesMap[node.datatype])"
-                   class="point">{{getLabel(datatypesMap[node.datatype])}}
+                   class="point">{{getDatatypeLabel(datatypesMap[node.datatype])}}
                 </a>
             </div>
         </td>
@@ -731,16 +730,15 @@
         </td>
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <a ng-click="goToDatatype(datatypesMap[node.datatype])"
-               class="point">{{::getLabel(datatypesMap[node.datatype])}}
-            </a>
+            <span>{{::getDatatypeLabel(datatypesMap[node.datatype])}}
+            </span>
         </td>
 
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a ng-click="goToTable(tablesMap[node.table])"
-               class="point" ng-show="node.table !== null && node.table !== undefined">
+            <span
+               ng-show="node.table !== null && node.table !== undefined">
                 {{::tablesMap[node.table].bindingIdentifier}}
-            </a>
+            </span>
         </td>
 
         <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
@@ -766,9 +764,9 @@
             </a>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment"
+            <span class="form-control" style="width:100%;height:100%" ng-model="node.comment"
                       ng-show="node.comment !== '' && node.comment !== null" disabled>
-            </textarea>
+            </span>
         </td>
     </tr>
 </script>
@@ -1682,24 +1680,24 @@
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-12">
-                <h4>Current Datatype: {{getLabel(currentDatatype)}}</h4>
+                <h4>Current Datatype: {{getDatatypeLabel(currentDatatype)}}</h4>
 
                 <div class="form-inline">
                  <span class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                    <label class="btn  btn-primary btn-sm" ng-click="findFlavors()"
-                           ng-class="{'active':scope === 'USER'}">
+                    <label class="btn  btn-primary btn-sm" ng-click="selection.scope = 'USER'; findFlavors()"
+                           ng-class="{'active':selection.scope === 'USER'}">
                         <input ng-disabled="resultsLoading" type="radio" value="USER"
-                               ng-model="scope"><i class="fa fa-th-list"></i>MY DATA TYPES
+                               ng-model="selection.scope"><i class="fa fa-th-list"></i>MY DATA TYPES
                     </label>
-                    <label class="btn  btn-primary btn-sm" ng-click="findFlavors()"
-                           ng-class="{'active':scope === 'HL7STANDARD'}">
+                    <label class="btn  btn-primary btn-sm" ng-click="selection.scope = 'HL7STANDARD';findFlavors()"
+                           ng-class="{'active':selection.scope === 'HL7STANDARD'}">
                         <input ng-disabled="resultsLoading" type="radio" value="HL7STANDARD"
-                               ng-model="scope"><i class="fa fa-th-list"></i>HL7 DATA TYPES
+                               ng-model="selection.scope"><i class="fa fa-th-list"></i>HL7 DATA TYPES
                     </label>
-                    <label class="btn  btn-primary btn-sm" ng-click="findFlavors()"
-                           ng-class="{'active':scope === 'MASTER'}">
+                    <label class="btn  btn-primary btn-sm" ng-click="selection.scope = 'MASTER';findFlavors()"
+                           ng-class="{'active':selection.scope === 'MASTER'}">
                         <input ng-disabled="resultsLoading" type="radio" value="MASTER"
-                               ng-model="scope"><i class="fa fa-th-list"></i>MASTER DATA TYPES
+                               ng-model="selection.scope"><i class="fa fa-th-list"></i>MASTER DATA TYPES
                     </label>
                 </span>
                 </div>
@@ -1709,13 +1707,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="col-md-1 col-1-percent" ng-show="collapsed">
-                <button title="Display Test Cases" class="btn btn-xs btn-primary"
-                        ng-click="collapsed = !collapsed">
-                    <i class="fa fa-caret-right"></i>
-                </button>
-            </div>
-            <div ng-show="!collapsed" class="col-md-3">
+            <div  class="col-md-3">
                 <div class="panel panel-primary">
                     <!-- Default panel contents -->
                     <div class="panel-heading panel-heading-collapsable">
@@ -1749,12 +1741,12 @@
                                             </thead>
                                             <tbody>
                                             <tr ng-repeat="row in tmpResults | orderBy:'row.ext'"
-                                                ng-class="{'selected': selectedDatatype != null && row.id === selectedDatatype.id}">
+                                                ng-class="{'selected': selection.datatype != null && row.id === selection.datatype.id}">
                                                 <td>{{$index + 1}}
                                                     <input type="radio" ng-checked="isSelected(row)"
                                                            ng-click="showDatatype(row)">
                                                 </td>
-                                                <td>{{getLabel(row)}}</td>
+                                                <td>{{getDatatypeLabel(row)}}</td>
                                                 <td ng-bind="row.description"></td>
                                                 <td ng-bind="row.version"></td>
                                                 <td ng-bind="row.date"></td>
@@ -1786,13 +1778,13 @@
                     </div>
                 </div>
             </div>
-            <div ng-class="{'col-md-9': !collapsed, 'col-md-11 col-98-5-percent':collapsed}">
+            <div class="col-md-11">
                 <!--<div ng-show="!loadingSelection">-->
-                <!--<div class="" ng-show="selectedDatatype != null">-->
+                <!--<div class="" ng-show="selection.datatype != null">-->
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                             <span>
-                               Datatype Definition <span ng-show="selectedDatatype != null">: {{getLabel(selectedDatatype)}}</span>
+                               Datatype Definition <span ng-show="selection.datatype != null">: {{getLabel(selection.datatype.name,selection.datatype.ext)}}</span>
                             </span>
 
                     </div>
@@ -1869,7 +1861,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary btn-sm" ng-click="submit()" ng-disabled="selectedDatatype === null"><span><i
+    <button class="btn btn-primary btn-sm" ng-click="submit()" ng-disabled="selection.datatype === null"><span><i
             class="fa fa-play fa-fw">
         &nbsp; </i>Select</span>
     </button>

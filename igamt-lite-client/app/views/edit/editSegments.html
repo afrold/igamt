@@ -20,7 +20,7 @@
 <form name="segmentForm" id="segmentForm" novalidate class="form-horizontal">
 
 <div class="igl-page-header">
-    <span class="header4 pull-left">Segment: {{segment.label}}</span>
+    <span class="header4 pull-left">Segment: {{getLabel(segment)}}</span>
                          <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="segmentForm.$invalid"
@@ -71,16 +71,16 @@
 
         <div class="col-md-2 col-margin">
             <div class="form-group"
-                 ng-class="{'igl-has-error has-feedback' : segmentForm.label.$invalid}">
-                <label class="control-label">Label</label>
+                 ng-class="{'igl-has-error has-feedback' : segmentForm.ext.$invalid}">
+                <label class="control-label">Extension</label>
                 <input type="text" ng-disabled="viewSettings.tableReadonly"
                        class="form-control"
                        ng-change="recordChanged()"
                        name="label" class="form-control"
-                       ng-model="segment.label"
+                       ng-model="segment.ext"
                        required required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(segment,'label', segments)">Label already used</span>
+                                          ng-show="isDuplicated(segment,'ext', segments)">Extension already used</span>
             </div>
         </div>
 
@@ -195,12 +195,11 @@
                 <thead>
                 <tr class="tbl-header"
                     style="margin-right: {{scrollbarWidth}}px;">
-                    <!--<th class="col-xs-2 col-fixed-250">-->
+                    <th class="col-xs-2 col-fixed-250">
                         <!--<input type="checkbox" ng-checked="isSelectedAllChildren()"-->
                                <!--ng-click="selectAllChildren($event)">-->
-
-                        <!--Name-->
-                    <!--</th>-->
+                        Name
+                    </th>
                     <th class="col-xs-1 col-fixed-80"
                         ng-show="viewSettings.isVisibleColumn('usage')">Usage
                     </th>
@@ -338,7 +337,7 @@
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)"   ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
         <td class="col-xs-2 col-fixed-250" ng-controller="DatatypeRowCtrl">
             <ng-form name="{{formName}}" class="form-inline">
-                <input type="checkbox" ng-checked="isChildSelected(node)" ng-click="selectChild($event,node)">
+                <!--<input type="checkbox" ng-checked="isChildSelected(node)" ng-click="selectChild($event,node)">-->
                 <span class="label label-field label-icon">F</span>
             <span ng-hide="isChildNew(node)"
                   tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"
@@ -433,7 +432,7 @@
             <!--</select>-->
 
             <a ng-click="showSelectDatatypeFlavorDlg(node)">
-                {{getLabel(datatypesMap[node.datatype])}}
+                {{getDatatypeLabel(datatypesMap[node.datatype])}}
             </a>
 
         </td>
@@ -562,9 +561,8 @@
         </td>
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <a ng-click="goToDatatype(datatypesMap[node.datatype])"
-               class="point">{{::datatypesMap[node.datatype].label}}
-            </a>
+            <span >{{::getLabel(datatypesMap[node.datatype])}}
+            </span>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <a ng-click="goToTable(tablesMap[node.table])" class="point"
@@ -601,9 +599,9 @@
         </td>
 
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment"
+            <span class="form-control" style="width:100%;height:100%" ng-bind="node.comment"
                       ng-show="node.comment !== '' && node.comment !== null" disabled>
-            </textarea>
+            </span>
         </td>
     </tr>
 </script>
@@ -651,10 +649,8 @@
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
-                <a ng-click="goToDatatype(datatypesMap[node.datatype])" class="point">
-                    <span>{{datatypesMap[node.datatype].label}}</span>
-                </a>
-            </div>
+                     <span>{{getLabel(datatypesMap[node.datatype])}}</span>
+             </div>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>
@@ -695,9 +691,9 @@
             </div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" disabled
+            <span class="form-control" style="width:100%;height:100%" ng-bind="node.comment" disabled
                       ng-show="node.comment != null && node.comment != ''">
-            </textarea>
+            </span>
         </td>
     </tr>
 </script>
@@ -744,9 +740,8 @@
         </td>
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <a ng-click="goToDatatype(datatypesMap[node.datatype])"
-               class="point">{{::datatypesMap[node.datatype].label}}
-            </a>
+            <span>{{::getLabel(datatypesMap[node.datatype])}}
+            </span>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <a type="button" ng-click="goToTable(tablesMap[node.table])"
@@ -783,9 +778,9 @@
             </a>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment"
+            <span class="form-control" style="width:100%;height:100%" ng-bind="node.comment"
                       ng-show="node.comment !== '' && node.comment !== null" disabled>
-            </textarea>
+            </span>
         </td>
     </tr>
 </script>
@@ -1745,7 +1740,7 @@
         <h3 class="modal-title">Delete Confirmation</h3>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want to delete Segment {{segToDelete.label}} ? </p>
+        <p>Are you sure you want to delete Segment {{getLabel(segToDelete)}} ? </p>
     </div>
     </div>
     <div class="modal-footer">

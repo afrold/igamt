@@ -1608,13 +1608,31 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getSegmentRefNodeName = function (node) {
-            if (!$rootScope.segmentsMap[node.ref]) {
-                console.log("igdoc.id=" + $rootScope.igdocument.id);
-                console.log("node.id=" + node.id);
-                console.log("node.ref=" + node.ref);
-            }
-            return node.position + "." + $rootScope.segmentsMap[node.ref].name + ":" + $rootScope.segmentsMap[node.ref].description;
+            var seg = $rootScope.segmentsMap[node.ref];
+            return node.position + "." + $rootScope.getSegmentLabel(seg)  ":" + seg.description;
         };
+
+        $rootScope.getSegmentLabel = function (seg) {
+            var ext = $rootScope.getExtensionInLibrary(seg, $rootScope.igdocument.profile.datatypeLibrary);
+            return $rootScope.getLabel(seg.name,ext);
+        };
+
+        $rootScope.getDatatypeLabel = function (datatype) {
+            var ext = $rootScope.getExtensionInLibrary(datatype, $rootScope.igdocument.profile.datatypeLibrary);
+            return $rootScope.getLabel(datatype.name,ext);
+        };
+
+        $rootScope.getExtensionInLibrary = function (id, library) {
+            if(library.children){
+                for(var i=0; i ++; i< library.children){
+                    if(library.children[i].id === id){
+                        return library.children[i].ext;
+                    }
+                }
+            }
+            return "";
+        };
+
 
         $rootScope.getGroupNodeName = function (node) {
             return node.position + "." + node.name;

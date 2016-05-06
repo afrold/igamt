@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService, FilteringSvc) {
+    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService, FilteringSvc, MastermapSvc) {
 //        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
@@ -327,25 +327,26 @@ angular.module('igl')
         };
 
 
-        $scope.showSelectDatatypeFlavorDlg = function (node) {
+        $scope.showSelectDatatypeFlavorDlg = function (field) {
             var modalInstance = $modal.open({
                 templateUrl: 'SelectDatatypeFlavor.html',
                 controller: 'SelectDatatypeFlavorCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
                     currentNode: function () {
-                        return node;
+                        return field;
                     },
                     hl7Version: function () {
                         return $rootScope.igdocument.metaData.hl7Version;
                     }
                 }
             });
-            modalInstance.result.then(function (selected) {
-                node.datatype = selected.id;
+            modalInstance.result.then(function (datatype) {
+                field.datatype = datatype.id;
                 //TODO: load master map
-                if (!$rootScope.datatypesMap[node.datatype] || $rootScope.datatypesMap[node.datatype] == null) {
-                    $rootScope.datatypesMap[node.datatype] = selected;
+                MastermapSvc.addDatatype(datatype.id, [node.id,node.type]);
+                if (!$rootScope.datatypesMap[field.datatype] || $rootScope.datatypesMap[field.datatype] == null) {
+                    $rootScope.datatypesMap[field.datatype] = datatype;
                 }
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
