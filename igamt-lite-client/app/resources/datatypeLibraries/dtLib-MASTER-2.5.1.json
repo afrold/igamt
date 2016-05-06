@@ -8,12 +8,12 @@
   "accountId" : null,
   "date" : null,
   "metaData" : {
-    "name" : null,
+    "name" : "Metadata name",
     "orgName" : "NIST",
-    "version" : null,
+    "version" : "Metadata version",
     "hl7Version" : "2.5.1",
     "date" : "April 27, 2016",
-    "ext" : null
+    "ext" : "Metadata ext"
   },
   "scope" : "MASTER",
   "children" : [ {

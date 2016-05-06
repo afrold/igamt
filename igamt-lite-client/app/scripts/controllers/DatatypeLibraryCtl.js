@@ -29,14 +29,14 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				getDataTypeLibraryByScopes($scope.scopes);
 			};
 
-      $scope.getMetaData = function(datatypeLibrary) {
-        $scope.metaDataView = "LibraryMetaData.html";
-        $scope.loadingSelection = true;
-        $timeout(
-          function () {
-            $scope.loadingSelection = false;
-          }, 100);
-      };
+//      $scope.getMetaData = function(datatypeLibrary) {
+//        $scope.metaDataView = "LibraryMetaData.html";
+//        $scope.loadingSelection = true;
+//        $timeout(
+//          function () {
+//            $scope.loadingSelection = false;
+//          }, 100);
+//      };
 
       $scope.getDatatypes = function(datatypeLibrary) {
         $scope.datatypeListView = "DatatypeList.html";
@@ -131,9 +131,10 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
           $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
           $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
           $scope.loadingSelection = false;
-          if ($scope.datatypesParams)
+          if ($scope.datatypesParams) {
             $scope.datatypesParams.refresh();
-        }, function (error) {
+          }
+          }, function (error) {
           $scope.loadingSelection = false;
           $rootScope.msg().text = error.data.text;
           $rootScope.msg().type = error.data.type;

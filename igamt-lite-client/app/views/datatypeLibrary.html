@@ -78,7 +78,7 @@
         </div>
       </tab>
       <tab index="1" heading="Data Types">
-       <div class="panel panel-primary" ng-show="datatypeLibStruct.children !== undefined" >
+       <div class="panel panel-primary" ng-show="datatypeLibStruct.children" >
             <div class="panel-heading">Data Type List</div>
             <div class="panel-body" style="padding-bottom:100px">
                 <div id="meta" style="width:100%">
@@ -88,7 +88,7 @@
         </div>
     </tab>
   </tabset>
-  <div class="row">
+  <div class="row" ng-show="datatypeView">
     <div class="panel panel-primary">
       <div class="panel-heading">Edit Area</div>
       <div class="panel-body" style="padding-bottom:100px">
@@ -105,12 +105,54 @@
 <form>
   <div class="container form-group">
   <div class="row">
-    <label class="control-label" for="hl7Version">HL7 Version</label>
+   <div class="col-sm-6">
+   <label class="control-label" for="hl7Version">HL7 Version</label>
     <input class="form-control"  type="text"
            name="hl7Version"
            ng-model="datatypeLibStruct.metaData.hl7Version"
            required/>
-</div>
+	</div>
+   <div class="col-sm-6">
+   <label class="control-label" for="name">Name</label>
+    <input class="form-control"  type="text"
+           name="name"
+           ng-model="datatypeLibStruct.metaData.name"
+           required/>
+	</div>
+	</div>
+  <div class="row">
+   <div class="col-sm-6">
+   <label class="control-label" for="ext">Extension</label>
+    <input class="form-control"  type="text"
+           name="ext"
+           ng-model="datatypeLibStruct.metaData.ext"
+           required/>
+	</div>
+   <div class="col-sm-6">
+   <label class="control-label" for="orgName">Organization Name</label>
+    <input class="form-control"  type="text"
+           name="orgName"
+           ng-model="datatypeLibStruct.metaData.orgName"
+           required/>
+	</div>
+	</div>
+  <div class="row">
+   <div class="col-sm-6">
+   <label class="control-label" for="version">Version</label>
+    <input class="form-control"  type="text"
+           name="version"
+           ng-model="datatypeLibStruct.metaData.version"
+           required/>
+	</div>
+   <div class="col-sm-6">
+   <label class="control-label" for="date">Date</label>
+    <input class="form-control"  type="text"
+           name="date"
+           ng-model="datatypeLibStruct.metaData.date"
+           required/>
+	</div>
+	</div>
+	</div>
 </form>
 </script>
 <script type="text/ng-template" id="DatatypeList.html">
