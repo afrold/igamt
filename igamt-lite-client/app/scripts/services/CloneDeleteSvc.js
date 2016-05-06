@@ -44,8 +44,8 @@ angular.module('igl').factory(
 		                });
 		            }
 		            $rootScope.segments.push(newSegment);
-		            $rootScope.igdocument.profile.segments.children.splice(0, 0, newSegment);
-		            $rootScope.igdocument.profile.segments.children = positionElements($rootScope.igdocument.profile.segments.children);
+		            $rootScope.igdocument.profile.segmentLibrary.children.splice(0, 0, newSegment);
+		            $rootScope.igdocument.profile.segmentLibrary.children = positionElements($rootScope.igdocument.profile.segmentLibrary.children);
 		            $rootScope.segment = newSegment;
 		            $rootScope.segmentsMap[newSegment.id] = newSegment;
 		            $rootScope.recordChanged();
@@ -75,8 +75,8 @@ angular.module('igl').factory(
 		                    conformanceStatement.id = new ObjectId().toString();
 		                });
 		            }
-		            $rootScope.igdocument.profile.datatypes.children.splice(0, 0, newDatatype);
-		            $rootScope.igdocument.profile.datatypes.children = positionElements($rootScope.igdocument.profile.datatypes.children);
+		            $rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newDatatype);
+		            $rootScope.igdocument.profile.datatypeLibrary.children = positionElements($rootScope.igdocument.profile.datatypeLibrary.children);
 		            $rootScope.datatype = newDatatype;
 		            $rootScope.datatypesMap[newDatatype.id] = newDatatype;
 		            $rootScope.recordChanged();
@@ -117,8 +117,8 @@ angular.module('igl').factory(
 					}
 		    	}
 
-		        $rootScope.igdocument.profile.tables.children.splice(0, 0, newTable);
-	            $rootScope.igdocument.profile.tables.children = positionElements($rootScope.igdocument.profile.tables.children);
+		        $rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newTable);
+	            $rootScope.igdocument.profile.tableLibrary.children = positionElements($rootScope.igdocument.profile.tableLibrary.children);
 	            $rootScope.recordChanged();
 				$rootScope.$broadcast('event:SetToC');
 				$rootScope.$broadcast('event:openTable', newTable);

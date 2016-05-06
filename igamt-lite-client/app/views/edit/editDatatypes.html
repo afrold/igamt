@@ -29,15 +29,14 @@
 <form name="datatypeForm" novalidate class="form-horizontal">
 <div class="row">
     <div class="col-md-12 igl-page-header">
-        <span class="header4 pull-left">Data Type: {{getLabel(datatype)}}</span>
+        <span class="header4 pull-left">Data Type: {{getDatatypeLabel(datatype)}}</span>
                      <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"
                  ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                  ng-click="save()">
-             <span><i class="fa fa-check fa-fw"></i> Apply</span>
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
-
                          <button title="Cancel Changes" type="button" class="btn btn-xs btn-warning"
                                  ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                                  ng-click="cancel()">

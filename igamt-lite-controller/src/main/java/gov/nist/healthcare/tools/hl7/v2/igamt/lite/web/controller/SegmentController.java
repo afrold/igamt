@@ -10,25 +10,31 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage.Type;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.SegmentSaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentSaveException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -43,6 +49,9 @@ public class SegmentController extends CommonController {
 
 	@Autowired
 	private SegmentService segmentService;
+
+	@Autowired
+	private SegmentLibraryService segmentLibraryService;
 
 	@Autowired
 	UserService userService;
@@ -63,22 +72,37 @@ public class SegmentController extends CommonController {
 		log.debug("segment=" + segment);
 		log.debug("segment.getId()=" + segment.getId());
 		log.info("Saving the " + segment.getScope() + " segment.");
-		User u = userService.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u
-				.getUsername());
-		if (segment.getAccountId() == null)
-			segment.setAccountId(account.getId());
-		if (account.getId().equals(segment.getAccountId())
-				|| segment.getParticipants().contains(account.getId())) {
-			if (segment.getScope() == null)
-				segment.setScope(SCOPE.USER);
-			segment.setDate(DateUtils.getCurrentTime());
-			Segment saved = segmentService.save(segment);
-			log.debug("saved.getId()=" + saved.getId());
-			log.debug("saved.getScope()=" + saved.getScope());
-			return new SegmentSaveResponse(saved.getDate(), saved.getVersion());
-		} else {
-			throw new ForbiddenOperationException();
-		}
+		segment.setDate(DateUtils.getCurrentTime());
+		Segment saved = segmentService.save(segment);
+		log.debug("saved.getId()=" + saved.getId());
+		log.debug("saved.getScope()=" + saved.getScope());
+		return new SegmentSaveResponse(saved.getDate(), saved.getVersion());
+
 	}
+
+	@RequestMapping(value = "/{segId}/delete", method = RequestMethod.POST)
+	public ResponseMessage save(@PathVariable("segId") String segId,
+			@RequestParam("libId") String libId)
+			throws ForbiddenOperationException, SegmentDeleteException {
+		log.info("Deleting segment " + segId + " segment.");
+		Segment segment = segmentService.findById(segId);
+		if (segment != null) {
+			Constant.SCOPE scope = segment.getScope();
+			STATUS status = segment.getStatus();
+			if (Constant.SCOPE.HL7STANDARD.equals(scope)
+					|| STATUS.PUBLISHED.equals(status))
+				throw new ForbiddenOperationException();
+			segment.setDate(DateUtils.getCurrentTime());
+			segmentService.delete(segment);
+			SegmentLibrary library = segmentLibraryService.findById(libId);
+			SegmentLink link = library.findOneSegmentById(segId);
+			if (link != null) {
+				library.getChildren().remove(link);
+				segmentLibraryService.save(library);
+			}
+			return new ResponseMessage(Type.success, "segmentDeleted");
+		}
+		throw new SegmentDeleteException("segmentNotFound");
+	}
+
 }

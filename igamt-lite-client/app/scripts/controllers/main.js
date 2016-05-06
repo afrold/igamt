@@ -1609,22 +1609,22 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.getSegmentRefNodeName = function (node) {
             var seg = $rootScope.segmentsMap[node.ref];
-            return node.position + "." + $rootScope.getSegmentLabel(seg)  ":" + seg.description;
+            return node.position + "." + $rootScope.getSegmentLabel(seg)  + ":" + seg.description;
         };
 
         $rootScope.getSegmentLabel = function (seg) {
-            var ext = $rootScope.getExtensionInLibrary(seg, $rootScope.igdocument.profile.datatypeLibrary);
+            var ext = $rootScope.getExtensionInLibrary(seg.id, $rootScope.igdocument.profile.segmentLibrary);
             return $rootScope.getLabel(seg.name,ext);
         };
 
         $rootScope.getDatatypeLabel = function (datatype) {
-            var ext = $rootScope.getExtensionInLibrary(datatype, $rootScope.igdocument.profile.datatypeLibrary);
+            var ext = $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary);
             return $rootScope.getLabel(datatype.name,ext);
         };
 
         $rootScope.getExtensionInLibrary = function (id, library) {
             if(library.children){
-                for(var i=0; i ++; i< library.children){
+                for(var i=0;  i< library.children.length;i ++){
                     if(library.children[i].id === id){
                         return library.children[i].ext;
                     }

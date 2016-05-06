@@ -124,4 +124,17 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	public void setMetaData(SegmentLibraryMetaData metaData) {
 		this.metaData = metaData;
 	}
+	
+	public boolean contains(String id) {
+		if (this.children != null) {
+			for (SegmentLink segl : this.children) {
+				if (segl.getId().equals(id)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	
 }

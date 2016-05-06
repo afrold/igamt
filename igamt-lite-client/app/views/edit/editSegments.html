@@ -20,13 +20,13 @@
 <form name="segmentForm" id="segmentForm" novalidate class="form-horizontal">
 
 <div class="igl-page-header">
-    <span class="header4 pull-left">Segment: {{getLabel(segment)}}</span>
+    <span class="header4 pull-left">Segment: {{getSegmentLabel(segment)}}</span>
                          <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="segmentForm.$invalid"
                  ng-hide="viewSettings.tableReadonly || igDocumentConfig.selectedType !== 'USER'"
                  ng-click="save()">
-             <span><i class="fa fa-check fa-fw"></i> Apply</span>
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
 
                          <button title="Cancel Changes" type="button" class="btn btn-xs btn-warning"

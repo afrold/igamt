@@ -126,7 +126,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 		var segs = this;
 	
 		segs.segments = function() {
-			return $rootScope.igdocument.profile.segments.children;
+			return $rootScope.igdocument.profile.segmentLibrary.children;
 		}
 		
 		segs.truncate = function() {
@@ -229,7 +229,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 		var dts = this;
 	
 		dts.datatypes = function() {
-			return $rootScope.igdocument.profile.datatypes.children;
+			return $rootScope.igdocument.profile.datatypeLibrary.children;
 		}
 		
 		dts.truncate = function() {
@@ -316,7 +316,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 		var vss = this;
 		
 		vss.valueSets = function() {
-			return $rootScope.igdocument.profile.tables.children;
+			return $rootScope.igdocument.profile.tableLibrary.children;
 		};
 				
 		vss.truncate = function() {
