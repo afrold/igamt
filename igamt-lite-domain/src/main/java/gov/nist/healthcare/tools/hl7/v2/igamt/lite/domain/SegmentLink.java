@@ -48,6 +48,6 @@ public class SegmentLink extends AbstractLink {
 	}
 
 	public String getLabel() {
-		return name + ext;
+		return name + "_" + ext;
 	}
 }

@@ -48,5 +48,5 @@ public class DatatypeLink extends AbstractLink {
 	}
 
 	public String getLabel() {
-		return name + ext;
+		return name + "_" + ext;
 	}}
