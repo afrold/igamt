@@ -47,39 +47,43 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-public class IGDocumentConverterFromOldToNew implements Runnable {
+public class IGDocumentConverterFromOldToNew{
 
 	private static final Logger log = LoggerFactory.getLogger(IGDocumentConverterFromOldToNew.class);
 
-	@Override
-	public void run() {
+	public void convert() {
 
 		MongoOperations mongoOps;
-		mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igl"));
-		mongoOps.dropCollection(Table.class);
-		mongoOps.dropCollection(TableLibrary.class);
-		mongoOps.dropCollection(Datatype.class);
-		mongoOps.dropCollection(DatatypeLibrary.class);
-		mongoOps.dropCollection(Segment.class);
-		mongoOps.dropCollection(SegmentLibrary.class);
-		mongoOps.dropCollection(Message.class);
-		mongoOps.dropCollection(IGDocument.class);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		IGDocumentReadConverterPreLib conv = new IGDocumentReadConverterPreLib();
-		DBCollection coll = mongoOps.getCollection("igdocumentPreLib");
-		DBCursor cur = coll.find();
-		while (cur.hasNext()) {
-			DBObject source = cur.next();
-			IGDocumentPreLib appPreLib = conv.convert(source);
-			if(appPreLib.getScope().equals(IGDocumentScope.HL7STANDARD)){
-				HL7STANDARD(appPreLib, mongoOps);
-			}else if (appPreLib.getScope().equals(IGDocumentScope.PRELOADED)){
-				PRELOADED(appPreLib, mongoOps);
-			}else {
-				USER(appPreLib, mongoOps);
+		try {
+			mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igl"));
+			mongoOps.dropCollection(Table.class);
+			mongoOps.dropCollection(TableLibrary.class);
+			mongoOps.dropCollection(Datatype.class);
+			mongoOps.dropCollection(DatatypeLibrary.class);
+			mongoOps.dropCollection(Segment.class);
+			mongoOps.dropCollection(SegmentLibrary.class);
+			mongoOps.dropCollection(Message.class);
+			mongoOps.dropCollection(IGDocument.class);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			IGDocumentReadConverterPreLib conv = new IGDocumentReadConverterPreLib();
+			DBCollection coll = mongoOps.getCollection("igdocumentPreLib");
+			DBCursor cur = coll.find();
+			while (cur.hasNext()) {
+				DBObject source = cur.next();
+				IGDocumentPreLib appPreLib = conv.convert(source);
+				if(appPreLib.getScope().equals(IGDocumentScope.HL7STANDARD)){
+					HL7STANDARD(appPreLib, mongoOps);
+				}else if (appPreLib.getScope().equals(IGDocumentScope.PRELOADED)){
+					PRELOADED(appPreLib, mongoOps);
+				}else if (appPreLib.getScope().equals(IGDocumentScope.USER)){
+					USER(appPreLib, mongoOps);
+				}
 			}
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
@@ -531,11 +535,5 @@ public class IGDocumentConverterFromOldToNew implements Runnable {
 		mongoOps.insert(dts, "datatype");
 		mongoOps.insert(tabs, "table");
 		mongoOps.insert(app, "igdocument");
-	}
-	
-
-	public static void main(String[] args) {
-		IGDocumentConverterFromOldToNew app = new IGDocumentConverterFromOldToNew();
-		app.run();
 	}
 }
