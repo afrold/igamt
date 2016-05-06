@@ -18,6 +18,8 @@ public class SegmentLink extends AbstractLink {
 
 	private String name;
 
+	private String ext;
+	
 	public SegmentLink() {
 		super();
 	}
@@ -36,4 +38,15 @@ public class SegmentLink extends AbstractLink {
 		this.name = name;
 	}
 
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
+
+	public String getLabel() {
+		return name + ext;
+	}
 }
