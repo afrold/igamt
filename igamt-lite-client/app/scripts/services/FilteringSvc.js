@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 angular
 .module('igl')
 .factory(
@@ -121,7 +121,7 @@ angular
     svc.show = function(leaf){
       var rst1 = false;
       _.each(svc.getMsgmodel(), function(filterElt){
-        rst1 = rst1 || filterByMsg(leaf, filterElt);
+        rst1 = rst1 || svc.filterByMsg(leaf, filterElt);
       });
       console.log("check1");
       console.log(rst1);
@@ -130,7 +130,7 @@ angular
       _.each(svc.getUsagesmodel(), function(filterElt){
         validUsages.push(filterElt.label);
       });
-      var rst2 = filterByUsage(leaf, validUsages);
+      var rst2 = svc.filterByUsage(leaf, validUsages);
 
       console.log("check2");
       console.log(rst2);
@@ -148,7 +148,7 @@ angular
       return rst;
     };
 
-    filterByMsg = function(leaf, filterElt){
+    svc.filterByMsg = function(leaf, filterElt){
       if (leaf.id === filterElt.id){
         return true;
       }
@@ -158,7 +158,7 @@ angular
       }
     }
 
-    filterByUsage = function(leaf, filter){
+    svc.filterByUsage = function(leaf, filter){
       if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
         if (MastermapSvc.getUsage(leaf.id, leaf.type) !== undefined){
           if (leaf.type === "message" || leaf.type === "table"){

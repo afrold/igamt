@@ -221,7 +221,7 @@ angular
 
     svc.createMMElement = function (id, type) {
       if (svc.getElement(id, type) === undefined) {
-        var eltColl = new Array();
+        var eltColl = new Object;
         eltColl["ig"] =[];
         eltColl["message"] =[];
         eltColl["field"] =[];
