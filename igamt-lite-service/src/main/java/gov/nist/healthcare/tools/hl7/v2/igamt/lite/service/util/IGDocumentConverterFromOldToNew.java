@@ -23,19 +23,26 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.DocumentMetaDataPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.IGDocumentPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.IGDocumentReadConverterPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfileMetaDataPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePreLib;
 
-import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
@@ -48,7 +55,6 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 public class IGDocumentConverterFromOldToNew{
-
 	private static final Logger log = LoggerFactory.getLogger(IGDocumentConverterFromOldToNew.class);
 
 	public void convert() {
@@ -68,20 +74,36 @@ public class IGDocumentConverterFromOldToNew{
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			IGDocumentReadConverterPreLib conv = new IGDocumentReadConverterPreLib();
-			DBCollection coll = mongoOps.getCollection("igdocumentPreLib");
-			DBCursor cur = coll.find();
-			while (cur.hasNext()) {
-				DBObject source = cur.next();
+			DBCollection coll1 = mongoOps.getCollection("igdocumentPreLib");
+			DBCursor cur1 = coll1.find();
+			while (cur1.hasNext()) {
+				DBObject source = cur1.next();
 				IGDocumentPreLib appPreLib = conv.convert(source);
 				if(appPreLib.getScope().equals(IGDocumentScope.HL7STANDARD)){
 					HL7STANDARD(appPreLib, mongoOps);
-				}else if (appPreLib.getScope().equals(IGDocumentScope.PRELOADED)){
+				}
+			}
+			
+			DBCollection coll2 = mongoOps.getCollection("igdocumentPreLib");
+			DBCursor cur2 = coll2.find();
+			while (cur2.hasNext()) {
+				DBObject source = cur2.next();
+				IGDocumentPreLib appPreLib = conv.convert(source);
+				if (appPreLib.getScope().equals(IGDocumentScope.PRELOADED)){
 					PRELOADED(appPreLib, mongoOps);
-				}else if (appPreLib.getScope().equals(IGDocumentScope.USER)){
+				}
+			}
+			
+			DBCollection coll3 = mongoOps.getCollection("igdocumentPreLib");
+			DBCursor cur3 = coll3.find();
+			while (cur3.hasNext()) {
+				DBObject source = cur3.next();
+				IGDocumentPreLib appPreLib = conv.convert(source);
+				if (appPreLib.getScope().equals(IGDocumentScope.USER)){
 					USER(appPreLib, mongoOps);
 				}
 			}
-		} catch (UnknownHostException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -136,6 +158,15 @@ public class IGDocumentConverterFromOldToNew{
 		log.info("hl7Version=" + appPreLib.getProfile().getMetaData().getHl7Version());
 		Set<Message> msgsPreLib = appPreLib.getProfile().getMessages().getChildren();
 		System.out.println("hl7Version=" + app.getProfile().getMetaData().getHl7Version());
+		List<Constant.SCOPE> scopes = new ArrayList<Constant.SCOPE>();
+		scopes.add(Constant.SCOPE.HL7STANDARD);
+		
+//		System.out.println(segmentLibraryService);
+//		List<SegmentLibrary> segmentLibraries = segmentLibraryService.findByScopesAndVersion(scopes, app.getProfile().getMetaData().getHl7Version());
+//		SegmentLibrary segmentLibrary = segmentLibraries.get(0);
+//		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService.findByScopesAndVersion(scopes, app.getProfile().getMetaData().getHl7Version());
+//		DatatypeLibrary datatypeLibrary = datatypeLibraries.get(0);
+		
 		for (Message sm : msgsPreLib) {
 			sm.setId(null);
 			
@@ -172,9 +203,16 @@ public class IGDocumentConverterFromOldToNew{
 			
 			
 			if (seg.getId() != null) {
-				seg.setId(ObjectId.get().toString());
-				seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
-				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getLabel()));
+//				if(seg.getLabel() == null || seg.getLabel().equals(seg.getName())){
+//					SegmentLink sl = segmentLibrary.findOneByName(seg.getName());
+//					seg = segmentService.findById(sl.getId());
+//					seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
+//					app.getProfile().getSegmentLibrary().addSegment(sl);
+//				}else {
+					seg.setId(ObjectId.get().toString());
+					seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
+					app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), seg.getLabel().replace(seg.getName(), "")));
+//				}
 			} else {
 				log.error("Null id seg=" + seg.toString());
 			}
@@ -191,24 +229,28 @@ public class IGDocumentConverterFromOldToNew{
 		app.getProfile().getDatatypeLibrary().setMetaData(dtMetaData);
 		mongoOps.insert(app.getProfile().getDatatypeLibrary(), "datatype-library");
 		for (Datatype dt : dts) {
-			if (dt.getId() != null) {
-				dt.setId(ObjectId.get().toString());
-				
-				for(Component c : dt.getComponents()){
-					if(c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)){
-						c.setUsage(Usage.X); System.out.println("Find");
-					}
+			for(Component c : dt.getComponents()){
+				if(c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)){
+					c.setUsage(Usage.X); System.out.println("Find");
 				}
-				
-				
-				dt.setScope(Constant.SCOPE.USER);
-				dt.setStatus(Datatype.STATUS.UNPUBLISHED);
-				dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
-				dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
-				app.getProfile().getDatatypeLibrary()
-						.addDatatype(new DatatypeLink(dt.getId(), dt.getLabel(), dt.getExt()));
+			}
+			
+			if (dt.getId() != null) {
+//				if(dt.getLabel() == null || dt.getLabel().equals(dt.getName())){
+//					DatatypeLink dl = datatypeLibrary.findOneByName(dt.getName());
+//					dt = datatypeService.findById(dt.getId());
+//					dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
+//					app.getProfile().getDatatypeLibrary().addDatatype(dl);
+//				}else {
+					dt.setId(ObjectId.get().toString());
+					dt.setScope(Constant.SCOPE.USER);
+					dt.setStatus(Datatype.STATUS.UNPUBLISHED);
+					dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
+					dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
+					app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getLabel().replace(dt.getName(), "")));
+//				}
 			} else {
-				log.error("Null id dt=" + dt.toString());
+				log.error("Null id seg=" + dt.toString());
 			}
 		}
 		mongoOps.save(app.getProfile().getDatatypeLibrary());
@@ -326,7 +368,7 @@ public class IGDocumentConverterFromOldToNew{
 			seg.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 			if (seg.getId() != null) {
 				seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
-				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getLabel()));
+				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), seg.getLabel().replace(seg.getName(), "")));
 			} else {
 				log.error("Null id seg=" + seg.toString());
 			}
@@ -354,7 +396,7 @@ public class IGDocumentConverterFromOldToNew{
 				dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 				dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
 				app.getProfile().getDatatypeLibrary()
-						.addDatatype(new DatatypeLink(dt.getId(), dt.getLabel(), dt.getExt()));
+						.addDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getLabel().replace(dt.getName(), "")));
 			} else {
 				log.error("Null id dt=" + dt.toString());
 			}
@@ -474,7 +516,7 @@ public class IGDocumentConverterFromOldToNew{
 			seg.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 			if (seg.getId() != null) {
 				seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
-				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getLabel()));
+				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), seg.getLabel().replace(seg.getName(), "")));
 			} else {
 				log.error("Null id seg=" + seg.toString());
 			}
@@ -502,7 +544,7 @@ public class IGDocumentConverterFromOldToNew{
 				dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 				dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
 				app.getProfile().getDatatypeLibrary()
-						.addDatatype(new DatatypeLink(dt.getId(), dt.getLabel(), dt.getExt()));
+						.addDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getLabel().replace(dt.getName(), "")));
 			} else {
 				log.error("Null id dt=" + dt.toString());
 			}

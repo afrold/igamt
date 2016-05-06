@@ -24,9 +24,10 @@ public class SegmentLink extends AbstractLink {
 		super();
 	}
 
-	public SegmentLink(String id, String name) {
+	public SegmentLink(String id, String name, String ext) {
 		super();
 		this.setId(id);
+		this.ext = ext;
 		this.name = name;
 	}
 
