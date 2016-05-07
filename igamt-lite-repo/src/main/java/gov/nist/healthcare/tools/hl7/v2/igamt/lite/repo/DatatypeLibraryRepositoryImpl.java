@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 
@@ -89,5 +90,14 @@ public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations 
 				datatypeLibrary = datatypeLibraries.get(0);
 			}
 			return datatypeLibrary;
+		}
+
+		@Override
+		public List<DatatypeLibrary> findDups(DatatypeLibrary dtl) {
+			Criteria where = Criteria.where("scope").in(dtl.getScope());
+			where.andOperator(Criteria.where("ext").is(dtl.getExt()));
+			Query qry = Query.query(where);
+			List<DatatypeLibrary> datatypeLibraries = mongo.find(qry, DatatypeLibrary.class);
+			return datatypeLibraries;
 		}
 }

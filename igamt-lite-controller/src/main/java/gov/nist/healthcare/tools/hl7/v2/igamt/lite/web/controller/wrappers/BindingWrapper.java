@@ -10,6 +10,8 @@ public class BindingWrapper {
 
 	private String datatypeLibraryExt;
 
+	private Long accountId;
+
 	public List<String> getDatatypeIds() {
 		return datatypeIds;
 	}
@@ -32,5 +34,13 @@ public class BindingWrapper {
 
 	public void setDatatypeLibraryExt(String datatypeLibraryExt) {
 		this.datatypeLibraryExt = datatypeLibraryExt;
+	}
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
 	}
 }

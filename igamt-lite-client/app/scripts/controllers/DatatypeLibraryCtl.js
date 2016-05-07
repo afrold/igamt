@@ -13,6 +13,8 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 	    $scope.viewSettings = ViewSettings;
       $scope.metaDataView = null;
       $scope.datatypeListView = null;
+      $scope.igDocumentConfig = {};
+      $scope.igDocumentConfig.selectedType
 
 	    $scope.tableWidth = null;
       $scope.datatypeLibrary = "";
@@ -84,11 +86,19 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				}
 			};
 
-			$scope.save = function() {
+			$scope.saveLib = function() {
 				angular.forEach($scope.datatypeLibStruct.children, function(dt) {
 					delete dt.new;
 				});
 				DatatypeLibrarySvc.save($scope.datatypeLibStruct);
+			};
+			
+			$scope.save = function() {
+				DatatypeService.save($scope.datatype);
+			};
+			
+			$scope.cancel = function() {
+				console.log("canceled");
 			};
 
 			$scope.edit = function(datatypeLibrary) {
@@ -134,6 +144,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
           if ($scope.datatypesParams) {
             $scope.datatypesParams.refresh();
           }
+          $scope.igDocumentConfig.selectedType = 'USER';
           }, function (error) {
           $scope.loadingSelection = false;
           $rootScope.msg().text = error.data.text;
@@ -223,7 +234,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 		};
 
     $scope.openDataypeList = function(hl7Version) {
-      var scopes = ['USER', 'HL7STANDARD'];
+     var scopes = ['USER', 'HL7STANDARD'];
       if (userInfoService.isAdmin()) {
             scopes.push('MASTER');
           }
@@ -240,12 +251,12 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
               }
             }
       }).result.then(function(results) {
-        var ids = [];
+       var ids = [];
            angular.forEach(results, function(result){
              ids.push(result.id);
           });
 
-        DatatypeService.bindDatatypes(ids, $scope.datatypeLibStruct.id, $scope.datatypeLibStruct.metaData.ext).then(function(results) {
+        	DatatypeLibrarySvc.bindDatatypes(ids, $scope.datatypeLibStruct.id, $scope.datatypeLibStruct.metaData.ext).then(function(results) {
         	console.log("$scope.openDataypeList.bindDatatypes results=" + results.length);
           angular.forEach(results, function(result){
             result.new = true;

@@ -48,7 +48,7 @@ public class DatatypeLink extends AbstractLink {
 	}
 
 	public String getLabel() {
-		return name + ext;
+		return name + (ext != null ? ext : "");
 	}
 
 	@Override

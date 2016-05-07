@@ -44,6 +44,8 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;
+	
+	private Random rand = new Random();
 
 	@Override
 	public List<DatatypeLibrary> findAll() {
@@ -125,26 +127,35 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	public List<Datatype> bindDatatypes(List<String> datatypeIds, String datatypeLibraryId, String datatypeLibraryExt,
 			Long accountId) {
 		
-		List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
 		DatatypeLibrary dtLib = datatypeLibraryRepository.findById(datatypeLibraryId);
-		String ext = checkExt(datatypeLibraryExt);
-		dtLib.getMetaData().setExt(ext);
+		dtLib.setExt(deNull(datatypeLibraryExt));
+		List<DatatypeLibrary> dtLibDups = datatypeLibraryRepository.findDups(dtLib);
+		if (dtLibDups != null) {
+			String ext = decorateExt(dtLib.getExt());
+			dtLib.setExt(ext);
+		}
+		dtLib.getMetaData().setExt(dtLib.getExt());
 		dtLib.setAccountId(accountId);
+		
+		List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
 		for (Datatype dt : datatypes) {
-			if(checkDup(dt, dtLib, ext)) {
-				String decoratedExt = dt.getExt() + "-" + genRand();
-				dt.setExt(decoratedExt);
-			} else {
-				dt.setExt(ext);
-			}
-			dt.setId(null);
+			dt.setExt(decorateExt(dtLib.getExt()));
 			dt.getLibIds().add(datatypeLibraryId);
+//			List<Datatype> dtDups = datatypeRepository.findDups(dt);
+//			if (dtDups.size() > 0) {
+//				String ext = decorateExt(dtLib.getExt());
+//				dt.setExt(ext);
+//			}
+			dt.setId(null);
+			dt.setType(Constant.DATATYPE);
 			dt.setScope(dtLib.getScope());
 			dt.setHl7Version(dtLib.getMetaData().getHl7Version());
+			dt.setDate(Constant.mdy.format(new Date()));
 			dt.setAccountId(accountId);
-			dtLib.getChildren().add(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
+			datatypeRepository.save(dt);
+			dtLib.addLink(dt);
 		}
-		datatypeRepository.save(datatypes);
+		datatypeLibraryRepository.save(dtLib);
 		return datatypes;
 	}
 
@@ -152,13 +163,16 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		return dtLib.getChildren().contains(new DatatypeLink(dt.getId(), dt.getName(), ext));
 	}
 	
-	String checkExt(String ext) {
-		return (ext != null) ? ext : genRand();
+	String decorateExt(String ext) {
+		return ext + "-" + genRand();
 	}
-
+	
+	String deNull(String ext) {
+		return (ext != null && ext.trim().length() > 0) ? ext : genRand();
+	}
+	
 	String genRand() {
-		int rand = new Random().nextInt(100);
-		return Integer.toString(rand);
+		return Integer.toString(rand.nextInt(100));
 	}
 
 	class DatatypeByLabel implements Comparator<Datatype> {

@@ -16,14 +16,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -157,10 +155,8 @@ public class DatatypeLibraryController extends CommonController {
 	@RequestMapping(value = "/bindDatatypes", method = RequestMethod.POST)
 	public List<Datatype> bindDatatypes(@RequestBody BindingWrapper binding) throws DatatypeSaveException {
 		log.debug("Binding datatypes=" + binding.getDatatypeIds().size());
-		User u = userService.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
 		List<Datatype> bound = datatypeLibraryService.bindDatatypes(binding.getDatatypeIds(),
-				binding.getDatatypeLibraryId(), binding.getDatatypeLibraryExt(), account.getId());
+				binding.getDatatypeLibraryId(), binding.getDatatypeLibraryExt(), binding.getAccountId());
 		return bound;
 	}
 }

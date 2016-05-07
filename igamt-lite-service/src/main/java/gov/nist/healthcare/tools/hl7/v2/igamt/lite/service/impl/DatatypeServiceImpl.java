@@ -74,4 +74,9 @@ public class DatatypeServiceImpl implements DatatypeService {
 		log.info("DataypeServiceImpl.save=" + datatype.getLabel());
 		return datatypeRepository.save(datatype);
 	}
+		
+	@Override
+	public void delete(Datatype dt) {
+		datatypeRepository.delete(dt);
+	}
 }

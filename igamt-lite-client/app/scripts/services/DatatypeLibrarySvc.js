@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend, userInfoService) {
+angular.module('igl').factory('DatatypeLibrarySvc', function($q, $http, $httpBackend, userInfoService) {
 
 	var svc = this;
 
@@ -84,13 +84,15 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
 			return angular.fromJson(response.data)});
 	};
 	
-	svc.bindDatatypes = function(ids, dtLibId) {
+	svc.bindDatatypes = function(ids, dtLibId, dtLibExt) {
     	var binding = {
     		"datatypeIds" : ids,
-    		"datatypeLibraryId" : dtLibId
+    		"datatypeLibraryId" : dtLibId,
+    		"datatypeLibraryExt" : dtLibExt,
+    		"accountId" : userInfoService.getAccountID()
     	};
         var delay = $q.defer();
-        $http.post('api/datatypes/bindDatatypes', binding).then(function (response) {
+        $http.post('api/datatype-library/bindDatatypes', binding).then(function (response) {
             var datatypes = angular.fromJson(response.data);
             delay.resolve(datatypes);
         }, function (error) {

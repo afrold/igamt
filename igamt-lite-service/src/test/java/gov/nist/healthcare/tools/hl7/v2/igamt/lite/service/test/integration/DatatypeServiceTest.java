@@ -61,4 +61,13 @@ public class DatatypeServiceTest {
 		String idafter = dtafter.getId();
 		assertTrue(idbefore.equals(idafter));
 	}
-}
+
+	@Test
+	public void testExtSave() {
+		List<Datatype> dts = datatypeService.findAll();
+		assertTrue(dts.size() > 0);
+		Datatype dtbefore = dts.get(0);
+		dtbefore.setExt("ABC");
+		Datatype dtafter = datatypeService.findById(dtbefore.getId());
+		assertEquals("ABC", dtafter.getExt());
+	}}
