@@ -82,4 +82,10 @@ public class DatatypeController extends CommonController {
 		log.debug("saved.getScope()=" + saved.getScope());
 		return new DatatypeSaveResponse(saved.getName(), saved.getScope().name());
 	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public void delete(@PathVariable("id") String id) throws DatatypeSaveException {
+		log.info("Deleting " + id);
+		datatypeService.delete(id);
+	}
 }

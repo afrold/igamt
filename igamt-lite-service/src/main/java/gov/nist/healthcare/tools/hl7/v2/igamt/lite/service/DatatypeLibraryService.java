@@ -42,4 +42,6 @@ public interface DatatypeLibraryService {
 
 	List<Datatype> bindDatatypes(List<String> datatypeIds, String datatyeLibraryId, String datatypeLibraryExt,
 			Long accountId);
+
+	void delete(String id);
 }

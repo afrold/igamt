@@ -195,6 +195,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				});
 
 				$scope.datatypeLibStruct.children.splice(idx, 1);
+				DatatypeService.delete_(datatype);
       };
 
         $scope.getTableWidth = function () {

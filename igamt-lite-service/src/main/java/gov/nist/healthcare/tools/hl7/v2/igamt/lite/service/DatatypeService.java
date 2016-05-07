@@ -31,4 +31,6 @@ public interface DatatypeService {
 	List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
 	void delete(Datatype dt);
+
+	void delete(String id);
 }

@@ -79,4 +79,9 @@ public class DatatypeServiceImpl implements DatatypeService {
 	public void delete(Datatype dt) {
 		datatypeRepository.delete(dt);
 	}
+	
+	@Override
+	public void delete(String id) {
+		datatypeRepository.delete(id);
+	}
 }

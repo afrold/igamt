@@ -122,6 +122,11 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	public void delete(DatatypeLibrary library) {
 		datatypeLibraryRepository.delete(library);
 	}
+	
+	@Override
+	public void delete(String id) {
+		datatypeLibraryRepository.delete(id);
+	}
 
 	@Override
 	public List<Datatype> bindDatatypes(List<String> datatypeIds, String datatypeLibraryId, String datatypeLibraryExt,

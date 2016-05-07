@@ -136,6 +136,10 @@ angular.module('igl').factory('DatatypeService',
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+            delete_: function(datatype) {
+                var delay = $q.defer();
+                $http.post('api/datatypes/delete', datatype.id);
             }
         };
         return DatatypeService;
