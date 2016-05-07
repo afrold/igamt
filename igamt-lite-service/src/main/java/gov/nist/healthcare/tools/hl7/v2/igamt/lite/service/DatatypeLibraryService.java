@@ -15,6 +15,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 
@@ -38,4 +39,7 @@ public interface DatatypeLibraryService {
 	void delete(DatatypeLibrary library);
 
 	List<String> findHl7Versions();
+
+	List<Datatype> bindDatatypes(List<String> datatypeIds, String datatyeLibraryId, String datatypeLibraryExt,
+			Long accountId);
 }

@@ -636,7 +636,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 //			Collections.sort(datatypeList);
 			for (DatatypeLink dl: datatypeList) {
 				Datatype dt = datatypeService.findById(dl.getId());
-				row = Arrays.asList(dl.getLabel() +" - "+ dt.getDescription());
+				row = Arrays.asList(dl.getName() +" - "+ dt.getDescription());
 				rows.add(row);
 			}
 			this.writeToSheet(rows, header, sheet, headerStyle);
@@ -1150,10 +1150,10 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 //			Collections.sort(datatypeList);
 			for (DatatypeLink dl: datatypeList) {
 				Datatype d = datatypeService.findById(dl.getId()); 
-				this.addTocContent(tocDocument, igWriter, dl.getLabel() != null ?  dl.getLabel()+ " - " + d.getDescription() : d.getName()
+				this.addTocContent(tocDocument, igWriter, dl.getName() != null ?  dl.getName()+ " - " + d.getDescription() : d.getName()
 						+ " - " + d.getDescription());
 
-				igDocument.add(new Paragraph( dl.getLabel() != null ?  dl.getLabel() + " - "
+				igDocument.add(new Paragraph( dl.getName() != null ?  dl.getName() + " - "
 						+ d.getDescription() : d.getName() + " - " + d.getDescription()));
 				igDocument.add(new Paragraph(d.getComment()));
 
@@ -1817,7 +1817,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 		for (DatatypeLink dl: datatypeList){
 			Datatype d = datatypeService.findById(dl.getId());
-			String dtInfo = dl.getLabel() + " - " + d.getDescription();
+			String dtInfo = dl.getName() + " - " + d.getDescription();
 			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3",
 					dtInfo);
 

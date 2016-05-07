@@ -245,7 +245,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
              ids.push(result.id);
           });
 
-        DatatypeService.bindDatatypes(ids, $scope.datatypeLibStruct.id).then(function(results) {
+        DatatypeService.bindDatatypes(ids, $scope.datatypeLibStruct.id, $scope.datatypeLibStruct.metaData.ext).then(function(results) {
         	console.log("$scope.openDataypeList.bindDatatypes results=" + results.length);
           angular.forEach(results, function(result){
             result.new = true;

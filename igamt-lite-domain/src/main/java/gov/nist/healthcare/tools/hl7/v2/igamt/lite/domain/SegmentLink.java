@@ -19,12 +19,12 @@ public class SegmentLink extends AbstractLink {
 	private String name;
 
 	private String ext;
-	
+
 	public SegmentLink() {
 		super();
 	}
 
-	public SegmentLink(String id, String name) {
+	public SegmentLink(String id, String name, String ext) {
 		super();
 		this.setId(id);
 		this.name = name;
@@ -48,5 +48,28 @@ public class SegmentLink extends AbstractLink {
 
 	public String getLabel() {
 		return name + ext;
+	}
+
+	@Override
+	public int hashCode() {
+		return (getId() + getLabel()).hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		SegmentLink link = null;
+
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj instanceof SegmentLink) {
+			link = (SegmentLink) obj;
+		} else {
+			return false;
+		}
+
+		return getId().equals(link.getId()) && getLabel().equals(link.getLabel());
 	}
 }

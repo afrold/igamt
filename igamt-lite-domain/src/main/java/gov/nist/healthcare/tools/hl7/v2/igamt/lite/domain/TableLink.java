@@ -36,4 +36,26 @@ public class TableLink extends AbstractLink {
 		this.bindingIdentifier = bindingIdentifier;
 	}
 
+	@Override
+	public int hashCode() {
+		return getId().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		TableLink link = null;
+
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj instanceof SegmentLink) {
+			link = (TableLink) obj;
+		} else {
+			return false;
+		}
+
+		return getId().equals(link.getId());
+	}
 }

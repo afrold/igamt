@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -33,8 +34,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.LibraryException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.LibraryNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.LibrarySaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.BindingWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.LibraryCreateWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
@@ -139,10 +142,6 @@ public class DatatypeLibraryController extends CommonController {
 		log.debug("datatypeLibrary=" + datatypeLibrary);
 		log.debug("datatypeLibrary.getId()=" + datatypeLibrary.getId());
 		log.info("Saving the " + datatypeLibrary.getScope() + " datatype library.");
-		User u = userService.getCurrentUser();
-		// Account account =
-		// accountRepository.findByTheAccountsUsername(u.getUsername());
-		// datatypeLibrary.setAccountId(account.getId());
 		// TODO This is necessary for a cascading save. For now we are
 		// having the user save dts one at a time.
 		// for (Datatype dt : datatypeLibrary.getChildren()) {
@@ -153,5 +152,15 @@ public class DatatypeLibraryController extends CommonController {
 		log.debug("saved.getId()=" + saved.getId());
 		log.debug("saved.getScope()=" + saved.getScope());
 		return new LibrarySaveResponse(saved.getDate(), saved.getScope().name());
+	}
+
+	@RequestMapping(value = "/bindDatatypes", method = RequestMethod.POST)
+	public List<Datatype> bindDatatypes(@RequestBody BindingWrapper binding) throws DatatypeSaveException {
+		log.debug("Binding datatypes=" + binding.getDatatypeIds().size());
+		User u = userService.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+		List<Datatype> bound = datatypeLibraryService.bindDatatypes(binding.getDatatypeIds(),
+				binding.getDatatypeLibraryId(), binding.getDatatypeLibraryExt(), account.getId());
+		return bound;
 	}
 }

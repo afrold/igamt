@@ -570,7 +570,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
 			Datatype d = datatypeService.findById(dl.getId());
 			ByID byID = new ByID();
-			byID.setByID(dl.getLabel());
+			byID.setByID(dl.getName());
 			if (d.getConformanceStatements().size() > 0) {
 				byID.setConformanceStatements(d.getConformanceStatements());
 				byNameOrByIDs.add(byID);
@@ -636,7 +636,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
 			Datatype d = datatypeService.findById(dl.getId());
 			ByID byID = new ByID();
-			byID.setByID(dl.getLabel());
+			byID.setByID(dl.getName());
 			if (d.getPredicates().size() > 0) {
 				byID.setPredicates(d.getPredicates());
 				byNameOrByIDs.add(byID);
@@ -665,7 +665,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		for (DatatypeLink dl : datatypeLibrary.getChildren()) {
 			Datatype d = datatypeService.findById(dl.getId());
 			ByID byID = new ByID();
-			byID.setByID(dl.getLabel());
+			byID.setByID(dl.getName());
 			if (d.getPredicates().size() > 0) {
 				byID.setPredicates(d.getPredicates());
 				byNameOrByIDs.add(byID);
@@ -691,7 +691,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		for (DatatypeLink dl : datatypeLibrary.getChildren()) {
 			Datatype d = datatypeService.findById(dl.getId());
 			ByID byID = new ByID();
-			byID.setByID(dl.getLabel());
+			byID.setByID(dl.getName());
 			if (d.getPredicates().size() > 0) {
 				byID.setPredicates(d.getPredicates());
 				byNameOrByIDs.add(byID);

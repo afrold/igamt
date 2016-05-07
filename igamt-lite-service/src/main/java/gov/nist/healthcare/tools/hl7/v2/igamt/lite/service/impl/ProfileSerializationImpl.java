@@ -134,7 +134,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			DatatypeLink link = new DatatypeLink();
 			link.setExt(d.getLabel().replace(d.getName(), ""));
 			link.setId(d.getId());
-			link.setLabel(d.getLabel());
+			link.setName(d.getLabel());
 			
 			datatypes.addDatatype(link);
 		}

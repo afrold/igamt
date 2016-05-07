@@ -138,4 +138,24 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	public void setMetaData(DatatypeLibraryMetaData metaData) {
 		this.metaData = metaData;
 	}
+	
+//	DatatypeLink addLink(Datatype dt) {
+//		
+//	}
+// 	
+//	DatatypeLink addLink(DatatypeLink dt) {
+//		if (checkDup(dt)) {
+//			return dt;
+//		} else {
+//			return true;
+//		}
+//	}
+// 	
+//	DatatypeLink deDup(DatatypeLink dt) {
+//		
+//	}
+//	
+//	boolean checkDup(DatatypeLink dt) {
+//		return getChildren().contains(dt);
+//	}
 }

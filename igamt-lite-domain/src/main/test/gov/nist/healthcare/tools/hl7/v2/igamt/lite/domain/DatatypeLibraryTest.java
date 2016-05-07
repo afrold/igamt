@@ -42,7 +42,7 @@ public class DatatypeLibraryTest {
 		assertEquals(2, sut.getChildren().size());
 		Iterator<DatatypeLink> itr = sut.getChildren().iterator();
 		while (itr.hasNext()) {
-			assertEquals("def", ((DatatypeLink)itr.next()).getLabel());
+			assertEquals("def", ((DatatypeLink)itr.next()).getName());
 		}
 	}
 

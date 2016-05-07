@@ -8,6 +8,8 @@ public class BindingWrapper {
 
 	private String datatypeLibraryId;
 
+	private String datatypeLibraryExt;
+
 	public List<String> getDatatypeIds() {
 		return datatypeIds;
 	}
@@ -22,5 +24,13 @@ public class BindingWrapper {
 
 	public void setDatatypeLibraryId(String datatypeLibraryId) {
 		this.datatypeLibraryId = datatypeLibraryId;
+	}
+
+	public String getDatatypeLibraryExt() {
+		return datatypeLibraryExt;
+	}
+
+	public void setDatatypeLibraryExt(String datatypeLibraryExt) {
+		this.datatypeLibraryExt = datatypeLibraryExt;
 	}
 }

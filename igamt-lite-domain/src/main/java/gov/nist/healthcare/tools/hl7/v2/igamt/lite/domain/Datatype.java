@@ -104,8 +104,15 @@ Cloneable, Comparable<Datatype> {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	
+	public String getPurposeAndUse() {
+		return purposeAndUse;
+	}
+
+	public void setPurposeAndUse(String purposeAndUse) {
+		this.purposeAndUse = purposeAndUse;
+	}
+
 	public void addComponent(Component c) {
 		c.setPosition(components.size() + 1);
 		components.add(c);

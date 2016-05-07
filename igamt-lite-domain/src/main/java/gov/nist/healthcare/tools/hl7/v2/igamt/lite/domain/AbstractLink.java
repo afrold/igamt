@@ -25,27 +25,4 @@ public abstract class AbstractLink {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	@Override
-	public int hashCode() {
-		return id.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		
-		AbstractLink link = null;
-		
-		if (obj == null) {
-			return false;
-		}
-		
-		if (obj instanceof AbstractLink) {
-			link = (AbstractLink) obj;
-		} else {
-			return false;
-		}
-	
-		return id.equals(link.getId());
-	}
 }

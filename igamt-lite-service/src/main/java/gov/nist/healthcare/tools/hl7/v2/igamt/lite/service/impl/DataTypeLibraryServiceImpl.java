@@ -13,6 +13,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 
 /**
@@ -38,29 +41,32 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 
 	@Autowired
 	private DatatypeLibraryRepository datatypeLibraryRepository;
-	
+
+	@Autowired
+	private DatatypeRepository datatypeRepository;
+
 	@Override
 	public List<DatatypeLibrary> findAll() {
 		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findAll();
 		log.debug("DatatypeLibraryRepository.findAll datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
 	}
-	
+
 	@Override
 	public List<DatatypeLibrary> findByScopes(List<SCOPE> scopes) {
 		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByScopes(scopes);
 		log.debug("DatatypeLibraryRepository.findByScopes datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
 	}
-	
+
 	@Override
 	public List<String> findHl7Versions() {
 		return datatypeLibraryRepository.findHl7Versions();
 	}
-	
+
 	@Override
 	public DatatypeLibrary findById(String id) {
-		return datatypeLibraryRepository.findById(id);
+		return datatypeLibraryRepository.findOne(id);
 	}
 
 	@Override
@@ -114,7 +120,47 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	public void delete(DatatypeLibrary library) {
 		datatypeLibraryRepository.delete(library);
 	}
+
+	@Override
+	public List<Datatype> bindDatatypes(List<String> datatypeIds, String datatypeLibraryId, String datatypeLibraryExt,
+			Long accountId) {
+		
+		List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
+		DatatypeLibrary dtLib = datatypeLibraryRepository.findById(datatypeLibraryId);
+		String ext = checkExt(datatypeLibraryExt);
+		dtLib.getMetaData().setExt(ext);
+		dtLib.setAccountId(accountId);
+		for (Datatype dt : datatypes) {
+			if(checkDup(dt, dtLib, ext)) {
+				String decoratedExt = dt.getExt() + "-" + genRand();
+				dt.setExt(decoratedExt);
+			} else {
+				dt.setExt(ext);
+			}
+			dt.setId(null);
+			dt.getLibIds().add(datatypeLibraryId);
+			dt.setScope(dtLib.getScope());
+			dt.setHl7Version(dtLib.getMetaData().getHl7Version());
+			dt.setAccountId(accountId);
+			dtLib.getChildren().add(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
+		}
+		datatypeRepository.save(datatypes);
+		return datatypes;
+	}
+
+	boolean checkDup(Datatype dt, DatatypeLibrary dtLib, String ext) {
+		return dtLib.getChildren().contains(new DatatypeLink(dt.getId(), dt.getName(), ext));
+	}
 	
+	String checkExt(String ext) {
+		return (ext != null) ? ext : genRand();
+	}
+
+	String genRand() {
+		int rand = new Random().nextInt(100);
+		return Integer.toString(rand);
+	}
+
 	class DatatypeByLabel implements Comparator<Datatype> {
 
 		@Override
