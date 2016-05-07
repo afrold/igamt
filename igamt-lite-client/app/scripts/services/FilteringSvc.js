@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 angular
 .module('igl')
 .factory(
@@ -93,8 +93,10 @@ angular
     };
 
     svc.getUsages = function(){
-      return [{"label":"R" , "id":1},{"label":"RE" , "id":2},{"label":"O" , "id":3},{"label":"C" , "id":4},{"label":"X" , "id":5},{"label":"B" , "id":6}]
+      return [{"label":"R" , "id":0},{"label":"RE" , "id":1},{"label":"O" , "id":2},{"label":"C" , "id":3},{"label":"X" , "id":4},{"label":"B" , "id":5}]
     };
+
+    svc.getUsageById = ["R", "RE", "O", "C", "X", "B"];
 
     svc.getSettings = function(){
       return {
@@ -118,37 +120,38 @@ angular
       }
     };
 
-    svc.show = function(leaf){
+    svc.showToC = function(leaf){
       var rst1 = false;
       _.each(svc.getMsgmodel(), function(filterElt){
-        rst1 = rst1 || filterByMsg(leaf, filterElt);
+        rst1 = rst1 || svc.filterByMsg(leaf, filterElt);
       });
-      console.log("check1");
-      console.log(rst1);
+      return rst1;
+    };
+
+    svc.show = function(leaf){
+      if (leaf === undefined) {
+        console.log("undefined");
+        return true;
+      }
+      var rst1 = false;
+      _.each(svc.getMsgmodel(), function(filterElt){
+        rst1 = rst1 || svc.filterByMsg(leaf, filterElt);
+      });
 
       var validUsages = [];
       _.each(svc.getUsagesmodel(), function(filterElt){
-        validUsages.push(filterElt.label);
-      });
-      var rst2 = filterByUsage(leaf, validUsages);
+        validUsages.push(svc.getUsageById[filterElt.id]);
+        });
+       var rst2 = svc.filterByUsage(leaf, validUsages);
 
-      console.log("check2");
-      console.log(rst2);
-
-      var rst = rst1 && rst2;
-      if (rst === undefined){
-        console.log(leaf.type)
-        console.log(leaf)
-        console.log(MastermapSvc.getElement(leaf.id, leaf.type));
-        console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
-
+       var rst = rst1 && rst2;
+       if (rst === undefined){
         rst = true;
       }
-      //       console.log(rst);
       return rst;
     };
 
-    filterByMsg = function(leaf, filterElt){
+    svc.filterByMsg = function(leaf, filterElt){
       if (leaf.id === filterElt.id){
         return true;
       }
@@ -158,19 +161,13 @@ angular
       }
     }
 
-    filterByUsage = function(leaf, filter){
+    svc.filterByUsage = function(leaf, filter){
       if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
         if (MastermapSvc.getUsage(leaf.id, leaf.type) !== undefined){
           if (leaf.type === "message" || leaf.type === "table"){
             return true;
           } else {
             var leafUsages = MastermapSvc.getUsage(leaf.id, leaf.type);
-/*             console.log(leaf.id);
-            console.log(leaf.type);
-            console.log("leaf usage");
-            console.log(leafUsages);
-            console.log("filter")
-            console.log(filter); */
             var rst = false;
             _.each(leafUsages, function(usg){
               rst = rst || (filter.indexOf(usg) !== -1);
@@ -179,6 +176,36 @@ angular
           }
         }
       }
+    }
+
+  svc.showInnerHtml = function(node, parentNode){
+          var validUsages = [];
+          _.each(svc.getUsagesmodel(), function(filterElt){
+            validUsages.push(svc.getUsageById[filterElt.id]);
+            });
+
+          return svc.filterByUsageWithParent(node, parentNode, validUsages);
+  }
+
+    svc.filterByUsageWithParent = function(node, parentNode, filter){
+//      if (MastermapSvc.getElement(node.id, node.type) !== undefined){
+//        if (MastermapSvc.getUsage(node.id, node.type) !== undefined){
+//          if (node.type === "field" || node.type === "component" ){
+//}
+            if (node.type === "subcomponent"){
+                var showElt = svc.filterByUsage({"id":node.id, "type":"component"}, filter);
+            } else {
+                var showElt = svc.filterByUsage(node, filter);
+            }
+            var showParents = svc.filterByUsage(parentNode, filter);
+            if (showElt && showParents !== undefined) {
+                return showElt && showParents;
+            else {
+                return true;
+            }
+            }
+//        }
+//      }
     }
     return svc;
   });

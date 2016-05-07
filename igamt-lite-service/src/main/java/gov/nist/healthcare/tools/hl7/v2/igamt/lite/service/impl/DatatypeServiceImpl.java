@@ -27,9 +27,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
  *
  */
 @Service
-public class DataypeServiceImpl implements DatatypeService {
+public class DatatypeServiceImpl implements DatatypeService {
 
-	Logger log = LoggerFactory.getLogger(DataypeServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(DatatypeServiceImpl.class);
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;
@@ -65,7 +65,7 @@ public class DataypeServiceImpl implements DatatypeService {
 	@Override
 	public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
 		List<Datatype> datatypes = datatypeRepository.findByScopesAndVersion(scopes, hl7Version);
-		log.info("DataypeServiceImpl.findByScopeAndVersion=" + datatypes.size());
+		log.info("DataypeServiceImpl.findByScopesAndVersion=" + datatypes.size());
 		return datatypes;
 	}
 
@@ -74,4 +74,16 @@ public class DataypeServiceImpl implements DatatypeService {
 		log.info("DataypeServiceImpl.save=" + datatype.getLabel());
 		return datatypeRepository.save(datatype);
 	}
+		
+		@Override
+		public List<Datatype> bindDatatypes(List<String> datatypeIds, String datatyeLibraryId) {
+			List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
+			for(Datatype dt : datatypes) {
+				dt.setId(null);
+//				dt.setExt();
+				dt.getLibIds().add(datatyeLibraryId);
+			}
+			datatypeRepository.save(datatypes);
+			return datatypes;
+		}
 }

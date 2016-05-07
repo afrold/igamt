@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q','FilteringSvc', function ($rootScope, ViewSettings, ElementUtils, $http, $q,FilteringSvc) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc) {
         var DatatypeService = {
             getNodes: function (parent, root) {
                 var children = [];
@@ -148,6 +148,20 @@ angular.module('igl').factory('DatatypeService',
             findFlavors: function (name, scope, hl7Version) {
                 var delay = $q.defer();
                 $http.get('api/datatypes/findFlavors', {params: {"name": name, "scope": scope, "hl7Version": hl7Version}}).then(function (response) {
+                    var datatypes = angular.fromJson(response.data);
+                    delay.resolve(datatypes);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            bindDatatypes: function(ids, dtLibId) {
+            	var binding = {
+            		"datatypeIds" : ids,
+            		"datatypeLibraryId" : dtLibId
+            	};
+                var delay = $q.defer();
+                $http.post('api/datatypes/bindDatatypes', binding).then(function (response) {
                     var datatypes = angular.fromJson(response.data);
                     delay.resolve(datatypes);
                 }, function (error) {

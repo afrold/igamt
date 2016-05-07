@@ -16,6 +16,7 @@ public abstract class AbstractReadConverter<S, T> implements Converter<S, T> {
 	public final static String CHILDREN = "children";
 
 	public final static String TYPE = "type";
+	public final static String EXT = "ext";
 	public final static String LABEL = "label";
 	public final static String NAME = "name";
 	public final static String DESCRIPTION = "description";

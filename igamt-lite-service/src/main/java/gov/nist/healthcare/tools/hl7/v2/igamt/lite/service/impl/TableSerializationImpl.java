@@ -19,6 +19,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 
 import java.io.IOException;
@@ -34,6 +36,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import nu.xom.Attribute;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -42,6 +45,9 @@ import org.xml.sax.SAXException;
 
 public class TableSerializationImpl implements TableSerialization {
 
+	@Autowired
+	private TableService tableService;
+	
 	@Override
 	public TableLibrary deserializeXMLToTableLibrary(String xmlContents) {
 		Document tableLibraryDoc = this.stringToDom(xmlContents);
@@ -140,7 +146,8 @@ public class TableSerializationImpl implements TableSerialization {
 		int tableID = 0;
 		nu.xom.Element elmHl7tables = new nu.xom.Element("hl7tables");
 
-		for (Table t : tableLibrary.getChildren()) {
+		for (TableLink link : tableLibrary.getChildren()) {
+			Table t = tableService.findById(link.getId());
 			tableID = tableID + 1;
 			nu.xom.Element elmHl7table = new nu.xom.Element("hl7table");
 			elmHl7table.addAttribute(new Attribute("id", tableID + ""));
@@ -226,7 +233,8 @@ public class TableSerializationImpl implements TableSerialization {
 
 		HashMap<String, nu.xom.Element> valueSetDefinitionsMap = new HashMap<String, nu.xom.Element>();
 
-		for (Table t : tableLibrary.getChildren()) {
+		for (TableLink link : tableLibrary.getChildren()) {
+			Table t = tableService.findById(link.getId());
 			nu.xom.Element elmValueSetDefinition = new nu.xom.Element("ValueSetDefinition");
 			elmValueSetDefinition
 					.addAttribute(new Attribute("BindingIdentifier", ExportUtil.str(t.getBindingIdentifier())));
@@ -355,7 +363,11 @@ public class TableSerializationImpl implements TableSerialization {
 				}
 
 				this.deserializeXMLToCode(elmTable, tableObj);
-				tableLibrary.addTable(tableObj);
+				tableObj = tableService.save(tableObj);
+				TableLink link = new TableLink();
+				link.setBindingIdentifier(tableObj.getBindingIdentifier());
+				link.setId(tableObj.getId());
+				tableLibrary.addTable(link);
 			}
 		}
 	}

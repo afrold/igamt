@@ -67,9 +67,9 @@ final Logger log = LoggerFactory.getLogger(DatatypeLibraryReadConverter.class);
 	
 	private DatatypeLink link(DBObject source, DatatypeLibrary dtLib) {
 		String id = readMongoId(source);
-		String label = (String)source.get(LABEL);
+		String name = (String)source.get(NAME);
 		String ext = (String)source.get(EXTENSION);
-		return new DatatypeLink(id, label, ext);
+		return new DatatypeLink(id, name, ext);
 	}
 	
 	DatatypeLibraryMetaData metaData(DBObject source) {

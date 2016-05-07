@@ -48,7 +48,7 @@ angular
     svc.addComponent = function(c, parent){
       svc.createMMElement(c.id, "component");
       svc.addParentsId(c.id, "component", parent);
-      if (svc.getElementByKey(c.id, "component", "usage") === undefined){
+      if (svc.getElementByKey(c.id, "component", "usage") !== undefined){
         svc.setElement(c.id, "component", "usage", c["usage"]);
       }
       if (c.datatype !== undefined){
@@ -212,16 +212,16 @@ angular
         if (svc.getElementByKey(elementId, elementType, parentType).indexOf(parentId) === -1){
           svc.setElement(elementId, elementType, parentType, svc.getElementByKey(elementId, elementType, parentType).concat(parentId));
         }
-        // Add element reference in parents if not already present
-        if (svc.getElementByKey(parentId, parentType, elementType).indexOf(elementId) === -1){
-          svc.setElement(parentId, parentType, elementType, svc.getElementByKey(parentId, parentType, elementType).concat(elementId));
-        }
+//        // Add element reference in parents if not already present
+//        if (svc.getElementByKey(parentId, parentType, elementType).indexOf(elementId) === -1){
+//          svc.setElement(parentId, parentType, elementType, svc.getElementByKey(parentId, parentType, elementType).concat(elementId));
+//        }
       });
     }
 
     svc.createMMElement = function (id, type) {
       if (svc.getElement(id, type) === undefined) {
-        var eltColl = new Array();
+        var eltColl = new Object;
         eltColl["ig"] =[];
         eltColl["message"] =[];
         eltColl["field"] =[];
@@ -280,30 +280,15 @@ angular
       var item = svc.getElement(id, type);
       if (item !== undefined){
         if (type === "message"){
-          //TBD
           return [];
         }
-        if (type === "field"){
+        if (type === "field" || type === "segmentRef" || type === "group" || type === "component"){
           return [svc.getElementByKey(id, type, "usage")];
-        }
-        if (type === "segmentRef"){
-          return [svc.getElementByKey(id, type, "usage")];
-        }
-        if (type === "group"){
-          return [svc.getElementByKey(id, type, "usage")];
-        }
-        if (type === "component"){
-          return [svc.getElementByKey(id, "component", "usage")];
         }
         if (type === "segment"){
           var sgt = svc.getElement(id, type);
           var rst = [];
           var usg = "";
-          sgt["group"].forEach(function(elt){
-            usg = svc.getElementByKey(elt, "group", "usage");
-            if (rst.indexOf(usg) === -1)
-              rst.push(usg);
-          });
           sgt["segmentRef"].forEach(function(elt){
             usg = svc.getElementByKey(elt, "segmentRef", "usage");
             if (rst.indexOf(usg) === -1)
@@ -312,7 +297,6 @@ angular
           return rst;
         }
         if (type === "table"){
-          // => check sgt and datatypes
           var tbl = svc.getElement(id, type);
           var rst = [];
           tbl["segment"].forEach(function(elt){
@@ -323,23 +307,21 @@ angular
               }
             });
           });
-/*           tbl["datatype"].forEach(function(elt){
+          tbl["datatype"].forEach(function(elt){
             var usgs = svc.getUsage(elt, "datatype");
             usgs.forEach(function(usg){
               if (rst.indexOf(usg) === -1){
                 rst.push(usg);
               }
             });
-          });*/
+          });
           return rst;
         }
         if (type === "datatype"){
-          // => check sgt and dt
           var dt = svc.getElement(id, type);
           var rst = [];
           var usg = "";
-          if (dt["segment"] !== undefined){
-            dt["segment"].forEach(function(elt){
+          dt["segment"].forEach(function(elt){
               var usgs = svc.getUsage(elt, "segment");
               usgs.forEach(function(usg){
               if (rst.indexOf(usg) === -1){
@@ -347,9 +329,7 @@ angular
               }
               });
             });
-          }
-/*           if (dt["datatype"] != undefined){
-            dt["datatype"].forEach(function(elt){
+          dt["datatype"].forEach(function(elt){
               var usgs = svc.getUsage(elt, "datatype");
               usgs.forEach(function(usg){
               if (rst.indexOf(usg) === -1){
@@ -357,16 +337,24 @@ angular
               }
               });
             });
-          } */
-          return rst;
-        }
+            return rst;
+           }
         if (type === "code"){
-          //TBD
-          return [];
+          var cd = svc.getElement(id, type);
+          var rst = [];
+          var usg = "";
+          cd["table"].forEach(function(elt){
+              var usgs = svc.getUsage(elt, "table");
+              usgs.forEach(function(usg){
+              if (rst.indexOf(usg) === -1){
+                rst.push(usg);
+              }
+              });
+            });
+            return rst;
+           }
         }
-      }
-    }
-
+        }
     return svc;
 
   });

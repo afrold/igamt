@@ -49,15 +49,13 @@ public class DataypeServiceImplTest {
 	@Autowired
 	DatatypeService datatypeService;
 
-	static DatatypeLibrary dtLib;
-
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
 
 	/**
 	 * Test method for
-	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DataypeServiceImpl#findAll(gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
+	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DatatypeServiceImpl#findAll(gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
 	 * .
 	 */
 	@Test
@@ -69,7 +67,7 @@ public class DataypeServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DataypeServiceImpl#findById(java.lang.String, gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
+	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DatatypeServiceImpl#findById(java.lang.String, gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
 	 * .
 	 */
 	@Test
@@ -78,14 +76,15 @@ public class DataypeServiceImplTest {
 		String id = dts.get(0).getId();
 		Datatype sut = datatypeService.findById(id);
 		assertNotNull(sut);
-		assertNotNull(sut.getSectionPosition());
 	}
 
 
 	@Test
 	public void testFindByScopeAndVersion() {	
 		List<SCOPE> stdScope = new ArrayList<SCOPE>();
+		stdScope.add(Constant.SCOPE.USER);
 		stdScope.add(Constant.SCOPE.HL7STANDARD);
+		stdScope.add(Constant.SCOPE.MASTER);
 		List<Datatype> sut = datatypeService.findByScopesAndVersion(stdScope, "2.5.1");
 		assertNotNull(sut);
 		assertTrue(sut.size() > 0);
@@ -93,15 +92,15 @@ public class DataypeServiceImplTest {
 	
 	/**
 	 * Test method for
-	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DataypeServiceImpl#findByLibrary(java.lang.String, gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
+	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DatatypeServiceImpl#findByLibrary(java.lang.String, gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
 	 * .
 	 */
 	@Test
 	public void testFindLibIds() {
 		List<SCOPE> stdScope = new ArrayList<SCOPE>();
 		stdScope.add(Constant.SCOPE.HL7STANDARD);
-		dtLib = datatypeLibraryService.findByScopesAndVersion(stdScope, "2.5.1");
-		String id = dtLib.getId();
+		List<DatatypeLibrary> dtLib = datatypeLibraryService.findByScopesAndVersion(stdScope, "2.5.1");
+		String id = dtLib.get(0).getId();
 		List<Datatype> sut = datatypeService.findByLibIds(id);
 		assertNotNull(sut);
 		assertTrue(sut.size() > 0);
@@ -112,9 +111,8 @@ public class DataypeServiceImplTest {
 	public void testFindByIds() {
 		List<SCOPE> stdScope = new ArrayList<SCOPE>();
 		stdScope.add(Constant.SCOPE.HL7STANDARD);
-		dtLib = datatypeLibraryService.findByScopesAndVersion(stdScope, "2.5.1");
-		DatatypeLibrary dtLib = datatypeLibraryService.findByScopesAndVersion(stdScope, "2.5.1");
-		Set<DatatypeLink> children = dtLib.getChildren();
+		List<DatatypeLibrary> dtLib = datatypeLibraryService.findByScopesAndVersion(stdScope, "2.5.1");
+		Set<DatatypeLink> children = dtLib.get(0).getChildren();
 		List<String> ids = new ArrayList<String>();
 		for(DatatypeLink dtl : children) {
 			ids.add(dtl.getId());
@@ -122,5 +120,23 @@ public class DataypeServiceImplTest {
 		List<Datatype> sut = datatypeService.findByIds(ids);
 		assertEquals(ids.size(), sut.size());
 		assertNull(sut.get(0).getSectionPosition());
+	}
+	
+	@Test
+	public void testBindDatatypes() {
+		List<Datatype> dts = datatypeService.findAll();
+		List<String> datatypeIds = new ArrayList<String>(); 
+		datatypeIds.add(dts.get(0).getId());
+		String dtLibId = "dtLibId";
+		int libIdsSize = dts.get(0).getLibIds().size();
+		List<Datatype> sut = datatypeService.bindDatatypes(datatypeIds, dtLibId);
+		assertNotNull(sut);
+		assertEquals(1, sut.size());
+		assertEquals(libIdsSize + 1, sut.get(0).getLibIds().size());
+		assertTrue(sut.get(0).getLibIds().contains(dtLibId));
+		Datatype sut1 = datatypeService.findById(sut.get(0).getId());
+		assertNotNull(sut1);
+		assertEquals(libIdsSize + 1, sut1.getLibIds().size());
+		assertTrue(sut1.getLibIds().contains(dtLibId));
 	}
 }

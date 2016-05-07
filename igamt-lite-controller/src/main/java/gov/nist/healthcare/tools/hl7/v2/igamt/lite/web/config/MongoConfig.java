@@ -11,13 +11,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.DatatypeReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.IGDocumentReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +28,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
 /**
  * @author Harold Affo (NIST)
@@ -69,8 +66,8 @@ public class MongoConfig extends AbstractMongoConfiguration {
 	@Bean
 	public Mongo mongo() throws Exception {
 		// MongoCredential credential = mongoCredential();
-		return new MongoClient(new ServerAddress(env.getProperty("mongo.host"),
-				Integer.valueOf(env.getProperty("mongo.port"))));
+		return new MongoClient(
+				new ServerAddress(env.getProperty("mongo.host"), Integer.valueOf(env.getProperty("mongo.port"))));
 	}
 
 	@Override
@@ -80,9 +77,9 @@ public class MongoConfig extends AbstractMongoConfiguration {
 		converterList.add(new FieldWriteConverter());
 		converterList.add(new ComponentWriteConverter());
 		converterList.add(new SegmentRefWriteConverter());
-		converterList.add(new ProfileReadConverter());
-		converterList.add(new IGDocumentReadConverter());
-		converterList.add(new DatatypeReadConverter());
+		// converterList.add(new ProfileReadConverter());
+		// converterList.add(new IGDocumentReadConverter());
+		// converterList.add(new DatatypeReadConverter());
 		return new CustomConversions(converterList);
 	}
 
