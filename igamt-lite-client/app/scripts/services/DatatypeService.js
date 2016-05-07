@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q','FilteringSvc', function ($rootScope, ViewSettings, ElementUtils, $http, $q,FilteringSvc) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc) {
         var DatatypeService = {
             getNodes: function (parent, root) {
                 var children = [];

@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, MastermapSvc) {
+    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, MastermapSvc, FilteringSvc) {
 
         $scope.init = function () {
         };
@@ -11,6 +11,7 @@ angular.module('igl')
         $scope.copy = function (message) {
             CloneDeleteSvc.copyMessage(message);
             $rootScope.$broadcast('event:SetToC');
+
         }
 
         $scope.close = function () {
@@ -27,7 +28,6 @@ angular.module('igl')
         $scope.goToSegment = function (segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
         };
-
 
         $scope.showSelectSegmentFlavorDlg = function (segmentRef) {
             var modalInstance = $modal.open({
@@ -54,7 +54,6 @@ angular.module('igl')
                     $scope.messagesParams.refresh();
             });
         };
-
 
         $scope.goToDatatype = function (datatype) {
             $scope.$emit('event:openDatatype', datatype);
@@ -136,6 +135,22 @@ angular.module('igl')
                 }
             }
             return 0;
+        };
+
+        $scope.isVisible = function(node){
+          if(node && node != null){
+            return FilteringSvc.show(node);
+          } else {
+            return true;
+          }
+        };
+
+        $scope.isVisibleInner = function(node, nodeParent){
+          if(node && node != null && nodeParent && nodeParent != null){
+            return FilteringSvc.showInnerHtml(node, nodeParent);
+          } else {
+            return true;
+          }
         };
     });
 
@@ -819,7 +834,6 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         angular.forEach($scope.selectedMessage.conformanceStatements, function (cs) {
             if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
         });
-
         $modalInstance.close($scope.selectedNode);
     };
 

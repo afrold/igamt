@@ -236,7 +236,7 @@
 </script>
 
 <script type="text/ng-template" id="MessageSegmentRefEditTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
         <td class="col-xs-2 col-fixed-250">
             <span class="label label-segment label-icon">S</span>
 
@@ -337,7 +337,7 @@
 </script>
 
 <script type="text/ng-template" id="MessageGroupEditTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
         <td class="col-xs-2 col-fixed-250">
         	<span>
             	<span class="label label-success label-icon">G</span>
@@ -440,7 +440,7 @@
 </script>
 
 <script type="text/ng-template" id="MessageFieldViewTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
         <td class="col-xs-2 col-fixed-250">
             <span class="label label-field label-icon" ng-show="node.obj.type === 'field'">F</span>
             <span class="label label-sub-component label-icon" ng-show="node.obj.type === 'subcomponent'">S</span>
@@ -567,7 +567,7 @@
 </script>
 
 <script type="text/ng-template" id="MessageComponentViewTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
         <td class="col-xs-2 col-fixed-250">
         	<span>
 <span class="label label-field label-icon" ng-show="node.obj.type === 'field'">F</span>
@@ -1141,7 +1141,7 @@
                                                                 ng-options="child as child.name for child in newConstraint.childNodes_2"/>
 													</span>
                 								</span>
-										
+
 												<span ng-show="newConstraint.contraintType == 'not-equal to another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
@@ -1151,7 +1151,7 @@
                                                                 ng-options="child as child.name for child in newConstraint.childNodes_2"/>
 													</span>
                 								</span>
-	
+
 												<span ng-show="newConstraint.contraintType == 'greater than another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
@@ -1191,7 +1191,7 @@
                                                                 ng-options="child as child.name for child in newConstraint.childNodes_2"/>
 													</span>
                 								</span>
-												
+
 												<span ng-show="newConstraint.contraintType == 'equal to'">
                 									<input class="form-control"
                                                            ng-model="newConstraint.value" type="text"/>
@@ -1211,7 +1211,7 @@
                 									<input class="form-control"
                                                            ng-model="newConstraint.value" type="text"/>
                 								</span>
-											
+
 												<span ng-show="newConstraint.contraintType == 'less than'">
                 									<input class="form-control"
                                                            ng-model="newConstraint.value" type="text"/>
@@ -1221,7 +1221,7 @@
                 									<input class="form-control"
                                                            ng-model="newConstraint.value" type="text"/>
                 								</span>
-						
+
 												<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
                 									<span>ValueSet ID: </span>
 													<select class="form-control form-control-short" name="valueSetId"
@@ -1517,7 +1517,6 @@
         </td>
     </tr>
 </script>
-
 
 <script type="text/ng-template" id="SelectSegmentFlavor.html">
     <div class="modal-header modal-wide">
