@@ -134,7 +134,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			DatatypeLink link = new DatatypeLink();
 			link.setExt(d.getLabel().replace(d.getName(), ""));
 			link.setId(d.getId());
-			link.setName(d.getLabel());
+			link.setName(d.getName());
 			
 			datatypes.addDatatype(link);
 		}
@@ -147,7 +147,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			Segment s = segmentService.save(segmentsMap.get(key));
 			SegmentLink link = new SegmentLink();
 			link.setId(s.getId());
-			link.setLabel(s.getLabel());
+			link.setExt(s.getLabel().replace(s.getName(), ""));
+			link.setName(s.getName());
 			segments.addSegment(link);
 		}
 		profile.setSegmentLibrary(segments);

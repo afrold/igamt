@@ -50,13 +50,14 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		IGDocumentConverterFromOldToNew old2New = new IGDocumentConverterFromOldToNew();
-//		old2New.convert();
-		
-		// loadPreloadedIGDocuments();
-		// checkTableNameForAllIGDocuments();
+//		covertOldToNew();
 	}
 
+	private void covertOldToNew() {
+		IGDocumentConverterFromOldToNew old2New = new IGDocumentConverterFromOldToNew();
+		old2New.convert();
+	}
+	
 	private void loadPreloadedIGDocuments() throws Exception {
 		IGDocument d = new IGDocument();
 
