@@ -54,7 +54,7 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
     //					console.log("response" + JSON.stringify(response));
               return angular.fromJson(response.data);
             });
-  }
+  };
 
 	svc.append = function(fromchildren, toChildren) {
 		angular.foreach(fromchildren, function(child) {

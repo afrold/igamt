@@ -106,7 +106,20 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		}
 
 		return null;
-	}	
+	}
+	
+	public SegmentLink findOneByName(String name) {
+		if (this.children != null) {
+			for (SegmentLink segl : this.children) {
+				if (segl.getName().equals(name)) {
+					return segl;
+				}
+			}
+		}
+
+		return null;
+	}
+
 // TODO gcr not working
 	public SegmentLibrary clone() throws CloneNotSupportedException {
 		SegmentLibrary clonedSegments = new SegmentLibrary();

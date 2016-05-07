@@ -55,17 +55,29 @@
         </div>
     </div>
     <div class="col-md-12">
-        <div class="col-md-2 col-margin">
+        <div class="col-md-1 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
+                <label class="control-label">Flavor</label>
+                <input type="text" ng-disabled="viewSettings.tableReadonly"
+                       ng-change="recordChanged()"
+                       name="label" id="label" class="form-control" ng-model="datatype.label"
+                       required aria-describedby="helpBlock2">
+                                    <span id="helpBlock2" class="help-block" style="color:red"
+                                          ng-show="isDuplicated(datatype,'label', datatypes)">Label already used</span>
+            </div>
+        </div>
+        <div class="col-md-1 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
-                <label class="control-label">Name</label>
+                <label class="control-label">Root</label>
                 <input type="text" disabled
                        name="name" class="form-control" ng-model="datatype.name"
                        required>
             </div>
         </div>
 
-        <div class="col-md-2 col-margin">
+        <div class="col-md-3 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
                 <label class="control-label">Description</label>
@@ -76,8 +88,7 @@
                        required>
             </div>
         </div>
-
-        <div class="col-md-2 col-margin">
+        <div class="col-md-1 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
                 <label class="control-label">Extension</label>
@@ -90,7 +101,27 @@
                                           ng-show="isDuplicated(datatype,'label', datatypes)">Extension already used</span>
             </div>
         </div>
-        <div class="col-md-2 col-margin">
+         <div class="col-md-1 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
+                <label class="control-label">HL7 Ver</label>
+                <input type="text" disabled
+                       ng-change="recordChanged()"
+                       name="description" class="form-control" ng-model="datatype.hl7Version"
+                       required>
+            </div>
+        </div>
+         <div class="col-md-6 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
+                <label class="control-label">Purpose and Use</label>
+                <textarea rows="3" cols="20"
+                       ng-change="recordChanged()"
+                       name="description" class="form-control" ng-model="datatype.purposeUse"
+                       required/>
+            </div>
+        </div>
+      <div class="col-md-6 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.comment.$invalid}">
                 <label class="control-label">Comment</label>
@@ -148,17 +179,7 @@
     <div class="col-md-12 igl-page-header">
 <span class="pull-left">
     <span class="header5">Definition</span>
-                                    <!--<div  style="margin-left:15px" class="btn-group btn-group-xs" data-toggle="buttons">-->
-                                        <!--<label class="btn btn-primary" ng-click="viewSettings.setTableRelevance(true)"-->
-                                               <!--ng-class="{'active': viewSettings.tableRelevance}">-->
-                                            <!--<input type="radio" ng-model="viewSettings.tableRelevance" ng-click="viewSettings.setTableRelevance(viewSettings.tableRelevance)" autocomplete="off" checked>R,RE,C(only)-->
-                                        <!--</label>-->
-                                        <!--<label class="btn  btn-primary" ng-click="viewSettings.setTableRelevance(false)"-->
-                                               <!--ng-class="{'active': !viewSettings.tableRelevance}">-->
-                                            <!--<input type="radio" ng-model="viewSettings.tableRelevance"  autocomplete="off">R,RE,C,O,X (All)-->
-                                        <!--</label>-->
-                                    <!--</div>-->
-                             </span>
+  </span>
                             <span class="pull-right">
                                 <span style="margin-right: 20px" ng-dropdown-multiselect=""
                                       options="viewSettings.columnOptions"
@@ -166,61 +187,40 @@
                                       selected-model="viewSettings.visibleColumns"
                                       events="viewSettings.events" extra-settings="viewSettings.extra"
                                       translation-texts="viewSettings.translations"></span>
-                            </span>
+  </span>
 
     </div>
 
     <div class="col-md-12">
-        <!--</form>-->
-        <!--&lt;!&ndash;</accordion-group>&ndash;&gt;-->
-        <!--&lt;!&ndash;<accordion-group is-open="true" panel-class="panel-info">&ndash;&gt;-->
-
-        <!--&lt;!&ndash;<accordion-heading>&ndash;&gt;-->
-        <!--&lt;!&ndash;<i class="fa"&ndash;&gt;-->
-        <!--&lt;!&ndash;ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i>&ndash;&gt;
-        -->
-        <!--&lt;!&ndash;Definition&ndash;&gt;-->
-
-        <!--&lt;!&ndash;</accordion-heading>&ndash;&gt;-->
-
-        <!--<form class="form-horizontal" name="datatypeForm">-->
-
-
         <div class="table-responsive">
             <table tt-table tt-params="datatypesParams"
                    class="table table-bordered table-fix-header table-condensed profile-table">
                 <thead>
                 <tr class="tbl-header"
                     style="margin-right: {{scrollbarWidth}}px;">
+                    <th class="col-xs-1 col-fixed-100"
+                        ng-show="viewSettings.isVisibleColumn('length')">SEQ
+                    </th>
                     <th class="col-xs-2 col-fixed-250">
-                        Name
+                        Component Name
                     </th>
                     <th class="col-xs-1 col-fixed-80"
                         ng-show="viewSettings.isVisibleColumn('usage')">Usage
                     </th>
                     <th class="col-xs-1 col-fixed-100"
-                        ng-show="viewSettings.isVisibleColumn('length')">Length
-                    </th>
-                    <th class="col-xs-1 col-fixed-80"
-                        ng-show="viewSettings.isVisibleColumn('confLength')">Conformance Length
-                    </th>
-                    <th class="col-xs-1 col-fixed-100"
-                        ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
+                        ng-show="viewSettings.isVisibleColumn('datatype')">DT
                     </th>
                     <th class="col-xs-1 col-fixed-130"
-                        ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                        ng-show="viewSettings.isVisibleColumn('valueSet')">Concept Domain/ Minimum Code System
                     </th>
                     <th class="col-xs-1" ng-style="predWidth"
-                        ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
+                        ng-show="viewSettings.isVisibleColumn('predicate')">Condition Predicate
                     </th>
                     <th class="col-xs-2" ng-style="csWidth"
                         ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement
                     </th>
-                    <th class="col-xs-1 col-fixed-80"
-                        ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
-                    </th>
                     <th class="col-xs-1" ng-style="commentWidth"
-                        ng-show="viewSettings.isVisibleColumn('comment')">Comment
+                        ng-show="viewSettings.isVisibleColumn('comment')">Comments
                     </th>
                 </tr>
                 </thead>
@@ -254,39 +254,23 @@
 
 <script type="text/ng-template" id="DatatypeEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
-        <td class="col-xs-2 col-fixed-250">
-                                              <span style="width:60%" type="text"
-                                                    name="name"
-                                                    ng-bind="node.name"></span>
-            <span ng-bind="node.description"></span>
-
+        <td class="col-xs-2 col-fixed-250">{{$index}}
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
-            <div>-</div>
-        </td>
-        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
-            <div>-</div>
-        </td>
-
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>-</div>
         </td>
-
-        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('codeSys')">
             <div>-</div>
         </td>
-
         <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>-</div>
         </td>
-
         <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>-</div>
         </td>
-
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <div>-</div>
         </td>

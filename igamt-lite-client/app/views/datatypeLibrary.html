@@ -6,7 +6,7 @@
     </div>
     <div ng-show="!loading">
     <div class="page-header">
-        <h3> Master Data Type Library</h3>
+        <h3> Master Data Type Libraries</h3>
     </div>
         <form id="selectDtTypeForm" class="form-horizontal" role="form">
             <div class="form-group">
@@ -67,7 +67,7 @@
 </form>
 </div>
   <tabset>
-      <tab index="0" heading="Metadata">Metadata
+      <tab index="0" heading="Metadata">
         <div class="panel panel-primary"  ng-show="datatypeLibStruct">
             <div class="panel-heading">Metadata</div>
             <div class="panel-body" style="padding-bottom:100px">
@@ -77,8 +77,8 @@
             </div>
         </div>
       </tab>
-      <tab index="1" heading="Data Types">Data Types
-       <div class="panel panel-primary" ng-show="datatypeLibStruct.children !== undefined" >
+      <tab index="1" heading="Data Types">
+       <div class="panel panel-primary" ng-show="datatypeLibStruct.children" >
             <div class="panel-heading">Data Type List</div>
             <div class="panel-body" style="padding-bottom:100px">
                 <div id="meta" style="width:100%">
@@ -88,7 +88,7 @@
         </div>
     </tab>
   </tabset>
-  <div class="row">
+  <div class="row" ng-show="datatypeView">
     <div class="panel panel-primary">
       <div class="panel-heading">Edit Area</div>
       <div class="panel-body" style="padding-bottom:100px">
@@ -105,13 +105,54 @@
 <form>
   <div class="container form-group">
   <div class="row">
-    <label class="control-label" for="hl7Version">HL7 Version</label>
+   <div class="col-sm-6">
+   <label class="control-label" for="hl7Version">HL7 Version</label>
     <input class="form-control"  type="text"
            name="hl7Version"
            ng-model="datatypeLibStruct.metaData.hl7Version"
            required/>
-</div>
-Something
+	</div>
+   <div class="col-sm-6">
+   <label class="control-label" for="name">Name</label>
+    <input class="form-control"  type="text"
+           name="name"
+           ng-model="datatypeLibStruct.metaData.name"
+           required/>
+	</div>
+	</div>
+  <div class="row">
+   <div class="col-sm-6">
+   <label class="control-label" for="ext">Extension</label>
+    <input class="form-control"  type="text"
+           name="ext"
+           ng-model="datatypeLibStruct.metaData.ext"
+           required/>
+	</div>
+   <div class="col-sm-6">
+   <label class="control-label" for="orgName">Organization Name</label>
+    <input class="form-control"  type="text"
+           name="orgName"
+           ng-model="datatypeLibStruct.metaData.orgName"
+           required/>
+	</div>
+	</div>
+  <div class="row">
+   <div class="col-sm-6">
+   <label class="control-label" for="version">Version</label>
+    <input class="form-control"  type="text"
+           name="version"
+           ng-model="datatypeLibStruct.metaData.version"
+           required/>
+	</div>
+   <div class="col-sm-6">
+   <label class="control-label" for="date">Date</label>
+    <input class="form-control"  type="text"
+           name="date"
+           ng-model="datatypeLibStruct.metaData.date"
+           required/>
+	</div>
+	</div>
+	</div>
 </form>
 </script>
 <script type="text/ng-template" id="DatatypeList.html">
@@ -142,12 +183,6 @@ Something
     <td st-ratio="25">{{getDisplayLabel(dt)}}</td>
     <td st-ratio="30" ng-bind="dt.description"></td>
     <td st-ratio="35">
-       <button
-              title="Save"
-              type="button" class="btn btn-xs btn-success"
-              ng-click="saveDatatype(dt)">
-        <span><i class="fa fa-pencil fa-fw"></i> Save</span>
-      </button>
      <button
               title="Edit"
               type="button" class="btn btn-xs btn-primary"
@@ -189,7 +224,7 @@ Something
         <div class="btn-group btn-group-sm" data-toggle="buttons">
           <label class="btn btn-primary btn-xs" ng-click="standard.hl7Version = vr; $parent.okDisabled = false"
                  ng-class="{'active':vr === hl7Version}"
-                 ng-repeat="vr in hl7Versions | orderBy:'toString()'" style="width : 50px; height : 30px;">
+                 ng-repeat="vr in hl7Versions | orderBy:'toString()' track by vr" style="width : 50px; height : 30px;">
             <input ng-disabled="loading" type="radio" ng-value="vr"
                    ng-model="$parent.hl7Version"/>{{vr}}
           </label>
@@ -225,7 +260,7 @@ Something
         <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
-<table st-table="datatypeLibDisplay" st-safe-src="datatypeLibStruct" st-sticky-header class="table table-striped table-bordered">
+<table st-table="datatypeLibDisplay" st-safe-src="datatypesLibStruct" st-sticky-header class="table table-striped table-bordered">
 <thead>
   <tr class="row tbl-header">
     <th st-ratio="2">&nbsp;</th>

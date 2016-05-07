@@ -16,23 +16,38 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  */
 public class SegmentLink extends AbstractLink {
 
-	private String label;
+	private String name;
 
+	private String ext;
+	
 	public SegmentLink() {
 		super();
 	}
 
-	public SegmentLink(String id, String label) {
+	public SegmentLink(String id, String name, String ext) {
 		super();
 		this.setId(id);
-		this.label = label;
+		this.ext = ext;
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
 	}
 
 	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
+		return name + "_" + ext;
 	}
 }

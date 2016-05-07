@@ -2,17 +2,17 @@
   "type" : "datatype",
   "sectionPosition" : 41,
   "hl7Version" : "2.5.1",
-  "accountId" : null,
+  "accountId" : 45,
   "scope" : "HL7STANDARD",
-  "date" : null,
+  "date" : "01/01/2016",
   "version" : null,
   "participants" : [ ],
   "libIds" : [ "57237653da0805ce1eab08ad" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0fd4c623dc6550ec96",
-  "label" : "AUI",
-  "ext" : null,
+  "label" : "AUI_01",
+  "ext" : "01",
   "components" : [ {
     "type" : "component",
     "name" : "Authorization Number",
@@ -64,7 +64,8 @@
   } ],
   "name" : "AUI",
   "description" : "Authorization Information",
-  "comment" : "",
+  "comment" : "Default comment",
   "usageNote" : "",
-  "status" : "PUBLISHED"
+  "status" : "PUBLISHED",
+  "purposeUse" : "This data type is used for specifying an identifier with its associated administrative detail. Assigning Authority and Identifier Type Code required to ensure the ID is unique among all Assigning Authorities and Identifier Type Codes."
 }

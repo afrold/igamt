@@ -61,8 +61,9 @@ public class SegmentLibraryReadConverter extends AbstractReadConverter<DBObject,
 			for (Object childObj : libDBObjects) {
 				DBObject dbObj = (DBObject)childObj;
 				String id = readMongoId(dbObj);
-				String label = (String)dbObj.get(LABEL);
-				SegmentLink sgl = new SegmentLink(id, label);
+				String name = (String)dbObj.get(NAME);
+				String ext = (String)dbObj.get(EXT);
+				SegmentLink sgl = new SegmentLink(id, name, ext);
 				lib.addSegment(sgl);
 			}
 		}

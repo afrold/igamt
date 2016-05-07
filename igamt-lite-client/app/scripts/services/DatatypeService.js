@@ -154,6 +154,20 @@ angular.module('igl').factory('DatatypeService',
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+            bindDatatypes: function(ids, dtLibId) {
+            	var binding = {
+            		"datatypeIds" : ids,
+            		"datatypeLibraryId" : dtLibId
+            	};
+                var delay = $q.defer();
+                $http.post('api/datatypes/bindDatatypes', binding).then(function (response) {
+                    var datatypes = angular.fromJson(response.data);
+                    delay.resolve(datatypes);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
         };
         return DatatypeService;

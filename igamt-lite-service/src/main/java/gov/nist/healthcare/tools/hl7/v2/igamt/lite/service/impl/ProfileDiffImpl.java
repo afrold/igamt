@@ -307,16 +307,16 @@ public class ProfileDiffImpl {
 					SegmentRefOrGroup srog = p1.getMessages()
 							.findOneSegmentRefOrGroup(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
-					if (srog instanceof SegmentRef) {
-						Segment s = p1.getSegmentLibrary().findOneSegmentById(
-								((SegmentRef) srog).getRef());
-						deltaDocument.add(new Paragraph(s.getLabel()
-								+ " edited", eltNameFont));
-
-					} else if (srog instanceof SegmentRef) {
-						deltaDocument.add(new Paragraph(srog.getComment()
-								+ " edited", eltNameFont));
-					}
+//					if (srog instanceof SegmentRef) {
+//						Segment s = p1.getSegmentLibrary().findOneSegmentById(
+//								((SegmentRef) srog).getRef());
+//						deltaDocument.add(new Paragraph(s.getLabel()
+//								+ " edited", eltNameFont));
+//
+//					} else if (srog instanceof SegmentRef) {
+//						deltaDocument.add(new Paragraph(srog.getComment()
+//								+ " edited", eltNameFont));
+//					}
 					for (String field : ec.getChange().keySet()) {
 						deltaDocument.add(Chunk.NEWLINE);
 						deltaDocument.add(new Paragraph("Field: " + field,
@@ -349,34 +349,34 @@ public class ProfileDiffImpl {
 			if (this.segmentsChanges.isEmpty())
 				deltaDocument.add(new Paragraph("No changes", valueFont));
 			for (ElementChange ec : this.segmentsChanges) {
-				if (ec.getChangeType().equals("edit")) {
-					Segment s = p1.getSegmentLibrary().findOneSegmentById(ec.getId());
-					deltaDocument.add(Chunk.NEWLINE);
-					deltaDocument.add(new Paragraph(s.getLabel() + " edited",
-							eltNameFont));
-					for (String field : ec.getChange().keySet()) {
-						deltaDocument.add(Chunk.NEWLINE);
-						deltaDocument.add(new Paragraph("Field: " + field,
-								fieldFont));
-						deltaDocument.add(new Paragraph("Base value: "
-								+ ec.getChange().get(field).get("basevalue"),
-								valueFont));
-						deltaDocument.add(new Paragraph("New value: "
-								+ ec.getChange().get(field).get("newvalue"),
-								valueFont));
-					}
-				}
-				if (ec.getChangeType().equals("del")) {
-					deltaDocument.add(Chunk.NEWLINE);
-					Segment s = p1.getSegmentLibrary().findOneSegmentById(ec.getId());
-					deltaDocument.add(new Paragraph(s.getLabel() + " deleted",
-							eltNameFont));
-				}
-				if (ec.getChangeType().equals("add")) {
-					Segment s = p2.getSegmentLibrary().findOneSegmentById(ec.getId());
-					deltaDocument.add(new Paragraph(s.getLabel() + " added",
-							eltNameFont));
-				}
+//				if (ec.getChangeType().equals("edit")) {
+//					Segment s = p1.getSegmentLibrary().findOneSegmentById(ec.getId());
+//					deltaDocument.add(Chunk.NEWLINE);
+//					deltaDocument.add(new Paragraph(s.getLabel() + " edited",
+//							eltNameFont));
+//					for (String field : ec.getChange().keySet()) {
+//						deltaDocument.add(Chunk.NEWLINE);
+//						deltaDocument.add(new Paragraph("Field: " + field,
+//								fieldFont));
+//						deltaDocument.add(new Paragraph("Base value: "
+//								+ ec.getChange().get(field).get("basevalue"),
+//								valueFont));
+//						deltaDocument.add(new Paragraph("New value: "
+//								+ ec.getChange().get(field).get("newvalue"),
+//								valueFont));
+//					}
+//				}
+//				if (ec.getChangeType().equals("del")) {
+//					deltaDocument.add(Chunk.NEWLINE);
+//					Segment s = p1.getSegmentLibrary().findOneSegmentById(ec.getId());
+//					deltaDocument.add(new Paragraph(s.getLabel() + " deleted",
+//							eltNameFont));
+//				}
+//				if (ec.getChangeType().equals("add")) {
+//					Segment s = p2.getSegmentLibrary().findOneSegmentById(ec.getId());
+//					deltaDocument.add(new Paragraph(s.getLabel() + " added",
+//							eltNameFont));
+//				}
 			}
 
 			deltaDocument.add(Chunk.NEWLINE);
@@ -385,34 +385,34 @@ public class ProfileDiffImpl {
 				deltaDocument.add(new Paragraph("No changes", valueFont));
 			}
 			for (ElementChange ec : this.fieldsChanges) {
-				if (ec.getChangeType().equals("edit")) {
-					Field f = p1.getSegmentLibrary().findOneField(ec.getId());
-					deltaDocument.add(Chunk.NEWLINE);
-					deltaDocument.add(new Paragraph(f.getName() + " edited",
-							eltNameFont));
-					for (String field : ec.getChange().keySet()) {
-						deltaDocument.add(Chunk.NEWLINE);
-						deltaDocument.add(new Paragraph("Field: " + field,
-								fieldFont));
-						deltaDocument.add(new Paragraph("Base value: "
-								+ ec.getChange().get(field).get("basevalue"),
-								valueFont));
-						deltaDocument.add(new Paragraph("New value: "
-								+ ec.getChange().get(field).get("newvalue"),
-								valueFont));
-					}
-				}
-				if (ec.getChangeType().equals("del")) {
-					Field f = p1.getSegmentLibrary().findOneField(ec.getId());
-					deltaDocument.add(Chunk.NEWLINE);
-					deltaDocument.add(new Paragraph(f.getName() + " deleted",
-							eltNameFont));
-				}
-				if (ec.getChangeType().equals("add")) {
-					Field f = p2.getSegmentLibrary().findOneField(ec.getId());
-					deltaDocument.add(new Paragraph(f.getName() + " added",
-							eltNameFont));
-				}
+//				if (ec.getChangeType().equals("edit")) {
+//					Field f = p1.getSegmentLibrary().findOneField(ec.getId());
+//					deltaDocument.add(Chunk.NEWLINE);
+//					deltaDocument.add(new Paragraph(f.getName() + " edited",
+//							eltNameFont));
+//					for (String field : ec.getChange().keySet()) {
+//						deltaDocument.add(Chunk.NEWLINE);
+//						deltaDocument.add(new Paragraph("Field: " + field,
+//								fieldFont));
+//						deltaDocument.add(new Paragraph("Base value: "
+//								+ ec.getChange().get(field).get("basevalue"),
+//								valueFont));
+//						deltaDocument.add(new Paragraph("New value: "
+//								+ ec.getChange().get(field).get("newvalue"),
+//								valueFont));
+//					}
+//				}
+//				if (ec.getChangeType().equals("del")) {
+//					Field f = p1.getSegmentLibrary().findOneField(ec.getId());
+//					deltaDocument.add(Chunk.NEWLINE);
+//					deltaDocument.add(new Paragraph(f.getName() + " deleted",
+//							eltNameFont));
+//				}
+//				if (ec.getChangeType().equals("add")) {
+//					Field f = p2.getSegmentLibrary().findOneField(ec.getId());
+//					deltaDocument.add(new Paragraph(f.getName() + " added",
+//							eltNameFont));
+//				}
 			}
 
 			deltaDocument.add(Chunk.NEWLINE);
@@ -420,34 +420,34 @@ public class ProfileDiffImpl {
 			if (this.datatypesChanges.isEmpty())
 				deltaDocument.add(new Paragraph("No changes", valueFont));
 			for (ElementChange ec : this.datatypesChanges) {
-				if (ec.getChangeType().equals("edit")) {
-					Datatype d = p1.getDatatypeLibrary().findOne(ec.getId());
-					deltaDocument.add(Chunk.NEWLINE);
-					deltaDocument.add(new Paragraph(d.getLabel() + " edited",
-							eltNameFont));
-					for (String field : ec.getChange().keySet()) {
-						deltaDocument.add(Chunk.NEWLINE);
-						deltaDocument.add(new Paragraph("Field: " + field,
-								fieldFont));
-						deltaDocument.add(new Paragraph("Base value: "
-								+ ec.getChange().get(field).get("basevalue"),
-								valueFont));
-						deltaDocument.add(new Paragraph("New value: "
-								+ ec.getChange().get(field).get("newvalue"),
-								valueFont));
-					}
-				}
-				if (ec.getChangeType().equals("del")) {
-					Datatype d = p1.getDatatypeLibrary().findOne(ec.getId());
-					deltaDocument.add(Chunk.NEWLINE);
-					deltaDocument.add(new Paragraph(d.getLabel() + " deleted",
-							eltNameFont));
-				}
-				if (ec.getChangeType().equals("add")) {
-					Datatype d = p1.getDatatypeLibrary().findOne(ec.getId());
-					deltaDocument.add(new Paragraph(d.getLabel() + " added",
-							eltNameFont));
-				}
+//				if (ec.getChangeType().equals("edit")) {
+//					Datatype d = p1.getDatatypeLibrary().findOne(ec.getId());
+//					deltaDocument.add(Chunk.NEWLINE);
+//					deltaDocument.add(new Paragraph(d.getLabel() + " edited",
+//							eltNameFont));
+//					for (String field : ec.getChange().keySet()) {
+//						deltaDocument.add(Chunk.NEWLINE);
+//						deltaDocument.add(new Paragraph("Field: " + field,
+//								fieldFont));
+//						deltaDocument.add(new Paragraph("Base value: "
+//								+ ec.getChange().get(field).get("basevalue"),
+//								valueFont));
+//						deltaDocument.add(new Paragraph("New value: "
+//								+ ec.getChange().get(field).get("newvalue"),
+//								valueFont));
+//					}
+//				}
+//				if (ec.getChangeType().equals("del")) {
+//					Datatype d = p1.getDatatypeLibrary().findOne(ec.getId());
+//					deltaDocument.add(Chunk.NEWLINE);
+//					deltaDocument.add(new Paragraph(d.getLabel() + " deleted",
+//							eltNameFont));
+//				}
+//				if (ec.getChangeType().equals("add")) {
+//					Datatype d = p1.getDatatypeLibrary().findOne(ec.getId());
+//					deltaDocument.add(new Paragraph(d.getLabel() + " added",
+//							eltNameFont));
+//				}
 			}
 
 			deltaDocument.add(Chunk.NEWLINE);
@@ -456,38 +456,38 @@ public class ProfileDiffImpl {
 			if (this.componentsChanges.isEmpty())
 				deltaDocument.add(new Paragraph("No changes", valueFont));
 			for (ElementChange ec : this.componentsChanges) {
-				if (ec.getChangeType().equals("edit")) {
-					Component c = p1.getDatatypeLibrary()
-							.findOneComponent(ec.getId());
-					deltaDocument.add(Chunk.NEWLINE);
-					deltaDocument.add(new Paragraph(c.getName() + " edited",
-							eltNameFont));
-					for (String field : ec.getChange().keySet()) {
-						deltaDocument.add(Chunk.NEWLINE);
-						deltaDocument.add(new Paragraph("Field: " + field,
-								fieldFont));
-						deltaDocument.add(new Paragraph("Base value: "
-								+ ec.getChange().get(field).get("basevalue"),
-								valueFont));
-						deltaDocument.add(new Paragraph("New value: "
-								+ ec.getChange().get(field).get("newvalue"),
-								valueFont));
-					}
-				}
-				if (ec.getChangeType().equals("del")) {
-					Component c = p1.getDatatypeLibrary()
-							.findOneComponent(ec.getId());
-					deltaDocument.add(Chunk.NEWLINE);
-					deltaDocument.add(new Paragraph(c.getName() + " deleted",
-							eltNameFont));
-				}
-				if (ec.getChangeType().equals("add")) {
-					Component c = p1.getDatatypeLibrary()
-							.findOneComponent(ec.getId());
-					deltaDocument.add(Chunk.NEWLINE);
-					deltaDocument.add(new Paragraph(c.getName() + " added",
-							eltNameFont));
-				}
+//				if (ec.getChangeType().equals("edit")) {
+//					Component c = p1.getDatatypeLibrary()
+//							.findOneComponent(ec.getId());
+//					deltaDocument.add(Chunk.NEWLINE);
+//					deltaDocument.add(new Paragraph(c.getName() + " edited",
+//							eltNameFont));
+//					for (String field : ec.getChange().keySet()) {
+//						deltaDocument.add(Chunk.NEWLINE);
+//						deltaDocument.add(new Paragraph("Field: " + field,
+//								fieldFont));
+//						deltaDocument.add(new Paragraph("Base value: "
+//								+ ec.getChange().get(field).get("basevalue"),
+//								valueFont));
+//						deltaDocument.add(new Paragraph("New value: "
+//								+ ec.getChange().get(field).get("newvalue"),
+//								valueFont));
+//					}
+//				}
+//				if (ec.getChangeType().equals("del")) {
+//					Component c = p1.getDatatypeLibrary()
+//							.findOneComponent(ec.getId());
+//					deltaDocument.add(Chunk.NEWLINE);
+//					deltaDocument.add(new Paragraph(c.getName() + " deleted",
+//							eltNameFont));
+//				}
+//				if (ec.getChangeType().equals("add")) {
+//					Component c = p1.getDatatypeLibrary()
+//							.findOneComponent(ec.getId());
+//					deltaDocument.add(Chunk.NEWLINE);
+//					deltaDocument.add(new Paragraph(c.getName() + " added",
+//							eltNameFont));
+//				}
 			}
 
 			deltaDocument.add(Chunk.NEWLINE);
@@ -753,578 +753,492 @@ public class ProfileDiffImpl {
 
 	private void compareMessages(Messages mlib1, Messages mlib2,
 			SegmentLibrary slib1, SegmentLibrary slib2) {
-		for (Message m : mlib1.getChildren()) {
-			for (SegmentRefOrGroup srog : m.getChildren()) {
-				ElementChange ec = new ElementChange(srog.getId(), m.getId());
-				if (mlib2.findOneSegmentRefOrGroup(srog.getId()) == null) {
-					if (srog instanceof SegmentRef) {
-						Segment s = slib1.findOneSegmentById(((SegmentRef) srog).getRef());
-						ec.recordChange("deleted", s.getName(), "");
-						ec.setChangeType("del");
-					} else if (srog instanceof Group) {
-						ec.recordChange("deleted", ((Group) srog).getName(), "");
-						ec.setChangeType("del");
-					}
-				} else {
-					SegmentRefOrGroup srog2 = mlib2
-							.findOneSegmentRefOrGroup(srog.getId());
-					if (!(srog.getMin().equals(srog2.getMin()))) {
-						ec.recordChange("Min", srog.getMin().toString(), srog2
-								.getMin().toString());
-					}
-					if (!(srog.getMax().equals(srog2.getMax()))) {
-						ec.recordChange("Max", srog.getMax(), srog2.getMax());
-					}
-					if (!(srog.getUsage().equals(srog2.getUsage()))) {
-						ec.recordChange("Usage", srog.getUsage().value(), srog
-								.getUsage().value());
-					}
-					if (!(srog.getComment().equals(srog2.getComment()))) {
-						ec.recordChange("Comment", srog.getComment(),
-								srog2.getComment());
-					}
-					ec.setChangeType("edit");
-				}
-				if (ec.countChanges() != 0)
-					this.segrefOrGroupChanges.add(ec);
-			}
-		}
-		for (Message m : mlib2.getChildren()) {
-			for (SegmentRefOrGroup srog : m.getChildren()) {
-				ElementChange ec = new ElementChange(srog.getId(), m.getId());
-				if (mlib1.findOneSegmentRefOrGroup(srog.getId()) == null) {
-					if (srog instanceof SegmentRef) {
-						Segment s = slib2.findOneSegmentById(((SegmentRef) srog).getRef());
-						ec.recordChange("added", "", s.getName());
-						ec.setChangeType("add");
-					} else if (srog instanceof Group) {
-						ec.recordChange("added", "", ((Group) srog).getName());
-						ec.setChangeType("add");
-					}
-					this.segrefOrGroupChanges.add(ec);
-				}
-			}
-		}
+//		for (Message m : mlib1.getChildren()) {
+//			for (SegmentRefOrGroup srog : m.getChildren()) {
+//				ElementChange ec = new ElementChange(srog.getId(), m.getId());
+//				if (mlib2.findOneSegmentRefOrGroup(srog.getId()) == null) {
+//					if (srog instanceof SegmentRef) {
+//						Segment s = slib1.findOneSegmentById(((SegmentRef) srog).getRef());
+//						ec.recordChange("deleted", s.getName(), "");
+//						ec.setChangeType("del");
+//					} else if (srog instanceof Group) {
+//						ec.recordChange("deleted", ((Group) srog).getName(), "");
+//						ec.setChangeType("del");
+//					}
+//				} else {
+//					SegmentRefOrGroup srog2 = mlib2
+//							.findOneSegmentRefOrGroup(srog.getId());
+//					if (!(srog.getMin().equals(srog2.getMin()))) {
+//						ec.recordChange("Min", srog.getMin().toString(), srog2
+//								.getMin().toString());
+//					}
+//					if (!(srog.getMax().equals(srog2.getMax()))) {
+//						ec.recordChange("Max", srog.getMax(), srog2.getMax());
+//					}
+//					if (!(srog.getUsage().equals(srog2.getUsage()))) {
+//						ec.recordChange("Usage", srog.getUsage().value(), srog
+//								.getUsage().value());
+//					}
+//					if (!(srog.getComment().equals(srog2.getComment()))) {
+//						ec.recordChange("Comment", srog.getComment(),
+//								srog2.getComment());
+//					}
+//					ec.setChangeType("edit");
+//				}
+//				if (ec.countChanges() != 0)
+//					this.segrefOrGroupChanges.add(ec);
+//			}
+//		}
+//		for (Message m : mlib2.getChildren()) {
+//			for (SegmentRefOrGroup srog : m.getChildren()) {
+//				ElementChange ec = new ElementChange(srog.getId(), m.getId());
+//				if (mlib1.findOneSegmentRefOrGroup(srog.getId()) == null) {
+//					if (srog instanceof SegmentRef) {
+//						Segment s = slib2.findOneSegmentById(((SegmentRef) srog).getRef());
+//						ec.recordChange("added", "", s.getName());
+//						ec.setChangeType("add");
+//					} else if (srog instanceof Group) {
+//						ec.recordChange("added", "", ((Group) srog).getName());
+//						ec.setChangeType("add");
+//					}
+//					this.segrefOrGroupChanges.add(ec);
+//				}
+//			}
+//		}
 	}
 
 	private void compareSegRef(SegmentRefOrGroup sr, SegmentLibrary s1, Messages mlib2) {
-		ElementChange ec = new ElementChange(sr.getId(), s1.getId());
-		if (mlib2.findOneSegmentRefOrGroup(sr.getId()) == null) {
-			Segment s = s1.findOneSegmentById(((SegmentRef) sr).getRef());
-			ec.recordChange("deleted", s.getName(), "");
-			ec.setChangeType("del");
-		} else {
-			SegmentRefOrGroup sr2 = mlib2.findOneSegmentRefOrGroup(sr.getId());
-			if (!(sr.getMin().equals(sr2.getMin()))) {
-				ec.recordChange("Min", sr.getMin().toString(), sr2.getMin()
-						.toString());
-			}
-			if (!(sr.getMax().equals(sr2.getMax()))) {
-				ec.recordChange("Max", sr.getMax(), sr2.getMax());
-			}
-			if (!(sr.getUsage().equals(sr2.getUsage()))) {
-				ec.recordChange("Usage", sr.getUsage().value(), sr.getUsage()
-						.value());
-			}
-			if (!(sr.getComment().equals(sr2.getComment()))) {
-				ec.recordChange("Comment", sr.getComment(), sr2.getComment());
-			}
-			ec.setChangeType("edit");
-		}
-		if (ec.countChanges() != 0)
-			this.segrefOrGroupChanges.add(ec);
-
+//		ElementChange ec = new ElementChange(sr.getId(), s1.getId());
+//		if (mlib2.findOneSegmentRefOrGroup(sr.getId()) == null) {
+//			Segment s = s1.findOneSegmentById(((SegmentRef) sr).getRef());
+//			ec.recordChange("deleted", s.getName(), "");
+//			ec.setChangeType("del");
+//		} else {
+//			SegmentRefOrGroup sr2 = mlib2.findOneSegmentRefOrGroup(sr.getId());
+//			if (!(sr.getMin().equals(sr2.getMin()))) {
+//				ec.recordChange("Min", sr.getMin().toString(), sr2.getMin()
+//						.toString());
+//			}
+//			if (!(sr.getMax().equals(sr2.getMax()))) {
+//				ec.recordChange("Max", sr.getMax(), sr2.getMax());
+//			}
+//			if (!(sr.getUsage().equals(sr2.getUsage()))) {
+//				ec.recordChange("Usage", sr.getUsage().value(), sr.getUsage()
+//						.value());
+//			}
+//			if (!(sr.getComment().equals(sr2.getComment()))) {
+//				ec.recordChange("Comment", sr.getComment(), sr2.getComment());
+//			}
+//			ec.setChangeType("edit");
+//		}
+//		if (ec.countChanges() != 0)
+//			this.segrefOrGroupChanges.add(ec);
+//
 		// TODO add added segrefs (case when srog had been added)
 	}
 
 	private void compareGroups(SegmentRefOrGroup g, SegmentLibrary slib1,
 			Messages mlib2) {
-		ElementChange ec = new ElementChange(g.getId(), slib1.getId());
-		if (mlib2.findOneSegmentRefOrGroup(g.getId()) == null) {
-			ec.recordChange("deleted", ((Group) g).getName(), "");
-			ec.setChangeType("del");
-		} else {
-			SegmentRefOrGroup sr2 = mlib2.findOneSegmentRefOrGroup(g.getId());
-			if (!(g.getMin().equals(sr2.getMin()))) {
-				ec.recordChange("Min", g.getMin().toString(), sr2.getMin()
-						.toString());
-			}
-			if (!(g.getMax().equals(sr2.getMax()))) {
-				ec.recordChange("Max", g.getMax().toString(), sr2.getMax()
-						.toString());
-			}
-			if (!(g.getUsage().equals(sr2.getUsage()))) {
-				ec.recordChange("Usage", g.getUsage().value(), sr2.getUsage()
-						.value());
-			}
-			if (!(g.getComment().equals(sr2.getComment()))) {
-				ec.recordChange("Comment", g.getComment(), sr2.getComment());
-			}
-			ec.setChangeType("edit");
-		}
-		if (ec.countChanges() != 0)
-			this.segrefOrGroupChanges.add(ec);
-
-		for (SegmentRefOrGroup srog : ((Group) g).getChildren()) {
-			if (srog instanceof SegmentRef) {
-				this.compareSegRef(srog, slib1, mlib2);
-			} else {
-				this.compareGroups(srog, slib1, mlib2);
-			}
-		}
+//		ElementChange ec = new ElementChange(g.getId(), slib1.getId());
+//		if (mlib2.findOneSegmentRefOrGroup(g.getId()) == null) {
+//			ec.recordChange("deleted", ((Group) g).getName(), "");
+//			ec.setChangeType("del");
+//		} else {
+//			SegmentRefOrGroup sr2 = mlib2.findOneSegmentRefOrGroup(g.getId());
+//			if (!(g.getMin().equals(sr2.getMin()))) {
+//				ec.recordChange("Min", g.getMin().toString(), sr2.getMin()
+//						.toString());
+//			}
+//			if (!(g.getMax().equals(sr2.getMax()))) {
+//				ec.recordChange("Max", g.getMax().toString(), sr2.getMax()
+//						.toString());
+//			}
+//			if (!(g.getUsage().equals(sr2.getUsage()))) {
+//				ec.recordChange("Usage", g.getUsage().value(), sr2.getUsage()
+//						.value());
+//			}
+//			if (!(g.getComment().equals(sr2.getComment()))) {
+//				ec.recordChange("Comment", g.getComment(), sr2.getComment());
+//			}
+//			ec.setChangeType("edit");
+//		}
+//		if (ec.countChanges() != 0)
+//			this.segrefOrGroupChanges.add(ec);
+//
+//		for (SegmentRefOrGroup srog : ((Group) g).getChildren()) {
+//			if (srog instanceof SegmentRef) {
+//				this.compareSegRef(srog, slib1, mlib2);
+//			} else {
+//				this.compareGroups(srog, slib1, mlib2);
+//			}
+//		}
 	}
 
 	private void compareSegments(SegmentLibrary slib1, SegmentLibrary slib2) {
-		for (Segment s : slib1.getChildren()) {
-			ElementChange ec = new ElementChange(s.getId(), slib1.getId());
-			if (slib2.findOneSegmentById(s.getId()) == null) {
-				ec.recordChange("deleted", s.getName(), "");
-				ec.setChangeType("del");
-			} else {
-				Segment s2 = slib2.findOneSegmentById(s.getId());
-				if (!(s.getDescription().equals(s2.getDescription()))) {
-					ec.recordChange("Description", s.getDescription(),
-							s2.getDescription());
-				}
-				if (!(s.getLabel().equals(s2.getLabel()))) {
-					ec.recordChange("Label", s.getLabel(), s2.getLabel());
-				}
-				if (!(s.getText1().equals(s2.getText1()))) {
-					ec.recordChange("Text", s.getText1(), s2.getText1());
-				}
-				if (!(s.getText2().equals(s2.getText2()))) {
-					ec.recordChange("Comment", s.getText2(), s2.getText2());
-				}
-				ec.setChangeType("edit");
-			}
-			if (ec.countChanges() != 0)
-				this.segmentsChanges.add(ec);
-
-			for (ConformanceStatement cs : s.getConformanceStatements()) {
-				ec = new ElementChange(cs.getId(), "confStat");
-
-				if (slib2.findOneConformanceStatement(cs.getId()) == null) {
-					System.out.println(cs.getDescription() + " deleted");
-					ec.recordChange("deleted", cs.getDescription(), "");
-					ec.setChangeType("del");
-				} else {
-					ConformanceStatement cs2 = slib2
-							.findOneConformanceStatement(cs.getId());
-					if (!cs.getAssertion().equals(cs2.getAssertion())) {
-						ec.recordChange("Assertion", cs.getAssertion(),
-								cs2.getAssertion());
-					}
-					if (!cs.getConstraintTarget().equals(
-							cs2.getConstraintTarget())) {
-						ec.recordChange("ConstraintTarget",
-								cs.getConstraintTarget(),
-								cs2.getConstraintTarget());
-					}
-					if (!cs.getDescription().equals(cs2.getDescription())) {
-						ec.recordChange("Description", cs.getDescription(),
-								cs2.getDescription());
-					}
-					ec.setChangeType("edit");
-				}
-				if (ec.countChanges() != 0)
-					this.confStatementChanges.add(ec);
-
-			}
-			for (Predicate p : s.getPredicates()) {
-				ec = new ElementChange(p.getId(), "predicate");
-				if (slib2.findOnePredicate(p.getId()) == null) {
-					ec.recordChange("deleted", p.getDescription(), "");
-					ec.setChangeType("del");
-				} else {
-					Predicate p2 = slib2.findOnePredicate(p.getId());
-					if (!p.getAssertion().equals(p2.getAssertion())) {
-						ec.recordChange("Assertion", p.getAssertion(),
-								p2.getAssertion());
-					}
-					if (!p.getConstraintTarget().equals(
-							p2.getConstraintTarget())) {
-						ec.recordChange("ConstraintTarget",
-								p.getConstraintTarget(),
-								p2.getConstraintTarget());
-					}
-					if (!p.getDescription().equals(p2.getDescription())) {
-						ec.recordChange("Description", p.getDescription(),
-								p2.getDescription());
-					}
-					if (!p.getTrueUsage().equals(p2.getTrueUsage())) {
-						ec.recordChange("TrueUsage", p.getTrueUsage().value(),
-								p2.getTrueUsage().value());
-					}
-					if (!p.getFalseUsage().equals(p2.getFalseUsage())) {
-						ec.recordChange("FalseUsage",
-								p.getFalseUsage().value(), p2.getFalseUsage()
-										.value());
-					}
-					ec.setChangeType("edit");
-				}
-				if (ec.countChanges() != 0)
-					this.predicatesChanges.add(ec);
-			}
-
-		}
-
-		for (Segment s : slib2.getChildren()) {
-			if (slib1.findOneSegmentById(s.getId()) == null) {
-				ElementChange ec = new ElementChange(s.getId(), slib2.getId());
-				ec.recordChange("added", "", s.getName());
-				ec.setChangeType("add");
-				this.segmentsChanges.add(ec);
-			}
-			for (ConformanceStatement cs : s.getConformanceStatements()) {
-				if (slib1.findOneConformanceStatement(cs.getId()) == null) {
-					ElementChange ec = new ElementChange(cs.getId(), "confStat");
-					ec.recordChange("added", cs.getDescription(), "");
-					ec.setChangeType("add");
-					this.confStatementChanges.add(ec);
-				}
-			}
-			for (Predicate p : s.getPredicates()) {
-				if (slib1.findOnePredicate(p.getId()) == null) {
-					ElementChange ec = new ElementChange(p.getId(), "predicate");
-					ec.recordChange("added", p.getDescription(), "");
-					ec.setChangeType("add");
-					this.predicatesChanges.add(ec);
-				}
-			}
-		}
+//		for (Segment s : slib1.getChildren()) {
+//			ElementChange ec = new ElementChange(s.getId(), slib1.getId());
+//			if (slib2.findOneSegmentById(s.getId()) == null) {
+//				ec.recordChange("deleted", s.getName(), "");
+//				ec.setChangeType("del");
+//			} else {
+//				Segment s2 = slib2.findOneSegmentById(s.getId());
+//				if (!(s.getDescription().equals(s2.getDescription()))) {
+//					ec.recordChange("Description", s.getDescription(),
+//							s2.getDescription());
+//				}
+//				if (!(s.getLabel().equals(s2.getLabel()))) {
+//					ec.recordChange("Label", s.getLabel(), s2.getLabel());
+//				}
+//				if (!(s.getText1().equals(s2.getText1()))) {
+//					ec.recordChange("Text", s.getText1(), s2.getText1());
+//				}
+//				if (!(s.getText2().equals(s2.getText2()))) {
+//					ec.recordChange("Comment", s.getText2(), s2.getText2());
+//				}
+//				ec.setChangeType("edit");
+//			}
+//			if (ec.countChanges() != 0)
+//				this.segmentsChanges.add(ec);
+//
+//			for (ConformanceStatement cs : s.getConformanceStatements()) {
+//				ec = new ElementChange(cs.getId(), "confStat");
+//
+//				if (slib2.findOneConformanceStatement(cs.getId()) == null) {
+//					System.out.println(cs.getDescription() + " deleted");
+//					ec.recordChange("deleted", cs.getDescription(), "");
+//					ec.setChangeType("del");
+//				} else {
+//					ConformanceStatement cs2 = slib2
+//							.findOneConformanceStatement(cs.getId());
+//					if (!cs.getAssertion().equals(cs2.getAssertion())) {
+//						ec.recordChange("Assertion", cs.getAssertion(),
+//								cs2.getAssertion());
+//					}
+//					if (!cs.getConstraintTarget().equals(
+//							cs2.getConstraintTarget())) {
+//						ec.recordChange("ConstraintTarget",
+//								cs.getConstraintTarget(),
+//								cs2.getConstraintTarget());
+//					}
+//					if (!cs.getDescription().equals(cs2.getDescription())) {
+//						ec.recordChange("Description", cs.getDescription(),
+//								cs2.getDescription());
+//					}
+//					ec.setChangeType("edit");
+//				}
+//				if (ec.countChanges() != 0)
+//					this.confStatementChanges.add(ec);
+//
+//			}
+//			for (Predicate p : s.getPredicates()) {
+//				ec = new ElementChange(p.getId(), "predicate");
+//				if (slib2.findOnePredicate(p.getId()) == null) {
+//					ec.recordChange("deleted", p.getDescription(), "");
+//					ec.setChangeType("del");
+//				} else {
+//					Predicate p2 = slib2.findOnePredicate(p.getId());
+//					if (!p.getAssertion().equals(p2.getAssertion())) {
+//						ec.recordChange("Assertion", p.getAssertion(),
+//								p2.getAssertion());
+//					}
+//					if (!p.getConstraintTarget().equals(
+//							p2.getConstraintTarget())) {
+//						ec.recordChange("ConstraintTarget",
+//								p.getConstraintTarget(),
+//								p2.getConstraintTarget());
+//					}
+//					if (!p.getDescription().equals(p2.getDescription())) {
+//						ec.recordChange("Description", p.getDescription(),
+//								p2.getDescription());
+//					}
+//					if (!p.getTrueUsage().equals(p2.getTrueUsage())) {
+//						ec.recordChange("TrueUsage", p.getTrueUsage().value(),
+//								p2.getTrueUsage().value());
+//					}
+//					if (!p.getFalseUsage().equals(p2.getFalseUsage())) {
+//						ec.recordChange("FalseUsage",
+//								p.getFalseUsage().value(), p2.getFalseUsage()
+//										.value());
+//					}
+//					ec.setChangeType("edit");
+//				}
+//				if (ec.countChanges() != 0)
+//					this.predicatesChanges.add(ec);
+//			}
+//
+//		}
+//
+//		for (Segment s : slib2.getChildren()) {
+//			if (slib1.findOneSegmentById(s.getId()) == null) {
+//				ElementChange ec = new ElementChange(s.getId(), slib2.getId());
+//				ec.recordChange("added", "", s.getName());
+//				ec.setChangeType("add");
+//				this.segmentsChanges.add(ec);
+//			}
+//			for (ConformanceStatement cs : s.getConformanceStatements()) {
+//				if (slib1.findOneConformanceStatement(cs.getId()) == null) {
+//					ElementChange ec = new ElementChange(cs.getId(), "confStat");
+//					ec.recordChange("added", cs.getDescription(), "");
+//					ec.setChangeType("add");
+//					this.confStatementChanges.add(ec);
+//				}
+//			}
+//			for (Predicate p : s.getPredicates()) {
+//				if (slib1.findOnePredicate(p.getId()) == null) {
+//					ElementChange ec = new ElementChange(p.getId(), "predicate");
+//					ec.recordChange("added", p.getDescription(), "");
+//					ec.setChangeType("add");
+//					this.predicatesChanges.add(ec);
+//				}
+//			}
+//		}
 	}
 
 	private void compareFields(SegmentLibrary slib1, SegmentLibrary slib2) {
-		for (Segment s : slib1.getChildren()) {
-			for (Field f : s.getFields()) {
-				ElementChange ec = new ElementChange(f.getId(), s.getId());
-
-				if (slib2.findOneField(f.getId()) == null) {
-					ec.recordChange("deleted", f.getName(), "");
-					ec.setChangeType("del");
-				} else {
-					Field f2 = slib2.findOneField(f.getId());
-					if (!f.getName().equals(f2.getName())) {
-						ec.recordChange("Name", f.getName(), f2.getName());
-					}
-					if (!f.getUsage().equals(f2.getUsage())) {
-						ec.recordChange("Usage", f.getUsage().value(), f2
-								.getUsage().value());
-					}
-					if (!f.getDatatype().equals(f2.getDatatype())) {
-						ec.recordChange("Datatype", f.getDatatype(),
-								f2.getDatatype());
-					}
-					if (!f.getMin().equals(f2.getMin())) {
-						ec.recordChange("Min", f.getMin().toString(), f2
-								.getMin().toString());
-					}
-					if (!f.getMinLength().equals(f2.getMinLength())) {
-						ec.recordChange("MinLength", f.getMinLength()
-								.toString(), f2.getMinLength().toString());
-					}
-					if (!f.getMax().equals(f2.getMax())) {
-						ec.recordChange("Max", f.getMax(), f2.getMax());
-					}
-					if (!f.getMaxLength().equals(f2.getMaxLength())) {
-						ec.recordChange("MaxLength", f.getMaxLength(),
-								f2.getMaxLength());
-					}
-					if (!f.getText().equals(f2.getText())) {
-						ec.recordChange("Text", f.getText(), f2.getText());
-					}
-					if (!f.getComment().equals(f2.getComment())) {
-						ec.recordChange("Comment", f.getComment(),
-								f2.getComment());
-					}
-					if (!f.getConfLength().equals(f2.getConfLength())) {
-						ec.recordChange("ConfLength", f.getConfLength(),
-								f2.getConfLength());
-					}
-					if (f.getTable() != null & f2.getTable() != null) {
-						if (!f.getTable().equals(f2.getTable())) {
-							ec.recordChange("Table", f.getTable(),
-									f2.getTable());
-						}
-					}
-					if (f.getBindingLocation() != null
-							& f2.getBindingLocation() != null) {
-						if (!f.getBindingLocation().equals(
-								f2.getBindingLocation())) {
-							ec.recordChange("BindingLocation",
-									f.getBindingLocation(),
-									f2.getBindingLocation());
-						}
-					}
-					if (f.getBindingStrength() != null
-							& f2.getBindingStrength() != null) {
-						if (!f.getBindingStrength().equals(
-								f2.getBindingStrength())) {
-							ec.recordChange("BindingStrength",
-									f.getBindingStrength(),
-									f.getBindingStrength());
-						}
-					}
-					ec.setChangeType("edit");
-				}
-				if (ec.countChanges() != 0)
-					this.fieldsChanges.add(ec);
-
-			}
-		}
-		for (Segment s : slib2.getChildren()) {
-			for (Field f : s.getFields()) {
-				if (slib1.findOneField(f.getId()) == null) {
-					ElementChange ec = new ElementChange(f.getId(), s.getId());
-					ec.recordChange("added", "", f.getName());
-					ec.setChangeType("add");
-					this.fieldsChanges.add(ec);
-				}
-			}
-		}
+//		}
 	}
 
 	private void compareDatatypes(DatatypeLibrary dlib1, DatatypeLibrary dlib2) {
-		for (Datatype dt : dlib1.getChildren()) {
-			ElementChange ec = new ElementChange(dt.getId(), dlib1.getId());
-			if (dlib2.findOne(dt.getId()) == null) {
-				ec.recordChange("deleted", dt.getName(), "");
-				ec.setChangeType("del");
-			} else {
-				Datatype dt2 = dlib2.findOne(dt.getId());
-				if (!(dt.getLabel().equals(dt2.getLabel()))) {
-					ec.recordChange("Label", dt.getLabel(), dt2.getLabel());
-				}
-				if (!(dt.getName().equals(dt2.getName()))) {
-					ec.recordChange("Name", dt.getName(), dt2.getName());
-				}
-				if (!(dt.getDescription().equals(dt2.getDescription()))) {
-					ec.recordChange("Description", dt.getDescription(),
-							dt2.getDescription());
-				}
-				if (!(dt.getComment().equals(dt2.getComment()))) {
-					ec.recordChange("Comment", dt.getComment(),
-							dt2.getComment());
-				}
-				if (!(dt.getUsageNote().equals(dt2.getUsageNote()))) {
-					ec.recordChange("UsageNote", dt.getUsageNote(),
-							dt2.getUsageNote());
-				}
-				ec.setChangeType("edit");
-			}
-			if (ec.countChanges() != 0)
-				this.datatypesChanges.add(ec);
-
-			for (ConformanceStatement cs : dt.getConformanceStatements()) {
-				ec = new ElementChange(cs.getId(), "confStat");
-				if (dlib2.findOneConformanceStatement(cs.getId()) == null) {
-					ec.recordChange("deleted", cs.getDescription(), "");
-					ec.setChangeType("del");
-				} else {
-					ConformanceStatement cs2 = dlib2
-							.findOneConformanceStatement(cs.getId());
-					if (!cs.getAssertion().equals(cs2.getAssertion())) {
-						ec.recordChange("Assertion", cs.getAssertion(),
-								cs2.getAssertion());
-					}
-					if (!cs.getConstraintTarget().equals(
-							cs2.getConstraintTarget())) {
-						ec.recordChange("ConstraintTarget",
-								cs.getConstraintTarget(),
-								cs2.getConstraintTarget());
-					}
-					if (!cs.getDescription().equals(cs2.getDescription())) {
-						ec.recordChange("Description", cs.getDescription(),
-								cs2.getDescription());
-					}
-					ec.setChangeType("edit");
-				}
-				if (ec.countChanges() != 0)
-					this.confStatementChanges.add(ec);
-
-			}
-			for (Predicate p : dt.getPredicates()) {
-				ec = new ElementChange(p.getId(), "predicate");
-				if (dlib2.findOnePredicate(p.getId()) == null) {
-					ec.recordChange("deleted", p.getDescription(), "");
-					ec.setChangeType("del");
-				} else {
-					Predicate p2 = dlib2.findOnePredicate(p.getId());
-					if (!p.getAssertion().equals(p2.getAssertion())) {
-						ec.recordChange("Assertion", p.getAssertion(),
-								p2.getAssertion());
-					}
-					if (!p.getConstraintTarget().equals(
-							p2.getConstraintTarget())) {
-						ec.recordChange("ConstraintTarget",
-								p.getConstraintTarget(),
-								p2.getConstraintTarget());
-					}
-					if (!p.getDescription().equals(p2.getDescription())) {
-						ec.recordChange("Description", p.getDescription(),
-								p2.getDescription());
-					}
-					if (!p.getTrueUsage().equals(p2.getTrueUsage())) {
-						ec.recordChange("TrueUsage", p.getTrueUsage().value(),
-								p2.getTrueUsage().value());
-					}
-					if (!p.getFalseUsage().equals(p2.getFalseUsage())) {
-						ec.recordChange("FalseUsage",
-								p.getFalseUsage().value(), p2.getFalseUsage()
-										.value());
-					}
-					ec.setChangeType("edit");
-				}
-				if (ec.countChanges() != 0)
-					this.predicatesChanges.add(ec);
-			}
-		}
-		for (Datatype dt2 : dlib2.getChildren()) {
-			if (dlib1.findOne(dt2.getId()) == null) {
-				ElementChange ec = new ElementChange(dt2.getId(), dlib2.getId());
-				ec.recordChange("added", "", dt2.getName());
-				ec.setChangeType("add");
-				this.datatypesChanges.add(ec);
-			}
-		}
+//		for (Datatype dt : dlib1.getChildren()) {
+//			ElementChange ec = new ElementChange(dt.getId(), dlib1.getId());
+//			if (dlib2.findOne(dt.getId()) == null) {
+//				ec.recordChange("deleted", dt.getName(), "");
+//				ec.setChangeType("del");
+//			} else {
+//				Datatype dt2 = dlib2.findOne(dt.getId());
+//				if (!(dt.getLabel().equals(dt2.getLabel()))) {
+//					ec.recordChange("Label", dt.getLabel(), dt2.getLabel());
+//				}
+//				if (!(dt.getName().equals(dt2.getName()))) {
+//					ec.recordChange("Name", dt.getName(), dt2.getName());
+//				}
+//				if (!(dt.getDescription().equals(dt2.getDescription()))) {
+//					ec.recordChange("Description", dt.getDescription(),
+//							dt2.getDescription());
+//				}
+//				if (!(dt.getComment().equals(dt2.getComment()))) {
+//					ec.recordChange("Comment", dt.getComment(),
+//							dt2.getComment());
+//				}
+//				if (!(dt.getUsageNote().equals(dt2.getUsageNote()))) {
+//					ec.recordChange("UsageNote", dt.getUsageNote(),
+//							dt2.getUsageNote());
+//				}
+//				ec.setChangeType("edit");
+//			}
+//			if (ec.countChanges() != 0)
+//				this.datatypesChanges.add(ec);
+//
+//			for (ConformanceStatement cs : dt.getConformanceStatements()) {
+//				ec = new ElementChange(cs.getId(), "confStat");
+//				if (dlib2.findOneConformanceStatement(cs.getId()) == null) {
+//					ec.recordChange("deleted", cs.getDescription(), "");
+//					ec.setChangeType("del");
+//				} else {
+//					ConformanceStatement cs2 = dlib2
+//							.findOneConformanceStatement(cs.getId());
+//					if (!cs.getAssertion().equals(cs2.getAssertion())) {
+//						ec.recordChange("Assertion", cs.getAssertion(),
+//								cs2.getAssertion());
+//					}
+//					if (!cs.getConstraintTarget().equals(
+//							cs2.getConstraintTarget())) {
+//						ec.recordChange("ConstraintTarget",
+//								cs.getConstraintTarget(),
+//								cs2.getConstraintTarget());
+//					}
+//					if (!cs.getDescription().equals(cs2.getDescription())) {
+//						ec.recordChange("Description", cs.getDescription(),
+//								cs2.getDescription());
+//					}
+//					ec.setChangeType("edit");
+//				}
+//				if (ec.countChanges() != 0)
+//					this.confStatementChanges.add(ec);
+//
+//			}
+//			for (Predicate p : dt.getPredicates()) {
+//				ec = new ElementChange(p.getId(), "predicate");
+//				if (dlib2.findOnePredicate(p.getId()) == null) {
+//					ec.recordChange("deleted", p.getDescription(), "");
+//					ec.setChangeType("del");
+//				} else {
+//					Predicate p2 = dlib2.findOnePredicate(p.getId());
+//					if (!p.getAssertion().equals(p2.getAssertion())) {
+//						ec.recordChange("Assertion", p.getAssertion(),
+//								p2.getAssertion());
+//					}
+//					if (!p.getConstraintTarget().equals(
+//							p2.getConstraintTarget())) {
+//						ec.recordChange("ConstraintTarget",
+//								p.getConstraintTarget(),
+//								p2.getConstraintTarget());
+//					}
+//					if (!p.getDescription().equals(p2.getDescription())) {
+//						ec.recordChange("Description", p.getDescription(),
+//								p2.getDescription());
+//					}
+//					if (!p.getTrueUsage().equals(p2.getTrueUsage())) {
+//						ec.recordChange("TrueUsage", p.getTrueUsage().value(),
+//								p2.getTrueUsage().value());
+//					}
+//					if (!p.getFalseUsage().equals(p2.getFalseUsage())) {
+//						ec.recordChange("FalseUsage",
+//								p.getFalseUsage().value(), p2.getFalseUsage()
+//										.value());
+//					}
+//					ec.setChangeType("edit");
+//				}
+//				if (ec.countChanges() != 0)
+//					this.predicatesChanges.add(ec);
+//			}
+//		}
+//		for (Datatype dt2 : dlib2.getChildren()) {
+//			if (dlib1.findOne(dt2.getId()) == null) {
+//				ElementChange ec = new ElementChange(dt2.getId(), dlib2.getId());
+//				ec.recordChange("added", "", dt2.getName());
+//				ec.setChangeType("add");
+//				this.datatypesChanges.add(ec);
+//			}
+//		}
 	}
 
 	private void compareComponents(DatatypeLibrary dlib1, DatatypeLibrary dlib2) {
-		for (Datatype dt : dlib1.getChildren()) {
-			for (Component c : dt.getComponents()) {
-				ElementChange ec = new ElementChange(c.getId(), dt.getId());
-				if (dlib2.findOneComponent(c.getId()) == null) {
-					ec.recordChange("deleted", c.getName(), "");
-					ec.setChangeType("del");
-				} else {
-					Component c2 = dlib2.findOneComponent(c.getId());
-
-					if (!(c.getDatatype().equals(c2.getDatatype()))) {
-						ec.recordChange("Datatype", c.getDatatype(),
-								c2.getDatatype());
-					}
-					if (!(c.getName().equals(c2.getName()))) {
-						ec.recordChange("Name", c.getName(), c2.getName());
-					}
-					if (!(c.getUsage().equals(c2.getUsage()))) {
-						ec.recordChange("Usage", c.getUsage().value(), c2
-								.getUsage().value());
-					}
-					if (!(c.getConfLength().equals(c2.getConfLength()))) {
-						ec.recordChange("ConfLength", c.getConfLength(),
-								c2.getConfLength());
-					}
-					if (!(c.getMinLength().equals(c2.getMinLength()))) {
-						ec.recordChange("MinLength", c.getMinLength()
-								.toString(), c2.getMinLength().toString());
-					}
-					if (!(c.getMaxLength().equals(c2.getMaxLength()))) {
-						ec.recordChange("MaxLength", c.getMaxLength(),
-								c2.getMaxLength());
-					}
-					if (!(c.getBindingLocation()
-							.equals(c2.getBindingLocation()))) {
-						ec.recordChange("BindingLocation",
-								c.getBindingLocation(), c2.getBindingLocation());
-					}
-					if (!(c.getBindingStrength()
-							.equals(c2.getBindingStrength()))) {
-						ec.recordChange("BindingStrength",
-								c.getBindingStrength(), c2.getBindingStrength());
-					}
-					if (c.getTable() != null & c2.getTable() != null) {
-						if (!(c.getTable().equals(c2.getTable()))) {
-							ec.recordChange("Table", c.getTable(),
-									c2.getTable());
-						}
-					}
-					if (!(c.getComment().equals(c2.getComment()))) {
-						ec.recordChange("Comment", c.getComment(),
-								c2.getComment());
-					}
-					if (!(c.getText().equals(c2.getText()))) {
-						ec.recordChange("Text", c.getText(), c2.getText());
-					}
-					ec.setChangeType("edit");
-				}
-				if (ec.countChanges() != 0)
-					this.componentsChanges.add(ec);
-			}
-		}
-		for (Datatype dt2 : dlib2.getChildren()) {
-			for (Component c : dt2.getComponents()) {
-				if (dlib1.findOneComponent(c.getId()) == null) {
-					ElementChange ec = new ElementChange(c.getId(), dt2.getId());
-					ec.recordChange("added", "", c.getName());
-					ec.setChangeType("add");
-					this.componentsChanges.add(ec);
-				}
-			}
-		}
+//		for (Datatype dt : dlib1.getChildren()) {
+//			for (Component c : dt.getComponents()) {
+//				ElementChange ec = new ElementChange(c.getId(), dt.getId());
+//				if (dlib2.findOneComponent(c.getId()) == null) {
+//					ec.recordChange("deleted", c.getName(), "");
+//					ec.setChangeType("del");
+//				} else {
+//					Component c2 = dlib2.findOneComponent(c.getId());
+//
+//					if (!(c.getDatatype().equals(c2.getDatatype()))) {
+//						ec.recordChange("Datatype", c.getDatatype(),
+//								c2.getDatatype());
+//					}
+//					if (!(c.getName().equals(c2.getName()))) {
+//						ec.recordChange("Name", c.getName(), c2.getName());
+//					}
+//					if (!(c.getUsage().equals(c2.getUsage()))) {
+//						ec.recordChange("Usage", c.getUsage().value(), c2
+//								.getUsage().value());
+//					}
+//					if (!(c.getConfLength().equals(c2.getConfLength()))) {
+//						ec.recordChange("ConfLength", c.getConfLength(),
+//								c2.getConfLength());
+//					}
+//					if (!(c.getMinLength().equals(c2.getMinLength()))) {
+//						ec.recordChange("MinLength", c.getMinLength()
+//								.toString(), c2.getMinLength().toString());
+//					}
+//					if (!(c.getMaxLength().equals(c2.getMaxLength()))) {
+//						ec.recordChange("MaxLength", c.getMaxLength(),
+//								c2.getMaxLength());
+//					}
+//					if (!(c.getBindingLocation()
+//							.equals(c2.getBindingLocation()))) {
+//						ec.recordChange("BindingLocation",
+//								c.getBindingLocation(), c2.getBindingLocation());
+//					}
+//					if (!(c.getBindingStrength()
+//							.equals(c2.getBindingStrength()))) {
+//						ec.recordChange("BindingStrength",
+//								c.getBindingStrength(), c2.getBindingStrength());
+//					}
+//					if (c.getTable() != null & c2.getTable() != null) {
+//						if (!(c.getTable().equals(c2.getTable()))) {
+//							ec.recordChange("Table", c.getTable(),
+//									c2.getTable());
+//						}
+//					}
+//					if (!(c.getComment().equals(c2.getComment()))) {
+//						ec.recordChange("Comment", c.getComment(),
+//								c2.getComment());
+//					}
+//					if (!(c.getText().equals(c2.getText()))) {
+//						ec.recordChange("Text", c.getText(), c2.getText());
+//					}
+//					ec.setChangeType("edit");
+//				}
+//				if (ec.countChanges() != 0)
+//					this.componentsChanges.add(ec);
+//			}
+//		}
+//		for (Datatype dt2 : dlib2.getChildren()) {
+//			for (Component c : dt2.getComponents()) {
+//				if (dlib1.findOneComponent(c.getId()) == null) {
+//					ElementChange ec = new ElementChange(c.getId(), dt2.getId());
+//					ec.recordChange("added", "", c.getName());
+//					ec.setChangeType("add");
+//					this.componentsChanges.add(ec);
+//				}
+//			}
+//		}
 	}
 
 	private void compareTables(TableLibrary tables, TableLibrary tables2) {
-		for (Table t : tables.getChildren()) {
-			ElementChange ec = new ElementChange(t.getId(), tables.getId());
-			if (tables2.findOneTableById(t.getId()) == null) {
-				ec.recordChange("deleted", t.getName(), "");
-				ec.setChangeType("del");
-			} else {
-				Table t2 = tables2.findOneTableById(t.getId());
-				if (!(t.getName().equals(t2.getName()))) {
-					ec.recordChange("Name", t.getName(), t2.getName());
-				}
-				ec.setChangeType("edit");
-			}
-			if (ec.countChanges() != 0)
-				this.tablesChanges.add(ec);
-		}
-		for (Table t : tables2.getChildren()) {
-			if (tables.findOneTableById(t.getId()) == null) {
-				ElementChange ec = new ElementChange(t.getId(), tables2.getId());
-				ec.recordChange("added", "", t.getName());
-				ec.setChangeType("add");
-				this.tablesChanges.add(ec);
-			}
-		}
+//		for (Table t : tables.getChildren()) {
+//			ElementChange ec = new ElementChange(t.getId(), tables.getId());
+//			if (tables2.findOneTableById(t.getId()) == null) {
+//				ec.recordChange("deleted", t.getName(), "");
+//				ec.setChangeType("del");
+//			} else {
+//				Table t2 = tables2.findOneTableById(t.getId());
+//				if (!(t.getName().equals(t2.getName()))) {
+//					ec.recordChange("Name", t.getName(), t2.getName());
+//				}
+//				ec.setChangeType("edit");
+//			}
+//			if (ec.countChanges() != 0)
+//				this.tablesChanges.add(ec);
+//		}
+//		for (Table t : tables2.getChildren()) {
+//			if (tables.findOneTableById(t.getId()) == null) {
+//				ElementChange ec = new ElementChange(t.getId(), tables2.getId());
+//				ec.recordChange("added", "", t.getName());
+//				ec.setChangeType("add");
+//				this.tablesChanges.add(ec);
+//			}
+//		}
 	}
 
 	private void compareCodes(TableLibrary tables, TableLibrary tables2) {
-		for (Table t : tables.getChildren()) {
-			for (Code c : t.getCodes()) {
-				ElementChange ec = new ElementChange(c.getId(), t.getId());
-				if (tables2.findOneCodeById(c.getId()) == null) {
-					ec.recordChange("deleted", c.getLabel(), "");
-					ec.setChangeType("del");
-				} else {
-					Code c2 = tables2.findOneCodeById(c.getId());
-					if (!(c.getLabel().equals(c2.getLabel()))) {
-						ec.recordChange("Label", c.getLabel(),
-								c2.getLabel());
-					}
-					if (!(c.getCodeSystem().equals(c2.getCodeSystem()))) {
-						ec.recordChange("CodeSys", c.getCodeSystem(),
-								c2.getCodeSystem());
-					}
-					if (!(c.getValue().equals(c2.getValue()))) {
-						ec.recordChange("Code", c.getValue(), c2.getValue());
-					}
-					ec.setChangeType("edit");
-				}
-				if (ec.countChanges() != 0)
-					this.codesChanges.add(ec);
-			}
-		}
-		for (Table t : tables2.getChildren()) {
-			for (Code c : t.getCodes()) {
-				if (tables.findOneCodeById(c.getId()) == null) {
-					ElementChange ec = new ElementChange(c.getId(), t.getId());
-					ec.recordChange("added", "", c.getLabel());
-					ec.setChangeType("add");
-					this.codesChanges.add(ec);
-				}
-			}
-		}
+//		for (Table t : tables.getChildren()) {
+//			for (Code c : t.getCodes()) {
+//				ElementChange ec = new ElementChange(c.getId(), t.getId());
+//				if (tables2.findOneCodeById(c.getId()) == null) {
+//					ec.recordChange("deleted", c.getLabel(), "");
+//					ec.setChangeType("del");
+//				} else {
+//					Code c2 = tables2.findOneCodeById(c.getId());
+//					if (!(c.getLabel().equals(c2.getLabel()))) {
+//						ec.recordChange("Label", c.getLabel(),
+//								c2.getLabel());
+//					}
+//					if (!(c.getCodeSystem().equals(c2.getCodeSystem()))) {
+//						ec.recordChange("CodeSys", c.getCodeSystem(),
+//								c2.getCodeSystem());
+//					}
+//					if (!(c.getValue().equals(c2.getValue()))) {
+//						ec.recordChange("Code", c.getValue(), c2.getValue());
+//					}
+//					ec.setChangeType("edit");
+//				}
+//				if (ec.countChanges() != 0)
+//					this.codesChanges.add(ec);
+//			}
+//		}
+//		for (Table t : tables2.getChildren()) {
+//			for (Code c : t.getCodes()) {
+//				if (tables.findOneCodeById(c.getId()) == null) {
+//					ElementChange ec = new ElementChange(c.getId(), t.getId());
+//					ec.recordChange("added", "", c.getLabel());
+//					ec.setChangeType("add");
+//					this.codesChanges.add(ec);
+//				}
+//			}
+//		}
 	}
 
 	public void compare(Profile p1, Profile p2) {
@@ -1841,83 +1755,83 @@ public class ProfileDiffImpl {
 	}
 
 	public static void main(String[] args) throws IOException {
-		try {
-			IGDocumentSerialization4ExportImpl test1 = new IGDocumentSerialization4ExportImpl();
-
-			Profile p1 = test1
-					.deserializeXMLToProfile(
-							new String(
-									Files.readAllBytes(Paths
-											.get("src//main//resources//vxu//Profile.xml"))),
-							new String(
-									Files.readAllBytes(Paths
-											.get("src//main//resources//vxu//ValueSets_all.xml"))),
-							new String(
-									Files.readAllBytes(Paths
-											.get("src//main//resources//vxu//Constraints.xml"))));
-
-			System.out.println(StringUtils.repeat("& * ", 25));
-			ProfileMetaData metaData = p1.getMetaData();
-
-			DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
-			Date date = new Date();
-			metaData.setDate(dateFormat.format(date));
-			metaData.setName("IZ_VXU");
-			metaData.setOrgName("NIST");
-			metaData.setSubTitle("Specifications");
-			metaData.setVersion("1.0");
-
-			metaData.setHl7Version(HL7Version.V2_7.value());
-			metaData.setSchemaVersion(SchemaVersion.V1_0.value());
-			metaData.setStatus("Draft");
-
-			p1.setMetaData(metaData);
-
-			Profile p2 = p1.clone();
-			p1.setId("1");
-			p2.setId("2");
-
-			Message message = p2.getMessages().getChildren()
-					.toArray(new Message[] {})[0];
-			SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
-			Group group = (Group) message.getChildren().get(5);
-			Segment segment = p2.getSegmentLibrary().findOneSegmentById(segmentRef.getRef());
-			Field field = segment.getFields().get(0);
-			Datatype datatype = p2.getDatatypeLibrary().getChildren()
-					.toArray(new Datatype[] {})[0];
-
-			// Fake addition
-			SegmentRef segmentRef3 = (SegmentRef) message.getChildren().get(4);
-			Segment segment3 = p1.getSegmentLibrary().findOneSegmentById(segmentRef3.getRef());
-			p1.getSegmentLibrary().delete(segment3.getId());
-
-			segmentRef.setMin(3);
-			segmentRef.setMax("94969");
-			field.setComment("wawa");
-			field.setName("new field name");
-			field.setName("<h2>new field name</h2>");
-			group.setMax("*");
-			group.setComment("new group comment");
-			p2.getMetaData().setName(new String("IZ_VXU_X"));
-			datatype.setComment("new dt comment");
-			segment.setComment("<h2>Tqqqqqqqq</h2>");
-			segment.setText1("<h2>Test format!</h2><p>textAngular WYSIWYG Text Editor</p><p><b>Features:</b></p><ol><li>Two-Way-Binding</li><li style=\"color: ;\"><b>Theming</b> Options</li><li>Simple Editor Instance Creation</li></ol><p><b>Link test:</b> <a href=\"https://github.com/fraywing/textAngular\">Here</a> </p>");
-
-			ProfileDiffImpl cmp = new ProfileDiffImpl();
-			// cmp.diffToJson(p1, p2);
-			cmp.print(p1, p2);
-			cmp.print(p2, p1);
-			InputStream inputStream = cmp.diffToPdf(p1, p2);
-			File tmpFile = new File(
-					"/Users/marieros/Documents/testXslt/nvo/delta.pdf");
-			FileUtils.copyInputStreamToFile(inputStream, tmpFile);
-
-			// cmp.diffToPdf(p1, p2);
-			System.out.println("done");
-
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			IGDocumentSerialization4ExportImpl test1 = new IGDocumentSerialization4ExportImpl();
+//
+//			Profile p1 = test1
+//					.deserializeXMLToProfile(
+//							new String(
+//									Files.readAllBytes(Paths
+//											.get("src//main//resources//vxu//Profile.xml"))),
+//							new String(
+//									Files.readAllBytes(Paths
+//											.get("src//main//resources//vxu//ValueSets_all.xml"))),
+//							new String(
+//									Files.readAllBytes(Paths
+//											.get("src//main//resources//vxu//Constraints.xml"))));
+//
+//			System.out.println(StringUtils.repeat("& * ", 25));
+//			ProfileMetaData metaData = p1.getMetaData();
+//
+//			DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
+//			Date date = new Date();
+//			metaData.setDate(dateFormat.format(date));
+//			metaData.setName("IZ_VXU");
+//			metaData.setOrgName("NIST");
+//			metaData.setSubTitle("Specifications");
+//			metaData.setVersion("1.0");
+//
+//			metaData.setHl7Version(HL7Version.V2_7.value());
+//			metaData.setSchemaVersion(SchemaVersion.V1_0.value());
+//			metaData.setStatus("Draft");
+//
+//			p1.setMetaData(metaData);
+//
+//			Profile p2 = p1.clone();
+//			p1.setId("1");
+//			p2.setId("2");
+//
+//			Message message = p2.getMessages().getChildren()
+//					.toArray(new Message[] {})[0];
+//			SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
+//			Group group = (Group) message.getChildren().get(5);
+//			Segment segment = p2.getSegmentLibrary().findOneSegmentById(segmentRef.getRef());
+//			Field field = segment.getFields().get(0);
+//			Datatype datatype = p2.getDatatypeLibrary().getChildren()
+//					.toArray(new Datatype[] {})[0];
+//
+//			// Fake addition
+//			SegmentRef segmentRef3 = (SegmentRef) message.getChildren().get(4);
+//			Segment segment3 = p1.getSegmentLibrary().findOneSegmentById(segmentRef3.getRef());
+//			p1.getSegmentLibrary().delete(segment3.getId());
+//
+//			segmentRef.setMin(3);
+//			segmentRef.setMax("94969");
+//			field.setComment("wawa");
+//			field.setName("new field name");
+//			field.setName("<h2>new field name</h2>");
+//			group.setMax("*");
+//			group.setComment("new group comment");
+//			p2.getMetaData().setName(new String("IZ_VXU_X"));
+//			datatype.setComment("new dt comment");
+//			segment.setComment("<h2>Tqqqqqqqq</h2>");
+//			segment.setText1("<h2>Test format!</h2><p>textAngular WYSIWYG Text Editor</p><p><b>Features:</b></p><ol><li>Two-Way-Binding</li><li style=\"color: ;\"><b>Theming</b> Options</li><li>Simple Editor Instance Creation</li></ol><p><b>Link test:</b> <a href=\"https://github.com/fraywing/textAngular\">Here</a> </p>");
+//
+//			ProfileDiffImpl cmp = new ProfileDiffImpl();
+//			// cmp.diffToJson(p1, p2);
+//			cmp.print(p1, p2);
+//			cmp.print(p2, p1);
+//			InputStream inputStream = cmp.diffToPdf(p1, p2);
+//			File tmpFile = new File(
+//					"/Users/marieros/Documents/testXslt/nvo/delta.pdf");
+//			FileUtils.copyInputStreamToFile(inputStream, tmpFile);
+//
+//			// cmp.diffToPdf(p1, p2);
+//			System.out.println("done");
+//
+//		} catch (CloneNotSupportedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

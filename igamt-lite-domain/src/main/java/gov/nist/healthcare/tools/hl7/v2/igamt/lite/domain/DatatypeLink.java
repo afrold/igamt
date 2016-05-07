@@ -16,7 +16,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  */
 public class DatatypeLink extends AbstractLink {
 
-	private String label;
+	private String name;
 
 	private String ext;
 	
@@ -24,19 +24,19 @@ public class DatatypeLink extends AbstractLink {
 		super();
 	}
 
-	public DatatypeLink(String id, String label, String ext) {
+	public DatatypeLink(String id, String name, String ext) {
 		super();
 		this.setId(id);
-		this.label = label;
+		this.name = name;
 		this.setExt(ext);
 	}	
-	
-	public String getLabel() {
-		return label;
+
+	public String getName() {
+		return name;
 	}
 
-	public void setLabel(String label) {
-		this.label = label;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getExt() {
@@ -46,4 +46,7 @@ public class DatatypeLink extends AbstractLink {
 	public void setExt(String ext) {
 		this.ext = ext;
 	}
-}
+
+	public String getLabel() {
+		return name + "_" + ext;
+	}}

@@ -2,18 +2,18 @@
   "type" : "datatypes",
   "sectionPosition" : 2,
   "sectionTitle" : "Datatypes",
-  "sectionDescription" : "Section description xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx yyyyyyyyyyyyyyyyyyyyyyyyyyyy",
+  "sectionDescription" : "Section description",
   "sectionContents" : null,
   "id" : "5722452ba7c81f853cca88af",
   "accountId" : null,
   "date" : null,
   "metaData" : {
-    "name" : null,
+    "name" : "Metadata name",
     "orgName" : "NIST",
-    "version" : null,
+    "version" : "Metadata version",
     "hl7Version" : "2.5.1",
     "date" : "April 27, 2016",
-    "ext" : null
+    "ext" : "Metadata ext"
   },
   "scope" : "MASTER",
   "children" : [ {
