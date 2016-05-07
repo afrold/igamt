@@ -1613,12 +1613,12 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getSegmentLabel = function (seg) {
-            var ext = $rootScope.getExtensionInLibrary(seg.id, $rootScope.igdocument.profile.segmentLibrary);
+            var ext = $rootScope.getExtensionInLibrary(seg.id, $rootScope.igdocument.profile.segments);
             return $rootScope.getLabel(seg.name,ext);
         };
 
         $rootScope.getDatatypeLabel = function (datatype) {
-            var ext = $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary);
+            var ext = $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypes);
             return $rootScope.getLabel(datatype.name,ext);
         };
 

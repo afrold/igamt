@@ -76,22 +76,22 @@ describe("delete message service", function () {
 	
     it('Can we clone a datatype', function () {
 	 	expect(igdocument).toBeDefined();
-    		var datatypes = igdocument.profile.datatypeLibrary.children;
-    		var bCount = igdocument.profile.datatypeLibrary.children.length;
+    		var datatypes = igdocument.profile.datatypes.children;
+    		var bCount = igdocument.profile.datatypes.children.length;
     		var SUT = datatypes[4];
         CloneDeleteSvc.cloneDatatypeFlavor(SUT);
-		var aCount = igdocument.profile.datatypeLibrary.children.length;
+		var aCount = igdocument.profile.datatypes.children.length;
 
 //		expect(bCount).toBe(aCount -1);
     });
     	
     it('Can we clone a value set', function () {
 	 	expect(igdocument).toBeDefined();
-    		var valueSets = igdocument.profile.tableLibrary.children;
-    		var bCount = igdocument.profile.tableLibrary.children.length;
+    		var valueSets = igdocument.profile.tables.children;
+    		var bCount = igdocument.profile.tables.children.length;
     		var SUT = valueSets[4];
         CloneDeleteSvc.cloneTableFlavor(SUT);
-		var aCount = igdocument.profile.tableLibrary.children.length;
+		var aCount = igdocument.profile.tables.children.length;
 //		expect(bCount).toBe(aCount -1);
     });
     
