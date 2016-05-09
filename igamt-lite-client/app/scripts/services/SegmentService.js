@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('SegmentService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http', 'FilteringSvc', function ($rootScope, ViewSettings,ElementUtils,$q,$http, FilteringSvc) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http', 'FilteringSvc','userInfoService', function ($rootScope, ViewSettings,ElementUtils,$q,$http, FilteringSvc,userInfoService) {
         var SegmentService = {
             getNodes: function (parent,root) {
                 var children = parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : root != null ? root.fields : [];
@@ -60,6 +60,7 @@ angular.module('igl').factory('SegmentService',
             },
             save: function (segment) {
                 var delay = $q.defer();
+                segment.accountId = userInfoService.getAccountID();
                 $http.post('api/segments/save', segment).then(function (response) {
                     var saveResponse = angular.fromJson(response.data);
                     segment.date = saveResponse.date;
