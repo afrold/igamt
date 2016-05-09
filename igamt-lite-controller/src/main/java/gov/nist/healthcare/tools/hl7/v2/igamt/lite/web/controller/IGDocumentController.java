@@ -4,8 +4,10 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
@@ -13,8 +15,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
@@ -174,65 +178,73 @@ public class IGDocumentController extends CommonController {
 		try {
 			log.info("Clone IGDocument with id=" + id);
 			User u = userService.getCurrentUser();
-			Account account = accountRepository.findByTheAccountsUsername(u
-					.getUsername());
+			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
 			if (account == null)
 				throw new UserAccountNotFoundException();
 			IGDocument igDocument = this.findIGDocument(id);
-			igDocument.setId(null);
-			DatatypeLibrary datatypeLibrary = igDocument.getProfile()
-					.getDatatypeLibrary();
-			DatatypeLibrary clonedDatatypeLibrary = datatypeLibrary.clone();
-			SegmentLibrary segmentLibrary = igDocument.getProfile()
-					.getSegmentLibrary();
-			SegmentLibrary clonedSegmentLibrary = segmentLibrary.clone();
 
-			TableLibrary tableLibrary = igDocument.getProfile()
-					.getTableLibrary();
+			DatatypeLibrary datatypeLibrary = igDocument.getProfile().getDatatypeLibrary();
+			SegmentLibrary segmentLibrary = igDocument.getProfile().getSegmentLibrary();
+			TableLibrary tableLibrary = igDocument.getProfile().getTableLibrary();
+			
+			DatatypeLibrary clonedDatatypeLibrary = datatypeLibrary.clone();
+			SegmentLibrary clonedSegmentLibrary = segmentLibrary.clone();
 			TableLibrary clonedTableLibrary = tableLibrary.clone();
 
-			igDocument.getProfile().setDatatypeLibrary(clonedDatatypeLibrary);
-			igDocument.getProfile().setSegmentLibrary(clonedSegmentLibrary);
-			igDocument.getProfile().setTableLibrary(clonedTableLibrary);
-			igDocument.setScope(IGDocumentScope.USER);
-			igDocument.setAccountId(account.getId());
+			List<Datatype> datatypes = datatypeService.findByLibIds(datatypeLibrary.getId());
+			if (datatypes != null) {
+				for (int i = 0; i < datatypes.size(); i++) {
+					Datatype d = datatypes.get(i);
+					DatatypeLink dl = clonedDatatypeLibrary.findOne(d.getId());
+					d.getLibIds().add(clonedDatatypeLibrary.getId());
+					if(d.getScope().equals(SCOPE.USER)){
+						d.setId(null);
+					}
+					datatypeService.save(d);
+					dl.setId(d.getId());
+				}
+			}
+
+			List<Segment> segments = segmentService.findByLibIds(segmentLibrary.getId());
+			if (segments != null) {
+				for (int i = 0; i < segments.size(); i++) {
+					Segment s = segments.get(i);
+					SegmentLink sl = clonedSegmentLibrary.findOne(s.getId());
+					s.getLibIds().add(clonedSegmentLibrary.getId());
+					if(s.getScope().equals(SCOPE.USER)){
+						s.setId(null);
+					}
+					segmentService.save(s);
+					sl.setId(s.getId());
+				}
+
+			}
+
+			List<Table> tables = tableService.findByLibIds(tableLibrary.getId());
+			if (tables != null) {
+				for (int i = 0; i < tables.size(); i++) {
+					Table t = tables.get(i);
+					TableLink tl = clonedTableLibrary.findOneTableById(t.getId());
+					t.getLibIds().add(clonedTableLibrary.getId());
+					if(t.getScope().equals(SCOPE.USER)){
+						t.setId(null);
+					}
+					tableService.save(t);
+					tl.setId(t.getId());
+				}
+			}
 
 			datatypeLibraryService.save(clonedDatatypeLibrary);
 			segmentLibraryService.save(clonedSegmentLibrary);
 			tableLibraryService.save(clonedTableLibrary);
-			List<Datatype> datatypes = datatypeService
-					.findByLibIds(datatypeLibrary.getId());
-			if (datatypes != null) {
-				for (int i = 0; i < datatypes.size(); i++) {
-					Datatype d = datatypes.get(i);
-					d.getLibIds().add(clonedDatatypeLibrary.getId());
-				}
-				datatypeService.save(datatypes);
-			}
-
-			List<Segment> segments = segmentService.findByLibIds(segmentLibrary
-					.getId());
-			if (segments != null) {
-				for (int i = 0; i < segments.size(); i++) {
-					Segment d = segments.get(i);
-					d.getLibIds().add(clonedSegmentLibrary.getId());
-				}
-				segmentService.save(segments);
-
-			}
-
-			List<Table> tables = tableService
-					.findByLibIds(tableLibrary.getId());
-			if (datatypes != null) {
-				for (int i = 0; i < datatypes.size(); i++) {
-					Table d = tables.get(i);
-					d.getLibIds().add(clonedTableLibrary.getId());
-				}
-				tableService.save(tables);
-			}
-
-			// d.setBaseId(d.getBaseId() != null ? d.getBaseId() : id);
-			// d.setSourceId(id);
+			
+			igDocument.getProfile().setDatatypeLibrary(clonedDatatypeLibrary);
+			igDocument.getProfile().setSegmentLibrary(clonedSegmentLibrary);
+			igDocument.getProfile().setTableLibrary(clonedTableLibrary);
+			
+			igDocument.setId(null);
+			igDocument.setScope(IGDocumentScope.USER);
+			igDocument.setAccountId(account.getId());
 			igDocument.getMetaData().setDate(DateUtils.getCurrentTime());
 			igDocumentService.save(igDocument);
 			return igDocument;

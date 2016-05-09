@@ -14,7 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  * @author gcr1
  *
  */
-public class DatatypeLink extends AbstractLink {
+public class DatatypeLink extends AbstractLink implements Cloneable{
 
 	private String name;
 
@@ -72,5 +72,13 @@ public class DatatypeLink extends AbstractLink {
 		}
 	
 		return getId().equals(link.getId()) && getLabel().equals(link.getLabel());
+	}
+	
+	public DatatypeLink clone(){
+		DatatypeLink clonedLink = new DatatypeLink();
+		clonedLink.setExt(this.ext);
+		clonedLink.setName(this.name);
+		clonedLink.setId(this.getId());
+		return clonedLink;
 	}
 }

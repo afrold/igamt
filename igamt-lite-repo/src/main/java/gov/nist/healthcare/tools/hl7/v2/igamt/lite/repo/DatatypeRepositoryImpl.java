@@ -91,6 +91,8 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		qry.fields().include("label");
 		qry.fields().include("status");
 		qry.fields().include("description");
+		qry.fields().include("date");
+		qry.fields().include("version");
 		qry.fields().include("ext");
 		return qry;
 	}

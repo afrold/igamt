@@ -242,7 +242,12 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 	public TableLibrary clone()
 			throws CloneNotSupportedException {
 		TableLibrary clone = new TableLibrary();
-		clone.setChildren(new HashSet<TableLink>(this.getChildren()));
+		
+		HashSet<TableLink> clonedChildren = new HashSet<TableLink>();
+		for(TableLink tl:this.children){
+			clonedChildren.add(tl.clone());
+		}
+		clone.setChildren(clonedChildren);
 		clone.setExt(this.getExt()+ "-" + genRand());
 		clone.setMetaData(this.getMetaData().clone());
 		clone.setScope(this.getScope());
