@@ -153,6 +153,29 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
         return delay.promise;
     };
 
+    svc.findFlavors = function (name, scope, hl7Version, libId) {
+        var delay = $q.defer();
+        $http.get('api/datatype-library/'+ libId + '/findFlavors', {params: {"name": name, "scope": scope, "hl7Version": hl7Version}}).then(function (response) {
+            var datatypes = angular.fromJson(response.data);
+            delay.resolve(datatypes);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
+    svc.findLibrariesByFlavorName = function (flavorName, flavorScope, flavorHl7Version) {
+        var delay = $q.defer();
+        $http.get('api/datatype-library/findLibrariesByFlavorName', {params: {"name": flavorName, "scope": flavorScope, "hl7Version": flavorHl7Version}}).then(function (response) {
+            var datatypes = angular.fromJson(response.data);
+            delay.resolve(datatypes);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
+
 
     return svc;
 });

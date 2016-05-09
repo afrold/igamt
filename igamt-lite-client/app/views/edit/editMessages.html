@@ -342,7 +342,7 @@
         	<span>
             	<span class="label label-success label-icon">G</span>
             	<span
-                       ng-bind="getGroupNodeName(node.obj)"/>
+                        ng-bind="getGroupNodeName(node.obj)"/>
             </span>
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
@@ -478,7 +478,7 @@
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <span class="point"
-              >{{getDatatypeLabel(node.obj.datatype)}}</span>
+                    >{{getDatatypeLabel(node.obj.datatype)}}</span>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>
@@ -560,7 +560,7 @@
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment"
-                      ng-show="node.obj.comment != null && node.obj.comment != ''">
+               ng-show="node.obj.comment != null && node.obj.comment != ''">
             </p>
         </td>
     </tr>
@@ -688,7 +688,7 @@
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment"
-                      ng-show="node.obj.comment != null && node.obj.comment != ''">
+               ng-show="node.obj.comment != null && node.obj.comment != ''">
             </p>
         </td>
     </tr>
@@ -1379,11 +1379,11 @@
         <td class="col-xs-2 col-fixed-250">
             <span class="label label-segment label-icon">S</span>
             <!--<a-->
-                    <!--tooltip-html="getGroupNodeName(node.obj)" tooltip-append-to-body="true"-->
-                    <!--class="point"-->
-                    <!--ng-click="goToSegment(node.obj.ref)"-->
-                    <!--tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node.obj)" tooltip-trigger-->
-                    <!--tooltip-animation="false" tooltip-placement="left"-->
+            <!--tooltip-html="getGroupNodeName(node.obj)" tooltip-append-to-body="true"-->
+            <!--class="point"-->
+            <!--ng-click="goToSegment(node.obj.ref)"-->
+            <!--tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node.obj)" tooltip-trigger-->
+            <!--tooltip-animation="false" tooltip-placement="left"-->
 
             <span>
                 {{getSegmentLabel(segmentsMap[node.obj.ref])}}
@@ -1440,7 +1440,7 @@
 
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment"
-                      ng-show="node.obj.comment != null && node.obj.comment != ''">
+               ng-show="node.obj.comment != null && node.obj.comment != ''">
             </p>
 
         </td>
@@ -1512,22 +1512,23 @@
 
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <p class="form-control" style="width:100%;height:100%" ng-bindl="node.obj.comment"
-                      ng-show="node.obj.comment !== '' && node.obj.comment !== null">
+               ng-show="node.obj.comment !== '' && node.obj.comment !== null">
             </p>
         </td>
     </tr>
 </script>
 
 <script type="text/ng-template" id="SelectSegmentFlavor.html">
-    <div class="modal-header modal-wide">
-        <h3 class="modal-title">Segment Selection</h3>
-    </div>
+<div class="modal-header modal-wide">
+    <h3 class="modal-title">Segment Selection</h3>
+</div>
 
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-md-12">
-                <h4>Current Segment: {{getLabel(currentSegment)}}</h4>
-                <div class="form-inline">
+<div class="modal-body">
+<div class="row">
+    <div class="col-md-12">
+        <h4>Current Segment: {{getLabel(currentSegment)}}</h4>
+
+        <div class="form-inline">
                  <span class="btn-group btn-group-sm pull-left" data-toggle="buttons">
                     <label class="btn  btn-primary btn-sm" ng-click="selection.scope = 'USER'; findFlavors()"
                            ng-class="{'active':selection.scope === 'USER'}">
@@ -1545,95 +1546,137 @@
                                ng-model="selection.scope"><i class="fa fa-th-list"></i>MASTER DATA TYPES
                     </label>
                 </span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+<div class="col-md-12">
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading panel-heading-collapsable">
+                <i class="glyphicon glyphicon-list"></i>Segment Libraries
+            </div>
+            <div class="panel-body">
+                <div ng-show="!librariesLoading">
+                    <div ng-show="librariesError === null">
+                        <div class="container-testcase">
+                            <div ng-show="libraries != null && libraries.length > 0">
+                                <table st-table="tmpLibraries" st-safe-src="libraries"
+                                       class="table table-striped table-bordered table-condensed igl-list-table">
+                                    <thead>
+                                    <tr>
+                                        <th st-ratio="100">
+                                            <input st-search placeholder="Search" class="input-sm form-control"
+                                                   type="search"/>
+                                        </th>
+                                    </tr>
+                                    <tr class="tbl-header">
+                                        <th>
+                                        </th>
+                                        <th st-sort="row.name">Name</th>
+                                        <th st-sort="row.version">Version</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="row in tmpLibraries | orderBy:'row.name'"
+                                        ng-class="{'selected': selection.library != null && row.id === selection.library.id}">
+                                        <td>{{$index + 1}}
+                                            <input type="radio" ng-checked="isSelectedLibrary(row)"
+                                                   ng-click="loadFlavors(row)">
+                                        </td>
+                                        <td ng-bind="row.name"></td>
+                                        <td ng-bind="row.version"></td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot ng-show="libraries.length >= 20">
+                                    <tr>
+                                        <td colspan="7">
+                                            <div st-pagination="" st-items-by-page="20"
+                                                 st-displayed-pages="7"></div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div ng-show="libraries == null || libraries.length == 0">
+                                No library found
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="librariesError != null">
+                        <div class="alert alert-danger" role="alert" ng-bind="librariesError"></div>
+                    </div>
+                </div>
+                <div ng-show="librariesLoading" style="text-align:center">
+                    <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="col-md-1 col-1-percent" ng-show="collapsed">
-                    <button title="Display Test Cases" class="btn btn-xs btn-primary"
-                            ng-click="collapsed = !collapsed">
-                        <i class="fa fa-caret-right"></i>
-                    </button>
-                </div>
-                <div ng-show="!collapsed" class="col-md-3">
-                    <div class="panel panel-primary">
-                        <!-- Default panel contents -->
-                        <div class="panel-heading panel-heading-collapsable">
-                            <i class="glyphicon glyphicon-list"></i>Segment Flavors
-                            <button title="Hide Flavors" class="btn btn-xs btn-primary pull-right"
-                                    ng-click="collapsed = !collapsed">
-                                <i class="fa fa-caret-left"></i>
-                            </button>
-                        </div>
-                        <div class="panel-body">
-                            <div ng-show="!resultsLoading">
-                                <div ng-show="resultsError === null">
-                                    <div class="container-testcase">
-                                        <div ng-show="results != null && results.length > 0">
-                                            <table st-table="tmpResults" st-safe-src="results"
-                                                   class="table table-striped table-bordered table-condensed igl-list-table">
-                                                <thead>
-                                                <!--<tr>-->
-                                                <!--<th st-ratio="100">-->
-                                                <!--<input st-search placeholder="Search" class="input-sm form-control" type="search"/>-->
-                                                <!--</th>-->
-                                                <!--</tr>-->
-                                                <tr class="tbl-header">
-                                                    <th>
-                                                    </th>
-                                                    <th st-sort="row.ext">Label</th>
-                                                    <th st-sort="row.description">Description</th>
-                                                    <th st-sort="row.version">Version</th>
-                                                    <th st-sort="row.date">Last update Date</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr ng-repeat="row in tmpResults | orderBy:'row.ext'"
-                                                    ng-class="{'selected': selection.segment != null && row.id === selection.segment.id}">
-                                                    <td>{{$index + 1}}
-                                                        <input type="radio" ng-checked="isSelected(row)"
-                                                               ng-click="showSegment(row)">
-                                                    </td>
-                                                    <td>{{getLabel(row)}}</td>
-                                                    <td ng-bind="row.description"></td>
-                                                    <td ng-bind="row.version"></td>
-                                                    <td ng-bind="row.date"></td>
-                                                </tr>
-                                                </tbody>
-                                                <tfoot ng-show="results.length >= 20">
-                                                <tr>
-                                                    <td colspan="7">
-                                                        <div st-pagination="" st-items-by-page="20"
-                                                             st-displayed-pages="7"></div>
-                                                    </td>
-                                                </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                        <div ng-show="results == null || results.length == 0">
-                                            No Flavor found
-                                        </div>
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div ng-show="!resultsLoading">
+                    <div ng-show="resultsError === null">
+                        <div class="container-testcase">
+                            <div ng-show="results != null && results.length > 0">
+                                <table st-table="tmpResults" st-safe-src="results"
+                                       class="table table-striped table-bordered table-condensed igl-list-table">
+                                    <thead>
+                                    <!--<tr>-->
+                                    <!--<th st-ratio="100">-->
+                                    <!--<input st-search placeholder="Search" class="input-sm form-control" type="search"/>-->
+                                    <!--</th>-->
+                                    <!--</tr>-->
+                                    <tr class="tbl-header">
+                                        <th>
+                                        </th>
+                                        <th st-sort="row.ext">Label</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="row in tmpResults | orderBy:'row.ext'"
+                                        ng-class="{'selected': selection.segment != null && row.id === selection.segment.id}">
+                                        <td>{{$index + 1}}
+                                            <input type="radio" ng-checked="isSelected(row)"
+                                                   ng-click="showSegment(row)">
+                                        </td>
+                                        <td>{{getLabel(row)}}</td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot ng-show="results.length >= 20">
+                                    <tr>
+                                        <td colspan="7">
+                                            <div st-pagination="" st-items-by-page="20"
+                                                 st-displayed-pages="7"></div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div ng-show="results == null || results.length == 0">
+                                No Flavor found
+                            </div>
 
-                                    </div>
-                                </div>
-                                <div ng-show="resultsError != null">
-                                    <div class="alert alert-danger" role="alert" ng-bind="resultsError"></div>
-                                </div>
-                            </div>
-                            <div ng-show="resultsLoading" style="text-align:center">
-                                <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
-                            </div>
                         </div>
                     </div>
+                    <div ng-show="resultsError != null">
+                        <div class="alert alert-danger" role="alert" ng-bind="resultsError"></div>
+                    </div>
                 </div>
-                <div ng-class="{'col-md-9': !collapsed, 'col-md-11 col-98-5-percent':collapsed}">
-                    <!--<div ng-show="!loadingSelection">-->
-                    <!--<div class="" ng-show="selection.segment != null">-->
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <span> Segment<span ng-show="selection.segment != null">: {{getLabel(selection.segment)}}</span>
+                <div ng-show="resultsLoading" style="text-align:center">
+                    <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <!--<div class="" ng-show="selection.segment != null">-->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                            <span> Segment Definition <span
+                                    ng-show="selection.segment != null">: {{getLabel(selection.segment)}}</span>
                             </span>
                         <span class="pull-right">
                         <button class="btn btn-primary btn-sm" ng-click="submit()"
@@ -1645,73 +1688,73 @@
                             &nbsp; </i>Cancel</span>
                         </button>
                             </span>
-                        </div>
-                        <div class="panel-body">
-                            <!--<div ng-show="datatypeError != null">-->
-                            <!--<div class="alert alert-danger" role="alert" ng-bind="datatypeError"></div>-->
-                            <!--</div>-->
-                            <!--<div ng-show="datatypeError === null" ng-controller="SelectedSegmentFlavorDefCtrl">-->
-                            <div class="pull-right">
+            </div>
+            <div class="panel-body">
+                <!--<div ng-show="datatypeError != null">-->
+                <!--<div class="alert alert-danger" role="alert" ng-bind="datatypeError"></div>-->
+                <!--</div>-->
+                <!--<div ng-show="datatypeError === null" ng-controller="SelectedSegmentFlavorDefCtrl">-->
+                <div class="pull-right">
                                  <span style="margin-right: 20px" ng-dropdown-multiselect=""
                                        options="viewSettings.columnOptions"
                                        selected-model="viewSettings.visibleColumns"
                                        events="viewSettings.events" extra-settings="viewSettings.extra"
                                        translation-texts="viewSettings.translations"></span>
-                            </div>
-                            <div class="table-responsive">
-                                <table tt-table tt-params="segmentFlavorParams"
-                                       class="table table-bordered table-fix-header table-condensed profile-table">
-                                    <thead>
-                                    <tr class="tbl-header"
-                                        style="margin-right: {{scrollbarWidth}}px;">
-                                        <th class="col-xs-2 col-fixed-250">
-                                            Name
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-80"
-                                            ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-100"
-                                            ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-100"
-                                            ng-show="viewSettings.isVisibleColumn('length')">Length
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-80"
-                                            ng-show="viewSettings.isVisibleColumn('confLength')">Conformance Length
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-100"
-                                            ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-130"
-                                            ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
-                                        </th>
-                                        <th class="col-xs-1" ng-style="predWidth"
-                                            ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
-                                        </th>
-                                        <th class="col-xs-1" ng-style="csWidth"
-                                            ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance
-                                            Statement
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-80"
-                                            ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
-                                        </th>
-                                        <th class="col-xs-1" ng-style="commentWidth"
-                                            ng-show="viewSettings.isVisibleColumn('comment')">Comment
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table tt-table tt-params="segmentFlavorParams"
+                           class="table table-bordered table-fix-header table-condensed profile-table">
+                        <thead>
+                        <tr class="tbl-header"
+                            style="margin-right: {{scrollbarWidth}}px;">
+                            <th class="col-xs-2 col-fixed-250">
+                                Name
+                            </th>
+                            <th class="col-xs-1 col-fixed-80"
+                                ng-show="viewSettings.isVisibleColumn('usage')">Usage
+                            </th>
+                            <th class="col-xs-1 col-fixed-100"
+                                ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
+                            </th>
+                            <th class="col-xs-1 col-fixed-100"
+                                ng-show="viewSettings.isVisibleColumn('length')">Length
+                            </th>
+                            <th class="col-xs-1 col-fixed-80"
+                                ng-show="viewSettings.isVisibleColumn('confLength')">Conformance Length
+                            </th>
+                            <th class="col-xs-1 col-fixed-100"
+                                ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
+                            </th>
+                            <th class="col-xs-1 col-fixed-130"
+                                ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                            </th>
+                            <th class="col-xs-1" ng-style="predWidth"
+                                ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
+                            </th>
+                            <th class="col-xs-1" ng-style="csWidth"
+                                ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance
+                                Statement
+                            </th>
+                            <th class="col-xs-1 col-fixed-80"
+                                ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
+                            </th>
+                            <th class="col-xs-1" ng-style="commentWidth"
+                                ng-show="viewSettings.isVisibleColumn('comment')">Comment
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal-footer">
+</div>
+</div>
+</div>
+<div class="modal-footer">
 
-    </div>
+</div>
 </script>
 
 <script type="text/ng-template" id="ConfirmMessageDeleteCtrl.html">
