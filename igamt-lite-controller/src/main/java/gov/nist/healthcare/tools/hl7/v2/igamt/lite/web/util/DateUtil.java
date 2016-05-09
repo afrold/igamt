@@ -7,11 +7,11 @@ import java.util.Date;
 
 public class DateUtil {
 
-	public String getCurrentDate() {
+	public static String getCurrentDate() {
 		return format(Calendar.getInstance().getTime());
 	}
 
-	public String format(Date date) {
+	public static String format(Date date) {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		return dateFormat.format(date);
 	}

@@ -84,4 +84,10 @@ public class DatatypeServiceImpl implements DatatypeService {
 	public void delete(String id) {
 		datatypeRepository.delete(id);
 	}
+
+	@Override
+	public void save(List<Datatype> datatypes) {
+		// TODO Auto-generated method stub
+		  datatypeRepository.save(datatypes);
+	}
 }

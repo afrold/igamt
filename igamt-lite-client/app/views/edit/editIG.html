@@ -30,11 +30,29 @@
     <!--</div>-->
     <!---->
     <div class="col-md-12 igl-page-header">
-        <span class="header4 pull-left">IG Document: {{igdocument.metaData.title}}
-            <span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>
-            <span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>
-        </span>
-                     <span class="pull-right">
+      <span class="header4 pull-left">
+        <div ng-controller="FilteringCtl">
+           <div class="row form-inline" style="margin:10px">
+            <label class="label label-default">Filters:</label>
+            <label>Conf Profiles</label>
+            <span  ng-dropdown-multiselect="" options="filtermsgdata()" selected-model="filtermsgmodel()" extra-settings="filtermsgsettings()" translation-texts="filtermsgtexts()">
+            </span>
+            <label>Usages</label>
+            <span  ng-dropdown-multiselect="" options="filterusagesdata()" selected-model="filterusagesmodel()" extra-settings="filterusagessettings()" translation-texts="filterusagestexts()">
+            </span>
+          </div>
+<!--           <div class="row" style="margin:10px">
+<!--             <div class="col-md-4" />
+ -->
+<!--             <div class="col-md-4" ng-dropdown-multiselect="" options="filterusagesdata()" selected-model="filterusagesmodel()" extra-settings="filterusagessettings()" translation-texts="filterusagestexts()">
+            </div>
+          </div> -->
+         </div>
+
+        <span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>
+        <span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>
+      </span>
+      <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-hide="viewSettings.tableReadonly"
                  ng-show="igDocumentConfig.selectedType === 'USER'"
@@ -49,7 +67,6 @@
                                         <span><i
                                                 class="fa fa-pencil fa-fw"></i>Edit</span>
                     </button>
-
                     <div class="btn-group">
                         <button type="button"
                                 class="btn btn-info btn-xs"><span><i
@@ -71,18 +88,16 @@
                     <button title="Close the IG Document" type="button" class="btn btn-xs btn-warning"
                             ng-click="close()">
                         <span><i class="fa fa-close fa-fw"></i>Close</span>
-                    </button>
+                       </button>
 
-                    <button title="Delete permanently" type="button" class="btn btn-xs btn-danger"
-                            ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"
-                            ng-click="confirmDelete(igdocument)">
-                        <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
-                    </button>
-    </span>
+                       <button title="Delete permanently" type="button" class="btn btn-xs btn-danger"
+                               ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"
+                               ng-click="confirmDelete(igdocument)">
+                         <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
+                       </button>
+      </span>
 
-
-    </div>
-    <div class="col-md-12">
+  <div class="col-md-12">
                 <span>version: {{igdocument.metaData.version}}
                 </span>
     </div>
@@ -145,7 +160,6 @@
                                         <span><i
                                                 class="fa fa-pencil fa-fw"></i>Edit</span>
                     </button>
-
                     <div class="btn-group dropup">
                         <button type="button"
                                 class="btn btn-info btn-xs"><span><i

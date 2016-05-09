@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService) {
+    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService, FilteringSvc, MastermapSvc,SegmentLibrarySvc) {
 //        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
@@ -24,7 +24,7 @@ angular.module('igl')
             $scope.refreshTree();
             $scope.loadingSelection = false;
         };
-        
+
         $scope.copy = function(segment) {
         		CloneDeleteSvc.copySegment(segment);
         }
@@ -33,7 +33,7 @@ angular.module('igl')
         		CloneDeleteSvc.deleteSegment(segment);
 			$rootScope.$broadcast('event:SetToC');
         };
-        
+
         $scope.hasChildren = function (node) {
             return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype) && $rootScope.getDatatype(node.datatype).components && $rootScope.getDatatype(node.datatype).components.length > 0));
         };
@@ -156,7 +156,7 @@ angular.module('igl')
             }
             return 0;
         };
-        
+
         $scope.countPredicateOnComponent = function (position, componentId) {
         	var dt = $scope.findDTByComponentId(componentId);
         	if (dt != null)
@@ -273,12 +273,46 @@ angular.module('igl')
 
         $scope.save = function () {
             $scope.saving = true;
+            var segment = $rootScope.segment;
+            var ext = segment.ext;
+            segment.ext = null;
+            if(segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1){
+                segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
+            }
             SegmentService.save($rootScope.segment).then(function (result) {
-                var index = indexOf(result.id);
-                if (index === -1) { // new segment
-                    $rootScope.igdocument.profile.segments.children.push(result);
+                if ($rootScope.segmentsMap[result.id] === null || $rootScope.segmentsMap[result.id] == undefined) { // new segment
+                    $rootScope.segments.push(result);
+                    $rootScope.segmentsMap[result.id] = result;
+                    var newLink = SegmentLibrarySvc.createEmptyLink();
+                    newLink.id = result.id;
+                    newLink.ext = ext;
+                    newLink.name = segment.name;
+                    // save link to segmentLibrary
+                    SegmentLibrarySvc.addChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
+                        $rootScope.igdocument.profile.segmentLibrary.children.push(newLink);
+                        $rootScope.$broadcast('event:SetToC');
+                    }, function (error) {
+                        $scope.saving = false;
+                        $rootScope.msg().text = error.data.text;
+                        $rootScope.msg().type = error.data.type;
+                        $rootScope.msg().show = true;
+                    });
                 } else {
-                    SegmentService.merge($rootScope.igdocument.profile.segments.children[index], result);
+                    var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
+                    if (oldLink != null) {
+                        SegmentService.merge($rootScope.segmentsMap[result.id], result);
+                        var newLink = SegmentService.getSegmentLink(result);
+                        newLink.ext = ext;
+                        SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
+                            oldLink.ext = newLink;
+                            $rootScope.$broadcast('event:SetToC');
+                        }, function (error) {
+                            $scope.saving = false;
+                            $rootScope.msg().text = error.data.text;
+                            $rootScope.msg().type = error.data.type;
+                            $rootScope.msg().show = true;
+                        });
+                    }
                 }
                 $scope.saving = false;
                 $scope.selectedChildren = [];
@@ -306,8 +340,8 @@ angular.module('igl')
         };
 
         var searchById = function (id) {
-            var children = $rootScope.igdocument.profile.segments.children;
-            for (var i = 0; i < $rootScope.igdocument.profile.segments.children; i++) {
+            var children = $rootScope.igdocument.profile.segmentLibrary.children;
+            for (var i = 0; i < $rootScope.igdocument.profile.segmentLibrary.children; i++) {
                 if (children[i].id === id) {
                     return children[i];
                 }
@@ -316,13 +350,41 @@ angular.module('igl')
         };
 
         var indexOf = function (id) {
-            var children = $rootScope.igdocument.profile.segments.children;
+            var children = $rootScope.igdocument.profile.segmentLibrary.children;
             for (var i = 0; i < children; i++) {
                 if (children[i].id === id) {
                     return i;
                 }
             }
             return -1;
+
+        };
+
+
+        $scope.showSelectDatatypeFlavorDlg = function (field) {
+            var modalInstance = $modal.open({
+                templateUrl: 'SelectDatatypeFlavor.html',
+                controller: 'SelectDatatypeFlavorCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    currentNode: function () {
+                        return field;
+                    },
+                    hl7Version: function () {
+                        return $rootScope.igdocument.metaData.hl7Version;
+                    }
+                }
+            });
+            modalInstance.result.then(function (datatype) {
+                field.datatype = datatype.id;
+                //TODO: load master map
+                if (!$rootScope.datatypesMap[field.datatype] || $rootScope.datatypesMap[field.datatype] == null) {
+                    $rootScope.datatypesMap[field.datatype] = datatype;
+                }
+                MastermapSvc.addDatatype(datatype.id, [field.id,field.type]);
+                if ($scope.segmentsParams)
+                    $scope.segmentsParams.refresh();
+            });
 
         };
 
@@ -366,7 +428,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     $scope.complexConstraint = null;
     $scope.complexConstraintTrueUsage = null;
     $scope.complexConstraintFalseUsage = null;
-    
+
     $scope.changed = false;
     $scope.tempPredicates = [];
     angular.copy($rootScope.segment.predicates, $scope.tempPredicates);
@@ -374,7 +436,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     $scope.setChanged = function () {
     	$scope.changed = true;
     }
-    
+
     $scope.initPredicate = function () {
     	$scope.newConstraint = angular.fromJson({
     		position_1: null,
@@ -401,7 +463,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         });
         $scope.newConstraint.segment = $rootScope.segment.name;
     }
-    
+
     $scope.initComplexPredicate = function () {
     	$scope.firstConstraint = null;
         $scope.secondConstraint = null;
@@ -409,9 +471,9 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         $scope.complexConstraintTrueUsage = null;
         $scope.complexConstraintFalseUsage = null;
     }
-    
+
     $scope.initPredicate();
-    
+
     $scope.deletePredicate = function (predicate) {
     	$scope.tempPredicates.splice($scope.tempPredicates.indexOf(predicate), 1);
         $scope.changed = true;
@@ -445,7 +507,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         }
         return false;
     };
-    
+
     $scope.addComplexPredicate = function(){
         $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
@@ -455,7 +517,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     	$scope.initComplexPredicate();
         $scope.changed = true;
     };
-    
+
     $scope.updatePredicate = function () {
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
 
@@ -463,7 +525,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         $scope.newConstraint.position_2  = $scope.genPosition($scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
         $scope.newConstraint.location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
         $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
-        
+
         if ($scope.newConstraint.position_1 != null) {
         	var positionPath = $scope.selectedNode.position + '[1]';
         	var cp = $rootScope.generatePredicate(positionPath, $scope.newConstraint);
@@ -502,7 +564,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     $scope.ok = function () {
         $modalInstance.close($scope.selectedNode);
     };
-    
+
     $scope.saveclose = function () {
     	angular.copy($scope.tempPredicates, $rootScope.segment.predicates);
     	$rootScope.recordChanged();
@@ -519,15 +581,15 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     $scope.complexConstraint = null;
     $scope.newComplexConstraintId = '';
     $scope.newComplexConstraint = [];
-    
+
     $scope.changed = false;
     $scope.tempComformanceStatements = [];
     angular.copy($rootScope.segment.conformanceStatements, $scope.tempComformanceStatements);
-    
+
     $scope.setChanged = function () {
     	$scope.changed = true;
     }
-    
+
     $scope.initConformanceStatement = function () {
     	$scope.newConstraint = angular.fromJson({
     		position_1: null,
@@ -553,21 +615,21 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         });
         $scope.newConstraint.segment = $rootScope.segment.name;
     }
-    
+
     $scope.initComplexStatement = function () {
     	$scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
         $scope.newComplexConstraintId = '';
     }
-    
+
     $scope.initConformanceStatement();
 
     $scope.deleteConformanceStatement = function (conformanceStatement) {
         $scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };
-    
+
     $scope.updateField_1 = function () {
         $scope.newConstraint.component_1 = null;
         $scope.newConstraint.subComponent_1 = null;
@@ -611,7 +673,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 
         return position;
     };
-    
+
     $scope.addComplexConformanceStatement = function(){
     	$scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
     	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
@@ -619,7 +681,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     	$scope.initComplexStatement();
         $scope.changed = true;
     };
-    
+
 
     $scope.addConformanceStatement = function () {
         $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
@@ -641,14 +703,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     	angular.forEach($scope.tempComformanceStatements, function (cs) {
     		$rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
     	});
-    	
+
     	angular.forEach($rootScope.segment.conformanceStatements, function (cs) {
     		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
     	});
-    	
+
         $modalInstance.close($scope.selectedNode);
     };
-    
+
     $scope.saveclose = function () {
     	angular.forEach($scope.tempComformanceStatements, function (cs) {
     		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
@@ -661,95 +723,49 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 });
 
 
-angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $modalInstance, segToDelete, $rootScope) {
+angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService,SegmentLibrarySvc) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
-    
+
     $scope.delete = function () {
         $scope.loading = true;
-        // Contrary to popular belief, we must remove the segment from both places.
-        var index = _.findIndex($rootScope.igdocument.profile.segments.children, function(child) {
-        		return child.id === $scope.segToDelete.id;
-	    });
-	    if (index > -1) $rootScope.igdocument.profile.segments.children.splice(index, 1);
-        var index = _.findIndex($rootScope.segments, function(child) {
-        		return child.id === $scope.segToDelete.id;
-        });        
-        if (index > -1) $rootScope.segments.splice(index, 1);
-        
-        if ($rootScope.segment === $scope.segToDelete) {
-            $rootScope.segment = null;
-        }
-        $rootScope.segmentsMap[$scope.segToDelete.id] = null;
-        $rootScope.references = [];
-        if ($scope.segToDelete.id < 0) {
-//            var index = $rootScope.changes["segment"]["add"].indexOf($scope.segToDelete);
-//            if (index > -1) $rootScope.changes["segment"]["add"].splice(index, 1);
-//            if ($rootScope.changes["segment"]["add"] && $rootScope.changes["segment"]["add"].length === 0) {
-//                delete  $rootScope.changes["segment"]["add"];
-//            }
-//            if ($rootScope.changes["segment"] && Object.getOwnPropertyNames($rootScope.changes["segment"]).length === 0) {
-//                delete  $rootScope.changes["segment"];
-//            }
-        } else {
-            $rootScope.recordDelete("segment", "edit", $scope.segToDelete.id);
-//            if ($scope.segToDelete.components != undefined && $scope.segToDelete.components != null && $scope.segToDelete.components.length > 0) {
-//
-//                //clear components changes
-//                angular.forEach($scope.dtToDelete.components, function (component) {
-//                    $rootScope.recordDelete("component", "edit", component.id);
-//                    $rootScope.removeObjectFromChanges("component", "delete", component.id);
-//                });
-//                if ($rootScope.changes["component"]["delete"] && $rootScope.changes["component"]["delete"].length === 0) {
-//                    delete  $rootScope.changes["component"]["delete"];
-//                }
-//
-//                if ($rootScope.changes["component"] && Object.getOwnPropertyNames($rootScope.changes["component"]).length === 0) {
-//                    delete  $rootScope.changes["component"];
-//                }
-//
-//            }
-//
-//            if ($scope.segToDelete.predicates != undefined && $scope.segToDelete.predicates != null && $scope.segToDelete.predicates.length > 0) {
-//                //clear predicates changes
-//                angular.forEach($scope.segToDelete.predicates, function (predicate) {
-//                    $rootScope.recordDelete("predicate", "edit", predicate.id);
-//                    $rootScope.removeObjectFromChanges("predicate", "delete", predicate.id);
-//                });
-//                if ($rootScope.changes["predicate"]["delete"] && $rootScope.changes["predicate"]["delete"].length === 0) {
-//                    delete  $rootScope.changes["predicate"]["delete"];
-//                }
-//
-//                if ($rootScope.changes["predicate"] && Object.getOwnPropertyNames($rootScope.changes["predicate"]).length === 0) {
-//                    delete  $rootScope.changes["predicate"];
-//                }
-//
-//            }
-//
-//            if ($scope.dtToDelete.conformanceStatements != undefined && $scope.dtToDelete.conformanceStatements != null && $scope.dtToDelete.conformanceStatements.length > 0) {
-//                //clear conforamance statement changes
-//                angular.forEach($scope.dtToDelete.conformanceStatements, function (confStatement) {
-//                    $rootScope.recordDelete("conformanceStatement", "edit", confStatement.id);
-//                    $rootScope.removeObjectFromChanges("conformanceStatement", "delete", confStatement.id);
-//                });
-//                if ($rootScope.changes["conformanceStatement"]["delete"] && $rootScope.changes["conformanceStatement"]["delete"].length === 0) {
-//                    delete  $rootScope.changes["conformanceStatement"]["delete"];
-//                }
-//
-//                if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["conformanceStatement"]).length === 0) {
-//                    delete  $rootScope.changes["conformanceStatement"];
-//                }
-//            }
-        }
+        SegmentService.delete($scope.segToDelete).then(function (result) {
+                SegmentLibrarySvc.deleteChild($scope.segToDelete.id).then(function (res) {
+                    // We must delete from two collections.
+                    var index = $rootScope.datatypes.indexOf($scope.segToDelete);
+                    $rootScope.segments.splice(index, 1);
+                    var tmp = SegmentLibrarySvc.findOneChild($scope.segToDelete.id, $rootScope.igdocument.profile.segmentLibrary);
+                    index = $rootScope.igdocument.profile.segmentLibrary.children.indexOf(tmp);
+                    $rootScope.igdocument.profile.segmentLibrary.children.splice(index, 1);
+                    $rootScope.segmentsMap[$scope.segToDelete.id] = null;
+                    $rootScope.references = [];
+                    if ($rootScope.segment === $scope.segToDelete) {
+                        $rootScope.segment = null;
+                    }
+                    $rootScope.recordDelete("segment", "edit", $scope.segToDelete.id);
+                    $rootScope.msg().text = "segDeleteSuccess";
+                    $rootScope.msg().type = "success";
+                    $rootScope.msg().show = true;
+                    $rootScope.manualHandle = true;
+                    $rootScope.$broadcast('event:SetToC');
+                    $modalInstance.close($scope.segToDelete);
+                    $scope.loading = false;
+                }, function (error) {
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                    $rootScope.manualHandle = true;
+                    $scope.loading = false;
+                });
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                $rootScope.manualHandle = true;
+                $scope.loading = false;
 
-
-        $rootScope.msg().text = "segDeleteSuccess";
-        $rootScope.msg().type = "success";
-        $rootScope.msg().show = true;
-        $rootScope.manualHandle = true;
-		$rootScope.$broadcast('event:SetToC');
-        $modalInstance.close($scope.segToDelete);
-
+            }
+        );
     };
 
     $scope.cancel = function () {

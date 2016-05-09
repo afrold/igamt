@@ -61,4 +61,20 @@ public class SegmentServiceImpl implements SegmentService {
 		log.info("SegmentServiceImpl.save=" + segment.getLabel());
 		return segmentRepository.save(segment);
 	}
+
+	@Override
+	public void delete(Segment segment) {
+		segmentRepository.delete(segment);
+	}
+	
+	@Override
+	public void delete(String id) {
+		segmentRepository.delete(id);
+	}
+	
+	@Override
+	public void save(List<Segment> segments) {
+		// TODO Auto-generated method stub
+		segmentRepository.save(segments);
+	}
 }

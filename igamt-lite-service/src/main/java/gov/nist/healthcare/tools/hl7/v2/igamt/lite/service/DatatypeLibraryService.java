@@ -18,6 +18,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 
 @Service
 public interface DatatypeLibraryService {
@@ -44,4 +45,8 @@ public interface DatatypeLibraryService {
 			Long accountId);
 
 	void delete(String id);
-}
+
+	List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name,
+			Long accountId); 
+	
+ }

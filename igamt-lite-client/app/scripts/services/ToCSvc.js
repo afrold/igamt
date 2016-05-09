@@ -2,7 +2,7 @@ angular
 		.module('igl')
 		.factory(
 				'ToCSvc',
-				function() {
+				function(FilteringSvc, MastermapSvc) {
 
 					var svc = this;
 
@@ -59,7 +59,7 @@ angular
 						});
 						var conformanceProfile = getMessageInfrastructure(igdocument);
 						toc.push(conformanceProfile);
-            console.log(toc);
+//             console.log(toc);
 						return toc;
 					};
 
@@ -106,11 +106,11 @@ angular
 								"profileMetadata"));
 						children.push(getTopEntry(igdocument.profile.messages,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.segments,
+						children.push(getTopEntry(igdocument.profile.segmentLibrary,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.datatypes,
+						children.push(getTopEntry(igdocument.profile.datatypeLibrary,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.tables,
+						children.push(getTopEntry(igdocument.profile.tableLibrary,
 								igdocument.profile));
 						rval.children = children;
 						return rval;
@@ -181,8 +181,7 @@ angular
 								child.sectionPosition, child.type, parent,
 								child);
 						return rval;
-					}
-					;
+					};
 
-					return svc;
+          return svc;
 				})

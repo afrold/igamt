@@ -10,6 +10,13 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,13 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeSaveResponse;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -47,13 +47,6 @@ public class DatatypeController extends CommonController {
 	@Autowired
 	AccountRepository accountRepository;
 
-	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public List<Datatype> datatypes() {
-		log.info("Fetching all Datatypes...");
-		List<Datatype> result = datatypeService.findAll();
-		return result;
-	}
-
 	@RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
 	public List<Datatype> findByIds(@RequestBody List<String> ids) {
 		log.info("Fetching datatypeByIds..." + ids);
@@ -69,7 +62,8 @@ public class DatatypeController extends CommonController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public DatatypeSaveResponse save(@RequestBody Datatype datatype) throws DatatypeSaveException {
+	public Datatype save(@RequestBody Datatype datatype)
+			throws DatatypeSaveException {
 		log.debug("datatypeLibrary=" + datatype);
 		log.debug("datatypeLibrary.getId()=" + datatype.getId());
 		log.info("Saving the " + datatype.getScope() + " datatype library.");
@@ -77,15 +71,19 @@ public class DatatypeController extends CommonController {
 		// Account account =
 		// accountRepository.findByTheAccountsUsername(u.getUsername());
 		// datatype.setAccountId(account.getId());
+		datatype.setDate(DateUtils.getCurrentTime());
 		Datatype saved = datatypeService.save(datatype);
 		log.debug("saved.getId()=" + saved.getId());
 		log.debug("saved.getScope()=" + saved.getScope());
-		return new DatatypeSaveResponse(saved.getName(), saved.getScope().name());
+		return saved;
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public void delete(@PathVariable("id") String id) throws DatatypeSaveException {
+	@RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
+	public boolean delete(@PathVariable("id") String id)
+			throws DatatypeSaveException {
 		log.info("Deleting " + id);
 		datatypeService.delete(id);
+		return true;
 	}
+
 }

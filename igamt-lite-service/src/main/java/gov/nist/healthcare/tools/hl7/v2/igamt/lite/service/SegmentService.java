@@ -26,4 +26,11 @@ public interface SegmentService {
 	List<Segment> findByLibIds(String segLibId);
 
 	List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	
+	void delete(Segment segment);
+
+	void delete(String id);
+
+	void save(List<Segment> segments);
+
 }

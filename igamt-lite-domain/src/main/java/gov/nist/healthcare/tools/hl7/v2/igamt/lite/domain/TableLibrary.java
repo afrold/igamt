@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
@@ -236,5 +237,26 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 
 	public void setTables(Set<TableLink> children) {
 		this.children = children;
+	}
+	
+	public TableLibrary clone()
+			throws CloneNotSupportedException {
+		TableLibrary clone = new TableLibrary();
+		clone.setChildren(new HashSet<TableLink>(this.getChildren()));
+		clone.setExt(this.getExt()+ "-" + genRand());
+		clone.setMetaData(this.getMetaData().clone());
+		clone.setScope(this.getScope());
+		clone.setSectionContents(this.getSectionContents()); 
+		clone.setSectionDescription(this.getSectionDescription());
+		clone.setSectionPosition(this.getSectionPosition());
+		clone.setSectionTitle(this.getSectionTitle());
+		clone.setType(this.getType());
+		clone.setDate(this.getDate());
+		return clone;	
+	}
+	
+	
+	private String genRand() {
+		return Integer.toString( new Random().nextInt(100));
 	}
 }

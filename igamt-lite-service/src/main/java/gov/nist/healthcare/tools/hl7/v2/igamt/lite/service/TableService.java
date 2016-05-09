@@ -24,4 +24,10 @@ public interface TableService {
 	List<Table> findByLibIds(String segLibId);
 
 	List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+
+	void delete(Table table);
+
+	void delete(String id);
+
+	void save(List<Table> tables);
 }

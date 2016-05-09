@@ -18,6 +18,7 @@ import java.util.Set;
 import org.springframework.data.annotation.Version;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
@@ -32,6 +33,8 @@ public abstract class SectionModelWithConstraints extends SectionModel {
 	protected String date;
 	
 	protected String version;
+		
+	protected  STATUS status; 
 	
 	private Set<String> participants = new HashSet<String>();
 	
@@ -154,6 +157,14 @@ public abstract class SectionModelWithConstraints extends SectionModel {
 
 	public void setLibIds(Set<String> libIds) {
 		this.libIds = libIds;
+	}
+
+	public STATUS getStatus() {
+		return status;
+	}
+
+	public void setStatus(STATUS status) {
+		this.status = status;
 	}
 	
 	

@@ -27,8 +27,7 @@ var app = angular
         'angularjs-dropdown-multiselect',
         'dndLists',
         'froala',
-        'ngNotificationsBar'
-        ,
+        'ngNotificationsBar',
         'ngMockE2E'
     ]);
 

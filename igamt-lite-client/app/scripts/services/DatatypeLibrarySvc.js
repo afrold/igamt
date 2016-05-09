@@ -1,96 +1,98 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('DatatypeLibrarySvc', function($q, $http, $httpBackend, userInfoService) {
+angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBackend, userInfoService) {
 
-	var svc = this;
+    var svc = this;
 
-	var dtLibStruct = function(scope, children) {
-		this.id = null;
-		this.scope = scope;
-	    this.sectionDescription = null;
-	    this.sectionContents = null;
-		this.children = children;
-	};
+    var dtLibStruct = function (scope, children) {
+        this.id = null;
+        this.scope = scope;
+        this.sectionDescription = null;
+        this.sectionContents = null;
+        this.children = children;
+    };
 
-  svc.getHL7Versions = function() {
-		return $http.get(
-				'api/datatype-library/findHl7Versions')
-				.then(function(response) {
+    svc.getHL7Versions = function () {
+        return $http.get(
+            'api/datatype-library/findHl7Versions')
+            .then(function (response) {
 //					console.log("response" + JSON.stringify(response));
-					return angular.fromJson(response.data);
-				});
-  };
+                return angular.fromJson(response.data);
+            });
+    };
 
-	svc.getDataTypeLibraryByScopes = function(scopes) {
-		console.log("datatype-library/findByScopes scopes=" + scopes);
+    svc.getDataTypeLibraryByScopes = function (scopes) {
+        console.log("datatype-library/findByScopes scopes=" + scopes);
         return $http.post(
             'api/datatype-library/findByScopes', angular.toJson(scopes))
-            .then(function(response) {
-    					console.log("getDataTypeLibraryByScopes response=" + response.data.length);
-              return angular.fromJson(response.data);
+            .then(function (response) {
+                console.log("getDataTypeLibraryByScopes response=" + response.data.length);
+                return angular.fromJson(response.data);
             });
-	};
+    };
 
-	svc.getDataTypeLibraryByScopesAndVersion = function(scopes, hl7Version) {
-		console.log("datatype-library/findByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
+    svc.getDataTypeLibraryByScopesAndVersion = function (scopes, hl7Version) {
+        console.log("datatype-library/findByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
         var scopesAndVersion = {
-          "scopes" : scopes,
-          "hl7Version" : hl7Version
+            "scopes": scopes,
+            "hl7Version": hl7Version
         };
         return $http.post(
             'api/datatype-library/findByScopesAndVersion', angular.toJson(scopesAndVersion))
-            .then(function(response) {
-     					console.log("getDataTypeLibraryByScopesAndVersion response size=" + response.data.length);
+            .then(function (response) {
+                console.log("getDataTypeLibraryByScopesAndVersion response size=" + response.data.length);
 //   					  console.log("getDataTypeLibraryByScopesAndVersion response=" + JSON.stringify(response.data));
-              return angular.fromJson(response.data);
+                return angular.fromJson(response.data);
             });
-	};
+    };
 
-  svc.getDatatypesByLibrary = function(dtLibId) {
+    svc.getDatatypesByLibrary = function (dtLibId) {
         return $http.get(
-            'api/datatype-library/' + dtLibId + '/datatypes')
-            .then(function(response) {
-    //					console.log("response" + JSON.stringify(response));
-              return angular.fromJson(response.data);
+                'api/datatype-library/' + dtLibId + '/datatypes')
+            .then(function (response) {
+                //					console.log("response" + JSON.stringify(response));
+                return angular.fromJson(response.data);
             });
-  };
+    };
 
-	svc.append = function(fromchildren, toChildren) {
-		angular.foreach(fromchildren, function(child) {
-			toChildren.push(child);
-		});
-		return svc.datatypeLibrary;
-	};
+    svc.append = function (fromchildren, toChildren) {
+        angular.foreach(fromchildren, function (child) {
+            toChildren.push(child);
+        });
+        return svc.datatypeLibrary;
+    };
 
-	svc.createUpdate = function(scope, children) {
-		var dtlrw = new dtLibStruct(scope, sortedChildren);
-	};
+    svc.createUpdate = function (scope, children) {
+        var dtlrw = new dtLibStruct(scope, sortedChildren);
+    };
 
-	svc.create = function(hl7Version, scope, name, ext) {
-    var dtlcw = { "hl7Version" : hl7Version,
-                  "scope" : scope,
-                  "name" : name,
-                  "ext" : ext,
-                  "accountId" : userInfoService.getAccountID()};
-		return $http.post(
-			'api/datatype-library/create', dtlcw).then(function(response) {
-			return angular.fromJson(response.data)});
-	};
+    svc.create = function (hl7Version, scope, name, ext) {
+        var dtlcw = { "hl7Version": hl7Version,
+            "scope": scope,
+            "name": name,
+            "ext": ext,
+            "accountId": userInfoService.getAccountID()};
+        return $http.post(
+            'api/datatype-library/create', dtlcw).then(function (response) {
+                return angular.fromJson(response.data)
+            });
+    };
 
-	svc.save = function(datatypeLibrary) {
-		return $http.post(
-			'api/datatype-library/save', angular.toJson(datatypeLibrary)).then(function(response) {
-			return angular.fromJson(response.data)});
-	};
-	
-	svc.bindDatatypes = function(ids, dtLibId, dtLibExt) {
-    	var binding = {
-    		"datatypeIds" : ids,
-    		"datatypeLibraryId" : dtLibId,
-    		"datatypeLibraryExt" : dtLibExt,
-    		"accountId" : userInfoService.getAccountID()
-    	};
+    svc.save = function (datatypeLibrary) {
+        return $http.post(
+            'api/datatype-library/save', angular.toJson(datatypeLibrary)).then(function (response) {
+                return angular.fromJson(response.data)
+            });
+    };
+
+    svc.bindDatatypes = function (ids, dtLibId, dtLibExt) {
+        var binding = {
+            "datatypeIds": ids,
+            "datatypeLibraryId": dtLibId,
+            "datatypeLibraryExt": dtLibExt,
+            "accountId": userInfoService.getAccountID()
+        };
         var delay = $q.defer();
         $http.post('api/datatype-library/bindDatatypes', binding).then(function (response) {
             var datatypes = angular.fromJson(response.data);
@@ -101,5 +103,56 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($q, $http, $httpBac
         return delay.promise;
     };
 
-	return svc;
+
+    svc.findOneChild = function (id, datatypeLibary) {
+        if (datatypeLibary.children) {
+            for (var i = 0; i < datatypeLibary.children.length; i++) {
+                if (datatypeLibary.children[i].id === id) {
+                    return datatypeLibary.children[i];
+                }
+            }
+        }
+        return null;
+    };
+
+    svc.createEmptyLink = function () {
+        return {id:null, ext:null, name:null};
+    };
+
+
+    svc.addChild = function (libId, datatypeLink) {
+        var delay = $q.defer();
+        $http.post('api/datatype-library/'+ libId+ '/addChild', datatypeLink).then(function (response) {
+            var link = angular.fromJson(response.data);
+            delay.resolve(link);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
+    svc.updateChild = function (libId, datatypeLink) {
+        var delay = $q.defer();
+        $http.post('api/datatype-library/'+ libId+ '/updateChild', datatypeLink).then(function (response) {
+            var link = angular.fromJson(response.data);
+            delay.resolve(link);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
+    svc.deleteChild = function (libId, id) {
+        var delay = $q.defer();
+        $http.post('api/datatype-library/'+ libId+ '/deleteChild', {params:{id:id}}).then(function (response) {
+            var link = angular.fromJson(response.data);
+            delay.resolve(link);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
+
+    return svc;
 });

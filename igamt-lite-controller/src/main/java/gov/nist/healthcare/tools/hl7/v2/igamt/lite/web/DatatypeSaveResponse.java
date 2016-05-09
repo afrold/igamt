@@ -28,19 +28,6 @@ public class DatatypeSaveResponse extends ResponseMessage {
 
 	private String version;
 
-	/**
-	 * @param type
-	 * @param text
-	 * @param resourceId
-	 * @param manualHandle
-	 * @param date
-	 * @param version
-	 */
-	public DatatypeSaveResponse(String date, String scope, String version) {
-		this(date, scope);
-		this.version = version;
-	}
-
 	public DatatypeSaveResponse(String date, String scope) {
 		super(Type.success, "datatypeSaved");
 		this.date = date;

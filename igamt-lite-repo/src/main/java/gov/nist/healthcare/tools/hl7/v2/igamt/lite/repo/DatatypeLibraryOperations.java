@@ -16,6 +16,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 
 /**
  * @author gcr1
@@ -34,4 +35,7 @@ public interface DatatypeLibraryOperations {
 	public List<String> findHl7Versions();
 
 	List<DatatypeLibrary> findDups(DatatypeLibrary dtl);
+ 
+	List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name,
+			Long accountId);
 }

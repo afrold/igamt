@@ -9,8 +9,10 @@ angular
 						'ToCSvc',
 						'ContextMenuSvc',
 						'CloneDeleteSvc',
+            'FilteringSvc',
+            'MastermapSvc',
 						function($scope, $rootScope, $timeout, ToCSvc,
-								ContextMenuSvc, CloneDeleteSvc) {
+								ContextMenuSvc, CloneDeleteSvc, FilteringSvc, MastermapSvc) {
 							var ctl = this;
 							$scope.collapsed = [];
 							$scope.yesDrop = false;
@@ -156,4 +158,13 @@ angular
 								}
 								$rootScope.$broadcast('event:SetToC');
 							};
-						} ])
+
+              $scope.show = function(leaf){
+                return FilteringSvc.showToC(leaf);
+              };
+
+              $rootScope.$on('event:loadMastermap', function (event, igdocument) {
+                MastermapSvc.parseIg(igdocument);
+            });
+
+            }])
