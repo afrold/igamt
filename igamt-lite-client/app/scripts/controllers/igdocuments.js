@@ -1012,6 +1012,21 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
     };
 });
 
+
+
+angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
+    $scope.loading = false;
+
+    $scope.save = function () {
+
+    };
+
+    $scope.cancel = function () {
+        $rootScope.metaData = null;
+    };
+});
+
+
 angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
     $scope.igdocumentToSelect = igdocumentToSelect;
     $scope.xmlFormat = '';
