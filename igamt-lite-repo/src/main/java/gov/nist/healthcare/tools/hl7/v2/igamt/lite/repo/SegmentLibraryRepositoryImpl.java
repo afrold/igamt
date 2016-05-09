@@ -23,6 +23,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
@@ -113,5 +114,27 @@ public class SegmentLibraryRepositoryImpl implements SegmentLibraryOperations {
 			List<SegmentLink> links = mongo.find(query, SegmentLink.class);
 
 		 return links;
+		}
+
+		@Override
+		public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope,
+				String hl7Version, String name, Long accountId) {
+			Criteria libCriteria = Criteria
+					.where("scope")
+					.is(scope)
+					.andOperator(
+							Criteria.where("metaData.hl7Version").is(hl7Version))
+					.andOperator(
+							Criteria.where("accountId")
+									.is(accountId)
+									.orOperator(
+											Criteria.where("accountId").is(null)));
+			Criteria linksCriteria = Criteria.where("children").elemMatch(
+					Criteria.where("name").is(name).andOperator(Criteria.where("status").is(STATUS.PUBLISHED)));
+			BasicQuery query = new BasicQuery(libCriteria.getCriteriaObject(),
+					linksCriteria.getCriteriaObject());
+			List<SegmentLibrary> libraries = mongo.find(query, SegmentLibrary.class);
+
+		 return libraries;
 		}
 }

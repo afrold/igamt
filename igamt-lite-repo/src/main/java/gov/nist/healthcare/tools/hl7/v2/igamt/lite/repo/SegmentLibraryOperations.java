@@ -12,9 +12,14 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.List;
 
+import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.Criteria;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 
@@ -34,7 +39,9 @@ public interface SegmentLibraryOperations {
 
 	public List<String> findHl7Versions(); 
 	
-	 
-		List<SegmentLink> findFlavors(SCOPE scope, String hl7Version, String name,
-				Long accountId);
+ 	public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version,
+			String name, Long accountId);
+	
+ 	public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version,
+			String name, Long accountId);
 }

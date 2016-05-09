@@ -38,4 +38,7 @@ public interface DatatypeLibraryOperations {
  
 	List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name,
 			Long accountId);
+	
+	List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope,
+			String hl7Version, String name, Long accountId);
 }
