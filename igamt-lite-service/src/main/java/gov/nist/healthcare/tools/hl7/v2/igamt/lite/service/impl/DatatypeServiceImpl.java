@@ -45,7 +45,7 @@ public class DatatypeServiceImpl implements DatatypeService {
 	public Datatype findById(String id) {
 		log.info("DataypeServiceImpl.findById=" + id);
 		Datatype datatype;
-		datatype = datatypeRepository.findById(id);
+		datatype = datatypeRepository.findOne(id);
 		return datatype;
 	}
 
