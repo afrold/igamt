@@ -390,15 +390,19 @@ angular.module('igl')
     });
 
 angular.module('igl')
-    .controller('SelectDatatypeFlavorCtrl', function ($scope, $filter, $modalInstance, $rootScope, $http, currentNode, DatatypeService, $rootScope, hl7Version, ngTreetableParams, ViewSettings) {
+    .controller('SelectDatatypeFlavorCtrl', function ($scope, $filter, $modalInstance, $rootScope, $http, currentNode, DatatypeService, $rootScope, hl7Version, ngTreetableParams, ViewSettings,DatatypeLibrarySvc) {
         $scope.resultsError = null;
         $scope.viewSettings = ViewSettings;
         $scope.resultsLoading = null;
+        $scope.librariesLoading = false;
+        $scope.librariesError = null;
         $scope.results = [];
         $scope.tmpResults = [].concat($scope.results);
+        $scope.libraries = [];
+        $scope.tmpLibraries = [].concat($scope.libraries);
         $scope.currentNode = currentNode;
         $scope.currentDatatype = $rootScope.datatypesMap[currentNode.datatype];
-        $scope.selection = {scope: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.scope : null, hl7Version: hl7Version, datatype: null, name: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name : null};
+        $scope.selection = {library: null, scope: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.scope : null, hl7Version: hl7Version, datatype: null, name: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name : null};
 
         $scope.datatypeFlavorParams = new ngTreetableParams({
             getNodes: function (parent) {
@@ -455,18 +459,49 @@ angular.module('igl')
             return true;
         };
 
-        $scope.findFlavors = function () {
-            $scope.resultsError = null;
-            $scope.resultsLoading = true;
-            $scope.results = [];
-            $scope.tmpResults = [].concat($scope.results);
-            DatatypeService.findFlavors($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (results) {
-                $scope.results = results;
+
+        $scope.loadFlavors = function () {
+            if($scope.selection.library != null) {
+                $scope.libariesError = null;
+                $scope.librariesLoading = true;
+                $scope.results = [];
+                $scope.tmpResults = [];
+                var lib = $scope.selection.library;
+                 for(var i=0; i < $scope.selection.library.length; i++){
+                    var link  = $scope.selection.library.children[i];
+                    if(link.name === $scope.selection.name) {
+                        $scope.results.push(link);
+                    }
+                };
                 $scope.tmpResults = [].concat($scope.results);
-                $scope.resultsLoading = false;
+//
+//
+//
+//
+//                DatatypeLibrarySvc.findFlavors($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version, $scope.selection.library.id).then(function (results) {
+//                    $scope.results = results;
+//                    $scope.tmpResults = [].concat($scope.results);
+//                    $scope.resultsLoading = false;
+//                }, function (error) {
+//                    $scope.resultsError = null;
+//                    $scope.resultsLoading = false;
+//                });
+            }
+        };
+
+
+        $scope.loadLibrariesByFlavorName = function () {
+            $scope.librariesError = null;
+            $scope.librariesLoading = true;
+            $scope.libraries = [];
+            $scope.tmpLibraries = [].concat($scope.libraries);
+            DatatypeLibrarySvc.findLibrariesByFlavorName($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (libraries) {
+                $scope.libraries = libraries;
+                $scope.tmpLibraries = [].concat($scope.libraries);
+                $scope.librariesLoading = false;
             }, function (error) {
-                $scope.resultsError = null;
-                $scope.resultsLoading = false;
+                $scope.librariesError = null;
+                $scope.librariesLoading = false;
             });
         };
 
@@ -474,16 +509,24 @@ angular.module('igl')
             return DatatypeService.isDatatypeSubDT(component, $scope.selection.datatype);
         };
 
-        $scope.isSelected = function (datatype) {
+        $scope.isSelectedDatatype = function (datatype) {
             return  $scope.selection.datatype != null && datatype != null && $scope.selection.datatype.id == datatype.id;
         };
 
-        $scope.showDatatype = function (datatype) {
-            if (datatype && datatype != null) {
+        $scope.isSelectedLibrary = function (library) {
+            return  $scope.selection.library != null && library != null && $scope.selection.library.id == library.id;
+        };
+
+        $scope.getDatatypeLabel = function (datatypeLink) {
+             return $rootScope.getLabel(datatypeLink.name,datatypeLink.ext);
+        };
+
+        $scope.showDatatype = function (datatypeLink) {
+            if (datatypeLink && datatypeLink != null) {
                 $scope.datatypeError = null;
                 $scope.loadingSelection = true;
-                DatatypeService.getOne(datatype.id).then(function (result) {
-                    $scope.selection.datatype = datatype;
+                DatatypeService.getOne(datatypeLink.id).then(function (result) {
+                    $scope.selection.datatype = result;
                     $scope.selection.datatype["type"] = "datatype";
                     $rootScope.tableWidth = null;
                     $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
@@ -502,7 +545,7 @@ angular.module('igl')
         };
 
         $scope.submit = function () {
-            $modalInstance.close($scope.$scope.selection.datatype);
+            $modalInstance.close($scope.selection.datatype);
         };
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');

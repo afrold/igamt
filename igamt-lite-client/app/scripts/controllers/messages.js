@@ -11,19 +11,19 @@ angular.module('igl')
         $scope.copy = function (message) {
             CloneDeleteSvc.copyMessage(message);
             $rootScope.$broadcast('event:SetToC');
-
-        }
+        };
 
         $scope.close = function () {
             $rootScope.message = null;
-            if ($scope.messagesParams)
+            if ($scope.messagesParams) {
                 $scope.messagesParams.refresh();
+            }
         };
 
         $scope.delete = function (message) {
             CloneDeleteSvc.deleteMessage(message);
             $rootScope.$broadcast('event:SetToC');
-        }
+        };
 
         $scope.goToSegment = function (segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
