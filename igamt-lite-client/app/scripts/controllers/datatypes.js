@@ -461,17 +461,19 @@ angular.module('igl')
         };
 
 
-        $scope.loadFlavors = function () {
-            if ($scope.selection.library != null) {
-                $scope.libariesError = null;
+        $scope.loadFlavors = function (library) {
+            if (library != null) {
+                $scope.selection.library = library;
+                 $scope.libariesError = null;
                 $scope.librariesLoading = true;
                 $scope.results = [];
                 $scope.tmpResults = [];
-                var lib = $scope.selection.library;
-                for (var i = 0; i < $scope.selection.library.length; i++) {
-                    var link = $scope.selection.library.children[i];
-                    if (link.name === $scope.selection.name) {
-                        $scope.results.push(link);
+                if($scope.selection.library.length > 0) {
+                    for (var i = 0; i < $scope.selection.library.length; i++) {
+                        var link = $scope.selection.library.children[i];
+                        if (link.name === $scope.selection.name) {
+                            $scope.results.push(link);
+                        }
                     }
                 }
                 $scope.tmpResults = [].concat($scope.results);

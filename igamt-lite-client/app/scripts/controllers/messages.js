@@ -176,7 +176,7 @@ angular.module('igl')
         $scope.tmpLibraries = [].concat($scope.libraries);
         $scope.currentNode = currentNode;
         $scope.currentSegment = $rootScope.segmentsMap[currentNode.ref];
-        $scope.selection = {scope: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.scope : null, hl7Version: hl7Version, segment: null, name: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.name : null};
+        $scope.selection = {libary: null, scope: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.scope : null, hl7Version: hl7Version, segment: null, name: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.name : null};
 
 
         $scope.segmentFlavorParams = new ngTreetableParams({
@@ -223,21 +223,23 @@ angular.module('igl')
         };
 
 
-
-        $scope.findFlavors = function () {
-            $scope.bindingError = null;
-            $scope.resultsError = null;
-            $scope.resultsLoading = true;
-            $scope.results = [];
-            $scope.tmpResults = [].concat($scope.results);
-            SegmentService.findFlavors($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (results) {
-                $scope.results = results;
+        $scope.loadFlavors = function (library) {
+            if (library != null) {
+                $scope.selection.library = library;
+                $scope.libariesError = null;
+                $scope.librariesLoading = true;
+                $scope.results = [];
+                $scope.tmpResults = [];
+                if ($scope.selection.library.length > 0) {
+                    for (var i = 0; i < $scope.selection.library.length; i++) {
+                        var link = $scope.selection.library.children[i];
+                        if (link.name === $scope.selection.name) {
+                            $scope.results.push(link);
+                        }
+                    }
+                }
                 $scope.tmpResults = [].concat($scope.results);
-                $scope.resultsLoading = false;
-            }, function (error) {
-                $scope.resultsError = null;
-                $scope.resultsLoading = false;
-            });
+            }
         };
 
         $scope.showSegment = function (segment) {
@@ -890,7 +892,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
 });
 
 
-angular.module('igl').controller('ConfirmMessageDeleteCtrl', function ($scope, $modalInstance, messageToDelete, $rootScope, MessagesSvc,IgDocumentService,CloneDeleteSvc) {
+angular.module('igl').controller('ConfirmMessageDeleteCtrl', function ($scope, $modalInstance, messageToDelete, $rootScope, MessagesSvc, IgDocumentService, CloneDeleteSvc) {
     $scope.messageToDelete = messageToDelete;
     $scope.loading = false;
     $scope.delete = function () {
