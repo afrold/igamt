@@ -24,13 +24,13 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
@@ -51,12 +51,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
@@ -74,6 +74,9 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	@Autowired
 	private IGDocumentRepository igdocumentRepository;
 
+	@Autowired
+	private MessageRepository messageRepository;
+	
 	@Autowired
 	private SegmentLibraryRepository segmentLibraryRepository;
 	
@@ -220,10 +223,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 				int maxPos = findMaxPosition(pSource.getMessages());
 				Message m1 = null;
 				m1 = m.clone();
-				if (SCOPE.USER == m.getScope()) {
-					m.setId(null);
-				}
 				m1.setId(null);
+				m1.setScope(Constant.SCOPE.USER);
 				Iterator<Event> itr = msgEvt.getChildren().iterator();
 				if (itr.hasNext()) {
 					String event = itr.next().getName();
@@ -236,6 +237,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 				log.debug("Message.name=" + name);
 				m1.setName(name);
 				m1.setPosition(++maxPos);
+				messageRepository.save(m1);
 				messages.addMessage(m1);
 				for (SegmentRefOrGroup sg : m.getChildren()) {
 					if (sg instanceof SegmentRef) {
@@ -265,7 +267,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		sgtsTarget.setType(pSource.getSegmentLibrary().getType());
 		SegmentLink sgt = pSource.getSegmentLibrary().findOneSegmentById(sref.getRef());
 		sgtsTarget.addSegment(sgt);
-		Segment seg = segmentRepository.findOne(sref.getId());
+		Segment seg = segmentRepository.findOne(sref.getRef());
 		if (SCOPE.USER == seg.getScope()) {
 			seg.setId(null);
 			seg.getLibIds().remove(sgtsSource.getId());

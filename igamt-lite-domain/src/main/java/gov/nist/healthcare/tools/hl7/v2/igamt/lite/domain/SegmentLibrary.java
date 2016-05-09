@@ -28,7 +28,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	
 	public SegmentLibrary() {
 		super();
-		type = Constant.SEGMENTLIBRARY;
+		type = Constant.SEGMENTS;
 	}
 
 	private Set<SegmentLink> children = new HashSet<SegmentLink>();

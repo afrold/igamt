@@ -29,7 +29,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	
 	public DatatypeLibrary() {
 		super();
-		type = Constant.DATATYPELIBRARY;
+		type = Constant.DATATYPES;
 	}
 
 	private Set<DatatypeLink> children = new HashSet<DatatypeLink>();

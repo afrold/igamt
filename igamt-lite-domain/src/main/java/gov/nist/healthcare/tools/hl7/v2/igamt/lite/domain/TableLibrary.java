@@ -43,7 +43,7 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 
 	public TableLibrary() {
 		super();
-		type = Constant.TABLELIBRARY;
+		type = Constant.TABLES;
 	}
 
 	private Set<TableLink> children = new HashSet<TableLink>();

@@ -53,7 +53,7 @@ public class SegmentLink extends AbstractLink {
 
 	@Override
 	public int hashCode() {
-		return (getId() + getLabel()).hashCode();
+		return (getId() + getName()).hashCode();
 	}
 
 	@Override
@@ -71,6 +71,6 @@ public class SegmentLink extends AbstractLink {
 			return false;
 		}
 
-		return getId().equals(link.getId()) && getLabel().equals(link.getLabel());
+		return getId().equals(link.getId()) && getName().equals(link.getLabel());
 	}
 }
