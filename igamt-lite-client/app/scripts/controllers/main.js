@@ -857,6 +857,18 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
         };
 
+        $rootScope.createNewExtension = function (ext) {
+            if ($rootScope.igdocument != null) {
+                var rand = (Math.floor(Math.random() * 10000000) + 1);
+                if($rootScope.igdocument.metaData["ext"] === null){
+                    return ext != null && ext != "" ? ext + "_" + rand: rand;
+                }else {
+                    return  ext != null && ext != "" ? ext + "_" + $rootScope.igdocument.metaData["ext"] + "_" + rand + 1: rand +1;
+                }
+            } else {
+                return null;
+            }
+        };
 
         $rootScope.isSubComponent = function (node) {
             node.type === 'component' && $rootScope.parentsMap[node.id] && $rootScope.parentsMap[node.id].type === 'component';
@@ -1671,6 +1683,19 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             ElementUtils.setUsage(node);
             $scope.recordChanged();
         };
+
+
+        $rootScope.findDatatypeInLibrary = function (datatypeId, datatypeLibary) {
+            if(datatypeLibary.children){
+                for(var i=0;  i< datatypeLibary.children.length;i ++){
+                    if(datatypeLibary.children[i].id === id){
+                        return datatypeLibary.children[i];
+                    }
+                }
+            }
+            return null;
+        };
+
 
 
 

@@ -4,13 +4,21 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
@@ -21,6 +29,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PhinvadsWSCallService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
@@ -35,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,6 +87,24 @@ public class IGDocumentController extends CommonController {
 
 	@Autowired
 	private IGDocumentCreationService igDocumentCreation;
+
+	@Autowired
+	private DatatypeLibraryService datatypeLibraryService;
+
+	@Autowired
+	private SegmentLibraryService segmentLibraryService;
+
+	@Autowired
+	private TableLibraryService tableLibraryService;
+
+	@Autowired
+	private DatatypeService datatypeService;
+
+	@Autowired
+	private SegmentService segmentService;
+
+	@Autowired
+	private TableService tableService;
 
 	public IGDocumentService getIgDocumentService() {
 		return igDocumentService;
@@ -147,16 +178,67 @@ public class IGDocumentController extends CommonController {
 					.getUsername());
 			if (account == null)
 				throw new UserAccountNotFoundException();
-			IGDocument d = this.findIGDocument(id);
-			d.setId(null);
-			d.setScope(IGDocumentScope.USER);
-			d.setAccountId(account.getId());
+			IGDocument igDocument = this.findIGDocument(id);
+			igDocument.setId(null);
+			DatatypeLibrary datatypeLibrary = igDocument.getProfile()
+					.getDatatypeLibrary();
+			DatatypeLibrary clonedDatatypeLibrary = datatypeLibrary.clone();
+			SegmentLibrary segmentLibrary = igDocument.getProfile()
+					.getSegmentLibrary();
+			SegmentLibrary clonedSegmentLibrary = segmentLibrary.clone();
+
+			TableLibrary tableLibrary = igDocument.getProfile()
+					.getTableLibrary();
+			TableLibrary clonedTableLibrary = tableLibrary.clone();
+
+			igDocument.getProfile().setDatatypeLibrary(clonedDatatypeLibrary);
+			igDocument.getProfile().setSegmentLibrary(clonedSegmentLibrary);
+			igDocument.getProfile().setTableLibrary(clonedTableLibrary);
+			igDocument.setScope(IGDocumentScope.USER);
+			igDocument.setAccountId(account.getId());
+
+			datatypeLibraryService.save(clonedDatatypeLibrary);
+			segmentLibraryService.save(clonedSegmentLibrary);
+			tableLibraryService.save(clonedTableLibrary);
+			List<Datatype> datatypes = datatypeService
+					.findByLibIds(datatypeLibrary.getId());
+			if (datatypes != null) {
+				for (int i = 0; i < datatypes.size(); i++) {
+					Datatype d = datatypes.get(i);
+					d.getLibIds().add(clonedDatatypeLibrary.getId());
+				}
+				datatypeService.save(datatypes);
+			}
+
+			List<Segment> segments = segmentService.findByLibIds(segmentLibrary
+					.getId());
+			if (segments != null) {
+				for (int i = 0; i < segments.size(); i++) {
+					Segment d = segments.get(i);
+					d.getLibIds().add(clonedSegmentLibrary.getId());
+				}
+				segmentService.save(segments);
+
+			}
+
+			List<Table> tables = tableService
+					.findByLibIds(tableLibrary.getId());
+			if (datatypes != null) {
+				for (int i = 0; i < datatypes.size(); i++) {
+					Table d = tables.get(i);
+					d.getLibIds().add(clonedTableLibrary.getId());
+				}
+				tableService.save(tables);
+			}
+
 			// d.setBaseId(d.getBaseId() != null ? d.getBaseId() : id);
 			// d.setSourceId(id);
-			d.getMetaData().setDate(DateUtils.getCurrentTime());
-			igDocumentService.save(d);
-			return d;
+			igDocument.getMetaData().setDate(DateUtils.getCurrentTime());
+			igDocumentService.save(igDocument);
+			return igDocument;
 		} catch (UserAccountNotFoundException e) {
+			throw new IGDocumentException(e);
+		} catch (CloneNotSupportedException e) {
 			throw new IGDocumentException(e);
 		}
 	}
@@ -529,6 +611,31 @@ public class IGDocumentController extends CommonController {
 				idrw.getMsgEvts(), idrw.getIgdocument());
 		igDocumentService.save(igDocument);
 		return igDocument;
+	}
+
+	@RequestMapping(value = "/{id}/deleteMessage", method = RequestMethod.POST, produces = "application/json")
+	public boolean deleteMessage(@PathVariable("id") String id,
+			@RequestParam("messageId") String messageId,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, IGDocumentNotFoundException,
+			IGDocumentException {
+		IGDocument d = igDocumentService.findOne(id);
+		if (d == null) {
+			throw new IGDocumentNotFoundException(id);
+		}
+		Set<Message> messages = d.getProfile().getMessages().getChildren();
+		Message found = null;
+		for (Message message : messages) {
+			if (message.getId().equals(messageId)) {
+				found = message;
+				break;
+			}
+		}
+		if (found != null) {
+			messages.remove(found);
+			igDocumentService.save(d);
+		}
+		return true;
 	}
 
 	private String escapeSpace(String str) {

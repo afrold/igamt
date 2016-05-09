@@ -244,7 +244,7 @@ public class IGDocumentConverterFromOldToNew{
 //				}else {
 					dt.setId(ObjectId.get().toString());
 					dt.setScope(Constant.SCOPE.USER);
-					dt.setStatus(Datatype.STATUS.UNPUBLISHED);
+					dt.setStatus(Constant.STATUS.UNPUBLISHED);
 					dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 					dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
 					app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getLabel().replace(dt.getName() + "_", "")));
@@ -392,7 +392,7 @@ public class IGDocumentConverterFromOldToNew{
 					}
 				}
 				dt.setScope(Constant.SCOPE.USER);
-				dt.setStatus(Datatype.STATUS.UNPUBLISHED);
+				dt.setStatus(Constant.STATUS.UNPUBLISHED);
 				dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 				dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
 				app.getProfile().getDatatypeLibrary()
@@ -540,7 +540,7 @@ public class IGDocumentConverterFromOldToNew{
 					}
 				}
 				dt.setScope(Constant.SCOPE.HL7STANDARD);
-				dt.setStatus(Datatype.STATUS.PUBLISHED);
+				dt.setStatus(Constant.STATUS.PUBLISHED);
 				dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 				dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
 				app.getProfile().getDatatypeLibrary()

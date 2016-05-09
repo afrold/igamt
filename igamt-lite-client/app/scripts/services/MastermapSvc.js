@@ -242,7 +242,7 @@ angular
 
     svc.createSegmentLibrary = function (igdocument){
       //             console.log("Creating segment library");
-      igdocument.profile.segmentLibrary.children.forEach(function(n){
+        $rootScope.segments.forEach(function(n){
         svc.segmentLibrary[n.id] = n;
       });
     }
@@ -250,7 +250,7 @@ angular
 
     svc.createTableLibrary = function (igdocument){
       //             console.log("Creating table library");
-      igdocument.profile.tableLibrary.children.forEach(function(n){
+        $rootScope.tables.forEach(function(n){
         svc.tableLibrary[n.id] = n;
       });
     }
@@ -258,7 +258,7 @@ angular
 
     svc.createDatatypeLibrary = function (igdocument){
       //             console.log("Creating datatype library");
-      igdocument.profile.datatypeLibrary.children.forEach(function(n){
+        $rootScope.datatypes.forEach(function(n){
         svc.datatypeLibrary[n.id] = n;
       });
     }

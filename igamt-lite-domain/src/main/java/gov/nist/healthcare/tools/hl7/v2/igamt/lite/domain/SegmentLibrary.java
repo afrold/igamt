@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
@@ -138,6 +139,15 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		this.metaData = metaData;
 	}
 	
+	
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
+
 	public boolean contains(String id) {
 		if (this.children != null) {
 			for (SegmentLink segl : this.children) {
@@ -148,6 +158,28 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		}
 		return false;
 	}
+	
+	public SegmentLibrary clone(SegmentLibrary library)
+			throws CloneNotSupportedException {
+		SegmentLibrary clone = new SegmentLibrary();
+		clone.setChildren(new HashSet<SegmentLink>(library.getChildren()));
+		clone.setExt(library.getExt()+ "-" + genRand());
+		clone.setMetaData(library.getMetaData().clone());
+		clone.setScope(library.getScope());
+		clone.setSectionContents(library.getSectionContents()); 
+		clone.setSectionDescription(library.getSectionDescription());
+		clone.setSectionPosition(library.getSectionPosition());
+		clone.setSectionTitle(library.getSectionTitle());
+		clone.setType(library.getType());
+		clone.setDate(library.getDate());
+		return clone;	
+	}
+	
+	
+	private String genRand() {
+		return Integer.toString( new Random().nextInt(100));
+	}
+	
 	
 	
 }

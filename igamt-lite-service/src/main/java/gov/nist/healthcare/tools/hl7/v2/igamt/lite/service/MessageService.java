@@ -15,22 +15,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 
-public interface SegmentService {
+public interface MessageService {
 	
-	Segment findById(String id);
+	Message findById(String id);
 	
-	Segment save(Segment segment);
+	Message save(Message message);
 
-	List<Segment> findByLibIds(String segLibId);
-
-	List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
-	
-	void delete(Segment segment);
+	void delete(Message message);
 
 	void delete(String id);
-
-	void save(List<Segment> segments);
 
 }

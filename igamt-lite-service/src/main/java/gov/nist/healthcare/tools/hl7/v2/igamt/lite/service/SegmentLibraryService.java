@@ -15,7 +15,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 
 @Service
 public interface SegmentLibraryService {
@@ -37,4 +40,9 @@ public interface SegmentLibraryService {
 	void delete(SegmentLibrary library);
 
 	List<String> findHl7Versions();
+	
+	List<SegmentLink> findFlavors(SCOPE scope, String hl7Version, String name,
+			Long accountId); 
+	
+
 }

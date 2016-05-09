@@ -12,16 +12,20 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
@@ -179,6 +183,12 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	String genRand() {
 		return Integer.toString(rand.nextInt(100));
 	}
+	
+	@Override
+	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version,
+			String name, Long accountId) {
+		 return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
+	}
 
 	class DatatypeByLabel implements Comparator<Datatype> {
 
@@ -187,4 +197,6 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 			return thatDt.getLabel().compareTo(thisDt.getLabel());
 		}
 	}
+
+	 
 }

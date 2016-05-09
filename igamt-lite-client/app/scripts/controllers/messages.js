@@ -137,20 +137,20 @@ angular.module('igl')
             return 0;
         };
 
-        $scope.isVisible = function(node){
-          if(node && node != null){
-            return FilteringSvc.show(node);
-          } else {
-            return true;
-          }
+        $scope.isVisible = function (node) {
+            if (node && node != null) {
+                return FilteringSvc.show(node);
+            } else {
+                return true;
+            }
         };
 
-        $scope.isVisibleInner = function(node, nodeParent){
-          if(node && node != null && nodeParent && nodeParent != null){
-            return FilteringSvc.showInnerHtml(node, nodeParent);
-          } else {
-            return true;
-          }
+        $scope.isVisibleInner = function (node, nodeParent) {
+            if (node && node != null && nodeParent && nodeParent != null) {
+                return FilteringSvc.showInnerHtml(node, nodeParent);
+            } else {
+                return true;
+            }
         };
     });
 
@@ -294,7 +294,7 @@ angular.module('igl')
 
 
         $scope.submit = function () {
-            if (!containsId($scope.selection.segment.id, segmentLibrary)){
+            if (!containsId($scope.selection.segment.id, segmentLibrary)) {
                 SegmentLibrarySvc.addSegment($scope.selection.segment.id, segmentLibrary).then(function (segmentLink) {
                     segmentLibrary.children.push(segmentLink);
                 }, function (error) {
@@ -850,4 +850,53 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
 });
 
 
+angular.module('igl').controller('ConfirmMessageDeleteCtrl', function ($scope, $modalInstance, messageToDelete, $rootScope, MessagesSvc,IgDocumentService,CloneDeleteSvc) {
+    $scope.messageToDelete = messageToDelete;
+    $scope.loading = false;
+    $scope.delete = function () {
+        $scope.loading = true;
+        MessagesSvc.delete($scope.messageToDelete).then(function (result) {
+            IgDocumentService.deleteMessage($scope.messageToDelete.id).then(function (res) {
+                // We must delete from two collections.
+                CloneDeleteSvc.execDeleteMessage($scope.messageToDelete);
+                var index = $rootScope.messages.indexOf($scope.messageToDelete);
+                $rootScope.messages.splice(index, 1);
+                var tmp = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.igdocument.profile.messages);
+                var index = $rootScope.igdocument.profile.messages.children.indexOf(tmp);
+                $rootScope.igdocument.profile.messages.children.splice(index, 1);
+                $rootScope.messagesMap[$scope.messageToDelete.id] = null;
+                $rootScope.references = [];
+                if ($rootScope.message === $scope.messageToDelete) {
+                    $rootScope.message = null;
+                }
+                $rootScope.recordDelete("message", "edit", $scope.messageToDelete.id);
+                $rootScope.msg().text = "messageDeleteSuccess";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+                $rootScope.manualHandle = true;
+                $scope.loading = false;
+                $rootScope.$broadcast('event:SetToC');
+                $modalInstance.close($scope.messageToDelete);
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                $rootScope.manualHandle = true;
+                $scope.loading = false;
+            });
+        }, function (error) {
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+            $rootScope.manualHandle = true;
+            $scope.loading = false;
+        });
+    };
 
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+});

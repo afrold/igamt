@@ -93,7 +93,8 @@ angular.module('igl').factory('DatatypeService',
                     var saveResponse = angular.fromJson(response.data);
                     datatype.date = saveResponse.date;
                     datatype.version = saveResponse.version;
-                    delay.resolve(saveResponse);
+                    datatype.id = saveResponse.id;
+                    delay.resolve(datatype);
                 }, function (error) {
                     delay.reject(error);
                 });
@@ -156,9 +157,13 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
             delete_: function(datatype) {
-                var delay = $q.defer();
-                $http.post('api/datatypes/delete', datatype.id);
+                 return $http.post('api/datatypes/'+ datatype.id+ '/delete');
+            },
+
+            getDatatypeLink : function(datatype){
+                return {id:datatype.id, ext: null, name: datatype.name};
             }
+
         };
         return DatatypeService;
     }])

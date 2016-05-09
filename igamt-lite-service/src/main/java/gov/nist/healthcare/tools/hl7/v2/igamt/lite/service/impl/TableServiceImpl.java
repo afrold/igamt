@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -59,5 +60,23 @@ public class TableServiceImpl implements TableService {
 	public Table save(Table table) {
 		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
 		return tableRepository.save(table);
+	} 
+	
+	@Override
+	public void delete(Table table) {
+		log.info("TableServiceImpl.delete=" + table.getBindingIdentifier());
+		tableRepository.delete(table); 
+	}
+	
+	@Override
+	public void delete(String id) {
+		log.info("TableServiceImpl.delete=" + id);
+		tableRepository.delete(id);
+	}
+	
+	@Override
+	public void save(List<Table> tables) {
+		// TODO Auto-generated method stub
+		tableRepository.save(tables);
 	}
 }

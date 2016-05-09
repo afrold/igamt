@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService, FilteringSvc, MastermapSvc) {
+    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService, FilteringSvc, MastermapSvc,SegmentLibrarySvc) {
 //        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
@@ -273,12 +273,46 @@ angular.module('igl')
 
         $scope.save = function () {
             $scope.saving = true;
+            var segment = $rootScope.segment;
+            var ext = segment.ext;
+            segment.ext = null;
+            if(segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1){
+                segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
+            }
             SegmentService.save($rootScope.segment).then(function (result) {
-                var index = indexOf(result.id);
-                if (index === -1) { // new segment
-                    $rootScope.igdocument.profile.segmentLibrary.children.push(result);
+                if ($rootScope.segmentsMap[result.id] === null || $rootScope.segmentsMap[result.id] == undefined) { // new segment
+                    $rootScope.segments.push(result);
+                    $rootScope.segmentsMap[result.id] = result;
+                    var newLink = SegmentLibrarySvc.createEmptyLink();
+                    newLink.id = result.id;
+                    newLink.ext = ext;
+                    newLink.name = segment.name;
+                    // save link to segmentLibrary
+                    SegmentLibrarySvc.addChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
+                        $rootScope.igdocument.profile.segmentLibrary.children.push(newLink);
+                        $rootScope.$broadcast('event:SetToC');
+                    }, function (error) {
+                        $scope.saving = false;
+                        $rootScope.msg().text = error.data.text;
+                        $rootScope.msg().type = error.data.type;
+                        $rootScope.msg().show = true;
+                    });
                 } else {
-                    SegmentService.merge($rootScope.igdocument.profile.segmentLibrary.children[index], result);
+                    var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
+                    if (oldLink != null) {
+                        SegmentService.merge($rootScope.segmentsMap[result.id], result);
+                        var newLink = SegmentService.getSegmentLink(result);
+                        newLink.ext = ext;
+                        SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
+                            oldLink.ext = newLink;
+                            $rootScope.$broadcast('event:SetToC');
+                        }, function (error) {
+                            $scope.saving = false;
+                            $rootScope.msg().text = error.data.text;
+                            $rootScope.msg().type = error.data.type;
+                            $rootScope.msg().show = true;
+                        });
+                    }
                 }
                 $scope.saving = false;
                 $scope.selectedChildren = [];
@@ -689,43 +723,49 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 });
 
 
-angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService) {
+angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService,SegmentLibrarySvc) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
+
     $scope.delete = function () {
         $scope.loading = true;
-        SegmentService.delete($scope.segToDelete.id, $rootScope.igdocument.profile.segmentLibrary.id).then(function(result){
-            // Contrary to popular belief, we must remove the segment from both places.
-            var index = _.findIndex($rootScope.igdocument.profile.segmentLibrary.children, function(child) {
-                return child.id === $scope.segToDelete.id;
-            });
-            if (index > -1) $rootScope.igdocument.profile.segmentLibrary.children.splice(index, 1);
-            var index = _.findIndex($rootScope.segments, function(child) {
-                return child.id === $scope.segToDelete.id;
-            });
-            if (index > -1) $rootScope.segments.splice(index, 1);
+        SegmentService.delete($scope.segToDelete).then(function (result) {
+                SegmentLibrarySvc.deleteChild($scope.segToDelete.id).then(function (res) {
+                    // We must delete from two collections.
+                    var index = $rootScope.datatypes.indexOf($scope.segToDelete);
+                    $rootScope.segments.splice(index, 1);
+                    var tmp = SegmentLibrarySvc.findOneChild($scope.segToDelete.id, $rootScope.igdocument.profile.segmentLibrary);
+                    index = $rootScope.igdocument.profile.segmentLibrary.children.indexOf(tmp);
+                    $rootScope.igdocument.profile.segmentLibrary.children.splice(index, 1);
+                    $rootScope.segmentsMap[$scope.segToDelete.id] = null;
+                    $rootScope.references = [];
+                    if ($rootScope.segment === $scope.segToDelete) {
+                        $rootScope.segment = null;
+                    }
+                    $rootScope.recordDelete("segment", "edit", $scope.segToDelete.id);
+                    $rootScope.msg().text = "segDeleteSuccess";
+                    $rootScope.msg().type = "success";
+                    $rootScope.msg().show = true;
+                    $rootScope.manualHandle = true;
+                    $rootScope.$broadcast('event:SetToC');
+                    $modalInstance.close($scope.segToDelete);
+                    $scope.loading = false;
+                }, function (error) {
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                    $rootScope.manualHandle = true;
+                    $scope.loading = false;
+                });
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                $rootScope.manualHandle = true;
+                $scope.loading = false;
 
-            if ($rootScope.segment === $scope.segToDelete) {
-                $rootScope.segment = null;
             }
-            $rootScope.segmentsMap[$scope.segToDelete.id] = null;
-            $rootScope.references = [];
-            if ($scope.segToDelete.id >= 0) {
-                 $rootScope.recordDelete("segment", "edit", $scope.segToDelete.id);
-            }
-            $rootScope.msg().text = "segDeleteSuccess";
-            $rootScope.msg().type = "success";
-            $rootScope.msg().show = true;
-            $rootScope.manualHandle = true;
-            $scope.loading = false;
-            $rootScope.$broadcast('event:SetToC');
-            $modalInstance.close($scope.segToDelete);
-        },function(error){
-            $rootScope.msg().text = error.text;
-            $rootScope.msg().type = "danger";
-            $rootScope.msg().show = true;
-            $rootScope.manualHandle = true;
-        });
+        );
     };
 
     $scope.cancel = function () {
