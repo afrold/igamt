@@ -2,9 +2,9 @@
  * Created by haffo on 3/9/16.
  */
 'use strict';
-angular.module('igl').factory('SegmentService',
+angular.module('igl').factory('MessageService',
     ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http', 'FilteringSvc', function ($rootScope, ViewSettings,ElementUtils,$q,$http, FilteringSvc) {
-        var SegmentService = {
+        var MessageService = {
             getNodes: function (parent,root) {
                 if (!parent || parent == null) {
                     return root.children;
@@ -40,5 +40,5 @@ angular.module('igl').factory('SegmentService',
                 }
             }
         };
-        return SegmentService;
+        return MessageService;
     }]);

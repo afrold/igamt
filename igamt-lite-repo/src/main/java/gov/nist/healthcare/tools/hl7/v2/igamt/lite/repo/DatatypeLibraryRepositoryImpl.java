@@ -119,6 +119,28 @@ public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations 
 	}
 
 	@Override
+	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version,
+			String name, Long accountId) {
+		Criteria libCriteria = Criteria
+				.where("scope")
+				.is(scope)
+				.andOperator(
+						Criteria.where("metaData.hl7Version").is(hl7Version))
+				.andOperator(
+						Criteria.where("accountId")
+								.is(accountId)
+								.orOperator(
+										Criteria.where("accountId").is(null)));
+		Criteria linksCriteria = Criteria.where("children").elemMatch(
+				Criteria.where("name").is(name).andOperator(Criteria.where("status").is(STATUS.PUBLISHED)));
+		BasicQuery query = new BasicQuery(libCriteria.getCriteriaObject(),
+				linksCriteria.getCriteriaObject());
+		List<DatatypeLibrary> libraries = mongo.find(query, DatatypeLibrary.class);
+
+	 return libraries;
+	}
+	
+	@Override
 	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version,
 			String name, Long accountId) {
 		Criteria libCriteria = Criteria
@@ -139,5 +161,6 @@ public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations 
 
 	 return links;
 	}
+	
 
 }

@@ -21,9 +21,12 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 
@@ -121,5 +124,17 @@ public class SegmentLibraryServiceImpl implements SegmentLibraryService {
 		public int compare(Segment thisDt, Segment thatDt) {
 			return thatDt.getLabel().compareTo(thisDt.getLabel());
 		}
+	}
+ 
+	@Override
+	public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version,
+			String name, Long accountId) {
+		 return segmentLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
+	}
+	
+	@Override
+	public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope,
+			String hl7Version, String name, Long accountId) {
+		return segmentLibraryRepository.findLibrariesByFlavorName(scope, hl7Version, name, accountId);
 	}
 }

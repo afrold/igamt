@@ -231,4 +231,21 @@ public class DatatypeLibraryController extends CommonController {
 		return datatypes;
 	}
 
+	@RequestMapping(value = "/findLibrariesByFlavorName", method = RequestMethod.GET, produces = "application/json")
+	public List<DatatypeLibrary> findLibrariesByFlavorName(
+			@RequestParam("name") String name,
+			@RequestParam("hl7Version") String hl7Version,
+			@RequestParam("scope") SCOPE scope) {
+		log.info("Finding flavors of datatype, name=" + name + ", hl7Version="
+				+ hl7Version + ", scope=" + scope + "...");
+		org.springframework.security.core.userdetails.User u = userService
+				.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u
+				.getUsername());
+		List<DatatypeLibrary> libraries = datatypeLibraryService
+				.findLibrariesByFlavorName(scope, hl7Version, name,
+						account.getId());
+		return libraries;
+	}
+
 }

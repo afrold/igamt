@@ -11,19 +11,19 @@ angular.module('igl')
         $scope.copy = function (message) {
             CloneDeleteSvc.copyMessage(message);
             $rootScope.$broadcast('event:SetToC');
-
-        }
+        };
 
         $scope.close = function () {
             $rootScope.message = null;
-            if ($scope.messagesParams)
+            if ($scope.messagesParams) {
                 $scope.messagesParams.refresh();
+            }
         };
 
         $scope.delete = function (message) {
             CloneDeleteSvc.deleteMessage(message);
             $rootScope.$broadcast('event:SetToC');
-        }
+        };
 
         $scope.goToSegment = function (segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
@@ -170,6 +170,10 @@ angular.module('igl')
         $scope.results = [];
         $scope.bindingError = null;
         $scope.tmpResults = [].concat($scope.results);
+        $scope.librariesLoading = false;
+        $scope.librariesError = null;
+        $scope.libraries = [];
+        $scope.tmpLibraries = [].concat($scope.libraries);
         $scope.currentNode = currentNode;
         $scope.currentSegment = $rootScope.segmentsMap[currentNode.ref];
         $scope.selection = {scope: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.scope : null, hl7Version: hl7Version, segment: null, name: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.name : null};
@@ -183,6 +187,42 @@ angular.module('igl')
                 return SegmentService.getTemplate(node, $scope.selection.segment);
             }
         });
+
+        $scope.loadFlavors = function () {
+            if ($scope.selection.library != null) {
+                $scope.libariesError = null;
+                $scope.librariesLoading = true;
+                $scope.results = [];
+                $scope.tmpResults = [];
+                var lib = $scope.selection.library;
+                for (var i = 0; i < $scope.selection.library.length; i++) {
+                    var link = $scope.selection.library.children[i];
+                    if (link.name === $scope.selection.name) {
+                        $scope.results.push(link);
+                    }
+                }
+                $scope.tmpResults = [].concat($scope.results);
+            }
+        };
+
+        $scope.loadLibrariesByFlavorName = function () {
+            $scope.librariesError = null;
+            $scope.librariesLoading = true;
+            $scope.libraries = [];
+            $scope.tmpLibraries = [].concat($scope.libraries);
+            $scope.results = [];
+            $scope.tmpResults = [];
+            SegmentLibrarySvc.findLibrariesByFlavorName($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (libraries) {
+                $scope.libraries = libraries;
+                $scope.tmpLibraries = [].concat($scope.libraries);
+                $scope.librariesLoading = false;
+            }, function (error) {
+                $scope.librariesError = null;
+                $scope.librariesLoading = false;
+            });
+        };
+
+
 
         $scope.findFlavors = function () {
             $scope.bindingError = null;
