@@ -276,9 +276,9 @@ angular.module('igl')
             SegmentService.save($rootScope.segment).then(function (result) {
                 var index = indexOf(result.id);
                 if (index === -1) { // new segment
-                    $rootScope.igdocument.profile.segments.children.push(result);
+                    $rootScope.igdocument.profile.segmentLibrary.children.push(result);
                 } else {
-                    SegmentService.merge($rootScope.igdocument.profile.segments.children[index], result);
+                    SegmentService.merge($rootScope.igdocument.profile.segmentLibrary.children[index], result);
                 }
                 $scope.saving = false;
                 $scope.selectedChildren = [];
@@ -306,8 +306,8 @@ angular.module('igl')
         };
 
         var searchById = function (id) {
-            var children = $rootScope.igdocument.profile.segments.children;
-            for (var i = 0; i < $rootScope.igdocument.profile.segments.children; i++) {
+            var children = $rootScope.igdocument.profile.segmentLibrary.children;
+            for (var i = 0; i < $rootScope.igdocument.profile.segmentLibrary.children; i++) {
                 if (children[i].id === id) {
                     return children[i];
                 }
@@ -316,7 +316,7 @@ angular.module('igl')
         };
 
         var indexOf = function (id) {
-            var children = $rootScope.igdocument.profile.segments.children;
+            var children = $rootScope.igdocument.profile.segmentLibrary.children;
             for (var i = 0; i < children; i++) {
                 if (children[i].id === id) {
                     return i;
@@ -694,12 +694,12 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-        SegmentService.delete($scope.segToDelete.id, $rootScope.igdocument.profile.segments.id).then(function(result){
+        SegmentService.delete($scope.segToDelete.id, $rootScope.igdocument.profile.segmentLibrary.id).then(function(result){
             // Contrary to popular belief, we must remove the segment from both places.
-            var index = _.findIndex($rootScope.igdocument.profile.segments.children, function(child) {
+            var index = _.findIndex($rootScope.igdocument.profile.segmentLibrary.children, function(child) {
                 return child.id === $scope.segToDelete.id;
             });
-            if (index > -1) $rootScope.igdocument.profile.segments.children.splice(index, 1);
+            if (index > -1) $rootScope.igdocument.profile.segmentLibrary.children.splice(index, 1);
             var index = _.findIndex($rootScope.segments, function(child) {
                 return child.id === $scope.segToDelete.id;
             });

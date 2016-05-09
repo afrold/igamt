@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService,MastermapSvc) {
+    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService,MastermapSvc,FilteringSvc) {
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
@@ -269,11 +269,12 @@ angular.module('igl')
         $scope.save = function () {
             $scope.saving = true;
             DatatypeService.save($rootScope.datatype).then(function (result) {
-                var index = indexOf(result.id);
+                var index = indexIn(result.id,$rootScope.datatypes);
                 if (index === -1) { // new datatype
-                    $rootScope.igdocument.profile.datatypes.children.push(result);
+                    $rootScope.datatypes.push(result);
+                    $rootScope.igdocument.profile.datatypeLibrary.children.push({result.id, result.);
                 } else {
-                    DatatypeService.merge($rootScope.igdocument.profile.datatypes.children[index], result);
+                    DatatypeService.merge($rootScope.igdocument.profile.datatypeLibrary.children[index], result);
                 }
                 $scope.saving = false;
                 $scope.selectedChildren = [];
@@ -301,8 +302,8 @@ angular.module('igl')
         };
 
         var searchById = function (id) {
-            var children = $rootScope.igdocument.profile.datatypes.children;
-            for (var i = 0; i < $rootScope.igdocument.profile.datatypes.children; i++) {
+            var children = $rootScope.igdocument.profile.datatypeLibrary.children;
+            for (var i = 0; i < $rootScope.igdocument.profile.datatypeLibrary.children; i++) {
                 if (children[i].id === id) {
                     return children[i];
                 }
@@ -310,8 +311,8 @@ angular.module('igl')
             return null;
         };
 
-        var indexOf = function (id) {
-            var children = $rootScope.igdocument.profile.datatypes.children;
+        var indexIn = function (id, collection) {
+            var children = collection;
             for (var i = 0; i < children; i++) {
                 if (children[i].id === id) {
                     return i;
@@ -484,13 +485,16 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
         // We must delete from two collections.
         var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
         if (index > -1) $rootScope.datatypes.splice(index, 1);
+        var tmp = $rootScope.findDatatypeInLibrary($scope.dtToDelete.id,$rootScope.igdocument.profile.datatypeLibrary);
+        if(tmp != null){
+            index = $rootScope.igdocument.profile.datatypeLibrary.children.indexOf(tmp);
+            if (index > -1) $rootScope.igdocument.profile.datatypeLibrary.children.splice(index, 1);
+        }
+        $rootScope.datatypesMap[$scope.dtToDelete.id] = null;
+        $rootScope.references = [];
         if ($rootScope.datatype === $scope.dtToDelete) {
             $rootScope.datatype = null;
         }
-        var index = $rootScope.igdocument.profile.datatypes.children.indexOf($scope.dtToDelete);
-        if (index > -1) $rootScope.igdocument.profile.datatypes.children.splice(index, 1);
-        $rootScope.datatypesMap[$scope.dtToDelete.id] = null;
-        $rootScope.references = [];
         if ($scope.dtToDelete.id < 0) { //datatype flavor
 //            var index = $rootScope.changes["datatype"]["add"].indexOf($scope.dtToDelete);
 //            if (index > -1) $rootScope.changes["datatype"]["add"].splice(index, 1);

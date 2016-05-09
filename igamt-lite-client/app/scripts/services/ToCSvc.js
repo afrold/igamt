@@ -106,11 +106,11 @@ angular
 								"profileMetadata"));
 						children.push(getTopEntry(igdocument.profile.messages,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.segments,
+						children.push(getTopEntry(igdocument.profile.segmentLibrary,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.datatypes,
+						children.push(getTopEntry(igdocument.profile.datatypeLibrary,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.tables,
+						children.push(getTopEntry(igdocument.profile.tableLibrary,
 								igdocument.profile));
 						rval.children = children;
 						return rval;

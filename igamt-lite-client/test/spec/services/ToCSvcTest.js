@@ -71,7 +71,7 @@ describe("toc service", function () {
 		
 	it("Do we have valid messages?", function() {
 		var label = "Conformance Profiles";
-		var rval = ToCSvc.getTopEntry("3.1", "3", label, document.profile.segments);
+		var rval = ToCSvc.getTopEntry("3.1", "3", label, document.profile.segmentLibrary);
 
 		expect(_.has(rval, 'id')).toBeTruthy();
 		expect(_.property('id')(rval)).toBe("3.1");
@@ -93,7 +93,7 @@ describe("toc service", function () {
 	
 	it("Do we have valid segments?", function() {
 		var label = "Segments and Field Descriptions";
-		var rval = ToCSvc.getTopEntry("3.2", "3", label, docprofile.segmentsgments);
+		var rval = ToCSvc.getTopEntry("3.2", "3", label, docprofile.segmentLibrarygments);
 		expect(_.has(rval, 'id')).toBeTruthy();
 		expect(_.property('id')(rval)).toBe("3.2");
 		expect(_.has(rval, "label")).toBeTruthy();
@@ -113,8 +113,8 @@ describe("toc service", function () {
 	
 	it("Do we have valid datatypes?", function() {
 		var label = "Datatypes";
-		var rval = ToCSvc.getTopEntry("5", label, document.profile.datatypes);
-		var rval = ToCSvc.getTopEntry("3.3", "3", label, document.profile.datatypes);
+		var rval = ToCSvc.getTopEntry("5", label, document.profile.datatypeLibrary);
+		var rval = ToCSvc.getTopEntry("3.3", "3", label, document.profile.datatypeLibrary);
 		expect(_.has(rval, 'id')).toBeTruthy();
 		expect(_.property('id')(rval)).toBe("3.3");
 		expect(_.has(rval, "label")).toBeTruthy();
@@ -135,7 +135,7 @@ describe("toc service", function () {
 	
 	it("Do we have valid valuesets?", function() {
 		var label = "Value Sets";
-		var rval = ToCSvc.getTopEntry("3.4", "3", label, document.profile.tables);
+		var rval = ToCSvc.getTopEntry("3.4", "3", label, document.profile.tableLibrary);
 		expect(_.has(rval, 'id')).toBeTruthy();
 		expect(_.property('id')(rval)).toBe("3.4");
 		expect(_.has(rval, "label")).toBeTruthy();

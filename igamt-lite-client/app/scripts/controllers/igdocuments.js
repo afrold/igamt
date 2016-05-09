@@ -330,18 +330,15 @@ angular.module('igl')
                     $rootScope.igdocument = igdocument;
                     $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     //StorageService.setIgDocument($rootScope.igdocument);
+                    $rootScope.initMaps();
                     $scope.loadSegments().then(function () {
                         $scope.loadDatatypes().then(function () {
                             $scope.loadTables().then(function () {
+                                $scope.collectMessages();
                                 $scope.sortByLabels();
-                                $rootScope.initMaps();
                                 $scope.loadMastermap();
                                 $scope.loadFilter();
                                 $scope.loadToc();
-                                $scope.collectDatatypes();
-                                $scope.collectSegments();
-                                $scope.collectTables();
-                                $scope.collectMessages();
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();
                                 waitingDialog.hide();
@@ -354,9 +351,9 @@ angular.module('igl')
 
         $scope.sortByLabels = function () {
             $rootScope.igdocument.profile.messages.children = $filter('orderBy')($rootScope.igdocument.profile.messages.children, 'name');
-            $rootScope.igdocument.profile.segments.children = $filter('orderBy')($rootScope.igdocument.profile.segments.children, 'name');
-            $rootScope.igdocument.profile.datatypes.children = $filter('orderBy')($rootScope.igdocument.profile.datatypes.children, 'name');
-            $rootScope.igdocument.profile.tables.children = $filter('orderBy')($rootScope.igdocument.profile.tables.children, 'name');
+            $rootScope.igdocument.profile.segmentLibrary.children = $filter('orderBy')($rootScope.igdocument.profile.segmentLibrary.children, 'name');
+            $rootScope.igdocument.profile.datatypeLibrary.children = $filter('orderBy')($rootScope.igdocument.profile.datatypeLibrary.children, 'name');
+            $rootScope.igdocument.profile.tableLibrary.children = $filter('orderBy')($rootScope.igdocument.profile.tableLibrary.children, 'name');
         };
 
         $scope.loadIgDocumentMetaData = function () {
@@ -379,9 +376,13 @@ angular.module('igl')
 
         $scope.loadDatatypes = function () {
             var delay = $q.defer();
-            DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.igdocument.profile.datatypes.id).then(function (children) {
-                $rootScope.igdocument.profile.datatypes.children = children;
-                $rootScope.igdocument.profile.datatypes.type = "datatypes";
+            $rootScope.igdocument.profile.datatypeLibrary.type = "datatypes";
+            DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.igdocument.profile.datatypeLibrary.id).then(function (children) {
+                $rootScope.datatypes = children;
+                $rootScope.datatypesMap = {};
+                angular.forEach(children, function (child) {
+                    this[child.id] = child;
+                }, $rootScope.datatypesMap);
                 delay.resolve(true);
             }, function (error) {
                 $rootScope.msg().text = "DatatypesLoadFailed";
@@ -395,10 +396,13 @@ angular.module('igl')
 
         $scope.loadSegments = function () {
             var delay = $q.defer();
-            SegmentLibrarySvc.getSegmentsByLibrary($rootScope.igdocument.profile.segments.id).then(function (children) {
-                $rootScope.igdocument.profile.segmentLinks = $rootScope.igdocument.profile.segments.children;
-                $rootScope.igdocument.profile.segments.children = children;
-                $rootScope.igdocument.profile.segments.type = "segments";
+            $rootScope.igdocument.profile.segmentLibrary.type = "segments";
+            SegmentLibrarySvc.getSegmentsByLibrary($rootScope.igdocument.profile.segmentLibrary.id).then(function (children) {
+                $rootScope.segments = children;
+                $rootScope.segmentsMap = {};
+                angular.forEach(children, function (child) {
+                    this[child.id] = child;
+                }, $rootScope.segmentsMap);
                 delay.resolve(true);
             }, function (error) {
                 $rootScope.msg().text = "SegmentsLoadFailed";
@@ -412,9 +416,13 @@ angular.module('igl')
 
         $scope.loadTables = function () {
             var delay = $q.defer();
-            TableLibrarySvc.getTablesByLibrary($rootScope.igdocument.profile.tables.id).then(function (children) {
-                $rootScope.igdocument.profile.tables.children = children;
-                $rootScope.igdocument.profile.tables.type = "tables";
+            $rootScope.igdocument.profile.tableLibrary.type = "tables";
+            TableLibrarySvc.getTablesByLibrary($rootScope.igdocument.profile.tableLibrary.id).then(function (children) {
+                $rootScope.tables = children;
+                $rootScope.tablesMap = {};
+                angular.forEach(children, function (child) {
+                    this[child.id] = child;
+                }, $rootScope.tablesMap);
                 delay.resolve(true);
             }, function (error) {
                 $rootScope.msg().text = "TablesLoadFailed";
@@ -439,26 +447,13 @@ angular.module('igl')
             $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
         };
 
-        $scope.collectDatatypes = function () {
-            $rootScope.datatypesMap = {};
-            $rootScope.datatypes = $rootScope.igdocument.profile.datatypes.children;
-            angular.forEach($rootScope.igdocument.profile.datatypes.children, function (child) {
-                this[child.id] = child;
-            }, $rootScope.datatypesMap);
-        };
 
-        $scope.collectSegments = function () {
-            $rootScope.segmentsMap = {};
-            $rootScope.segments = [];
-            angular.forEach($rootScope.igdocument.profile.segments.children, function (child) {
-                this[child.id] = child;
-            }, $rootScope.segmentsMap);
-        };
+
 
         $scope.collectTables = function () {
-            $rootScope.tables = $rootScope.igdocument.profile.tables.children;
+            $rootScope.tables = $rootScope.igdocument.profile.tableLibrary.children;
             $rootScope.tablesMap = {};
-            angular.forEach($rootScope.igdocument.profile.tables.children, function (child) {
+            angular.forEach($rootScope.igdocument.profile.tableLibrary.children, function (child) {
                 this[child.id] = child;
                 if (child.displayName) {
                     child.label = child.displayName;
@@ -1189,9 +1184,9 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
         for (var i = 0; i < $scope.selectedTables.length; i++) {
             var v = $scope.selectedTables[i];
             $rootScope.tablesMap[v.id] = v;
-            $rootScope.igdocument.profile.tables.children.splice(0, 0, v);
+            $rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, v);
         }
-        $rootScope.igdocument.profile.tables.children = positionElements($rootScope.igdocument.profile.tables.children);
+        $rootScope.igdocument.profile.tableLibrary.children = positionElements($rootScope.igdocument.profile.tableLibrary.children);
         $rootScope.recordChanged();
         $rootScope.$emit('event:loadFilter', $rootScope.igdocument);
         $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
