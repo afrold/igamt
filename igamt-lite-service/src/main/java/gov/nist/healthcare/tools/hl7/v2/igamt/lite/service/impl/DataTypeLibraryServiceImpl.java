@@ -145,7 +145,6 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
 		for (Datatype dt : datatypes) {
 			dt.setId(null);
-			datatypeRepository.save(dt);
 			dt.getLibIds().add(datatypeLibraryId);
 			dt.setExt(decorateExt(dtLib.getExt()));
 			dt.setType(Constant.DATATYPE);
@@ -153,6 +152,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 			dt.setHl7Version(dtLib.getMetaData().getHl7Version());
 			dt.setDate(Constant.mdy.format(new Date()));
 			dt.setAccountId(accountId);
+			//  We save at this point in order to have an id for the link.
 			datatypeRepository.save(dt);
 			dtLib.addLink(dt);
 		}
