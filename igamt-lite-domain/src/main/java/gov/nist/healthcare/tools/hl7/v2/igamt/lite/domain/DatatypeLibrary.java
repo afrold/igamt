@@ -117,6 +117,18 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 		return null;
 	}
+	
+	public DatatypeLink findOneByName(String name) {
+		if (this.children != null) {
+			for (DatatypeLink dtl1 : this.children) {
+				if (dtl1.getName().equals(name)) {
+					return dtl1;
+				}
+			}
+		}
+
+		return null;
+	}
 
 	public DatatypeLibrary clone(HashMap<String, Datatype> dtRecords, HashMap<String, Table> tableRecords)
 			throws CloneNotSupportedException {
