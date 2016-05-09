@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', 'userInfoService', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc,userInfoService) {
         var DatatypeService = {
             getNodes: function (parent, root) {
                 var children = [];
@@ -89,6 +89,7 @@ angular.module('igl').factory('DatatypeService',
             },
             save: function (datatype) {
                 var delay = $q.defer();
+                datatype.accountId = userInfoService.getAccountID();
                 $http.post('api/datatypes/save', datatype).then(function (response) {
                     var saveResponse = angular.fromJson(response.data);
                     datatype.date = saveResponse.date;
