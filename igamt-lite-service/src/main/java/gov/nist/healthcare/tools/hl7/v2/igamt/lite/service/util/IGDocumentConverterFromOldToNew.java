@@ -1,7 +1,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
@@ -23,11 +27,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.DatatypeReadConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.IGDocumentReadConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentReadConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.TableReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.DocumentMetaDataPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.IGDocumentPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.IGDocumentReadConverterPreLib;
@@ -36,16 +39,19 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePr
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,7 +96,7 @@ public class IGDocumentConverterFromOldToNew{
 				DBObject source = cur2.next();
 				IGDocumentPreLib appPreLib = conv.convert(source);
 				if (appPreLib.getScope().equals(IGDocumentScope.PRELOADED)){
-					PRELOADED(appPreLib, mongoOps);
+					USER(appPreLib, mongoOps);
 				}
 			}
 			
@@ -159,14 +165,23 @@ public class IGDocumentConverterFromOldToNew{
 		Set<Message> msgsPreLib = appPreLib.getProfile().getMessages().getChildren();
 		System.out.println("hl7Version=" + app.getProfile().getMetaData().getHl7Version());
 		List<Constant.SCOPE> scopes = new ArrayList<Constant.SCOPE>();
-		scopes.add(Constant.SCOPE.HL7STANDARD);
+		scopes.add(Constant.SCOPE.HL7STANDARD);	
 		
-//		System.out.println(segmentLibraryService);
-//		List<SegmentLibrary> segmentLibraries = segmentLibraryService.findByScopesAndVersion(scopes, app.getProfile().getMetaData().getHl7Version());
-//		SegmentLibrary segmentLibrary = segmentLibraries.get(0);
-//		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService.findByScopesAndVersion(scopes, app.getProfile().getMetaData().getHl7Version());
-//		DatatypeLibrary datatypeLibrary = datatypeLibraries.get(0);
 		
+		HashMap<String, Segment> hl7SegmentMap = this.findHL7SegemntsByVersion(app.getProfile().getMetaData().getHl7Version(), mongoOps);
+		HashMap<String, Datatype> hl7DatatypeMap = this.findHL7DatatypesByVersion(app.getProfile().getMetaData().getHl7Version(), mongoOps);
+		HashMap<String, Table> hl7TableMap = this.findHL7TablesByVersion(app.getProfile().getMetaData().getHl7Version(), mongoOps);
+		IGDocument hl7IGDocument = this.findHL7IGDocumentByVersion(app.getProfile().getMetaData().getHl7Version(), mongoOps);
+		Set<Table> userTables = new HashSet<Table>();
+		
+		TableLibraryMetaData tabMetaData = new TableLibraryMetaData();
+		tabMetaData.setDate(Constant.mdy.format(new Date()));
+		tabMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
+		tabMetaData.setOrgName("NIST");
+		app.getProfile().getTableLibrary().setScope(Constant.SCOPE.USER);
+		app.getProfile().getTableLibrary().setMetaData(tabMetaData);
+		mongoOps.insert(app.getProfile().getTableLibrary(), "table-library");
+
 		for (Message sm : msgsPreLib) {
 			sm.setId(null);
 			
@@ -181,44 +196,81 @@ public class IGDocumentConverterFromOldToNew{
 			app.getProfile().getMessages().addMessage(sm);
 		}
 		Set<Segment> segs = appPreLib.getProfile().getSegments().getChildren();
+		Set<Segment> newsegs = new HashSet<Segment>();
 		SegmentLibraryMetaData segMetaData = new SegmentLibraryMetaData();
 		segMetaData.setDate(Constant.mdy.format(new Date()));
 		segMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
-		// segMetaData.setName(ppl.getMetaData().getName());
 		segMetaData.setOrgName("NIST");
-		// segMetaData.setVersion(ppl.getMetaData().getVersion());
 		app.getProfile().getSegmentLibrary().setScope(Constant.SCOPE.USER);
 		app.getProfile().getSegmentLibrary().setMetaData(segMetaData);
 		mongoOps.insert(app.getProfile().getSegmentLibrary(), "segment-library");
 		for (Segment seg : segs) {
-			seg.setScope(Constant.SCOPE.USER);
-			seg.setHl7Version(app.getProfile().getMetaData().getHl7Version());
-			
-			
-			for(Field f :seg.getFields()){
-				if(f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)){
-					f.setUsage(Usage.X); System.out.println("Find");
-				}
-			}
-			
-			
 			if (seg.getId() != null) {
-//				if(seg.getLabel() == null || seg.getLabel().equals(seg.getName())){
-//					SegmentLink sl = segmentLibrary.findOneByName(seg.getName());
-//					seg = segmentService.findById(sl.getId());
-//					seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
-//					app.getProfile().getSegmentLibrary().addSegment(sl);
-//				}else {
+				if(seg.getLabel() == null || seg.getLabel().equals(seg.getName())){
+					seg = hl7SegmentMap.get(hl7IGDocument.getProfile().getSegmentLibrary().findOneByName(seg.getName()).getId());
+					seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
+					Query query = query(where("_id").is(seg.getId()));
+				    Update update = update("libIds", seg.getLibIds());
+				    mongoOps.updateFirst(query, update, Segment.class);
+					seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
+					app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), ""));
+					for(Field f :seg.getFields()){
+						if(f.getTable() != null){
+							Table t = hl7TableMap.get(f.getTable());
+							if(t == null){
+								log.error(f.getTable() + "is missing!!!!!");
+							}else {
+								if(!t.getLibIds().contains(app.getProfile().getTableLibrary().getId())){
+									t.getLibIds().add(app.getProfile().getTableLibrary().getId());
+									Query query2 = query(where("_id").is(t.getId()));
+								    Update update2 = update("libIds", t.getLibIds());
+								    mongoOps.updateFirst(query2, update2, Table.class);
+								    
+								    app.getProfile().getTableLibrary().addTable(new TableLink(t.getId(), t.getBindingIdentifier()));
+								}
+							}
+						}
+					}
+				}else {
+					seg.setScope(Constant.SCOPE.USER);
+					seg.setHl7Version(app.getProfile().getMetaData().getHl7Version());
+					
+					for(Field f :seg.getFields()){
+						if(f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)){
+							f.setUsage(Usage.X); System.out.println("Find");
+						}
+						if(f.getTable() != null){
+							Table t =  appPreLib.getProfile().getTables().findOneTableById(f.getTable());
+							if(t == null){
+								log.error(f.getTable() + "is missing!!!!!");
+							}else {
+								if(t.getLibIds() == null){
+									t.setLibIds(new HashSet<String>());
+								}
+								if(!t.getLibIds().contains(app.getProfile().getTableLibrary().getId())){
+									t.setScope(Constant.SCOPE.USER);
+									t.setHl7Version(app.getProfile().getMetaData().getHl7Version());
+									t.getLibIds().add(app.getProfile().getTableLibrary().getId());
+									userTables.add(t);
+								    app.getProfile().getTableLibrary().addTable(new TableLink(t.getId(), t.getBindingIdentifier()));
+								}
+							}
+						}
+						
+					}
+					
 					seg.setId(ObjectId.get().toString());
 					seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
 					app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), seg.getLabel().replace(seg.getName() + "_", "")));
-//				}
+					newsegs.add(seg);
+				}
 			} else {
 				log.error("Null id seg=" + seg.toString());
 			}
 		}
-		mongoOps.save(app.getProfile().getSegmentLibrary());
+		
 		Set<Datatype> dts = appPreLib.getProfile().getDatatypes().getChildren();
+		Set<Datatype> newdts = new HashSet<Datatype>();
 		DatatypeLibraryMetaData dtMetaData = new DatatypeLibraryMetaData();
 		dtMetaData.setDate(Constant.mdy.format(new Date()));
 		dtMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
@@ -229,211 +281,230 @@ public class IGDocumentConverterFromOldToNew{
 		app.getProfile().getDatatypeLibrary().setMetaData(dtMetaData);
 		mongoOps.insert(app.getProfile().getDatatypeLibrary(), "datatype-library");
 		for (Datatype dt : dts) {
-			for(Component c : dt.getComponents()){
-				if(c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)){
-					c.setUsage(Usage.X); System.out.println("Find");
-				}
-			}
-			
 			if (dt.getId() != null) {
-//				if(dt.getLabel() == null || dt.getLabel().equals(dt.getName())){
-//					DatatypeLink dl = datatypeLibrary.findOneByName(dt.getName());
-//					dt = datatypeService.findById(dt.getId());
-//					dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
-//					app.getProfile().getDatatypeLibrary().addDatatype(dl);
-//				}else {
+				if(dt.getLabel() == null || dt.getLabel().equals(dt.getName())){
+					dt = hl7DatatypeMap.get(hl7IGDocument.getProfile().getDatatypeLibrary().findOneByName(dt.getName()).getId());
+					dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
+					Query query = query(where("_id").is(dt.getId()));
+				    Update update = update("libIds", dt.getLibIds());
+				    mongoOps.updateFirst(query, update, Datatype.class);
+					app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(dt.getId(), dt.getName(), ""));
+					for(Component c : dt.getComponents()){
+						if(c.getTable() != null){
+							Table t = hl7TableMap.get(c.getTable());
+							if(t == null){
+								log.error(c.getTable() + " is missing!!!!!");
+							}
+							if(!t.getLibIds().contains(app.getProfile().getTableLibrary().getId())){
+								t.getLibIds().add(app.getProfile().getTableLibrary().getId());
+								Query query2 = query(where("_id").is(t.getId()));
+							    Update update2 = update("libIds", t.getLibIds());
+							    mongoOps.updateFirst(query2, update2, Table.class);
+							    
+							    app.getProfile().getTableLibrary().addTable(new TableLink(t.getId(), t.getBindingIdentifier()));
+							}
+						}
+					}
+					
+				}else {
 					dt.setId(ObjectId.get().toString());
 					dt.setScope(Constant.SCOPE.USER);
 					dt.setStatus(Constant.STATUS.UNPUBLISHED);
 					dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
+					
+					for(Component c : dt.getComponents()){
+						if(c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)){
+							c.setUsage(Usage.X); System.out.println("Find");
+						}
+						
+						if(c.getTable() != null){
+							Table t =  appPreLib.getProfile().getTables().findOneTableById(c.getTable());
+							if(t == null){
+								log.error(c.getTable() + "is missing!!!!!");
+							}else {
+								if(t.getLibIds() == null){
+									t.setLibIds(new HashSet<String>());
+								}
+								if(!t.getLibIds().contains(app.getProfile().getTableLibrary().getId())){
+									t.setScope(Constant.SCOPE.USER);
+									t.setHl7Version(app.getProfile().getMetaData().getHl7Version());
+									t.getLibIds().add(app.getProfile().getTableLibrary().getId());
+									userTables.add(t);
+								    app.getProfile().getTableLibrary().addTable(new TableLink(t.getId(), t.getBindingIdentifier()));
+								}
+							}
+						}
+						
+					}
+					
 					dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
 					app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getLabel().replace(dt.getName() + "_", "")));
-//				}
+					newdts.add(dt);
+				}
 			} else {
 				log.error("Null id seg=" + dt.toString());
 			}
 		}
+		
+		mongoOps.save(app.getProfile().getSegmentLibrary());
 		mongoOps.save(app.getProfile().getDatatypeLibrary());
-		Set<Table> tabs = appPreLib.getProfile().getTables().getChildren();
-		TableLibraryMetaData tabMetaData = new TableLibraryMetaData();
-		tabMetaData.setDate(Constant.mdy.format(new Date()));
-		tabMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
-		// tabMetaData.setName(ppl.getMetaData().getName());
-		tabMetaData.setOrgName("NIST");
-		// tabMetaData.setVersion(ppl.getMetaData().getVersion());
-		app.getProfile().getTableLibrary().setScope(Constant.SCOPE.USER);
-		app.getProfile().getTableLibrary().setMetaData(tabMetaData);
-		mongoOps.insert(app.getProfile().getTableLibrary(), "table-library");
-		for (Table tab : tabs) {
-			tab.setScope(Constant.SCOPE.USER);
-			tab.setHl7Version(app.getProfile().getMetaData().getHl7Version());
-			if (tab.getId() != null) {
-				tab.setId(ObjectId.get().toString());
-				tab.getLibIds().add(app.getProfile().getTableLibrary().getId());
-				app.getProfile().getTableLibrary()
-						.addTable(new TableLink(tab.getId(), tab.getBindingIdentifier()));
-			} else {
-				log.error("Null id tab=" + tab.toString());
-			}
-		}
-		
-		
-		
 		mongoOps.save(app.getProfile().getTableLibrary());
+		
+		
 		mongoOps.insert(app.getProfile().getMessages().getChildren(), "message");
-		mongoOps.insert(segs, "segment");
-		mongoOps.insert(dts, "datatype");
-		mongoOps.insert(tabs, "table");
+		mongoOps.insert(newsegs, "segment");
+		mongoOps.insert(newdts, "datatype");
+		mongoOps.insert(userTables, "table");
 		mongoOps.insert(app, "igdocument");
 		
 	}
 	
-	private void PRELOADED(IGDocumentPreLib appPreLib, MongoOperations mongoOps){
-		IGDocument app = new IGDocument();
-
-		ProfilePreLib ppl = appPreLib.getProfile();
-		Profile prof = new Profile();
-		prof.setBaseId(ppl.getBaseId());
-		prof.setChanges(ppl.getChanges());
-		prof.setComment(ppl.getComment());
-		prof.setConstraintId(ppl.getConstraintId());
-		ProfileMetaDataPreLib pmdpl = ppl.getMetaData();
-		ProfileMetaData profileMetaData = new ProfileMetaData();
-		profileMetaData.setEncodings(pmdpl.getEncodings());
-		profileMetaData.setExt(pmdpl.getExt());
-		profileMetaData.setHl7Version(pmdpl.getHl7Version());
-		profileMetaData.setOrgName("NIST");
-		profileMetaData.setSchemaVersion(pmdpl.getSchemaVersion());
-		profileMetaData.setSpecificationName(pmdpl.getSpecificationName());
-		profileMetaData.setStatus(pmdpl.getStatus());
-		profileMetaData.setSubTitle(pmdpl.getSubTitle());
-		profileMetaData.setTopics(pmdpl.getTopics());
-		profileMetaData.setType(pmdpl.getType());
-		prof.setMetaData(profileMetaData);
-		prof.setScope(ppl.getScope());
-		prof.setSectionContents(ppl.getSectionContents());
-		prof.setSectionDescription(ppl.getSectionDescription());
-		prof.setSectionPosition(ppl.getSectionPosition());
-		prof.setSectionTitle(ppl.getSectionTitle());
-		prof.setSourceId(ppl.getSourceId());
-		prof.setType(ppl.getType());
-		prof.setUsageNote(ppl.getUsageNote());
-		app.addProfile(prof);
-		DocumentMetaDataPreLib docMetaDataPreLib = appPreLib.getMetaData();
-		DocumentMetaData metaData = new DocumentMetaData();
-		metaData.setDate(Constant.mdy.format(new Date()));
-		metaData.setExt(docMetaDataPreLib.getExt());
-		metaData.setHl7Version(appPreLib.getProfile().getMetaData().getHl7Version());
-		metaData.setOrgName(docMetaDataPreLib.getOrgName());
-		metaData.setSpecificationName(docMetaDataPreLib.getSpecificationName());
-		metaData.setStatus(docMetaDataPreLib.getStatus());
-		metaData.setSubTitle(docMetaDataPreLib.getSubTitle());
-		metaData.setTitle(docMetaDataPreLib.getTitle());
-		metaData.setTopics(docMetaDataPreLib.getTopics());
-		app.setMetaData(metaData);
-		log.info("hl7Version=" + appPreLib.getProfile().getMetaData().getHl7Version());
-		Set<Message> msgsPreLib = appPreLib.getProfile().getMessages().getChildren();
-		System.out.println("hl7Version=" + app.getProfile().getMetaData().getHl7Version());
-		for (Message sm : msgsPreLib) {
-			System.out.println("msgs=" + app.getProfile().getMessages().getChildren().size() + " msg name="
-					+ sm.getName() + " children=" + sm.getChildren().size());
-			
-			for(SegmentRefOrGroup sog :sm.getChildren()){
-				if(sog.getUsage().equals(Usage.B) || sog.getUsage().equals(Usage.W)){
-					sog.setUsage(Usage.X); System.out.println("Find");
-				}
-			}
-			
-			app.getProfile().getMessages().addMessage(sm);
-		}
-		Set<Segment> segs = appPreLib.getProfile().getSegments().getChildren();
-		SegmentLibraryMetaData segMetaData = new SegmentLibraryMetaData();
-		segMetaData.setDate(Constant.mdy.format(new Date()));
-		segMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
-		// segMetaData.setName(ppl.getMetaData().getName());
-		segMetaData.setOrgName("NIST");
-		// segMetaData.setVersion(ppl.getMetaData().getVersion());
-		app.getProfile().getSegmentLibrary().setScope(Constant.SCOPE.USER);
-		app.getProfile().getSegmentLibrary().setMetaData(segMetaData);
-		mongoOps.insert(app.getProfile().getSegmentLibrary(), "segment-library");
-		for (Segment seg : segs) {
-			seg.setScope(Constant.SCOPE.USER);
-			
-			for(Field f :seg.getFields()){
-				if(f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)){
-					f.setUsage(Usage.X); System.out.println("Find");
-				}
-			}
-			
-			seg.setHl7Version(app.getProfile().getMetaData().getHl7Version());
-			if (seg.getId() != null) {
-				seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
-				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), seg.getLabel().replace(seg.getName() + "_", "")));
-			} else {
-				log.error("Null id seg=" + seg.toString());
-			}
-		}
-		mongoOps.save(app.getProfile().getSegmentLibrary());
-		Set<Datatype> dts = appPreLib.getProfile().getDatatypes().getChildren();
-		DatatypeLibraryMetaData dtMetaData = new DatatypeLibraryMetaData();
-		dtMetaData.setDate(Constant.mdy.format(new Date()));
-		dtMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
-		// dtMetaData.setName(ppl.getMetaData().getName());
-		dtMetaData.setOrgName("NIST");
-		// dtMetaData.setVersion(ppl.getMetaData().getVersion());
-		app.getProfile().getDatatypeLibrary().setScope(Constant.SCOPE.USER);
-		app.getProfile().getDatatypeLibrary().setMetaData(dtMetaData);
-		mongoOps.insert(app.getProfile().getDatatypeLibrary(), "datatype-library");
-		for (Datatype dt : dts) {
-			if (dt.getId() != null) {
-				for(Component c : dt.getComponents()){
-					if(c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)){
-						c.setUsage(Usage.X); System.out.println("Find");
-					}
-				}
-				dt.setScope(Constant.SCOPE.USER);
-				dt.setStatus(Constant.STATUS.UNPUBLISHED);
-				dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
-				dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
-				app.getProfile().getDatatypeLibrary()
-						.addDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getLabel().replace(dt.getName() + "_", "")));
-			} else {
-				log.error("Null id dt=" + dt.toString());
-			}
-		}
-		mongoOps.save(app.getProfile().getDatatypeLibrary());
-		Set<Table> tabs = appPreLib.getProfile().getTables().getChildren();
-		TableLibraryMetaData tabMetaData = new TableLibraryMetaData();
-		tabMetaData.setDate(Constant.mdy.format(new Date()));
-		tabMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
-		// tabMetaData.setName(ppl.getMetaData().getName());
-		tabMetaData.setOrgName("NIST");
-		// tabMetaData.setVersion(ppl.getMetaData().getVersion());
-		app.getProfile().getTableLibrary().setScope(Constant.SCOPE.USER);
-		app.getProfile().getTableLibrary().setMetaData(tabMetaData);
-		mongoOps.insert(app.getProfile().getTableLibrary(), "table-library");
-		for (Table tab : tabs) {
-			tab.setScope(Constant.SCOPE.USER);
-			tab.setHl7Version(app.getProfile().getMetaData().getHl7Version());
-			if (tab.getId() != null) {
-				tab.getLibIds().add(app.getProfile().getTableLibrary().getId());
-				app.getProfile().getTableLibrary()
-						.addTable(new TableLink(tab.getId(), tab.getBindingIdentifier()));
-			} else {
-				log.error("Null id tab=" + tab.toString());
-			}
-		}
-		
-		
-		
-		mongoOps.save(app.getProfile().getTableLibrary());
-		mongoOps.insert(app.getProfile().getMessages().getChildren(), "message");
-		mongoOps.insert(segs, "segment");
-		mongoOps.insert(dts, "datatype");
-		mongoOps.insert(tabs, "table");
-		mongoOps.insert(app, "igdocument");
-		
-	}
+//	private void PRELOADED(IGDocumentPreLib appPreLib, MongoOperations mongoOps){
+//		IGDocument app = new IGDocument();
+//
+//		ProfilePreLib ppl = appPreLib.getProfile();
+//		Profile prof = new Profile();
+//		prof.setBaseId(ppl.getBaseId());
+//		prof.setChanges(ppl.getChanges());
+//		prof.setComment(ppl.getComment());
+//		prof.setConstraintId(ppl.getConstraintId());
+//		ProfileMetaDataPreLib pmdpl = ppl.getMetaData();
+//		ProfileMetaData profileMetaData = new ProfileMetaData();
+//		profileMetaData.setEncodings(pmdpl.getEncodings());
+//		profileMetaData.setExt(pmdpl.getExt());
+//		profileMetaData.setHl7Version(pmdpl.getHl7Version());
+//		profileMetaData.setOrgName("NIST");
+//		profileMetaData.setSchemaVersion(pmdpl.getSchemaVersion());
+//		profileMetaData.setSpecificationName(pmdpl.getSpecificationName());
+//		profileMetaData.setStatus(pmdpl.getStatus());
+//		profileMetaData.setSubTitle(pmdpl.getSubTitle());
+//		profileMetaData.setTopics(pmdpl.getTopics());
+//		profileMetaData.setType(pmdpl.getType());
+//		prof.setMetaData(profileMetaData);
+//		prof.setScope(ppl.getScope());
+//		prof.setSectionContents(ppl.getSectionContents());
+//		prof.setSectionDescription(ppl.getSectionDescription());
+//		prof.setSectionPosition(ppl.getSectionPosition());
+//		prof.setSectionTitle(ppl.getSectionTitle());
+//		prof.setSourceId(ppl.getSourceId());
+//		prof.setType(ppl.getType());
+//		prof.setUsageNote(ppl.getUsageNote());
+//		app.addProfile(prof);
+//		DocumentMetaDataPreLib docMetaDataPreLib = appPreLib.getMetaData();
+//		DocumentMetaData metaData = new DocumentMetaData();
+//		metaData.setDate(Constant.mdy.format(new Date()));
+//		metaData.setExt(docMetaDataPreLib.getExt());
+//		metaData.setHl7Version(appPreLib.getProfile().getMetaData().getHl7Version());
+//		metaData.setOrgName(docMetaDataPreLib.getOrgName());
+//		metaData.setSpecificationName(docMetaDataPreLib.getSpecificationName());
+//		metaData.setStatus(docMetaDataPreLib.getStatus());
+//		metaData.setSubTitle(docMetaDataPreLib.getSubTitle());
+//		metaData.setTitle(docMetaDataPreLib.getTitle());
+//		metaData.setTopics(docMetaDataPreLib.getTopics());
+//		app.setMetaData(metaData);
+//		log.info("hl7Version=" + appPreLib.getProfile().getMetaData().getHl7Version());
+//		Set<Message> msgsPreLib = appPreLib.getProfile().getMessages().getChildren();
+//		System.out.println("hl7Version=" + app.getProfile().getMetaData().getHl7Version());
+//		for (Message sm : msgsPreLib) {
+//			System.out.println("msgs=" + app.getProfile().getMessages().getChildren().size() + " msg name="
+//					+ sm.getName() + " children=" + sm.getChildren().size());
+//			
+//			for(SegmentRefOrGroup sog :sm.getChildren()){
+//				if(sog.getUsage().equals(Usage.B) || sog.getUsage().equals(Usage.W)){
+//					sog.setUsage(Usage.X); System.out.println("Find");
+//				}
+//			}
+//			
+//			app.getProfile().getMessages().addMessage(sm);
+//		}
+//		Set<Segment> segs = appPreLib.getProfile().getSegments().getChildren();
+//		SegmentLibraryMetaData segMetaData = new SegmentLibraryMetaData();
+//		segMetaData.setDate(Constant.mdy.format(new Date()));
+//		segMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
+//		// segMetaData.setName(ppl.getMetaData().getName());
+//		segMetaData.setOrgName("NIST");
+//		// segMetaData.setVersion(ppl.getMetaData().getVersion());
+//		app.getProfile().getSegmentLibrary().setScope(Constant.SCOPE.USER);
+//		app.getProfile().getSegmentLibrary().setMetaData(segMetaData);
+//		mongoOps.insert(app.getProfile().getSegmentLibrary(), "segment-library");
+//		for (Segment seg : segs) {
+//			seg.setScope(Constant.SCOPE.USER);
+//			
+//			for(Field f :seg.getFields()){
+//				if(f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)){
+//					f.setUsage(Usage.X); System.out.println("Find");
+//				}
+//			}
+//			
+//			seg.setHl7Version(app.getProfile().getMetaData().getHl7Version());
+//			if (seg.getId() != null) {
+//				seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
+//				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), seg.getLabel().replace(seg.getName() + "_", "")));
+//			} else {
+//				log.error("Null id seg=" + seg.toString());
+//			}
+//		}
+//		mongoOps.save(app.getProfile().getSegmentLibrary());
+//		Set<Datatype> dts = appPreLib.getProfile().getDatatypes().getChildren();
+//		DatatypeLibraryMetaData dtMetaData = new DatatypeLibraryMetaData();
+//		dtMetaData.setDate(Constant.mdy.format(new Date()));
+//		dtMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
+//		// dtMetaData.setName(ppl.getMetaData().getName());
+//		dtMetaData.setOrgName("NIST");
+//		// dtMetaData.setVersion(ppl.getMetaData().getVersion());
+//		app.getProfile().getDatatypeLibrary().setScope(Constant.SCOPE.USER);
+//		app.getProfile().getDatatypeLibrary().setMetaData(dtMetaData);
+//		mongoOps.insert(app.getProfile().getDatatypeLibrary(), "datatype-library");
+//		for (Datatype dt : dts) {
+//			if (dt.getId() != null) {
+//				for(Component c : dt.getComponents()){
+//					if(c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)){
+//						c.setUsage(Usage.X); System.out.println("Find");
+//					}
+//				}
+//				dt.setScope(Constant.SCOPE.USER);
+//				dt.setStatus(Constant.STATUS.UNPUBLISHED);
+//				dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
+//				dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
+//				app.getProfile().getDatatypeLibrary()
+//						.addDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getLabel().replace(dt.getName() + "_", "")));
+//			} else {
+//				log.error("Null id dt=" + dt.toString());
+//			}
+//		}
+//		mongoOps.save(app.getProfile().getDatatypeLibrary());
+//		Set<Table> tabs = appPreLib.getProfile().getTables().getChildren();
+//		TableLibraryMetaData tabMetaData = new TableLibraryMetaData();
+//		tabMetaData.setDate(Constant.mdy.format(new Date()));
+//		tabMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
+//		// tabMetaData.setName(ppl.getMetaData().getName());
+//		tabMetaData.setOrgName("NIST");
+//		// tabMetaData.setVersion(ppl.getMetaData().getVersion());
+//		app.getProfile().getTableLibrary().setScope(Constant.SCOPE.USER);
+//		app.getProfile().getTableLibrary().setMetaData(tabMetaData);
+//		mongoOps.insert(app.getProfile().getTableLibrary(), "table-library");
+//		for (Table tab : tabs) {
+//			tab.setScope(Constant.SCOPE.USER);
+//			tab.setHl7Version(app.getProfile().getMetaData().getHl7Version());
+//			if (tab.getId() != null) {
+//				tab.getLibIds().add(app.getProfile().getTableLibrary().getId());
+//				app.getProfile().getTableLibrary()
+//						.addTable(new TableLink(tab.getId(), tab.getBindingIdentifier()));
+//			} else {
+//				log.error("Null id tab=" + tab.toString());
+//			}
+//		}
+//		
+//		
+//		
+//		mongoOps.save(app.getProfile().getTableLibrary());
+//		mongoOps.insert(app.getProfile().getMessages().getChildren(), "message");
+//		mongoOps.insert(segs, "segment");
+//		mongoOps.insert(dts, "datatype");
+//		mongoOps.insert(tabs, "table");
+//		mongoOps.insert(app, "igdocument");
+//		
+//	}
 	
 	
 	private void HL7STANDARD(IGDocumentPreLib appPreLib, MongoOperations mongoOps){
@@ -577,5 +648,74 @@ public class IGDocumentConverterFromOldToNew{
 		mongoOps.insert(dts, "datatype");
 		mongoOps.insert(tabs, "table");
 		mongoOps.insert(app, "igdocument");
+	}
+	
+	private HashMap<String, Segment> findHL7SegemntsByVersion(String hl7Version, MongoOperations mongoOps){
+		HashMap<String, Segment> segments = new HashMap<String, Segment>();
+		
+		DBCollection segmentsDBCollection = mongoOps.getCollection("segment");
+		DBCursor segmentCur = segmentsDBCollection.find();
+		while (segmentCur.hasNext()) {
+			DBObject source = segmentCur.next();
+			SegmentReadConverter segmentConv = new SegmentReadConverter();
+			Segment seg = segmentConv.convert(source);
+			if(seg.getScope().equals(SCOPE.HL7STANDARD) && seg.getHl7Version().equals(hl7Version)){
+				segments.put(seg.getId(), seg);
+			}
+		}
+		return segments;
+	}
+	
+	private HashMap<String, Datatype> findHL7DatatypesByVersion(String hl7Version, MongoOperations mongoOps){
+		HashMap<String, Datatype> datatypes = new HashMap<String, Datatype>();
+		
+		DBCollection datatypesDBCollection = mongoOps.getCollection("datatype");
+		DBCursor datatypeCur = datatypesDBCollection.find();
+		while (datatypeCur.hasNext()) {
+			DBObject source = datatypeCur.next();
+			DatatypeReadConverter datatypeConv = new DatatypeReadConverter();
+			Datatype dt = datatypeConv.convert(source);
+			if(dt.getScope().equals(SCOPE.HL7STANDARD) && dt.getHl7Version().equals(hl7Version)){
+				datatypes.put(dt.getId(), dt);
+			}
+		}
+		return datatypes;
+	}
+	
+	private HashMap<String, Table> findHL7TablesByVersion(String hl7Version, MongoOperations mongoOps){
+		HashMap<String, Table> tables = new HashMap<String, Table>();
+		
+		DBCollection tablesDBCollection = mongoOps.getCollection("table");
+		DBCursor tableCur = tablesDBCollection.find();
+		while (tableCur.hasNext()) {
+			DBObject source = tableCur.next();
+			TableReadConverter tableConv = new TableReadConverter();
+			Table t = tableConv.convert(source);
+			if(t.getScope().equals(SCOPE.HL7STANDARD) && t.getHl7Version().equals(hl7Version)){
+				tables.put(t.getId(), t);
+			}
+		}
+		return tables;
+	}
+	
+	private IGDocument findHL7IGDocumentByVersion(String hl7Version, MongoOperations mongoOps){
+		DBCollection igDocumentsDBCollection = mongoOps.getCollection("igdocument");
+		DBCursor igDocumentCur = igDocumentsDBCollection.find();
+		while (igDocumentCur.hasNext()) {
+			DBObject source = igDocumentCur.next();
+			IGDocumentReadConverter igDocumentConv = new IGDocumentReadConverter();
+			IGDocument igd = igDocumentConv.convert(source);
+			System.out.println("DEBUG-WOO");
+			System.out.println(hl7Version);
+			System.out.println(igd.getScope());
+			System.out.println(igd.getMetaData().getHl7Version());
+			System.out.println("DEBUG-END");
+			
+			
+			if(igd.getScope().equals(IGDocumentScope.HL7STANDARD) && igd.getMetaData().getHl7Version().equals(hl7Version)){
+				return igd;
+			}
+		}
+		return null;
 	}
 }
