@@ -19,6 +19,20 @@
             <form name="sectionForm" id="sectionForm" class="form-horizontal" novalidate>
                 <div class="row">
                     <div class="col-md-12 igl-page-header">
+
+                        <span class="pull-right">
+         <button title="Save Changes" type="button" class="btn btn-xs btn-success"
+                 ng-disabled="sectionForm.$invalid"
+                 ng-hide="viewSettings.tableReadonly"
+                 ng-click="save()">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </button>
+                         <button title="Cancel Changes" type="button" class="btn btn-xs btn-warning"
+                                 ng-hide="viewSettings.tableReadonly"
+                                 ng-click="cancel()">
+                             <span><i class="fa fa-times fa-fw"></i> Cancel</span>
+                         </button>
+    </span>
                         <div class="form-group control-group pull-left"  ng-hide="viewSettings.tableReadonly || isFixedSectionTitle(section)"
                              ng-class="{'igl-has-error has-feedback' : sectionForm.title.$invalid}">
                             <input type="text"

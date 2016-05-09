@@ -1,6 +1,6 @@
 angular.module('igl').factory(
     'CloneDeleteSvc',
-    function ($rootScope, $modal, ProfileAccessSvc, $cookies, DatatypeLibrarySvc,SegmentLibrarySvc,TableLibrarySvc,MessageService,MessageLibrarySvc) {
+    function ($rootScope, $modal, ProfileAccessSvc, $cookies, DatatypeLibrarySvc,SegmentLibrarySvc,TableLibrarySvc,MessageService,MessageLibrarySvc,IgDocumentService) {
 
         var svc = this;
 
@@ -17,8 +17,15 @@ angular.module('igl').factory(
             newSection.label = newSection.sectionTitle;
             section.parent.childSections.splice(0, 0, newSection);
             section.parent.childSections = positionElements(section.parent.childSections);
-            $rootScope.$broadcast('event:SetToC');
-            $rootScope.$broadcast('event:openSection', newSection);
+            IgDocumentService.save($rootScope.igDocument).then(function (result) {
+                $rootScope.$broadcast('event:SetToC');
+                $rootScope.$broadcast('event:openSection', newSection);
+             }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+
         }
 
         svc.copySegment = function (segment) {

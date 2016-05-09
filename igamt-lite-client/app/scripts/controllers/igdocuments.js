@@ -759,6 +759,7 @@ angular.module('igl')
         $scope.selectDocumentMetaData = function () {
             $scope.subview = "EditDocumentMetadata.html";
             $scope.loadingSelection = true;
+            $rootScope.metaData = angular.copy($rootScope.igdocument.metaData);
             $timeout(
                 function () {
                     $scope.loadingSelection = false;

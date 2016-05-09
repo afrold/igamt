@@ -133,6 +133,18 @@ angular.module('igl').factory('SegmentLibrarySvc', function($http, userInfoServi
         return delay.promise;
     };
 
+    svc.findLibrariesByFlavorName = function (flavorName, flavorScope, flavorHl7Version) {
+        var delay = $q.defer();
+        $http.get('api/segment-library/findLibrariesByFlavorName', {params: {"name": flavorName, "scope": flavorScope, "hl7Version": flavorHl7Version}}).then(function (response) {
+            var libraries = angular.fromJson(response.data);
+            delay.resolve(libraries);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
 
-	return svc;
+
+
+    return svc;
 });
