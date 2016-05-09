@@ -72,6 +72,14 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.scope = scope;
 	}
 
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
+
 	public void addDatatype(DatatypeLink dtl) {
 		children.add(dtl);
 	}
@@ -138,16 +146,8 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	public void setMetaData(DatatypeLibraryMetaData metaData) {
 		this.metaData = metaData;
 	}
-
-	public DatatypeLink findOneByName(String name) {
-		if (this.children != null) {
-			for (DatatypeLink dtl1 : this.children) {
-				if (dtl1.getName().equals(name)) {
-					return dtl1;
-				}
-			}
-		}
-
-		return null;
+	
+	public boolean addLink(Datatype dt) {
+		return getChildren().add(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
 	}
-}
+ }

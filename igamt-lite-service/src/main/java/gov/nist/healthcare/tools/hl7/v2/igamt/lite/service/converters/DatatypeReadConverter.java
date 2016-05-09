@@ -40,6 +40,7 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
 			dt.setType((String) source.get(TYPE));
 			dt.setName(((String) source.get(NAME)));
 			dt.setLabel((String) source.get(LABEL));
+			dt.setExt((String) source.get(EXTENSION));
 			dt.setDescription((String) source.get(DESCRIPTION));
 			dt.setComment(readString(source, COMMENT));
 			dt.setUsageNote(readString(source, USAGE_NOTE));

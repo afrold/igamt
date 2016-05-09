@@ -75,15 +75,13 @@ public class DatatypeServiceImpl implements DatatypeService {
 		return datatypeRepository.save(datatype);
 	}
 		
-		@Override
-		public List<Datatype> bindDatatypes(List<String> datatypeIds, String datatyeLibraryId) {
-			List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
-			for(Datatype dt : datatypes) {
-				dt.setId(null);
-//				dt.setExt();
-				dt.getLibIds().add(datatyeLibraryId);
-			}
-			datatypeRepository.save(datatypes);
-			return datatypes;
-		}
+	@Override
+	public void delete(Datatype dt) {
+		datatypeRepository.delete(dt);
+	}
+	
+	@Override
+	public void delete(String id) {
+		datatypeRepository.delete(id);
+	}
 }

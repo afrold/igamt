@@ -30,5 +30,7 @@ public interface DatatypeService {
 
 	List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-	List<Datatype> bindDatatypes(List<String> datatypeIds, String datatyeLibraryId);
+	void delete(Datatype dt);
+
+	void delete(String id);
 }

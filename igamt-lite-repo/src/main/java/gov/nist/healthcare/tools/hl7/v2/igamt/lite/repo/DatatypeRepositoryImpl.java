@@ -56,9 +56,11 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 
 	@Override
 	public Datatype findById(String id) {
-		Query qry = new Query();
-		Datatype datatype = null;
+		Criteria where = Criteria.where("id").is(id);
+		Query qry = Query.query(where);
+		qry = set4Brevis(qry);
 		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
+		Datatype datatype = null;
 		if (datatypes != null && datatypes.size() > 0) {
 			datatype = datatypes.get(0);
 		}
@@ -73,9 +75,19 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
 		return datatypes;
 	}
+	
+	@Override
+	public List<Datatype> findDups(Datatype dt) {
+		Criteria where = Criteria.where("libIds").in(dt.getLibIds());
+		where.andOperator(Criteria.where("ext").is(dt.getExt()));
+		Query qry = Query.query(where);
+		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
+		return datatypes;
+	}
 
 	Query set4Brevis(Query qry) {
 		qry.fields().include("_id");
+		qry.fields().include("name");
 		qry.fields().include("label");
 		qry.fields().include("ext");
 		qry.fields().include("name");
@@ -83,7 +95,6 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		qry.fields().include("description");
 		qry.fields().include("data");
 		qry.fields().include("version");
-
 		return qry;
 	}
 }

@@ -19,7 +19,7 @@ public class DatatypeLink extends AbstractLink {
 	private String name;
 
 	private String ext;
-	
+
 	public DatatypeLink() {
 		super();
 	}
@@ -29,7 +29,7 @@ public class DatatypeLink extends AbstractLink {
 		this.setId(id);
 		this.name = name;
 		this.setExt(ext);
-	}	
+	}
 
 	public String getName() {
 		return name;
@@ -48,5 +48,29 @@ public class DatatypeLink extends AbstractLink {
 	}
 
 	public String getLabel() {
-		return name + "_" + ext;
-	}}
+		return name + (ext != null ? ext : "");
+	}
+
+	@Override
+	public int hashCode() {
+		return (getId() + getLabel()).hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		DatatypeLink link = null;
+		
+		if (obj == null) {
+			return false;
+		}
+		
+		if (obj instanceof DatatypeLink) {
+			link = (DatatypeLink) obj;
+		} else {
+			return false;
+		}
+	
+		return getId().equals(link.getId()) && getLabel().equals(link.getLabel());
+	}
+}

@@ -35,7 +35,6 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeSaveResponse;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.BindingWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 
 /**
@@ -107,10 +106,9 @@ public class DatatypeController extends CommonController {
 		return result;
 	}
 
-	@RequestMapping(value = "/bindDatatypes", method = RequestMethod.POST)
-	public List<Datatype> bindDatatypes(@RequestBody BindingWrapper binding) throws DatatypeSaveException {
-		log.debug("Binding datatypes=" + binding.getDatatypeIds().size());
-		List<Datatype> bound = datatypeService.bindDatatypes(binding.getDatatypeIds(), binding.getDatatypeLibraryId());
-		return bound;
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public void delete(@PathVariable("id") String id) throws DatatypeSaveException {
+		log.info("Deleting " + id);
+		datatypeService.delete(id);
 	}
 }
