@@ -198,5 +198,11 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		}
 	}
 
+	@Override
+	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope,
+			String hl7Version, String name, Long accountId) {
+		return datatypeLibraryRepository.findLibrariesByFlavorName(scope, hl7Version, name, accountId);
+	}
+
 	 
 }

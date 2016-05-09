@@ -242,9 +242,10 @@ public class DatatypeLibraryController extends CommonController {
 				.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u
 				.getUsername());
-		List<DatatypeLink> datatypes = datatypeLibraryService.findFlavors(
-				scope, hl7Version, name, account.getId());
-		return datatypes;
+		List<DatatypeLibrary> libraries = datatypeLibraryService
+				.findLibrariesByFlavorName(scope, hl7Version, name,
+						account.getId());
+		return libraries;
 	}
 
 }

@@ -1719,7 +1719,7 @@
                                             </thead>
                                             <tbody>
                                             <tr ng-repeat="row in tmpLibraries | orderBy:'row.name'"
-                                                ng-class="{'selected': selection.datatypeLibrary != null && row.id === selection.datatypeLibrary.id}">
+                                                ng-class="{'selected': selection.library != null && row.id === selection.library.id}">
                                                 <td>{{$index + 1}}
                                                     <input type="radio" ng-checked="isSelectedLibrary(row)"
                                                            ng-click="loadFlavors(row)">
@@ -1739,12 +1739,12 @@
                                         </table>
                                     </div>
                                     <div ng-show="libraries == null || libraries.length == 0">
-                                        No Library found
+                                        No library found
                                     </div>
                                 </div>
                             </div>
-                            <div ng-show="resultsError != null">
-                                <div class="alert alert-danger" role="alert" ng-bind="resultsError"></div>
+                            <div ng-show="librariesError != null">
+                                <div class="alert alert-danger" role="alert" ng-bind="librariesError"></div>
                             </div>
                         </div>
                         <div ng-show="librariesLoading" style="text-align:center">
@@ -1756,7 +1756,7 @@
                 <div class="panel panel-primary">
                     <!-- Default panel contents -->
                     <div class="panel-heading panel-heading-collapsable">
-                        <i class="glyphicon glyphicon-list"></i>Datatype Flavors
+                        <i class="glyphicon glyphicon-list"></i>Data Type Flavors
                         <button title="Hide Flavors" class="btn btn-xs btn-primary pull-right"
                                 ng-click="collapsed = !collapsed">
                             <i class="fa fa-caret-left"></i>
