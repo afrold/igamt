@@ -200,11 +200,11 @@ angular
             var showParents = svc.filterByUsage(parentNode, filter);
             if (showElt && showParents !== undefined) {
                 return showElt && showParents;
-            }else {
+            } else {
                 return true;
             }
  //        }
 //      }
-    }
+}
     return svc;
   });

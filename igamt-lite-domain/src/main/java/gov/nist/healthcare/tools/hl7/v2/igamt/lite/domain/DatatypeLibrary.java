@@ -153,10 +153,15 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		return clonedDatatypes;
 	} 
 	
-	public DatatypeLibrary clone()
-			throws CloneNotSupportedException {
+	public DatatypeLibrary clone() throws CloneNotSupportedException {
 		DatatypeLibrary clone = new DatatypeLibrary();
-		clone.setChildren(new HashSet<DatatypeLink>(this.getChildren()));
+		
+		HashSet<DatatypeLink> clonedChildren = new HashSet<DatatypeLink>();
+		for(DatatypeLink dl:this.children){
+			clonedChildren.add(dl.clone());
+		}
+		
+		clone.setChildren(clonedChildren);
 		clone.setExt(this.getExt() + "-" + genRand());
 		clone.setMetaData(this.getMetaData().clone());
 		clone.setScope(this.getScope());

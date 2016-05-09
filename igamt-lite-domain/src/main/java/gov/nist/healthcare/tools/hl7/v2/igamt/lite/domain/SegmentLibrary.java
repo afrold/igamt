@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -114,6 +113,18 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		return null;
 	}
 	
+	public SegmentLink findOne(String sgId) {
+		if (this.children != null) {
+			for (SegmentLink segl1 : this.children) {
+				if (segl1.equals(sgId)) {
+					return segl1;
+				}
+			}
+		}
+
+		return null;
+	}
+	
 	public SegmentLink findOneByName(String name) {
 		if (this.children != null) {
 			for (SegmentLink segl : this.children) {
@@ -124,12 +135,6 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		}
 
 		return null;
-	}
-
-// TODO gcr not working
-	public SegmentLibrary clone() throws CloneNotSupportedException {
-		SegmentLibrary clonedSegments = new SegmentLibrary();
-		return clonedSegments;
 	}
 
 	public void merge(SegmentLibrary segLib) {
@@ -164,19 +169,23 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		return false;
 	}
 	
-	public SegmentLibrary clone(SegmentLibrary library)
-			throws CloneNotSupportedException {
+	public SegmentLibrary clone() throws CloneNotSupportedException {
 		SegmentLibrary clone = new SegmentLibrary();
-		clone.setChildren(new HashSet<SegmentLink>(library.getChildren()));
-		clone.setExt(library.getExt()+ "-" + genRand());
-		clone.setMetaData(library.getMetaData().clone());
-		clone.setScope(library.getScope());
-		clone.setSectionContents(library.getSectionContents()); 
-		clone.setSectionDescription(library.getSectionDescription());
-		clone.setSectionPosition(library.getSectionPosition());
-		clone.setSectionTitle(library.getSectionTitle());
-		clone.setType(library.getType());
-		clone.setDate(library.getDate());
+		
+		HashSet<SegmentLink> clonedChildren = new HashSet<SegmentLink>();
+		for(SegmentLink sl:this.children){
+			clonedChildren.add(sl.clone());
+		}
+		clone.setChildren(clonedChildren);
+		clone.setExt(this.getExt()+ "-" + genRand());
+		clone.setMetaData(this.getMetaData().clone());
+		clone.setScope(this.getScope());
+		clone.setSectionContents(this.getSectionContents()); 
+		clone.setSectionDescription(this.getSectionDescription());
+		clone.setSectionPosition(this.getSectionPosition());
+		clone.setSectionTitle(this.getSectionTitle());
+		clone.setType(this.getType());
+		clone.setDate(this.getDate());
 		return clone;	
 	}
 	
