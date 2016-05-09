@@ -76,6 +76,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		metaData.setTitle(source.get("title") != null ? ((String) source.get("title")) : null);
 		metaData.setTopics(source.get("topics") != null ? ((String) source.get("topics")) : null);
 		metaData.setVersion(source.get("version") != null ? ((String) source.get("version")) : null);
+		metaData.setHl7Version(source.get("hl7Version") != null ? ((String) source.get("hl7Version")) : null);
 		return metaData;
 	}
 	
