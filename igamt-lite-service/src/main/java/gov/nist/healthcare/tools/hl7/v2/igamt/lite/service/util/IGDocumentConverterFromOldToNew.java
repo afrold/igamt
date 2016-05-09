@@ -251,6 +251,7 @@ public class IGDocumentConverterFromOldToNew{
 									t.setScope(Constant.SCOPE.USER);
 									t.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 									t.getLibIds().add(app.getProfile().getTableLibrary().getId());
+									t.setId(ObjectId.get().toString());
 									userTables.add(t);
 								    app.getProfile().getTableLibrary().addTable(new TableLink(t.getId(), t.getBindingIdentifier()));
 								}
@@ -294,14 +295,15 @@ public class IGDocumentConverterFromOldToNew{
 							Table t = hl7TableMap.get(c.getTable());
 							if(t == null){
 								log.error(c.getTable() + " is missing!!!!!");
-							}
-							if(!t.getLibIds().contains(app.getProfile().getTableLibrary().getId())){
-								t.getLibIds().add(app.getProfile().getTableLibrary().getId());
-								Query query2 = query(where("_id").is(t.getId()));
-							    Update update2 = update("libIds", t.getLibIds());
-							    mongoOps.updateFirst(query2, update2, Table.class);
-							    
-							    app.getProfile().getTableLibrary().addTable(new TableLink(t.getId(), t.getBindingIdentifier()));
+							}else {
+								if(!t.getLibIds().contains(app.getProfile().getTableLibrary().getId())){
+									t.getLibIds().add(app.getProfile().getTableLibrary().getId());
+									Query query2 = query(where("_id").is(t.getId()));
+								    Update update2 = update("libIds", t.getLibIds());
+								    mongoOps.updateFirst(query2, update2, Table.class);
+								    
+								    app.getProfile().getTableLibrary().addTable(new TableLink(t.getId(), t.getBindingIdentifier()));
+								}	
 							}
 						}
 					}
@@ -329,6 +331,7 @@ public class IGDocumentConverterFromOldToNew{
 									t.setScope(Constant.SCOPE.USER);
 									t.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 									t.getLibIds().add(app.getProfile().getTableLibrary().getId());
+									t.setId(ObjectId.get().toString());
 									userTables.add(t);
 								    app.getProfile().getTableLibrary().addTable(new TableLink(t.getId(), t.getBindingIdentifier()));
 								}
