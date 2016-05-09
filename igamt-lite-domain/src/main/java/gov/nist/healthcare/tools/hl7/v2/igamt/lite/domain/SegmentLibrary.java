@@ -28,6 +28,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	
 	public SegmentLibrary() {
 		super();
+		type = Constant.SEGMENTLIBRARY;
 	}
 
 	private Set<SegmentLink> children = new HashSet<SegmentLink>();
@@ -74,6 +75,10 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 
 	public void addSegment(SegmentLink seg) {
 		children.add(seg);
+	}
+
+	public void addSegment(Segment seg) {
+		children.add(new SegmentLink(seg.getId(), seg.getName(), null));
 	}
 
 	public SegmentLink save(SegmentLink seg) {
@@ -179,7 +184,4 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	private String genRand() {
 		return Integer.toString( new Random().nextInt(100));
 	}
-	
-	
-	
 }

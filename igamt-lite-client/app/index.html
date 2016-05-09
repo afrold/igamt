@@ -56,6 +56,7 @@
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/line_breaker.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/table.css">
     <link rel="stylesheet" href="lib/igamt.css"/>
+    <link rel="stylesheet" href="lib/dialog.css"/>
 
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()">
@@ -87,6 +88,7 @@
 
     <div ng-include="'views/footer.html'"></div>
     <div ng-include="'views/templates.html'"></div>
+ 	<div ng-include="'views/edit/editDatatypes.html'"></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <!--<script>-->
@@ -215,12 +217,15 @@
 	<script src="scripts/services/IgDocumentService.js"></script>
 	<script src="scripts/services/MastermapSvc.js"></script>
 	<script src="scripts/services/MessageEventsSvc.js"></script>
+	<script src="scripts/services/MessageService.js"></script>
+	<script src="scripts/services/MessagesSvc.js"></script>
 	<script src="scripts/services/MultiAccountLoader.js"></script>
 	<script src="scripts/services/ProfileAccessSvc.js"></script>
 	<script src="scripts/services/SegmentLibrarySvc.js"></script>
 	<script src="scripts/services/SegmentService.js"></script>
 	<script src="scripts/services/StorageService.js"></script>
 	<script src="scripts/services/TableLibrarySvc.js"></script>
+	<script src="scripts/services/TableService.js"></script>
 	<script src="scripts/services/ToCSvc.js"></script>
 	<script src="scripts/services/ViewSettings.js"></script>
 	<script src="scripts/services/about.js"></script>

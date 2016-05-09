@@ -18,9 +18,9 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 	private String id;
 
 	private Long accountId;
-	
+
 	private String date;
-	
+
 	private String ext;
 
 	private String valueSetLibraryIdentifier;
@@ -32,18 +32,19 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 	private String organizationName;
 
 	private String description;
-	
+
 	private String dateCreated;
 
 	private String profileName = "";
-	
+
 	private TableLibraryMetaData metaData;
-	
+
 	private Constant.SCOPE scope;
-	
+
 	public TableLibrary() {
 		super();
-		}
+		type = Constant.TABLELIBRARY;
+	}
 
 	private Set<TableLink> children = new HashSet<TableLink>();
 
@@ -156,6 +157,11 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 			children.add(tl);
 	}
 
+	public void addTable(Table tab) {
+		if (tab != null)
+			children.add(new TableLink(tab.getId(), tab.getBindingIdentifier()));
+	}
+
 	public TableLink save(TableLink tl) {
 		if (tl != null)
 			children.add(tl);
@@ -166,7 +172,7 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		if (tl != null)
 			this.children.remove(tl);
 	}
-	
+
 	public TableLink findOneTableById(String id) {
 		if (this.children != null) {
 			for (TableLink tl : this.children) {
@@ -179,49 +185,49 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		return null;
 	}
 
-	public TableLibrary clone(HashMap<String, Table> tabRecords)
-			throws CloneNotSupportedException {
+	public TableLibrary clone(HashMap<String, Table> tabRecords) throws CloneNotSupportedException {
 		TableLibrary clonedTables = new TableLibrary();
-//		clonedTables.setChildren(new HashSet<Table>());
-//		for (Table tab : this.children) {
-//			if (tabRecords.containsKey(tab.getId())) {
-//				clonedTables.addTable(tabRecords.get(tab.getId()));
-//			} else {
-//				Table clone = tab.clone();
-//				clone.setId(tab.getId());
-//				tabRecords.put(tab.getId(), clone);
-//				clonedTables.addTable(clone);
-//			}
-//		}
+		// clonedTables.setChildren(new HashSet<Table>());
+		// for (Table tab : this.children) {
+		// if (tabRecords.containsKey(tab.getId())) {
+		// clonedTables.addTable(tabRecords.get(tab.getId()));
+		// } else {
+		// Table clone = tab.clone();
+		// clone.setId(tab.getId());
+		// tabRecords.put(tab.getId(), clone);
+		// clonedTables.addTable(clone);
+		// }
+		// }
 
 		return clonedTables;
 	}
-	
-	public void merge(TableLibrary tabs){
+
+	public void merge(TableLibrary tabs) {
 		this.getChildren().addAll(tabs.getChildren());
 	}
-	
-//	@JsonIgnore
-//	public Code getCode() {
-//		//TODO Only byID constraints are considered; might want to consider byName
-//		Constraints constraints = new Constraints();
-//		Context tabContext = new Context();
-//
-//		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
-//		byNameOrByIDs = new HashSet<ByNameOrByID>();
-//		for (Table d : this.getChildren()) {
-//			ByID byID = new ByID();
-//			byID.setByID(d.getLabel());
-//			if (d.getConformanceStatements().size() > 0) {
-//				byID.setConformanceStatements(d.getConformanceStatements());
-//				byNameOrByIDs.add(byID);
-//			}
-//		}
-//		tabContext.setByNameOrByIDs(byNameOrByIDs);
-//
-//		constraints.setDatatypes(tabContext);
-//		return constraints;
-//	}
+
+	// @JsonIgnore
+	// public Code getCode() {
+	// //TODO Only byID constraints are considered; might want to consider
+	// byName
+	// Constraints constraints = new Constraints();
+	// Context tabContext = new Context();
+	//
+	// Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+	// byNameOrByIDs = new HashSet<ByNameOrByID>();
+	// for (Table d : this.getChildren()) {
+	// ByID byID = new ByID();
+	// byID.setByID(d.getLabel());
+	// if (d.getConformanceStatements().size() > 0) {
+	// byID.setConformanceStatements(d.getConformanceStatements());
+	// byNameOrByIDs.add(byID);
+	// }
+	// }
+	// tabContext.setByNameOrByIDs(byNameOrByIDs);
+	//
+	// constraints.setDatatypes(tabContext);
+	// return constraints;
+	// }
 
 	public TableLibraryMetaData getMetaData() {
 		return metaData;
@@ -238,25 +244,23 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 	public void setTables(Set<TableLink> children) {
 		this.children = children;
 	}
-	
-	public TableLibrary clone()
-			throws CloneNotSupportedException {
+
+	public TableLibrary clone() throws CloneNotSupportedException {
 		TableLibrary clone = new TableLibrary();
 		clone.setChildren(new HashSet<TableLink>(this.getChildren()));
-		clone.setExt(this.getExt()+ "-" + genRand());
+		clone.setExt(this.getExt() + "-" + genRand());
 		clone.setMetaData(this.getMetaData().clone());
 		clone.setScope(this.getScope());
-		clone.setSectionContents(this.getSectionContents()); 
+		clone.setSectionContents(this.getSectionContents());
 		clone.setSectionDescription(this.getSectionDescription());
 		clone.setSectionPosition(this.getSectionPosition());
 		clone.setSectionTitle(this.getSectionTitle());
 		clone.setType(this.getType());
 		clone.setDate(this.getDate());
-		return clone;	
+		return clone;
 	}
-	
-	
+
 	private String genRand() {
-		return Integer.toString( new Random().nextInt(100));
+		return Integer.toString(new Random().nextInt(100));
 	}
 }
