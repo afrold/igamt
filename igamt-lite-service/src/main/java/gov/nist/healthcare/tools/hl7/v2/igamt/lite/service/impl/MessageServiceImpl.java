@@ -18,63 +18,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 
 /**
  * @author gcr1
  *
  */
 @Service
-public class SegmentServiceImpl implements SegmentService {
+public class MessageServiceImpl implements MessageService {
 	
-	Logger log = LoggerFactory.getLogger(SegmentServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(MessageServiceImpl.class);
 
 	@Autowired
-	private SegmentRepository segmentRepository;
- 	
-	@Override
-	public List<Segment> findByLibIds(String segLibId) {
-		List<Segment> datatypes = segmentRepository.findByLibIds(segLibId);
-		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
-		return datatypes;
-	}
+	private MessageRepository segmentRepository;
+ 	 
 	
 	@Override 
-	public Segment findById(String id) {
-		log.info("SegmentServiceImpl.findById=" + id);
+	public Message findById(String id) {
+		log.info("MessageServiceImpl.findById=" + id);
 		return segmentRepository.findOne(id);
 	}
 	
 	@Override
-	public List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-		List<Segment> segments = segmentRepository.findByScopesAndVersion(scopes, hl7Version);
-		log.info("SegmentServiceImpl.findByScopeAndVersion=" + segments.size());
-		return segments;
-	}
-	
-	@Override
-	public Segment save(Segment segment) {
-		log.info("SegmentServiceImpl.save=" + segment.getLabel());
-		return segmentRepository.save(segment);
+	public Message save(Message segment) {
+ 		return segmentRepository.save(segment);
 	}
 
 	@Override
-	public void delete(Segment segment) {
+	public void delete(Message segment) {
 		segmentRepository.delete(segment);
 	}
 	
 	@Override
 	public void delete(String id) {
 		segmentRepository.delete(id);
-	}
-	
-	@Override
-	public void save(List<Segment> segments) {
-		// TODO Auto-generated method stub
-		segmentRepository.save(segments);
 	}
 }

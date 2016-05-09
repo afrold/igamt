@@ -29,6 +29,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.LibrarySaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.LibraryCreateWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibraryNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
@@ -192,15 +193,53 @@ public class SegmentLibraryController extends CommonController {
 				throw new ForbiddenOperationException();
 			segment.setDate(DateUtils.getCurrentTime());
 			segmentService.delete(segment);
-			SegmentLibrary library = segmentLibraryService.findById(libId);
+			SegmentLibrary library = segmentLibraryService.findById(segLibId);
 			SegmentLink link = library.findOneSegmentById(segId);
 			if (link != null) {
 				library.getChildren().remove(link);
 				segmentLibraryService.save(library);
 			}
-			return new ResponseMessage(Type.success, "segmentDeleted");
+			return new ResponseMessage(Type.success, "segmentAdded");
 		}
 		throw new IllegalArgumentException("segmentNotFound");
+	}
+
+	@RequestMapping(value = "/{libId}/addChild", method = RequestMethod.POST)
+	public SegmentLink addChild(@PathVariable String libId,
+			@RequestBody SegmentLink child) throws SegmentSaveException {
+		log.debug("Adding a link to the library");
+		SegmentLibrary lib = segmentLibraryService.findById(libId);
+		lib.addSegment(child);
+		segmentLibraryService.save(lib);
+		return child;
+	}
+
+	@RequestMapping(value = "/{libId}/updateChild", method = RequestMethod.POST)
+	public SegmentLink updateChild(@PathVariable String libId,
+			@RequestBody SegmentLink child) throws DatatypeSaveException {
+		log.debug("Adding a link to the library");
+		SegmentLibrary lib = segmentLibraryService.findById(libId);
+		SegmentLink found = lib.findOneSegmentById(child.getId());
+		if (found != null) {
+			found.setExt(child.getExt());
+		}
+		segmentLibraryService.save(lib);
+		return child;
+	}
+
+	@RequestMapping(value = "/findFlavors", method = RequestMethod.GET, produces = "application/json")
+	public List<SegmentLink> findFlavors(@RequestParam("name") String name,
+			@RequestParam("hl7Version") String hl7Version,
+			@RequestParam("scope") SCOPE scope) {
+		log.info("Finding flavors of datatype, name=" + name + ", hl7Version="
+				+ hl7Version + ", scope=" + scope + "...");
+		org.springframework.security.core.userdetails.User u = userService
+				.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u
+				.getUsername());
+		List<SegmentLink> links = segmentLibraryService.findFlavors(scope,
+				hl7Version, name, account.getId());
+		return links;
 	}
 
 }

@@ -84,5 +84,44 @@ angular.module('igl').factory('TableLibrarySvc', function($http, $httpBackend, u
 			return angular.fromJson(response.data)});
 	};
 
-	return svc;
+    svc.findOneChild = function (id, library) {
+        if (library.children) {
+            for (var i = 0; i < library.children.length; i++) {
+                if (library.children[i].id === id) {
+                    return library.children[i];
+                }
+            }
+        }
+        return null;
+    };
+
+    svc.createEmptyLink = function () {
+        return {id:null, bindingIdentifier:null};
+    };
+
+
+    svc.addChild = function (libId, child) {
+        var delay = $q.defer();
+        $http.post('api/table-library/'+ libId+ '/addChild', child).then(function (response) {
+            var link = angular.fromJson(response.data);
+            delay.resolve(link);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
+    svc.updateChild = function (libId, child) {
+        var delay = $q.defer();
+        $http.post('api/table-library/'+ libId+ '/updateChild', child).then(function (response) {
+            var link = angular.fromJson(response.data);
+            delay.resolve(link);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
+
+    return svc;
 });

@@ -33,7 +33,7 @@
                <th st-ratio="30">Description</th>
                <th st-ratio="10">Scope</th>
                <th st-ratio="10">HL7 Version</th>
-               <th st-ratio="37">Actions</th>
+               <th st-ratio="38">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -43,7 +43,7 @@
                 <td st-ratio="30">{{dt.sectionDescription}}
                 <td st-ratio="10">{{dt.scope}}</td>
                 <td st-ratio="10">{{dt.metaData.hl7Version}}</td>
-                <td st-ratio="37">
+                <td st-ratio="38">
                    <button
                            title="Edit"
                            type="button" class="btn btn-xs btn-primary"
@@ -66,6 +66,7 @@
   </div>
 </form>
 </div>
+ <div class="row">
   <tabset>
       <tab index="0" heading="Metadata">
         <div class="panel panel-primary"  ng-show="datatypeLibStruct">
@@ -88,6 +89,7 @@
         </div>
     </tab>
   </tabset>
+ </div>
   <div class="row" ng-show="datatypeView">
     <div class="panel panel-primary">
       <div class="panel-heading">Edit Area</div>
@@ -102,6 +104,12 @@
 </div>
 </div>
 <script type="text/ng-template" id="LibraryMetaData.html">
+<div class="pull-right" style="margin-right:20px">
+  <button type="button" class="btn btn-success btn-sm"
+          ng-click="saveLib()"><i class="fa fa-plus"></i>
+    Save
+  </button>
+</div>
 <form>
   <div class="container form-group">
   <div class="row">
@@ -158,7 +166,7 @@
 <script type="text/ng-template" id="DatatypeList.html">
 <div class="pull-right" style="margin-right:20px">
   <button type="button" class="btn btn-success btn-sm"
-          ng-click="save()"><i class="fa fa-plus"></i>
+          ng-click="saveLib()"><i class="fa fa-plus"></i>
     Save
   </button>
   <button type="button" class="btn btn-primary btn-sm"
@@ -171,7 +179,7 @@
   <tr class="row tbl-header">
     <th st-ratio="10" st-sort="getDisplayLabel(dt)" st-sort-default="true">Label</th>
     <th st-ratio="30">Description</th>
-    <th st-ratio="35">Actions</th>
+    <th st-ratio="58">Actions</th>
     <th st-ratio="2">Publish</th>
   </tr>
   <tr>
@@ -180,9 +188,9 @@
 </thead>
 <tbody>
 	<tr class="row" ng-repeat="dt in datatypeDisplay" ng-class="{'new': dt.new}">
-    <td st-ratio="25">{{getDisplayLabel(dt)}}</td>
+    <td st-ratio="10">{{getDisplayLabel(dt)}}</td>
     <td st-ratio="30" ng-bind="dt.description"></td>
-    <td st-ratio="35">
+    <td st-ratio="58">
      <button
               title="Edit"
               type="button" class="btn btn-xs btn-primary"

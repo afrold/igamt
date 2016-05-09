@@ -40,12 +40,13 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
 			dt.setType((String) source.get(TYPE));
 			dt.setName(((String) source.get(NAME)));
 			dt.setLabel((String) source.get(LABEL));
+			dt.setExt((String) source.get(EXTENSION));
 			dt.setDescription((String) source.get(DESCRIPTION));
 			dt.setComment(readString(source, COMMENT));
 			dt.setUsageNote(readString(source, USAGE_NOTE));
 			dt.setSectionPosition((Integer) source.get(SECTION_POSITION));
 			dt.setScope(source.get(SCOPE_) != null ? Constant.SCOPE.valueOf((String) source.get(SCOPE_)) : null);
-			dt.setStatus(source.get(STATUS_) != null ? Datatype.STATUS.valueOf((String) source.get(STATUS_)) : null);
+			dt.setStatus(source.get(STATUS_) != null ? Constant.STATUS.valueOf((String) source.get(STATUS_)) : null);
 
 			BasicDBList libIds = (BasicDBList) source.get(LIB_IDS);
 			if (libIds != null) {

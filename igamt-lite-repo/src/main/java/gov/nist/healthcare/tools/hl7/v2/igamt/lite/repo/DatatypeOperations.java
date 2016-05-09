@@ -31,4 +31,6 @@ public interface DatatypeOperations {
 	List<Datatype> findByIds(List<String> ids);
 
 	List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+
+	List<Datatype> findDups(Datatype dt);
 }

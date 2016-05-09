@@ -17,11 +17,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 
 public class SegmentLibraryRepositoryImpl implements SegmentLibraryOperations {
 	
@@ -87,5 +91,27 @@ public class SegmentLibraryRepositoryImpl implements SegmentLibraryOperations {
 				segmentLibrary = segmentLibraries.get(0);
 			}
 			return segmentLibrary;
+		}
+
+		@Override
+		public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version,
+				String name, Long accountId) {
+			Criteria libCriteria = Criteria
+					.where("scope")
+					.is(scope)
+					.andOperator(
+							Criteria.where("metaData.hl7Version").is(hl7Version))
+					.andOperator(
+							Criteria.where("accountId")
+									.is(accountId)
+									.orOperator(
+											Criteria.where("accountId").is(null)));
+			Criteria linksCriteria = Criteria.where("children").elemMatch(
+					Criteria.where("name").is(name));
+			BasicQuery query = new BasicQuery(libCriteria.getCriteriaObject(),
+					linksCriteria.getCriteriaObject());
+			List<SegmentLink> links = mongo.find(query, SegmentLink.class);
+
+		 return links;
 		}
 }

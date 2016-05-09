@@ -14,21 +14,18 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  * @author gcr1
  *
  */
-public class DatatypeLink extends AbstractLink {
+public class SearchFlavorResult extends AbstractLink {
 
 	private String name;
-
 	private String ext;
-
-	public DatatypeLink() {
-		super();
-	}
-
-	public DatatypeLink(String id, String name, String ext) {
+	private String libName;
+ 
+	public SearchFlavorResult(String id, String name, String ext,String libName) {
 		super();
 		this.setId(id);
 		this.name = name;
 		this.setExt(ext);
+		this.libName = libName;
 	}
 
 	public String getName() {
@@ -59,14 +56,14 @@ public class DatatypeLink extends AbstractLink {
 	@Override
 	public boolean equals(Object obj) {
 		
-		DatatypeLink link = null;
+		SearchFlavorResult link = null;
 		
 		if (obj == null) {
 			return false;
 		}
 		
-		if (obj instanceof DatatypeLink) {
-			link = (DatatypeLink) obj;
+		if (obj instanceof SearchFlavorResult) {
+			link = (SearchFlavorResult) obj;
 		} else {
 			return false;
 		}

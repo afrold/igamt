@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -76,39 +76,10 @@ angular.module('igl')
         $scope.getMessageParams = function () {
             return new ngTreetableParams({
                 getNodes: function (parent) {
-                    if (!parent || parent == null) {
-                        return $rootScope.messageTree.children;
-                    } else {
-                        return parent.children;
-                    }
+                    return MessageService.getNodes(parent,$rootScope.messageTree);
                 },
                 getTemplate: function (node) {
-                    if ($scope.viewSettings.tableReadonly) {
-
-                        if (node.obj.type === 'segmentRef') {
-                            return 'MessageSegmentRefReadTree.html';
-                        } else if (node.obj.type === 'group') {
-                            return 'MessageGroupReadTree.html';
-                        } else if (node.obj.type === 'field') {
-                            return 'MessageFieldViewTree.html';
-                        } else if (node.obj.type === 'component') {
-                            return 'MessageComponentViewTree.html';
-                        } else {
-                            return 'MessageReadTree.html';
-                        }
-                    } else {
-                        if (node.obj.type === 'segmentRef') {
-                            return 'MessageSegmentRefEditTree.html';
-                        } else if (node.obj.type === 'group') {
-                            return 'MessageGroupEditTree.html';
-                        } else if (node.obj.type === 'field') {
-                            return 'MessageFieldViewTree.html';
-                        } else if (node.obj.type === 'component') {
-                            return 'MessageComponentViewTree.html';
-                        } else {
-                            return 'MessageEditTree.html';
-                        }
-                    }
+                   return MessageService.getTemplate(node,$rootScope.messageTree);
                 }
             });
         };

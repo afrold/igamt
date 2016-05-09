@@ -17,77 +17,127 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 
 public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations {
-	
-	private Logger log = LoggerFactory.getLogger(DatatypeLibraryRepositoryImpl.class);
 
-	 @Autowired
-	 private MongoOperations mongo;
+	private Logger log = LoggerFactory
+			.getLogger(DatatypeLibraryRepositoryImpl.class);
 
-		@Override
-		public List<DatatypeLibrary> findByScopes(List<SCOPE> scopes) {
-			Criteria where = Criteria.where("scope").in(scopes);
-			Query qry = Query.query(where);
-			List<DatatypeLibrary> list =  mongo.find(qry, DatatypeLibrary.class);
-			log.debug("DatatypeLibraryRespositoryImpl.findByScopes list.size()=" + list.size());
-		    return list;
+	@Autowired
+	private MongoOperations mongo;
+
+	@Override
+	public List<DatatypeLibrary> findByScopes(List<SCOPE> scopes) {
+		Criteria where = Criteria.where("scope").in(scopes);
+		Query qry = Query.query(where);
+		List<DatatypeLibrary> list = mongo.find(qry, DatatypeLibrary.class);
+		log.debug("DatatypeLibraryRespositoryImpl.findByScopes list.size()="
+				+ list.size());
+		return list;
+	}
+
+	@Override
+	public List<DatatypeLibrary> findScopesNVersion(List<SCOPE> scopes,
+			String hl7Version) {
+		log.info("DatatypeLibraryRespositoryImpl.findByScopesAndVersion="
+				+ hl7Version);
+		Criteria where = Criteria.where("scope").in(scopes);
+		if (hl7Version != null) {
+			where.andOperator(Criteria.where("metaData.hl7Version").is(
+					hl7Version));
 		}
+		Query qry = Query.query(where);
+		List<DatatypeLibrary> list = mongo.find(qry, DatatypeLibrary.class);
+		log.info("DatatypeLibraryRespositoryImpl.findByScopesAndVersion list.size()="
+				+ list.size());
+		return list;
+	}
 
-		@Override
-		public List<DatatypeLibrary> findScopesNVersion(List<SCOPE> scopes, String hl7Version) {
-			log.info("DatatypeLibraryRespositoryImpl.findByScopesAndVersion=" + hl7Version);
-			Criteria where = Criteria.where("scope").in(scopes);
-			if (hl7Version != null) {
-				where.andOperator(Criteria.where("metaData.hl7Version").is(hl7Version));
-			}
-			Query qry = Query.query(where);
-			List<DatatypeLibrary> list =  mongo.find(qry, DatatypeLibrary.class);
-			log.info("DatatypeLibraryRespositoryImpl.findByScopesAndVersion list.size()=" + list.size());
-		    return list;
-	 	}
+	@Override
+	public List<DatatypeLibrary> findByAccountId(Long accountId,
+			String hl7Version) {
+		log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion="
+				+ hl7Version);
+		Criteria where = Criteria
+				.where("accountId")
+				.is(accountId)
+				.andOperator(Criteria.where("scope").is(SCOPE.USER))
+				.andOperator(
+						Criteria.where("metaData.hl7Version").is(hl7Version));
+		Query qry = Query.query(where);
+		List<DatatypeLibrary> list = mongo.find(qry, DatatypeLibrary.class);
+		log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion list.size()="
+				+ list.size());
+		return list;
+	}
 
-		@Override
-		public List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version) {
-			log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion=" + hl7Version);
-			Criteria where = Criteria.where("accountId").is(accountId)
-					.andOperator(Criteria.where("scope").is(SCOPE.USER))
-					.andOperator(Criteria.where("metaData.hl7Version").is(hl7Version));
-			Query qry = Query.query(where);
-			List<DatatypeLibrary> list =  mongo.find(qry, DatatypeLibrary.class);
-			log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion list.size()=" + list.size());
-		    return list;
+	@Override
+	public List<String> findHl7Versions() {
+		Criteria where = Criteria.where("scope").is(SCOPE.HL7STANDARD);
+		Query qry = Query.query(where);
+		qry.fields().include("metaData.hl7Version");
+		List<DatatypeLibrary> dtLibs = mongo.find(qry, DatatypeLibrary.class);
+		List<String> versions = new ArrayList<String>();
+		for (DatatypeLibrary dtLib : dtLibs) {
+			versions.add(dtLib.getMetaData().getHl7Version());
 		}
-		
-		@Override
-		public List<String> findHl7Versions() {
-			Criteria where = Criteria.where("scope").is(SCOPE.HL7STANDARD);
-			Query qry = Query.query(where);
-			qry.fields().include("metaData.hl7Version");
-			List<DatatypeLibrary> dtLibs = mongo.find(qry, DatatypeLibrary.class);
-			List<String> versions = new ArrayList<String>();
-			for (DatatypeLibrary dtLib : dtLibs) {
-				versions.add(dtLib.getMetaData().getHl7Version());
-			}
-			return versions;
-		}
+		return versions;
+	}
 
-		@Override
-		public DatatypeLibrary findById(String id) {
-			log.debug("DatatypeLibraryRespositoryImpl.findById=" + id);
-			Criteria where = Criteria.where("id").is(id);
-			Query qry = Query.query(where);
-			DatatypeLibrary datatypeLibrary = null;
-			List<DatatypeLibrary> datatypeLibraries = mongo.find(qry, DatatypeLibrary.class);
-			if (datatypeLibraries != null && datatypeLibraries.size() > 0) {
-				datatypeLibrary = datatypeLibraries.get(0);
-			}
-			return datatypeLibrary;
+	@Override
+	public DatatypeLibrary findById(String id) {
+		log.debug("DatatypeLibraryRespositoryImpl.findById=" + id);
+		Criteria where = Criteria.where("id").is(id);
+		Query qry = Query.query(where);
+		DatatypeLibrary datatypeLibrary = null;
+		List<DatatypeLibrary> datatypeLibraries = mongo.find(qry,
+				DatatypeLibrary.class);
+		if (datatypeLibraries != null && datatypeLibraries.size() > 0) {
+			datatypeLibrary = datatypeLibraries.get(0);
 		}
+		return datatypeLibrary;
+	}
+
+	@Override
+	public List<DatatypeLibrary> findDups(DatatypeLibrary dtl) {
+		Criteria where = Criteria.where("scope").in(dtl.getScope());
+		where.andOperator(Criteria.where("ext").is(dtl.getExt()));
+		Query qry = Query.query(where);
+		List<DatatypeLibrary> datatypeLibraries = mongo.find(qry,
+				DatatypeLibrary.class);
+		return datatypeLibraries;
+	}
+
+	@Override
+	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version,
+			String name, Long accountId) {
+		Criteria libCriteria = Criteria
+				.where("scope")
+				.is(scope)
+				.andOperator(
+						Criteria.where("metaData.hl7Version").is(hl7Version))
+				.andOperator(
+						Criteria.where("accountId")
+								.is(accountId)
+								.orOperator(
+										Criteria.where("accountId").is(null)));
+		Criteria linksCriteria = Criteria.where("children").elemMatch(
+				Criteria.where("name").is(name).andOperator(Criteria.where("status").is(STATUS.PUBLISHED)));
+		BasicQuery query = new BasicQuery(libCriteria.getCriteriaObject(),
+				linksCriteria.getCriteriaObject());
+		List<DatatypeLink> links = mongo.find(query, DatatypeLink.class);
+
+	 return links;
+	}
+
 }

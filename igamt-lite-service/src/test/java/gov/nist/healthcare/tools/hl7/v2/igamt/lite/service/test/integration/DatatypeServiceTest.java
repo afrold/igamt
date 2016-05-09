@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -45,8 +46,28 @@ public class DatatypeServiceTest {
 	
 	@Test
 	public void testFindAll() {
-		List<Datatype> datatypes = datatypeService.findAll();
-		log.info("datatypes.size()=" + datatypes.size());
-		assertEquals(91, datatypes.size());
+		List<Datatype> dts = datatypeService.findAll();
+		log.info("datatypes.size()=" + dts.size());
+		assertTrue(dts.size() > 0);
 	}
-}
+	
+	@Test
+	public void testById() {
+		List<Datatype> dts = datatypeService.findAll();
+		assertTrue(dts.size() > 0);
+		Datatype dtbefore = dts.get(0);
+		String idbefore = dtbefore.getId();
+		Datatype dtafter = datatypeService.findById(idbefore);
+		String idafter = dtafter.getId();
+		assertTrue(idbefore.equals(idafter));
+	}
+
+	@Test
+	public void testExtSave() {
+		List<Datatype> dts = datatypeService.findAll();
+		assertTrue(dts.size() > 0);
+		Datatype dtbefore = dts.get(0);
+		dtbefore.setExt("ABC");
+		Datatype dtafter = datatypeService.findById(dtbefore.getId());
+		assertEquals("ABC", dtafter.getExt());
+	}}

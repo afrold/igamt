@@ -93,7 +93,8 @@ angular.module('igl').factory('DatatypeService',
                     var saveResponse = angular.fromJson(response.data);
                     datatype.date = saveResponse.date;
                     datatype.version = saveResponse.version;
-                    delay.resolve(saveResponse);
+                    datatype.id = saveResponse.id;
+                    delay.resolve(datatype);
                 }, function (error) {
                     delay.reject(error);
                 });
@@ -155,20 +156,14 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
-            bindDatatypes: function(ids, dtLibId) {
-            	var binding = {
-            		"datatypeIds" : ids,
-            		"datatypeLibraryId" : dtLibId
-            	};
-                var delay = $q.defer();
-                $http.post('api/datatypes/bindDatatypes', binding).then(function (response) {
-                    var datatypes = angular.fromJson(response.data);
-                    delay.resolve(datatypes);
-                }, function (error) {
-                    delay.reject(error);
-                });
-                return delay.promise;
+            delete_: function(datatype) {
+                 return $http.post('api/datatypes/'+ datatype.id+ '/delete');
+            },
+
+            getDatatypeLink : function(datatype){
+                return {id:datatype.id, ext: null, name: datatype.name};
             }
+
         };
         return DatatypeService;
     }])

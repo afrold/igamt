@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,6 +57,11 @@ public class Table extends SectionModel implements Serializable,
 
 	private Constant.SCOPE scope;
 	
+	protected Long accountId; 
+		
+	protected String date;
+			
+	protected  STATUS status; 
 	public Table() {
 		super();
 		this.type = Constant.TABLE;
@@ -268,4 +276,30 @@ public class Table extends SectionModel implements Serializable,
             append(id, rhs.id).
             isEquals();
     }
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public STATUS getStatus() {
+		return status;
+	}
+
+	public void setStatus(STATUS status) {
+		this.status = status;
+	}
+    
+    
 }

@@ -106,15 +106,18 @@ angular.module('igl').factory('SegmentService',
                 to.purposeAndUse = from.purposeAndUse;
                 return to;
             },
-            delete: function (segmentId, libId) {
+            delete: function (segmentId) {
                 var delay = $q.defer();
-                $http.post('api/segments/'+ segmentId+ '/delete', {params:{"libId":libId}}).then(function (response) {
+                $http.post('api/segments/'+ segmentId+ '/delete').then(function (response) {
                     var saveResponse = angular.fromJson(response.data);
                     delay.resolve(saveResponse);
                 }, function (error) {
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+            getSegmentLink : function(segment){
+                return {id:segment.id, ext: null, name: segment.name};
             }
 
         };

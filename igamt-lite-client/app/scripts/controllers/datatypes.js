@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService,MastermapSvc,FilteringSvc) {
+    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc) {
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
@@ -268,13 +268,46 @@ angular.module('igl')
 
         $scope.save = function () {
             $scope.saving = true;
-            DatatypeService.save($rootScope.datatype).then(function (result) {
-                var index = indexIn(result.id,$rootScope.datatypes);
-                if (index === -1) { // new datatype
+            var datatype = $rootScope.datatype;
+            var ext = datatype.ext;
+            datatype.ext = null;
+            if (datatype.libIds.indexOf($rootScope.igdocument.profile.datatypeLibrary.id) == -1) {
+                datatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
+            }
+            DatatypeService.save(datatype).then(function (result) {
+                if ($rootScope.datatypesMap[result.id] === null || $rootScope.datatypesMap[result.id] == undefined) { // new datatype
                     $rootScope.datatypes.push(result);
-                    $rootScope.igdocument.profile.datatypeLibrary.children.push({result.id, result.);
+                    $rootScope.datatypesMap[result.id] = result;
+                    var newLink = DatatypeLibrarySvc.createEmptyLink();
+                    newLink.id = result.id;
+                    newLink.ext = ext;
+                    newLink.name = datatype.name;
+                    // save link to datatypeLibrary
+                    DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
+                        $rootScope.igdocument.profile.datatypeLibrary.children.push(newLink);
+                        $rootScope.$broadcast('event:SetToC');
+                    }, function (error) {
+                        $scope.saving = false;
+                        $rootScope.msg().text = error.data.text;
+                        $rootScope.msg().type = error.data.type;
+                        $rootScope.msg().show = true;
+                    });
                 } else {
-                    DatatypeService.merge($rootScope.igdocument.profile.datatypeLibrary.children[index], result);
+                    var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary);
+                    if (oldLink != null) {
+                        DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                        var newLink = DatatypeService.getDatatypeLink(result);
+                        newLink.ext = ext;
+                        DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
+                            oldLink.ext = newLink;
+                            $rootScope.$broadcast('event:SetToC');
+                        }, function (error) {
+                            $scope.saving = false;
+                            $rootScope.msg().text = error.data.text;
+                            $rootScope.msg().type = error.data.type;
+                            $rootScope.msg().show = true;
+                        });
+                    }
                 }
                 $scope.saving = false;
                 $scope.selectedChildren = [];
@@ -340,7 +373,7 @@ angular.module('igl')
                 component.datatype = datatype.id;
                 //TODO: load master map
                 $rootScope.datatypesMap[component.datatype] = datatype;
-                MastermapSvc.addDatatype(datatype.id, [component.id,component.type]);
+                MastermapSvc.addDatatype(datatype.id, [component.id, component.type]);
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
             });
@@ -357,22 +390,22 @@ angular.module('igl')
     });
 
 angular.module('igl')
-    .controller('SelectDatatypeFlavorCtrl', function ($scope, $filter, $modalInstance, $rootScope, $http, currentNode, DatatypeService, $rootScope, hl7Version,ngTreetableParams,ViewSettings) {
+    .controller('SelectDatatypeFlavorCtrl', function ($scope, $filter, $modalInstance, $rootScope, $http, currentNode, DatatypeService, $rootScope, hl7Version, ngTreetableParams, ViewSettings) {
         $scope.resultsError = null;
         $scope.viewSettings = ViewSettings;
         $scope.resultsLoading = null;
         $scope.results = [];
         $scope.tmpResults = [].concat($scope.results);
         $scope.currentNode = currentNode;
-        $scope.currentDatatype =  $rootScope.datatypesMap[currentNode.datatype];
-        $scope.selection = {scope: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.scope : null, hl7Version:hl7Version, datatype: null, name:$scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name:null};
+        $scope.currentDatatype = $rootScope.datatypesMap[currentNode.datatype];
+        $scope.selection = {scope: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.scope : null, hl7Version: hl7Version, datatype: null, name: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name : null};
 
         $scope.datatypeFlavorParams = new ngTreetableParams({
             getNodes: function (parent) {
-                return DatatypeService.getNodes(parent,$scope.selection.datatype);
+                return DatatypeService.getNodes(parent, $scope.selection.datatype);
             },
             getTemplate: function (node) {
-                return DatatypeService.getReadTemplate(node,$scope.selection.datatype);
+                return DatatypeService.getReadTemplate(node, $scope.selection.datatype);
             }
         });
 
@@ -438,7 +471,7 @@ angular.module('igl')
         };
 
         $scope.isDatatypeSubDT = function (component) {
-            return DatatypeService.isDatatypeSubDT(component,$scope.selection.datatype);
+            return DatatypeService.isDatatypeSubDT(component, $scope.selection.datatype);
         };
 
         $scope.isSelected = function (datatype) {
@@ -446,9 +479,9 @@ angular.module('igl')
         };
 
         $scope.showDatatype = function (datatype) {
-             if (datatype && datatype != null) {
-                 $scope.datatypeError = null;
-                 $scope.loadingSelection = true;
+            if (datatype && datatype != null) {
+                $scope.datatypeError = null;
+                $scope.loadingSelection = true;
                 DatatypeService.getOne(datatype.id).then(function (result) {
                     $scope.selection.datatype = datatype;
                     $scope.selection.datatype["type"] = "datatype";
@@ -477,95 +510,54 @@ angular.module('igl')
     });
 
 
-angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope) {
+angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope, DatatypeLibrarySvc, DatatypeService) {
     $scope.dtToDelete = dtToDelete;
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-        // We must delete from two collections.
-        var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
-        if (index > -1) $rootScope.datatypes.splice(index, 1);
-        var tmp = $rootScope.findDatatypeInLibrary($scope.dtToDelete.id,$rootScope.igdocument.profile.datatypeLibrary);
-        if(tmp != null){
-            index = $rootScope.igdocument.profile.datatypeLibrary.children.indexOf(tmp);
-            if (index > -1) $rootScope.igdocument.profile.datatypeLibrary.children.splice(index, 1);
-        }
-        $rootScope.datatypesMap[$scope.dtToDelete.id] = null;
-        $rootScope.references = [];
-        if ($rootScope.datatype === $scope.dtToDelete) {
-            $rootScope.datatype = null;
-        }
-        if ($scope.dtToDelete.id < 0) { //datatype flavor
-//            var index = $rootScope.changes["datatype"]["add"].indexOf($scope.dtToDelete);
-//            if (index > -1) $rootScope.changes["datatype"]["add"].splice(index, 1);
-//            if ($rootScope.changes["datatype"]["add"] && $rootScope.changes["datatype"]["add"].length === 0) {
-//                delete  $rootScope.changes["datatype"]["add"];
-//            }
-//            if ($rootScope.changes["datatype"] && Object.getOwnPropertyNames($rootScope.changes["datatype"]).length === 0) {
-//                delete  $rootScope.changes["datatype"];
-//            }
-        } else {
-            $rootScope.recordDelete("datatype", "edit", $scope.dtToDelete.id);
-            if ($scope.dtToDelete.components != undefined && $scope.dtToDelete.components != null && $scope.dtToDelete.components.length > 0) {
-
-                //clear components changes
-                angular.forEach($scope.dtToDelete.components, function (component) {
-                    $rootScope.recordDelete("component", "edit", component.id);
-//                    $rootScope.removeObjectFromChanges("component", "delete", component.id);
+        DatatypeService.delete_($scope.dtToDelete).then(function (result) {
+                DatatypeLibrarySvc.deleteChild($scope.dtToDelete.id).then(function (res) {
+                    // We must delete from two collections.
+                    var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
+                    $rootScope.datatypes.splice(index, 1);
+                    var tmp = DatatypeLibrarySvc.findOneChild($scope.dtToDelete.id, $rootScope.igdocument.profile.datatypeLibrary);
+                    index = $rootScope.igdocument.profile.datatypeLibrary.children.indexOf(tmp);
+                    $rootScope.igdocument.profile.datatypeLibrary.children.splice(index, 1);
+                    $rootScope.datatypesMap[$scope.dtToDelete.id] = null;
+                    $rootScope.references = [];
+                    if ($rootScope.datatype === $scope.dtToDelete) {
+                        $rootScope.datatype = null;
+                    }
+                    $rootScope.recordDelete("datatype", "edit", $scope.dtToDelete.id);
+                    $rootScope.msg().text = "dtDeleteSuccess";
+                    $rootScope.msg().type = "success";
+                    $rootScope.msg().show = true;
+                    $rootScope.manualHandle = true;
+                    $scope.loading = false;
+                    $rootScope.$broadcast('event:SetToC');
+                    $modalInstance.close($scope.dtToDelete);
+                }, function (error) {
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                    $rootScope.manualHandle = true;
+                    $scope.loading = false;
                 });
-//                if ($rootScope.changes["component"]["delete"] && $rootScope.changes["component"]["delete"].length === 0) {
-//                    delete  $rootScope.changes["component"]["delete"];
-//                }
-
-//                if ($rootScope.changes["component"] && Object.getOwnPropertyNames($rootScope.changes["component"]).length === 0) {
-//                    delete  $rootScope.changes["component"];
-//                }
-
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                $rootScope.manualHandle = true;
+                $scope.loading = false;
             }
-
-            if ($scope.dtToDelete.predicates != undefined && $scope.dtToDelete.predicates != null && $scope.dtToDelete.predicates.length > 0) {
-                //clear predicates changes
-                angular.forEach($scope.dtToDelete.predicates, function (predicate) {
-                    $rootScope.recordDelete("predicate", "edit", predicate.id);
-//                    $rootScope.removeObjectFromChanges("predicate", "delete", predicate.id);
-                });
-//                if ($rootScope.changes["predicate"]["delete"] && $rootScope.changes["predicate"]["delete"].length === 0) {
-//                    delete  $rootScope.changes["predicate"]["delete"];
-//                }
-
-//                if ($rootScope.changes["predicate"] && Object.getOwnPropertyNames($rootScope.changes["predicate"]).length === 0) {
-//                    delete  $rootScope.changes["predicate"];
-//                }
-
-            }
-
-            if ($scope.dtToDelete.conformanceStatements != undefined && $scope.dtToDelete.conformanceStatements != null && $scope.dtToDelete.conformanceStatements.length > 0) {
-                //clear conforamance statement changes
-                angular.forEach($scope.dtToDelete.conformanceStatements, function (confStatement) {
-                    $rootScope.recordDelete("conformanceStatement", "edit", confStatement.id);
-//                    $rootScope.removeObjectFromChanges("conformanceStatement", "delete", confStatement.id);
-                });
-//                if ($rootScope.changes["conformanceStatement"]["delete"] && $rootScope.changes["conformanceStatement"]["delete"].length === 0) {
-//                    delete  $rootScope.changes["conformanceStatement"]["delete"];
-//                }
-
-//                if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["conformanceStatement"]).length === 0) {
-//                    delete  $rootScope.changes["conformanceStatement"];
-//                }
-            }
-        }
-        $rootScope.msg().text = "dtDeleteSuccess";
-        $rootScope.msg().type = "success";
-        $rootScope.msg().show = true;
-        $rootScope.manualHandle = true;
-        $rootScope.$broadcast('event:SetToC');
-        $modalInstance.close($scope.dtToDelete);
+        );
     };
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-});
+})
+;
 
 
 angular.module('igl').controller('DatatypeReferencesCtrl', function ($scope, $modalInstance, dtToDelete) {

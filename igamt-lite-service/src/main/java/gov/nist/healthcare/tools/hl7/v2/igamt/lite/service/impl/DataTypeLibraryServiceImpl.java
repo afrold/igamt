@@ -12,19 +12,26 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 
 /**
@@ -38,29 +45,34 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 
 	@Autowired
 	private DatatypeLibraryRepository datatypeLibraryRepository;
+
+	@Autowired
+	private DatatypeRepository datatypeRepository;
 	
+	private Random rand = new Random();
+
 	@Override
 	public List<DatatypeLibrary> findAll() {
 		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findAll();
 		log.debug("DatatypeLibraryRepository.findAll datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
 	}
-	
+
 	@Override
 	public List<DatatypeLibrary> findByScopes(List<SCOPE> scopes) {
 		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByScopes(scopes);
 		log.debug("DatatypeLibraryRepository.findByScopes datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
 	}
-	
+
 	@Override
 	public List<String> findHl7Versions() {
 		return datatypeLibraryRepository.findHl7Versions();
 	}
-	
+
 	@Override
 	public DatatypeLibrary findById(String id) {
-		return datatypeLibraryRepository.findById(id);
+		return datatypeLibraryRepository.findOne(id);
 	}
 
 	@Override
@@ -115,6 +127,69 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		datatypeLibraryRepository.delete(library);
 	}
 	
+	@Override
+	public void delete(String id) {
+		datatypeLibraryRepository.delete(id);
+	}
+
+	@Override
+	public List<Datatype> bindDatatypes(List<String> datatypeIds, String datatypeLibraryId, String datatypeLibraryExt,
+			Long accountId) {
+		
+		DatatypeLibrary dtLib = datatypeLibraryRepository.findById(datatypeLibraryId);
+		dtLib.setExt(deNull(datatypeLibraryExt));
+		List<DatatypeLibrary> dtLibDups = datatypeLibraryRepository.findDups(dtLib);
+		if (dtLibDups != null) {
+			String ext = decorateExt(dtLib.getExt());
+			dtLib.setExt(ext);
+		}
+		dtLib.getMetaData().setExt(dtLib.getExt());
+		dtLib.setAccountId(accountId);
+		
+		List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
+		for (Datatype dt : datatypes) {
+			dt.setExt(decorateExt(dtLib.getExt()));
+			dt.getLibIds().add(datatypeLibraryId);
+//			List<Datatype> dtDups = datatypeRepository.findDups(dt);
+//			if (dtDups.size() > 0) {
+//				String ext = decorateExt(dtLib.getExt());
+//				dt.setExt(ext);
+//			}
+			dt.setId(null);
+			dt.setType(Constant.DATATYPE);
+			dt.setScope(dtLib.getScope());
+			dt.setHl7Version(dtLib.getMetaData().getHl7Version());
+			dt.setDate(Constant.mdy.format(new Date()));
+			dt.setAccountId(accountId);
+			datatypeRepository.save(dt);
+			dtLib.addLink(dt);
+		}
+		datatypeLibraryRepository.save(dtLib);
+		return datatypes;
+	}
+
+	boolean checkDup(Datatype dt, DatatypeLibrary dtLib, String ext) {
+		return dtLib.getChildren().contains(new DatatypeLink(dt.getId(), dt.getName(), ext));
+	}
+	
+	String decorateExt(String ext) {
+		return ext + "-" + genRand();
+	}
+	
+	String deNull(String ext) {
+		return (ext != null && ext.trim().length() > 0) ? ext : genRand();
+	}
+	
+	String genRand() {
+		return Integer.toString(rand.nextInt(100));
+	}
+	
+	@Override
+	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version,
+			String name, Long accountId) {
+		 return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
+	}
+
 	class DatatypeByLabel implements Comparator<Datatype> {
 
 		@Override
@@ -122,4 +197,6 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 			return thatDt.getLabel().compareTo(thisDt.getLabel());
 		}
 	}
+
+	 
 }

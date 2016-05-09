@@ -857,6 +857,18 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
         };
 
+        $rootScope.createNewExtension = function (ext) {
+            if ($rootScope.igdocument != null) {
+                var rand = (Math.floor(Math.random() * 10000000) + 1);
+                if($rootScope.igdocument.metaData["ext"] === null){
+                    return ext != null && ext != "" ? ext + "_" + rand: rand;
+                }else {
+                    return  ext != null && ext != "" ? ext + "_" + $rootScope.igdocument.metaData["ext"] + "_" + rand + 1: rand +1;
+                }
+            } else {
+                return null;
+            }
+        };
 
         $rootScope.isSubComponent = function (node) {
             node.type === 'component' && $rootScope.parentsMap[node.id] && $rootScope.parentsMap[node.id].type === 'component';

@@ -121,22 +121,4 @@ public class DataypeServiceImplTest {
 		assertEquals(ids.size(), sut.size());
 		assertNull(sut.get(0).getSectionPosition());
 	}
-	
-	@Test
-	public void testBindDatatypes() {
-		List<Datatype> dts = datatypeService.findAll();
-		List<String> datatypeIds = new ArrayList<String>(); 
-		datatypeIds.add(dts.get(0).getId());
-		String dtLibId = "dtLibId";
-		int libIdsSize = dts.get(0).getLibIds().size();
-		List<Datatype> sut = datatypeService.bindDatatypes(datatypeIds, dtLibId);
-		assertNotNull(sut);
-		assertEquals(1, sut.size());
-		assertEquals(libIdsSize + 1, sut.get(0).getLibIds().size());
-		assertTrue(sut.get(0).getLibIds().contains(dtLibId));
-		Datatype sut1 = datatypeService.findById(sut.get(0).getId());
-		assertNotNull(sut1);
-		assertEquals(libIdsSize + 1, sut1.getLibIds().size());
-		assertTrue(sut1.getLibIds().contains(dtLibId));
-	}
 }

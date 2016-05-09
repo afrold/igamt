@@ -95,6 +95,44 @@ angular.module('igl').factory('SegmentLibrarySvc', function($http, userInfoServi
                 return angular.fromJson(response.data)});
     };
 
+    svc.findOneChild = function (id, library) {
+        if (library.children) {
+            for (var i = 0; i < library.children.length; i++) {
+                if (library.children[i].id === id) {
+                    return library.children[i];
+                }
+            }
+        }
+        return null;
+    };
+
+    svc.createEmptyLink = function () {
+        return {id:null, ext:null, name:null};
+    };
+
+
+    svc.addChild = function (libId, child) {
+        var delay = $q.defer();
+        $http.post('api/segment-library/'+ libId+ '/addChild', child).then(function (response) {
+            var link = angular.fromJson(response.data);
+            delay.resolve(link);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
+    svc.updateChild = function (libId, child) {
+        var delay = $q.defer();
+        $http.post('api/segment-library/'+ libId+ '/updateChild', child).then(function (response) {
+            var link = angular.fromJson(response.data);
+            delay.resolve(link);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
 
 	return svc;
 });
