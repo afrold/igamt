@@ -2,7 +2,7 @@ angular
 		.module('igl')
 		.factory(
 				'ToCSvc',
-				function(FilteringSvc, MastermapSvc) {
+				function(FilteringSvc, MastermapSvc,$rootScope) {
 
 					var svc = this;
 
@@ -101,16 +101,24 @@ angular
 								igdocument.profile.sectionTitle,
 								igdocument.profile.sectionPosition,
 								igdocument.profile.type, 0, igdocument.profile);
-						var children = [];
+
+                        var datatypes = angular.copy(igdocument.profile.datatypeLibrary);
+                        datatypes.children = $rootScope.datatypes;
+                        var segments = angular.copy(igdocument.profile.segmentLibrary);
+                        segments.children = $rootScope.segments;
+                        var tables = angular.copy(igdocument.profile.tableLibrary);
+                        tables.children = $rootScope.tables;
+
+                        var children = [];
 						children.push(getMetadata(igdocument.profile,
 								"profileMetadata"));
 						children.push(getTopEntry(igdocument.profile.messages,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.segmentLibrary,
+						children.push(getTopEntry(segments,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.datatypeLibrary,
+						children.push(getTopEntry(datatypes,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.tableLibrary,
+						children.push(getTopEntry(tables,
 								igdocument.profile));
 						rval.children = children;
 						return rval;
