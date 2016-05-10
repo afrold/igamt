@@ -50,6 +50,7 @@ import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -190,18 +191,32 @@ public class IGDocumentController extends CommonController {
 			DatatypeLibrary clonedDatatypeLibrary = datatypeLibrary.clone();
 			SegmentLibrary clonedSegmentLibrary = segmentLibrary.clone();
 			TableLibrary clonedTableLibrary = tableLibrary.clone();
+			
+			clonedDatatypeLibrary.setChildren(new HashSet<DatatypeLink>());
+			clonedSegmentLibrary.setChildren(new HashSet<SegmentLink>());
+			clonedTableLibrary.setChildren(new HashSet<TableLink>());
 
-			List<Datatype> datatypes = datatypeService.findByLibIds(datatypeLibrary.getId());
+			datatypeLibraryService.save(clonedDatatypeLibrary);
+			segmentLibraryService.save(clonedSegmentLibrary);
+			tableLibraryService.save(clonedTableLibrary);
+			
+			List<Datatype> datatypes = datatypeService.findByFullDTsLibIds(datatypeLibrary.getId());
 			if (datatypes != null) {
 				for (int i = 0; i < datatypes.size(); i++) {
 					Datatype d = datatypes.get(i);
-					DatatypeLink dl = clonedDatatypeLibrary.findOne(d.getId());
-					d.getLibIds().add(clonedDatatypeLibrary.getId());
+					
+					System.out.println(clonedDatatypeLibrary.getId());
+					System.out.println(datatypeLibrary.getId());
+					System.out.println(d.getId());
+					DatatypeLink dl = datatypeLibrary.findOne(d.getId()).clone();
 					if(d.getScope().equals(SCOPE.USER)){
 						d.setId(null);
+						d.setLibId(new HashSet<String>());
 					}
+					d.getLibIds().add(clonedDatatypeLibrary.getId());
 					datatypeService.save(d);
 					dl.setId(d.getId());
+					clonedDatatypeLibrary.addDatatype(dl);
 				}
 			}
 
@@ -209,13 +224,15 @@ public class IGDocumentController extends CommonController {
 			if (segments != null) {
 				for (int i = 0; i < segments.size(); i++) {
 					Segment s = segments.get(i);
-					SegmentLink sl = clonedSegmentLibrary.findOne(s.getId());
-					s.getLibIds().add(clonedSegmentLibrary.getId());
+					SegmentLink sl = segmentLibrary.findOne(s.getId());
 					if(s.getScope().equals(SCOPE.USER)){
 						s.setId(null);
+						s.setLibId(new HashSet<String>());
 					}
+					s.getLibIds().add(clonedSegmentLibrary.getId());
 					segmentService.save(s);
 					sl.setId(s.getId());
+					clonedSegmentLibrary.addSegment(sl);
 				}
 
 			}
@@ -224,13 +241,15 @@ public class IGDocumentController extends CommonController {
 			if (tables != null) {
 				for (int i = 0; i < tables.size(); i++) {
 					Table t = tables.get(i);
-					TableLink tl = clonedTableLibrary.findOneTableById(t.getId());
-					t.getLibIds().add(clonedTableLibrary.getId());
+					TableLink tl = tableLibrary.findOneTableById(t.getId());
 					if(t.getScope().equals(SCOPE.USER)){
 						t.setId(null);
+						t.setLibIds(new HashSet<String>());
 					}
+					t.getLibIds().add(clonedTableLibrary.getId());
 					tableService.save(t);
 					tl.setId(t.getId());
+					clonedTableLibrary.addTable(tl);
 				}
 			}
 

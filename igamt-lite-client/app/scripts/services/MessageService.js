@@ -5,7 +5,18 @@
 angular.module('igl').factory('MessageService',
     ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http', 'FilteringSvc', function ($rootScope, ViewSettings,ElementUtils,$q,$http, FilteringSvc) {
         var MessageService = {
-            getNodes: function (parent,root) {
+        	save: function (message) {
+        		var delay = $q.defer();
+                $http.post('api/messages/save', message).then(function (response) {
+                	var saved = angular.fromJson(response.data);
+                	delay.resolve(saved);
+                	return saved;
+                }, function (error) {
+                	delay.reject(error);
+                });
+                return delay.promise;
+        	},
+        	getNodes: function (parent,root) {
                 if (!parent || parent == null) {
                     return root.children;
                 } else {

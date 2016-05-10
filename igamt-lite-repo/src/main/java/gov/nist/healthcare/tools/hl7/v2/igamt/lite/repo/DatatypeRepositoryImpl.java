@@ -37,6 +37,13 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		qry = set4Brevis(qry);
 		return mongo.find(qry, Datatype.class);
 	}
+	
+	@Override
+	public List<Datatype> findFullDTsByLibIds(String dtLibId) {
+		Criteria where = Criteria.where("libIds").in(dtLibId);
+		Query qry = Query.query(where);
+		return mongo.find(qry, Datatype.class);
+	}
 
 	@Override
 	public List<Datatype> findAll() {

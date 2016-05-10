@@ -78,7 +78,15 @@ public class DatatypeLink extends AbstractLink implements Cloneable{
 		DatatypeLink clonedLink = new DatatypeLink();
 		clonedLink.setExt(this.ext);
 		clonedLink.setName(this.name);
-		clonedLink.setId(this.getId());
+		clonedLink.setId(this.id);
 		return clonedLink;
 	}
+
+	@Override
+	public String toString() {
+		return "DatatypeLink [name=" + name + ", ext=" + ext + ", getId()="
+				+ getId() + "]";
+	}
+	
+	
 }

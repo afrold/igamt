@@ -111,7 +111,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	public SegmentLink findOne(String sgId) {
 		if (this.children != null) {
 			for (SegmentLink segl1 : this.children) {
-				if (segl1.equals(sgId)) {
+				if (segl1.getId().equals(sgId)) {
 					return segl1;
 				}
 			}
