@@ -88,10 +88,10 @@ angular
     }
 
 
-    svc.addDatatype = function(datatype, parent) {
+    svc.addDatatype = function(datatypeId, parent) {
 
-      if (datatype !== undefined && datatype !== "") {
-        var dt = svc.getDatatypeLibrary()[datatype];
+      if (datatypeId !== undefined && datatypeId !== "") {
+        var dt = svc.getDatatypeLibrary()[datatypeId];
         if (dt !== undefined){
           svc.createMMElement(dt.id, "datatype");
           svc.addParentsId(dt.id, "datatype", parent);
@@ -100,10 +100,21 @@ angular
             svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
           });
         } else {
-          svc.createMMElement(datatype, "datatype");
-          svc.addParentsId(datatype, "datatype", parent);
+          svc.createMMElement(datatypeId, "datatype");
+          svc.addParentsId(datatypeId, "datatype", parent);
           //           console.log("!!! => datatype " + datatype + " not found in library");
         }
+      }
+    }
+
+
+    svc.addDatatypeObject = function(dt, parent) {
+        if (dt !== undefined){
+          svc.createMMElement(dt.id, "datatype");
+          svc.addParentsId(dt.id, "datatype", parent);
+          dt.components.forEach( function(c) {
+            svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
+          });
       }
     }
 
