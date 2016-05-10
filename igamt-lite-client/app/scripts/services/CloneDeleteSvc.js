@@ -1,7 +1,7 @@
 angular.module('igl').factory(
     'CloneDeleteSvc',
 //    function ($rootScope, $modal, ProfileAccessSvc, $cookies, DatatypeLibrarySvc,SegmentLibrarySvc,TableLibrarySvc,MessageService,MessageLibrarySvc) {
-    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService) {
+    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc) {
 
         var svc = this;
 
@@ -92,25 +92,31 @@ angular.module('igl').factory(
                 });
             }
             
-            if(newDatatype.scope === 'USER'){
-            	newDatatype.id = null;
-            	newDatatype = DatatypeService.save(newDatatype);
-            }
+            newDatatype.scope = 'USER';
+            newDatatype.id = null;
+            newDatatype = DatatypeService.save(newDatatype);
             
             newLink.ext = newDatatype.ext;
             newLink.id = newDatatype.id;
             
             $rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
             $rootScope.igdocument.profile.datatypeLibrary.children = sortElementsByAlphabetically($rootScope.igdocument.profile.datatypeLibrary.children);
-            $rootScope.recordChanged();
-            $rootScope.igdocument.profile.datatypeLibrary = DatatypeLibrarySvc.save($rootScope.igdocument.profile.datatypeLibrary);
 
-            $rootScope.datatypes.splice(0, 0, newDatatype);
-            $rootScope.datatype = newDatatype;
-            $rootScope.datatypesMap[newDatatype.id] = newDatatype;
-            
-            $rootScope.$broadcast('event:SetToC');
-            $rootScope.$broadcast('event:openDatatype', newDatatype);
+            DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
+                $rootScope.igdocument.profile.datatypeLibrary.children.push(newLink);
+                MastermapSvc.addDatatypeObject(newDatatype, []);
+                $rootScope.datatypes.splice(0, 0, newDatatype);
+                $rootScope.datatype = newDatatype;
+                $rootScope.datatypesMap[newDatatype.id] = newDatatype;
+                
+                $rootScope.$broadcast('event:SetToC');
+                $rootScope.$broadcast('event:openDatatype', newDatatype);
+            }, function (error) {
+                $scope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
         };
 
         svc.copyTable = function (table) {
