@@ -16,7 +16,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  */
 public abstract class AbstractLink {
 
-	private String id;
+	protected String id;
 	
 	public String getId() {
 		return id;

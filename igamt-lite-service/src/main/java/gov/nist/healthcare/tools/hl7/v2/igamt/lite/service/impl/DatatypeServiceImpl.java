@@ -45,7 +45,7 @@ public class DatatypeServiceImpl implements DatatypeService {
 	public Datatype findById(String id) {
 		log.info("DataypeServiceImpl.findById=" + id);
 		Datatype datatype;
-		datatype = datatypeRepository.findById(id);
+		datatype = datatypeRepository.findOne(id);
 		return datatype;
 	}
 
@@ -58,6 +58,13 @@ public class DatatypeServiceImpl implements DatatypeService {
 	@Override
 	public List<Datatype> findByLibIds(String dtLibId) {
 		List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId);
+		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
+		return datatypes;
+	}
+	
+	@Override
+	public List<Datatype> findByFullDTsLibIds(String dtLibId) {
+		List<Datatype> datatypes = datatypeRepository.findFullDTsByLibIds(dtLibId);
 		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
 		return datatypes;
 	}

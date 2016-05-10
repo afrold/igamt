@@ -130,7 +130,7 @@ angular
           svc.addField(f, parent.concat([[segment.id, "segment"]]));
         });
       } else {
-        console.log("!!! => segment id " + segmentId + " not found");
+//        console.log("!!! => segment id " + segmentId + " not found");
       }
     }
 

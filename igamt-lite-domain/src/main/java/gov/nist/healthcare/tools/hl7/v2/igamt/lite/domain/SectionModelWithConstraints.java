@@ -36,9 +36,9 @@ public abstract class SectionModelWithConstraints extends SectionModel {
 		
 	protected  STATUS status; 
 	
-	private Set<String> participants = new HashSet<String>();
+	protected Set<String> participants = new HashSet<String>();
 	
-	private Set<String> libIds = new HashSet<String>();
+	protected Set<String> libIds = new HashSet<String>();
 
 	protected List<Predicate> predicates = new ArrayList<Predicate>();
 

@@ -71,7 +71,7 @@ public class IGDocumentCreationServiceTest {
 	final String hl7Version = "2.5.1";
 	final Long accountId = 45L;
 
-	@BeforeClass
+//	@BeforeClass
 	public static void setup() {
 		refIneteg = new ProfileCreationReferentialIntegrityTest();
 	}
@@ -108,6 +108,7 @@ public class IGDocumentCreationServiceTest {
 		List<MessageEvents> msgEvts5 = msgEvts.subList(0, 5);
 
 		IGDocument pNew = null;
+		int bCount = igDocumentRepository.findAll().size();
 		try {
 			pNew = igDocumentCreation.createIntegratedIGDocument(msgEvts5, hl7Version, accountId);
 		} catch (IGDocumentException e) {
@@ -117,17 +118,11 @@ public class IGDocumentCreationServiceTest {
 		for (Message msg : pNew.getProfile().getMessages().getChildren() ) {
 			assertNotNull(msg.getId());
 		}
-		refIneteg.testMessagesVsSegments(pNew.getProfile());
-		refIneteg.testFieldDatatypes(pNew.getProfile());
-		refIneteg.testComponentDataypes(pNew.getProfile());
-
-		// TODO move this elsewhere.
-		// Captures the newly created profile.
-		// ObjectMapper mapper = new ObjectMapper();
-		// File OUTPUT_DIR = new File(System.getenv("IGAMT") + "/IGDocuments");
-		// File outfile = new File(OUTPUT_DIR, "igdocument-" + "2.7.5" +
-		// ".json");
-		// mapper.writerWithDefaultPrettyPrinter().writeValue(outfile, pNew);
+		int aCount = igDocumentRepository.findAll().size();
+		assertEquals(aCount, bCount + 1);
+		igDocumentRepository.delete(pNew);
+		int lCount = igDocumentRepository.findAll().size();
+		assertEquals(lCount, bCount);
 	}
 
 	@Test
@@ -144,6 +139,7 @@ public class IGDocumentCreationServiceTest {
 		IGDocument pNew = null;
 		IGDocument pNewNew = null;
 		try {
+			int bCount = igDocumentRepository.findAll().size();
 			pNew = igDocumentCreation.createIntegratedIGDocument(msgEvts5, hl7Version, accountId);
 			assertEquals(5, pNew.getProfile().getMessages().getChildren().size());
 			int maxPos = 1;
@@ -160,9 +156,12 @@ public class IGDocumentCreationServiceTest {
 			assertTrue(maxPos < maxPosNew);
 			assertEquals(maxPos +2, maxPosNew);
 			assertEquals(7, pNewNew.getProfile().getMessages().getChildren().size());
-			refIneteg.testMessagesVsSegments(pNewNew.getProfile());
-			refIneteg.testFieldDatatypes(pNewNew.getProfile());
-			refIneteg.testComponentDataypes(pNewNew.getProfile());
+			int aCount = igDocumentRepository.findAll().size();
+			assertEquals(aCount, bCount + 1);
+			igDocumentRepository.delete(pNew);
+			int lCount = igDocumentRepository.findAll().size();
+			assertEquals(lCount, bCount);
+			
 		} catch (IGDocumentException e) {
 			e.printStackTrace();
 		}

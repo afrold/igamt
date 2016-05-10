@@ -20,7 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ DatatypeLibraryReadConverterTest.class, DatatypeReadConverterTest.class,
-		SegmentLibraryReadConverterTest.class })
+		SegmentLibraryReadConverterTest.class, IGDocumentReadConverterTest.class})
 public class AllTests {
 
 }
