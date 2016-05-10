@@ -19,7 +19,7 @@
             "ER7"
         ]
     },
-    "segments": {
+    "segmentLibrary": {
         "id": "55366517dfc5d47697b82919",
         "children": [
             {
@@ -11160,7 +11160,7 @@
             }
         ]
     },
-    "datatypes": {
+    "datatypeLibrary": {
         "id": "55366517dfc5d47697b826dc",
         "children": [
             {
@@ -17518,7 +17518,7 @@
             }
         ]
     },
-    "tables": {
+    "tableLibrary": {
         "id": "55366516dfc5d47697b81c72",
         "valueSetLibraryIdentifier": "",
         "status": "Active",
