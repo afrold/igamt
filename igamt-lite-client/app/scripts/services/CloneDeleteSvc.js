@@ -24,10 +24,10 @@ angular.module('igl').factory(
 
         svc.copySegment = function (segment) {
             var newSegment = angular.copy(segment);
-            car newLink = angular.copy(SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary));
+            var newLink = angular.copy(SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary));
             newSegment.participants = [];
             
-            newSegment.ext = $rootScope.createNewExtension(segmentLink.ext);
+            newSegment.ext = $rootScope.createNewExtension(newLink.ext);
             if (newSegment.fields != undefined && newSegment.fields != null && newSegment.fields.length != 0) {
                 for (var i = 0; i < newSegment.fields.length; i++) {
                     newSegment.fields[i].id = new ObjectId().toString();
@@ -71,7 +71,7 @@ angular.module('igl').factory(
             
             newDatatype.participants = [];
 
-            newDatatype.ext = $rootScope.createNewExtension(datatypeLink.ext);
+            newDatatype.ext = $rootScope.createNewExtension(newLink.ext);
 
             if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
                 for (var i = 0; i < newDatatype.components.length; i++) {
@@ -117,9 +117,7 @@ angular.module('igl').factory(
             var newTable = angular.copy(table);
             var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary));
             
-            //TODO ???
             newTable.participants = [];
-            //TODO ???
             
             newTable.bindingIdentifier = $rootScope.createNewExtension(newLink.bindingIdentifier);
             newTable.codes = [];
@@ -183,7 +181,6 @@ angular.module('igl').factory(
             $rootScope.igdocument.profile.messages.children.splice(0, 0, newMessage);
             $rootScope.recordChanged();
             $rootScope.igdocument = IgDocumentService.save($rootScope.igdocument);
-            //TODO ????
             $rootScope.messages = $rootScope.igdocument.profile.messages;
             $rootScope.message = newMessage;
             
