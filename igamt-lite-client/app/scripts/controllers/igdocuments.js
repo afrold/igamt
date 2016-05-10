@@ -188,7 +188,7 @@ angular.module('igl')
         };
 
         $scope.selectIGDocumentType = function (selectedType) {
-            console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
+            //console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
             $scope.igDocumentConfig.selectedType = selectedType;
             StorageService.setSelectedIgDocumentType(selectedType);
             $scope.loadIGDocuments();
@@ -768,6 +768,7 @@ angular.module('igl')
 
         $scope.selectProfileMetaData = function () {
             $scope.subview = "EditProfileMetadata.html";
+            $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
             $scope.loadingSelection = true;
             $timeout(
                 function () {
@@ -1014,13 +1015,39 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
 
 
 
-angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
+angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies,IgDocumentService) {
     $scope.loading = false;
 
     $scope.save = function () {
-
+        $rootScope.igdocument.metaData = $rootScope.metaData;
+        IgDocumentService.save($rootScope.igDocument).then(function (result) {
+            $scope.saving = false;
+        }, function (error) {
+            $scope.saving = false;
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+        });
     };
+    $scope.cancel = function () {
+        $rootScope.metaData = null;
+    };
+});
 
+angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies,IgDocumentService) {
+    $scope.loading = false;
+
+    $scope.save = function () {
+        $rootScope.igdocument.profile.metaData = $rootScope.metaData;
+        IgDocumentService.save($rootScope.igDocument).then(function (result) {
+            $scope.saving = false;
+        }, function (error) {
+            $scope.saving = false;
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+        });
+    };
     $scope.cancel = function () {
         $rootScope.metaData = null;
     };

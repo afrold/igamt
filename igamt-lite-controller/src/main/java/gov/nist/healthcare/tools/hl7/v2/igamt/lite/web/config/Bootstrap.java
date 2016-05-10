@@ -57,7 +57,7 @@ public class Bootstrap implements InitializingBean {
 		IGDocumentConverterFromOldToNew old2New = new IGDocumentConverterFromOldToNew();
 		old2New.convert();
 	}
-	
+
 	private void loadPreloadedIGDocuments() throws Exception {
 		IGDocument d = new IGDocument();
 
@@ -102,13 +102,13 @@ public class Bootstrap implements InitializingBean {
 			TableLibrary tables = igd.getProfile().getTableLibrary();
 
 			for (TableLink tl : tables.getChildren()) {
-//				if (t.getName() == null || t.getName().equals("")) {
-//					if (t.getDescription() != null) {
-//						t.setName(t.getDescription());
-//						ischanged = true;
-//					} else
-//						t.setName("NONAME");
-//				}
+				// if (t.getName() == null || t.getName().equals("")) {
+				// if (t.getDescription() != null) {
+				// t.setName(t.getDescription());
+				// ischanged = true;
+				// } else
+				// t.setName("NONAME");
+				// }
 			}
 
 			if (ischanged)

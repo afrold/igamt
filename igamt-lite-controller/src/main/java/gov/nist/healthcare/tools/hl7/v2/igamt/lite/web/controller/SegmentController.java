@@ -72,7 +72,7 @@ public class SegmentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
-	public boolean save(@PathVariable("id") String segId) {
+	public boolean delete(@PathVariable("id") String segId) {
 		log.info("Deleting segment " + segId);
 		segmentService.delete(segId);
 		return true;

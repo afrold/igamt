@@ -58,7 +58,7 @@ public class TableController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
-	public boolean save(@PathVariable("id") String tableId) {
+	public boolean delete(@PathVariable("id") String tableId) {
 		log.info("Deleting table " + tableId);
 		tableService.delete(tableId);
 		return true;
