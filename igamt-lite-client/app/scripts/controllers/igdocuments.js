@@ -1015,7 +1015,7 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
 
 
 
-angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies,IgDocumentService) {
+angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $rootScope, $http,IgDocumentService) {
     $scope.loading = false;
 
     $scope.save = function () {
