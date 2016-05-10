@@ -188,7 +188,7 @@ angular.module('igl')
         };
 
         $scope.selectIGDocumentType = function (selectedType) {
-            console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
+            //console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
             $scope.igDocumentConfig.selectedType = selectedType;
             StorageService.setSelectedIgDocumentType(selectedType);
             $scope.loadIGDocuments();
