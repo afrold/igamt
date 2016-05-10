@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('TableService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc','userInfoService', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc,userInfoService) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', 'userInfoService', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc,userInfoService) {
         var TableService = {
 
             save: function (table) {
