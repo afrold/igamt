@@ -227,6 +227,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	private void addMessages(List<MessageEvents> msgEvts, Profile pSource, Profile pTarget) throws IGDocumentException {
 		Messages messages = pTarget.getMessages();
+		messages.setSectionTitle(pSource.getMessages().getSectionTitle());
+		messages.setSectionPosition(pSource.getMessages().getSectionPosition());
 		messages.setType(pSource.getMessages().getType());
 		try {
 			for (MessageEvents msgEvt : msgEvts) {

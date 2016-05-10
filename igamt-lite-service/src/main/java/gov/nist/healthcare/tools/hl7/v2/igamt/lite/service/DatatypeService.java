@@ -25,6 +25,8 @@ public interface DatatypeService {
 	List<Datatype> findAll();
 
 	List<Datatype> findByLibIds(String dtLibId);
+	
+	List<Datatype> findByFullDTsLibIds(String dtLibId);
 
 	List<Datatype> findByIds(List<String> ids);
 

@@ -12,6 +12,7 @@ angular.module('igl').factory('TableService',
                 $http.post('api/tables/save', table).then(function (response) {
                     var saved = angular.fromJson(response.data);
                     delay.resolve(saved);
+                    return saved;
                 }, function (error) {
                     delay.reject(error);
                 });
