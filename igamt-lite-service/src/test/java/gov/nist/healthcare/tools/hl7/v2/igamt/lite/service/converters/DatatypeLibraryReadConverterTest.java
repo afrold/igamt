@@ -42,6 +42,7 @@ public class DatatypeLibraryReadConverterTest {
 		while (cur.hasNext()) {
 			DBObject source = cur.next();
 			DatatypeLibrary sut = cnv.convert(source);
+			log.info("converted version=" + sut.getMetaData().getHl7Version());
 			assertNotNull(sut);
 		}
 	}

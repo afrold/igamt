@@ -96,7 +96,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	}
 
 	public boolean addDatatype(Datatype dt) {
-		return getChildren().add(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
+		return children.add(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
 	}
 	
 	public DatatypeLink findOne(String dtId) {

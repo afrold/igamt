@@ -170,18 +170,25 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		msgsTarget.setSectionDescription(dSource.getProfile().getMessages().getSectionDescription());
 		msgsTarget.setSectionPosition(dSource.getProfile().getMessages().getSectionPosition());
 		SegmentLibrary sgtsTarget = new SegmentLibrary();
+		sgtsTarget.setMetaData(dSource.getProfile().getSegmentLibrary().getMetaData());
+		sgtsTarget.setScope(Constant.SCOPE.USER);
 		segmentLibraryRepository.save(sgtsTarget);
+		
 		sgtsTarget.setSectionTitle(dSource.getProfile().getSegmentLibrary().getSectionTitle());
 		sgtsTarget.setSectionContents(dSource.getProfile().getSegmentLibrary().getSectionContents());
 		sgtsTarget.setSectionDescription(dSource.getProfile().getSegmentLibrary().getSectionDescription());
 		sgtsTarget.setSectionPosition(dSource.getProfile().getSegmentLibrary().getSectionPosition());
 		DatatypeLibrary dtsTarget = new DatatypeLibrary();
+		dtsTarget.setMetaData(dSource.getProfile().getDatatypeLibrary().getMetaData());
+		dtsTarget.setScope(Constant.SCOPE.USER);
 		datatypeLibraryRepository.save(dtsTarget);
 		dtsTarget.setSectionTitle(dSource.getProfile().getDatatypeLibrary().getSectionTitle());
 		dtsTarget.setSectionContents(dSource.getProfile().getDatatypeLibrary().getSectionContents());
 		dtsTarget.setSectionDescription(dSource.getProfile().getDatatypeLibrary().getSectionDescription());
 		dtsTarget.setSectionPosition(dSource.getProfile().getDatatypeLibrary().getSectionPosition());
 		TableLibrary tabTarget = new TableLibrary();
+		tabTarget.setMetaData(dSource.getProfile().getTableLibrary().getMetaData());
+		tabTarget.setScope(Constant.SCOPE.USER);
 		tableLibraryRepository.save(tabTarget);
 		tabTarget.setSectionTitle(dSource.getProfile().getTableLibrary().getSectionTitle());
 		tabTarget.setSectionContents(dSource.getProfile().getTableLibrary().getSectionContents());
@@ -196,6 +203,9 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		addMessages(msgEvts, dSource.getProfile(), pTarget);
 
 		dTarget.setProfile(pTarget);
+		segmentLibraryRepository.save(sgtsTarget);
+		datatypeLibraryRepository.save(dtsTarget);
+		tableLibraryRepository.save(tabTarget);
 		igdocumentRepository.save(dTarget);
 		return dTarget;
 	}
@@ -272,9 +282,9 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		if (SCOPE.USER == seg.getScope()) {
 			seg.setId(null);
 			seg.getLibIds().remove(sgtsSource.getId());
-			seg.getLibIds().add(sgtsTarget.getId());
-			segmentRepository.save(seg);
 		}
+		seg.getLibIds().add(sgtsTarget.getId());
+		segmentRepository.save(seg);
 		for (Field f : seg.getFields()) {
 			Datatype dt = datatypeRepository.findOne(f.getDatatype());
 			if (dt != null) {
@@ -303,11 +313,10 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		if (SCOPE.USER == dt.getScope()) {
 			dt.setId(null);
 			dt.getLibIds().remove(dtsSource.getId());
-			dt.getLibIds().add(dtsTarget.getId());
-			datatypeRepository.save(dt);
 		}
+		dt.getLibIds().add(dtsTarget.getId());
+		datatypeRepository.save(dt);
 		DatatypeLink link = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());
-		dtsTarget.addDatatype(link);
 			if (!dtsTarget.getChildren().contains(link)) {
 			for (Component cpt : dt.getComponents()) {
 				Datatype dt1 = datatypeRepository.findOne(cpt.getDatatype());
@@ -317,6 +326,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 					addTable(vsd, pSource, pTarget);
 				}
 			}
+			dtsTarget.addDatatype(link);
 		}
 	}
 
@@ -327,9 +337,9 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		if (SCOPE.USER == vsd.getScope()) {
 			vsd.setId(null);
 			vsd.getLibIds().remove(vsdSource.getId());
-			vsd.getLibIds().add(vsdTarget.getId());
-			tableRepository.save(vsd);
 		}
+		vsd.getLibIds().add(vsdTarget.getId());
+		tableRepository.save(vsd);
 		vsdTarget.addTable(vsd);
 	}
 

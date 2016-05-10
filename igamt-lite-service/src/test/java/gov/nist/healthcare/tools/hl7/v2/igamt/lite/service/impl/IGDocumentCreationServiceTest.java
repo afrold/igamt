@@ -76,7 +76,7 @@ public class IGDocumentCreationServiceTest {
 		refIneteg = new ProfileCreationReferentialIntegrityTest();
 	}
 
-//	@Test
+	@Test
 	public void testFindHl7VersionsTest() {
 		List<String> list = igDocumentCreation.findHl7Versions();
 		assertNotNull(list);
@@ -89,7 +89,7 @@ public class IGDocumentCreationServiceTest {
 		assertEquals(9, igDocumentCreation.findIGDocumentsByHl7Versions().size());
 	}
 
-//	@Test
+	@Test
 	public void testSummary() {
 		List<IGDocument> igds = igDocumentRepository
 				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);

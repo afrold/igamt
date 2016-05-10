@@ -349,6 +349,7 @@ angular.module('igl')
             var delay = $q.defer();
             $rootScope.igdocument.profile.datatypeLibrary.type = "datatypes";
             DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.igdocument.profile.datatypeLibrary.id).then(function (children) {
+            	consloe.log("datatypes count=" + children.length);
                 $rootScope.datatypes = children;
                 $rootScope.datatypesMap = {};
                 angular.forEach(children, function (child) {

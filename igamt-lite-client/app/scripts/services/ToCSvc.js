@@ -47,8 +47,8 @@ angular
 								+ igdocument.id);
 						toc = [];
 
-						// console.log("childSections=" +
-						// igdocument.childSections.length);
+//						console.log("childSections=" +
+//						igdocument.childSections.length);
 						var documentMetadata = getMetadata(igdocument,
 								"documentMetadata");
 						toc.push(documentMetadata);
@@ -59,7 +59,7 @@ angular
 						});
 						var conformanceProfile = getMessageInfrastructure(igdocument);
 						toc.push(conformanceProfile);
-//             console.log(toc);
+             console.log("toc=" + toc);
 						return toc;
 					};
 
@@ -116,7 +116,6 @@ angular
 								igdocument.profile));
 						children.push(getTopEntry(segments,
 								igdocument.profile));
-						console.log("datatypes=" + JSON.stringify(datatypes));
 						children.push(getTopEntry(datatypes,
 								igdocument.profile));
 						children.push(getTopEntry(tables,
