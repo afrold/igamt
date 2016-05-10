@@ -116,6 +116,7 @@ angular
 								igdocument.profile));
 						children.push(getTopEntry(segments,
 								igdocument.profile));
+						console.log("datatypes=" + JSON.stringify(datatypes));
 						children.push(getTopEntry(datatypes,
 								igdocument.profile));
 						children.push(getTopEntry(tables,

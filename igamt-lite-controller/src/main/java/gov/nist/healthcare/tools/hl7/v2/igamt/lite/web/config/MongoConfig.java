@@ -31,6 +31,7 @@ import com.mongodb.ServerAddress;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.IGDocumentReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
 /**
@@ -78,7 +79,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
 		converterList.add(new ComponentWriteConverter());
 		converterList.add(new SegmentRefWriteConverter());
 		// converterList.add(new ProfileReadConverter());
-		// converterList.add(new IGDocumentReadConverter());
+		converterList.add(new IGDocumentReadConverter());
 		// converterList.add(new DatatypeReadConverter());
 		return new CustomConversions(converterList);
 	}

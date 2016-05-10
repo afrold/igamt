@@ -158,7 +158,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 			dt.setAccountId(accountId);
 			//  We save at this point in order to have an id for the link.
 			datatypeRepository.save(dt);
-			dtLib.addLink(dt);
+			dtLib.addDatatype(dt);
 		}
 		datatypeLibraryRepository.save(dtLib);
 		return datatypes;

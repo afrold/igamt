@@ -196,7 +196,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		addMessages(msgEvts, dSource.getProfile(), pTarget);
 
 		dTarget.setProfile(pTarget);
-
+		igdocumentRepository.save(dTarget);
 		return dTarget;
 	}
 
@@ -207,6 +207,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		String hl7Version = dTarget.getProfile().getMetaData().getHl7Version();
 		IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
 		addMessages(msgEvts, dSource.getProfile(), dTarget.getProfile());
+		igdocumentRepository.save(dTarget);
 		return dTarget;
 	}
 

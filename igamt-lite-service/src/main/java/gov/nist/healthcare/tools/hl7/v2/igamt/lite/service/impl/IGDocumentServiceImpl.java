@@ -137,7 +137,4 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-
 }
