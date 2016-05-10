@@ -15,6 +15,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 
 import java.util.List;
@@ -80,7 +81,7 @@ public class DatatypeController extends CommonController {
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
 	public boolean delete(@PathVariable("id") String id)
-			throws DatatypeSaveException {
+			throws DatatypeDeleteException {
 		log.info("Deleting " + id);
 		datatypeService.delete(id);
 		return true;

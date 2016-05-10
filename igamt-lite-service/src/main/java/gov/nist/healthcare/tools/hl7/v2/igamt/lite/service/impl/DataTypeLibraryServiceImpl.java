@@ -180,11 +180,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		return Integer.toString(rand.nextInt(100));
 	}
 	
-	@Override
-	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version,
-			String name, Long accountId) {
-		 return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
-	}
+	
 
 	class DatatypeByLabel implements Comparator<Datatype> {
 
@@ -194,6 +190,12 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		}
 	}
 
+	@Override
+	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version,
+			String name, Long accountId) {
+		 return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
+	}
+	
 	@Override
 	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope,
 			String hl7Version, String name, Long accountId) {
