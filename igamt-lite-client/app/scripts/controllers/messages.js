@@ -49,7 +49,7 @@ angular.module('igl')
                 if (!$rootScope.segmentsMap[segmentRef.ref] || $rootScope.segmentsMap[segmentRef.ref] == null) {
                     $rootScope.segmentsMap[segmentRef.ref] = segment;
                 }
-                MastermapSvc.addSegment(segment.id, [segmentRef.id, segmentRef.type]);
+                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
                 if ($scope.messagesParams)
                     $scope.messagesParams.refresh();
             });
