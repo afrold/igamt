@@ -361,7 +361,7 @@
                         <label class="btn btn-primary btn-xs" ng-click="source = 'HL7'; listHL7Versions()"
                                ng-class="{'active':source === 'HL7'}">
                             <input ng-disabled="loading" type="radio" ng-value="source"
-                                   ng-model="$parent.source">From HL7 Standrad
+                                   ng-model="$parent.source">From HL7 Standard
                         </label>
                         <label class="btn btn-primary btn-xs" ng-click="source = 'PHINVADS'"
                                ng-class="{'active':source === 'PHINVADS'}">
@@ -408,7 +408,7 @@
                             	</tr>
 							</thead>
 							<tbody>
-    							<tr ng-repeat="table in phinvadsTables.children | orderBy:'bindingIdentifier' |  filter:search:strict">
+    							<tr ng-repeat="table in phinvadsTables | orderBy:'bindingIdentifier' |  filter:search:strict">
       								<td>{{table.bindingIdentifier}}</td>
       								<td>{{table.name}}</td>
 									<td><a class="pointer" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a></td>
@@ -442,7 +442,7 @@
                             	</tr>
 							</thead>
 							<tbody>
-    							<tr ng-repeat="table in hl7Tables.children | orderBy:'bindingIdentifier' |  filter:search:strict">
+    							<tr ng-repeat="table in hl7Tables | orderBy:'bindingIdentifier' |  filter:search:strict">
       								<td>{{table.bindingIdentifier}}</td>
       								<td>{{table.name}}</td>
 									<td><a class="pointer" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a></td>

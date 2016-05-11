@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('TableLibrarySvc', function($http, $httpBackend, userInfoService) {
+angular.module('igl').factory('TableLibrarySvc', function($http, $httpBackend, $q, userInfoService) {
 
 	var svc = this;
 

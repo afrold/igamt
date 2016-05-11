@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -1120,7 +1120,7 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
     };
 });
 
-angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
+angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
     $scope.loading = false;
     $scope.igdocumentToSelect = igdocumentToSelect;
     $scope.source = '';
@@ -1171,33 +1171,16 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
     }
 
     $scope.addTable = function (table) {
-        var newTable = angular.fromJson({
-            id: new ObjectId().toString(),
-            type: 'table',
-            bindingIdentifier: $rootScope.createNewFlavorName(table.bindingIdentifier),
-            name: table.name,
-            description: table.name,
-            version: '',
-            oid: table.oid,
-            stability: 'Static',
-            extensibility: 'Open',
-            contentDefinition: 'Extensional',
-            source: $scope.source + " " + $scope.selectedHL7Version,
-            codes: []
-        });
-
-        for (var i = 0, len1 = table.codes.length; i < len1; i++) {
-            var newValue = {
-                id: new ObjectId().toString(),
-                type: 'value',
-                value: table.codes[i].value,
-                label: table.codes[i].label,
-                codeSystem: table.codes[i].codeSystem,
-                codeUsage: table.codes[i].codeUsage
-            };
-
-            newTable.codes.push(newValue);
+    	var newTable = angular.copy(table);
+    	newTable.participants = [];
+        newTable.bindingIdentifier = $rootScope.createNewExtension(table.bindingIdentifier);
+        
+        if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
+        	for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
+        		newTable.codes[i].id = new ObjectId().toString();
+        	}
         }
+        console.log(JSON.stringify(newTable));
         $scope.selectedTables.push(newTable);
     };
 
@@ -1208,15 +1191,40 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
 
     $scope.save = function () {
         for (var i = 0; i < $scope.selectedTables.length; i++) {
-            var v = $scope.selectedTables[i];
-            $rootScope.tablesMap[v.id] = v;
-            $rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, v);
+            var newTable = $scope.selectedTables[i];
+            console.log(JSON.stringify(newTable));
+            newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+
+            TableService.save(newTable).then(function (result){
+            	newTable = result;
+                var newLink = angular.fromJson({
+            		id : newTable.id,
+            		bindingIdentifier : newTable.bindingIdentifier
+            	});
+                
+                TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
+                	$rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newLink);
+                	$rootScope.tables.splice(0, 0, newTable);
+                    $rootScope.tablesMap[newTable.id] = newTable;
+                    MastermapSvc.addValueSetObject(newTable, []);
+                    $rootScope.$broadcast('event:SetToC');
+                    
+                }, function (error) {
+                    $scope.saving = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
+                
+                
+            }, function (error) {
+                $scope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
         }
-        $rootScope.igdocument.profile.tableLibrary.children = positionElements($rootScope.igdocument.profile.tableLibrary.children);
-        $rootScope.recordChanged();
-        $rootScope.$emit('event:loadFilter', $rootScope.igdocument);
-        $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
-        $rootScope.$broadcast('event:SetToC');
+        
         $modalInstance.dismiss('cancel');
     };
 
