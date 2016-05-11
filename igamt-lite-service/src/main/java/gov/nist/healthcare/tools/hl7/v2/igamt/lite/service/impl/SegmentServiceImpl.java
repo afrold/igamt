@@ -36,6 +36,10 @@ public class SegmentServiceImpl implements SegmentService {
 	@Autowired
 	private SegmentRepository segmentRepository;
  	
+	public List<Segment> findAll() {
+		return segmentRepository.findAll();
+	}
+
 	@Override
 	public List<Segment> findByLibIds(String segLibId) {
 		List<Segment> datatypes = segmentRepository.findByLibIds(segLibId);
