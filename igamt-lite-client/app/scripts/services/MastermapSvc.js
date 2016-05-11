@@ -79,6 +79,23 @@ angular
         }
       }
     }
+    
+    
+  //TODO Olivier, please check this function
+    svc.addValueSetObject = function(table, parent) {
+        	if (table !== undefined){
+        		svc.createMMElement(table.id, "table");
+        		svc.addParentsId(table.id, "table", parent);
+
+        		_.each(table.codes, function(c) {
+        			svc.addCodes(c, parent.concat([[table.id, 'table']]));
+        		});
+        	} else {
+        		svc.createMMElement(tableId, "table");
+        		svc.addParentsId(tableId, "table", parent);
+        		//           console.log("!!! => table " + tableId + " not found in library");
+        	}
+    }
 
 
     svc.addCodes = function(code, parent) {
@@ -88,10 +105,10 @@ angular
     }
 
 
-    svc.addDatatype = function(datatype, parent) {
+    svc.addDatatype = function(datatypeId, parent) {
 
-      if (datatype !== undefined && datatype !== "") {
-        var dt = svc.getDatatypeLibrary()[datatype];
+      if (datatypeId !== undefined && datatypeId !== "") {
+        var dt = svc.getDatatypeLibrary()[datatypeId];
         if (dt !== undefined){
           svc.createMMElement(dt.id, "datatype");
           svc.addParentsId(dt.id, "datatype", parent);
@@ -100,10 +117,21 @@ angular
             svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
           });
         } else {
-          svc.createMMElement(datatype, "datatype");
-          svc.addParentsId(datatype, "datatype", parent);
+          svc.createMMElement(datatypeId, "datatype");
+          svc.addParentsId(datatypeId, "datatype", parent);
           //           console.log("!!! => datatype " + datatype + " not found in library");
         }
+      }
+    }
+
+
+    svc.addDatatypeObject = function(dt, parent) {
+        if (dt !== undefined){
+          svc.createMMElement(dt.id, "datatype");
+          svc.addParentsId(dt.id, "datatype", parent);
+          dt.components.forEach( function(c) {
+            svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
+          });
       }
     }
 
@@ -130,8 +158,20 @@ angular
           svc.addField(f, parent.concat([[segment.id, "segment"]]));
         });
       } else {
-        console.log("!!! => segment id " + segmentId + " not found");
+//        console.log("!!! => segment id " + segmentId + " not found");
       }
+    }
+    
+    //TODO Olivier, please check this function
+    svc.addSegmentObject = function(segment, parent) {
+    	if (segment !== undefined){
+    		svc.createMMElement(segment.id, "segment");
+    		svc.addParentsId(segment.id, "segment", parent);
+
+    		_.each(segment.fields, function(f) {
+            svc.addField(f, parent.concat([[segment.id, "segment"]]));
+          });
+        }
     }
 
     svc.addMessage = function (message, parent) {

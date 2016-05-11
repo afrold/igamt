@@ -47,8 +47,8 @@ angular
 								+ igdocument.id);
 						toc = [];
 
-						// console.log("childSections=" +
-						// igdocument.childSections.length);
+//						console.log("childSections=" +
+//						igdocument.childSections.length);
 						var documentMetadata = getMetadata(igdocument,
 								"documentMetadata");
 						toc.push(documentMetadata);
@@ -59,7 +59,7 @@ angular
 						});
 						var conformanceProfile = getMessageInfrastructure(igdocument);
 						toc.push(conformanceProfile);
-//             console.log(toc);
+             console.log("toc=" + toc);
 						return toc;
 					};
 
@@ -109,6 +109,8 @@ angular
                         var tables = angular.copy(igdocument.profile.tableLibrary);
                         tables.children = $rootScope.tables;
 
+                        console.log("datatypes TOC = " + datatypes.children.length);
+                        console.log("datatypeLibrary TOC = " + igdocument.profile.datatypeLibrary.children.length);
                         var children = [];
 						children.push(getMetadata(igdocument.profile,
 								"profileMetadata"));

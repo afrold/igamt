@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('TableService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc','userInfoService', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc,userInfoService) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', 'userInfoService', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc,userInfoService) {
         var TableService = {
 
             save: function (table) {
@@ -12,6 +12,7 @@ angular.module('igl').factory('TableService',
                 $http.post('api/tables/save', table).then(function (response) {
                     var saved = angular.fromJson(response.data);
                     delay.resolve(saved);
+                    return saved;
                 }, function (error) {
                     delay.reject(error);
                 });

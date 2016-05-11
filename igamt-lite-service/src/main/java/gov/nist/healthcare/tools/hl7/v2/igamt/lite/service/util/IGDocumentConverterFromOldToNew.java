@@ -147,7 +147,7 @@ public class IGDocumentConverterFromOldToNew{
 		prof.setSourceId(ppl.getSourceId());
 		prof.setType(ppl.getType());
 		prof.setUsageNote(ppl.getUsageNote());
-		prof.setScope(IGDocumentScope.USER);
+		prof.setScope(appPreLib.getScope());
 		app.addProfile(prof, appPreLib.getChildSections());
 		DocumentMetaDataPreLib docMetaDataPreLib = appPreLib.getMetaData();
 		DocumentMetaData metaData = new DocumentMetaData();

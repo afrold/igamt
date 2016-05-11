@@ -22,6 +22,7 @@ public class Constant {
 	}
 
 	public final static String SEGMENTS = "segments";
+	public final static String SEGMENTLIBRARY = "segmentlibrary";
 	public final static String SEGMENT = "segment";
 	public final static String SEGMENTREF = "segmentRef";
 	public final static String FIELD = "field";
@@ -30,6 +31,7 @@ public class Constant {
 	public final static String GROUP = "group";
 	public final static String MESSAGE = "message";
 	public final static String DATATYPES = "datatypes";
+	public final static String DATATYPELIBRARY = "datatypelibrary";
 	public final static String DATATYPE = "datatype";
 	public final static String PROFILE = "profile";
 	public final static String TABLELIBRARY = "tablelibrary";

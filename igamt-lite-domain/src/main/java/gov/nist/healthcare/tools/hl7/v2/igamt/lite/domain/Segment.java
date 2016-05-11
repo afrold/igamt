@@ -1,20 +1,19 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-
 @Document(collection = "segment")
-public class Segment extends SectionModelWithConstraints implements java.io.Serializable,
+public class Segment extends DataModelWithConstraints implements java.io.Serializable,
 Cloneable, Comparable<Segment> {
 
 	private static final long serialVersionUID = 1L;

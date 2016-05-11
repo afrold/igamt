@@ -132,7 +132,7 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		
 		int messagePositionNum = 0;
 		for(Message m:p.getMessages().getChildren()){
-			m.setSectionPosition(messagePositionNum);
+			m.setPosition(messagePositionNum);
 			messagePositionNum = messagePositionNum + 1;
 		}
 		
@@ -245,7 +245,7 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		
 		int messagePositionNum = 0;
 		for(Message m:p.getMessages().getChildren()){
-			m.setSectionPosition(messagePositionNum);
+			m.setPosition(messagePositionNum);
 			messagePositionNum = messagePositionNum + 1;
 		}
 		

@@ -8,11 +8,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
@@ -50,6 +53,7 @@ import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -178,70 +182,95 @@ public class IGDocumentController extends CommonController {
 		try {
 			log.info("Clone IGDocument with id=" + id);
 			User u = userService.getCurrentUser();
-			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+			Account account = accountRepository.findByTheAccountsUsername(u
+					.getUsername());
 			if (account == null)
 				throw new UserAccountNotFoundException();
 			IGDocument igDocument = this.findIGDocument(id);
 
-			DatatypeLibrary datatypeLibrary = igDocument.getProfile().getDatatypeLibrary();
-			SegmentLibrary segmentLibrary = igDocument.getProfile().getSegmentLibrary();
-			TableLibrary tableLibrary = igDocument.getProfile().getTableLibrary();
-			
+			DatatypeLibrary datatypeLibrary = igDocument.getProfile()
+					.getDatatypeLibrary();
+			SegmentLibrary segmentLibrary = igDocument.getProfile()
+					.getSegmentLibrary();
+			TableLibrary tableLibrary = igDocument.getProfile()
+					.getTableLibrary();
+
 			DatatypeLibrary clonedDatatypeLibrary = datatypeLibrary.clone();
 			SegmentLibrary clonedSegmentLibrary = segmentLibrary.clone();
 			TableLibrary clonedTableLibrary = tableLibrary.clone();
 
-			List<Datatype> datatypes = datatypeService.findByLibIds(datatypeLibrary.getId());
+			clonedDatatypeLibrary.setChildren(new HashSet<DatatypeLink>());
+			clonedSegmentLibrary.setChildren(new HashSet<SegmentLink>());
+			clonedTableLibrary.setChildren(new HashSet<TableLink>());
+
+			datatypeLibraryService.save(clonedDatatypeLibrary);
+			segmentLibraryService.save(clonedSegmentLibrary);
+			tableLibraryService.save(clonedTableLibrary);
+
+			List<Datatype> datatypes = datatypeService
+					.findByFullDTsLibIds(datatypeLibrary.getId());
 			if (datatypes != null) {
 				for (int i = 0; i < datatypes.size(); i++) {
 					Datatype d = datatypes.get(i);
-					DatatypeLink dl = clonedDatatypeLibrary.findOne(d.getId());
-					d.getLibIds().add(clonedDatatypeLibrary.getId());
-					if(d.getScope().equals(SCOPE.USER)){
+					System.out.println(clonedDatatypeLibrary.getId());
+					System.out.println(datatypeLibrary.getId());
+					System.out.println(d.getId());
+					DatatypeLink dl = datatypeLibrary.findOne(d.getId())
+							.clone();
+					if (d.getScope().equals(SCOPE.USER)) {
 						d.setId(null);
+						d.setLibId(new HashSet<String>());
 					}
+					d.getLibIds().add(clonedDatatypeLibrary.getId());
 					datatypeService.save(d);
 					dl.setId(d.getId());
+					clonedDatatypeLibrary.addDatatype(dl);
 				}
 			}
 
-			List<Segment> segments = segmentService.findByLibIds(segmentLibrary.getId());
+			List<Segment> segments = segmentService.findByLibIds(segmentLibrary
+					.getId());
 			if (segments != null) {
 				for (int i = 0; i < segments.size(); i++) {
 					Segment s = segments.get(i);
-					SegmentLink sl = clonedSegmentLibrary.findOne(s.getId());
-					s.getLibIds().add(clonedSegmentLibrary.getId());
-					if(s.getScope().equals(SCOPE.USER)){
+					SegmentLink sl = segmentLibrary.findOne(s.getId());
+					if (s.getScope().equals(SCOPE.USER)) {
 						s.setId(null);
+						s.setLibId(new HashSet<String>());
 					}
+					s.getLibIds().add(clonedSegmentLibrary.getId());
 					segmentService.save(s);
 					sl.setId(s.getId());
+					clonedSegmentLibrary.addSegment(sl);
 				}
 
 			}
 
-			List<Table> tables = tableService.findByLibIds(tableLibrary.getId());
+			List<Table> tables = tableService
+					.findByLibIds(tableLibrary.getId());
 			if (tables != null) {
 				for (int i = 0; i < tables.size(); i++) {
 					Table t = tables.get(i);
-					TableLink tl = clonedTableLibrary.findOneTableById(t.getId());
-					t.getLibIds().add(clonedTableLibrary.getId());
-					if(t.getScope().equals(SCOPE.USER)){
+					TableLink tl = tableLibrary.findOneTableById(t.getId());
+					if (t.getScope().equals(SCOPE.USER)) {
 						t.setId(null);
+						t.setLibIds(new HashSet<String>());
 					}
+					t.getLibIds().add(clonedTableLibrary.getId());
 					tableService.save(t);
 					tl.setId(t.getId());
+					clonedTableLibrary.addTable(tl);
 				}
 			}
 
 			datatypeLibraryService.save(clonedDatatypeLibrary);
 			segmentLibraryService.save(clonedSegmentLibrary);
 			tableLibraryService.save(clonedTableLibrary);
-			
+
 			igDocument.getProfile().setDatatypeLibrary(clonedDatatypeLibrary);
 			igDocument.getProfile().setSegmentLibrary(clonedSegmentLibrary);
 			igDocument.getProfile().setTableLibrary(clonedTableLibrary);
-			
+
 			igDocument.setId(null);
 			igDocument.setScope(IGDocumentScope.USER);
 			igDocument.setAccountId(account.getId());
@@ -606,7 +635,6 @@ public class IGDocumentController extends CommonController {
 		IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(
 				idrw.getMsgEvts(), idrw.getHl7Version(), account.getId());
 
-		igDocumentService.save(igDocument);
 		assert (igDocument.getId() != null);
 		assert (igDocument.getAccountId() != null);
 		return igDocument;
@@ -621,7 +649,6 @@ public class IGDocumentController extends CommonController {
 		log.debug("getIgdocument()" + idrw.getIgdocument());
 		IGDocument igDocument = igDocumentCreation.updateIntegratedIGDocument(
 				idrw.getMsgEvts(), idrw.getIgdocument());
-		igDocumentService.save(igDocument);
 		return igDocument;
 	}
 
@@ -648,6 +675,129 @@ public class IGDocumentController extends CommonController {
 			igDocumentService.save(d);
 		}
 		return true;
+	}
+
+	@RequestMapping(value = "/{id}/metadata/save", method = RequestMethod.POST)
+	public boolean saveIgDocMetadata(@PathVariable("id") String id,
+			@RequestBody DocumentMetaData metaData, HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
+		IGDocument d = igDocumentService.findOne(id);
+		if (d == null) {
+			throw new IGDocumentNotFoundException(id);
+		}
+		d.setMetaData(metaData);
+		igDocumentService.save(d);
+		return true;
+	}
+
+	@RequestMapping(value = "/{id}/profile/metadata/save", method = RequestMethod.POST)
+	public boolean saveProfileMetadata(@PathVariable("id") String id,
+			@RequestBody ProfileMetaData metaData, HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
+		IGDocument d = igDocumentService.findOne(id);
+		if (d == null) {
+			throw new IGDocumentNotFoundException(id);
+		}
+		d.getProfile().setMetaData(metaData);
+		igDocumentService.save(d);
+		return true;
+	}
+
+	@RequestMapping(value = "/{id}/section/save", method = RequestMethod.POST)
+	public boolean updateSection(@PathVariable("id") String id,
+			@RequestBody Section section, HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
+		IGDocument d = igDocumentService.findOne(id);
+		if (d == null) {
+			throw new IGDocumentNotFoundException(id);
+		}
+		Section s = findSection(d, section.getId());
+		if (s == null)
+			throw new IGDocumentException("Unknown Section");
+		s.merge(section);
+		igDocumentService.save(d);
+		return true;
+	}
+
+	@RequestMapping(value = "/{id}/section/delete", method = RequestMethod.POST)
+	public boolean updateSection(@PathVariable("id") String id,
+			@RequestParam("sectionId") String sectionId,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, IGDocumentNotFoundException,
+			IGDocumentException {
+		IGDocument d = igDocumentService.findOne(id);
+		if (d == null) {
+			throw new IGDocumentNotFoundException(id);
+		}
+		Section sect = findSection(d, sectionId);
+		if (sect == null)
+			throw new IGDocumentException("Unknown Section");
+		if (d.getChildSections().contains(sect)) {
+			d.getChildSections().remove(sect);
+		} else {
+			Section parent = findSectionParent(d, sectionId);
+			if (parent == null)
+				throw new IGDocumentException("Unknown Section");
+			parent.getChildSections().remove(sect);
+		}
+		igDocumentService.save(d);
+		return true;
+	}
+
+	private Section findSectionParent(IGDocument document, String sectionId) {
+		for (Section section : document.getChildSections()) {
+			Section s = findSectionParent(section, sectionId);
+			if (s != null) {
+				return s;
+			}
+		}
+		return null;
+	}
+
+	private Section findSection(IGDocument document, String sectionId) {
+		for (Section section : document.getChildSections()) {
+			Section s = findSection(section, sectionId);
+			if (s != null) {
+				return s;
+			}
+		}
+		return null;
+	}
+
+	private Section findSection(Section parent, String sectionId) {
+		if (parent.getId().equals(sectionId))
+			return parent;
+		if (parent.getChildSections() != null)
+			for (Object child : parent.getChildSections()) {
+				if (child instanceof Section) {
+					Section section = (Section) child;
+					Section f = findSection(section, sectionId);
+					if (f != null) {
+						return f;
+					}
+				}
+			}
+		return null;
+	}
+
+	private Section findSectionParent(Section parent, String sectionId) {
+		if (parent.getChildSections() != null)
+			for (Object child : parent.getChildSections()) {
+				if (child instanceof Section) {
+					Section section = (Section) child;
+					if (section.getId().equals(sectionId)) {
+						return parent;
+					}
+					Section f = findSectionParent(section, sectionId);
+					if (f != null) {
+						return section;
+					}
+				}
+			}
+		return null;
 	}
 
 	private String escapeSpace(String str) {

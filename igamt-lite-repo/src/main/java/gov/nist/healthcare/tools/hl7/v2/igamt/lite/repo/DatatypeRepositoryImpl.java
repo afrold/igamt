@@ -34,14 +34,21 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	public List<Datatype> findByLibIds(String dtLibId) {
 		Criteria where = Criteria.where("libIds").in(dtLibId);
 		Query qry = Query.query(where);
-		qry = set4Brevis(qry);
+//		qry = set4Brevis(qry);
+		return mongo.find(qry, Datatype.class);
+	}
+	
+	@Override
+	public List<Datatype> findFullDTsByLibIds(String dtLibId) {
+		Criteria where = Criteria.where("libIds").in(dtLibId);
+		Query qry = Query.query(where);
 		return mongo.find(qry, Datatype.class);
 	}
 
 	@Override
 	public List<Datatype> findAll() {
 		Query qry = new Query();
-		qry = set4Brevis(qry);
+//		qry = set4Brevis(qry);
 		return mongo.find(qry, Datatype.class);
 	}
 
@@ -50,7 +57,7 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		Criteria where = Criteria.where("scope").in(scopes);
 		where.andOperator(Criteria.where("hl7Version").is(hl7Version));
 		Query qry = Query.query(where);
-		qry = set4Brevis(qry);
+//		qry = set4Brevis(qry);
 		return mongo.find(qry, Datatype.class);
 	}
 
@@ -58,7 +65,7 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	public Datatype findById(String id) {
 		Criteria where = Criteria.where("id").is(id);
 		Query qry = Query.query(where);
-		qry = set4Brevis(qry);
+//		qry = set4Brevis(qry);
 		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
 		Datatype datatype = null;
 		if (datatypes != null && datatypes.size() > 0) {
@@ -71,7 +78,7 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	public List<Datatype> findByIds(List<String> ids) {
 		Criteria where = Criteria.where("id").in(ids);
 		Query qry = Query.query(where);
-		qry = set4Brevis(qry);
+//		qry = set4Brevis(qry);
 		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
 		return datatypes;
 	}
@@ -85,15 +92,15 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		return datatypes;
 	}
 
-	Query set4Brevis(Query qry) {
-		qry.fields().include("_id");
-		qry.fields().include("name");
-		qry.fields().include("label");
-		qry.fields().include("status");
-		qry.fields().include("description");
-		qry.fields().include("date");
-		qry.fields().include("version");
-		qry.fields().include("ext");
-		return qry;
-	}
+//	Query set4Brevis(Query qry) {
+//		qry.fields().include("_id");
+//		qry.fields().include("name");
+//		qry.fields().include("label");
+//		qry.fields().include("status");
+//		qry.fields().include("description");
+//		qry.fields().include("date");
+//		qry.fields().include("version");
+//		qry.fields().include("ext");
+//		return qry;
+//	}
 }

@@ -32,6 +32,10 @@ public class MessagesReadConverter extends AbstractReadConverter<DBObject, Messa
 	public Messages convert(DBObject source) {
 		Messages messages = new Messages();
 		messages.setId(readMongoId(source));
+		messages.setSectionContents((String) source.get(SECTION_COMMENTS));
+		messages.setSectionDescription((String) source.get(SECTION_DESCRIPTION));
+		messages.setSectionPosition((Integer) source.get(SECTION_POSITION));
+		messages.setSectionTitle((String) source.get(SECTION_TITLE));
 		BasicDBList messagesDBObjects = (BasicDBList) source.get("children");
 		messages.setChildren(new HashSet<Message>());
 		for (Object childObj : messagesDBObjects) {

@@ -211,7 +211,5 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     $httpBackend.whenGET(/^api\/tables\/.*/).respond(function (method, url, data, headers) {
         var id = url.split('/')[1];
         return [200, findTable(id), {}];
-    });
-
-
+    });  
 });

@@ -53,7 +53,7 @@ public class SegmentLink extends AbstractLink implements Cloneable{
 
 	@Override
 	public int hashCode() {
-		return (getId() + getLabel()).hashCode();
+		return (getId() + getName()).hashCode();
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class SegmentLink extends AbstractLink implements Cloneable{
 			return false;
 		}
 
-		return getId().equals(link.getId()) && getLabel().equals(link.getLabel());
+		return getId().equals(link.getId());
 	}
 	
 	public SegmentLink clone(){

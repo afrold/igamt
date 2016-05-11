@@ -1536,15 +1536,12 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             return '';
         };
 
-        $rootScope.getLabel = function (obj) {
-            if(obj != undefined && obj != null) {
-                if (obj.ext && obj.ext !== null && obj.ext !== "") {
-                    return obj.name + "_" + obj.ext;
-                } else {
-                    return obj.name;
-                }
+        $rootScope.getLabel = function (name, ext) {
+            if (ext && ext !== null && ext !== "") {
+                return name + "_" + ext;
+            } else {
+                return name;
             }
-            return "";
         };
 
         $rootScope.getDynamicWidth = function (a, b, otherColumsWidth) {
@@ -1630,11 +1627,16 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getDatatypeLabel = function (datatype) {
+        	console.log("getDatatypeLabel Here id=" + datatype.id);
+
             var ext = $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary);
+        	console.log("getDatatypeLabel Here name=" + datatype.name);
+        	console.log("getDatatypeLabel Here ext=" + ext);
             return $rootScope.getLabel(datatype.name,ext);
         };
 
         $rootScope.getExtensionInLibrary = function (id, library) {
+        	console.log("main Here id=" + id);
             if(library.children){
                 for(var i=0;  i< library.children.length;i ++){
                     if(library.children[i].id === id){

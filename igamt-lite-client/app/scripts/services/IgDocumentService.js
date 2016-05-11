@@ -56,6 +56,16 @@ angular.module('igl').factory('IgDocumentService',
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+            saveMetadata: function (id, metaData) {
+                var delay = $q.defer();
+                $http.post('api/igdocuments/'+ id+ '/metadata/save', metaData).then(function (response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    delay.resolve(saveResponse);
+                }, function (error) {
+                    delay.reject(error);
+                 });
+                return delay.promise;
             }
 
 

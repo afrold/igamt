@@ -23,6 +23,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 public interface DatatypeOperations {
 
 	List<Datatype> findByLibIds(String dtLibId);
+	
+	List<Datatype> findFullDTsByLibIds(String dtLibId);
 
 	List<Datatype> findAll();
 

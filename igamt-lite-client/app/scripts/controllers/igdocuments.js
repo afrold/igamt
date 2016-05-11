@@ -133,8 +133,8 @@ angular.module('igl')
                 $scope.selectTable(table); // Should we open in a dialog ??
             });
 
-            $scope.$on('event:openSection', function (event, section) {
-                $scope.selectSection(section); // Should we open in a dialog ??
+            $scope.$on('event:openSection', function (event, section, referencer) {
+                $scope.selectSection(section,referencer); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openDocumentMetadata', function (event, metaData) {
@@ -843,12 +843,13 @@ angular.module('igl')
                 }, 100);
         };
 
-        $scope.selectSection = function (section) {
+        $scope.selectSection = function (section,entry) {
             $scope.subview = "EditSections.html";
             $scope.loadingSelection = true;
             $timeout(
                 function () {
-                    $rootScope.section = section;
+                    $rootScope.section = angular.copy(section);
+                    $rootScope.entry = entry;
                     $scope.loadingSelection = false;
                 }, 100);
         };
@@ -1018,40 +1019,51 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
     };
 });
 
-
-
-angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies,IgDocumentService) {
-    $scope.loading = false;
+angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $rootScope, $http,IgDocumentService) {
+    $scope.saving = false;
+    $scope.saved = false;
 
     $scope.save = function () {
-        $rootScope.igdocument.metaData = $rootScope.metaData;
-        IgDocumentService.save($rootScope.igDocument).then(function (result) {
-            $scope.saving = false;
-        }, function (error) {
-            $scope.saving = false;
-            $rootScope.msg().text = error.data.text;
-            $rootScope.msg().type = error.data.type;
-            $rootScope.msg().show = true;
-        });
+        $scope.saving = true;
+        $scope.saved = false;
+        if($rootScope.igDocument != null && $rootScope.metaData != null) {
+            IgDocumentService.saveMetadata($rootScope.igDocument.id, $rootScope.metaData).then(function (result) {
+                $scope.saving = false;
+                $scope.saved = true;
+                $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
+            }, function (error) {
+                $scope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+                $scope.saved = false;
+            });
+        }
     };
     $scope.cancel = function () {
         $rootScope.metaData = null;
     };
 });
 
-angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies,IgDocumentService) {
-    $scope.loading = false;
-
+angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootScope, $http,ProfileSvc) {
+    $scope.saving = false;
+    $scope.saved = false;
     $scope.save = function () {
-        $rootScope.igdocument.profile.metaData = $rootScope.metaData;
-        IgDocumentService.save($rootScope.igDocument).then(function (result) {
-            $scope.saving = false;
-        }, function (error) {
-            $scope.saving = false;
-            $rootScope.msg().text = error.data.text;
-            $rootScope.msg().type = error.data.type;
-            $rootScope.msg().show = true;
-        });
+        $scope.saving = true;
+        $scope.saved = false;
+        if($rootScope.igDocument != null && $rootScope.metaData != null) {
+            ProfileSvc.save($rootScope.igDocument.id, $rootScope.metaData).then(function (result) {
+                $scope.saving = false;
+                $scope.saved = true;
+                $rootScope.igdocument.profile.metaData = angular.copy($rootScope.metaData);
+            }, function (error) {
+                $scope.saving = false;
+                $scope.saved = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+        }
     };
     $scope.cancel = function () {
         $rootScope.metaData = null;

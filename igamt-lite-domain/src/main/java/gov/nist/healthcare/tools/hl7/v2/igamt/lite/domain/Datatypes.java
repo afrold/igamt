@@ -217,12 +217,12 @@ public class Datatypes extends TextbasedSectionModel implements java.io.Serializ
 		
 	}
 	
-	public void setPositionsOrder(){
-		List<Datatype> sortedList = new ArrayList<Datatype>(this.getChildren());
-		Collections.sort(sortedList);
-		for (Datatype elt: sortedList) {
-			elt.setSectionPosition(sortedList.indexOf(elt));
-		}
-	}
+//	public void setPositionsOrder(){
+//		List<Datatype> sortedList = new ArrayList<Datatype>(this.getChildren());
+//		Collections.sort(sortedList);
+//		for (Datatype elt: sortedList) {
+//			elt.setSectionPosition(sortedList.indexOf(elt));
+//		}
+//	}
 
 }
