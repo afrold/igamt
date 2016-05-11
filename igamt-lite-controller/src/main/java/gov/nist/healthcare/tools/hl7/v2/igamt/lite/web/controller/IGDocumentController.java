@@ -214,8 +214,7 @@ public class IGDocumentController extends CommonController {
 					System.out.println(clonedDatatypeLibrary.getId());
 					System.out.println(datatypeLibrary.getId());
 					System.out.println(d.getId());
-					DatatypeLink dl = datatypeLibrary.findOne(d.getId())
-							.clone();
+					DatatypeLink dl = datatypeLibrary.findOne(d.getId()).clone();
 					if (d.getScope().equals(SCOPE.USER)) {
 						d.setId(null);
 						d.setLibId(new HashSet<String>());
