@@ -120,6 +120,19 @@ angular
       }
     };
 
+    svc.loadMessages = function(igdocument){
+        svc.setMsgdata(svc.getMessages(igdocument));
+        svc.setMsgmodel(svc.getMessages(igdocument));
+        svc.setMsgsettings(svc.getSettings());
+        svc.setMsgtexts(svc.getTexts("Conf. profiles"));
+}
+     svc.loadUsages = function(){
+         svc.setUsagesdata(FilteringSvc.getUsages());
+         svc.setUsagesmodel(FilteringSvc.getUsages());
+         svc.setUsagessettings(FilteringSvc.getSettings());
+         svc.setUsagestexts(FilteringSvc.getTexts("Usages"));
+     };
+
     svc.showToC = function(leaf){
       var rst1 = false;
       _.each(svc.getMsgmodel(), function(filterElt){
