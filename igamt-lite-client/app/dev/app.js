@@ -23,12 +23,13 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular',
-        'ng-context-menu',
+        'ui.bootstrap.contextMenu',
         'angularjs-dropdown-multiselect',
         'dndLists',
         'froala',
         'ngNotificationsBar',
         'ngMockE2E'
+        ,'ui.tree'
     ]);
 
 var

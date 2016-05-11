@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Document(collection = "table")
-@JsonIgnoreProperties({"libId", "libIds"})
 public class Table extends DataModel implements Serializable,
 		Comparable<Table>, Cloneable {
 
@@ -59,7 +58,11 @@ public class Table extends DataModel implements Serializable,
 		
 	protected String date;
 			
-	protected  STATUS status; 
+	protected STATUS status; 
+	
+	
+	
+	
 	public Table() {
 		super();
 		this.type = Constant.TABLE;
