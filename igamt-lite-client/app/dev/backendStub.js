@@ -108,6 +108,14 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     }
 
 
+
+    $httpBackend.whenPOST('api/updateSections').respond(function (data, status, headers, config) {
+        console.log('updating Sections');
+        
+        return null;
+    });
+    
+    
     $httpBackend.whenGET('api/datatype-library/findHl7Versions').respond(function (method, url, data, headers) {
         console.log('api/igdocuments/hl7/findHl7Versions');
         return [200, ["2.1", "2.2", "2.3", "2.3.1", "2.4", "2.5.1", "2.6", "2.7"], {}];
