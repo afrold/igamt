@@ -252,12 +252,12 @@ public class Tables extends TextbasedSectionModel implements Serializable, Clone
 		}
 	}
 	
-	public void setPositionsOrder(){
-		List<Table> sortedList = new ArrayList<Table>(this.getChildren());
-		Collections.sort(sortedList);
-		for (Table elt: sortedList) {
-			elt.setSectionPosition(sortedList.indexOf(elt));
-		}
-	}
+//	public void setPositionsOrder(){
+//		List<Table> sortedList = new ArrayList<Table>(this.getChildren());
+//		Collections.sort(sortedList);
+//		for (Table elt: sortedList) {
+//			elt.setSectionPosition(sortedList.indexOf(elt));
+//		}
+//	}
 
 }

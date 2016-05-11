@@ -69,15 +69,13 @@ body {
 
 .messageSubContent {
 	font-size: 12px;
-	margin-left:14px;
 }
 </style>
 <div ng-controller="IGDocumentListCtrl" class="uitree">
-<button ng-click= "print(igdocument)"></button>
 	<div ng-controller="TreeCtrl">
 		<div ui-tree="treeOptions">
 			<ol ui-tree-nodes="" ng-model="TreeIgs">
-				<li ng-repeat="ig in TreeIgs" ui-tree-node ng-init="updatePositions(ig.childSections)">
+				<li ng-repeat="ig in TreeIgs" ui-tree-node>
 					<div ui-tree-handle class="treeRoot">
 						<span data-nodrag ng-click="editIg(ig)">{{ig.metaData.title}}</span>
 					</div>
@@ -85,7 +83,7 @@ body {
 					<ol ui-tree-nodes="" ng-model="ig.childSections"
 						data-type="sections">
 
-						<li ng-repeat="section in ig.childSections " ui-tree-node
+						<li ng-repeat="section in ig.childSections" ui-tree-node
 							data-type="section" ng-if="!collapsed">
 							<div ui-tree-handle context-menu="sectionOption"
 								class="treeSection">
@@ -94,14 +92,14 @@ body {
 									ng-click="toggle(this);" class="fa fa-caret-right"
 									ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i>
 								<span data-nodrag data-nodrag
-									ng-class="{selected : section.id===activeModel}"
-									ng-click="editSection(section);Activate(section.id)">
-								[{{section.sectionPosition}}]	{{section.sectionTitle}} </span>
+									ng-class="{selected : this===activeModel}"
+									ng-click="editSection(section);Activate(this)">
+									{{section.sectionTitle}}</span>
 							</div>
 
 							<ol ui-tree-nodes="" ng-model="section.childSections"
 								data-type={{section.sectionTitle}}>
-								<li ng-repeat="subsection in section.childSections " ui-tree-node
+								<li ng-repeat="subsection in section.childSections" ui-tree-node
 									ng-if="!collapsed" data-type="subsection">
 									<div ui-tree-handle class="treeSubSection"
 										context-menu="sectionOption">
@@ -109,9 +107,9 @@ body {
 											ng-show="subsection.childSections.length>0" data-nodrag
 											ng-click="toggle(this);" class="fa fa-caret-right"
 											ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i>
-										<span data-nodrag ng-class="{selected : subsection.id===activeModel}"
-											ng-click="editSection(subsection); Activate(subsection.id)">
-											{{section.sectionPosition}}.{{subsection.sectionPosition}}	{{subsection.sectionTitle}} </span>
+										<span data-nodrag ng-class="{selected : this===activeModel}"
+											ng-click="editSection(subsection); Activate(this)">
+											{{subsection.sectionTitle}} </span>
 									</div>
 
 
@@ -122,8 +120,8 @@ body {
 											<div ui-tree-handle class="treeUnderSubSection"
 												context-menu="sectionOption">
 												<span class="glyphicon glyphicon-move"></span> <span
-													ng-class="{selected : undersubsection.id===activeModel}" data-nodrag
-													ng-click="editSection(undersubsection);Activate(undersubsection.id)"> {{section.sectionPosition}}.{{subsection.sectionPosition}}.{{undersubsection.sectionPosition}}.{{undersubsection.sectionTitle}}</span>
+													ng-class="{selected : this===activeModel}" data-nodrag
+													ng-click="editSection(undersubsection);Activate(this)">{{undersubsection.sectionTitle}}</span>
 											</div>
 										</li>
 									</ol>
@@ -137,8 +135,8 @@ body {
 							class="fa fa-caret-down"
 							ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !profilecollapded}"></i>
 
-						<span data-nodrag ng-click="editProfile();"> 
-						Message Infrastructure</span>
+						<span data-nodrag ng-click="editProfile();"> Message
+							Infrastructure</span>
 					</div>
 
 					<ol ui-tree-nodes="" ng-model="ig.profile.messages.children"
@@ -149,24 +147,24 @@ body {
 								ng-class="{'fa-caret-down': !collapsemessage, 'fa-caret-right': collapsemessage}"></i>
 
 							<span class="label label-component label-icon">M</span> <span
-								ng-click="editRoutSection('conformance Profiles');" data-nodrag>
+								ng-click="editRoutSection('conformance Profile');" data-nodrag>
 								Conformance Profiles </span>
 						</div>
 						<li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
 							ng-if="!collapsemessage" data-type="message">
 							<div ui-tree-handle class="messageSubContent"
 								context-menu="MessagesOption">
-								<span class="glyphicon glyphicon-move"></span> <span data-nodrag 
+								<span class="glyphicon glyphicon-move"></span> <span data-nodrag
 									ng-class="{selected : msg.id===activeModel}"
 									ng-click="editMessage(msg);Activate(msg.id)">
-								[{{msg.position}}]	{{msg.name}}-{{msg.description}}</span>
+									{{msg.name}}-{{msg.description}} {{msg.id}}</span>
 
 							</div>
 						</li>
 					</ol>
 
 
-					<ol ui-tree-nodes="" ng-model="segments"
+					<ol ui-tree-nodes="" ng-model="ig.profile.segments.children"
 						ng-show="!profilecollapsed" data-type="segments">
 						<div ui-tree-handle class="messageContent">
 							<i data-nodrag ng-click="switcherseg()" class="fa fa-caret-right"
@@ -174,21 +172,22 @@ body {
 
 							<span class="label label-segment label-icon">S</span>
 							<span data-nodrag
-								ng-click="editRoutSection('Segments and field descriptions')">
-								Segments and field descriptions</span>
+								ng-click="editRoutSection('Segments and field descriptions')">Segments
+								and field descriptions</span>
 						</div>
-						<li ng-repeat="segment in segments"
+						<li ng-repeat="segment in ig.profile.segments.children"
 							ui-tree-node ng-if="!collapsesegment" data-type="segment">
 							<div ui-tree-handle class="messageSubContent" data-nodrag
 								ng-click="editSeg(segment)" context-menu="fieldOption">
-								<span data-nodrag 
+								<span data-nodrag
 									ng-class="{selected : segment.id===activeModel}"
-									ng-click=" editSeg(segment);Activate(segment.id)"> [{{segment.sectionPosition}}]	{{segment.name}}-{{segment.description}}</span>
+									ng-click=" Activate(segment.id);editSeg(segment);">{{segment.name}}-{{segment.description}}</span>
 							</div>
 						</li>
 					</ol>
 
-					<ol ui-tree-nodes="" ng-model="datatypes" ng-show="!profilecollapsed" data-type="datatypes">
+					<ol ui-tree-nodes="" ng-model="ig.profile.datatypes.children"
+						ng-show="!profilecollapsed" data-type="datatypes">
 						<div ui-tree-handle class="messageContent">
 							<i data-nodrag ng-click="switcherdata()"
 								class="fa fa-caret-right"
@@ -198,19 +197,19 @@ body {
 								data-nodrag ng-click="editRoutSection('Datatypes')">Datatypes</span>
 						</div>
 
-						<li ng-repeat="data in datatypes" ui-tree-node
+						<li ng-repeat="data in ig.profile.datatypes.children" ui-tree-node
 							ng-if="!collapsedata" data-type="datatype">
 							<div ui-tree-handle class="messageSubContent" data-nodrag
 								ng-click="editDataType(data)" context-menu="fieldOption">
-								<span data-nodrag 
-									ng-class="{selected : data.id===activeModel}"
-									ng-click="editDataType(data); Activate(data.id)">{{data.name}}-{{data.description}}</span>
+								<span data-nodrag
+									ng-class="{selected : data.name===activeModel}"
+									ng-click="editDataType(data); Activate(data.name)">{{data.name}}-{{data.description}}</span>
 
 							</div>
 						</li>
 					</ol>
 
-					<ol ui-tree-nodes="" ng-model="tables"
+					<ol ui-tree-nodes="" ng-model="ig.profile.tables.children"
 						ng-show="!profilecollapsed" data-type="tables">
 						<div ui-tree-handle class="messageContent">
 							<i data-nodrag ng-click="switchertable()"
@@ -218,20 +217,20 @@ body {
 								ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i>
 
 							<span class="label label-datatype label-icon">T</span><span
-								data-nodrag ng-click="editRoutSection('Value Sets')">Value
+								data-nodrag ng-click="editRoutSection('ValueSets')">Value
 								Sets</span>
 						</div>
 
-						<li ng-repeat="table in tables" ui-tree-node
+						<li ng-repeat="table in ig.profile.tables.children" ui-tree-node
 							data-type="table" ng-if="!collapsetable">
 							<div ui-tree-handle class="messageSubContent" data-nodrag
 								ng-click="editTable(table);Activate(table.bindingIdentifier)"
 								context-menu="fieldOption">
-								<span 
+								<span
 									ng-class="{selected : table.bindingIdentifier===activeModel}"
 									data-nodrag
 									ng-click="editTable(table);Activate(table.bindingIdentifier)">
-									{{table.bindingIdentifier}}-{{table.description}} {{table.position}}</span>
+									{{table.bindingIdentifier}}-{{table.description}}</span>
 							</div>
 						</li>
 					</ol>

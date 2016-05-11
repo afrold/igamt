@@ -10,11 +10,14 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.IGDocumentServiceImpl;
 
 import java.io.File;
@@ -51,6 +54,15 @@ public class IGExportTest {
 	@Autowired
 	IGDocumentExportService igExport;
 
+	@Autowired
+	private DatatypeService datatypeService;
+
+	@Autowired
+	private SegmentService segmentService;
+
+	@Autowired
+	private TableService tableService;
+	
 	List<IGDocument> igs;
 	IGDocument ig;
 	Profile p;
@@ -74,12 +86,25 @@ public class IGExportTest {
 		}
 	};
 
+	
+
+	@Test
+	public void testCallService() {
+		assertNotNull(datatypeService);
+		assertNotNull(segmentService);
+		assertNotNull(tableService);
+		assertNotNull(datatypeService.findAll().size());
+		assertNotNull(segmentService.findAll().size());
+		assertNotNull(tableService.findAll().size());
+		
+	}	
 
 	@Test
 	public void testCallIGExportDocx() {
 		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
+//			igs = igService.findAll();
+//			ig = igs.get(0);
+			ig = igService.findOne("573245a43004dc332131d418");
 //			ig = igService.findOne("56b4b811d4c6f591953e7b7a");
 
 			content = igExport.exportAsDocx(ig);
@@ -172,8 +197,9 @@ public class IGExportTest {
 	@Test
 	public void testCallIGExportPdf() {
 		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
+//			igs = igService.findAll();
+//			ig = igs.get(0);
+			ig = igService.findOne("573245a43004dc332131d418");
 
 			content = igExport.exportAsPdf(ig);
 			assertNotNull(content);
@@ -195,10 +221,11 @@ public class IGExportTest {
 			igs = igService.findAll();
 			ig = igs.get(0);
 
-			content = igExport.exportAsHtml(ig);
+//			content = igExport.exportAsHtml(ig);
+			content = igExport.exportAsXml(ig);
 			assertNotNull(content);
 			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("IG_"+timeStamp+".html");
+			tmpFile = new File("IG_"+timeStamp+".xml");
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");

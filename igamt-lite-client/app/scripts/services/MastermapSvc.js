@@ -79,6 +79,23 @@ angular
         }
       }
     }
+    
+    
+  //TODO Olivier, please check this function
+    svc.addValueSetObject = function(table, parent) {
+        	if (table !== undefined){
+        		svc.createMMElement(table.id, "table");
+        		svc.addParentsId(table.id, "table", parent);
+
+        		_.each(table.codes, function(c) {
+        			svc.addCodes(c, parent.concat([[table.id, 'table']]));
+        		});
+        	} else {
+        		svc.createMMElement(tableId, "table");
+        		svc.addParentsId(tableId, "table", parent);
+        		//           console.log("!!! => table " + tableId + " not found in library");
+        	}
+    }
 
 
     svc.addCodes = function(code, parent) {
@@ -143,6 +160,18 @@ angular
       } else {
 //        console.log("!!! => segment id " + segmentId + " not found");
       }
+    }
+    
+    //TODO Olivier, please check this function
+    svc.addSegmentObject = function(segment, parent) {
+    	if (segment !== undefined){
+    		svc.createMMElement(segment.id, "segment");
+    		svc.addParentsId(segment.id, "segment", parent);
+
+    		_.each(segment.fields, function(f) {
+            svc.addField(f, parent.concat([[segment.id, "segment"]]));
+          });
+        }
     }
 
     svc.addMessage = function (message, parent) {

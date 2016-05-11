@@ -21,6 +21,8 @@ public interface TableService {
 	
 	Table save(Table table);
 
+	List<Table> findAll();
+	
 	List<Table> findByLibIds(String segLibId);
 
 	List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);

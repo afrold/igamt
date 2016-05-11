@@ -71,7 +71,7 @@ public class SegmentLink extends AbstractLink implements Cloneable{
 			return false;
 		}
 
-		return getId().equals(link.getId()) && getName().equals(link.getLabel());
+		return getId().equals(link.getId());
 	}
 	
 	public SegmentLink clone(){
@@ -80,5 +80,10 @@ public class SegmentLink extends AbstractLink implements Cloneable{
 		clonedLink.setName(this.name);
 		clonedLink.setId(this.getId());
 		return clonedLink;
+	}
+
+	@Override
+	public String toString() {
+		return "SegmentLink [id=" + id + ", name=" + name + ", ext=" + ext + ", label= " + getLabel() + "]";
 	}
 }
