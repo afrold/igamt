@@ -1622,30 +1622,35 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getSegmentLabel = function (seg) {
-            var ext = $rootScope.getExtensionInLibrary(seg.id, $rootScope.igdocument.profile.segmentLibrary);
+            var ext = $rootScope.getExtensionInLibrary(seg.id, $rootScope.igdocument.profile.segmentLibrary,"ext");
             return $rootScope.getLabel(seg.name,ext);
         };
 
         $rootScope.getDatatypeLabel = function (datatype) {
         	console.log("getDatatypeLabel Here id=" + datatype.id);
-
-            var ext = $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary);
+            var ext = $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary, "ext");
         	console.log("getDatatypeLabel Here name=" + datatype.name);
         	console.log("getDatatypeLabel Here ext=" + ext);
             return $rootScope.getLabel(datatype.name,ext);
         };
 
-        $rootScope.getExtensionInLibrary = function (id, library) {
-        	console.log("main Here id=" + id);
-            if(library.children){
+        $rootScope.getTableLabel = function (table) {
+             return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.tableLibrary,"bindingIdentifier");
+        };
+
+        $rootScope.getExtensionInLibrary = function (id, library,propertyType) {
+            console.log("main Here id=" + id);
+            if(propertyType && library.children){
                 for(var i=0;  i< library.children.length;i ++){
                     if(library.children[i].id === id){
-                        return library.children[i].ext;
+                        return library.children[i][propertyType];
                     }
                 }
             }
             return "";
         };
+
+
 
 
         $rootScope.getGroupNodeName = function (node) {
