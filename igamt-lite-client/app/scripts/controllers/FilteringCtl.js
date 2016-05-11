@@ -38,15 +38,8 @@ angular
             };
 
             $rootScope.$on('event:loadFilter', function (event, igdocument) {
-                FilteringSvc.setMsgdata(FilteringSvc.getMessages(igdocument));
-                FilteringSvc.setMsgmodel(FilteringSvc.getMessages(igdocument));
-                FilteringSvc.setMsgsettings(FilteringSvc.getSettings());
-                FilteringSvc.setMsgtexts(FilteringSvc.getTexts("Conf. profiles"));
-
-                FilteringSvc.setUsagesdata(FilteringSvc.getUsages());
-                FilteringSvc.setUsagesmodel(FilteringSvc.getUsages());
-                FilteringSvc.setUsagessettings(FilteringSvc.getSettings());
-                FilteringSvc.setUsagestexts(FilteringSvc.getTexts("Usages"));
+                FilteringSvc.loadMessages(igdocument);
+                FilteringSvc.loadUsages();
             });
 
   }

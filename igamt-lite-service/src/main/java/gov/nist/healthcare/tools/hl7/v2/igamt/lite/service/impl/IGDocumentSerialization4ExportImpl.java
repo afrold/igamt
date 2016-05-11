@@ -70,8 +70,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class IGDocumentSerialization4ExportImpl implements ProfileSerialization {
+	Logger logger = LoggerFactory.getLogger( IGDocumentSerialization4ExportImpl.class );
 
 	@Autowired
 	private DatatypeService datatypeService;
@@ -81,8 +84,6 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 	@Autowired
 	private TableService tableService;
-
-	Logger logger = LoggerFactory.getLogger( IGDocumentSerialization4ExportImpl.class );
 
 
 	public File serializeProfileToFile(Profile profile) throws UnsupportedEncodingException {
@@ -503,14 +504,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 				nu.xom.Element csinfo = new nu.xom.Element("Constraints");
 				csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-				csinfo.addAttribute(new Attribute("position", String.valueOf(m.getSectionPosition())));
+				csinfo.addAttribute(new Attribute("position", String.valueOf(m.getPosition())));
 				csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
 				csinfo.addAttribute(new Attribute("title", m.getName())); 
 				csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
 
 				nu.xom.Element cpinfo = new nu.xom.Element("Constraints");
 				cpinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-				cpinfo.addAttribute(new Attribute("position", String.valueOf(m.getSectionPosition())));
+				cpinfo.addAttribute(new Attribute("position", ""));
 				cpinfo.addAttribute(new Attribute("h", String.valueOf(3)));
 				cpinfo.addAttribute(new Attribute("title", m.getName()));
 				cpinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
@@ -566,14 +567,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 				nu.xom.Element csinfo = new nu.xom.Element("Constraints");
 				csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-				csinfo.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition())));
+				csinfo.addAttribute(new Attribute("position", ""));
 				csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
 				csinfo.addAttribute(new Attribute("title", sl.getLabel()));
 				csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
 
 				nu.xom.Element cpinfo = new nu.xom.Element("Constraints");
 				cpinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-				cpinfo.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition())));
+				cpinfo.addAttribute(new Attribute("position", ""));
 				cpinfo.addAttribute(new Attribute("h", String.valueOf(3)));
 				cpinfo.addAttribute(new Attribute("title", s.getLabel()));
 				cpinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
@@ -636,14 +637,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 					nu.xom.Element csinfo = new nu.xom.Element("Constraints");
 					csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-					csinfo.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition())));
+					csinfo.addAttribute(new Attribute("position", ""));
 					csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
 					csinfo.addAttribute(new Attribute("title", d.getLabel()));
 					csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
 
 					nu.xom.Element cpdtinfo = new nu.xom.Element("Constraints");
 					cpdtinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-					cpdtinfo.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition())));
+					cpdtinfo.addAttribute(new Attribute("position", ""));
 					cpdtinfo.addAttribute(new Attribute("h", String.valueOf(3)));
 					cpdtinfo.addAttribute(new Attribute("title", d.getLabel()));
 					cpdtinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
@@ -917,8 +918,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		Table t = tableService.findById(tl.getId());
 		nu.xom.Element sect = new nu.xom.Element("Section");
 		sect.addAttribute(new Attribute("id", t.getId()));
-		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(t.getSectionPosition()+1)));
-		sect.addAttribute(new Attribute("position", String.valueOf(t.getSectionPosition()+1)));
+		sect.addAttribute(new Attribute("prefix", prefix));
+		sect.addAttribute(new Attribute("position", ""));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
 		sect.addAttribute(new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
 
@@ -933,8 +934,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		elmTableDefinition.addAttribute(new Attribute("Extensibility", (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
 		elmTableDefinition.addAttribute(new Attribute("ContentDefinition", (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
 		elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
-		elmTableDefinition.addAttribute(new Attribute("position", String.valueOf(t.getSectionPosition()+1)));
-		elmTableDefinition.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(t.getSectionPosition()+1)));
+		elmTableDefinition.addAttribute(new Attribute("position", ""));
+		elmTableDefinition.addAttribute(new Attribute("prefix", prefix ));
 
 		if (t.getCodes() != null) {
 			for (Code c : t.getCodes()) {
@@ -1075,12 +1076,16 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 	private void serializeSegment(nu.xom.Element ss, SegmentLink sl, TableLibrary tables, DatatypeLibrary datatypes, String prefix) {
 		nu.xom.Element sect = new nu.xom.Element("Section");
-		if (sl.getId() != null && segmentService != null && segmentService.findById(sl.getId()) != null){
+//		if (sl.getId() != null && segmentService != null && segmentService.findById(sl.getId()) != null){
+		if (sl.getId() != null) {
+			logger.debug("\n\n"+sl.toString() + "\n\n");
+			logger.debug("\n\n" + (segmentService == null) + "\n\n");
+			
 			Segment s = segmentService.findById(sl.getId());
 
 			sect.addAttribute(new Attribute("id", s.getId()));
-			sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(s.getSectionPosition()+1)));
-			sect.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition()+1)));
+			sect.addAttribute(new Attribute("prefix", prefix ));
+			sect.addAttribute(new Attribute("position", ""));
 			sect.addAttribute(new Attribute("h", String.valueOf(3)));
 			sect.addAttribute(new Attribute("title", sl.getLabel() + " - " + s.getDescription()));
 
@@ -1088,7 +1093,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
 			elmSegment.addAttribute(new Attribute("Name", sl.getName()));
 			elmSegment.addAttribute(new Attribute("Label", sl.getLabel()));
-			elmSegment.addAttribute(new Attribute("Position", String.valueOf(s.getSectionPosition()+1)));
+			elmSegment.addAttribute(new Attribute("Position", ""));
 			elmSegment
 			.addAttribute(new Attribute("Description", s.getDescription()));
 			if (s.getComment() != null && !s.getComment().isEmpty()){
@@ -1096,8 +1101,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			}
 
 			elmSegment.addAttribute(new Attribute("id", s.getId()));
-			elmSegment.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(s.getSectionPosition()+1)));
-			elmSegment.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition()+1)));
+			elmSegment.addAttribute(new Attribute("prefix", prefix ));
+			elmSegment.addAttribute(new Attribute("position", ""));
 
 			//TODO if ( !s.getText1().equals("") | !s.getText2().equals("")){
 			if (s.getText1()!= null && !s.getText1().isEmpty()){
@@ -1194,8 +1199,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		Datatype d = datatypeService.findById(dl.getId());
 
 		sect.addAttribute(new Attribute("id", d.getId()));
-		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(d.getSectionPosition()+1)));
-		sect.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition()+1)));
+		sect.addAttribute(new Attribute("prefix", prefix));
+		sect.addAttribute(new Attribute("position", ""));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
 		sect.addAttribute(new Attribute("title", d.getLabel() + " - " + d.getDescription()));
 
@@ -1210,8 +1215,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 
 		elmDatatype.addAttribute(new Attribute("id", d.getId()));
-		elmDatatype.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(d.getSectionPosition()+1)));
-		elmDatatype.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition()+1)));
+		elmDatatype.addAttribute(new Attribute("prefix", prefix ));
+		elmDatatype.addAttribute(new Attribute("position", ""));
 		nu.xom.Element elmText = new nu.xom.Element("Text");
 		elmText.addAttribute(new Attribute("Type", "UsageNote"));
 		elmText.appendChild(d.getUsageNote());
