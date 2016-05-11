@@ -12,7 +12,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Document(collection = "message")
-public class Message extends SectionModelWithConstraints implements java.io.Serializable,
+public class Message extends DataModelWithConstraints implements java.io.Serializable,
 Cloneable, Comparable<Message> {
 
 	private static final long serialVersionUID = 1L;

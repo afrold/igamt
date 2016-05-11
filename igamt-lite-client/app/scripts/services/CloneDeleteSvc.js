@@ -60,7 +60,7 @@ angular.module('igl').factory(
                 	$rootScope.segment = newSegment;
                 	$rootScope.segmentsMap[newSegment.id] = newSegment;
                 	MastermapSvc.addSegmentObject(newSegment, []);
-                	
+                	$rootScope.processElement(newSegment);
                 	$rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openSegment', newSegment);
                 }, function (error) {
@@ -120,6 +120,7 @@ angular.module('igl').factory(
                     $rootScope.datatype = newDatatype;
                     $rootScope.datatypesMap[newDatatype.id] = newDatatype;
                     MastermapSvc.addDatatypeObject(newDatatype, []);
+                    $rootScope.processElement(newDatatype);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openDatatype', newDatatype);
                 }, function (error) {
@@ -210,7 +211,8 @@ angular.module('igl').factory(
                     $rootScope.message = newMessage;
                     
                     //TODO NEED to check
-                    MastermapSvc.addMessage(newMessage, $rootScope.igdocument.profile.messages);
+                    MastermapSvc.addMessage(newMessage, []);
+                    $rootScope.processElement(newMessage);
                     
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openMessage', newMessage);

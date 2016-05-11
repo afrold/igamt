@@ -112,7 +112,7 @@ public class Messages extends TextbasedSectionModel implements java.io.Serializa
 		List<Message> sortedList = new ArrayList<Message>(this.getChildren());
 		Collections.sort(sortedList);
 		for (Message elt: sortedList) {
-			elt.setSectionPosition(sortedList.indexOf(elt));
+			elt.setPosition(sortedList.indexOf(elt));
 		}
 	}
 }
