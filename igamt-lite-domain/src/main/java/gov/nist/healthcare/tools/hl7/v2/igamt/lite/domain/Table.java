@@ -1,6 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -24,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Document(collection = "table")
 @JsonIgnoreProperties({"libId", "libIds"})
-public class Table extends SectionModel implements Serializable,
+public class Table extends DataModel implements Serializable,
 		Comparable<Table>, Cloneable {
 
 	/**

@@ -204,12 +204,12 @@ public class Segments extends TextbasedSectionModel implements java.io.Serializa
 		}
 	}
 
-	public void setPositionsOrder(){
-		List<Segment> sortedList = new ArrayList<Segment>(this.getChildren());
-		Collections.sort(sortedList);
-		for (Segment elt: sortedList) {
-			elt.setSectionPosition(sortedList.indexOf(elt));
-		}
-	}
+//	public void setPositionsOrder(){
+//		List<Segment> sortedList = new ArrayList<Segment>(this.getChildren());
+//		Collections.sort(sortedList);
+//		for (Segment elt: sortedList) {
+//			elt.setSectionPosition(sortedList.indexOf(elt));
+//		}
+//	}
 
 }
