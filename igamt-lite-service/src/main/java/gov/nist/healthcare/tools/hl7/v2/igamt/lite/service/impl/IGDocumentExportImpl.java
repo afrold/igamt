@@ -1267,7 +1267,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			for (Message m : messagesList) {
 
-				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." +  String.valueOf(p.getMessages().getSectionPosition()+1)+ "." + String.valueOf(m.getSectionPosition()+1) + " " + m.getName(), m.getId());
+				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." +  String.valueOf(p.getMessages().getSectionPosition()+1)+ "." + String.valueOf(m.getPosition()+1) + " " + m.getName(), m.getId());
 				title = new Paragraph(m.getName(), titleFont);
 				section = sectionCp.addSection(title);
 				section.setIndentationLeft(30);
@@ -1309,7 +1309,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			for (SegmentLink sl: segmentsList){
 				Segment s = segmentService.findById(sl.getId());
 				String segmentInfo = sl.getLabel() + " - " + s.getDescription();
-				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getSegmentLibrary().getSectionPosition()+1) + "." + String.valueOf(s.getSectionPosition()+1) + " " + segmentInfo, s.getId());
+				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getSegmentLibrary().getSectionPosition()+1) + " " + segmentInfo, s.getId());
 				com.itextpdf.text.Section section1 = sectionSgt.addSection(new Paragraph(segmentInfo, titleFont));
 
 				section1.add(Chunk.NEWLINE);
@@ -1367,7 +1367,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			for (DatatypeLink dl: datatypeList) {
 				Datatype d = datatypeService.findById(dl.getId());
 
-				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getDatatypeLibrary().getSectionPosition()+1) + "." + String.valueOf(d.getSectionPosition()+1) + " " + (dl.getLabel() != null ?  dl.getLabel()+ " - " + d.getDescription() : d.getName()
+				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getDatatypeLibrary().getSectionPosition()+1) + " " + (dl.getLabel() != null ?  dl.getLabel()+ " - " + d.getDescription() : d.getName()
 						+ " - " + d.getDescription()), d.getId());
 				com.itextpdf.text.Section section1 = sectionDts.addSection(new Paragraph( dl.getLabel() != null ?  dl.getLabel() + " - "
 						+ d.getDescription() : d.getName() + " - " + d.getDescription()));
@@ -1406,7 +1406,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			for (TableLink tl : tables) {
 				Table t = tableService.findById(tl.getId());
-				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." +  String.valueOf(p.getTableLibrary().getSectionPosition()+1) + "." + String.valueOf(t.getSectionPosition()+1) + " " + tl.getBindingIdentifier()
+				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." +  String.valueOf(p.getTableLibrary().getSectionPosition()+1) + " " + tl.getBindingIdentifier()
 						+ " - " + t.getDescription(), t.getId());
 				com.itextpdf.text.Section section1 = sectionVsd.addSection(new Paragraph(tl.getBindingIdentifier() + " - " + t.getDescription()));
 
