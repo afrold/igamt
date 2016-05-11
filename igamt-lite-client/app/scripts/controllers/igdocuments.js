@@ -9,12 +9,15 @@ angular.module('igl')
         $rootScope.igs = [];
         $scope.tmpIgs = [].concat($rootScope.igs);
         $scope.error = null;
+        $scope.print=function(param){
+        	console.log(param);
+        }
         $scope.loading = false;
         $scope.viewSettings = ViewSettings;
         $scope.igDocumentMsg = {};
         $scope.igDocumentConfig = {
             selectedType: null
-        };
+        }
 
         $scope.nodeReady = true;
         $scope.igDocumentTypes = [
@@ -296,6 +299,8 @@ angular.module('igl')
                 waitingDialog.show('Opening IG Document...', {dialogSize: 'xs', progressType: 'info'});
                 $scope.selectIgTab(1);
                 $timeout(function () {
+                 $rootScope.TreeIgs =[];
+                 $rootScope.TreeIgs.push(igdocument);
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
@@ -948,7 +953,7 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
         $scope.loading = true;
         var changes = angular.toJson($rootScope.changes);
         var data = {"changes": changes, "igDocument": $rootScope.igdocument};
-        $http.post('api/igdocuments/save', data, {timeout: 60000}).then(function (response) {
+        $http.post('api/igdocuments/save',data, {timeout: 60000}).then(function (response) {
             var saveResponse = angular.fromJson(response.data);
             $rootScope.igdocument.metaData.date = saveResponse.date;
             $rootScope.igdocument.metaData.version = saveResponse.version;
