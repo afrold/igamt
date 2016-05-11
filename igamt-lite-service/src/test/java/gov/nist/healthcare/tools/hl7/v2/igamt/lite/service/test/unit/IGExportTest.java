@@ -192,8 +192,9 @@ public class IGExportTest {
 	public void testCallIGExportHtml() {
 
 		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
+//			igs = igService.findAll();
+			ig = igService.findOne("57322798d4c66078aca0fbec");
+//			ig = igs.get(0);
 
 			content = igExport.exportAsHtml(ig);
 			assertNotNull(content);

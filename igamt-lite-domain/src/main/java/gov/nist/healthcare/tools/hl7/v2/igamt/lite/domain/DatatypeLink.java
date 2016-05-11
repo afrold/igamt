@@ -71,7 +71,7 @@ public class DatatypeLink extends AbstractLink implements Cloneable{
 			return false;
 		}
 	
-		return getId().equals(link.getId()) && getLabel().equals(link.getLabel());
+		return getId().equals(link.getId());
 	}
 	
 	public DatatypeLink clone(){
