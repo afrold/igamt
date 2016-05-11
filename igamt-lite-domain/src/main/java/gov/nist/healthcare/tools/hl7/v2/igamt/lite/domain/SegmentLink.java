@@ -81,4 +81,9 @@ public class SegmentLink extends AbstractLink implements Cloneable{
 		clonedLink.setId(this.getId());
 		return clonedLink;
 	}
+
+	@Override
+	public String toString() {
+		return "SegmentLink [id=" + id + ", name=" + name + ", ext=" + ext + ", label= " + getLabel() + "]";
+	}
 }

@@ -70,8 +70,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class IGDocumentSerialization4ExportImpl implements ProfileSerialization {
+	Logger logger = LoggerFactory.getLogger( IGDocumentSerialization4ExportImpl.class );
 
 	@Autowired
 	private DatatypeService datatypeService;
@@ -81,8 +84,6 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 	@Autowired
 	private TableService tableService;
-
-	Logger logger = LoggerFactory.getLogger( IGDocumentSerialization4ExportImpl.class );
 
 
 	public File serializeProfileToFile(Profile profile) throws UnsupportedEncodingException {
@@ -1075,7 +1076,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 	private void serializeSegment(nu.xom.Element ss, SegmentLink sl, TableLibrary tables, DatatypeLibrary datatypes, String prefix) {
 		nu.xom.Element sect = new nu.xom.Element("Section");
-		if (sl.getId() != null && segmentService != null && segmentService.findById(sl.getId()) != null){
+//		if (sl.getId() != null && segmentService != null && segmentService.findById(sl.getId()) != null){
+		if (sl.getId() != null) {
+			logger.debug("\n\n"+sl.toString() + "\n\n");
+			logger.debug("\n\n" + (segmentService == null) + "\n\n");
+			
 			Segment s = segmentService.findById(sl.getId());
 
 			sect.addAttribute(new Attribute("id", s.getId()));

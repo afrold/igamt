@@ -36,6 +36,10 @@ public class TableServiceImpl implements TableService {
 	@Autowired
 	private TableRepository tableRepository;
  	
+	public List<Table> findAll() {
+		return tableRepository.findAll();
+	}
+
 	@Override
 	public List<Table> findByLibIds(String tabLibId) {
 		List<Table> tables = tableRepository.findByLibIds(tabLibId);
