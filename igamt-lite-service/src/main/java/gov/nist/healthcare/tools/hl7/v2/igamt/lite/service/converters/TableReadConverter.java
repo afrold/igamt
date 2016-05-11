@@ -32,7 +32,6 @@ public class TableReadConverter extends AbstractReadConverter<DBObject, Table> {
 		log.info("Table.convert==>");
 		Table table = new Table();
 		table.setType((String) source.get(TYPE));
-		table.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		table.setScope(SCOPE.valueOf((String)source.get(SCOPE_)));
 		table.setHl7Version((String)source.get(HL7_VERSION));
 

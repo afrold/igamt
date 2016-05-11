@@ -10,22 +10,6 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.convert.ReadingConverter;
-
-import com.mongodb.BasicDBList;
-import com.mongodb.DBObject;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
@@ -54,6 +38,21 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileConversionException;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.convert.ReadingConverter;
+
+import com.mongodb.BasicDBList;
+import com.mongodb.DBObject;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 31, 2015
@@ -206,7 +205,6 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		seg.setComment(readString(source, "comment"));
 		seg.setText1(readString(source, "text1"));
 		seg.setText2(readString(source, "text2"));
-		seg.setSectionPosition((Integer) source.get("sectionPosition"));
 
 		BasicDBList fieldObjects = (BasicDBList) source.get("fields");
 		if (fieldObjects != null) {
@@ -289,7 +287,6 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		dt.setComment(readString(source, "comment"));
 		dt.setUsageNote(readString(source, "usageNote"));
 		dt.setComponents(new ArrayList<Component>());
-		dt.setSectionPosition((Integer) source.get("sectionPosition"));
 		
 		BasicDBList componentObjects = (BasicDBList) source.get("components");
 		if (componentObjects != null) {
@@ -481,7 +478,6 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 				DBObject tableObject = (DBObject) tableObj;
 				Table table = new Table();
 				table.setType("table");
-				table.setSectionPosition((Integer) tableObject.get("sectionPosition"));
 				
 				table.setCodes(new ArrayList<Code>());
 				table.setId(readMongoId(tableObject));
@@ -564,7 +560,6 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 			message.setPosition((Integer) child.get("position"));
 			message.setStructID((String) child.get("structID"));
 			message.setType((String) child.get("type"));
-			message.setSectionPosition((Integer) child.get("sectionPosition"));
 			message.setMessageID((String) child.get("messageID"));
 			
 			
