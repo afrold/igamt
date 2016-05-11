@@ -1,8 +1,7 @@
 angular.module('igl').factory(
     'CloneDeleteSvc',
 
-//    function ($rootScope, $modal, ProfileAccessSvc, $cookies, DatatypeLibrarySvc,SegmentLibrarySvc,TableLibrarySvc,MessageService,MessageLibrarySvc) {
-    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc,SectionSvc) {
+    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc,SectionSvc, FilteringSvc) {
 
         var svc = this;
 
@@ -211,9 +210,9 @@ angular.module('igl').factory(
                     $rootScope.message = newMessage;
                     
                     //TODO NEED to check
-                    MastermapSvc.addMessage(newMessage, []);
                     $rootScope.processElement(newMessage);
-                    
+                    MastermapSvc.addMessage(newMessage, []);
+                    FilteringSvc.addMsgInFilter(newMessage.name, newMessage.id);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openMessage', newMessage);
                     
@@ -439,6 +438,8 @@ angular.module('igl').factory(
         }
 
         svc.execDeleteMessage = function (message) {
+        	//TODO (Oli) delete message in filter in the MasterMap.
+        	
             // We do the delete in pairs: dead and live.  dead = things we are deleting and live = things we are keeping.
             // We are deleting the message so it's dead.
             // The message there is from the ToC so what we need is its reference,

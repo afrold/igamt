@@ -156,10 +156,10 @@ angular
         svc.setMsgtexts(svc.getTexts("Conf. profiles"));
 }
      svc.loadUsages = function(){
-         svc.setUsagesdata(FilteringSvc.getUsages());
-         svc.setUsagesmodel(FilteringSvc.getUsages());
-         svc.setUsagessettings(FilteringSvc.getSettings());
-         svc.setUsagestexts(FilteringSvc.getTexts("Usages"));
+         svc.setUsagesdata(svc.getUsages());
+         svc.setUsagesmodel(svc.getUsages());
+         svc.setUsagessettings(svc.getSettings());
+         svc.setUsagestexts(svc.getTexts("Usages"));
      };
 
     svc.showToC = function(leaf){
