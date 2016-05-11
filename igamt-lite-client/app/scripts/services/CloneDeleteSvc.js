@@ -1,7 +1,8 @@
 angular.module('igl').factory(
     'CloneDeleteSvc',
+
 //    function ($rootScope, $modal, ProfileAccessSvc, $cookies, DatatypeLibrarySvc,SegmentLibrarySvc,TableLibrarySvc,MessageService,MessageLibrarySvc) {
-    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc) {
+    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc,SectionSvc) {
 
         var svc = this;
 
@@ -442,13 +443,21 @@ angular.module('igl').factory(
         }
 
         svc.deleteSection = function (section) {
+            SectionSvc.delete($rootScope.igdocument.id,section.reference).then(function(result){
+                var secLive = section.parent.childSections;
 
-            var secLive = section.parent.childSections;
+                var idxP = _.findIndex(secLive, function (child) {
+                    return child.id === section.reference.id;
+                });
+                section.parent.childSections.splice(idxP, 1);
 
-            var idxP = _.findIndex(secLive, function (child) {
-                return child.id === section.reference.id;
+            }, function(error){
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                $rootScope.manualHandle = true;
+                $scope.loading = false;
             });
-            section.parent.childSections.splice(idxP, 1);
         }
 
         svc.findMessageIndex = function (messages, id) {

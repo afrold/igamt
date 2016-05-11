@@ -373,7 +373,7 @@ angular.module('igl')
                 component.datatype = datatype.id;
                 //TODO: load master map
                 $rootScope.datatypesMap[component.datatype] = datatype;
-                MastermapSvc.addDatatype(datatype.id, [component.id, component.type]);
+                MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
             });
