@@ -22,7 +22,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -584,21 +583,26 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{hl7Version}/tables", method = RequestMethod.GET, produces = "application/json")
-	public TableLibrary findHl7Tables(
-			@PathVariable("hl7Version") String hl7Version) {
+	public Set<Table> findHl7Tables(@PathVariable("hl7Version") String hl7Version) {
 		log.info("Fetching all Tables for " + hl7Version);
-		List<IGDocument> igDocuments = igDocumentCreation
-				.findIGDocumentsByHl7Versions();
+		
+		Set<Table> result = new HashSet<Table>();
+		
+		List<IGDocument> igDocuments = igDocumentCreation.findIGDocumentsByHl7Versions();
 		for (IGDocument igd : igDocuments) {
-			if (igd.getProfile().getMetaData().getHl7Version()
-					.equals(hl7Version))
-				return igd.getProfile().getTableLibrary();
+			if (igd.getProfile().getMetaData().getHl7Version().equals(hl7Version)){
+				for(TableLink link:igd.getProfile().getTableLibrary().getChildren()){
+					Table t = tableService.findById(link.getId());
+					t.setBindingIdentifier(link.getBindingIdentifier());
+					result.add(t);
+				}
+			}
 		}
-		return null;
+		return result;
 	}
 
 	@RequestMapping(value = "/{searchText}/PHINVADS/tables", method = RequestMethod.GET, produces = "application/json")
-	public Tables findPHINVADSTables(
+	public Set<Table> findPHINVADSTables(
 			@PathVariable("searchText") String searchText)
 			throws MalformedURLException {
 		log.info("Fetching all Tables for " + searchText);

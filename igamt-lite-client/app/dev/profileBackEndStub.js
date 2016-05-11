@@ -23,6 +23,9 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         var profile = angular.fromJson(request.response);
         return [request.status, profile, {}];
     });
+    
+
+
 
     $httpBackend.whenGET('api/shortaccounts?filter=accountType::author').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();

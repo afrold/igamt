@@ -41,7 +41,6 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
 		seg.setComment(readString(source, COMMENT));
 		seg.setText1(readString(source, TEXT_1));
 		seg.setText2(readString(source, TEXT_2));
-		seg.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		seg.setScope(Constant.SCOPE.valueOf((String) source.get(SCOPE_)));
 		seg.setHl7Version((String) source.get(HL7_VERSION));
 

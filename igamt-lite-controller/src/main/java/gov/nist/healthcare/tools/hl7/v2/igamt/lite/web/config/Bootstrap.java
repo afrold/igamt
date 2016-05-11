@@ -50,12 +50,12 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		covertOldToNew();
+		// covertOldToNew();
 	}
 
 	private void covertOldToNew() {
 		IGDocumentConverterFromOldToNew old2New = new IGDocumentConverterFromOldToNew();
-		// old2New.convert();
+		old2New.convert();
 	}
 
 	private void loadPreloadedIGDocuments() throws Exception {
