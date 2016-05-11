@@ -172,8 +172,9 @@ public class IGExportTest {
 	@Test
 	public void testCallIGExportPdf() {
 		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
+//			igs = igService.findAll();
+//			ig = igs.get(0);
+			ig = igService.findOne("573245a43004dc332131d418");
 
 			content = igExport.exportAsPdf(ig);
 			assertNotNull(content);
@@ -192,8 +193,12 @@ public class IGExportTest {
 	public void testCallIGExportHtml() {
 
 		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
+//			igs = igService.findAll();
+//			ig = igs.get(0);
+			ig = igService.findOne("573245a43004dc332131d418");
+//			5730fb823004eb6b39de7b26
+//			5730fb793004eb6b39db6606
+			// new ig 4 msg 573245a43004dc332131d418
 
 			content = igExport.exportAsHtml(ig);
 			assertNotNull(content);
