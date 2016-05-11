@@ -120,6 +120,35 @@ angular
       }
     };
 
+    svc.searchById = function(idKey, myArray){
+        for (var i=0; i < myArray.length; i++) {
+            if (myArray[i].id === idKey) {
+                return i;
+            }
+        }
+        return undefined;
+    };
+
+    svc.removeMsgFromFilter = function(msgId){
+        var elt = svc.searchById(msgId, svc.getMsgmodel());
+        if (elt !== undefined){
+            svc.getMsgmodel().splice(elt, 1)
+            }
+    };
+
+    svc.addMsgInFilter = function(name, msgId){
+        if (name != undefined && msgId !== undefined) {
+            svc.getMsgmodel().push({"label": name, "id": msgId});
+            }
+    };
+
+    svc.updateMsgFromFilter = function(name, msgId){
+        var elt = svc.searchById(msgId, svc.getMsgmodel());
+        if (elt !== undefined){
+            svc.getMsgmodel()[elt].label = name;
+            }
+    };
+
     svc.loadMessages = function(igdocument){
         svc.setMsgdata(svc.getMessages(igdocument));
         svc.setMsgmodel(svc.getMessages(igdocument));
