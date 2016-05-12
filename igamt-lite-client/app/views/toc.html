@@ -152,11 +152,12 @@ body {
 								ng-click="editRoutSection('conformance Profiles');" data-nodrag>
 								Conformance Profiles </span>
 						</div>
-						<li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
+						<li ng-repeat="msg in ig.profile.messages.children | filter:showToC" ui-tree-node
 							ng-if="!collapsemessage" data-type="message">
 							<div ui-tree-handle class="messageSubContent"
 								context-menu="MessagesOption">
-								<span class="glyphicon glyphicon-move"></span> <span data-nodrag 
+								<span class="glyphicon glyphicon-move"></span> <span data-nodrag
+
 									ng-class="{selected : msg.id===activeModel}"
 									ng-click="editMessage(msg);Activate(msg.id)">
 								[{{msg.position}}]	{{msg.name}}-{{msg.description}}</span>
@@ -177,7 +178,7 @@ body {
 								ng-click="editRoutSection('Segments and field descriptions')">
 								Segments and field descriptions</span>
 						</div>
-						<li ng-repeat="segment in segments"
+						<li ng-repeat="segment in segments | filter:showToC"
 							ui-tree-node ng-if="!collapsesegment" data-type="segment">
 							<div ui-tree-handle class="messageSubContent" data-nodrag
 								ng-click="editSeg(segment)" context-menu="fieldOption">
@@ -198,7 +199,7 @@ body {
 								data-nodrag ng-click="editRoutSection('Datatypes')">Datatypes</span>
 						</div>
 
-						<li ng-repeat="data in datatypes" ui-tree-node
+						<li ng-repeat="data in datatypes| filter:showToC" ui-tree-node
 							ng-if="!collapsedata" data-type="datatype">
 							<div ui-tree-handle class="messageSubContent" data-nodrag
 								ng-click="editDataType(data)" context-menu="fieldOption">
@@ -222,7 +223,7 @@ body {
 								Sets</span>
 						</div>
 
-						<li ng-repeat="table in tables" ui-tree-node
+						<li ng-repeat="table in tables| filter:showToC" ui-tree-node
 							data-type="table" ng-if="!collapsetable">
 							<div ui-tree-handle class="messageSubContent" data-nodrag
 								ng-click="editTable(table);Activate(table.bindingIdentifier)"
