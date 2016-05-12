@@ -176,7 +176,7 @@ angular
 														child.bindingIdentifier,
 														parent);
 											} else if (parentType === "datatype") {
-												var label = getDatatypeLabel(child);
+												var label = $rootScope.getDatatypeLabel(child);
 												console.log("ToC datatype label=" + label);
 												entry = createEntry(child,
 														label, parent);

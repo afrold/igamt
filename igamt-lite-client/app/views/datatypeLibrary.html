@@ -1,4 +1,4 @@
-<div class="container" ng-controller="MasterDatatypeLibraryCtl"
+<div class="container" ng-controller="DatatypeLibraryCtl"
 	ng-init="initDatatypeLibrary()">
 
 	<div class="row">
@@ -127,7 +127,7 @@
 <div class="col-sm-3 pull-right" style="margin-right:20px">
   <button type="button" class="btn btn-success btn-sm"
           ng-click="saveLib()"><i class="fa fa-plus"></i>
-    Save
+    Save Library
   </button>
 </div>
 </div>
@@ -234,7 +234,7 @@
         <span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
       </button>
     </td>
-    <td st-ratio="2" ng-class="'fa-check fa-2x' : dt.publish "></td>
+    <td st-ratio="2" style="text-align : center; vertical-align : bottom;"><label for="publish + $index"><input name="publish + $index" ng-model="dt.publish" type="checkbox" ng-hide="true"/><i ng-class="{'fa fa-check fa-2x' : !dt.publish}" style="color : #88A888"></i></label></td>
   </tr>
 </tbody>
 <tfoot ng-show="datatypeLibStruct.children.length >= 10">
@@ -245,12 +245,6 @@
 </tr>
 </tfoot>
 </table>
-<div class="pull-right" style="margin-right:20px">
-  <button type="button" class="btn btn-success btn-sm"
-          ng-click="saveDatatype()"><i class="fa fa-plus"></i>
-    Save Library
-  </button>
- </div>
 </script>
 <script type="text/ng-template" id="standardDatatypeDlg.html">
 <div id="standard-datatypelibrary-dialog">
@@ -356,43 +350,32 @@
 </div>
 </script>
 <script type="text/ng-template" id="EditDatatypeLibraryDatatype.html">
-<div ng-controller="DatatypeListCtrl" ng-init="init()" class="container">
+<div class="container">
 <div ng-show="loadingSelection"
      style="text-align: center;">
     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
 </div>
 <div ng-show="!loadingSelection">
 <div ng-show="datatype !== null" id="executionPanel">
-<!--<accordion close-others="false">-->
-<!--<accordion-group is-open="true" panel-class="panel-info">-->
-
-<!--<accordion-heading>-->
-<!--<i class="fa"-->
-<!--ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i>-->
-<!--MetaData-->
-<!--</accordion-heading>-->
-
 <form name="datatypeForm" novalidate class="form-horizontal">
 <div class="row">
     <div class="col-md-12 igl-page-header">
-        <span class="header4 pull-left">Data Type: {{getDatatypeLabel(datatype)}}</span>
+        <span class="header4 pull-left">Data Type: {{getLabel(datatypeStruct.name, datatypeLibStruct.ext)}}</span>
                      <span class="pull-right">
+  		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng.model="datatypeStruct.publish" style="margin-right : 8px"/>Publish</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"
-                 ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                 ng-click="save()">
+                 ng-hide="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                 ng-click="saveDatatype()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
                          <button title="Cancel Changes" type="button" class="btn btn-xs btn-warning"
-                                 ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
+                                 ng-hide="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
                                  ng-click="cancel()">
                              <span><i class="fa fa-times fa-fw"></i> Cancel</span>
                          </button>
     </span>
-
     </div>
-
-
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -407,10 +390,10 @@
                 <label class="control-label">Flavor</label>
                 <input type="text" ng-disabled="viewSettings.tableReadonly"
                        ng-change="recordChanged()"
-                       name="label" id="label" class="form-control" ng-model="datatype.label"
+                       name="label" id="label" class="form-control" ng-model="datatypeStruct.label"
                        required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(datatype,'label', datatypes)">Label already used</span>
+                                          ng-show="isDuplicated(datatypeStruct,'label', datatypes)">Label already used</span>
             </div>
         </div>
         <div class="col-md-1 col-margin">
@@ -418,7 +401,7 @@
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
                 <label class="control-label">Root</label>
                 <input type="text" disabled
-                       name="name" class="form-control" ng-model="datatype.name"
+                       name="name" class="form-control" ng-model="datatypeStruct.name"
                        required>
             </div>
         </div>
@@ -429,8 +412,8 @@
                 <label class="control-label">Description</label>
                 <input type="text" disabled
                        ng-change="recordChanged()"
-                       ng-disabled="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                       name="description" class="form-control" ng-model="datatype.description"
+                       ng-disabled="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                       name="description" class="form-control" ng-model="datatypeStruct.description"
                        required>
             </div>
         </div>
@@ -440,11 +423,11 @@
                 <label class="control-label">Extension</label>
                 <input type="text"
                        ng-change="recordChanged()"
-                       ng-disabled="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                       name="label" id="ext" class="form-control" ng-model="datatype.ext"
+                       ng-disabled="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                       name="label" id="ext" class="form-control" ng-model="datatypeStruct.ext"
                        required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(datatype,'label', datatypes)">Extension already used</span>
+                                          ng-show="isDuplicated(datatypeStruct,'label', datatypes)">Extension already used</span>
             </div>
         </div>
          <div class="col-md-1 col-margin">
@@ -453,7 +436,7 @@
                 <label class="control-label">HL7 Version</label>
                 <input type="text" disabled
                        ng-change="recordChanged()"
-                       name="description" class="form-control" ng-model="datatype.hl7Version"
+                       name="description" class="form-control" ng-model="datatypeStruct.hl7Version"
                        required>
             </div>
         </div>
@@ -463,7 +446,7 @@
                 <label class="control-label">Purpose and Use</label>
                 <textarea rows="3" cols="20"
                        ng-change="recordChanged()"
-                       name="description" class="form-control" ng-model="datatype.purposeUse"
+                       name="description" class="form-control" ng-model="datatypeStruct.purposeUse"
                        required/>
             </div>
         </div>
@@ -472,10 +455,10 @@
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.comment.$invalid}">
                 <label class="control-label">Comment</label>
                 <input type="text"
-                       ng-disabled="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                       ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
+                       ng-disabled="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                       ng-change="recordDatatypeChange('datatypeStruct','edit',datatypeStruct.id,'comment', datatypeStruct.comment)"
                        name="comment" class="form-control"
-                       ng-model="datatype.comment">
+                       ng-model="datatypeStruct.comment">
             </div>
         </div>
 
@@ -487,8 +470,8 @@
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.purposeAndUse.$invalid}">
                 <label class="control-label">Purpose And Use</label>
                 <textarea style="width:100%;height:100%"
-                          ng-disabled="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                          ng-change="recordDatatypeChange('datatype','edit',datatype.id,'purposeAndUse', datatype.purposeAndUse)"
+                          ng-disabled="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                          ng-change="recordDatatypeChange('datatypeStruct','edit',datatypeStruct.id,'purposeAndUse', datatypeStruct.purposeAndUse)"
                           name="comment" class="form-control"
                           class="form-control"
                           ng-model="node.purposeAndUse">
@@ -503,15 +486,15 @@
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
                 <label class="control-label">Definition Text</label>
 
-                <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'">
-                    <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="text"
+                <div ng-if="!viewSettings.tableReadonly && datatypeStruct.scope === 'USER'">
+                    <textarea froala="froalaEditorOptions" ng-model="datatypeStruct.usageNote" name="text"
                               id="text"
                               ng-change="recordChanged()"></textarea>
                 </div>
 
-                <div ng-if="viewSettings.tableReadonly || datatype.scope !== 'USER'">
+                <div ng-if="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'">
                     <div class="fr-view">
-                        <div froala-view="datatype.usageNote"></div>
+                        <div froala-view="datatypeStruct.usageNote"></div>
                     </div>
                 </div>
 
@@ -554,7 +537,7 @@
                         ng-show="viewSettings.isVisibleColumn('usage')">Usage
                     </th>
                     <th class="col-xs-1 col-fixed-100"
-                        ng-show="viewSettings.isVisibleColumn('datatype')">DT
+                        ng-show="viewSettings.isVisibleColumn('datatypeStruct')">DT
                     </th>
                     <th class="col-xs-1 col-fixed-130"
                         ng-show="viewSettings.isVisibleColumn('valueSet')">Concept Domain/ Minimum Code System

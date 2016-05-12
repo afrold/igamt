@@ -55,19 +55,7 @@
         </div>
     </div>
     <div class="col-md-12">
-        <div class="col-md-1 col-margin">
-            <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
-                <label class="control-label">Flavor</label>
-                <input type="text" ng-disabled="viewSettings.tableReadonly"
-                       ng-change="recordChanged()"
-                       name="label" id="label" class="form-control" ng-model="datatype.label"
-                       required aria-describedby="helpBlock2">
-                                    <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(datatype,'label', datatypes)">Label already used</span>
-            </div>
-        </div>
-        <div class="col-md-1 col-margin">
+        <div class="col-md-2 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
                 <label class="control-label">Name</label>
@@ -77,7 +65,7 @@
             </div>
         </div>
 
-        <div class="col-md-3 col-margin">
+        <div class="col-md-2 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
                 <label class="control-label">Description</label>
@@ -98,6 +86,19 @@
                        required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
                                           ng-show="isDuplicated(datatype,'label', datatypes)">Label already used</span>
+            </div>
+        </div>
+        <div class="col-md-2 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
+                <label class="control-label">Extension</label>
+                <input type="text"
+                       ng-change="recordChanged()"
+                       ng-disabled="viewSettings.tableReadonly || datatype.scope !== 'USER'"
+                       name="label" id="ext" class="form-control" ng-model="datatype.ext"
+                       required aria-describedby="helpBlock2">
+                                    <span id="helpBlock2" class="help-block" style="color:red"
+                                          ng-show="isDuplicated(datatype,'label', datatypes)">Extension already used</span>
             </div>
         </div>
       <div class="col-md-6 col-margin">
@@ -153,36 +154,41 @@
 
     </div>
 
-    <div class="col-md-12">
         <div class="table-responsive">
             <table tt-table tt-params="datatypesParams"
                    class="table table-bordered table-fix-header table-condensed profile-table">
                 <thead>
                 <tr class="tbl-header"
                     style="margin-right: {{scrollbarWidth}}px;">
-                    <th class="col-xs-1 col-fixed-100"
-                        ng-show="viewSettings.isVisibleColumn('length')">SEQ
-                    </th>
                     <th class="col-xs-2 col-fixed-250">
-                        Component Name
+                        Name
                     </th>
                     <th class="col-xs-1 col-fixed-80"
                         ng-show="viewSettings.isVisibleColumn('usage')">Usage
                     </th>
                     <th class="col-xs-1 col-fixed-100"
-                        ng-show="viewSettings.isVisibleColumn('datatype')">DT
+                        ng-show="viewSettings.isVisibleColumn('length')">Length
+                    </th>
+                    <th class="col-xs-1 col-fixed-80"
+                        ng-show="viewSettings.isVisibleColumn('confLength')">Conformance Length
+                    </th>
+                    <th class="col-xs-1 col-fixed-100"
+                        ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
                     </th>
                     <th class="col-xs-1 col-fixed-130"
-                        ng-show="viewSettings.isVisibleColumn('valueSet')">Concept Domain/ Minimum Code System
+                        ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
                     </th>
                     <th class="col-xs-1" ng-style="predWidth"
-                        ng-show="viewSettings.isVisibleColumn('predicate')">Condition Predicate
+                        ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
                     </th>
                     <th class="col-xs-2" ng-style="csWidth"
                         ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement
                     </th>
+                    <th class="col-xs-1 col-fixed-80"
+                        ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
+                    </th>
                     <th class="col-xs-1" ng-style="commentWidth"
-                        ng-show="viewSettings.isVisibleColumn('comment')">Comments
+                        ng-show="viewSettings.isVisibleColumn('comment')">Comment
                     </th>
                 </tr>
                 </thead>

@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').controller('MasterDatatypeLibraryCtl',
+angular.module('igl').controller('DatatypeLibraryCtl',
 		function($scope, $rootScope, $modal, $timeout, ngTreetableParams, DatatypeService, DatatypeLibrarySvc, FormsSelectSvc, ViewSettings, userInfoService) {
 
       $scope.datatypeLibsStruct = [];
@@ -81,12 +81,6 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				});
 			};
 
-			$scope.getDisplayLabel = function(dt) {
-				if(dt) {
-					return (dt.ext) ? dt.label + "_" + dt.ext : dt.label;
-				}
-			};
-
 			$scope.trackSelections = function(bool, selection) {
 				if (bool) {
 					selection.status = "PUBLISHED";
@@ -100,10 +94,6 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 					delete dt.new;
 				});
 				DatatypeLibrarySvc.save($scope.datatypeLibStruct);
-			};
-			
-			$scope.save = function() {
-				DatatypeService.save($scope.datatype);
 			};
 			
 			$scope.cancel = function() {
@@ -137,13 +127,13 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 	};
 	
     $scope.editDatatype = function(datatype) {
-      $scope.datatypeView = "EditDatatypes.html";
+      $scope.datatypeView = "EditDatatypeLibraryDatatype.html";
       if (datatype && datatype != null) {
         $scope.loadingSelection = true;
 
         DatatypeService.getOne(datatype.id).then(function (result) {
-          $rootScope.datatype = result;
-          $rootScope.datatype["type"] = "datatype";
+          $scope.datatypeStruct = result;
+          $scope.datatypeStruct["type"] = "datatype";
           $scope.tableWidth = null;
           $scope.scrollbarWidth = $scope.getScrollbarWidth();
           $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
@@ -156,7 +146,8 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
               getTemplate: function (node) {
                   return DatatypeService.getTemplate(node, $rootScope.datatype);
               }
-          });
+           });
+          $scope.loadingSelection = false;
           $scope.datatypeLibrariesConfig.selectedType = 'USER';
           }, function (error) {
           $scope.loadingSelection = false;

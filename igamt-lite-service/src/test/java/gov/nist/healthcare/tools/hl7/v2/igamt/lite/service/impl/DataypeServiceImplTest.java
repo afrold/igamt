@@ -104,7 +104,6 @@ public class DataypeServiceImplTest {
 		List<Datatype> sut = datatypeService.findByLibIds(id);
 		assertNotNull(sut);
 		assertTrue(sut.size() > 0);
-		assertNull(sut.get(0).getSectionPosition());
 	}
 
 	@Test
@@ -119,6 +118,5 @@ public class DataypeServiceImplTest {
 		}
 		List<Datatype> sut = datatypeService.findByIds(ids);
 		assertEquals(ids.size(), sut.size());
-		assertNull(sut.get(0).getSectionPosition());
 	}
 }

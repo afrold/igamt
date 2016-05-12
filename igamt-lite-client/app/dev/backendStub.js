@@ -192,7 +192,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
             return [200, findDatatypeFlavors(params.name,params.hl7Version,params.scope), {}];
 
          }else{
-            return [200, findDatatype(id), {}];
+            return [200, findDatatype(path), {}];
          }
      });
 
