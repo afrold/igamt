@@ -118,7 +118,7 @@ angular.module('igl').factory(
                     console.log("rootscope.datatypeLibrary = " + $rootScope.igdocument.profile.datatypeLibrary.children.length);
                     $rootScope.datatype = newDatatype;
                     $rootScope.datatypesMap[newDatatype.id] = newDatatype;
-                    MastermapSvc.addDatatypeObject(newDatatype, []);
+                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
                     $rootScope.processElement(newDatatype);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openDatatype', newDatatype);
