@@ -234,7 +234,7 @@ angular
       svc.createMMElement(profile.id, "ig");
 
       _.each(profile.messages.children, function(m) {
-        var parentsList = [[profile.id, "ig"]];
+        var parentsList = [[profile.id, "ig"], [igdocument.id, "profile"]];
         svc.addMessage(m, parentsList);
       });
 
@@ -263,6 +263,7 @@ angular
       if (svc.getElement(id, type) === undefined) {
         var eltColl = new Object;
         eltColl["ig"] =[];
+        eltColl["profile"] =[];
         eltColl["message"] =[];
         eltColl["field"] =[];
         eltColl["segment"] =[];
