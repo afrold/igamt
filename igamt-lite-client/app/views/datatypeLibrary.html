@@ -7,7 +7,7 @@
 		</div>
 		<div ng-show="!loading">
 			<div class="page-header">
-				<h3>Data Type Libraries</h3><pre>{{datatypesParams}}</pre>
+				<h3>Data Type Libraries</h3>
 			</div>
 			<div class="col-md-12">
 				<form id="selectDtTypeForm" class="form-horizontal">
@@ -204,7 +204,7 @@
 <table st-table="datatypeDisplay" st-safe-src="datatypeLibStruct.children" st-sticky-header class="table table-bordered">
 <thead>
   <tr class="row tbl-header">
-    <th st-ratio="10" st-sort="getDisplayLabel(dt)" st-sort-default="true">Label</th>
+    <th st-ratio="10" st-sort="getLabel(dt.name, datatypeLibStruct.ext)" st-sort-default="true">Label</th>
     <th st-ratio="30">Description</th>
     <th st-ratio="58">Actions</th>
     <th st-ratio="2">Publish</th>
@@ -215,7 +215,7 @@
 </thead>
 <tbody>
 	<tr class="row" ng-repeat="dt in datatypeDisplay" ng-class="{'new': dt.new}">
-    <td st-ratio="10">{{getDisplayLabel(dt)}}</td>
+    <td st-ratio="10">{{getLabel(dt.name, datatypeLibStruct.ext)}}</td>
     <td st-ratio="30" ng-bind="dt.description"></td>
     <td st-ratio="58">
      <button
@@ -237,13 +237,15 @@
     <td st-ratio="2" style="text-align : center; vertical-align : bottom;"><label for="publish + $index"><input name="publish + $index" ng-model="dt.publish" type="checkbox" ng-hide="true"/><i ng-class="{'fa fa-check fa-2x' : !dt.publish}" style="color : #88A888"></i></label></td>
   </tr>
 </tbody>
+
 <tfoot ng-show="datatypeLibStruct.children.length >= 10">
 <tr style="margin-right: {{scrollbarWidth}}px;">
-<td colspan="7">
-<div st-pagination="" st-items-by-page="10" st-displayed-pages="7"></div>
+<td colspan="7" class="text-center">
+<span st-pagination="" st-items-by-page="10" st-displayed-pages="7"></span>
 </td>
 </tr>
 </tfoot>
+
 </table>
 </script>
 <script type="text/ng-template" id="standardDatatypeDlg.html">
