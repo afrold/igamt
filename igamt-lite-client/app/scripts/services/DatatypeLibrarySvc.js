@@ -22,12 +22,12 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
             });
     };
 
-    svc.getDataTypeLibraryByScopes = function (scopes) {
-        console.log("datatype-library/findByScopes scopes=" + scopes);
+    svc.getDataTypeLibraryByScope = function (scope) {
+        console.log("datatype-library/findByScope scope=" + scope);
         return $http.post(
-            'api/datatype-library/findByScopes', angular.toJson(scopes))
+            'api/datatype-library/findByScope', scope)
             .then(function (response) {
-                console.log("getDataTypeLibraryByScopes response=" + response.data.length);
+                console.log("getDataTypeLibraryByScope response=" + response.data.length);
                 return angular.fromJson(response.data);
             });
     };
@@ -80,6 +80,7 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
     };
 
     svc.save = function (datatypeLibrary) {
+    	
         return $http.post(
             'api/datatype-library/save', angular.toJson(datatypeLibrary)).then(function (response) {
                 return angular.fromJson(response.data)
@@ -174,7 +175,6 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
         });
         return delay.promise;
     };
-
 
 
     return svc;

@@ -172,7 +172,7 @@ angular
 
     svc.show = function(leaf){
       if (leaf === undefined) {
-        console.log("undefined");
+        console.log("Undefined leaf");
         return true;
       }
       var rst1 = false;
@@ -197,9 +197,14 @@ angular
       if (leaf.id === filterElt.id){
         return true;
       }
-
-      if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
+      if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined) {
         return (MastermapSvc.getElementByKey(leaf.id, leaf.type, "message").indexOf(filterElt.id) !== -1);
+      } else {
+      console.log("UNDEFINED ELEMENT!!");
+      console.log("--> mastermap");
+      console.log(MastermapSvc.getMastermap());
+      console.log("--> undefined leaf");
+      console.log(leaf);
       }
     }
 

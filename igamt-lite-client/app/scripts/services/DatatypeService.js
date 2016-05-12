@@ -97,6 +97,7 @@ angular.module('igl').factory('DatatypeService',
                     datatype.id = saveResponse.id;
                     delay.resolve(datatype);
                 }, function (error) {
+                	console.log("DatatypeService.save error=" + error);
                     delay.reject(error);
                 });
                 return delay.promise;
@@ -160,7 +161,6 @@ angular.module('igl').factory('DatatypeService',
             delete_: function(datatype) {
                  return $http.post('api/datatypes/'+ datatype.id+ '/delete');
             },
-
             getDatatypeLink : function(datatype){
                 return {id:datatype.id, ext: null, name: datatype.name};
             }

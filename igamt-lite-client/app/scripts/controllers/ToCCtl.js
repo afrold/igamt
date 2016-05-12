@@ -169,8 +169,4 @@ angular
                 return FilteringSvc.showToC(leaf);
             };
 
-            $rootScope.$on('event:loadMastermap', function (event, igdocument) {
-                MastermapSvc.parseIg(igdocument);
-            });
-
         }])

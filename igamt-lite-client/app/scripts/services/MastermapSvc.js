@@ -188,9 +188,21 @@ angular
       });
     }
 
+    svc.addMessageObject = function (message, parent) {
+      svc.createMMElement(message.id, "message");
+      svc.addParentsId(message.id, "message", parent);
+
+      _.each(message.children, function(segrefOrGroup) {
+        if (segrefOrGroup.type === "segmentRef"){
+          svc.addSegmentRef(segrefOrGroup, parent.concat([[message.id, 'message']]));
+        } else {
+          svc.addGroup(segrefOrGroup, parent.concat([[message.id, 'message']]));
+        }
+      });
+    }
+
 
     svc.addSegmentRef = function (segmentRef, parent){
-      //           console.log("Processing segment ref " + segmentRef.id);
 
       var segRefId = segmentRef.id;
       var segRef = segmentRef.ref;
@@ -231,11 +243,15 @@ angular
       svc.createDatatypeLibrary(igdocument);
       svc.createTableLibrary(igdocument);
 
-      svc.createMMElement(profile.id, "ig");
+      svc.createMMElement(igdocument.id, "ig");
 
+      var parents = [[igdocument.id, "ig"]];
+      svc.createMMElement(profile.id, "profile");
+      svc.addParentsId(profile.id, "profile", parent);
+
+      parents = parents.concat([[profile.id, "profile"]]);
       _.each(profile.messages.children, function(m) {
-        var parentsList = [[profile.id, "ig"]];
-        svc.addMessage(m, parentsList);
+        svc.addMessageObject(m, parents);
       });
 
     }
@@ -263,6 +279,7 @@ angular
       if (svc.getElement(id, type) === undefined) {
         var eltColl = new Object;
         eltColl["ig"] =[];
+        eltColl["profile"] =[];
         eltColl["message"] =[];
         eltColl["field"] =[];
         eltColl["segment"] =[];
@@ -281,24 +298,22 @@ angular
     }
 
     svc.createSegmentLibrary = function (igdocument){
-      //             console.log("Creating segment library");
-        $rootScope.segments.forEach(function(n){
+                   console.log("Creating segment library");
+        igdocument.profile.segmentLibrary.children.forEach(function(n){
         svc.segmentLibrary[n.id] = n;
       });
     }
 
 
     svc.createTableLibrary = function (igdocument){
-      //             console.log("Creating table library");
-        $rootScope.tables.forEach(function(n){
+        igdocument.profile.tableLibrary.children.forEach(function(n){
         svc.tableLibrary[n.id] = n;
       });
     }
 
 
     svc.createDatatypeLibrary = function (igdocument){
-      //             console.log("Creating datatype library");
-        $rootScope.datatypes.forEach(function(n){
+        igdocument.profile.datatypeLibrary.children.forEach(function(n){
         svc.datatypeLibrary[n.id] = n;
       });
     }

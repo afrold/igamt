@@ -2,7 +2,7 @@ angular
   .module('igl')
   .controller(
       'FilteringCtl',
-          function ($scope, $rootScope, FilteringSvc) {
+          function ($scope, $rootScope, MastermapSvc, FilteringSvc) {
             var ctl = this;
 
             $scope.filtermsgmodel = function(){
@@ -42,5 +42,8 @@ angular
                 FilteringSvc.loadUsages();
             });
 
+            $rootScope.$on('event:loadMastermap', function (event, igdocument) {
+              MastermapSvc.parseIg(igdocument);
+            });
   }
 );
