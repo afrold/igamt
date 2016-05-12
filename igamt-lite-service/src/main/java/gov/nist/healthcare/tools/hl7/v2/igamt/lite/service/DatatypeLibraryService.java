@@ -24,8 +24,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 public interface DatatypeLibraryService {
 
 	List<DatatypeLibrary> findAll();
-	
-	List<DatatypeLibrary> findByScopes(List<SCOPE> scopes);
+
+	List<DatatypeLibrary> findByScope(SCOPE scope, Long accountId);
 
 	DatatypeLibrary findById(String id);
 
@@ -51,6 +51,4 @@ public interface DatatypeLibraryService {
 	
 	List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope,
 			String hl7Version, String name, Long accountId);
-	
-	
  }

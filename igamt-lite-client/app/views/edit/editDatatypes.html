@@ -70,7 +70,7 @@
         <div class="col-md-1 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
-                <label class="control-label">Root</label>
+                <label class="control-label">Name</label>
                 <input type="text" disabled
                        name="name" class="form-control" ng-model="datatype.name"
                        required>
@@ -88,37 +88,16 @@
                        required>
             </div>
         </div>
-        <div class="col-md-1 col-margin">
+        <div class="col-md-2 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
-                <label class="control-label">Extension</label>
-                <input type="text"
+                <label class="control-label">Label</label>
+                <input type="text" ng-disabled="viewSettings.tableReadonly"
                        ng-change="recordChanged()"
-                       ng-disabled="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                       name="label" id="ext" class="form-control" ng-model="datatype.ext"
+                       name="label" id="label" class="form-control" ng-model="datatype.label"
                        required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(datatype,'label', datatypes)">Extension already used</span>
-            </div>
-        </div>
-         <div class="col-md-1 col-margin">
-            <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
-                <label class="control-label">HL7 Version</label>
-                <input type="text" disabled
-                       ng-change="recordChanged()"
-                       name="description" class="form-control" ng-model="datatype.hl7Version"
-                       required>
-            </div>
-        </div>
-         <div class="col-md-6 col-margin">
-            <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
-                <label class="control-label">Purpose and Use</label>
-                <textarea rows="3" cols="20"
-                       ng-change="recordChanged()"
-                       name="description" class="form-control" ng-model="datatype.purposeUse"
-                       required/>
+                                          ng-show="isDuplicated(datatype,'label', datatypes)">Label already used</span>
             </div>
         </div>
       <div class="col-md-6 col-margin">
@@ -134,23 +113,6 @@
         </div>
 
     </div>
-
-    <div class="col-md-12">
-        <div class="col-md-12 col-margin">
-            <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.purposeAndUse.$invalid}">
-                <label class="control-label">Purpose And Use</label>
-                <textarea style="width:100%;height:100%"
-                          ng-disabled="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                          ng-change="recordDatatypeChange('datatype','edit',datatype.id,'purposeAndUse', datatype.purposeAndUse)"
-                          name="comment" class="form-control"
-                          class="form-control"
-                          ng-model="node.purposeAndUse">
-                </textarea>
-            </div>
-        </div>
-    </div>
-
     <div class="col-md-12">
         <div class="col-md-12 col-margin">
             <div class="form-group control-group"

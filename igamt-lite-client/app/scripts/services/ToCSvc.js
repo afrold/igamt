@@ -175,13 +175,19 @@ angular
 														child,
 														child.bindingIdentifier,
 														parent);
-											} else {
+											} else if (parentType === "datatype") {
+												var label = getDatatypeLabel(child);
+												console.log("ToC datatype label=" + label);
+												entry = createEntry(child,
+														label, parent);
+											}  else {
 												entry = createEntry(child,
 														child.label, parent);
 											}
 											rval.push(entry);
 										});
-						return _.sortBy(rval, "reference.position");
+						return rval;
+//						return _.sortBy(rval, "label");
 					}
 					;
 

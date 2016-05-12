@@ -26,7 +26,7 @@ public interface DatatypeLibraryOperations {
 	
 	public DatatypeLibrary findById(String id);
 
-	public List<DatatypeLibrary> findByScopes(List<SCOPE> scopes);
+	List<DatatypeLibrary> findByScope(SCOPE scope, Long accountId);
 	
 	public List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version);
 

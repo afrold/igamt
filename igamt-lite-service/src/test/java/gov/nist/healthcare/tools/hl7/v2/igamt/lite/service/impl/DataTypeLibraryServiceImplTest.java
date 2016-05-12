@@ -62,30 +62,17 @@ public class DataTypeLibraryServiceImplTest {
 	}
 
 	@Test
-	public void testFindByScopes() {
-		List<DatatypeLibrary> dtlMs;
-		List<SCOPE> stdScope = new ArrayList<SCOPE>();
-		stdScope.add(Constant.SCOPE.HL7STANDARD);
-		dtlMs = dtlService.findByScopesAndVersion(stdScope, "2.5.1");
-		assertNotNull(dtlMs);
-		DatatypeLibrary dtlM = dtlMs.get(0);
-		dtlM.setId(null);
-		dtlM.setScope(Constant.SCOPE.MASTER);
-		dtlService.save(dtlM);
+	public void testFindByScope() {
+		List<DatatypeLibrary> dtlH = dtlService.findByScope(SCOPE.HL7STANDARD, null);
+		assertNotNull(dtlH);
+		assertTrue(dtlH.size() > 0);
 
-		List<DatatypeLibrary> dtlUs;
-		dtlUs = dtlService.findByScopesAndVersion(stdScope, "2.5.1");
-		assertNotNull(dtlUs);
-		DatatypeLibrary dtlU = dtlUs.get(0);
-		dtlU.setId(null);
-		dtlU.setScope(Constant.SCOPE.USER);
-		dtlService.save(dtlU);
+		List<DatatypeLibrary> dtlM = dtlService.findByScope(SCOPE.MASTER, 45L);
+		assertNotNull(dtlM);
+		assertTrue(dtlH.size() > 0);
 
-		List<SCOPE> scopes = new ArrayList<SCOPE>();
-		scopes.add(SCOPE.MASTER);
-		scopes.add(SCOPE.USER);
-		List<DatatypeLibrary> dtl = dtlService.findByScopes(scopes);
-		assertNotNull(dtl);
+		List<DatatypeLibrary> dtlU = dtlService.findByScope(SCOPE.USER, 45L);
+		assertNotNull(dtlU);
 	}
 
 //	@Test
@@ -212,7 +199,7 @@ public class DataTypeLibraryServiceImplTest {
 	public void testBindDatatypesDoDups() {
 		List<SCOPE> scopes = new ArrayList<SCOPE>();
 		scopes.add(Constant.SCOPE.MASTER);
-		List<DatatypeLibrary> dtls = dtlService.findByScopes(scopes);
+		List<DatatypeLibrary> dtls = dtlService.findByScope(SCOPE.MASTER, null);
 		assertNotNull(dtls);
 		assertEquals(0, dtls.get(0).getChildren().size());
 		List<Datatype> dts = dtService.findAll();
@@ -222,7 +209,7 @@ public class DataTypeLibraryServiceImplTest {
 		datatypeIds.add(dts.get(2).getId());
 		String dtLibId = dtls.get(0).getId();
 		List<Datatype> sut = dtlService.bindDatatypes(datatypeIds, dtLibId, "tex", 45L);
-		List<DatatypeLibrary> dtls1 = dtlService.findByScopes(scopes);
+		List<DatatypeLibrary> dtls1 = dtlService.findByScope(SCOPE.MASTER, null);
 		assertNotNull(dtls1);
 		assertEquals(3, dtls1.get(0).getChildren().size());
 		assertNotNull(sut);
@@ -233,10 +220,9 @@ public class DataTypeLibraryServiceImplTest {
 		List<Datatype> sut1 = dtService.findByScopesAndVersion(scopes, sut.get(0).getHl7Version());
 		assertNotNull(sut1);
 		List<String> datatypeIds1 = new ArrayList<String>();
-		datatypeIds.add(sut1.get(0).getId());
-		datatypeIds.add(sut1.get(1).getId());
-		datatypeIds.add(sut1.get(2).getId());
-		int libIdsSize1 = sut1.get(0).getLibIds().size();
+		datatypeIds1.add(sut1.get(0).getId());
+		datatypeIds1.add(sut1.get(1).getId());
+		datatypeIds1.add(sut1.get(2).getId());
 		List<Datatype> sut2 = dtlService.bindDatatypes(datatypeIds, dtLibId, "tex", 45L);
 		assertNotNull(sut2);
 	}

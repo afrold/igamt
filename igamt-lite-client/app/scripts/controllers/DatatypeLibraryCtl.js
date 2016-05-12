@@ -13,32 +13,40 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 	    $scope.viewSettings = ViewSettings;
       $scope.metaDataView = null;
       $scope.datatypeListView = null;
-      $scope.igDocumentConfig = {};
-      $scope.igDocumentConfig.selectedType
-
+ 
 	    $scope.tableWidth = null;
       $scope.datatypeLibrary = "";
       $scope.hl7Version = null;
       $scope.datatypeView = null;
       $scope.scopes = [];
+      $scope.datatypeLibrariesConfig = {};
+      $scope.datatypeLibrariesConfig.selectedType
+	  $scope.admin = userInfoService.isAdmin();
+      
+      $scope.datatypeLibraryTypes = [
+                                { name: "Browse Master data type libraries", type: 'MASTER', visible :  $scope.admin,
+                                },
+                                { name: "Access My data type libraries", type: 'USER', visible :  true
+                                }
+                            ];
 
 			$scope.initDatatypeLibrary = function() {
 				$scope.start = false;
-        $scope.scopes = ["USER"];
-        if (true) { //($scope.isAuthenticated() && $scope.isAdmin()) {
-          $scope.scopes.push("MASTER");
-        }
-				getDataTypeLibraryByScopes($scope.scopes);
 			};
 
-//      $scope.getMetaData = function(datatypeLibrary) {
-//        $scope.metaDataView = "LibraryMetaData.html";
-//        $scope.loadingSelection = true;
-//        $timeout(
-//          function () {
-//            $scope.loadingSelection = false;
-//          }, 100);
-//      };
+// $scope.getMetaData = function(datatypeLibrary) {
+// $scope.metaDataView = "LibraryMetaData.html";
+// $scope.loadingSelection = true;
+// $timeout(
+// function () {
+// $scope.loadingSelection = false;
+// }, 100);
+// };
+
+	        $scope.selectDTLibraryType = function (selectedType) {
+		        $scope.datatypeLibrariesConfig.selectedType = selectedType;
+	            getDataTypeLibraryByScope(selectedType);
+	        };
 
       $scope.getDatatypes = function(datatypeLibrary) {
         $scope.datatypeListView = "DatatypeList.html";
@@ -49,8 +57,9 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
           }, 100);
       };
 
-			function getDataTypeLibraryByScopes(scopes) {
-				DatatypeLibrarySvc.getDataTypeLibraryByScopes(scopes).then(function(data) {
+			function getDataTypeLibraryByScope(scope) {
+				DatatypeLibrarySvc.getDataTypeLibraryByScope(scope).then(function(data) {
+		 $scope.datatypeLibsStruct = [];
           angular.forEach(data, function(datum){
 						$scope.datatypeLibsStruct.push(datum);
           });
@@ -131,20 +140,24 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
       $scope.datatypeView = "EditDatatypes.html";
       if (datatype && datatype != null) {
         $scope.loadingSelection = true;
+
         DatatypeService.getOne(datatype.id).then(function (result) {
           $rootScope.datatype = result;
-          $scope.loadingSelection = false;
           $rootScope.datatype["type"] = "datatype";
           $scope.tableWidth = null;
           $scope.scrollbarWidth = $scope.getScrollbarWidth();
           $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
           $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
           $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
-          $scope.loadingSelection = false;
-          if ($scope.datatypesParams) {
-            $scope.datatypesParams.refresh();
-          }
-          $scope.igDocumentConfig.selectedType = 'USER';
+          $scope.datatypesParams = new ngTreetableParams({
+              getNodes: function (parent) {
+                  return DatatypeService.getNodes(parent, $rootScope.datatype);
+              },
+              getTemplate: function (node) {
+                  return DatatypeService.getTemplate(node, $rootScope.datatype);
+              }
+          });
+          $scope.datatypeLibrariesConfig.selectedType = 'USER';
           }, function (error) {
           $scope.loadingSelection = false;
           $rootScope.msg().text = error.data.text;
@@ -215,7 +228,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
         };
 
 
-			$scope.openStandardDataypes = function() {
+			$scope.openStandardDataypes = function(scope) {
 					var standardDatatypesInstance = $modal.open({
 						templateUrl : 'standardDatatypeDlg.html',
 						controller : 'StandardDatatypeLibraryInstanceDlgCtl',
@@ -227,8 +240,13 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 					}).result.then(function(standard) {
 						console.log( "hl7Version=" + standard.hl7Version + " name=" + standard.name + " ext=" + standard.ext);
             $scope.hl7Version = standard.hl7Version;
-            DatatypeLibrarySvc.create(standard.hl7Version, "MASTER", standard.name, standard.ext).then(function(result){
-             $scope.datatypeLibsStruct.push(result);
+            DatatypeLibrarySvc.create(standard.hl7Version, scope, standard.name, standard.ext).then(function(result){
+            	getDataTypeLibraryByScope([scope])
+            	angular.forEach(datatypeLibrariesConfig, function(lib) {
+                    if (lib.type === scope) {
+                        datatypeLibrariesConfig.selectedType = lib;
+                     }
+             	});
            });
 						console.log("$scope.datatypeLibsStruct=" + $scope.datatypeLibsStruct.length);
           });
@@ -288,26 +306,19 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 				}
 			}
 
-/* 			$scope.trackSelections = function(bool, event) {
-				if (bool) {
-					$scope.standardSelections.push(event);
-				} else {
-					for (var i = 0; i < $scope.standardSelections.length; i++) {
-						if ($scope.standardSelections[i].id === event.id) {
-							$scope.standardSelections.splice(i, 1);
-						}
-					}
-				}
-				$scope.okDisabled = $scope.standardSelections.length === 0;
-			};
+/*
+ * $scope.trackSelections = function(bool, event) { if (bool) {
+ * $scope.standardSelections.push(event); } else { for (var i = 0; i <
+ * $scope.standardSelections.length; i++) { if ($scope.standardSelections[i].id
+ * === event.id) { $scope.standardSelections.splice(i, 1); } } }
+ * $scope.okDisabled = $scope.standardSelections.length === 0; };
  */
-/*       $scope.loadDatatypesByScopeAndVersion = function() {
-        $scope.loading = true;
-            DatatypeLibrarySvc.getDatatypesByScopeAndVersion($scope.scope, hl7Version).then(function(response){
-            $scope.datatypeStruct = response;
-          });
-          $scope.loading = false;
-      }; */
+/*
+ * $scope.loadDatatypesByScopeAndVersion = function() { $scope.loading = true;
+ * DatatypeLibrarySvc.getDatatypesByScopeAndVersion($scope.scope,
+ * hl7Version).then(function(response){ $scope.datatypeStruct = response; });
+ * $scope.loading = false; };
+ */
 
 			$scope.ok = function() {
 				$modalInstance.close($scope.standard);

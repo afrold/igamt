@@ -63,13 +63,13 @@ angular.module('igl').factory(
                 	$rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openSegment', newSegment);
                 }, function (error) {
-                    $scope.saving = false;
+                	$rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
                 });
             }, function (error) {
-                $scope.saving = false;
+            	$rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
@@ -123,13 +123,13 @@ angular.module('igl').factory(
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openDatatype', newDatatype);
                 }, function (error) {
-                    $scope.saving = false;
+                	$rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
                 });
             }, function (error) {
-                $scope.saving = false;
+            	$rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
