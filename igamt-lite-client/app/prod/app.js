@@ -63,7 +63,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         })
         .when('/datatypeLibrary', {
             templateUrl: 'views/datatypeLibrary.html',
-            controller: 'MasterDatatypeLibraryCtl'
+            controller: 'DatatypeLibraryCtl'
         })
         .when('/doc', {
             templateUrl: 'views/doc.html'

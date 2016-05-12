@@ -471,8 +471,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('half-build', [ 'clean:dist', 
 					              'includeSource:prod',
 	                              'wiredep:prod',
-	                              'concurrent:server', 
-	                              'copy:dev'
+	                              'concurrent:dist'
 								]);
 
 	grunt.registerTask('build', [ 'clean:dist', 

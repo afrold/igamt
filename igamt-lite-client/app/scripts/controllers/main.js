@@ -1627,10 +1627,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getDatatypeLabel = function (datatype) {
-        	console.log("getDatatypeLabel Here id=" + datatype.id);
+//        	console.log("getDatatypeLabel Here id=" + datatype.id);
             var ext = $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary, "ext");
-        	console.log("getDatatypeLabel Here name=" + datatype.name);
-        	console.log("getDatatypeLabel Here ext=" + ext);
+//        	console.log("getDatatypeLabel Here name=" + datatype.name);
+//        	console.log("getDatatypeLabel Here ext=" + ext);
             return $rootScope.getLabel(datatype.name,ext);
         };
 
