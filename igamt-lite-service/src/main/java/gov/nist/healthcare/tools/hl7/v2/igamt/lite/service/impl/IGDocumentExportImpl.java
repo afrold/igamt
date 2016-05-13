@@ -42,6 +42,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerializationDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
@@ -203,6 +204,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	
 	@Autowired
 	private ProfileSerialization profileSerializationService;
+	
+	@Autowired
+	private ProfileSerializationDocument profileSerializationDocumentService;
 
 	//	@Autowired
 	//	private UserService userService;
@@ -937,8 +941,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			// Generate xml file containing profile
 //			File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
 			File tmpXmlFile =  new File("IGDocTemp.xml");
-			String stringIgDoc = new IGDocumentSerialization4ExportImpl()
-			.serializeIGDocumentToXML(igdoc);
+			String stringIgDoc = profileSerializationDocumentService.serializeIGDocumentToXML(igdoc);
 			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
 					Charset.forName("UTF-8"));
 
@@ -1000,8 +1003,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("DTTemp", ".xml");
-			String stringIgDoc = new IGDocumentSerialization4ExportImpl()
-			.serializeDatatypesToXML(igdoc);
+			String stringIgDoc = profileSerializationDocumentService.serializeDatatypesToXML(igdoc);
 			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
 					Charset.forName("UTF-8"));
 
@@ -1030,7 +1032,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			// Generate xml file containing profile
 //			File tmpXmlFile = File.createTempFile("DTTemp", ".xml");
 			File tmpXmlFile = new File("DTTemp.xml");
-			String stringIgDoc = new IGDocumentSerialization4ExportImpl()
+			String stringIgDoc = profileSerializationDocumentService
 			.serializeDatatypeToXML(d, igdoc);
 			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
 					Charset.forName("UTF-8"));
@@ -1068,7 +1070,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			// Generate xml file containing profile
 			//			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
 			File tmpXmlFile = new File("IGDocTemp.xml");
-			String stringProfile = new IGDocumentSerialization4ExportImpl()
+			String stringProfile = profileSerializationDocumentService
 			.serializeProfileToXML(d.getProfile());
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));
@@ -1079,8 +1081,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			Builder builder = new Builder();
 			//			nu.xom.Document input = builder.build(tmpXmlFile);
 
-			nu.xom.Document input = new IGDocumentSerialization4ExportImpl()
-			.serializeIGDocumentToDoc(d);
+			nu.xom.Document input = profileSerializationDocumentService.serializeIGDocumentToDoc(d);
 			nu.xom.Document stylesheet = builder.build(this.getClass()
 					.getResourceAsStream("/rendering/igdocument.xsl"));
 			XSLTransform transform = new XSLTransform(stylesheet);
@@ -1888,7 +1889,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
-			String stringIgDoc = new IGDocumentSerialization4ExportImpl()
+			String stringIgDoc = profileSerializationDocumentService
 			.serializeIGDocumentToXML(igdoc);
 			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
 					Charset.forName("UTF-8"));
@@ -1977,7 +1978,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("DTTemp", ".xml");
-			String stringIgDoc = new IGDocumentSerialization4ExportImpl()
+			String stringIgDoc = profileSerializationDocumentService
 			.serializeDatatypesToXML(igdoc);
 			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
 					Charset.forName("UTF-8"));
@@ -2048,8 +2049,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("DTTemp", ".xml");
-			String stringIgDoc = new IGDocumentSerialization4ExportImpl()
-			.serializeDatatypeToXML(d, igdoc);
+			String stringIgDoc = profileSerializationDocumentService.serializeDatatypeToXML(d, igdoc);
 			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
 					Charset.forName("UTF-8"));
 

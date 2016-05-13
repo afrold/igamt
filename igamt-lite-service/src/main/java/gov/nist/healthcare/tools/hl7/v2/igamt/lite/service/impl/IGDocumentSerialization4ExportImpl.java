@@ -128,10 +128,13 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 		}
 	}
 
+	@Override
 	public String serializeIGDocumentToXML(IGDocument igdoc) {
 		return serializeIGDocumentToDoc(igdoc).toXML();
 	}
 
+	
+	@Override
 	public nu.xom.Document serializeIGDocumentToDoc(IGDocument igdoc) {
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
 
@@ -144,7 +147,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 		e.appendChild(profileSections);
 		return doc;
 	}
-
+	
+	
+	@Override
 	public String serializeDatatypesToXML(IGDocument igdoc) {
 		return serializeDatatypesToDoc(igdoc).toXML();
 	}
@@ -158,6 +163,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 		return doc;
 	}
 
+	@Override
 	public String serializeDatatypeToXML(Datatype d, IGDocument igdoc) {
 		return serializeDatatypeToDoc(d, igdoc).toXML();
 	}
