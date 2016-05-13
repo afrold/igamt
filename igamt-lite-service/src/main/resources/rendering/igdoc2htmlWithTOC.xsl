@@ -469,8 +469,6 @@
 	<xsl:template match="Segment" mode="toc">
 		<a href="#{@ID}">
 			<br></br>
-			<xsl:value-of select="@Position" />
-			<xsl:text>.</xsl:text>
 			<xsl:value-of select="@Name" />
 			-
 			<xsl:value-of select="@Description" />
@@ -645,8 +643,6 @@
 	<xsl:template match="Datatype" mode="toc">
 		<a href="#{@ID}">
 			<br></br>
-			<xsl:value-of select="@Position" />
-			<xsl:text>.</xsl:text>
 			<xsl:value-of select="@Label" />
 			-
 			<xsl:value-of select="@Description" />
@@ -804,8 +800,6 @@
 	<xsl:template match="ValueSetDefinition" mode="toc">
 		<a href="#{@Id}">
 			<br></br>
-			<xsl:value-of select="@Position" />
-			<xsl:text>.</xsl:text>
 			<xsl:value-of select="@BindingIdentifier" />
 			-
 			<xsl:value-of select="@Description" />
