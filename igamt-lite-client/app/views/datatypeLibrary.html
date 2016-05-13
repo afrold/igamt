@@ -358,7 +358,7 @@
     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
 </div>
 <div ng-show="!loadingSelection">
-<div ng-show="datatype !== null" id="executionPanel">
+<div ng-show="datatypeStruct !== null" id="executionPanel">
 <form name="datatypeForm" novalidate class="form-horizontal">
 <div class="row">
     <div class="col-md-12 igl-page-header">
@@ -561,7 +561,7 @@
          <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>-</div>
         </td>
-      <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('valueSet')">
+      <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('codeSys')">
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
@@ -572,6 +572,261 @@
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <div>-</div>
+        </td>
+    </tr>
+</script>
+<script type="text/ng-template" id="DatatypeLibraryComponentEditTree.html">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)"
+        ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
+        <td class="col-xs-2 col-fixed-250" ng-controller="DatatypeRowCtrl">
+            <ng-form name="{{formName}}" class="form-inline">
+                <!--<input type="checkbox" ng-checked="isChildSelected(node)" ng-click="selectChild($event,node)">-->
+                <span class="label label-component label-icon">C</span>
+            <span ng-hide="isChildNew(node)"
+                  tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true"
+                  tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger
+                  tooltip-animation="false" tooltip-placement="left"
+                    ></span>
+             <span ng-show="isChildNew(node)">
+                  {{node.position}}.
+                <input
+                        class="form-control focus"
+                        autofocus
+                        style="width:65%"
+                        name="name"
+                        ng-change="recordDatatypeChange('component','edit',node.id,'name', node.name)"
+                        ng-class="{ 'igl-has-error has-feedback' : {{formName}}.name.$invalid}"
+                        ng-model="node.name" required>
+
+            </span>
+            </ng-form>
+        </td>
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
+
+                <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)"
+                      ng-controller="DatatypeRowCtrl">
+                	<ng-form name="{{formName}}" class="form-inline">
+                        <select class="form-control input-sm" name="usage" id="usage"
+                                ng-change="setUsage(node)"
+                                ng-class="{ 'igl-has-error has-feedback' : {{formName}}.usage.$invalid}"
+                                required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
+                    </ng-form>
+                </span>
+
+            <div ng-show="node.usage === 'C' && countPredicate(node.position) !== 0">
+                <p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                    C({{p.trueUsage}}/{{p.falseUsage}})
+                </p>
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
+            <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
+                <input style="width:45%" class="form-control"
+                       name="minLength"
+                       ng-change="recordDatatypeChange('component','edit',node.id,'minLength', node.minLength)"
+                       ng-pattern="/^\d+$/"
+                       ng-class="{ 'igl-has-error has-feedback' : {{formName}}.minLength.$invalid}"
+                       ng-model="node.minLength" required ng-minlength="1">
+                <input style="width:45%" class="form-control" type="text"
+                       name="maxLength"
+                       ng-change="recordDatatypeChange('component','edit',node.id,'maxLength', node.maxLength)"
+                       ng-class="{ 'igl-has-error has-feedback' : {{formName}}.maxLength.$invalid}"
+                       ng-pattern="/^\d+$|^\*?$/"
+                       ng-model="node.maxLength" required>
+                </span>
+            </ng-form>
+        </td>
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
+            <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
+                <input style="width:50%" class="form-control" type="text"
+                       name="confLength"
+                       required
+                       ng-change="recordDatatypeChange('component','edit',node.id,'confLength', node.confLength)"
+                       ng-class="{ 'igl-has-error has-feedback' : {{formName}}.confLength.$invalid}"
+                       ng-pattern="/^\d+$/"
+                       ng-model="node.confLength">
+            </ng-form>
+        </td>
+
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+            <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
+                <div ng-show="node.datatype != null && datatypesMap[node.datatype] != null && datatypesMap[node.datatype] != undefined">
+                    <a ng-click="showSelectDatatypeFlavorDlg(node)">
+                        {{getLabel(datatypeStruct.name, datatypeLibStruct.metaData.ext)}}
+                    </a>
+                </div>
+
+            </ng-form>
+        </td>
+
+        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+            <div ng-show="node.table != undefined && node.table !== null">
+                <a ng-click="goToTable(tablesMap[node.table])" class="point">
+                    <span>{{tablesMap[node.table].bindingIdentifier}}</span>
+                </a>
+                <a ng-click="mapTable(node)" class="point">
+                    <span><i class="fa fa-pencil fa-fw"></i></span>
+                </a>
+                <a ng-click="deleteTable(node)" class="point">
+                    <span><i class="fa fa-times fa-fw"></i></span>
+                </a>
+            </div>
+            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTable(datatypesMap[node.datatype])">
+                <a ng-click="mapTable(node)" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
+            </div>
+        </td>
+
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
+            <div>
+                <div ng-show="countPredicate(node.position) === 0 && node.usage === 'C'">
+                    <a ng-click="managePredicate(node)" class="point">
+                        <i class="fa fa-plus fa-fw"></i>
+
+                        <p class="warning">Need predicate</p>
+                    </a>
+                </div>
+                <div ng-show="countPredicate(node.position) !== 0 && node.usage === 'C'">
+                    <p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                        <a ng-click="managePredicate(node)" tooltip-html="getPredicateAsString(p)"
+                           tooltip-append-to-body="true"
+                           tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
+                           tooltip-animation="false" tooltip-placement="left"></a>
+                    </p>
+                </div>
+            </div>
+        </td>
+
+        <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
+            <div>
+                <div ng-show="countConformanceStatements(node.position) == 0">
+                    <a ng-click="manageConformanceStatement(node)" class="point">
+                        <i class="fa fa-plus fa-fw"></i>
+                    </a>
+                </div>
+                <p ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
+                    <a ng-click="manageConformanceStatement(node)" tooltip-html="getConformanceStatementAsString(c)"
+                       tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)"
+                       tooltip-trigger
+                       tooltip-animation="false" tooltip-placement="left"></a>
+                </p>
+            </div>
+        </td>
+
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">
+            <div>
+                <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
+                   class="point">
+                    <i class="fa fa-pencil fa-fw" ng-show="node.text !== '' && node.text !== null"></i>
+                    <i class="fa fa-plus fa-fw" ng-show="node.text === '' || node.text === null"></i>
+                </a>
+                <a ng-click="node.text = ''" ng-show="node.text !== '' && node.text !== null">
+                    <i class="fa fa-times fa-fw"></i>
+                </a>
+            </div>
+        </td>
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')"
+            style="text-align:center">
+            <a
+                    ng-show="node.comment === null || node.comment == undefined || node.comment == ''"
+                    ng-click="node.comment = ' '" class="point">
+                <i class="fa fa-plus fa-fw"></i>
+            </a>
+            <textarea style="width:100%;height:100%"
+                      class="form-control"
+                      ng-model="node.comment"
+                      ng-show="node.comment !== null && node.comment != undefined && node.comment != ''">
+            </textarea>
+            <a
+                    ng-show="node.comment !== null && node.comment !== undefined && node.comment != ''"
+                    ng-click="node.comment = null"
+                    class="point">
+                <i class="fa fa-times fa-fw"></i>
+            </a>
+
+        </td>
+    </tr>
+</script>
+<script type="text/ng-template" id="DatatypeSubComponentEditTree.html">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
+        <td class="col-xs-2 col-fixed-250">
+                                        <span>
+                                            <span class="label label-sub-component label-icon">S</span>
+                                             <span
+                                                     tooltip-html="getComponentNodeName(node)"
+                                                     tooltip-append-to-body="true"
+                                                     tooltip-class="constraints-tooltip"
+                                                     ng-bind-html="getComponentNodeName(node)" tooltip-trigger
+                                                     tooltip-animation="false" tooltip-placement="left"
+                                                     ></span>
+                                        </span>
+        </td>
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
+			<span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) === 0)">
+            	{{node.usage}}
+            </span>
+
+            <div ng-show="node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) !== 0">
+                <p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
+                    C({{p.trueUsage}}/{{p.falseUsage}})
+                </p>
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
+            <div>
+                -
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
+            <div>
+                -
+            </div>
+        </td>
+
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+            <div>
+                <a ng-click="goToDatatype(datatypesMap[node.datatype])"
+                   class="point">{{getDatatypeLabel(datatypesMap[node.datatype])}}
+                </a>
+            </div>
+        </td>
+
+        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+            <a ng-click="goToTable(tablesMap[node.table])"
+               class="point" ng-show="node.table !== null && node.table !== undefined">
+                {{tablesMap[node.table].bindingIdentifier}}
+            </a>
+        </td>
+
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
+            <p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true"
+               tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
+               tooltip-animation="false" tooltip-placement="left">
+            </p>
+        </td>
+
+        <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
+            <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true"
+               tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger
+               tooltip-animation="false" tooltip-placement="left">
+            </p>
+        </td>
+
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
+            <div>
+                <a ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)"
+                   class="point">
+                    <i class="fa fa-eye fa-fw"></i>
+                </a>
+            </div>
+        </td>
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
+            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" disabled>
+            </textarea>
         </td>
     </tr>
 </script>

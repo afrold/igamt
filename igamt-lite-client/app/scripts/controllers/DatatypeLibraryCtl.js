@@ -23,8 +23,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $scope.datatypeLibrariesConfig = {};
       $scope.datatypeLibrariesConfig.selectedType
 	  $scope.admin = userInfoService.isAdmin();
-      $scope.datatypesParams = {};
-      
+
+      $scope.datatypesParams = new ngTreetableParams({
+          getNodes: function (parent) {
+              return $scope.getNodes(parent, $scope.datatypeStruct);
+          },
+          getTemplate: function (node) {
+              return $scope.getEditTemplate(node, $scope.datatypeStruct);
+          }
+       });
+
       $scope.datatypeLibraryTypes = [
                                 { name: "Browse Master data type libraries", type: 'MASTER', visible :  $scope.admin,
                                 },
@@ -158,16 +166,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
           $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
           $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
           $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
-          $scope.datatypesParams = new ngTreetableParams({
-              getNodes: function (parent) {
-                  return $scope.datatypeStruct.components;
-              },
-              getTemplate: function (node) {
-                  return 'DatatypeLibraryEditTree.html';
-              }
-           });
+          $scope.datatypesParams.refresh();
           $scope.loadingSelection = false;
-          $scope.datatypeLibrariesConfig.selectedType = 'USER';
+          if ($scope.datatypeStruct) {
+        	  $scope.datatypeLibrariesConfig.selectedType = 'USER';
+          }
           }, function (error) {
           $scope.loadingSelection = false;
           $rootScope.msg().text = error.data.text;
@@ -175,6 +178,33 @@ angular.module('igl').controller('DatatypeLibraryCtl',
           $rootScope.msg().show = true;
         });
       }
+    };
+    
+    $scope.getNodes = function (parent, root) {
+        var children = [];
+        if (parent && parent != null) {
+            if (parent.datatype) {
+                var dt = $scope.datatypeStruct;
+                children = dt.components;
+            } else {
+                children = parent.components;
+            }
+        } else {
+            if (root != null) {
+                children = root.components;
+            } else {
+                children = [];
+            }
+        }
+        return children;
+    };
+    
+    $scope.getEditTemplate = function (node, root) {
+        return node.type === 'datatype' ? 'DatatypeLibraryEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeLibraryComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeLibrarySubComponentEditTree.html' : '';
+    };
+    
+    $scope.isVisible = function (node) {
+        return DatatypeService.isVisible(node);
     };
 
   $scope.copyDatatype = function(datatype) {
