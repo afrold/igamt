@@ -66,5 +66,6 @@
   "description" : "Daily Deductible Information",
   "comment" : "",
   "usageNote" : "",
-  "status" : "PUBLISHED"
+  "status" : "PUBLISHED",
+  "purposeAndUse" : "This data type is used for specifying an identifier with its associated administrative detail. Assigning Authority and Identifier Type Code required to ensure the ID is unique among all Assigning Authorities and Identifier Type Codes."
 }

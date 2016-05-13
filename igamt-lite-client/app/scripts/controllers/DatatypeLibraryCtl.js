@@ -2,7 +2,7 @@
  * http://usejsdoc.org/
  */
 angular.module('igl').controller('DatatypeLibraryCtl',
-		function($scope, $rootScope, $modal, $timeout, ngTreetableParams, DatatypeService, DatatypeLibrarySvc, FormsSelectSvc, ViewSettings, userInfoService) {
+		function($scope, $rootScope, $modal, $timeout, ngTreetableParams, DatatypeService, DatatypeLibrarySvc, FormsSelectSvc, IGDocumentSvc, TableService, ViewSettings, userInfoService) {
 
       $scope.datatypeLibsStruct = [];
       $scope.datatypeLibStruct = null;
@@ -40,9 +40,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                                 }
                             ];
 
-			$scope.initDatatypeLibrary = function() {
-				$scope.start = false;
-			};
+	$scope.initDatatypeLibrary = function() {
+		IGDocumentSvc.loadIgDocumentMetaData();
+		$scope.start = false;
+	};
 
 // $scope.getMetaData = function(datatypeLibrary) {
 // $scope.metaDataView = "LibraryMetaData.html";
@@ -184,8 +185,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         var children = [];
         if (parent && parent != null) {
             if (parent.datatype) {
-                var dt = $scope.datatypeStruct;
-                children = dt.components;
+                 children = DatatypeService.getOne(parent.datatype);
             } else {
                 children = parent.components;
             }
@@ -282,6 +282,15 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             return "";
         };
 
+        $scope.getBindingIdentifier = function(tableId) {
+        	console.log("getBindingIdentifier==>");
+//        	var bindingIdentifier;
+//        	TableService.getOne(tableId).then(function(result){
+//        		bindingIdentifier = angular.fromjson(result.data);
+//        	});
+        	console.log("<==getBindingIdentifier= bindingIdentifier");
+        	return "bindingIdentifier";
+        };
 
 			$scope.openStandardDataypes = function(scope) {
 					var standardDatatypesInstance = $modal.open({

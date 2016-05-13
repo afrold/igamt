@@ -17,8 +17,8 @@
                     "bindingLocation" : "",
                     "datatype" : "565f3ab5d4c6e52cfd43b945",
                     "position" : 1,
-                    "comment" : "",
-                    "text" : "",
+                    "comment" : "Delay Days comment",
+                    "text" : "Delay Days text",
                     "hide" : false,
                     "id" : "565f3ab5d4c6e52cfd43ba18"
                 }, {
@@ -55,10 +55,11 @@
                     "id" : "565f3ab5d4c6e52cfd43ba1a"
                 } ],
                 "name" : "DDI",
-                "description" : "Daily Deductible Information",
+                "description" : "Daily Deductible Informations",
                 "hl7Version" : "2.6",
-                "comment" : "",
-                "usageNote" : ""
+                "comment" : "A comment",
+                "usageNote" : "",
+                "purposeAndUse" : "This data type is used for specifying an identifier with its associated administrative detail. Assigning Authority and Identifier Type Code required to ensure the ID is unique among all Assigning Authorities and Identifier Type Codes."
             }, {
                 "type" : "datatype",
                 "sectionPosition" : 13,

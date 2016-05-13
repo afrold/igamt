@@ -12,6 +12,7 @@
     "table" : "",
     "bindingStrength" : "",
     "bindingLocation" : "",
+    "purposeAndUse" : "This data type is used for specifying an identifier with its associated administrative detail. Assigning Authority and Identifier Type Code required to ensure the ID is unique among all Assigning Authorities and Identifier Type Codes.",
     "datatype" : "569eac0fd4c623dc6550eccf",
     "position" : 1,
     "comment" : "",
