@@ -52,10 +52,10 @@ angular
         svc.setElement(c.id, "component", "usage", c["usage"]);
       }
       if (c.datatype !== undefined){
-        svc.addDatatype(c.datatype, parent.concat([[c.id, "component"]]));
+        svc.addDatatypeId(c.datatype, parent.concat([[c.id, "component"]]));
       }
       if (c.table !== undefined){
-        svc.addValueSet(c.table, parent.concat([[c.id, "component"]]));
+        svc.addValueSetId(c.table, parent.concat([[c.id, "component"]]));
       }
 
       // svc.addDatatype(c.datatype, parent.concat(new  Array([dt.id, 'datatype']))); ?? nedd to process subcomponent without infinite loop
@@ -119,25 +119,6 @@ angular
     svc.addCodes = function(code, parent) {
         svc.createMMElement(code.id, "code");
         svc.addParentsId(code.id, "code", parent);
-    }
-
-
-    svc.addDatatype = function(datatypeId, parent) {
-      if (datatypeId !== undefined && datatypeId !== "") {
-        var dt = svc.getDatatypeLibrary()[datatypeId];
-        if (dt !== undefined){
-          svc.createMMElement(dt.id, "datatype");
-          svc.addParentsId(dt.id, "datatype", parent);
-//           console.log(svc.mastermap[dt.id, "datatype"])
-          dt.components.forEach( function(c) {
-            svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
-          });
-        } else {
-          svc.createMMElement(datatypeId, "datatype");
-          svc.addParentsId(datatypeId, "datatype", parent);
-          //           console.log("!!! => datatype " + datatype + " not found in library");
-        }
-      }
     }
 
 
@@ -255,33 +236,33 @@ angular
 
 
     svc.addSegmentRef = function (segmentRef, parent){
+        var segRefId = segmentRef.id;
+        var segRef = segmentRef.ref;
 
-      var segRefId = segmentRef.id;
-      var segRef = segmentRef.ref;
+        svc.createMMElement(segRefId, "segmentRef");
+        svc.setElement(segRefId, "segmentRef", "usage", segmentRef["usage"]);
+        svc.addParentsId(segRefId, "segmentRef", parent);
 
-      svc.createMMElement(segRefId, "segmentRef");
-      svc.setElement(segRefId, "segmentRef", "usage", segmentRef["usage"]);
-      svc.addParentsId(segRefId, "segmentRef", parent);
-
-      svc.addSegmentId(segRef, parent.concat([[segRefId, "segmentRef"]]));
+        svc.addSegmentId(segRef, parent.concat([[segRefId, "segmentRef"]]));
     }
 
 
     svc.addGroup = function (group, parent) {
-      //           console.log("Processing group " + group.id);
-
       svc.createMMElement(group.id, "group");
-      svc.setElement(group.id, "group", "usage", group["usage"]);
-      if (group["usage"] === undefined){
-        console.log("undefined usage for group!!")}
       svc.addParentsId(group.id, "group", parent);
 
+      if (group["usage"] !== undefined && group["usage"] !== "") {
+          svc.setElement(group.id, "group", "usage", group["usage"]);
+      } else {
+          console.log("undefined usage for group!!");
+      }
+
       _.each(group.children, function(n) {
-        if (n.type === "segmentRef"){
-          svc.addSegmentRef(n, parent.concat([[group.id, 'group']]));
-        } else {
-          svc.addGroup(n, parent.concat([[group.id, 'group']]));
-        }
+          if (n.type === "segmentRef"){
+              svc.addSegmentRef(n, parent.concat([[group.id, 'group']]));
+          } else {
+              svc.addGroup(n, parent.concat([[group.id, 'group']]));
+          }
       });
     }
 

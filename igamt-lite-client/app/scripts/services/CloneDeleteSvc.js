@@ -58,7 +58,9 @@ angular.module('igl').factory(
                 	$rootScope.segments.splice(0, 0, newSegment);
                 	$rootScope.segment = newSegment;
                 	$rootScope.segmentsMap[newSegment.id] = newSegment;
-                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                	console.log(newSegment);
+                	console.log([[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+//                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 	$rootScope.processElement(newSegment);
                 	$rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openSegment', newSegment);
