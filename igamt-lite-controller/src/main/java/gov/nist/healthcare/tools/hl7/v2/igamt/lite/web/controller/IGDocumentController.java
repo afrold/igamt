@@ -4,21 +4,27 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
@@ -33,6 +39,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PhinvadsWSCallService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
@@ -52,6 +59,7 @@ import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -113,6 +121,9 @@ public class IGDocumentController extends CommonController {
 	@Autowired
 	private TableService tableService;
 
+	@Autowired
+	private MessageService messageService;
+	
 	public IGDocumentService getIgDocumentService() {
 		return igDocumentService;
 	}
@@ -180,19 +191,27 @@ public class IGDocumentController extends CommonController {
 			IGDocumentException {
 		try {
 			log.info("Clone IGDocument with id=" + id);
+			
+			HashMap<String,String> segmentIdChangeMap = new HashMap<String,String>();
+			HashMap<String,String> datatypeIdChangeMap = new HashMap<String,String>();
+			HashMap<String,String> tableIdChangeMap = new HashMap<String,String>();
+			
 			User u = userService.getCurrentUser();
-			Account account = accountRepository.findByTheAccountsUsername(u
-					.getUsername());
+			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
 			if (account == null)
 				throw new UserAccountNotFoundException();
 			IGDocument igDocument = this.findIGDocument(id);
+			
+			for(Message m: igDocument.getProfile().getMessages().getChildren()){
+				m.setId(null);
+				messageService.save(m);
+			}
+			
+			
 
-			DatatypeLibrary datatypeLibrary = igDocument.getProfile()
-					.getDatatypeLibrary();
-			SegmentLibrary segmentLibrary = igDocument.getProfile()
-					.getSegmentLibrary();
-			TableLibrary tableLibrary = igDocument.getProfile()
-					.getTableLibrary();
+			DatatypeLibrary datatypeLibrary = igDocument.getProfile().getDatatypeLibrary();
+			SegmentLibrary segmentLibrary = igDocument.getProfile().getSegmentLibrary();
+			TableLibrary tableLibrary = igDocument.getProfile().getTableLibrary();
 
 			DatatypeLibrary clonedDatatypeLibrary = datatypeLibrary.clone();
 			SegmentLibrary clonedSegmentLibrary = segmentLibrary.clone();
@@ -206,33 +225,36 @@ public class IGDocumentController extends CommonController {
 			segmentLibraryService.save(clonedSegmentLibrary);
 			tableLibraryService.save(clonedTableLibrary);
 
-			List<Datatype> datatypes = datatypeService
-					.findByFullDTsLibIds(datatypeLibrary.getId());
+			List<Datatype> datatypes = datatypeService.findByFullDTsLibIds(datatypeLibrary.getId());
 			if (datatypes != null) {
 				for (int i = 0; i < datatypes.size(); i++) {
+					String oldDatatypeId = null;
 					Datatype d = datatypes.get(i);
-					System.out.println(clonedDatatypeLibrary.getId());
-					System.out.println(datatypeLibrary.getId());
-					System.out.println(d.getId());
 					DatatypeLink dl = datatypeLibrary.findOne(d.getId()).clone();
 					if (d.getScope().equals(SCOPE.USER)) {
+						oldDatatypeId = d.getId();
 						d.setId(null);
 						d.setLibId(new HashSet<String>());
 					}
+					
 					d.getLibIds().add(clonedDatatypeLibrary.getId());
 					datatypeService.save(d);
 					dl.setId(d.getId());
 					clonedDatatypeLibrary.addDatatype(dl);
+					if(oldDatatypeId != null) {
+						datatypeIdChangeMap.put(oldDatatypeId, d.getId());
+					}
 				}
 			}
 
-			List<Segment> segments = segmentService.findByLibIds(segmentLibrary
-					.getId());
+			List<Segment> segments = segmentService.findByLibIds(segmentLibrary.getId());
 			if (segments != null) {
 				for (int i = 0; i < segments.size(); i++) {
+					String oldSegmentId = null;
 					Segment s = segments.get(i);
 					SegmentLink sl = segmentLibrary.findOne(s.getId());
 					if (s.getScope().equals(SCOPE.USER)) {
+						oldSegmentId = s.getId();
 						s.setId(null);
 						s.setLibId(new HashSet<String>());
 					}
@@ -240,17 +262,21 @@ public class IGDocumentController extends CommonController {
 					segmentService.save(s);
 					sl.setId(s.getId());
 					clonedSegmentLibrary.addSegment(sl);
+					if(oldSegmentId != null) {
+						segmentIdChangeMap.put(oldSegmentId, s.getId());
+					}
 				}
 
 			}
 
-			List<Table> tables = tableService
-					.findByLibIds(tableLibrary.getId());
+			List<Table> tables = tableService.findByLibIds(tableLibrary.getId());
 			if (tables != null) {
 				for (int i = 0; i < tables.size(); i++) {
+					String oldTableId = null;
 					Table t = tables.get(i);
 					TableLink tl = tableLibrary.findOneTableById(t.getId());
 					if (t.getScope().equals(SCOPE.USER)) {
+						oldTableId = t.getId();
 						t.setId(null);
 						t.setLibIds(new HashSet<String>());
 					}
@@ -258,6 +284,9 @@ public class IGDocumentController extends CommonController {
 					tableService.save(t);
 					tl.setId(t.getId());
 					clonedTableLibrary.addTable(tl);
+					if(oldTableId != null) {
+						tableIdChangeMap.put(oldTableId, t.getId());
+					}
 				}
 			}
 
@@ -269,6 +298,12 @@ public class IGDocumentController extends CommonController {
 			igDocument.getProfile().setSegmentLibrary(clonedSegmentLibrary);
 			igDocument.getProfile().setTableLibrary(clonedTableLibrary);
 
+			
+			updateModifiedId(tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap, igDocument.getProfile());
+			
+			
+			
+			
 			igDocument.setId(null);
 			igDocument.setScope(IGDocumentScope.USER);
 			igDocument.setAccountId(account.getId());
@@ -280,6 +315,48 @@ public class IGDocumentController extends CommonController {
 		} catch (CloneNotSupportedException e) {
 			throw new IGDocumentException(e);
 		}
+	}
+
+	private void updateModifiedId(HashMap<String, String> tableIdChangeMap, HashMap<String, String> datatypeIdChangeMap, HashMap<String, String> segmentIdChangeMap, Profile profile) {
+		for(SegmentLink sl: profile.getSegmentLibrary().getChildren()){
+			Segment s = segmentService.findById(sl.getId());
+			for(Field f:s.getFields()){
+				if(f.getDatatype() != null && datatypeIdChangeMap.containsKey(f.getDatatype())) f.setDatatype(datatypeIdChangeMap.get(f.getDatatype()));
+				if(f.getTable() != null && tableIdChangeMap.containsKey(f.getTable())) f.setTable(tableIdChangeMap.get(f.getTable()));
+			}
+			segmentService.save(s);
+		}
+		
+		for(DatatypeLink dl: profile.getDatatypeLibrary().getChildren()){
+			Datatype d = datatypeService.findById(dl.getId());
+			for(Component c:d.getComponents()){
+				if(c.getDatatype() != null && datatypeIdChangeMap.containsKey(c.getDatatype())) c.setDatatype(datatypeIdChangeMap.get(c.getDatatype()));
+				if(c.getTable() != null && tableIdChangeMap.containsKey(c.getTable())) c.setTable(tableIdChangeMap.get(c.getTable()));
+			}
+			datatypeService.save(d);
+		}
+		
+		for(Message m : profile.getMessages().getChildren()){
+			for(SegmentRefOrGroup sog : m.getChildren()){
+				this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap, sog);
+			}
+		}
+	}
+
+	private void udateModifiedSegmentIdAndVisitChild(HashMap<String, String> segmentIdChangeMap, SegmentRefOrGroup sog) {
+		if(sog instanceof SegmentRef){
+			SegmentRef segmentRef = (SegmentRef)sog;
+			if(segmentIdChangeMap.containsKey(segmentRef.getRef())) segmentRef.setRef(segmentIdChangeMap.get(segmentRef.getRef()));
+		}
+		
+		if (sog instanceof Group) {
+			Group g = (Group)sog;
+			
+			for(SegmentRefOrGroup child:g.getChildren()){
+				this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap, child);
+			}
+		}
+		
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -403,12 +480,10 @@ public class IGDocumentController extends CommonController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException,
 			CloneNotSupportedException {
-		log.info("Exporting as xml file profile with id=" + id
-				+ " for selected messages=" + Arrays.toString(messageIds));
+		log.info("Exporting as xml file profile with id=" + id + " for selected messages=" + Arrays.toString(messageIds));
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
-		content = igDocumentExport.exportAsValidationForSelectedMessages(d,
-				messageIds);
+		content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
 		response.setContentType("application/zip");
 		response.setHeader("Content-disposition", "attachment;filename="
 				+ escapeSpace(d.getMetaData().getTitle()) + "-"
