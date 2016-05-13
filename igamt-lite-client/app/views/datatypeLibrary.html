@@ -50,7 +50,7 @@
 						<thead>
 							<tr class="tbl-header">
 								<th st-ratio="2" style="text-align: center;">#</th>
-								<th st-ratio="10" st-sort="datatypeLibsDisplay(dt)"
+								<th st-ratio="10" st-sort="datatypeLibsDisplay(dtLib)"
 									st-sort-default="true">Label</th>
 								<th st-ratio="30">Description</th>
 								<th st-ratio="10">Scope</th>
@@ -59,24 +59,24 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-class="{'new' : dt.new}"
-								ng-repeat="dt in datatypeLibsDisplay">
+							<tr ng-class="{'new' : dtLib.new}"
+								ng-repeat="dtLib in datatypeLibsDisplay">
 								<td st-ratio="2" style="text-align: right;">{{$index + 1}}</td>
-								<td st-ratio="10">{{dt.sectionTitle}}</td>
-								<td st-ratio="30">{{dt.sectionDescription}}
-								<td st-ratio="10">{{dt.scope}}</td>
-								<td st-ratio="10">{{dt.metaData.hl7Version}}</td>
+								<td st-ratio="10">{{dtLib.sectionTitle}}</td>
+								<td st-ratio="30">{{dtLib.sectionDescription}}
+								<td st-ratio="10">{{dtLib.scope}}</td>
+								<td st-ratio="10">{{dtLib.metaData.hl7Version}}</td>
 								<td st-ratio="38">
 									<button title="Edit" type="button"
-										class="btn btn-xs btn-primary" ng-click="edit(dt)">
+										class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib)">
 										<span><i class="fa fa-pencil fa-fw"></i> Edit</span>
 									</button>
 									<button title="Create Copy" type="button"
-										class="btn btn-xs btn-info" ng-click="copy(dt)">
+										class="btn btn-xs btn-info" ng-click="copyLibrary(dtLib)">
 										<span><i class="fa fa-plus fa-fw"></i> Copy</span>
 									</button>
 									<button title="Delete" type="button"
-										class="btn btn-xs btn-danger" ng-click="delete(dt)">
+										class="btn btn-xs btn-danger" ng-click="deleteLibrary(dtLib)">
 										<span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
 									</button>
 								</td>
@@ -201,10 +201,10 @@
     Add data types.
   </button>
 </div>
-<table st-table="datatypeDisplay" st-safe-src="datatypeLibStruct.children" st-sticky-header class="table table-bordered">
+<table st-table="datatypeDisplay" st-safe-src="datatypesBrevis" st-sticky-header class="table table-bordered">
 <thead>
   <tr class="row tbl-header">
-    <th st-ratio="10" st-sort="getLabel(dt.name, datatypeLibStruct.ext)" st-sort-default="true">Label</th>
+    <th st-ratio="10" st-sort="getLabel(dt.name, dt.ext)" st-sort-default="true">Label</th>
     <th st-ratio="30">Description</th>
     <th st-ratio="58">Actions</th>
     <th st-ratio="2">Publish</th>
@@ -215,7 +215,7 @@
 </thead>
 <tbody>
 	<tr class="row" ng-repeat="dt in datatypeDisplay" ng-class="{'new': dt.new}">
-    <td st-ratio="10">{{getLabel(dt.name, datatypeLibStruct.ext)}}</td>
+    <td st-ratio="10">{{getLabel(dt.name, dt.ext)}}</td>
     <td st-ratio="30" ng-bind="dt.description"></td>
     <td st-ratio="58">
      <button
@@ -332,9 +332,9 @@
   </tr>
 </thead>
 <tbody>
-  <tr class="row" ng-repeat="dt in datatypesDisplay">
+  <tr class="row" ng-repeat="dt in datatypesDisplay | orderBy: 'name'">
     <td st-ratio="2"><input value="1" name="datatypesDisplay.id" type="checkbox" ng-model="bool" ng-click="trackSelections(bool, dt)"/></td>
-    <td st-ratio="48">{{dt.label}}</td>
+    <td st-ratio="48">{{dt.name}}</td>
     <td st-ratio="48">{{dt.ext}}</td>
   </tr>
 </tbody>
@@ -368,7 +368,7 @@
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"
                  ng-hide="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
-                 ng-click="saveDatatype()">
+                 ng-click="saveDatatype(datatypeStruct)">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
                          <button title="Cancel Changes" type="button" class="btn btn-xs btn-warning"
@@ -445,10 +445,10 @@
          <div class="col-md-6 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
-                <label class="control-label">Purpose and Use</label>
-                <textarea rows="3" cols="20"
+                <label for="pnu" class="control-label">Purpose and Use</label>
+                <textarea name="pnu" rows="3" cols="20"
                        ng-change="recordChanged()"
-                       name="description" class="form-control" ng-model="datatypeStruct.purposeUse"
+                       name="description" class="form-control" ng-model="datatypeStruct.purposeAndUse"
                        required/>
             </div>
         </div>
@@ -465,23 +465,6 @@
         </div>
 
     </div>
-
-    <div class="col-md-12">
-        <div class="col-md-12 col-margin">
-            <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.purposeAndUse.$invalid}">
-                <label class="control-label">Purpose And Use</label>
-                <textarea style="width:100%;height:100%"
-                          ng-disabled="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
-                          ng-change="recordDatatypeChange('datatypeStruct','edit',datatypeStruct.id,'purposeAndUse', datatypeStruct.purposeAndUse)"
-                          name="comment" class="form-control"
-                          class="form-control"
-                          ng-model="node.purposeAndUse">
-                </textarea>
-            </div>
-        </div>
-    </div>
-
     <div class="col-md-12">
         <div class="col-md-12 col-margin">
             <div class="form-group control-group"
@@ -564,4 +547,31 @@
 </div>
 </div>
 </div>
+</script>
+<script type="text/ng-template" id="DatatypeLibraryEditTree.html">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
+        <td class="col-xs-2 col-fixed-250">{{$index}}
+        </td>
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('name')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
+            <div>-</div>
+        </td>
+         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('datatype')">
+            <div>-</div>
+        </td>
+      <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('valueSet')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
+            <div>-</div>
+        </td>
+    </tr>
 </script>

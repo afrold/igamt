@@ -157,6 +157,11 @@ public class DatatypeLibraryController extends CommonController {
 		return new LibrarySaveResponse(saved.getDate(), saved.getScope().name());
 	}
 
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public void delete(@PathVariable String id) {
+		datatypeLibraryService.delete(id);
+	}
+
 	@RequestMapping(value = "/bindDatatypes", method = RequestMethod.POST)
 	public List<Datatype> bindDatatypes(@RequestBody BindingWrapper binding) throws DatatypeSaveException {
 		log.debug("Binding datatypes=" + binding.getDatatypeIds().size());

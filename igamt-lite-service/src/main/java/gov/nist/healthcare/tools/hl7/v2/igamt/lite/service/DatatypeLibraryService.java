@@ -37,8 +37,6 @@ public interface DatatypeLibraryService {
 
 	DatatypeLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
 
-	void delete(DatatypeLibrary library);
-
 	List<String> findHl7Versions();
 
 	List<Datatype> bindDatatypes(List<String> datatypeIds, String datatyeLibraryId, String datatypeLibraryExt,

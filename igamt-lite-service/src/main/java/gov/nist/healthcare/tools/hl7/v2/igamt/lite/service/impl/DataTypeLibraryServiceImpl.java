@@ -12,20 +12,17 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.BasicQuery;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
@@ -123,13 +120,16 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public void delete(DatatypeLibrary library) {
-		datatypeLibraryRepository.delete(library);
-	}
-	
-	@Override
-	public void delete(String id) {
-		datatypeLibraryRepository.delete(id);
+	public void delete(String dtLibId) {
+		List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId);
+		for (Datatype datatype : datatypes) {
+			Set<String> libIds = datatype.getLibIds();
+			libIds.remove(dtLibId);
+			if (libIds.isEmpty()) {
+				datatypeRepository.delete(datatype);
+			}
+		}
+		datatypeLibraryRepository.delete(dtLibId);
 	}
 
 	@Override
