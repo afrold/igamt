@@ -9,29 +9,20 @@
  * modified versions bear some notice that they have been modified.
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import nu.xom.Document;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 
-public interface TableSerialization {
-	TableLibrary deserializeXMLToTableLibrary(String xmlContents);
+public interface ConstraintsSerialization {
+	Constraints deserializeXMLToConformanceStatements(String xmlConstraints);
 
-	TableLibrary deserializeXMLToTableLibrary(Document xmlDoc);
+	Constraints deserializeXMLToPredicates(String xmlConstraints);
 
-	String serializeTableLibraryToXML(TableLibrary tableLibrary);
+	String serializeConstraintsToXML(Profile profile);
 	
-	String serializeTableLibraryToXML(Profile profile);
-	
-	String serializeTableLibraryToXML(DatatypeLibrary datatypeLibrary);
+	String serializeConstraintsToXML(DatatypeLibrary datatypeLibrary);
 
-	Document serializeTableLibraryToDoc(TableLibrary tableLibrary);
-	
-	Document serializeTableLibraryToDoc(Profile profile);
-
-	String serializeTableLibraryToGazelleXML(Profile profile);
-	
-	Document serializeTableLibraryToGazelleDoc(Profile profile);
+	nu.xom.Document serializeConstraintsToDoc(Profile profile);
 }

@@ -30,6 +30,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ConstraintsSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -59,6 +60,7 @@ import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -66,7 +68,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-
+@Service
 public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 	@Autowired
@@ -78,15 +80,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	@Autowired
 	private TableService tableService;
 	
-	public String releaseConstraintId(String xmlConstraints){
-		if(xmlConstraints != null){
-			Document conformanceContextDoc = this.stringToDom(xmlConstraints);
-			Element elmConformanceContext = (Element) conformanceContextDoc.getElementsByTagName("ConformanceContext").item(0);
-			return elmConformanceContext.getAttribute("UUID");
-		}
-		return null;
-	}
-	
 	@Override
 	public Constraints deserializeXMLToConformanceStatements(String xmlConstraints) {
 		if (xmlConstraints != null) {
@@ -96,17 +89,14 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 			Context datatypeContextObj = new Context();
 			Context segmentContextObj = new Context();
-			Context groupContextObj = new Context();
 			Context messageContextObj = new Context();
 
 			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Datatype").item(0), datatypeContextObj);
 			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Segment").item(0), segmentContextObj);
-			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Group").item(0), groupContextObj);
 			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Message").item(0), messageContextObj);
 
 			constraints.setDatatypes(datatypeContextObj);
 			constraints.setSegments(segmentContextObj);
-			constraints.setGroups(groupContextObj);
 			constraints.setMessages(messageContextObj);
 
 			return constraints;
@@ -123,17 +113,14 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 			Context datatypeContextObj = new Context();
 			Context segmentContextObj = new Context();
-			Context groupContextObj = new Context();
 			Context messageContextObj = new Context();
 
 			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Datatype").item(0), datatypeContextObj);
 			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Segment").item(0), segmentContextObj);
-			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Group").item(0), groupContextObj);
 			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Message").item(0), messageContextObj);
 
 			constraints.setDatatypes(datatypeContextObj);
 			constraints.setSegments(segmentContextObj);
-			constraints.setGroups(groupContextObj);
 			constraints.setMessages(messageContextObj);
 
 			return constraints;
@@ -226,12 +213,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		}
 		predicates_Elm.appendChild(predicates_segment_Elm);
 
-		nu.xom.Element predicates_group_Elm = new nu.xom.Element("Group");
-		for (ByNameOrByID byNameOrByIDObj : predicates.getGroups().getByNameOrByIDs()) {
-			nu.xom.Element groupConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
-			if (groupConstaint != null) predicates_group_Elm.appendChild(groupConstaint);
-		}
-		predicates_Elm.appendChild(predicates_group_Elm);
 		
 		nu.xom.Element predicates_message_Elm = new nu.xom.Element("Message");
 		for (ByNameOrByID byNameOrByIDObj : predicates.getMessages().getByNameOrByIDs()) {
@@ -257,13 +238,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			if (segmentConstaint != null) constraints_segment_Elm.appendChild(segmentConstaint);
 		}
 		constraints_Elm.appendChild(constraints_segment_Elm);
-
-		nu.xom.Element constraints_group_Elm = new nu.xom.Element("Group");
-		for (ByNameOrByID byNameOrByIDObj : conformanceStatements.getGroups().getByNameOrByIDs()) {
-			nu.xom.Element groupConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
-			if (groupConstaint != null) constraints_group_Elm.appendChild(groupConstaint);
-		}
-		constraints_Elm.appendChild(constraints_group_Elm);
 		
 		nu.xom.Element constraints_message_Elm = new nu.xom.Element("Message");
 		for (ByNameOrByID byNameOrByIDObj : conformanceStatements.getMessages().getByNameOrByIDs()) {
@@ -358,7 +332,8 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		nu.xom.Element elmDescription = new nu.xom.Element("Description");
 		elmDescription.appendChild(c.getDescription());
 		elmConstraint.appendChild(elmDescription);
- 		nu.xom.Node n = this.innerXMLHandler(c.getAssertion()); //TODO: FIXME. WOO: Escape ""
+		
+ 		nu.xom.Node n = this.innerXMLHandler(c.getAssertion());
 		if(n != null)
 		elmConstraint.appendChild(n);
 
@@ -366,19 +341,18 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	}
 
 	private nu.xom.Node innerXMLHandler(String xml) {
-		Builder builder = new Builder(new NodeFactory());
-		try {
-			nu.xom.Document doc = builder.build(xml, null);
-			return doc.getRootElement().copy();
-		} catch (ValidityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParsingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(xml != null){
+			Builder builder = new Builder(new NodeFactory());
+			try {
+				nu.xom.Document doc = builder.build(xml, null);
+				return doc.getRootElement().copy();
+			} catch (ValidityException e) {
+				e.printStackTrace();
+			} catch (ParsingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -523,10 +497,10 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
-		Context gContext = new Context();
 		Context mContext = new Context();
 
 		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Message m : profile.getMessages().getChildren()) {
 			ByID byID = new ByID();
@@ -538,22 +512,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		}
 		mContext.setByNameOrByIDs(byNameOrByIDs);
 
-		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Message m : profile.getMessages().getChildren()) {
-			for (SegmentRefOrGroup srog: m.getChildren()){
-				if (srog instanceof Group) {
-					Group g = (Group)srog;
-					ByID byID = new ByID();
-					byID.setByID("" + g.getName());
-					if (g.getConformanceStatements().size() > 0) {
-						byID.setConformanceStatements(g.getConformanceStatements());
-						byNameOrByIDs.add(byID);
-					}
-				}
-			}
-		}
-		gContext.setByNameOrByIDs(byNameOrByIDs);
-				
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
 			Segment s = segmentService.findById(sl.getId());
@@ -580,7 +538,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
-		constraints.setGroups(gContext);
+//		constraints.setGroups(gContext);
 		constraints.setMessages(mContext);
 		return constraints;
 	}
@@ -589,7 +547,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
-		Context gContext = new Context();
 		Context mContext = new Context();
 
 		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
@@ -603,22 +560,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			}
 		}
 		mContext.setByNameOrByIDs(byNameOrByIDs);
-
-		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Message m : profile.getMessages().getChildren()) {
-			for (SegmentRefOrGroup srog: m.getChildren()){
-				if (srog instanceof Group) {
-					Group g = (Group)srog;
-					ByID byID = new ByID();
-					byID.setByID(g.getName());
-					if (g.getPredicates().size() > 0) {
-						byID.setPredicates(g.getPredicates());
-						byNameOrByIDs.add(byID);
-					}
-				}
-			}
-		}
-		gContext.setByNameOrByIDs(byNameOrByIDs);
 
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
@@ -646,7 +587,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
-		constraints.setGroups(gContext);
 		constraints.setMessages(mContext);
 		return constraints;
 	}
@@ -656,7 +596,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
-		Context gContext = new Context();
 		Context mContext = new Context();
 		
 		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
@@ -675,7 +614,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
-		constraints.setGroups(gContext);
 		constraints.setMessages(mContext);
 		return constraints;
 	}
@@ -684,7 +622,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
-		Context gContext = new Context();
 		Context mContext = new Context();
 		
 		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
@@ -702,7 +639,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
-		constraints.setGroups(gContext);
 		constraints.setMessages(mContext);
 		return constraints;
 	}
