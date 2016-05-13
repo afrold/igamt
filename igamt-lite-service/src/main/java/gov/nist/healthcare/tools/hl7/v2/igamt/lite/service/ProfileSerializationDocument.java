@@ -14,7 +14,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 import java.io.IOException;
 import java.io.InputStream;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import nu.xom.Document;
 
@@ -34,4 +36,8 @@ public interface ProfileSerializationDocument {
 	InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException;
 	String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary);
 	Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary);
+	String serializeDatatypeToXML(Datatype d, IGDocument igdoc);
+	String serializeIGDocumentToXML(IGDocument igdoc);
+	String serializeDatatypesToXML(IGDocument igdoc);
+	Document serializeIGDocumentToDoc(IGDocument igdoc);
 }
