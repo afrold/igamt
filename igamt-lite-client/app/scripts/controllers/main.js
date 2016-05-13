@@ -1622,20 +1622,37 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getSegmentLabel = function (seg) {
-            var ext = $rootScope.getExtensionInLibrary(seg.id, $rootScope.igdocument.profile.segmentLibrary,"ext");
+            var ext = $rootScope.getSegmentExtension(seg);
             return $rootScope.getLabel(seg.name,ext);
         };
 
+        $rootScope.getSegmentExtension = function (seg) {
+            return $rootScope.getExtensionInLibrary(seg.id, $rootScope.igdocument.profile.segmentLibrary,"ext");
+        };
+
+        $rootScope.getDatatypeExtension = function (datatype) {
+            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary,"ext");
+        };
+
+        $rootScope.getTableBindingIdentifier = function (datatype) {
+            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.tableLibrary,"bindingIdentifier");
+        };
+
+
+
         $rootScope.getDatatypeLabel = function (datatype) {
-        	console.log("getDatatypeLabel Here id=" + datatype.id);
-            var ext = $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary, "ext");
-        	console.log("getDatatypeLabel Here name=" + datatype.name);
-        	console.log("getDatatypeLabel Here ext=" + ext);
-            return $rootScope.getLabel(datatype.name,ext);
+            if(datatype && datatype != null) {
+                console.log("getDatatypeLabel Here id=" + datatype.id);
+                var ext = $rootScope.getDatatypeExtension(datatype);
+                console.log("getDatatypeLabel Here name=" + datatype.name);
+                console.log("getDatatypeLabel Here ext=" + ext);
+                return $rootScope.getLabel(datatype.name, ext);
+            }
+            return "";
         };
 
         $rootScope.getTableLabel = function (table) {
-             return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.tableLibrary,"bindingIdentifier");
+             return $rootScope.getTableBindingIdentifier(table);
         };
 
         $rootScope.getExtensionInLibrary = function (id, library,propertyType) {
