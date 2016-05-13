@@ -36,6 +36,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerializationDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
@@ -73,7 +74,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IGDocumentSerialization4ExportImpl implements ProfileSerialization {
+public class IGDocumentSerialization4ExportImpl implements ProfileSerializationDocument {
 	Logger logger = LoggerFactory.getLogger( IGDocumentSerialization4ExportImpl.class );
 
 	@Autowired
