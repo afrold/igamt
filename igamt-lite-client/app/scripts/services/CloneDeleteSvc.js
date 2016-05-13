@@ -1,7 +1,7 @@
 angular.module('igl').factory(
     'CloneDeleteSvc',
 
-    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc,SectionSvc, FilteringSvc) {
+    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, SectionSvc, FilteringSvc) {
 
         var svc = this;
 
@@ -59,7 +59,9 @@ angular.module('igl').factory(
                 	$rootScope.segments.splice(0, 0, newSegment);
                 	$rootScope.segment = newSegment;
                 	$rootScope.segmentsMap[newSegment.id] = newSegment;
-                	MastermapSvc.addSegmentObject(newSegment, []);
+                	console.log(newSegment);
+                	console.log([[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+//                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 	$rootScope.processElement(newSegment);
                 	$rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openSegment', newSegment);
@@ -182,7 +184,7 @@ angular.module('igl').factory(
                             }
                         }
                     }
-                    MastermapSvc.addValueSetObject(newTable, []);
+                    MastermapSvc.addValueSetObject(newTable, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openTable', newTable);
                     waitingDialog.hide();
@@ -220,9 +222,8 @@ angular.module('igl').factory(
                 	$rootScope.messages = $rootScope.igdocument.profile.messages;
                     $rootScope.message = newMessage;
                     
-                    //TODO NEED to check
                     $rootScope.processElement(newMessage);
-                    MastermapSvc.addMessage(newMessage, []);
+                    MastermapSvc.addMessage(newMessage, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                     FilteringSvc.addMsgInFilter(newMessage.name, newMessage.id);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openMessage', newMessage);
@@ -253,6 +254,7 @@ angular.module('igl').factory(
                 abortValueSetDelete(table);
             } else {
                 confirmValueSetDelete(table);
+                MastermapSvc.deleteValueSet(table);
             }
         }
 
@@ -393,6 +395,7 @@ angular.module('igl').factory(
                 abortSegmentDelete(segment);
             } else {
                 confirmSegmentDelete(segment);
+                MastermapSvc.deleteSegment(segment.id)
             }
         }
 
@@ -450,8 +453,7 @@ angular.module('igl').factory(
         }
 
         svc.execDeleteMessage = function (message) {
-        	//TODO (Oli) delete message in filter in the MasterMap.
-        	
+
             // We do the delete in pairs: dead and live.  dead = things we are deleting and live = things we are keeping.
             // We are deleting the message so it's dead.
             // The message there is from the ToC so what we need is its reference,
@@ -485,6 +487,7 @@ angular.module('igl').factory(
             }
 
             var rval = deleteSegments(segmentRefsLive, segmentRefsSincerelyDead);
+            MastermapSvc.deleteMessage(message.id);
             return rval;
         }
 

@@ -192,8 +192,8 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
 		cs.setId(readMongoId(source));
 		cs.setConstraintId(((String) source.get(CONSTRAINT_ID)));
 		cs.setConstraintTarget(((String) source.get(CONSTRAINT_TARGET)));
-		cs.setDescription((String) source.get(ASSERTION));
-		cs.setAssertion(((String) source.get(FALSE_USAGE)));
+		cs.setDescription((String) source.get(DESCRIPTION));
+		cs.setAssertion(((String) source.get(ASSERTION)));
 		cs.setReference(reference(((DBObject) source.get(REFERENCE))));
 		return cs;
 	}

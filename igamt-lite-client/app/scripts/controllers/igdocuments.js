@@ -150,7 +150,7 @@ angular.module('igl')
             });
 
             $rootScope.$on('event:IgsPushed', function (event, igdocument) {
-                console.log("event:IgsPushed=" + igdocument)
+//                console.log("event:IgsPushed=" + igdocument)
                 if ($scope.igDocumentConfig.selectedType === 'USER') {
                     var idx = $rootScope.igs.findIndex(function (igd) {
                         return igd.id === igdocument.id;
