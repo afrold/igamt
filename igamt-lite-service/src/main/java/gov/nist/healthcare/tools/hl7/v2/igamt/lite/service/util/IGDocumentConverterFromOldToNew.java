@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -16,6 +17,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
@@ -232,6 +234,18 @@ public class IGDocumentConverterFromOldToNew{
 								}
 							}
 						}
+						
+						if(f.getDatatype() != null){
+							Datatype dt = hl7DatatypeMap.get(f.getDatatype());
+							if (!dt.getLibIds().contains(app.getProfile().getDatatypeLibrary().getId())){
+								dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
+								Query query2 = query(where("_id").is(dt.getId()));
+							    Update update2 = update("libIds", dt.getLibIds());
+							    mongoOps.updateFirst(query2, update2, Datatype.class);
+							    
+							    app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(dt.getId(), dt.getName(), ""));
+							}
+						}
 					}
 				}else {
 					seg.setScope(Constant.SCOPE.USER);
@@ -327,6 +341,17 @@ public class IGDocumentConverterFromOldToNew{
 								}	
 							}
 						}
+						if(c.getDatatype() != null){
+							Datatype cdt = hl7DatatypeMap.get(c.getDatatype());
+							if (!cdt.getLibIds().contains(app.getProfile().getDatatypeLibrary().getId())){
+								cdt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
+								Query query2 = query(where("_id").is(cdt.getId()));
+							    Update update2 = update("libIds", cdt.getLibIds());
+							    mongoOps.updateFirst(query2, update2, Datatype.class);
+							    
+							    app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(cdt.getId(), cdt.getName(), ""));
+							}
+						}
 					}
 					
 				}else {
@@ -396,6 +421,14 @@ public class IGDocumentConverterFromOldToNew{
 		for(Segment s: profilePreLib.getSegments().getChildren()){
 			for(Field f:s.getFields()){
 				if(f.getDatatype() != null && f.getDatatype().equals(oldDatatypeId)) f.setDatatype(newDatatypeId);
+			}
+			
+			for(Mapping map:s.getDynamicMapping().getMappings()){
+				
+				for(Case c : map.getCases()){
+					if(c.getDatatype() != null && c.getDatatype().equals(oldDatatypeId)) c.setDatatype(newDatatypeId);
+				}
+				
 			}
 		}
 		

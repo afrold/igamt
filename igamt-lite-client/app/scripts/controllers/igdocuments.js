@@ -150,7 +150,7 @@ angular.module('igl')
             });
 
             $rootScope.$on('event:IgsPushed', function (event, igdocument) {
-                console.log("event:IgsPushed=" + igdocument)
+//                console.log("event:IgsPushed=" + igdocument)
                 if ($scope.igDocumentConfig.selectedType === 'USER') {
                     var idx = $rootScope.igs.findIndex(function (igd) {
                         return igd.id === igdocument.id;
@@ -589,17 +589,19 @@ angular.module('igl')
 
         $scope.exportAs = function (format) {
             if ($rootScope.igdocument != null) {
-                if (!ViewSettings.tableReadonly) {
-                    IgDocumentService.save($rootScope.igdocument).then(function (result) {
-                        IgDocumentService.exportAs($rootScope.igdocument, format);
-                    }, function (error) {
-                        $rootScope.msg().text = error.data.text;
-                        $rootScope.msg().type = error.data.type;
-                        $rootScope.msg().show = true;
-                    });
-                } else {
-                    IgDocumentService.exportAs($rootScope.igdocument, format);
-                }
+                IgDocumentService.exportAs($rootScope.igdocument, format);
+
+//                if (!ViewSettings.tableReadonly) {
+//                    IgDocumentService.save($rootScope.igdocument).then(function (result) {
+//                        IgDocumentService.exportAs($rootScope.igdocument, format);
+//                    }, function (error) {
+//                        $rootScope.msg().text = error.data.text;
+//                        $rootScope.msg().type = error.data.type;
+//                        $rootScope.msg().show = true;
+//                    });
+//                } else {
+//                    IgDocumentService.exportAs($rootScope.igdocument, format);
+//                }
             }
         };
 
@@ -632,36 +634,36 @@ angular.module('igl')
             $rootScope.section['type'] = type;
         };
 
-        $scope.save = function () {
-            $rootScope.msg().text = null;
-            $rootScope.msg().type = null;
-            $rootScope.msg().show = false;
-            var delay = $q.defer();
-            waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
-            IgDocumentService.save($rootScope.igdocument).then(function (saveResponse) {
-                var found = $scope.findOne($rootScope.igdocument.id);
-                if (found != null) {
-                    var index = $rootScope.igs.indexOf(found);
-                    if (index > 0) {
-                        $rootScope.igs [index] = $rootScope.igdocument;
-                    }
-                }
-                $rootScope.msg().text = saveResponse.text;
-                $rootScope.msg().type = saveResponse.type;
-                $rootScope.msg().show = true;
-                StorageService.setIgDocument($rootScope.igdocument);
-                $rootScope.clearChanges();
-                waitingDialog.hide();
-                delay.resolve(true);
-            }, function (error) {
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
-                waitingDialog.hide();
-                delay.reject(false);
-            });
-            return delay.promise;
-        };
+//        $scope.save = function () {
+//            $rootScope.msg().text = null;
+//            $rootScope.msg().type = null;
+//            $rootScope.msg().show = false;
+//            var delay = $q.defer();
+//            waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
+//            IgDocumentService.save($rootScope.igdocument).then(function (saveResponse) {
+//                var found = $scope.findOne($rootScope.igdocument.id);
+//                if (found != null) {
+//                    var index = $rootScope.igs.indexOf(found);
+//                    if (index > 0) {
+//                        $rootScope.igs [index] = $rootScope.igdocument;
+//                    }
+//                }
+//                $rootScope.msg().text = saveResponse.text;
+//                $rootScope.msg().type = saveResponse.type;
+//                $rootScope.msg().show = true;
+//                StorageService.setIgDocument($rootScope.igdocument);
+//                $rootScope.clearChanges();
+//                waitingDialog.hide();
+//                delay.resolve(true);
+//            }, function (error) {
+//                $rootScope.msg().text = error.data.text;
+//                $rootScope.msg().type = error.data.type;
+//                $rootScope.msg().show = true;
+//                waitingDialog.hide();
+//                delay.reject(false);
+//            });
+//            return delay.promise;
+//        };
 
         $scope.exportChanges = function () {
             var form = document.createElement("form");
@@ -740,6 +742,7 @@ angular.module('igl')
                 $scope.loadingSelection = true;
                 SegmentService.get(segment.id).then(function (result) {
                     $rootScope.segment = angular.copy(segment);
+                    $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
                     $rootScope.segment["type"] = "segment";
                     $rootScope.tableWidth = null;
                     $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
@@ -787,6 +790,7 @@ angular.module('igl')
                 $scope.loadingSelection = true;
                 DatatypeService.getOne(datatype.id).then(function (result) {
                     $rootScope.datatype = angular.copy(result);
+                    $rootScope.datatype.ext = $rootScope.getExtension($rootScope.datatype);
                     $scope.loadingSelection = false;
                     $rootScope.datatype["type"] = "datatype";
                     $rootScope.tableWidth = null;

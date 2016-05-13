@@ -509,10 +509,6 @@ angular.module('igl')
             return  $scope.selection.library != null && library != null && $scope.selection.library.id == library.id;
         };
 
-        $scope.getDatatypeLabel = function (datatypeLink) {
-            return $rootScope.getLabel(datatypeLink.name, datatypeLink.ext);
-        };
-
         $scope.showDatatype = function (datatypeLink) {
             if (datatypeLink && datatypeLink != null) {
                 $scope.datatypeError = null;

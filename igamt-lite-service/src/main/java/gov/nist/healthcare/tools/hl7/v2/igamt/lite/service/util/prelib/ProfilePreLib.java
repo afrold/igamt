@@ -1,14 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bson.types.ObjectId;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
@@ -28,6 +19,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.bson.types.ObjectId;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProfilePreLib extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
@@ -202,7 +202,6 @@ public class ProfilePreLib extends TextbasedSectionModel implements java.io.Seri
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
-		Context gContext = new Context();
 		Context mContext = new Context();
 
 		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
@@ -216,22 +215,6 @@ public class ProfilePreLib extends TextbasedSectionModel implements java.io.Seri
 			}
 		}
 		mContext.setByNameOrByIDs(byNameOrByIDs);
-
-		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Message m : this.getMessages().getChildren()) {
-			for (SegmentRefOrGroup srog : m.getChildren()) {
-				if (srog instanceof Group) {
-					Group g = (Group) srog;
-					ByID byID = new ByID();
-					byID.setByID("" + g.getName());
-					if (g.getConformanceStatements().size() > 0) {
-						byID.setConformanceStatements(g.getConformanceStatements());
-						byNameOrByIDs.add(byID);
-					}
-				}
-			}
-		}
-		gContext.setByNameOrByIDs(byNameOrByIDs);
 
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Segment s : this.getSegments().getChildren()) {
@@ -257,7 +240,6 @@ public class ProfilePreLib extends TextbasedSectionModel implements java.io.Seri
 
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
-		constraints.setGroups(gContext);
 		constraints.setMessages(mContext);
 		return constraints;
 	}
@@ -269,7 +251,6 @@ public class ProfilePreLib extends TextbasedSectionModel implements java.io.Seri
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
-		Context gContext = new Context();
 		Context mContext = new Context();
 
 		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
@@ -283,22 +264,6 @@ public class ProfilePreLib extends TextbasedSectionModel implements java.io.Seri
 			}
 		}
 		mContext.setByNameOrByIDs(byNameOrByIDs);
-
-		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Message m : this.getMessages().getChildren()) {
-			for (SegmentRefOrGroup srog : m.getChildren()) {
-				if (srog instanceof Group) {
-					Group g = (Group) srog;
-					ByID byID = new ByID();
-					byID.setByID(g.getName());
-					if (g.getPredicates().size() > 0) {
-						byID.setPredicates(g.getPredicates());
-						byNameOrByIDs.add(byID);
-					}
-				}
-			}
-		}
-		gContext.setByNameOrByIDs(byNameOrByIDs);
 
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Segment s : this.getSegments().getChildren()) {
@@ -324,7 +289,6 @@ public class ProfilePreLib extends TextbasedSectionModel implements java.io.Seri
 
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
-		constraints.setGroups(gContext);
 		constraints.setMessages(mContext);
 		return constraints;
 	}

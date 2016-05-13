@@ -361,7 +361,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     $rootScope.requests401 = [];
 
     $rootScope.$on('event:loginRequired', function () {
-            console.log("in loginRequired event");
+//            console.log("in loginRequired event");
         $rootScope.showLoginDialog();
     });
 
