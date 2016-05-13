@@ -95,11 +95,11 @@ input.igl-has-error,select.igl-has-error {
 
 
 
-.nav-tabs {
-    background-color: #ffec9d;
-    border-bottom: 1px solid #ffec9d;
-    color: black;
-}
+/*.nav-tabs {*/
+    /*background-color: #ffec9d;*/
+    /*border-bottom: 1px solid #ffec9d;*/
+    /*color: black;*/
+/*}*/
 
 .label-icon {
     width: 5px;
@@ -142,7 +142,7 @@ input.igl-has-error,select.igl-has-error {
 }
 
 .page-header {
-    padding-bottom: 2px;
+    padding-bottom: 20px;
     margin: 10px 0 10px;
 }
 

@@ -28,17 +28,17 @@
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
             <!--<li ng-class="{'active':isActive('/home')}"><a href="#/home"><i class="glyphicon glyphicon-home"></i>Home</a></li>-->
-            <li ng-class="activeWhen(path()=='/home')">
+            <li ng-class="activeWhen(path()=='/home')" class="nav-header">
                 <a class="point" href="#/home"><i class="fa fa-home"></i>&nbsp;<span msg key="navbar.home"></span></a>
             </li>
-            <li ng-class="activeWhen(path()=='/ig')"><a class="point" href="#/ig"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.igs"></span></a></li>
+            <li class="nav-header" ng-class="activeWhen(path()=='/ig')"><a class="point" href="#/ig"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.igs"></span></a></li>
 
-            <li ng-show="true || isAuthenticated() || isAdmin()" ng-class="activeWhen(path()=='/datatypeLibrary')"><a class="point" href="#/datatypeLibrary"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.datatypeLibrary"></span></a></li>
-             <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">
+            <li class="nav-header" ng-show="isAuthenticated() || isAdmin()" ng-class="activeWhen(path()=='/datatypeLibrary')"><a class="point" href="#/datatypeLibrary"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.datatypeLibrary"></span></a></li>
+             <li class="nav-header" class="nav-header" ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">
                 <a href="#/registration"><div msg key="navbar.registration"></div></a>
             </li>
 
-            <li ng-class="activeWhen(path()=='/forgotten')" ng-show="!isAuthenticated()">
+            <li class="nav-header" ng-class="activeWhen(path()=='/forgotten')" ng-show="!isAuthenticated()">
                 <a href="#/forgotten"><div msg key="navbar.forgotten"></div></a>
             </li>
 
@@ -47,9 +47,9 @@
             <!--<a class="point" ng-click="setLanguage('en')"><div msg class="msg" key="navbar.lang.english"></div></a>-->
             <!--</li>-->
 
-            <li ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
-            <li ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
-            <li ng-show='showSpinner()' ><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
+            <li class="nav-header" ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
+            <li class="nav-header" ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
+            <li class="nav-header" ng-show='showSpinner()' ><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
 
             <!--<li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">-->
             <!--<a href="#/registerUser"><div msg key="navbar.registerUser"></div></a>-->
@@ -58,12 +58,12 @@
 
         <ul class="nav navbar-nav navbar-right" style="margin-right: 5px">
 
-            <li  ng-show="isAuthenticated()" ng-class="activeWhen(path()=='/useraccount')"><a class="point" href="#/useraccount"><i class="fa fa-user"></i>&nbsp;My Account</a></li>
+            <li  class="nav-header" ng-show="isAuthenticated()" ng-class="activeWhen(path()=='/useraccount')"><a class="point" href="#/useraccount"><i class="fa fa-user"></i>&nbsp;My Account</a></li>
 
-            <li class="" style="margin-right: 5em" ng-show="isAuthenticated()">
+            <li class="nav-header"  class="" style="margin-right: 5em" ng-show="isAuthenticated()">
                 <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span msg class="msg" key="navbar.logout"></span></a>
             </li>
-            <li class="" style="margin-right: 5em" ng-show="!isAuthenticated()">
+            <li class="nav-header" class="" style="margin-right: 5em" ng-show="!isAuthenticated()">
                 <a class="point" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;<span msg class="msg" key="navbar.login"></span></a>
             </li>
         </ul>

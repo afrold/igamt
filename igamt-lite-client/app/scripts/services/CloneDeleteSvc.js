@@ -23,6 +23,7 @@ angular.module('igl').factory(
         }
 
         svc.copySegment = function (segment) {
+            waitingDialog.show('Copying Segment...', {dialogSize: 'xs', progressType: 'success'});
             var newSegment = angular.copy(segment);
             var newLink = angular.copy(SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary));
 
@@ -62,22 +63,26 @@ angular.module('igl').factory(
                 	$rootScope.processElement(newSegment);
                 	$rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openSegment', newSegment);
+                    waitingDialog.hide();
                 }, function (error) {
                 	$rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
+                    waitingDialog.hide();
                 });
             }, function (error) {
             	$rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
+                waitingDialog.hide();
             });
         };
 
         svc.copyDatatype = function (datatype) {
-        	console.log("CHECK-pre: " + datatype.components.length);
+            waitingDialog.show('Copying Data Type...', {dialogSize: 'xs', progressType: 'success'});
+            console.log("CHECK-pre: " + datatype.components.length);
             var newDatatype = angular.copy(datatype, {});
             
             console.log("CHECK: " + newDatatype.components.length);
@@ -122,22 +127,26 @@ angular.module('igl').factory(
                     $rootScope.processElement(newDatatype);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openDatatype', newDatatype);
+                    waitingDialog.hide();
                 }, function (error) {
                 	$rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
+                    waitingDialog.hide();
                 });
             }, function (error) {
             	$rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
+                waitingDialog.hide();
             });
             
         };
 
         svc.copyTable = function (table) {
+            waitingDialog.show('Copying Table...', {dialogSize: 'xs', progressType: 'success'});
             var newTable = angular.copy(table);
             var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary));
             
@@ -176,24 +185,26 @@ angular.module('igl').factory(
                     MastermapSvc.addValueSetObject(newTable, []);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openTable', newTable);
+                    waitingDialog.hide();
                     
                 }, function (error) {
-                    $scope.saving = false;
-                    $rootScope.msg().text = error.data.text;
+                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
+                    waitingDialog.hide();
                 });
                 
                 
             }, function (error) {
-                $scope.saving = false;
-                $rootScope.msg().text = error.data.text;
+                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
+                waitingDialog.hide();
             });
         };
 
         svc.copyMessage = function (message) {
+            waitingDialog.show('Copying Message...', {dialogSize: 'xs', progressType: 'success'});
             var newMessage = angular.copy(message);
             newMessage.id = null;
             newMessage.name = $rootScope.createNewFlavorName(message.name);
@@ -215,19 +226,20 @@ angular.module('igl').factory(
                     FilteringSvc.addMsgInFilter(newMessage.name, newMessage.id);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openMessage', newMessage);
-                    
+                    waitingDialog.hide();
                     return newMessage;
                 }, function (error) {
                     $scope.saving = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
+                    waitingDialog.hide();
                 });
             }, function (error) {
-                $scope.saving = false;
-                $rootScope.msg().text = error.data.text;
+                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
+                waitingDialog.hide();
             });
             
         };

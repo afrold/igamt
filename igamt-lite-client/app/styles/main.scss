@@ -1968,19 +1968,19 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 }
 
 
-.nav-tabs > li > a {
-  border-color: #ffec9d;
-  background-color: #ffec9d;
-  color: black;
-}
+//.nav-tabs > li > a {
+//  border-color: #ffec9d;
+//  background-color: #ffec9d;
+//  color: black;
+//}
 
-.nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
-  background-color: #ffcc00;
-  border-color: #ffcc00;
-  //border: 0px;
-  color: white;
-  cursor: pointer;
-}
+//.nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
+//  background-color: #ffcc00;
+//  border-color: #ffcc00;
+//  //border: 0px;
+//  color: white;
+//  cursor: pointer;
+//}
 
 
 
@@ -2016,9 +2016,9 @@ ul.dropdown-menu, ul.dropdown-menu > li {
   color:black;
 }
 
-.nav-tabs > .active > a:hover {
-  background-color: #ffcc00;
-}
+//.nav-tabs > .active > a:hover {
+//  background-color: #ffcc00;
+//}
 
 .nav-tabs > a:hover {
   color: black;
@@ -2033,28 +2033,28 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 }
 
 
-.nav-tabs > li > a {
-  color: #ffef8f;
-  border-radius: 0px;
-}
-
-.nav-tabs > li > a:hover {
-  color: #ffef8f;
-}
+//.nav-tabs > li > a {
+//  color: #ffef8f;
+//  border-radius: 0px;
+//}
+//
+//.nav-tabs > li > a:hover {
+//  color: #ffef8f;
+//}
 
 .nav-tabs {
   cursor: pointer;
 }
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+//
+//.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
+//  background-color: #ffcc00;
+//  border-color: #ffcc00;
+//  color: black;
+//}
 
-.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
-  background-color: #ffcc00;
-  border-color: #ffcc00;
-  color: black;
-}
-
-li.active {
+li.nav-header.active {
   background-color: #ffcc00;
 }
 
@@ -2260,4 +2260,20 @@ table.conformance-profiles-table td {
   width: 50%;
   height: 500px;
   overflow-y: auto;
+}
+
+
+.toc-container {
+  max-width: 100% !important;
+  max-height: 700px !important;
+  overflow: auto;
+  white-space:nowrap;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f6f6f6+47,ededed+100;White+3D+%231 */
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+
+
 }
