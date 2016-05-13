@@ -2,24 +2,24 @@
 angular
 .module('igl')
 .service (
-  'MastermapSvc',
-  function($rootScope) {
+    'MastermapSvc',
+    function($rootScope) {
 
-    var svc = {};
+        var svc = {};
 
-    svc.mastermap = [];
+        svc.mastermap = [];
 
-    svc.segmentLibrary = {};
-    svc.datatypeLibrary = {};
-    svc.tableLibrary = {};
+        svc.segmentLibrary = {};
+        svc.datatypeLibrary = {};
+        svc.tableLibrary = {};
 
-    svc.parseIg = function(igdocument){
-      if (igdocument !== null && igdocument !== undefined){
-        svc.addIG(igdocument);
-        return svc.getMastermap();
-      }
-      return [];
-    }
+        svc.parseIg = function(igdocument){
+            if (igdocument !== null && igdocument !== undefined){
+                svc.addIG(igdocument);
+                return svc.getMastermap();
+            }
+            return [];
+        }
 
     svc.getMastermap = function(){
       return this.mastermap;
@@ -79,8 +79,8 @@ angular
         }
       }
     }
-    
-    
+
+
     svc.addValueSetId = function(tableId, parent) {
         if (tableId !== undefined && tableId !== "") {
             svc.createMMElement(tableId, "table");
@@ -98,6 +98,7 @@ angular
           }
     }
 
+
     svc.addValueSetObject = function(table, parent) {
         if (table !== undefined){
             svc.createMMElement(table.id, "table");
@@ -107,6 +108,11 @@ angular
                 svc.addCodes(c, parent.concat([[table.id, 'table']]));
             });
         }
+    }
+
+
+    svc.deleteValueset = function(tableId) {
+        svc.removeMastermapElt(tableId, "table");
     }
 
 
@@ -166,6 +172,11 @@ angular
     }
 
 
+    svc.deleteDatatype = function(datatypeId) {
+        svc.removeMastermapElt(datatypeId, "datatype");
+    }
+
+
     svc.addField = function (field, parent) {
       svc.createMMElement(field.id, "field");
       svc.addParentsId(field.id, "field", parent);
@@ -205,6 +216,11 @@ angular
     }
 
 
+    svc.deleteSegment = function(segmentId) {
+        svc.removeMastermapElt(segmentId, "segment");
+    }
+
+
     svc.addMessage = function (message, parent) {
       svc.createMMElement(message.id, "message");
       svc.addParentsId(message.id, "message", parent);
@@ -217,6 +233,12 @@ angular
         }
       });
     }
+
+
+    svc.deleteMessage = function(messageId) {
+        svc.removeMastermapElt(messageId, "message");
+    }
+
 
     svc.addMessageObject = function (message, parent) {
       svc.createMMElement(message.id, "message");
@@ -285,6 +307,17 @@ angular
         });
     }
 
+
+    svc.deleteIgdocument = function(igdocumentId) {
+        svc.removeMastermapElt(igdocumentId, "ig");
+    }
+
+
+    svc.deleteProfile = function(profileId) {
+        svc.removeMastermapElt(profileId, "profile");
+    }
+
+
     svc.addParentsId = function (elementId, elementType, parentsList) {
         // Element refers to self
         // svc.mastermap[elementId][elementType] = svc.mastermap[elementId][elementType].concat(elementId);
@@ -325,6 +358,20 @@ angular
       }
     }
 
+    svc.removeMastermapElt = function(toBeRemovedId, toBeRemovedType) {
+        // Collects elements about elements to delete
+        var toBeRemovedInfo = svc.getElement(toBeRemovedId, toBeRemovedType);
+        var areas = ["ig", "profile", "message", "field", "segment", "segmentRef", "group", "table", "datatype", "component", "code"];
+        // Remove element in parents
+        _.each(areas, function(area){
+            _.each(toBeRemovedInfo[area], function(idParent){
+                svc.removeId(idParent, svc.getElementByKey(idParent, area, toBeRemovedType));
+                });
+        });
+        // Remove element in mastermap
+        svc.removeId(toBeRemovedId.concat(toBeRemovedType), svc.getMastermap());
+    }
+
     svc.createSegmentLibrary = function (igdocument){
                    console.log("Creating segment library");
         igdocument.profile.segmentLibrary.children.forEach(function(n){
@@ -358,6 +405,17 @@ angular
     svc.setElement = function(id, type, key, value){
       svc.mastermap[id.concat(type)][key] = value;
     }
+
+
+    svc.removeId = function(idKey, myArray){
+        var index = myArray.indexOf(idKey);
+        if (index !== -1){
+            myArray.splice(index, 1)
+        }
+    };
+
+
+
 
     svc.getUsage = function (id, type){
       var item = svc.getElement(id, type);
