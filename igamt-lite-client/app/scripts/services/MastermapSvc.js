@@ -81,32 +81,42 @@ angular
     }
     
     
-  //TODO Olivier, please check this function
-    svc.addValueSetObject = function(table, parent) {
-        	if (table !== undefined){
-        		svc.createMMElement(table.id, "table");
-        		svc.addParentsId(table.id, "table", parent);
+    svc.addValueSetId = function(tableId, parent) {
+        if (tableId !== undefined && tableId !== "") {
+            svc.createMMElement(tableId, "table");
+            svc.addParentsId(tableId, "table", parent);
 
-        		_.each(table.codes, function(c) {
-        			svc.addCodes(c, parent.concat([[table.id, 'table']]));
-        		});
-        	} else {
-        		svc.createMMElement(tableId, "table");
-        		svc.addParentsId(tableId, "table", parent);
-        		//           console.log("!!! => table " + tableId + " not found in library");
-        	}
+            var table = svc.getTableLibrary()[tableId];
+                if (table !== undefined){
+                    _.each(table.codes, function(c) {
+                        svc.addCodes(c, parent.concat([[table.id, 'table']]));
+                    });
+                } else {
+                    // Table not found
+                    // console.log("!!! => table " + tableId + " not found in library");
+                }
+          }
+    }
+
+    svc.addValueSetObject = function(table, parent) {
+        if (table !== undefined){
+            svc.createMMElement(table.id, "table");
+            svc.addParentsId(table.id, "table", parent);
+
+            _.each(table.codes, function(c) {
+                svc.addCodes(c, parent.concat([[table.id, 'table']]));
+            });
+        }
     }
 
 
     svc.addCodes = function(code, parent) {
-
-      svc.createMMElement(code.id, "code");
-      svc.addParentsId(code.id, "code", parent);
+        svc.createMMElement(code.id, "code");
+        svc.addParentsId(code.id, "code", parent);
     }
 
 
     svc.addDatatype = function(datatypeId, parent) {
-
       if (datatypeId !== undefined && datatypeId !== "") {
         var dt = svc.getDatatypeLibrary()[datatypeId];
         if (dt !== undefined){
@@ -125,6 +135,26 @@ angular
     }
 
 
+    svc.addDatatypeId = function(datatypeId, parent) {
+        // Add id then check if in library
+        if (datatypeId !== undefined && datatypeId !== "") {
+            svc.createMMElement(datatypeId, "datatype");
+            svc.addParentsId(datatypeId, "datatype", parent);
+
+            var dt = svc.getDatatypeLibrary()[datatypeId];
+            if (dt !== undefined){
+                // console.log(svc.mastermap[dt.id, "datatype"])
+                dt.components.forEach( function(c) {
+                    svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
+                });
+            } else {
+                // datatype not found
+                // console.log("!!! => datatype " + datatype + " not found in library");
+            }
+        }
+    }
+
+
     svc.addDatatypeObject = function(dt, parent) {
         if (dt !== undefined){
           svc.createMMElement(dt.id, "datatype");
@@ -137,18 +167,17 @@ angular
 
 
     svc.addField = function (field, parent) {
-
       svc.createMMElement(field.id, "field");
       svc.addParentsId(field.id, "field", parent);
       svc.setElement(field.id, "field", "usage", field["usage"]);
 
-      svc.addValueSet(field.table, parent.concat([[field.id, "field"]]));
-      svc.addDatatype(field.datatype, parent.concat([[field.id, "field"]]));
+      svc.addValueSetId(field.table, parent.concat([[field.id, "field"]]));
+      svc.addDatatypeId(field.datatype, parent.concat([[field.id, "field"]]));
     }
 
 
-    svc.addSegment = function (segmentId, parent) {
-
+    svc.addSegmentId = function (segmentId, parent) {
+      // Add the id in mastermap when given. Then check if object can be found in segment library.
       svc.createMMElement(segmentId, "segment");
       svc.addParentsId(segmentId, "segment", parent);
 
@@ -158,11 +187,12 @@ angular
           svc.addField(f, parent.concat([[segment.id, "segment"]]));
         });
       } else {
-//        console.log("!!! => segment id " + segmentId + " not found");
+        // Pass : object not found
+        // console.log("!!! => segment id " + segmentId + " not found");
       }
     }
-    
-    //TODO Olivier, please check this function
+
+
     svc.addSegmentObject = function(segment, parent) {
     	if (segment !== undefined){
     		svc.createMMElement(segment.id, "segment");
@@ -174,8 +204,8 @@ angular
         }
     }
 
-    svc.addMessage = function (message, parent) {
 
+    svc.addMessage = function (message, parent) {
       svc.createMMElement(message.id, "message");
       svc.addParentsId(message.id, "message", parent);
 
@@ -211,7 +241,7 @@ angular
       svc.setElement(segRefId, "segmentRef", "usage", segmentRef["usage"]);
       svc.addParentsId(segRefId, "segmentRef", parent);
 
-      svc.addSegment(segRef, parent.concat([[segRefId, "segmentRef"]]));
+      svc.addSegmentId(segRef, parent.concat([[segRefId, "segmentRef"]]));
     }
 
 
@@ -235,39 +265,37 @@ angular
 
 
     svc.addIG = function (igdocument) {
-      console.log("Creating mastermap\nprocessing IG : " + igdocument.profile.id);
+        console.log("Creating mastermap\nprocessing IG : " + igdocument.id);
 
-      var profile = igdocument.profile;
+        var profile = igdocument.profile;
 
-      svc.createSegmentLibrary(igdocument);
-      svc.createDatatypeLibrary(igdocument);
-      svc.createTableLibrary(igdocument);
+        svc.createSegmentLibrary(igdocument);
+        svc.createDatatypeLibrary(igdocument);
+        svc.createTableLibrary(igdocument);
 
-      svc.createMMElement(igdocument.id, "ig");
+        svc.createMMElement(igdocument.id, "ig");
 
-      var parents = [[igdocument.id, "ig"]];
-      svc.createMMElement(profile.id, "profile");
-      svc.addParentsId(profile.id, "profile", parent);
+        var parents = [[igdocument.id, "ig"]];
+        svc.createMMElement(profile.id, "profile");
+        svc.addParentsId(profile.id, "profile", parent);
 
-      parents = parents.concat([[profile.id, "profile"]]);
-      _.each(profile.messages.children, function(m) {
-        svc.addMessageObject(m, parents);
-      });
-
+        parents = parents.concat([[profile.id, "profile"]]);
+        _.each(profile.messages.children, function(m) {
+          svc.addMessageObject(m, parents);
+        });
     }
 
     svc.addParentsId = function (elementId, elementType, parentsList) {
-      //             console.log(elementId + " -> " + parentsList)
-      //  //Element refers to self
-      //   svc.mastermap[elementId][elementType] = svc.mastermap[elementId][elementType].concat(elementId);
+        // Element refers to self
+        // svc.mastermap[elementId][elementType] = svc.mastermap[elementId][elementType].concat(elementId);
 
-      _.each(parentsList, function(parent) {
-        var parentId = parent[0];
-        var parentType = parent[1];
-        //Add parents reference in element if not present
-        if (svc.getElementByKey(elementId, elementType, parentType).indexOf(parentId) === -1){
-          svc.setElement(elementId, elementType, parentType, svc.getElementByKey(elementId, elementType, parentType).concat(parentId));
-        }
+        _.each(parentsList, function(parent) {
+            var parentId = parent[0];
+            var parentType = parent[1];
+            //Add parents reference in element if not present
+            if (svc.getElementByKey(elementId, elementType, parentType).indexOf(parentId) === -1){
+                svc.setElement(elementId, elementType, parentType, svc.getElementByKey(elementId, elementType, parentType).concat(parentId));
+            }
 //        // Add element reference in parents if not already present
 //        if (svc.getElementByKey(parentId, parentType, elementType).indexOf(elementId) === -1){
 //          svc.setElement(parentId, parentType, elementType, svc.getElementByKey(parentId, parentType, elementType).concat(elementId));
