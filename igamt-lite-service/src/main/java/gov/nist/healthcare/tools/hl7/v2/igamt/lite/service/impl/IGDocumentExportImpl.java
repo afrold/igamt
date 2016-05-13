@@ -41,6 +41,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
@@ -199,6 +200,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	
 	@Autowired
 	private TableService tableService;
+	
+	@Autowired
+	private ProfileSerialization profileSerializationService;
 
 	//	@Autowired
 	//	private UserService userService;
@@ -215,8 +219,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	@Override
 	public InputStream exportAsXml(IGDocument d) {
 		if (d != null) {
-			return IOUtils.toInputStream(new ProfileSerializationImpl()
-			.serializeProfileToXML(d.getProfile()));
+			return IOUtils.toInputStream(profileSerializationService.serializeProfileToXML(d.getProfile()));
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -224,7 +227,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	public InputStream exportAsZip(IGDocument d) throws IOException {
 		if (d != null) {
-			return new ProfileSerializationImpl().serializeProfileToZip(d.getProfile());
+			return profileSerializationService.serializeProfileToZip(d.getProfile());
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -232,7 +235,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	public InputStream exportAsZip(DatatypeLibrary d) throws IOException {
 		if (d != null) {
-			return new ProfileSerializationImpl().serializeDatatypeToZip(d);
+			return profileSerializationService.serializeDatatypeToZip(d);
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -241,7 +244,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	@Override
 	public InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
 		if (d != null) {
-			return new ProfileSerializationImpl().serializeProfileToZip(d.getProfile(), mids);
+			return profileSerializationService.serializeProfileToZip(d.getProfile(), mids);
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -250,7 +253,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	@Override
 	public InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
 		if (d != null) {
-			return new ProfileSerializationImpl().serializeProfileGazelleToZip(d.getProfile(), mids);
+			return profileSerializationService.serializeProfileGazelleToZip(d.getProfile(), mids);
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -259,7 +262,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	@Override
 	public InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
 		if (d != null) {
-			return new ProfileSerializationImpl().serializeProfileDisplayToZip(d.getProfile(), mids);
+			return profileSerializationService.serializeProfileDisplayToZip(d.getProfile(), mids);
 		} else {
 			return new NullInputStream(1L);
 		}

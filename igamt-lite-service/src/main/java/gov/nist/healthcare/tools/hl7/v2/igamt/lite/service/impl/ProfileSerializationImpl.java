@@ -41,6 +41,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
@@ -80,13 +81,16 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+@Service
 public class ProfileSerializationImpl implements ProfileSerialization {
+	private Logger log = LoggerFactory.getLogger(ProfileSerializationImpl.class);
 	
 	@Autowired
 	private DatatypeService datatypeService;
@@ -97,8 +101,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	@Autowired
 	private TableService tableService;
 	
-	Logger logger = LoggerFactory.getLogger( ProfileSerializationImpl.class );
-
 	private HashMap<String, Datatype> datatypesMap;
 	private HashMap<String, Segment> segmentsMap;
 	private Constraints conformanceStatement;
@@ -302,6 +304,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element ss = new nu.xom.Element("Segments");
 		for (SegmentLink link: profile.getSegmentLibrary().getChildren()) {
 			Segment s = segmentService.findById(link.getId());
+			
+			System.out.println("DL ID: " + profile.getDatatypeLibrary().getId());
 			ss.appendChild(this.serializeSegment(s, profile.getTableLibrary(), profile.getDatatypeLibrary()));
 		}
 		e.appendChild(ss);
@@ -1058,7 +1062,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			if (profile.getTableLibrary().findOneTableById(c.getTable()) != null){
 				elmComponent.addAttribute(new Attribute("Table", profile.getTableLibrary().findOneTableById(c.getTable()).getBindingIdentifier() + ""));
 			} else {
-				logger.warn("Value set "+c.getTable()+" not found in library");
+				log.warn("Value set "+c.getTable()+" not found in library");
 				elmComponent.addAttribute(new Attribute("Table", c.getTable()));
 			}
 		}
@@ -1109,7 +1113,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			if (profile.getTableLibrary().findOneTableById(c.getTable()) != null){
 				elmComponent.addAttribute(new Attribute("Binding", profile.getTableLibrary().findOneTableById(c.getTable()).getBindingIdentifier() + ""));
 			} else {
-				logger.warn("Value set "+c.getTable()+" not found in library");
+				log.warn("Value set "+c.getTable()+" not found in library");
 				elmComponent.addAttribute(new Attribute("Binding", c.getTable()));
 			}
 		}
@@ -1194,7 +1198,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			if (profile.getTableLibrary().findOneTableById(sc.getTable()) != null){
 				elmSubComponent.addAttribute(new Attribute("Table", profile.getTableLibrary().findOneTableById(sc.getTable()).getBindingIdentifier() + ""));
 			} else {
-				logger.warn("Value set "+sc.getTable()+" not found in library");
+				log.warn("Value set "+sc.getTable()+" not found in library");
 				elmSubComponent.addAttribute(new Attribute("Table", sc.getTable()));
 			}
 		}
@@ -1234,7 +1238,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			if (profile.getTableLibrary().findOneTableById(sc.getTable()) != null){
 				elmSubComponent.addAttribute(new Attribute("Binding", profile.getTableLibrary().findOneTableById(sc.getTable()).getBindingIdentifier() + ""));
 			} else {
-				logger.warn("Value set "+sc.getTable()+" not found in library");
+				log.warn("Value set "+sc.getTable()+" not found in library");
 				elmSubComponent.addAttribute(new Attribute("Binding", sc.getTable()));
 			}
 		}
@@ -1429,7 +1433,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					if (tables.findOneTableById(c.getTable()) != null){
 						elmComponent.addAttribute(new Attribute("Binding", tables.findOneTableById(c.getTable()).getBindingIdentifier() + ""));
 					} else {
-						logger.warn("Value set "+c.getTable()+" not found in library");
+						log.warn("Value set "+c.getTable()+" not found in library");
 						elmComponent.addAttribute(new Attribute("Binding", c.getTable()));
 					}
 				}
@@ -1737,8 +1741,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		ZipOutputStream out = new ZipOutputStream(outputStream);
 
 		this.generateProfileIS(out, this.serializeProfileToXML(profile));
-		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile));
-		this.generateConstraintsIS(out, new ConstraintsSerializationImpl().serializeConstraintsToXML(profile));
+//		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile));
+//		this.generateConstraintsIS(out, new ConstraintsSerializationImpl().serializeConstraintsToXML(profile));
 
 		out.close();
 		bytes = outputStream.toByteArray();
@@ -2078,13 +2082,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private void addDatatype(String key, Profile original, HashMap<String, DatatypeLink> datatypesMap, HashMap<String, TableLink> tablesMap) {
 		Datatype d = datatypeService.findById(key);
-		
-		datatypesMap.put(key, original.getDatatypeLibrary().findOne(key));
-		
-		for(Component c:d.getComponents()){
-			this.addDatatype(c.getDatatype(), original, datatypesMap, tablesMap);
-			if(c.getTable() != null && !c.getTable().equals("")){
-				tablesMap.put(c.getTable(), original.getTableLibrary().findOneTableById(c.getTable()));
+		DatatypeLink dl = original.getDatatypeLibrary().findOne(key);
+		if(dl != null){
+			datatypesMap.put(key, dl);
+			
+			for(Component c:d.getComponents()){
+				this.addDatatype(c.getDatatype(), original, datatypesMap, tablesMap);
+				if(c.getTable() != null && !c.getTable().equals("")){
+					tablesMap.put(c.getTable(), original.getTableLibrary().findOneTableById(c.getTable()));
+				}
+			}
+		}else {
+			try {
+				throw new Exception("1818181");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
@@ -2142,5 +2155,13 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		
 		outputStream3.close();
 		
+	}
+
+	public Logger getLog() {
+		return log;
+	}
+
+	public void setLog(Logger log) {
+		this.log = log;
 	}
 }

@@ -121,7 +121,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [200, ["2.1", "2.2", "2.3", "2.3.1", "2.4", "2.5.1", "2.6", "2.7"], {}];
     });
 
-    $httpBackend.whenPOST('api/datatype-library/findByScopes').respond(function (method, url, data, headers) {
+    $httpBackend.whenPOST('api/datatype-library/findByScope').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/findByScopes begin=' + data);
         request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
@@ -192,16 +192,16 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
             return [200, findDatatypeFlavors(params.name,params.hl7Version,params.scope), {}];
 
          }else{
-            return [200, findDatatype(id), {}];
+            return [200, findDatatype(path), {}];
          }
      });
 
-//
-//    $httpBackend.whenGET(/^api\/datatypes\/findFlavors\/.*/).respond(function (method, url, data, headers,params) {
-//       return [200, findDatatypeFlavors(params.name,params.hl7Version,params.scope), {}];
-//    });
-
-
+    $httpBackend.whenPOST('api/datatypes/save').respond(function (method, url, datatype, headers) {
+        var request = new XMLHttpRequest();
+        console.log('api/save begin=' + datatype);
+        var response = angular.fromJson(datatype);
+        return [request.status, response, {}];
+    });
 
     $httpBackend.whenGET(/^api\/segments\/.*/).respond(function (method, url, data, headers) {
         var id = url.split('/')[1];

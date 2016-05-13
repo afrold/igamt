@@ -120,6 +120,48 @@ angular
       }
     };
 
+    svc.searchById = function(idKey, myArray){
+        for (var i=0; i < myArray.length; i++) {
+            if (myArray[i].id === idKey) {
+                return i;
+            }
+        }
+        return undefined;
+    };
+
+    svc.removeMsgFromFilter = function(msgId){
+        var elt = svc.searchById(msgId, svc.getMsgmodel());
+        if (elt !== undefined){
+            svc.getMsgmodel().splice(elt, 1)
+            }
+    };
+
+    svc.addMsgInFilter = function(name, msgId){
+        if (name != undefined && msgId !== undefined) {
+            svc.getMsgmodel().push({"label": name, "id": msgId});
+            }
+    };
+
+    svc.updateMsgFromFilter = function(name, msgId){
+        var elt = svc.searchById(msgId, svc.getMsgmodel());
+        if (elt !== undefined){
+            svc.getMsgmodel()[elt].label = name;
+            }
+    };
+
+    svc.loadMessages = function(igdocument){
+        svc.setMsgdata(svc.getMessages(igdocument));
+        svc.setMsgmodel(svc.getMessages(igdocument));
+        svc.setMsgsettings(svc.getSettings());
+        svc.setMsgtexts(svc.getTexts("Conf. profiles"));
+}
+     svc.loadUsages = function(){
+         svc.setUsagesdata(svc.getUsages());
+         svc.setUsagesmodel(svc.getUsages());
+         svc.setUsagessettings(svc.getSettings());
+         svc.setUsagestexts(svc.getTexts("Usages"));
+     };
+
     svc.showToC = function(leaf){
       var rst1 = false;
       _.each(svc.getMsgmodel(), function(filterElt){
@@ -130,7 +172,7 @@ angular
 
     svc.show = function(leaf){
       if (leaf === undefined) {
-        console.log("undefined");
+        console.log("Undefined leaf");
         return true;
       }
       var rst1 = false;
@@ -155,9 +197,14 @@ angular
       if (leaf.id === filterElt.id){
         return true;
       }
-
-      if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
+      if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined) {
         return (MastermapSvc.getElementByKey(leaf.id, leaf.type, "message").indexOf(filterElt.id) !== -1);
+      } else {
+      console.log("UNDEFINED ELEMENT!!");
+      console.log("--> mastermap");
+      console.log(MastermapSvc.getMastermap());
+      console.log("--> undefined leaf");
+      console.log(leaf);
       }
     }
 
@@ -206,5 +253,20 @@ angular
  //        }
 //      }
 }
+
+    svc.isUnused = function(node){
+        if (MastermapSvc.getElement(node.id, node.type) !== undefined){
+            if (node.type == "segment") {
+                return (MastermapSvc.getElementByKey(node.id, node.type, "segmentRef").length === 0);
+            } else if (node.type == "datatype") {
+                return (MastermapSvc.getElementByKey(node.id, node.type, "field").length === 0) &&
+                (MastermapSvc.getElementByKey(node.id, node.type, "datatype").length === 0);
+            } else if (node.type == "table") {
+                return (MastermapSvc.getElementByKey(node.id, node.type, "field").length === 0) &&
+                (MastermapSvc.getElementByKey(node.id, node.type, "datatype").length === 0);
+            }
+        }
+    }
+
     return svc;
   });

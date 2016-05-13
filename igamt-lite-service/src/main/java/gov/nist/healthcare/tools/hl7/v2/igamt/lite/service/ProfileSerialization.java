@@ -9,7 +9,7 @@
  * modified versions bear some notice that they have been modified.
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -2,24 +2,24 @@
 angular
 .module('igl')
 .service (
-  'MastermapSvc',
-  function($rootScope) {
+    'MastermapSvc',
+    function($rootScope) {
 
-    var svc = {};
+        var svc = {};
 
-    svc.mastermap = [];
+        svc.mastermap = [];
 
-    svc.segmentLibrary = {};
-    svc.datatypeLibrary = {};
-    svc.tableLibrary = {};
+        svc.segmentLibrary = {};
+        svc.datatypeLibrary = {};
+        svc.tableLibrary = {};
 
-    svc.parseIg = function(igdocument){
-      if (igdocument !== null && igdocument !== undefined){
-        svc.addIG(igdocument);
-        return svc.getMastermap();
-      }
-      return [];
-    }
+        svc.parseIg = function(igdocument){
+            if (igdocument !== null && igdocument !== undefined){
+                svc.addIG(igdocument);
+                return svc.getMastermap();
+            }
+            return [];
+        }
 
     svc.getMastermap = function(){
       return this.mastermap;
@@ -79,34 +79,50 @@ angular
         }
       }
     }
-    
-    
-  //TODO Olivier, please check this function
-    svc.addValueSetObject = function(table, parent) {
-        	if (table !== undefined){
-        		svc.createMMElement(table.id, "table");
-        		svc.addParentsId(table.id, "table", parent);
 
-        		_.each(table.codes, function(c) {
-        			svc.addCodes(c, parent.concat([[table.id, 'table']]));
-        		});
-        	} else {
-        		svc.createMMElement(tableId, "table");
-        		svc.addParentsId(tableId, "table", parent);
-        		//           console.log("!!! => table " + tableId + " not found in library");
-        	}
+
+    svc.addValueSetId = function(tableId, parent) {
+        if (tableId !== undefined && tableId !== "") {
+            svc.createMMElement(tableId, "table");
+            svc.addParentsId(tableId, "table", parent);
+
+            var table = svc.getTableLibrary()[tableId];
+                if (table !== undefined){
+                    _.each(table.codes, function(c) {
+                        svc.addCodes(c, parent.concat([[table.id, 'table']]));
+                    });
+                } else {
+                    // Table not found
+                    // console.log("!!! => table " + tableId + " not found in library");
+                }
+          }
+    }
+
+
+    svc.addValueSetObject = function(table, parent) {
+        if (table !== undefined){
+            svc.createMMElement(table.id, "table");
+            svc.addParentsId(table.id, "table", parent);
+
+            _.each(table.codes, function(c) {
+                svc.addCodes(c, parent.concat([[table.id, 'table']]));
+            });
+        }
+    }
+
+
+    svc.deleteValueset = function(tableId) {
+        svc.removeMastermapElt(tableId, "table");
     }
 
 
     svc.addCodes = function(code, parent) {
-
-      svc.createMMElement(code.id, "code");
-      svc.addParentsId(code.id, "code", parent);
+        svc.createMMElement(code.id, "code");
+        svc.addParentsId(code.id, "code", parent);
     }
 
 
     svc.addDatatype = function(datatypeId, parent) {
-
       if (datatypeId !== undefined && datatypeId !== "") {
         var dt = svc.getDatatypeLibrary()[datatypeId];
         if (dt !== undefined){
@@ -125,6 +141,26 @@ angular
     }
 
 
+    svc.addDatatypeId = function(datatypeId, parent) {
+        // Add id then check if in library
+        if (datatypeId !== undefined && datatypeId !== "") {
+            svc.createMMElement(datatypeId, "datatype");
+            svc.addParentsId(datatypeId, "datatype", parent);
+
+            var dt = svc.getDatatypeLibrary()[datatypeId];
+            if (dt !== undefined){
+                // console.log(svc.mastermap[dt.id, "datatype"])
+                dt.components.forEach( function(c) {
+                    svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
+                });
+            } else {
+                // datatype not found
+                // console.log("!!! => datatype " + datatype + " not found in library");
+            }
+        }
+    }
+
+
     svc.addDatatypeObject = function(dt, parent) {
         if (dt !== undefined){
           svc.createMMElement(dt.id, "datatype");
@@ -136,19 +172,23 @@ angular
     }
 
 
-    svc.addField = function (field, parent) {
+    svc.deleteDatatype = function(datatypeId) {
+        svc.removeMastermapElt(datatypeId, "datatype");
+    }
 
+
+    svc.addField = function (field, parent) {
       svc.createMMElement(field.id, "field");
       svc.addParentsId(field.id, "field", parent);
       svc.setElement(field.id, "field", "usage", field["usage"]);
 
-      svc.addValueSet(field.table, parent.concat([[field.id, "field"]]));
-      svc.addDatatype(field.datatype, parent.concat([[field.id, "field"]]));
+      svc.addValueSetId(field.table, parent.concat([[field.id, "field"]]));
+      svc.addDatatypeId(field.datatype, parent.concat([[field.id, "field"]]));
     }
 
 
-    svc.addSegment = function (segmentId, parent) {
-
+    svc.addSegmentId = function (segmentId, parent) {
+      // Add the id in mastermap when given. Then check if object can be found in segment library.
       svc.createMMElement(segmentId, "segment");
       svc.addParentsId(segmentId, "segment", parent);
 
@@ -158,11 +198,12 @@ angular
           svc.addField(f, parent.concat([[segment.id, "segment"]]));
         });
       } else {
-//        console.log("!!! => segment id " + segmentId + " not found");
+        // Pass : object not found
+        // console.log("!!! => segment id " + segmentId + " not found");
       }
     }
-    
-    //TODO Olivier, please check this function
+
+
     svc.addSegmentObject = function(segment, parent) {
     	if (segment !== undefined){
     		svc.createMMElement(segment.id, "segment");
@@ -174,8 +215,13 @@ angular
         }
     }
 
-    svc.addMessage = function (message, parent) {
 
+    svc.deleteSegment = function(segmentId) {
+        svc.removeMastermapElt(segmentId, "segment");
+    }
+
+
+    svc.addMessage = function (message, parent) {
       svc.createMMElement(message.id, "message");
       svc.addParentsId(message.id, "message", parent);
 
@@ -189,8 +235,26 @@ angular
     }
 
 
+    svc.deleteMessage = function(messageId) {
+        svc.removeMastermapElt(messageId, "message");
+    }
+
+
+    svc.addMessageObject = function (message, parent) {
+      svc.createMMElement(message.id, "message");
+      svc.addParentsId(message.id, "message", parent);
+
+      _.each(message.children, function(segrefOrGroup) {
+        if (segrefOrGroup.type === "segmentRef"){
+          svc.addSegmentRef(segrefOrGroup, parent.concat([[message.id, 'message']]));
+        } else {
+          svc.addGroup(segrefOrGroup, parent.concat([[message.id, 'message']]));
+        }
+      });
+    }
+
+
     svc.addSegmentRef = function (segmentRef, parent){
-      //           console.log("Processing segment ref " + segmentRef.id);
 
       var segRefId = segmentRef.id;
       var segRef = segmentRef.ref;
@@ -199,7 +263,7 @@ angular
       svc.setElement(segRefId, "segmentRef", "usage", segmentRef["usage"]);
       svc.addParentsId(segRefId, "segmentRef", parent);
 
-      svc.addSegment(segRef, parent.concat([[segRefId, "segmentRef"]]));
+      svc.addSegmentId(segRef, parent.concat([[segRefId, "segmentRef"]]));
     }
 
 
@@ -223,35 +287,48 @@ angular
 
 
     svc.addIG = function (igdocument) {
-      console.log("Creating mastermap\nprocessing IG : " + igdocument.profile.id);
+        console.log("Creating mastermap\nprocessing IG : " + igdocument.id);
 
-      var profile = igdocument.profile;
+        var profile = igdocument.profile;
 
-      svc.createSegmentLibrary(igdocument);
-      svc.createDatatypeLibrary(igdocument);
-      svc.createTableLibrary(igdocument);
+        svc.createSegmentLibrary(igdocument);
+        svc.createDatatypeLibrary(igdocument);
+        svc.createTableLibrary(igdocument);
 
-      svc.createMMElement(profile.id, "ig");
+        svc.createMMElement(igdocument.id, "ig");
 
-      _.each(profile.messages.children, function(m) {
-        var parentsList = [[profile.id, "ig"]];
-        svc.addMessage(m, parentsList);
-      });
+        var parents = [[igdocument.id, "ig"]];
+        svc.createMMElement(profile.id, "profile");
+        svc.addParentsId(profile.id, "profile", parent);
 
+        parents = parents.concat([[profile.id, "profile"]]);
+        _.each(profile.messages.children, function(m) {
+          svc.addMessageObject(m, parents);
+        });
     }
 
-    svc.addParentsId = function (elementId, elementType, parentsList) {
-      //             console.log(elementId + " -> " + parentsList)
-      //  //Element refers to self
-      //   svc.mastermap[elementId][elementType] = svc.mastermap[elementId][elementType].concat(elementId);
 
-      _.each(parentsList, function(parent) {
-        var parentId = parent[0];
-        var parentType = parent[1];
-        //Add parents reference in element if not present
-        if (svc.getElementByKey(elementId, elementType, parentType).indexOf(parentId) === -1){
-          svc.setElement(elementId, elementType, parentType, svc.getElementByKey(elementId, elementType, parentType).concat(parentId));
-        }
+    svc.deleteIgdocument = function(igdocumentId) {
+        svc.removeMastermapElt(igdocumentId, "ig");
+    }
+
+
+    svc.deleteProfile = function(profileId) {
+        svc.removeMastermapElt(profileId, "profile");
+    }
+
+
+    svc.addParentsId = function (elementId, elementType, parentsList) {
+        // Element refers to self
+        // svc.mastermap[elementId][elementType] = svc.mastermap[elementId][elementType].concat(elementId);
+
+        _.each(parentsList, function(parent) {
+            var parentId = parent[0];
+            var parentType = parent[1];
+            //Add parents reference in element if not present
+            if (svc.getElementByKey(elementId, elementType, parentType).indexOf(parentId) === -1){
+                svc.setElement(elementId, elementType, parentType, svc.getElementByKey(elementId, elementType, parentType).concat(parentId));
+            }
 //        // Add element reference in parents if not already present
 //        if (svc.getElementByKey(parentId, parentType, elementType).indexOf(elementId) === -1){
 //          svc.setElement(parentId, parentType, elementType, svc.getElementByKey(parentId, parentType, elementType).concat(elementId));
@@ -263,6 +340,7 @@ angular
       if (svc.getElement(id, type) === undefined) {
         var eltColl = new Object;
         eltColl["ig"] =[];
+        eltColl["profile"] =[];
         eltColl["message"] =[];
         eltColl["field"] =[];
         eltColl["segment"] =[];
@@ -280,25 +358,37 @@ angular
       }
     }
 
+    svc.removeMastermapElt = function(toBeRemovedId, toBeRemovedType) {
+        // Collects elements about elements to delete
+        var toBeRemovedInfo = svc.getElement(toBeRemovedId, toBeRemovedType);
+        var areas = ["ig", "profile", "message", "field", "segment", "segmentRef", "group", "table", "datatype", "component", "code"];
+        // Remove element in parents
+        _.each(areas, function(area){
+            _.each(toBeRemovedInfo[area], function(idParent){
+                svc.removeId(idParent, svc.getElementByKey(idParent, area, toBeRemovedType));
+                });
+        });
+        // Remove element in mastermap
+        svc.removeId(toBeRemovedId.concat(toBeRemovedType), svc.getMastermap());
+    }
+
     svc.createSegmentLibrary = function (igdocument){
-      //             console.log("Creating segment library");
-        $rootScope.segments.forEach(function(n){
+                   console.log("Creating segment library");
+        igdocument.profile.segmentLibrary.children.forEach(function(n){
         svc.segmentLibrary[n.id] = n;
       });
     }
 
 
     svc.createTableLibrary = function (igdocument){
-      //             console.log("Creating table library");
-        $rootScope.tables.forEach(function(n){
+        igdocument.profile.tableLibrary.children.forEach(function(n){
         svc.tableLibrary[n.id] = n;
       });
     }
 
 
     svc.createDatatypeLibrary = function (igdocument){
-      //             console.log("Creating datatype library");
-        $rootScope.datatypes.forEach(function(n){
+        igdocument.profile.datatypeLibrary.children.forEach(function(n){
         svc.datatypeLibrary[n.id] = n;
       });
     }
@@ -315,6 +405,17 @@ angular
     svc.setElement = function(id, type, key, value){
       svc.mastermap[id.concat(type)][key] = value;
     }
+
+
+    svc.removeId = function(idKey, myArray){
+        var index = myArray.indexOf(idKey);
+        if (index !== -1){
+            myArray.splice(index, 1)
+        }
+    };
+
+
+
 
     svc.getUsage = function (id, type){
       var item = svc.getElement(id, type);

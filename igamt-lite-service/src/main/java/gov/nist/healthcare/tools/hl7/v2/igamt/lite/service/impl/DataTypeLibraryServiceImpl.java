@@ -59,9 +59,9 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public List<DatatypeLibrary> findByScopes(List<SCOPE> scopes) {
-		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByScopes(scopes);
-		log.debug("DatatypeLibraryRepository.findByScopes datatypeLibrary=" + datatypeLibrary.size());
+	public List<DatatypeLibrary> findByScope(SCOPE scope, Long accountId) {
+		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByScope(scope, accountId);
+		log.debug("DatatypeLibraryRepository.findByScope datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
 	}
 

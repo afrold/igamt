@@ -21,10 +21,8 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 
@@ -37,8 +35,14 @@ public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations 
 	private MongoOperations mongo;
 
 	@Override
-	public List<DatatypeLibrary> findByScopes(List<SCOPE> scopes) {
-		Criteria where = Criteria.where("scope").in(scopes);
+	public List<DatatypeLibrary> findByScope(SCOPE scope, Long accountId) {
+		
+		Criteria where = Criteria.where("scope").is(scope);
+		
+		if (scope == SCOPE.USER) {
+			where.andOperator(Criteria.where("accountId").is(accountId));
+		}
+		
 		Query qry = Query.query(where);
 		List<DatatypeLibrary> list = mongo.find(qry, DatatypeLibrary.class);
 		log.debug("DatatypeLibraryRespositoryImpl.findByScopes list.size()="

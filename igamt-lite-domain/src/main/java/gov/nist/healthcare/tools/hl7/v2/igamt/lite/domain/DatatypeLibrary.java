@@ -100,7 +100,9 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	}
 	
 	public DatatypeLink findOne(String dtId) {
+		System.out.println(dtId + " in the " + this.id);
 		if (this.children != null) {
+			System.out.println(this.children.size());
 			for (DatatypeLink dtl : this.children) {
 				if (dtl.getId().equals(dtId)) {
 					return dtl;

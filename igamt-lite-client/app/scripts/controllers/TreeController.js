@@ -2,7 +2,7 @@ angular
 		.module('igl')
 		.controller(
 				'TreeCtrl',
-				function($scope, $rootScope,$http) {
+				function($scope, $rootScope, $http, FilteringSvc) {
 
 					$scope.collapsedata = true;
 					$scope.collapsemessage = true;
@@ -367,5 +367,12 @@ angular
 				        });
 						}			
 
-					
+                    $scope.showToC = function (leaf) {
+                        return FilteringSvc.showToC(leaf);
+                    };
+
+                    $scope.isUnused = function (node) {
+                        return FilteringSvc.isUnused(node);
+                    };
+
 				});

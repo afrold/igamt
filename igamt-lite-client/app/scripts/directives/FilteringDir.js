@@ -85,7 +85,7 @@ function ($filter, $document, $compile, $parse) {
                 enableSearch: true,
                 selectionLimit: 0,
                 showCheckAll: true,
-                showUncheckAll: true,
+                showUncheckAll: false,
                 closeOnSelect: false,
                 buttonClasses: 'btn btn-xs',
                 closeOnDeselect: false,

@@ -10,6 +10,19 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
@@ -29,19 +42,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveExc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -68,53 +68,47 @@ public class DatatypeLibraryController extends CommonController {
 	@RequestMapping(method = RequestMethod.GET)
 	public List<DatatypeLibrary> getDatatypeLibraries() {
 		log.info("Fetching all datatype libraries.");
-		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService
-				.findAll();
+		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService.findAll();
 		return datatypeLibraries;
 	}
 
 	@RequestMapping(value = "/{dtLibId}/datatypes", method = RequestMethod.GET, produces = "application/json")
-	public List<Datatype> getDatatypesByLibrary(
-			@PathVariable("dtLibId") String dtLibId) {
+	public List<Datatype> getDatatypesByLibrary(@PathVariable("dtLibId") String dtLibId) {
 		log.info("Fetching datatypeByLibrary..." + dtLibId);
 		List<Datatype> result = datatypeService.findByLibIds(dtLibId);
 		return result;
 	}
 
-	@RequestMapping(value = "/findByScopes", method = RequestMethod.POST, produces = "application/json")
-	public List<DatatypeLibrary> findByScopes(@RequestBody List<String> scopes) {
+	@RequestMapping(value = "/findByScope", method = RequestMethod.POST, produces = "application/json")
+	public List<DatatypeLibrary> findByScope(@RequestBody String scope_) {
 		log.info("Fetching datatype libraries...");
-		List<SCOPE> scopes1 = new ArrayList<SCOPE>();
+		List<DatatypeLibrary> datatypeLibraries = null;
 		try {
-			for (String s : scopes) {
-				SCOPE scope = SCOPE.valueOf(s);
-				if (scope != null) {
-					scopes1.add(scope);
-				}
+			Long accountId = null;
+			SCOPE scope = SCOPE.valueOf(scope_);
+			User u = userService.getCurrentUser();
+			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+			if (account == null) {
+				throw new UserAccountNotFoundException();
 			}
+			accountId = account.getId();
+			datatypeLibraries = datatypeLibraryService.findByScope(scope, accountId);
 		} catch (Exception e) {
 			log.error("", e);
 		}
-		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService
-				.findByScopes(scopes1);
 		return datatypeLibraries;
 	}
 
 	@RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST, produces = "application/json")
-	public List<DatatypeLibrary> findByScopesAndVersion(
-			@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
-		log.info("Fetching the datatype library. scope="
-				+ scopesAndVersion.getScopes() + " hl7Version="
+	public List<DatatypeLibrary> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
+		log.info("Fetching the datatype library. scope=" + scopesAndVersion.getScopes() + " hl7Version="
 				+ scopesAndVersion.getHl7Version());
 		List<DatatypeLibrary> datatypes = null;
 		try {
-			datatypes = datatypeLibraryService.findByScopesAndVersion(
-					scopesAndVersion.getScopes(),
+			datatypes = datatypeLibraryService.findByScopesAndVersion(scopesAndVersion.getScopes(),
 					scopesAndVersion.getHl7Version());
 			if (datatypes == null) {
-				throw new NotFoundException(
-						"Datatype not found for scopesAndVersion="
-								+ scopesAndVersion);
+				throw new NotFoundException("Datatype not found for scopesAndVersion=" + scopesAndVersion);
 			}
 		} catch (Exception e) {
 			log.error("", e);
@@ -130,14 +124,11 @@ public class DatatypeLibraryController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{accountId}/{hl7Version}/findByAccountId", method = RequestMethod.GET)
-	public List<DatatypeLibrary> findByAccountId(
-			@PathVariable("accountId") Long accountId,
+	public List<DatatypeLibrary> findByAccountId(@PathVariable("accountId") Long accountId,
 			@PathVariable("hl7Version") String hl7Version)
-			throws LibraryNotFoundException, UserAccountNotFoundException,
-			LibraryException {
+			throws LibraryNotFoundException, UserAccountNotFoundException, LibraryException {
 		log.info("Fetching the datatype libraries...");
-		List<DatatypeLibrary> result = datatypeLibraryService.findByAccountId(
-				accountId, hl7Version);
+		List<DatatypeLibrary> result = datatypeLibraryService.findByAccountId(accountId, hl7Version);
 		return result;
 	}
 
@@ -145,17 +136,15 @@ public class DatatypeLibraryController extends CommonController {
 	public DatatypeLibrary create(@RequestBody LibraryCreateWrapper dtlcw) {
 		SCOPE scope = SCOPE.valueOf(dtlcw.getScope());
 
-		return datatypeLibraryService.create(dtlcw.getName(), dtlcw.getExt(),
-				scope, dtlcw.getHl7Version(), dtlcw.getAccountId());
+		return datatypeLibraryService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),
+				dtlcw.getAccountId());
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public LibrarySaveResponse save(@RequestBody DatatypeLibrary datatypeLibrary)
-			throws LibrarySaveException {
+	public LibrarySaveResponse save(@RequestBody DatatypeLibrary datatypeLibrary) throws LibrarySaveException {
 		log.debug("datatypeLibrary=" + datatypeLibrary);
 		log.debug("datatypeLibrary.getId()=" + datatypeLibrary.getId());
-		log.info("Saving the " + datatypeLibrary.getScope()
-				+ " datatype library.");
+		log.info("Saving the " + datatypeLibrary.getScope() + " datatype library.");
 		// TODO This is necessary for a cascading save. For now we are
 		// having the user save dts one at a time.
 		// for (Datatype dt : datatypeLibrary.getChildren()) {
@@ -169,18 +158,15 @@ public class DatatypeLibraryController extends CommonController {
 	}
 
 	@RequestMapping(value = "/bindDatatypes", method = RequestMethod.POST)
-	public List<Datatype> bindDatatypes(@RequestBody BindingWrapper binding)
-			throws DatatypeSaveException {
+	public List<Datatype> bindDatatypes(@RequestBody BindingWrapper binding) throws DatatypeSaveException {
 		log.debug("Binding datatypes=" + binding.getDatatypeIds().size());
-		List<Datatype> bound = datatypeLibraryService.bindDatatypes(
-				binding.getDatatypeIds(), binding.getDatatypeLibraryId(),
-				binding.getDatatypeLibraryExt(), binding.getAccountId());
+		List<Datatype> bound = datatypeLibraryService.bindDatatypes(binding.getDatatypeIds(),
+				binding.getDatatypeLibraryId(), binding.getDatatypeLibraryExt(), binding.getAccountId());
 		return bound;
 	}
 
 	@RequestMapping(value = "/{libId}/addChild", method = RequestMethod.POST)
-	public DatatypeLink addChild(@PathVariable String libId,
-			@RequestBody DatatypeLink datatypeLink)
+	public DatatypeLink addChild(@PathVariable String libId, @RequestBody DatatypeLink datatypeLink)
 			throws DatatypeSaveException {
 		log.debug("Adding a link to the library");
 		DatatypeLibrary lib = datatypeLibraryService.findById(libId);
@@ -190,8 +176,7 @@ public class DatatypeLibraryController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{libId}/updateChild", method = RequestMethod.POST)
-	public DatatypeLink updateChild(@PathVariable String libId,
-			@RequestBody DatatypeLink datatypeLink)
+	public DatatypeLink updateChild(@PathVariable String libId, @RequestBody DatatypeLink datatypeLink)
 			throws DatatypeSaveException {
 		log.debug("Adding a link to the library");
 		DatatypeLibrary lib = datatypeLibraryService.findById(libId);
@@ -204,8 +189,7 @@ public class DatatypeLibraryController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{libId}/deleteChild", method = RequestMethod.POST)
-	public boolean deleteChild(@PathVariable String libId,
-			@RequestParam("id") String id) throws DatatypeSaveException {
+	public boolean deleteChild(@PathVariable String libId, @RequestParam("id") String id) throws DatatypeSaveException {
 		log.debug("Deleting a link to the library");
 		DatatypeLibrary lib = datatypeLibraryService.findById(libId);
 		DatatypeLink found = lib.findOne(id);
@@ -218,33 +202,24 @@ public class DatatypeLibraryController extends CommonController {
 
 	@RequestMapping(value = "/findFlavors", method = RequestMethod.GET, produces = "application/json")
 	public List<DatatypeLink> findFlavors(@RequestParam("name") String name,
-			@RequestParam("hl7Version") String hl7Version,
-			@RequestParam("scope") SCOPE scope) {
-		log.info("Finding flavors of datatype, name=" + name + ", hl7Version="
-				+ hl7Version + ", scope=" + scope + "...");
-		org.springframework.security.core.userdetails.User u = userService
-				.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u
-				.getUsername());
-		List<DatatypeLink> datatypes = datatypeLibraryService.findFlavors(
-				scope, hl7Version, name, account.getId());
+			@RequestParam("hl7Version") String hl7Version, @RequestParam("scope") SCOPE scope) {
+		log.info("Finding flavors of datatype, name=" + name + ", hl7Version=" + hl7Version + ", scope=" + scope
+				+ "...");
+		org.springframework.security.core.userdetails.User u = userService.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+		List<DatatypeLink> datatypes = datatypeLibraryService.findFlavors(scope, hl7Version, name, account.getId());
 		return datatypes;
 	}
 
 	@RequestMapping(value = "/findLibrariesByFlavorName", method = RequestMethod.GET, produces = "application/json")
-	public List<DatatypeLibrary> findLibrariesByFlavorName(
-			@RequestParam("name") String name,
-			@RequestParam("hl7Version") String hl7Version,
-			@RequestParam("scope") SCOPE scope) {
-		log.info("Finding flavors of datatype, name=" + name + ", hl7Version="
-				+ hl7Version + ", scope=" + scope + "...");
-		org.springframework.security.core.userdetails.User u = userService
-				.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u
-				.getUsername());
-		List<DatatypeLibrary> libraries = datatypeLibraryService
-				.findLibrariesByFlavorName(scope, hl7Version, name,
-						account.getId());
+	public List<DatatypeLibrary> findLibrariesByFlavorName(@RequestParam("name") String name,
+			@RequestParam("hl7Version") String hl7Version, @RequestParam("scope") SCOPE scope) {
+		log.info("Finding flavors of datatype, name=" + name + ", hl7Version=" + hl7Version + ", scope=" + scope
+				+ "...");
+		org.springframework.security.core.userdetails.User u = userService.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+		List<DatatypeLibrary> libraries = datatypeLibraryService.findLibrariesByFlavorName(scope, hl7Version, name,
+				account.getId());
 		return libraries;
 	}
 
