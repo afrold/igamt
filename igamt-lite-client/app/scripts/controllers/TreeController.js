@@ -371,4 +371,8 @@ angular
                         return FilteringSvc.showToC(leaf);
                     };
 
+                    $scope.isUnused = function (node) {
+                        return FilteringSvc.isUnused(node);
+                    };
+
 				});
