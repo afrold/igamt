@@ -253,5 +253,20 @@ angular
  //        }
 //      }
 }
+
+    svc.isUnused = function(node){
+        if (MastermapSvc.getElement(node.id, node.type) !== undefined){
+            if (node.type == "segment") {
+                return (MastermapSvc.getElementByKey(node.id, node.type, "segmentRef").length === 0);
+            } else if (node.type == "datatype") {
+                return (MastermapSvc.getElementByKey(node.id, node.type, "field").length === 0) &&
+                (MastermapSvc.getElementByKey(node.id, node.type, "datatype").length === 0);
+            } else if (node.type == "table") {
+                return (MastermapSvc.getElementByKey(node.id, node.type, "field").length === 0) &&
+                (MastermapSvc.getElementByKey(node.id, node.type, "datatype").length === 0);
+            }
+        }
+    }
+
     return svc;
   });
