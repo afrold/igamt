@@ -1642,10 +1642,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.getDatatypeLabel = function (datatype) {
             if(datatype && datatype != null) {
-                console.log("getDatatypeLabel Here id=" + datatype.id);
                 var ext = $rootScope.getDatatypeExtension(datatype);
-                console.log("getDatatypeLabel Here name=" + datatype.name);
-                console.log("getDatatypeLabel Here ext=" + ext);
                 return $rootScope.getLabel(datatype.name, ext);
             }
             return "";
