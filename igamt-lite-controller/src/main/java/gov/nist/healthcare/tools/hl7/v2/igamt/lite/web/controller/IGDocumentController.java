@@ -6,6 +6,7 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -16,6 +17,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
@@ -324,6 +326,12 @@ public class IGDocumentController extends CommonController {
 				if(f.getDatatype() != null && datatypeIdChangeMap.containsKey(f.getDatatype())) f.setDatatype(datatypeIdChangeMap.get(f.getDatatype()));
 				if(f.getTable() != null && tableIdChangeMap.containsKey(f.getTable())) f.setTable(tableIdChangeMap.get(f.getTable()));
 			}
+			
+			for(Mapping map:s.getDynamicMapping().getMappings()){
+				for(Case c : map.getCases()){
+					if(c.getDatatype() != null && datatypeIdChangeMap.containsKey(c.getDatatype())) c.setDatatype(datatypeIdChangeMap.get(c.getDatatype()));
+				}
+			}
 			segmentService.save(s);
 		}
 		
@@ -340,6 +348,7 @@ public class IGDocumentController extends CommonController {
 			for(SegmentRefOrGroup sog : m.getChildren()){
 				this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap, sog);
 			}
+			messageService.save(m);
 		}
 	}
 

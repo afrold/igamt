@@ -20,6 +20,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 
@@ -37,12 +38,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import nu.xom.Attribute;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+@Service
 public class TableSerializationImpl implements TableSerialization {
 
 	@Autowired
@@ -197,6 +200,7 @@ public class TableSerializationImpl implements TableSerialization {
 		return elmSpecification;
 	}
 
+	@Override
 	public nu.xom.Element serializeTableLibraryToElement(Profile profile) {
 		TableLibrary tableLibrary = profile.getTableLibrary();
 
