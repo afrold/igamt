@@ -53,9 +53,7 @@ public class IGDocumentConverterFromNewToOld {
 	private static final Logger log = LoggerFactory.getLogger(IGDocumentConverterFromNewToOld.class);
 
 	public IGDocumentPreLib convert(IGDocument doc) {
-		
 		IGDocumentPreLib preLib = new IGDocumentPreLib();
-		
 		preLib.setAccountId(doc.getAccountId());
 		preLib.setChildSections(doc.getChildSections());
 		preLib.setComment(doc.getComment());
