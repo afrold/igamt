@@ -283,13 +283,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         $scope.getBindingIdentifier = function(tableId) {
-        	console.log("getBindingIdentifier==>");
-//        	var bindingIdentifier;
-//        	TableService.getOne(tableId).then(function(result){
-//        		bindingIdentifier = angular.fromjson(result.data);
-//        	});
-        	console.log("<==getBindingIdentifier= bindingIdentifier");
-        	return "bindingIdentifier";
+        	console.log("getBindingIdentifier==>" + tableId);
+        	var bindingIdentifier;
+        	bindingIdentifier = TableService.getOne(tableId);
+        	console.log("<==getBindingIdentifier=" + bindingIdentifier);
+        	return bindingIdentifier;
         };
 
 			$scope.openStandardDataypes = function(scope) {

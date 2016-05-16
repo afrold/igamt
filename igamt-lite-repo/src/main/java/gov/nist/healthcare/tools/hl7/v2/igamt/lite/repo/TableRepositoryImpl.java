@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 public class TableRepositoryImpl implements TableOperations {
@@ -42,5 +43,14 @@ public class TableRepositoryImpl implements TableOperations {
 			where.andOperator(Criteria.where("hl7Version").is(hl7Version));
 			Query qry = Query.query(where);
 			return mongo.find(qry, Table.class);
+		}
+		
+		@Override
+		public List<Table> findBindingIdentifiers(List<String> tableIds) {
+			Criteria where = Criteria.where("id").in(tableIds);
+			Query qry = Query.query(where);
+			qry.fields().include("bindingIdentifier");
+			List<Table> tables = mongo.find(qry, Table.class);
+			return tables;
 		}
 }

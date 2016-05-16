@@ -24,4 +24,6 @@ public interface TableOperations {
 	List<Table> findByLibIds(String tabLibId);
 
 	List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+
+	List<Table> findBindingIdentifiers(List<String> tableIds);
 }
