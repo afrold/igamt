@@ -273,34 +273,34 @@ angular.module('igl')
 
         $scope.save = function () {
             $scope.saving = true;
-            waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
             var segment = $rootScope.segment;
             var ext = segment.ext;
             segment.ext = null;
+            if(segment.libIds == undefined) segment.libIds = [];
             if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1) {
                 segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
             }
             SegmentService.save($rootScope.segment).then(function (result) {
+                segment.ext = ext;
                 var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
                 if (oldLink != null) {
                     SegmentService.merge($rootScope.segmentsMap[result.id], result);
                     var newLink = SegmentService.getSegmentLink(result);
                     newLink.ext = ext;
                     SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
-                        oldLink.ext = newLink;
+                        oldLink.ext = newLink.ext;
+                        oldLink.name = newLink.name;
                         $scope.saving = false;
                         $scope.selectedChildren = [];
                         if ($scope.segmentsParams)
                             $scope.segmentsParams.refresh();
                         $rootScope.$broadcast('event:SetToC');
-                        waitingDialog.hide();
-                    }, function (error) {
+                     }, function (error) {
                         $scope.saving = false;
                         $rootScope.msg().text = error.data.text;
                         $rootScope.msg().type = error.data.type;
                         $rootScope.msg().show = true;
-                        waitingDialog.hide();
-                    });
+                     });
                 }
                 //TODO update Toc
             }, function (error) {
@@ -308,7 +308,7 @@ angular.module('igl')
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
-                waitingDialog.hide();
+                segment.ext = ext;
 
             });
         };
@@ -709,7 +709,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 });
 
 
-angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc) {
+angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc,MastermapSvc) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
 
@@ -718,7 +718,7 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
         SegmentService.delete($scope.segToDelete).then(function (result) {
                 SegmentLibrarySvc.deleteChild($scope.segToDelete.id).then(function (res) {
                     // We must delete from two collections.
-                    var index = $rootScope.datatypes.indexOf($scope.segToDelete);
+                    var index = $rootScope.segments.indexOf($scope.segToDelete);
                     $rootScope.segments.splice(index, 1);
                     var tmp = SegmentLibrarySvc.findOneChild($scope.segToDelete.id, $rootScope.igdocument.profile.segmentLibrary);
                     index = $rootScope.igdocument.profile.segmentLibrary.children.indexOf(tmp);
@@ -733,6 +733,7 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
                     $rootScope.msg().type = "success";
                     $rootScope.msg().show = true;
                     $rootScope.manualHandle = true;
+                    MastermapSvc.deleteSegment($scope.dtToDelete.id);
                     $rootScope.$broadcast('event:SetToC');
                     $modalInstance.close($scope.segToDelete);
                     $scope.loading = false;

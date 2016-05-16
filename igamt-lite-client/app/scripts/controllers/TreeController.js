@@ -15,16 +15,21 @@ angular
             $scope.collapsemessage = false;
             $scope.collapsesegment = false;
             $scope.collapsetable = false;
-
+            $scope.collapsevalueSet=false;
+            $scope.profilecollapsed = false;
             $scope.activeModel = "";
             $scope.Activate = function (param) {
                 $scope.activeModel = param;
             }
-            $scope.profilecollapsed = false;
+      
 
             $rootScope.switcherprofile = function () {
                 $scope.profilecollapsed = !$scope.profilecollapsed;
 
+            };
+
+            $rootScope.switchervalueSet = function () {
+                $scope.collapsevalueSet = !$scope.collapsevalueSet;
             };
             $rootScope.switchertable = function () {
                 $scope.collapsetable = !$scope.collapsetable;
@@ -44,6 +49,7 @@ angular
                 $scope.collapsedata = !$scope.collapsedata;
 
             };
+            
 
             $scope.treeOptions = {
 
@@ -99,6 +105,16 @@ angular
                 if (arr !== undefined) {
                     for (var i = arr.length - 1; i >= 0; i--) {
                         arr[i].sectionPosition = i + 1;
+                    }
+                }
+                return "";
+            };
+            
+
+            $scope.updateMessagePositions = function (arr) {
+                if (arr !== undefined) {
+                    for (var i = arr.length - 1; i >= 0; i--) {
+                        arr[i].position = i + 1;
                     }
                 }
                 return "";
@@ -173,11 +189,12 @@ angular
                     }
                     return clone;
                 }
-
-
             };
 
-
+            $scope.debug= function(leaf){
+            	console.log("DEBUG FNCT");
+            	console.log(leaf.$nodeScope.$modelValue.description);
+            }
             $scope.sectionOption = [
 
                 ['clone',
@@ -219,43 +236,50 @@ angular
 
                 ['clone',
                     function ($itemScope) {
-                        CloneDeleteSvc.copySegment($itemScope.$nodeScope.$modelValue);
+                        CloneDeleteSvc.copySegment($itemScope.segment);
 
                     } ],
                 null,
                 ['delete',
                     function ($itemScope) {
-                        CloneDeleteSvc.deleteSegment($itemScope.$nodeScope.$modelValue);
+                        CloneDeleteSvc.deleteSegment($itemScope.segment);
                     } ]
 
             ];
 
+            
+            
+            
             $scope.DataTypeOptions = [
 
                 ['clone',
                     function ($itemScope) {
-                        CloneDeleteSvc.copyDatatype($itemScope.$nodeScope.$modelValue);
+                	
+                	//  console.log("******"+$itemScope.$nodeScope.$modelValue.name+"******");
+                        CloneDeleteSvc.copyDatatype($itemScope.data); 
 
+                      
                     } ],
                 null,
                 ['delete',
                     function ($itemScope) {
-                        CloneDeleteSvc.deleteDatatype($itemScope.$nodeScope.$modelValue);
+                        CloneDeleteSvc.deleteDatatype($itemScope.data);
                     } ]
-
+                    
+                   
             ];
 
             $scope.ValueSetOptions = [
 
                 ['clone',
                     function ($itemScope) {
-                        CloneDeleteSvc.copyTable($itemScope.$nodeScope.$modelValue);
+                        CloneDeleteSvc.copyTable($itemScope.table);
 
                     } ],
                 null,
                 ['delete',
                     function ($itemScope) {
-                        CloneDeleteSvc.deleteValueSet($itemScope.$nodeScope.$modelValue);
+                        CloneDeleteSvc.deleteValueSet($itemScope.table);
                     } ]
 
             ];
@@ -265,14 +289,14 @@ angular
                 [
                     'clone',
                     function ($itemScope) {
-                        CloneDeleteSvc.copyMessage($itemScope.$nodeScope.$modelValue);
+                        CloneDeleteSvc.copyMessage($itemScope.msg);
 
                     } ],
                 null,
                 [
                     'delete',
                     function ($itemScope) {
-                        CloneDeleteSvc.deleteMessage($itemScope.$nodeScope.$modelValue);
+                        CloneDeleteSvc.deleteMessage($itemScope.msg);
 
 
                     } ]
@@ -294,7 +318,7 @@ angular
                 [
                     'clone',
                     function ($itemScope) {
-                        CloneDeleteSvc.copyTable($itemScope.$nodeScope.$modelValue);
+                        CloneDeleteSvc.copyTable($itemScope.table);
 
 
                     } ],
@@ -302,7 +326,7 @@ angular
                 [
                     'delete',
                     function ($itemScope) {
-                        CloneDeleteSvc.deleteValueSet($itemScope.$nodeScope.$modelValue);
+                        CloneDeleteSvc.deleteValueSet($itemScope.table);
                     } ]
 
 
@@ -344,7 +368,9 @@ angular
 
             $scope.getRoutSectionByname = function (name) {
                 var section = {};
+                $scope.Activate(name);
                 if (name.toLowerCase() === 'conformance profiles') {
+                	
                     section.sectionContents = $rootScope.igdocument.profile.messages.sectionContents;
                     section.sectionTitle = $rootScope.igdocument.profile.messages.sectionTitle;
                     section.sectionPosition = $rootScope.igdocument.profile.messages.sectionPosition;
@@ -352,6 +378,7 @@ angular
                     section.sectionDescription = $rootScope.igdocument.profile.messages.Description;
 
                 } else if (name.toLowerCase() === 'segments and field descriptions') {
+            
                     section.sectionContents = $rootScope.igdocument.profile.segmentLibrary.sectionContents;
                     section.sectionTitle = $rootScope.igdocument.profile.segmentLibrary.sectionTitle;
                     section.sectionPosition = $rootScope.igdocument.profile.segmentLibrary.sectionPosition;
@@ -388,7 +415,7 @@ angular
                 $scope.$emit('event:openMessage', message);
             }
             $scope.editProfile = function () {
-
+            	 $scope.Activate("Message Infrastructure");
                 $scope.$emit('event:openProfileMetadata',
                     $rootScope.igdocument);
             }
@@ -423,7 +450,7 @@ angular
                     });
                 return promise;
             }
-
+            
 
             $scope.updateChildeSections = function (childSections) {
 
@@ -452,12 +479,7 @@ angular
                     });
                 return promise;
             }
-
-
-            $scope.showToC = function (leaf) {
-                return FilteringSvc.showToC(leaf);
-            };
-
+           
             $scope.isUnused = function (node) {
                 return FilteringSvc.isUnused(node);
             };
@@ -466,10 +488,32 @@ angular
             $scope.showToC = function (leaf) {
                 return FilteringSvc.showToC(leaf);
             };
-
-            $scope.isUnused = function (node) {
-                return FilteringSvc.isUnused(node);
+            
+            $scope.getScopeLabel = function (leaf) {
+            if (leaf.scope==='HL7STANDARD'){
+            	return 'HL7';
+            }
+            else  if(leaf.scope==='USER') {
+            	return 'USE';
+            	
+            }
+            
+            else  if(leaf.scope==='MASTER') {
+            	return 'MAS';
+            	
+            }
+            
+            else {
+            	return "";
+            	
+            }
             };
+            
+
+            
+            
+
+
 
         }]);
 

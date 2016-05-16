@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="lib/igamt.css"/>
 
 </head>
-<body ng-controller="MainCtrl" ng-app="igl" ng-init="init()">
+<body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" block-ui="main">
 <notifications-bar class="notifications" closeIcon="fa fa-times-circle"></notifications-bar>
 
 <div id="wrapper">
@@ -74,6 +74,11 @@
     <div ng-include="'views/footer.html'"></div>
     <div ng-include="'views/templates.html'"></div>
  	<div ng-include="'views/edit/editDatatypes.html'"></div>
+    <ng-include src="'views/edit/editDocument.html'"></ng-include>
+    <ng-include src="'views/edit/editSegments.html'"></ng-include>
+    <ng-include src="'views/edit/editMessages.html'"></ng-include>
+    <ng-include src="'views/edit/editValueSets.html'"></ng-include>
+    <ng-include src="'views/edit/editSections.html'"></ng-include>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <!--<script>-->

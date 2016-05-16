@@ -24,13 +24,13 @@
             <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-md btn-primary"
                  ng-disabled="segmentForm.$invalid"
-                 ng-hide="viewSettings.tableReadonly || igDocumentConfig.selectedType !== 'USER'"
+                 ng-hide="viewSettings.tableReadonly ||(segment.scope !== 'USER' && segment.scope !== 'MASTER')"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
 
                          <button title="Cancel Changes" type="button" class="btn btn-md btn-warning"
-                                 ng-hide="viewSettings.tableReadonly || igDocumentConfig.selectedType !== 'USER'"
+                                 ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') "
                                  ng-click="cancel()">
                              <span><i class="fa fa-times fa-fw"></i> Cancel</span>
                          </button>
@@ -57,7 +57,7 @@
                 <label class="col-md-2 control-label">Extension</label>
 
                 <div class="col-md-10">
-                    <input type="text" ng-disabled="viewSettings.tableReadonly"
+                    <input type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
                            class="form-control"
                            ng-change="recordChanged()"
                            name="label" class="form-control"
@@ -86,13 +86,14 @@
             <div class="form-group"
                  ng-class="{'igl-has-error has-feedback' : segmentForm.comment.$invalid}">
                 <label class="col-md-2 control-label">Comment</label>
-
-                <div class="col-md-10"><input
-                        ng-disabled="viewSettings.tableReadonly"
-                        class="form-control" type="text"
-                        name="comment"
-                        ng-change="recordChanged()"
-                        ng-model="segment.comment"></div>
+                <div class="col-md-10">
+                    <textarea rows="3" cols="20"
+                              ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
+                              ng-change="recordChanged()"
+                              name="comment" id="comment" class="form-control"
+                              ng-model="segment.comment"
+                            />
+                </div>
 
             </div>
 
@@ -105,7 +106,7 @@
                               name="text1"
                               ng-change="recordChanged()"></textarea>
                 </div>
-                <div ng-if="viewSettings.tableReadonly">
+                <div ng-if="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                     <div froala-view="segment.text1"></div>
                 </div>
 </div>
@@ -115,12 +116,12 @@
                  ng-class="{'igl-has-error has-feedback' : segmentForm.text2.$invalid}">
                 <label class="col-md-2 control-label">Definition Post-Text</label>
                 <div class="col-md-10">
-                <div ng-if="!viewSettings.tableReadonly">
+                <div ng-if="!viewSettings.tableReadonly && segment.scope === 'USER'">
                     <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2"
                               name="text2"
                               ng-change="recordChanged()"></textarea>
                 </div>
-                <div ng-if="viewSettings.tableReadonly">
+                <div ng-if="viewSettings.tableReadonly || (segment.scope === 'MASTER' || segment.scope === 'HL7STANDARD')">
                     <div class="fr-view">
                         <div froala-view="segment.text2"></div>
                     </div>
