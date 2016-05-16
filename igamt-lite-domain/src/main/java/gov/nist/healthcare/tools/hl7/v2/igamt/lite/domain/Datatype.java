@@ -189,9 +189,9 @@ Cloneable, Comparable<Datatype> {
 	@Override
 	public int compareTo(Datatype o) {
 		int x = String.CASE_INSENSITIVE_ORDER.compare(this.getName() != null && this.label != null ? this.getName() + this.getLabel() : "",
-				o.getName() != null && this.getLabel() != null ? o.getName() + this.getLabel() : "");
+				o.getName() != null && o.getLabel() != null ? o.getName() + o.getLabel() : "");
 		if (x == 0) {
-			x = (this.getName() != null  && this.getLabel() != null ? this.getName() + this.getLabel() : "").compareTo(o.getName() != null && this.getLabel() != null ? o.getName()+o.getLabel(): "");
+			x = (this.getName() != null  && this.getLabel() != null ? this.getName() + this.getLabel() : "").compareTo(o.getName() != null && o.getLabel() != null ? o.getName()+o.getLabel(): "");
 		}
 		return x;
 	}

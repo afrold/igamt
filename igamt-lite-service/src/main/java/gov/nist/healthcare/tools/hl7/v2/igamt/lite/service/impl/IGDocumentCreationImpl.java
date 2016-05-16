@@ -278,9 +278,9 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		SegmentLibrary sgtsSource = pSource.getSegmentLibrary();
 		SegmentLibrary sgtsTarget = pTarget.getSegmentLibrary();
 		sgtsTarget.setType(pSource.getSegmentLibrary().getType());
-		SegmentLink sgt = pSource.getSegmentLibrary().findOneSegmentById(sref.getRef());
+		SegmentLink sgt = sref.getRef();
 		sgtsTarget.addSegment(sgt);
-		Segment seg = segmentRepository.findOne(sref.getRef());
+		Segment seg = segmentRepository.findOne(sref.getRef().getId());
 		if (SCOPE.USER == seg.getScope()) {
 			seg.setId(null);
 			seg.getLibIds().remove(sgtsSource.getId());

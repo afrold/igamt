@@ -29,7 +29,8 @@ var app = angular
         'froala',
         'ngNotificationsBar',
         'ngDragDrop',
-        'ui.tree'
+        'ui.tree',
+        'blockUI'
     ]);
 
 var
@@ -48,7 +49,7 @@ var
 //the message to be shown to the user
 var msg = {};
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, notificationsConfigProvider) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, notificationsConfigProvider,blockUIConfig) {
 
 
     $routeProvider
@@ -283,6 +284,11 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         spinner = true;
         return data;
     };
+
+    blockUIConfig.message = 'Please wait...';
+    blockUIConfig.blockBrowserNavigation = true;
+
+
     $httpProvider.defaults.transformRequest.push(spinnerStarter);
 
     httpHeaders = $httpProvider.defaults.headers;

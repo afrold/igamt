@@ -333,7 +333,7 @@ public class IGDocumentController extends CommonController {
 				if (f.getDatatype() != null && f.getDatatype().getId() != null && datatypeIdChangeMap.containsKey(f.getDatatype().getId()))
 					f.getDatatype().setId(datatypeIdChangeMap.get(f.getDatatype().getId()));
 				if (f.getTable() != null && f.getTable().getId() != null && tableIdChangeMap.containsKey(f.getTable().getId()))
-					f.getDatatype().setId(tableIdChangeMap.get(f.getTable().getId()));
+					f.getTable().setId(tableIdChangeMap.get(f.getTable().getId()));
 			}
 			
 			for(Mapping map:s.getDynamicMapping().getMappings()){
@@ -368,8 +368,8 @@ public class IGDocumentController extends CommonController {
 			HashMap<String, String> segmentIdChangeMap, SegmentRefOrGroup sog) {
 		if (sog instanceof SegmentRef) {
 			SegmentRef segmentRef = (SegmentRef) sog;
-			if (segmentIdChangeMap.containsKey(segmentRef.getRef()))
-				segmentRef.setRef(segmentIdChangeMap.get(segmentRef.getRef()));
+			if (segmentIdChangeMap.containsKey(segmentRef.getRef().getId()))
+				segmentRef.getRef().setId(segmentIdChangeMap.get(segmentRef.getRef().getId()));
 		}
 
 		if (sog instanceof Group) {

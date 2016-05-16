@@ -180,6 +180,7 @@ public class DatatypeLibraryController extends CommonController {
 		DatatypeLink found = lib.findOne(datatypeLink.getId());
 		if (found != null) {
 			found.setExt(datatypeLink.getExt());
+			found.setName(datatypeLink.getName());
 		}
 		datatypeLibraryService.save(lib);
 		return datatypeLink;

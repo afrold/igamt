@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('SegmentLibrarySvc', function($http, userInfoService) {
+angular.module('igl').factory('SegmentLibrarySvc', function($http, userInfoService,$q) {
 
 	var svc = this;
 

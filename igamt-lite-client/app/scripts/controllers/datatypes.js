@@ -271,17 +271,20 @@ angular.module('igl')
             var datatype = $rootScope.datatype;
             var ext = datatype.ext;
             datatype.ext = null;
+            if(datatype.libIds == undefined) datatype.libIds = [];
             if (datatype.libIds.indexOf($rootScope.igdocument.profile.datatypeLibrary.id) == -1) {
                 datatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
             }
             DatatypeService.save(datatype).then(function (result) {
+                datatype.ext = ext;
                 var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary);
                 if (oldLink != null) {
                     DatatypeService.merge($rootScope.datatypesMap[result.id], result);
                     var newLink = DatatypeService.getDatatypeLink(result);
                     newLink.ext = ext;
                     DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
-                        oldLink.ext = newLink;
+                        oldLink.ext = newLink.ext;
+                        oldLink.name = newLink.name;
                         $scope.saving = false;
                         $scope.selectedChildren = [];
                         if ($scope.datatypesParams)
@@ -292,7 +295,7 @@ angular.module('igl')
                         $rootScope.msg().text = error.data.text;
                         $rootScope.msg().type = error.data.type;
                         $rootScope.msg().show = true;
-                    });
+                     });
                 }
                 //TODO update Toc
             }, function (error) {
@@ -300,6 +303,7 @@ angular.module('igl')
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
+                datatype.ext = ext;
             });
         };
 
@@ -522,7 +526,7 @@ angular.module('igl')
     });
 
 
-angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope, DatatypeLibrarySvc, DatatypeService) {
+angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope, DatatypeLibrarySvc, DatatypeService,MastermapSvc) {
     $scope.dtToDelete = dtToDelete;
     $scope.loading = false;
     $scope.delete = function () {
@@ -546,6 +550,7 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
                     $rootScope.msg().show = true;
                     $rootScope.manualHandle = true;
                     $scope.loading = false;
+                    MastermapSvc.deleteDatatype($scope.segToDelete.id);
                     $rootScope.$broadcast('event:SetToC');
                     $modalInstance.close($scope.dtToDelete);
                 }, function (error) {

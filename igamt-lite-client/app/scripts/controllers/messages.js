@@ -43,13 +43,11 @@ angular.module('igl')
                 MastermapSvc.addMessage(message, []);
                 $rootScope.$broadcast('event:SetToC');
                 $rootScope.message = angular.copy(message);
-                waitingDialog.hide();
-            }, function (error) {
+             }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
-                waitingDialog.hide();
-            });
+             });
         };
 
 
@@ -70,6 +68,9 @@ angular.module('igl')
                 resolve: {
                     currentNode: function () {
                         return segmentRef;
+                    },
+                    segmentLibrary: function () {
+                        return $rootScope.igdocument.profile.segmentLibrary;
                     },
                     hl7Version: function () {
                         return $rootScope.igdocument.metaData.hl7Version;

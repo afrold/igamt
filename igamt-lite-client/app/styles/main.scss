@@ -420,20 +420,20 @@ select.form-control:checked {
 }
 
 select.form-control-node {
-	display: block;
-	height: 34px;
-	padding: 6px 12px;
-	font-size: 14px;
-	line-height: 1.428571429;
-	color: #555;
-	vertical-align: middle;
-	background-color: #fff;
-	background-image: none;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-	cursor: pointer;
+  display: block;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  cursor: pointer;
 }
 
 select.form-control-node:checked {
@@ -443,10 +443,10 @@ select.form-control-node:checked {
 }
 
 input.form-control {
-    background-color: #efefef;
+  background-color: #efefef;
   //  color: black;
   cursor: pointer;
-//  border: 1px solid #cccccc;
+  //  border: 1px solid #cccccc;
 }
 
 input.form-control-warning {
@@ -1330,17 +1330,17 @@ input.account-input {
 }
 
 .account-input {
-//  background-color: white;
-//  background-image: none;
-//  border: 1px solid #cccccc;
-//  border-radius: 4px;
-//  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-//  color: #555555;
-//  font-size: 14px;
-//  height: 34px;
-//  line-height: 1.42857;
-//  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-//  width: 270px;
+  //  background-color: white;
+  //  background-image: none;
+  //  border: 1px solid #cccccc;
+  //  border-radius: 4px;
+  //  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  //  color: #555555;
+  //  font-size: 14px;
+  //  height: 34px;
+  //  line-height: 1.42857;
+  //  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  //  width: 270px;
 }
 
 .login-input {
@@ -1901,11 +1901,11 @@ table.igl-list-table {
 
 
 .dropdown-menu{
-//  z-index: -1;
+  //  z-index: -1;
 }
 
 .left-content {
-   text-align:left;
+  text-align:left;
 }
 
 .form-group{
@@ -2229,11 +2229,11 @@ table.conformance-profiles-table td {
 }
 
 .btn-xxs {
-	padding: 5px 10px !important;
-    font-size: 12px;
-    line-height: 1;
-    border-radius: 3px !important;
-    margin: 0px !important;
+  padding: 5px 10px !important;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 3px !important;
+  margin: 0px !important;
 }
 
 .select2 > .select2-choice.ui-select-match {

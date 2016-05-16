@@ -452,7 +452,7 @@ public class IGDocumentConverterFromOldToNew{
 	private void updateSegmentIdAndVisitChild(String oldSegmentId, String newSegmentId, SegmentRefOrGroup sog) {
 		if(sog instanceof SegmentRef){
 			SegmentRef segmentRef = (SegmentRef)sog;
-			if(segmentRef.getRef().equals(oldSegmentId)) segmentRef.setRef(newSegmentId);
+			if(segmentRef.getRef().getId().equals(oldSegmentId)) segmentRef.getRef().setId(newSegmentId);
 		}
 		
 		if (sog instanceof Group) {
@@ -555,7 +555,7 @@ public class IGDocumentConverterFromOldToNew{
 			seg.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 			if (seg.getId() != null) {
 				seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
-				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), seg.getLabel().replace(seg.getName() + "_", "")));
+				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), ""));
 			} else {
 				log.error("Null id seg=" + seg.toString());
 			}
@@ -583,7 +583,7 @@ public class IGDocumentConverterFromOldToNew{
 				dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 				dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
 				app.getProfile().getDatatypeLibrary()
-						.addDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getLabel().replace(dt.getName() + "_", "")));
+						.addDatatype(new DatatypeLink(dt.getId(), dt.getName(), ""));
 			} else {
 				log.error("Null id dt=" + dt.toString());
 			}
