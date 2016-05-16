@@ -78,7 +78,7 @@ public class DatatypeServiceImpl implements DatatypeService {
 
 		@Override
 	public Datatype save(Datatype datatype) {
-		log.info("DataypeServiceImpl.save=" + datatype.getLabel());
+		log.info("DataypeServiceImpl.save=" + datatype.getId());
 		return datatypeRepository.save(datatype);
 	}
 		

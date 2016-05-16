@@ -15,13 +15,13 @@ public class SegmentRef extends SegmentRefOrGroup implements Cloneable {
 	// @JsonIgnoreProperties({ "label", "fields", "dynamicMappings", "name",
 	// "description", "predicates", "conformanceStatements", "comment",
 	// "usageNote", "type", "text1", "text2" })
-	private String ref;
+	private SegmentLink ref;
 
-	public String getRef() {
+	public SegmentLink getRef() {
 		return ref;
 	}
 
-	public void setRef(String ref) {
+	public void setRef(SegmentLink ref) {
 		this.ref = ref;
 		// this.refId = ref != null ? ref.getId() : null;
 	}
@@ -47,7 +47,7 @@ public class SegmentRef extends SegmentRefOrGroup implements Cloneable {
 		clonedSegmentRef.setMax(max);
 		clonedSegmentRef.setMin(min);
 		clonedSegmentRef.setPosition(position);
-		clonedSegmentRef.setRef(ref);
+		clonedSegmentRef.setRef(ref.clone());
 		clonedSegmentRef.setUsage(usage);
 
 		return clonedSegmentRef;

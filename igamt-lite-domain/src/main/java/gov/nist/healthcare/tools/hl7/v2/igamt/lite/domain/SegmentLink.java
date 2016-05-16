@@ -48,7 +48,7 @@ public class SegmentLink extends AbstractLink implements Cloneable{
 	}
 
 	public String getLabel() {
-		return name + "_" + ext;
+		return name + (ext != null ? "_" + ext : "");
 	}
 
 	@Override
