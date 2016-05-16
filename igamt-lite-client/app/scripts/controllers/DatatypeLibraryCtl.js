@@ -6,7 +6,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
       $scope.datatypeLibsStruct = [];
       $scope.datatypeLibStruct = null;
-      $scope.datatypesBrevis = []; 
+      $scope.datatypesJoinStruct = []; 
 			$scope.datatypeStruct = null;
 			$scope.loadingSelection = true;
 			$scope.publishSelections = [];
@@ -14,7 +14,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 	    $scope.viewSettings = ViewSettings;
       $scope.metaDataView = null;
       $scope.datatypeListView = null;
- 
+      $scope.accordi = {metaData: false, definition: true, dtlist: true, dtDetails: false};
+
 	    $scope.tableWidth = null;
       $scope.datatypeLibrary = "";
       $scope.hl7Version = null;
@@ -112,6 +113,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			};
 
 			$scope.editLibrary = function(datatypeLibrary) {
+				$rootScope.isEditing = true;
 				$scope.loadingSelection = true;
 				$timeout(
 					function () {
@@ -124,16 +126,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 	  var sortedDts = _.sortBy(datatypes, 'id');
                 	  console.log("Verify synch=" + sortedLinks.length === sortedDts.length + " sortedLinks.length" + sortedLinks.length + " sortedDts.length" + sortedDts.length);
                 	  for (i = 0; i < sortedLinks.length; i++) {
-                		  var datatypeBrevis = {
+                		  var datatypeJoinStruct = {
                 				  label : $rootScope.getLabel(sortedLinks[i].name, sortedLinks[i].ext),
                 				  description : sortedDts[i].description,
                 		  		  publish : sortedDts[i].publish,
                 		  		  linkRef : sortedLinks[i],
                 		  		  dtRef : sortedDts[i]
                 		  };
-                 		  console.log("datatypeBrevis=" + JSON.stringify(datatypeBrevis));
+                 		  console.log("datatypeJoinStruct=" + JSON.stringify(datatypeJoinStruct));
 
-                		  $scope.datatypesBrevis.push(datatypeBrevis);
+                		  $scope.datatypesJoinStruct.push(datatypeJoinStruct);
                 	  }
                   });
                   console.log("$scope.edit.datatypeLibStruct=" + JSON.stringify($scope.datatypeLibStruct.children.length));
@@ -151,6 +153,54 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 				DatatypeLibrarySvc.delete($scope.datatypeLibStruct.id);
 			}
 
+	        $scope.confirmDelete = function (datatypeLibrary) {
+	            var modalInstance = $modal.open({
+	                templateUrl: 'ConfirmDatatypeLibraryDeleteCtrl.html',
+	                controller: 'ConfirmDatatypeLibraryDeleteCtrl',
+	                resolve: {
+	                    igdocumentToDelete: function () {
+	                        return igdocument;
+	                    }
+	                }
+	            });
+	            modalInstance.result.then(function (datatypeLibrary) {
+	                $scope.datatypeLibraryToDelete = datatypeLibrary;
+	                var idxP = _.findIndex($scope.igs, function (child) {
+	                    return child.id === datatypeLibrary.id;
+	                });
+	                $scope.igs.splice(idxP, 1);
+	            });
+	        };
+
+	        $scope.confirmClose = function () {
+	            var modalInstance = $modal.open({
+	                templateUrl: 'ConfirmDatatypeLibraryCloseCtrl.html',
+	                controller: 'ConfirmDatatypeLibraryCloseCtrl'
+	            });
+	            modalInstance.result.then(function () {
+	                $rootScope.clearChanges();
+	            }, function () {
+	            });
+	        };
+
+	        $scope.confirmOpen = function (igdocument) {
+	            var modalInstance = $modal.open({
+	                templateUrl: 'ConfirmDatatypeLibraryOpenCtrl.html',
+	                controller: 'ConfirmDatatypeLibraryOpenCtrl',
+	                resolve: {
+	                    igdocumentToOpen: function () {
+	                        return igdocument;
+	                    }
+	                }
+	            });
+	            modalInstance.result.then(function (igdocument) {
+	                $rootScope.clearChanges();
+	                $scope.openDatatypeLibrary(igdocument);
+	            }, function () {
+	            });
+	        };
+
+
 	$scope.saveDatatype = function(datatype) {
 		console.log("save datatype=" + JSON.stringify(datatype.label));
 		DatatypeService.save(datatype).then(function(result){
@@ -158,25 +208,26 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 		});
 	};
 	
-    $scope.editDatatype = function(datatype) {
+    $scope.editDatatype = function(datatypeJoinStruct) {
       $scope.datatypeView = "EditDatatypeLibraryDatatype.html";
-		console.log("edit datatype=" + JSON.stringify(datatype.label));
-      if (datatype && datatype != null) {
+		console.log("edit datatypeJoinStruct=" + JSON.stringify(datatypeJoinStruct.label));
+      if (datatypeJoinStruct && datatypeJoinStruct != null) {
         $scope.loadingSelection = true;
         
-        var queryId = null;
-        if (datatype.oldId) {
-        	queryId = datatype.oldId;
-        } else {
-        	queryId = datatype.id;
-        }
+//        var queryId = null;
+//        if (datatypeStruct.oldId) {
+//        	queryId = datatypeJoinStruct.oldId;
+//        } else {
+//        	queryId = datatypeJoinStruct.id;
+//        }
 
-        DatatypeService.getOne(queryId).then(function (result) {
-          $scope.datatypeStruct = result;
-          if (datatype.oldId) {
-        	  $scope.datatypeStruct.id = null;
-        	  delete datatype.oldId;
-          }
+        $scope.datatypeStruct = datatypeJoinStruct.dtRef;
+//        DatatypeService.getOne(queryId).then(function (result) {
+//          $scope.datatypeStruct = result;
+//          if (datatypeJoinStruct.oldId) {
+//        	  $scope.datatypeStruct.id = null;
+//        	  delete datatypeJoinStruct.oldId;
+//          }
           $scope.datatypeStruct["type"] = "datatype";
           $scope.tableWidth = null;
           $scope.scrollbarWidth = $scope.getScrollbarWidth();
@@ -188,12 +239,12 @@ angular.module('igl').controller('DatatypeLibraryCtl',
           if ($scope.datatypeStruct) {
         	  $scope.datatypeLibrariesConfig.selectedType = 'USER';
           }
-          }, function (error) {
-          $scope.loadingSelection = false;
-          $rootScope.msg().text = error.data.text;
-          $rootScope.msg().type = error.data.type;
-          $rootScope.msg().show = true;
-        });
+//          }, function (error) {
+//          $scope.loadingSelection = false;
+//          $rootScope.msg().text = error.data.text;
+//          $rootScope.msg().type = error.data.type;
+//          $rootScope.msg().show = true;
+//        });
       }
     };
     
@@ -235,7 +286,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 		newDatatype.oldId = newDatatype.id;
 		newDatatype.id = new ObjectId().toString();
 		newDatatype.ext = newDatatype.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
-		$scope.datatypesBrevis.push(newDatatype);
+		$scope.datatypesJoinStruct.push(newDatatype);
   	}
   
  // $scope.copyDatatype = function(datatype) {
@@ -363,7 +414,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         	console.log("$scope.openDataypeList.bindDatatypes results=" + results.length);
           angular.forEach(results, function(result){
             result.new = true;
-            $scope.datatypesBrevis.push(result);
+            $scope.datatypesJoinStruct.push(result);
            });
         });
     });
@@ -376,7 +427,6 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 
       $scope.scope = "HL7STANDARD";
       $scope.hl7Versions = hl7Versions;
-      console.log("StandardDatatypeLibraryInstanceDlgCtl hl7Versions" + JSON.stringify(hl7Versions));
       $scope.standard = {};
       $scope.standard.hl7Version = null;
       $scope.name = null;
@@ -444,4 +494,138 @@ angular.module('igl').controller('DatatypeListInstanceDlgCtl',
 			$scope.cancel = function() {
 				$modalInstance.dismiss('cancel');
 			};
+});
+
+
+angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function ($scope, $modalInstance, datatypeLibStructToDelete, $rootScope, $http) {
+    $scope.datatypeLibStructToDelete = datatypeLibStructToDelete;
+    $scope.loading = false;
+    $scope.delete = function () {
+        $scope.loading = true;
+        $http.post($rootScope.api('api/datatype-library/' + $scope.datatypeLibStructToDelete.id + '/delete')).then(function (response) {
+            var index = $rootScope.datatypeLibsStruct.indexOf($scope.datatypeLibStructToDelete);
+            if (index > -1) $rootScope.datatypeLibsStruct.splice(index, 1);
+            $rootScope.backUp = null;
+            if ($scope.datatypeLibStructToDelete === $scope.datatypeLibStruct) {
+                $scope.closeDatatypeLibrary();
+            }
+            $rootScope.msg().text = "igDeleteSuccess";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+            $rootScope.manualHandle = true;
+            $scope.igdocumentToDelete = null;
+            $scope.loading = false;
+            $modalInstance.close($scope.igdocumentToDelete);
+
+        }, function (error) {
+            $scope.error = error;
+            $scope.loading = false;
+            $modalInstance.dismiss('cancel');
+            $rootScope.msg().text = "igDeleteFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+
+
+// waitingDialog.hide();
+        });
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+angular.module('igl').controller('ConfirmDatatypeLibraryCloseCtrl', function ($scope, $modalInstance, $rootScope, $http) {
+    $scope.loading = false;
+    $scope.discardChangesAndClose = function () {
+        $scope.loading = true;
+        $http.get('api/datatype-library/' + $rootScope.igdocument.id, {timeout: 60000}).then(function (response) {
+            var index = $rootScope.igs.indexOf($rootScope.igdocument);
+            $rootScope.igs[index] = angular.fromJson(response.data);
+            $scope.loading = false;
+            $scope.clear();
+        }, function (error) {
+            $scope.loading = false;
+            $rootScope.msg().text = "igResetFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+
+            $modalInstance.dismiss('cancel');
+        });
+    };
+
+    $scope.clear = function () {
+        $rootScope.closeDatatypeLibrary();
+        $modalInstance.close();
+    };
+
+    $scope.ConfirmDatatypeLibraryOpenCtrl = function () {
+        $scope.loading = true;
+        var changes = angular.toJson($rootScope.changes);
+        var data = {"changes": changes, "igDocument": $rootScope.igdocument};
+        $http.post('api/datatype-library/save',data, {timeout: 60000}).then(function (response) {
+            var saveResponse = angular.fromJson(response.data);
+            $rootScope.igdocument.metaData.date = saveResponse.date;
+            $rootScope.igdocument.metaData.version = saveResponse.version;
+            $scope.loading = false;
+            $scope.clear();
+        }, function (error) {
+            $rootScope.msg().text = "igSaveFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+
+            $scope.loading = false;
+            $modalInstance.dismiss('cancel');
+        });
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+angular.module('igl').controller('ConfirmDatatypeLibraryOpenCtrl', function ($scope, $modalInstance, datatypeLibStructToOpen, $rootScope, $http) {
+    $scope.igdocumentToOpen = igdocumentToOpen;
+    $scope.loading = false;
+
+    $scope.discardChangesAndOpen = function () {
+        $scope.loading = true;
+        $http.get('api/datatype-library/' + $rootScope.igdocument.id, {timeout: 60000}).then(function (response) {
+            var index = $rootScope.igs.indexOf($rootScope.igdocument);
+            $rootScope.igs[index] = angular.fromJson(response.data);
+            $scope.loading = false;
+            $modalInstance.close($scope.igdocumentToOpen);
+        }, function (error) {
+            $scope.loading = false;
+            $rootScope.msg().text = "igResetFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+
+            $modalInstance.dismiss('cancel');
+        });
+    };
+
+    $scope.saveChangesAndOpen = function () {
+        $scope.loading = true;
+        var changes = angular.toJson($rootScope.changes);
+        var data = {"changes": changes, "igDocument": $rootScope.igdocument};
+        $http.post('api/datatype-library/save', data, {timeout: 60000}).then(function (response) {
+            var saveResponse = angular.fromJson(response.data);
+            $rootScope.igdocument.metaData.date = saveResponse.date;
+            $rootScope.igdocument.metaData.version = saveResponse.version;
+            $scope.loading = false;
+            $modalInstance.close($scope.igdocumentToOpen);
+        }, function (error) {
+            $rootScope.msg().text = "igSaveFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+            $scope.loading = false;
+            $modalInstance.dismiss('cancel');
+        });
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
 });

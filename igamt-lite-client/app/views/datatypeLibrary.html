@@ -1,47 +1,55 @@
 <div class="container" ng-controller="DatatypeLibraryCtl"
 	ng-init="initDatatypeLibrary()">
 
+	<div ng-show="!loading">
+		<div class="page-header">
+			<h3>Data Type Libraries</h3>
+		</div>
+	</div>
+	<accordion close-others="false"> 
+	<accordion-group is-open="accordi.dtList" panel-class="panel-primary">
+	<accordion-heading> 
+	<i class="fa"
+		ng-class="{'fa-caret-down': accordi.dtlist, 'fa-caret-right': !accordi.dtlist}"></i>
+	<i class="fa fa-file-text-o fa-fw"></i> Data Type Libraries List 
+	</accordion-heading>
 	<div class="row">
 		<div ng-hide="!loading" style="text-align: center">
 			<img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..." />
 		</div>
-		<div ng-show="!loading">
-			<div class="page-header">
-				<h3>Data Type Libraries</h3>
-			</div>
-			<div class="col-md-12">
-				<form id="selectDtTypeForm" class="form-horizontal">
-					<div class="form-group">
-						<div style="margin-left: 15px"
-							class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-							<label class="btn  btn-primary btn-sm"
-								ng-click="selectDTLibraryType(tt.type)"
-								ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}"
-								ng-repeat="tt in datatypeLibraryTypes | uppercase"
-								ng-show="tt.visible"> <input ng-disabled="loading"
-								type="radio" ng-value="tt.type"
-								ng-model="$parent.datatypeLibrariesConfig.selectedType"><i
-								class="fa fa-th-list"></i> {{tt.name}}
-							</label>
-						</div>
-						<div class="pull-right" style="margin-right: 20px" ng-show="admin">
-							<button type="button" class="btn btn-primary btn-sm"
-								ng-click="openStandardDataypes('MASTER')" ng-show="isAdmin()">
-								<i class="fa fa-plus"></i> Create Master Data Type Library
-							</button>
-							<button type="button" class="btn btn-primary btn-sm"
-								ng-click="openStandardDataypes('USER')">
-								<i class="fa fa-plus"></i> Create user Data Type Library
-							</button>
-						</div>
+		<div class="col-md-12">
+			<form id="selectDtTypeForm" class="form-horizontal">
+				<div class="form-group">
+					<div style="margin-left: 15px"
+						class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+						<label class="btn  btn-primary btn-sm"
+							ng-click="selectDTLibraryType(tt.type)"
+							ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}"
+							ng-repeat="tt in datatypeLibraryTypes | uppercase"
+							ng-show="tt.visible"> <input ng-disabled="loading"
+							type="radio" ng-value="tt.type"
+							ng-model="$parent.datatypeLibrariesConfig.selectedType"><i
+							class="fa fa-th-list"></i> {{tt.name}}
+						</label>
 					</div>
-				</form>
-			</div>
+					<div class="pull-right" style="margin-right: 20px" ng-show="admin">
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-click="openStandardDataypes('MASTER')" ng-show="isAdmin()">
+							<i class="fa fa-plus"></i> Create Master Data Type Library
+						</button>
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-click="openStandardDataypes('USER')">
+							<i class="fa fa-plus"></i> Create user Data Type Library
+						</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 
 	<div ng-show="datatypeLibsStruct">
 		<div class="row">
+		<div class="col-md-12">
 			<form>
 				<div class="form-group">
 					<table st-table="datatypeLibsDisplay"
@@ -84,42 +92,60 @@
 						</tbody>
 					</table>
 				</div>
+				</div>
 			</form>
 		</div>
-		<div class="row">
-			<tabset> <tab index="0" heading="Metadata">
-			<div class="panel panel-primary" ng-show="datatypeLibStruct">
-				<div class="panel-heading">Metadata</div>
-				<div class="panel-body" style="padding-bottom: 100px">
-					<div id="meta" style="width: 100%">
-						<ng-include src="metaDataView"></ng-include>
-					</div>
-				</div>
-			</div>
-			</tab> <tab index="1" heading="Data Types">
-			<div class="panel panel-primary" ng-show="datatypeLibStruct.children">
-				<div class="panel-heading">Data Type List</div>
-				<div class="panel-body" style="padding-bottom: 100px">
-					<div id="meta" style="width: 100%">
-						<ng-include src="datatypeListView"></ng-include>
-					</div>
-				</div>
-			</div>
-			</tab> </tabset>
 		</div>
-		<div class="row" ng-show="datatypeView">
-			<div class="panel panel-primary">
-				<div class="panel-heading">Edit Area</div>
-				<div class="panel-body" style="padding-bottom: 100px">
-					<div id="editDatatype" ng-show="datatypeView !== undefined"
-						style="width: 100%">
-						<ng-include src="datatypeView"></ng-include>
-					</div>
+	</accordion-group> 
+	<accordion-group is-open="accordi.dtDetails" panel-class="panel-primary"> 
+		<accordion-heading>
+			<i class="fa"
+				ng-class="{'fa-caret-down': accordi.dtDetails, 'fa-caret-right': !accordi.dtDetails}"></i>
+			<i class="fa fa-pencil fa-fw"></i>Edit Data Type Library :
+			{{datatypeLibStruct.metaData.title}} 
+		</accordion-heading>
+<div class="row" ng-show="!isEditing">
+    <div class="col-md-12">
+        <p>No Data Type Library Selected.</p>
+    </div>
+</div>
+	<div ng-show="isEditing">
+	<div class="row">
+		<tabset> <tab index="0" heading="Metadata">
+		<div class="panel panel-primary" ng-show="datatypeLibStruct">
+			<div class="panel-heading">Metadata</div>
+			<div class="panel-body" style="padding-bottom: 100px">
+				<div id="meta" style="width: 100%">
+					<ng-include src="metaDataView"></ng-include>
+				</div>
+			</div>
+		</div>
+		</tab> <tab index="1" heading="Data Types">
+		<div class="panel panel-primary" ng-show="datatypeLibStruct.children">
+			<div class="panel-heading">Data Type List</div>
+			<div class="panel-body" style="padding-bottom: 100px">
+				<div id="meta" style="width: 100%">
+					<ng-include src="datatypeListView"></ng-include>
+				</div>
+			</div>
+		</div>
+		</tab> </tabset>
+	</div>
+	</div>
+	<div class="row" ng-show="datatypeView">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Edit Area</div>
+			<div class="panel-body" style="padding-bottom: 100px">
+				<div id="editDatatype" ng-show="datatypeView !== undefined"
+					style="width: 100%">
+					<ng-include src="datatypeView"></ng-include>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+</accordion-group>
+</accordion>
 </div>
 <script type="text/ng-template" id="LibraryMetaData.html">
 <div class="container>
@@ -129,6 +155,16 @@
           ng-click="saveLib()"><i class="fa fa-plus"></i>
     Save Library
   </button>
+                   <button title="Close the Data Type Library" type="button" class="btn btn-xs btn-warning"
+                            ng-click="closeLib()">
+                        <span><i class="fa fa-close fa-fw"></i>Close</span>
+                       </button>
+
+                       <button title="Delete permanently" type="button" class="btn btn-xs btn-danger"
+                               ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"
+                               ng-click="confirmDelete(datatypeLibtStruct)">
+                         <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
+                       </button>
 </div>
 </div>
 <div class="row">
@@ -575,7 +611,8 @@
         </td>
     </tr>
 </script>
-<script type="text/ng-template" id="DatatypeLibraryComponentEditTree.html">
+<script type="text/ng-template"
+	id="DatatypeLibraryComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)"
         ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
          <td class="col-xs-1 col-fixed-100">1

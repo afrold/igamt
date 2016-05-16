@@ -12,10 +12,12 @@ import com.mongodb.DBObject;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -163,15 +165,24 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
 		f.setMaxLength((String) source.get(MAX_LENGTH));
 		f.setConfLength(getConfLength(source));
 		f.setPosition((Integer) source.get(POSITION));
-		f.setTable(((String) source.get(TABLE)));
+		DBObject tabObj = (DBObject)source.get(TABLE);
+		String tabId = readMongoId(tabObj);
+		String bindingIdentifier = (String)tabObj.get("bindingIdentifier");
+		String bindingStrength = (String)tabObj.get("bindingStrength");
+		String bindingLocation = (String)tabObj.get("bindingLocation");
+		TableLink tabLink = new TableLink(tabId, bindingIdentifier, bindingStrength, bindingLocation);
+		f.setTable(tabLink);
 		f.setUsage(Usage.valueOf((String) source.get(USAGE)));
-		f.setBindingLocation((String) source.get(BINDING_LOCATION));
-		f.setBindingStrength((String) source.get(BINDING_STRENGTH));
 		f.setItemNo((String) source.get(ITEM_NO));
 		f.setMin((Integer) source.get(MIN));
 		f.setMax((String) source.get(MAX));
 		f.setText(readString(source, TEXT));
-		f.setDatatype(((String) source.get(Constant.DATATYPE)));
+		DBObject dtObj = (DBObject)source.get(TABLE);
+		String dtId = readMongoId(dtObj);
+		String name = (String)dtObj.get("name");
+		String ext = (String)dtObj.get("ext");
+		DatatypeLink dtLink = new DatatypeLink(dtId, name, ext);
+		f.setDatatype(dtLink);
 		return f;
 	}
 

@@ -26,10 +26,12 @@ public class TableLink extends AbstractLink implements Cloneable{
 		super();
 	}
 
-	public TableLink(String id, String bindingIdentifier) {
+	public TableLink(String id, String bindingIdentifier, String bindingStrength, String bindingLocation) {
 		super();
 		this.setId(id);
 		this.bindingIdentifier = bindingIdentifier;
+		this.bindingStrength = bindingStrength;
+		this.bindingLocation = bindingLocation;
 	}
 
 	public String getBindingIdentifier() {

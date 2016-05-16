@@ -3,10 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 
 import com.mongodb.BasicDBList;
@@ -15,6 +13,8 @@ import com.mongodb.DBObject;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -143,11 +143,20 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
 		c.setMaxLength((String) source.get(MAX_LENGTH));
 		c.setConfLength(getConfLength(source));
 		c.setPosition((Integer) source.get(POSITION));
-		c.setTable(((String) source.get(Constant.TABLE)));
+		DBObject tabObj = (DBObject)source.get(TABLE);
+		String tabId = readMongoId(tabObj);
+		String bindingIdentifier = (String)tabObj.get("bindingIdentifier");
+		String bindingStrength = (String)tabObj.get("bindingStrength");
+		String bindingLocation = (String)tabObj.get("bindingLocation");
+		TableLink tabLink = new TableLink(tabId, bindingIdentifier, bindingStrength, bindingLocation);
+		c.setTable(tabLink);
 		c.setUsage(Usage.valueOf((String) source.get(USAGE)));
-		c.setBindingLocation((String) source.get(BINDING_LOCATION));
-		c.setBindingStrength((String) source.get(BINDING_STRENGTH));
-		c.setDatatype(((String) source.get(Constant.DATATYPE)));
+		DBObject dtObj = (DBObject)source.get(TABLE);
+		String dtId = readMongoId(dtObj);
+		String name = (String)dtObj.get("name");
+		String ext = (String)dtObj.get("ext");
+		DatatypeLink dtLink = new DatatypeLink(dtId, name, ext);
+		c.setDatatype(dtLink);
 		return c;
 	}
 }

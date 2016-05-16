@@ -427,7 +427,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 					// f.getItemNo().replaceFirst("^0+(?!$)", ""),
 					String.valueOf(f.getPosition()),
 					f.getName(),
-					(f.getDatatype() == null || f.getDatatype().isEmpty() ?
+					(f.getDatatype() == null ?
 							"" : (datatypes.findOne(f.getDatatype()) == null ? 
 									f.getDatatype() : datatypes.findOne(f.getDatatype()).getLabel())),
 									f.getUsage().value(),
@@ -435,8 +435,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 											+ String.valueOf(f.getMax()) + "]",
 											"[" + String.valueOf(f.getMinLength()) + ".."
 													+ String.valueOf(f.getMaxLength()) + "]",
-													(f.getTable() == null || f.getTable().isEmpty() ? 
-															"" : (tables.findOneTableById(f.getTable()) == null ? f.getTable() : tables.findOneTableById(f.getTable()).getBindingIdentifier())),
+													(f.getTable() == null ? 
+															"" : (tables.findOneTableById(f.getTable().getId()) == null ? f.getTable() : tables.findOneTableById(f.getTable().getId()).getBindingIdentifier())),
 															f.getComment() == null ? "" : f.getComment());
 			rows.add(row);
 
@@ -476,14 +476,14 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 						c.getPosition().toString(),
 						c.getName(),
 						c.getConfLength(),
-						(c.getDatatype() == null || c.getDatatype().isEmpty() ?
+						(c.getDatatype() == null ?
 								"" : (datatypes.findOne(c.getDatatype()) == null ? 
 										c.getDatatype() : datatypes.findOne(c.getDatatype()).getLabel())),
 										c.getUsage().value(),
 										"[" + String.valueOf(c.getMinLength()) + ".."
 												+ String.valueOf(c.getMaxLength()) + "]",
-												(c.getTable() == null || c.getTable().isEmpty() ? 
-														"" : (tables.findOneTableById(c.getTable()) == null ? c.getTable() : tables.findOneTableById(c.getTable()).getBindingIdentifier())),
+												(c.getTable() == null ? 
+														"" : (tables.findOneTableById(c.getTable().getId()) == null ? c.getTable() : tables.findOneTableById(c.getTable()).getBindingIdentifier())),
 														c.getComment());
 				rows.add(row);
 				List<Constraint> constraints = this.findConstraints(

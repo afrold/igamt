@@ -29,16 +29,6 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.IGDocumentReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentLibraryReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.TableLibraryReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.TableReadConverter;
-
 /**
  * @author Harold Affo (NIST)
  * 
@@ -80,17 +70,17 @@ public class MongoConfig extends AbstractMongoConfiguration {
 	@Bean
 	public CustomConversions customConversions() {
 		List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
-//		converterList.add(new FieldWriteConverter());
-//		converterList.add(new ComponentWriteConverter());
-//		converterList.add(new SegmentRefWriteConverter());
-//		converterList.add(new ProfileReadConverter());
-//		converterList.add(new IGDocumentReadConverter());
-//		converterList.add(new SegmentReadConverter());
-//		converterList.add(new DatatypeReadConverter());
-//		converterList.add(new TableReadConverter());
-//		converterList.add(new DatatypeLibraryReadConverter());
-//		converterList.add(new SegmentLibraryReadConverter());
-//		converterList.add(new TableLibraryReadConverter());
+		// converterList.add(new FieldWriteConverter());
+		// converterList.add(new ComponentWriteConverter());
+		// converterList.add(new SegmentRefWriteConverter());
+		// converterList.add(new ProfileReadConverter());
+		// converterList.add(new IGDocumentReadConverter());
+		// converterList.add(new SegmentReadConverter());
+		// converterList.add(new DatatypeReadConverter());
+		// converterList.add(new TableReadConverter());
+		// converterList.add(new DatatypeLibraryReadConverter());
+		// converterList.add(new SegmentLibraryReadConverter());
+		// converterList.add(new TableLibraryReadConverter());
 		return new CustomConversions(converterList);
 	}
 
