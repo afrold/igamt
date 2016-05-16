@@ -57,27 +57,6 @@ angular
       if (c.table !== undefined){
         svc.addValueSetId(c.table, parent.concat([[c.id, "component"]]));
       }
-
-      // svc.addDatatype(c.datatype, parent.concat(new  Array([dt.id, 'datatype']))); ?? nedd to process subcomponent without infinite loop
-    }
-
-
-    svc.addValueSet = function(tableId, parent) {
-      if (tableId !== undefined && tableId !== "") {
-        var table = svc.getTableLibrary()[tableId];
-        if (table !== undefined){
-          svc.createMMElement(table.id, "table");
-          svc.addParentsId(table.id, "table", parent);
-
-          _.each(table.codes, function(c) {
-            svc.addCodes(c, parent.concat([[table.id, 'table']]));
-          });
-        } else {
-          svc.createMMElement(tableId, "table");
-          svc.addParentsId(tableId, "table", parent);
-          //           console.log("!!! => table " + tableId + " not found in library");
-        }
-      }
     }
 
 
@@ -86,15 +65,15 @@ angular
             svc.createMMElement(tableId, "table");
             svc.addParentsId(tableId, "table", parent);
 
-            var table = svc.getTableLibrary()[tableId];
-                if (table !== undefined){
-                    _.each(table.codes, function(c) {
-                        svc.addCodes(c, parent.concat([[table.id, 'table']]));
-                    });
-                } else {
-                    // Table not found
-                    // console.log("!!! => table " + tableId + " not found in library");
-                }
+//            var table = svc.getTableLibrary()[tableId];
+//            if (table !== undefined){
+//                _.each(table.codes, function(c) {
+//                    svc.addCodes(c, parent.concat([[table.id, 'table']]));
+//                });
+//            } else {
+//                // Table not found
+//                // console.log("!!! => table " + tableId + " not found in library");
+//            }
           }
     }
 
@@ -104,9 +83,9 @@ angular
             svc.createMMElement(table.id, "table");
             svc.addParentsId(table.id, "table", parent);
 
-            _.each(table.codes, function(c) {
-                svc.addCodes(c, parent.concat([[table.id, 'table']]));
-            });
+//            _.each(table.codes, function(c) {
+//                svc.addCodes(c, parent.concat([[table.id, 'table']]));
+//            });
         }
     }
 
