@@ -204,7 +204,7 @@
 <table st-table="datatypeDisplay" st-safe-src="datatypesBrevis" st-sticky-header class="table table-bordered">
 <thead>
   <tr class="row tbl-header">
-    <th st-ratio="10" st-sort="getLabel(dt.name, dt.ext)" st-sort-default="true">Label</th>
+    <th st-ratio="10" st-sort="sort.label" st-sort-default="true">Label</th>
     <th st-ratio="30">Description</th>
     <th st-ratio="58">Actions</th>
     <th st-ratio="2">Publish</th>
@@ -215,7 +215,7 @@
 </thead>
 <tbody>
 	<tr class="row" ng-repeat="dt in datatypeDisplay" ng-class="{'new': dt.new}">
-    <td st-ratio="10">{{getLabel(dt.name, dt.ext)}}</td>
+    <td st-ratio="10">{{dt.label}}</td>
     <td st-ratio="30" ng-bind="dt.description"></td>
     <td st-ratio="58">
      <button

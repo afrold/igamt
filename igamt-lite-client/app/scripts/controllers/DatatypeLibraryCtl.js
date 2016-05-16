@@ -117,8 +117,24 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 					function () {
             $scope.hl7Version = datatypeLibrary.metaData.hl7Version;
                   $scope.datatypeLibStruct = datatypeLibrary;
+                  var datatypes = null;
                   DatatypeLibrarySvc.getDatatypesByLibrary($scope.datatypeLibStruct.id).then(function(response){
-                    $scope.datatypesBrevis = response;
+                	  datatypes = response;
+                	  var sortedLinks = _.sortBy($scope.datatypeLibStruct.children, 'id');
+                	  var sortedDts = _.sortBy(datatypes, 'id');
+                	  console.log("Verify synch=" + sortedLinks.length === sortedDts.length + " sortedLinks.length" + sortedLinks.length + " sortedDts.length" + sortedDts.length);
+                	  for (i = 0; i < sortedLinks.length; i++) {
+                		  var datatypeBrevis = {
+                				  label : $rootScope.getLabel(sortedLinks[i].name, sortedLinks[i].ext),
+                				  description : sortedDts[i].description,
+                		  		  publish : sortedDts[i].publish,
+                		  		  linkRef : sortedLinks[i],
+                		  		  dtRef : sortedDts[i]
+                		  };
+                 		  console.log("datatypeBrevis=" + JSON.stringify(datatypeBrevis));
+
+                		  $scope.datatypesBrevis.push(datatypeBrevis);
+                	  }
                   });
                   console.log("$scope.edit.datatypeLibStruct=" + JSON.stringify($scope.datatypeLibStruct.children.length));
                   $scope.metaDataView = "LibraryMetaData.html";
@@ -206,14 +222,20 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     $scope.isVisible = function (node) {
         return DatatypeService.isVisible(node);
     };
+    
+    $scope.sort = {
+    		label : function(dt) {
+    			return $rootScope.getLabel(dt.name, $scope.datatypeLibStruct.metaData.ext)
+    		}
+    }
 
   $scope.copyDatatype = function(datatype) {
 		console.log("copy datatype=" + JSON.stringify(datatype.label));
-		var newDatatype = angular.copy(result);
+		var newDatatype = angular.copy(datatype);
 		newDatatype.oldId = newDatatype.id;
 		newDatatype.id = new ObjectId().toString();
 		newDatatype.ext = newDatatype.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
-		$scope.datatypeLibStruct.children.push(newDatatype);
+		$scope.datatypesBrevis.push(newDatatype);
   	}
   
  // $scope.copyDatatype = function(datatype) {

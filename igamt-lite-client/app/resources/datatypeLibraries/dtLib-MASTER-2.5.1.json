@@ -18,23 +18,23 @@
   "scope" : "MASTER",
   "children" : [ {
     "id" : "569eac0fd4c623dc6550ecc6",
-    "label" : "XPN",
+    "name" :"XPN",
     "ext" : null
   }, {
     "id" : "569eac0fd4c623dc6550ecc5",
-    "label" : "RPT",
+    "name" :"RPT",
     "ext" : null
   }, {
     "id" : "569eac0fd4c623dc6550ecc4",
-    "label" : "NDL",
+    "name" :"NDL",
     "ext" : null
   }, {
     "id" : "569eac0fd4c623dc6550ecc3",
-    "label" : "SI",
+    "name" :"SI",
     "ext" : null
   }, {
     "id" : "569eac0fd4c623dc6550ecc9",
-    "label" : "LA1",
+    "name" :"LA1",
     "ext" : null
   } ]
 }

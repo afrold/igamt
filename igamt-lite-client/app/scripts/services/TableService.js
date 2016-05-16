@@ -44,7 +44,7 @@ angular.module('igl').factory('TableService',
                 });
                 return delay.promise;
             },
-            getBindingIdentifiers(ids) {
+            getBindingIdentifiers : function(ids) {
             	
             },
             merge: function (to, from) {
