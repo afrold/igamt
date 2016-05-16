@@ -1,16 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Deprecated
 public class Segments extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
@@ -117,7 +114,7 @@ public class Segments extends TextbasedSectionModel implements java.io.Serializa
 		if (this.children != null) {
 			for (Segment m : this.children) {
 				for (Field f : m.getFields()) {
-					Component c = datatypes.findOneComponent(f.getDatatype());
+					Component c = datatypes.findOneComponent(f.getDatatype().getId());
 					if (c != null) {
 						return c;
 					}
