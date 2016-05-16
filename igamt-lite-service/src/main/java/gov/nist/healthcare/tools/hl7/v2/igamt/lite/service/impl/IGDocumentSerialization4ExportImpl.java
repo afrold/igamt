@@ -1147,9 +1147,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 			if (f.getConfLength() != null && !f.getConfLength().equals(""))
 				elmField.addAttribute(new Attribute("ConfLength", f
 						.getConfLength()));
-			if (f.getTable() != null && !f.getTable().equals(""))
+			if (f.getTable() != null && !f.getTable().getBindingIdentifier().equals(""))
 				elmField.addAttribute(new Attribute("Binding", tables.findOneTableById(
-						f.getTable()).getBindingIdentifier()+""));
+						f.getTable().getId()).getBindingIdentifier()+""));
 			if (f.getItemNo() != null && !f.getItemNo().equals(""))
 				elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
 			if (f.getComment() != null && !f.getComment().isEmpty())
@@ -1263,13 +1263,13 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 					elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
 				}
 
-				if (c.getTable() != null && !c.getTable().isEmpty())
-					if (tables.findOneTableById(c.getTable()) != null){
+				if (c.getTable() != null && c.getTable().getBindingIdentifier() != null)
+					if (tables.findOneTableById(c.getTable().getId()) != null){
 						elmComponent.addAttribute(new Attribute("Binding", tables
-								.findOneTableById(c.getTable()).getBindingIdentifier() + ""));
+								.findOneTableById(c.getTable().getId()).getBindingIdentifier() + ""));
 					} else {
 						logger.warn("Value set not found in library " + c.getTable());
-						elmComponent.addAttribute(new Attribute("Binding", c.getTable()));
+						elmComponent.addAttribute(new Attribute("Binding", c.getTable().getBindingIdentifier()));
 					}
 
 				List<Constraint> constraints = findConstraints( i, d.getPredicates(), d.getConformanceStatements());
