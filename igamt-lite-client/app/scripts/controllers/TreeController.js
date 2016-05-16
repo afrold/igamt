@@ -402,7 +402,6 @@ angular
             $scope.editDataType = function (data) {
                 $rootScope.datatype = data;
                 $scope.$emit('event:openDatatype', $rootScope.datatype);
-                $scope.subview = "EditDatatypes.html";
             }
 
             $scope.editTable = function (table) {
