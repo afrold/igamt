@@ -45,7 +45,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;
-	
+
 	private Random rand = new Random();
 
 	@Override
@@ -93,6 +93,14 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		return datatypeLibrary;
 	}
 
+	@Override
+	public DatatypeLibrary saveMetaData(DatatypeLibraryMetaData datatypeLibraryMetaData) {
+		log.info("DataypeServiceImpl.save=" + datatypeLibraryMetaData.getName());
+		DatatypeLibrary dataTypeLibrary = datatypeLibraryRepository.findOne(datatypeLibraryMetaData.getDatatypLibId());
+		dataTypeLibrary.setMetaData(datatypeLibraryMetaData);
+		return datatypeLibraryRepository.save(dataTypeLibrary);
+	}
+
 	DatatypeLibraryMetaData defaultMetadata() {
 		DatatypeLibraryMetaData metaData = new DatatypeLibraryMetaData();
 		metaData.setName("Master data type library");
@@ -135,7 +143,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	@Override
 	public List<Datatype> bindDatatypes(List<String> datatypeIds, String datatypeLibraryId, String datatypeLibraryExt,
 			Long accountId) {
-		
+
 		DatatypeLibrary dtLib = datatypeLibraryRepository.findById(datatypeLibraryId);
 		dtLib.setExt(deNull(datatypeLibraryExt));
 		List<DatatypeLibrary> dtLibDups = datatypeLibraryRepository.findDups(dtLib);
@@ -145,7 +153,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		}
 		dtLib.getMetaData().setExt(dtLib.getExt());
 		dtLib.setAccountId(accountId);
-		
+
 		List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
 		for (Datatype dt : datatypes) {
 			dt.setId(null);
@@ -156,7 +164,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 			dt.setHl7Version(dtLib.getMetaData().getHl7Version());
 			dt.setDate(Constant.mdy.format(new Date()));
 			dt.setAccountId(accountId);
-			//  We save at this point in order to have an id for the link.
+			// We save at this point in order to have an id for the link.
 			datatypeRepository.save(dt);
 			dtLib.addDatatype(dt);
 		}
@@ -167,20 +175,18 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	boolean checkDup(Datatype dt, DatatypeLibrary dtLib, String ext) {
 		return dtLib.getChildren().contains(new DatatypeLink(dt.getId(), dt.getName(), ext));
 	}
-	
+
 	String decorateExt(String ext) {
 		return ext + "-" + genRand();
 	}
-	
+
 	String deNull(String ext) {
 		return (ext != null && ext.trim().length() > 0) ? ext : genRand();
 	}
-	
+
 	String genRand() {
 		return Integer.toString(rand.nextInt(100));
 	}
-	
-	
 
 	class DatatypeByLabel implements Comparator<Datatype> {
 
@@ -191,16 +197,14 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version,
-			String name, Long accountId) {
-		 return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
+	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name, Long accountId) {
+		return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
 	}
-	
+
 	@Override
-	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope,
-			String hl7Version, String name, Long accountId) {
+	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version, String name,
+			Long accountId) {
 		return datatypeLibraryRepository.findLibrariesByFlavorName(scope, hl7Version, name, accountId);
 	}
 
-	 
 }

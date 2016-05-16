@@ -37,7 +37,5 @@ public interface DatatypeService {
 	void delete(String id);
 	
 	void save(List<Datatype> datatypes);
-	
 
-	
 }

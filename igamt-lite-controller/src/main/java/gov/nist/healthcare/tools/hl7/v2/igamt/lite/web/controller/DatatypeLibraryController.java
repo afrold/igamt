@@ -29,6 +29,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -140,20 +141,11 @@ public class DatatypeLibraryController extends CommonController {
 				dtlcw.getAccountId());
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public LibrarySaveResponse save(@RequestBody DatatypeLibrary datatypeLibrary) throws LibrarySaveException {
-		log.debug("datatypeLibrary=" + datatypeLibrary);
-		log.debug("datatypeLibrary.getId()=" + datatypeLibrary.getId());
-		log.info("Saving the " + datatypeLibrary.getScope() + " datatype library.");
-		// TODO This is necessary for a cascading save. For now we are
-		// having the user save dts one at a time.
-		// for (Datatype dt : datatypeLibrary.getChildren()) {
-		// dt.setAccountId(account.getId());
-		// datatypeService.save(dt);
-		// }
-		DatatypeLibrary saved = datatypeLibraryService.save(datatypeLibrary);
-		log.debug("saved.getId()=" + saved.getId());
-		log.debug("saved.getScope()=" + saved.getScope());
+	@RequestMapping(value = "/saveMetaData", method = RequestMethod.POST)
+	public LibrarySaveResponse saveMetaData(@RequestBody DatatypeLibraryMetaData datatypeLibraryMetaData)
+			throws LibrarySaveException {
+		log.info("Saving the " + datatypeLibraryMetaData.getName() + " datatype library.");
+		DatatypeLibrary saved = datatypeLibraryService.saveMetaData(datatypeLibraryMetaData);
 		return new LibrarySaveResponse(saved.getDate(), saved.getScope().name());
 	}
 
