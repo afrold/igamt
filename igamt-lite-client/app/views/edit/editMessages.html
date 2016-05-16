@@ -509,7 +509,7 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>
 				<span ng-show="node.obj.table != undefined && node.obj.table != null">
-					<a class="point" ng-click="goToTable(tablesMap[node.obj.table])">{{tablesMap[node.obj.table].bindingIdentifier}}</a>
+					<a class="point" ng-click="goToTable(tablesMap[node.obj.table.id])">{{getTableLabel(tablesMap[node.obj.table.id])}}</a>
                 </span>
             </div>
         </td>
@@ -636,7 +636,7 @@
         <td class="col-xs-1 col-fixed-130">
             <div>
 				<span ng-show="node.obj.table != undefined && node.obj.table != null">
-					<a class="point" ng-click="goToTable(tablesMap[node.obj.table])">{{tablesMap[node.obj.table].bindingIdentifier}}</a>
+					<a class="point" ng-click="goToTable(tablesMap[node.obj.table.id])">{{getTableLabel(tablesMap[node.obj.table.id])}}</a>
                 </span>
             </div>
         </td>
@@ -723,7 +723,7 @@
 <script type="text/ng-template" id="PredicateMessageCtrl.html">
 <div class="modal-header">
     <div ng-show="selectedNode.obj.type === 'segmentRef'">
-        <h3 class="header4">Predicate for {{segmentsMap[selectedNode.obj.ref].name}}({{selectedNode.path}})</h3>
+        <h3 class="header4">Predicate for {{segmentsMap[selectedNode.obj.ref.id].name}}({{selectedNode.path}})</h3>
     </div>
     <div ng-hide="selectedNode.obj.type === 'segmentRef'">
         <h3 class="header4">Predicate for {{selectedNode.obj.name}}({{selectedNode.path}})</h3>
@@ -1000,7 +1000,7 @@
 <div class="modal-header">
     <div ng-show="selectedNode.obj.type === 'segmentRef'">
         <h3 class="header4">Conformance statement for
-            {{segmentsMap[selectedNode.obj.ref].name}}({{selectedNode.path}})</h3>
+            {{segmentsMap[selectedNode.obj.ref.id].name}}({{selectedNode.path}})</h3>
     </div>
     <div ng-hide="selectedNode.obj.type === 'segmentRef'">
         <h3 class="header4">Conformance statement for {{selectedNode.obj.name}}({{selectedNode.path}})</h3>
@@ -1412,7 +1412,7 @@
             <!--tooltip-animation="false" tooltip-placement="left"-->
 
             <span>
-                {{getSegmentLabel(segmentsMap[node.obj.ref])}}
+                {{getSegmentLabel(segmentsMap[node.obj.ref.id])}}
             </span>
 
         </td>

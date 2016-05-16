@@ -474,7 +474,7 @@ angular.module('igl')
                     segRefOrGroups.push(node);
                     $scope.collectData($rootScope.segmentsMap[node.ref], segRefOrGroups, segments, datatypes);
                 } else if (node.type === 'component' || node.type === 'subcomponent' || node.type === 'field') {
-                    $scope.collectData($rootScope.datatypesMap[node.datatype], segRefOrGroups, segments, datatypes);
+                    $scope.collectData($rootScope.datatypesMap[node.datatype.id], segRefOrGroups, segments, datatypes);
                 } else if (node.type === 'datatype') {
                     if (datatypes.indexOf(node) === -1) {
                         datatypes.push(node);

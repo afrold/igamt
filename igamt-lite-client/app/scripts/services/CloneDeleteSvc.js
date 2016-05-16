@@ -62,7 +62,7 @@ angular.module('igl').factory(
                 	$rootScope.segmentsMap[newSegment.id] = newSegment;
                 	console.log(newSegment);
                 	console.log([[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-//                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 	$rootScope.processElement(newSegment);
                 	$rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openSegment', newSegment);
@@ -272,7 +272,7 @@ angular.module('igl').factory(
                 }
             });
             modalInstance.result.then(function (table) {
-                $scope.tableToDelete = table;
+               // $scope.tableToDelete = table;
             }, function () {
             });
         };

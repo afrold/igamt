@@ -743,7 +743,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         if (parent) {
                             $rootScope.parentsMap[element.id] = parent;
                         }
-                        $rootScope.processElement($rootScope.segmentsMap[element.ref], element);
+                        $rootScope.processElement($rootScope.segmentsMap[element.ref.id], element);
                     } else if (element.type === "segment") {
                         element.fields = $filter('orderBy')(element.fields, 'position');
                         angular.forEach(element.conformanceStatements, function (cs) {
@@ -754,10 +754,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         });
                     } else if (element.type === "field") {
                         $rootScope.parentsMap[element.id] = parent;
-                        $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+                        $rootScope.processElement($rootScope.datatypesMap[element.datatype.id], element);
                     } else if (element.type === "component") {
                         $rootScope.parentsMap[element.id] = parent;
-                        $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+                        $rootScope.processElement($rootScope.datatypesMap[element.datatype.id], element);
                     } else if (element.type === "datatype") {
                         element.components = $filter('orderBy')(element.components, 'position');
                         angular.forEach(element.conformanceStatements, function (cs) {
@@ -825,14 +825,14 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         f.path = parent.path + "." + element.position + "[1]";
                         f.children = [];
                         parent.children.push(f);
-                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], f);
+                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], f);
                     } else if (element.type === "component") {
                         var c = new Object();
                         c.obj = element;
                         c.path = parent.path + "." + element.position + "[1]";
                         c.children = [];
                         parent.children.push(c);
-                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], c);
+                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], c);
                     } else if (element.type === "datatype") {
                         element.components = $filter('orderBy')(element.components, 'position');
                         angular.forEach(element.components, function (component) {
@@ -876,10 +876,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.findDatatypeRefs = function (datatype, obj) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
-                if ($rootScope.datatypesMap[obj.datatype] === datatype && $rootScope.references.indexOf(obj) === -1) {
+                if ($rootScope.datatypesMap[obj.datatype.id] === datatype && $rootScope.references.indexOf(obj) === -1) {
                     $rootScope.references.push(obj);
                 }
-                $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype]);
+                $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id]);
             } else if (angular.equals(obj.type, 'segment')) {
                 angular.forEach($rootScope.segments, function (segment) {
                     angular.forEach(segment.fields, function (field) {
@@ -898,11 +898,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.findTableRefs = function (table, obj) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
                 if (obj.table != undefined) {
-                    if (obj.table === table.id && $rootScope.references.indexOf(obj) === -1) {
+                    if (obj.table.id === table.id && $rootScope.references.indexOf(obj) === -1) {
                         $rootScope.references.push(obj);
                     }
                 }
-                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype]);
+                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id]);
             } else if (angular.equals(obj.type, 'segment')) {
                 angular.forEach($rootScope.segments, function (segment) {
                     angular.forEach(segment.fields, function (field) {

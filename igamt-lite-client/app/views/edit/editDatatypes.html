@@ -361,7 +361,7 @@
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
-                <div ng-show="node.datatype != null && datatypesMap[node.datatype] != null && datatypesMap[node.datatype] != undefined">
+                <div ng-show="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                     <!--<select class="form-control input-sm"-->
                     <!--name="datatype"-->
                     <!--ng-model="node.datatype"-->
@@ -369,13 +369,13 @@
                     <!--required-->
                     <!--ng-selected="dt.id === node.datatype"-->
                     <!--ng-class="{ 'igl-has-error has-feedback' : innerForm.datatype.$invalid}"-->
-                    <!--ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">-->
+                    <!--ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name">-->
                     <!--</select>-->
                     <a ng-click="showSelectDatatypeFlavorDlg(node)">
-                        {{getDatatypeLabel(datatypesMap[node.datatype])}}
+                        {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                     </a>
                 </div>
-                <!--<div ng-show="node.datatype === null || datatypesMap[node.datatype] === null || !datatypesMap[node.datatype]">-->
+                <!--<div ng-show="node.datatype === null || datatypesMap[node.datatype.id] === null || !datatypesMap[node.datatype.id]">-->
                 <!--<a ng-click="showSelectDatatypeDlg(node)">-->
                 <!--<i class="fa fa-plus fa-fw"></i>-->
                 <!--</a>-->
@@ -386,8 +386,8 @@
 
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.table != undefined && node.table !== null">
-                <a ng-click="goToTable(tablesMap[node.table])" class="point">
-                    <span>{{tablesMap[node.table].bindingIdentifier}}</span>
+                <a ng-click="goToTable(tablesMap[node.table.id])" class="point">
+                    <span>{{getTableLabel(tablesMap[node.table.id])}}</span>
                 </a>
                 <a ng-click="mapTable(node)" class="point">
                     <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -396,7 +396,7 @@
                     <span><i class="fa fa-times fa-fw"></i></span>
                 </a>
             </div>
-            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTable(datatypesMap[node.datatype])">
+            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTable(datatypesMap[node.datatype.id])">
                 <a ng-click="mapTable(node)" class="point">
                     <span><i class="fa fa-plus fa-fw"></i></span>
                 </a>
@@ -507,7 +507,7 @@
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
-                {{::getDatatypeLabel(datatypesMap[node.datatype])}}
+                {{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </div>
         </td>
 
@@ -515,7 +515,7 @@
             <div>
                 <div ng-show="node.table != undefined  && node.table !== null">
                     <span>
-                        {{::tablesMap[node.table].bindingIdentifier}}
+                        {{::getTableLabel(tablesMap[node.table.id])}}
                     </span>
                 </div>
             </div>
@@ -594,16 +594,16 @@
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
-                <a ng-click="goToDatatype(datatypesMap[node.datatype])"
-                   class="point">{{getDatatypeLabel(datatypesMap[node.datatype])}}
+                <a ng-click="goToDatatype(datatypesMap[node.datatype.id])"
+                   class="point">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                 </a>
             </div>
         </td>
 
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a ng-click="goToTable(tablesMap[node.table])"
+            <a ng-click="goToTable(tablesMap[node.table.id])"
                class="point" ng-show="node.table !== null && node.table !== undefined">
-                {{tablesMap[node.table].bindingIdentifier}}
+                {{getTableLabel(tablesMap[node.table.id])}}
             </a>
         </td>
 
@@ -675,14 +675,14 @@
         </td>
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <span>{{::getDatatypeLabel(datatypesMap[node.datatype])}}
+            <span>{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </span>
         </td>
 
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <span
                     ng-show="node.table !== null && node.table !== undefined">
-                {{::tablesMap[node.table].bindingIdentifier}}
+                {{::getTableLabel(tablesMap[node.table.id])}}
             </span>
         </td>
 

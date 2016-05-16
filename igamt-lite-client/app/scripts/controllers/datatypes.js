@@ -595,7 +595,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
     $scope.selectedNode = selectedNode;
     $scope.selectedTable = null;
     if (selectedNode.table != undefined) {
-        $scope.selectedTable = $rootScope.tablesMap[selectedNode.table];
+        $scope.selectedTable = $rootScope.tablesMap[selectedNode.table.id];
     }
 
     $scope.selectTable = function (table) {
@@ -604,7 +604,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
     };
 
     $scope.mappingTable = function () {
-        $scope.selectedNode.table = $scope.selectedTable.id;
+        $scope.selectedNode.table.id = $scope.selectedTable.id;
         $rootScope.recordChangeForEdit2('component', 'edit', $scope.selectedNode.id, 'table', $scope.selectedTable.id);
         $scope.ok();
     };
