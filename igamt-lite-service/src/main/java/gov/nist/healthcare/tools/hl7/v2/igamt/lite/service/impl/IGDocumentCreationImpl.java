@@ -288,13 +288,15 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		seg.getLibIds().add(sgtsTarget.getId());
 		segmentRepository.save(seg);
 		for (Field f : seg.getFields()) {
-			Datatype dt = datatypeRepository.findOne(f.getDatatype());
+			Datatype dt = datatypeRepository.findOne(f.getDatatype().getId());
 			if (dt != null) {
 				addDatatype(dt, pSource, pTarget);
 			}
-			Table vsd = tableRepository.findOne(f.getTable());
-			if (vsd != null) {
-				addTable(vsd, pSource, pTarget);
+			if(f.getTable() != null){
+				Table vsd = tableRepository.findOne(f.getTable().getId());
+				if (vsd != null) {
+					addTable(vsd, pSource, pTarget);
+				}
 			}
 		}
 	}
@@ -321,11 +323,13 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		DatatypeLink link = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());
 			if (!dtsTarget.getChildren().contains(link)) {
 			for (Component cpt : dt.getComponents()) {
-				Datatype dt1 = datatypeRepository.findOne(cpt.getDatatype());
+				Datatype dt1 = datatypeRepository.findOne(cpt.getDatatype().getId());
 				addDatatype(dt1, pSource, pTarget);
-				Table vsd = tableRepository.findOne(cpt.getTable());
-				if (vsd != null) {
-					addTable(vsd, pSource, pTarget);
+				if(cpt.getTable() != null){
+					Table vsd = tableRepository.findOne(cpt.getTable().getId());
+					if (vsd != null) {
+						addTable(vsd, pSource, pTarget);
+					}
 				}
 			}
 			dtsTarget.addDatatype(link);

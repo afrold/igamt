@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,12 @@ import com.mongodb.DBObject;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -163,15 +165,13 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
 		f.setMaxLength((String) source.get(MAX_LENGTH));
 		f.setConfLength(getConfLength(source));
 		f.setPosition((Integer) source.get(POSITION));
-		f.setTable(((String) source.get(TABLE)));
+		f.setTable((tableLink((DBObject) source.get(TABLE))));
 		f.setUsage(Usage.valueOf((String) source.get(USAGE)));
-		f.setBindingLocation((String) source.get(BINDING_LOCATION));
-		f.setBindingStrength((String) source.get(BINDING_STRENGTH));
 		f.setItemNo((String) source.get(ITEM_NO));
 		f.setMin((Integer) source.get(MIN));
 		f.setMax((String) source.get(MAX));
 		f.setText(readString(source, TEXT));
-		f.setDatatype(((String) source.get(Constant.DATATYPE)));
+		f.setDatatype((datatypeLink((DBObject) source.get(Constant.DATATYPE))));
 		return f;
 	}
 
@@ -209,5 +209,26 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
 		p.setFalseUsage(source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source.get(FALSE_USAGE))) : null);
 		p.setTrueUsage(source.get(TRUE_USAGE) != null ? Usage.valueOf(((String) source.get(TRUE_USAGE))) : null);
 		return p;
+	}
+	
+	private DatatypeLink datatypeLink(DBObject source){
+		DatatypeLink dl = new DatatypeLink();
+		dl.setId(readMongoId(source));
+		dl.setName((String) source.get("name"));
+		dl.setExt((String) source.get("ext"));
+		
+		return dl;
+	}
+
+	private TableLink tableLink(DBObject source){
+		if(source == null) return null;
+		
+		TableLink tl = new TableLink();
+		tl.setId(readMongoId(source));
+		tl.setBindingIdentifier((String) source.get("bindingIdentifier"));
+		tl.setBindingLocation((String) source.get("bindingLocation"));
+		tl.setBindingStrength((String) source.get("bindingStrength"));
+		
+		return tl;
 	}
 }

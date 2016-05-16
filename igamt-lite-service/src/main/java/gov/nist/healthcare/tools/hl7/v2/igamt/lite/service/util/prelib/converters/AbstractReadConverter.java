@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters;
 
 import org.bson.types.ObjectId;
 import org.springframework.core.convert.converter.Converter;

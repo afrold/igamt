@@ -8,7 +8,7 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
@@ -38,8 +38,6 @@ public class FieldWriteConverter implements Converter<Field, DBObject> {
 		dbo.put("maxLength", source.getMaxLength());
 		dbo.put("confLength", source.getConfLength());
 		dbo.put("table", source.getTable());
-		dbo.put("bindingStrength", source.getBindingStrength());
-		dbo.put("bindingLocation", source.getBindingLocation());
 		dbo.put("position", source.getPosition());
 		dbo.put("comment", source.getComment());
 		dbo.put("text", source.getText());

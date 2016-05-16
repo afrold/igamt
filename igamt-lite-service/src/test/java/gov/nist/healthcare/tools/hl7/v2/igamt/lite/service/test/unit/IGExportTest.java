@@ -197,9 +197,9 @@ public class IGExportTest {
 	@Test
 	public void testCallIGExportPdf() {
 		try {
-//			igs = igService.findAll();
-//			ig = igs.get(0);
-			ig = igService.findOne("573245a43004dc332131d418");
+			igs = igService.findAll();
+			ig = igs.get(0);
+//			ig = igService.findOne("573245a43004dc332131d418");
 
 			content = igExport.exportAsPdf(ig);
 			assertNotNull(content);
