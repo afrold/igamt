@@ -330,12 +330,10 @@ public class IGDocumentController extends CommonController {
 		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
 			Segment s = segmentService.findById(sl.getId());
 			for (Field f : s.getFields()) {
-				if (f.getDatatype() != null
-						&& datatypeIdChangeMap.containsKey(f.getDatatype()))
-					f.setDatatype(datatypeIdChangeMap.get(f.getDatatype()));
-				if (f.getTable() != null
-						&& tableIdChangeMap.containsKey(f.getTable()))
-					f.setTable(tableIdChangeMap.get(f.getTable()));
+				if (f.getDatatype() != null && f.getDatatype().getId() != null && datatypeIdChangeMap.containsKey(f.getDatatype().getId()))
+					f.getDatatype().setId(datatypeIdChangeMap.get(f.getDatatype().getId()));
+				if (f.getTable() != null && f.getTable().getId() != null && tableIdChangeMap.containsKey(f.getTable().getId()))
+					f.getDatatype().setId(tableIdChangeMap.get(f.getTable().getId()));
 			}
 			
 			for(Mapping map:s.getDynamicMapping().getMappings()){
@@ -349,12 +347,10 @@ public class IGDocumentController extends CommonController {
 		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
 			Datatype d = datatypeService.findById(dl.getId());
 			for (Component c : d.getComponents()) {
-				if (c.getDatatype() != null
-						&& datatypeIdChangeMap.containsKey(c.getDatatype()))
-					c.setDatatype(datatypeIdChangeMap.get(c.getDatatype()));
-				if (c.getTable() != null
-						&& tableIdChangeMap.containsKey(c.getTable()))
-					c.setTable(tableIdChangeMap.get(c.getTable()));
+				if (c.getDatatype() != null && c.getDatatype().getId() != null && datatypeIdChangeMap.containsKey(c.getDatatype().getId()))
+					c.getDatatype().setId(datatypeIdChangeMap.get(c.getDatatype().getId()));
+				if (c.getTable() != null && c.getTable().getId() != null && tableIdChangeMap.containsKey(c.getTable().getId()))
+					c.getTable().setId(tableIdChangeMap.get(c.getTable().getId()));
 			}
 			datatypeService.save(d);
 		}

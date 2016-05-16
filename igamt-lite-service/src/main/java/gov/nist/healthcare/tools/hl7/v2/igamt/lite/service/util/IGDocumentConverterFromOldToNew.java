@@ -32,15 +32,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.DatatypeReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.IGDocumentReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.TableReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.DocumentMetaDataPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.IGDocumentPreLib;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.IGDocumentReadConverterPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfileMetaDataPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePreLib;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters.DatatypeReadConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters.IGDocumentReadConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters.IGDocumentReadConverterPreLib;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters.SegmentReadConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters.TableReadConverter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -220,7 +220,7 @@ public class IGDocumentConverterFromOldToNew{
 					app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), ""));
 					for(Field f :seg.getFields()){
 						if(f.getTable() != null){
-							Table t = hl7TableMap.get(f.getTable());
+							Table t = hl7TableMap.get(f.getTable().getId());
 							if(t == null){
 								log.error(f.getTable() + " is missing!!!!!");
 							}else {
@@ -236,7 +236,7 @@ public class IGDocumentConverterFromOldToNew{
 						}
 						
 						if(f.getDatatype() != null){
-							Datatype dt = hl7DatatypeMap.get(f.getDatatype());
+							Datatype dt = hl7DatatypeMap.get(f.getDatatype().getId());
 							if (!dt.getLibIds().contains(app.getProfile().getDatatypeLibrary().getId())){
 								dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
 								Query query2 = query(where("_id").is(dt.getId()));
@@ -257,7 +257,7 @@ public class IGDocumentConverterFromOldToNew{
 							f.setUsage(Usage.X); System.out.println("Find");
 						}
 						if(f.getTable() != null){
-							Table t =  appPreLib.getProfile().getTables().findOneTableById(f.getTable());
+							Table t =  appPreLib.getProfile().getTables().findOneTableById(f.getTable().getId());
 							if(t == null){
 								log.error(f.getTable() + " is missing!!!!!");
 							}else {
@@ -327,7 +327,7 @@ public class IGDocumentConverterFromOldToNew{
 					app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(dt.getId(), dt.getName(), ""));
 					for(Component c : dt.getComponents()){
 						if(c.getTable() != null){
-							Table t = hl7TableMap.get(c.getTable());
+							Table t = hl7TableMap.get(c.getTable().getId());
 							if(t == null){
 								log.error(c.getTable() + " is missing!!!!!");
 							}else {
@@ -342,7 +342,7 @@ public class IGDocumentConverterFromOldToNew{
 							}
 						}
 						if(c.getDatatype() != null){
-							Datatype cdt = hl7DatatypeMap.get(c.getDatatype());
+							Datatype cdt = hl7DatatypeMap.get(c.getDatatype().getId());
 							if (!cdt.getLibIds().contains(app.getProfile().getDatatypeLibrary().getId())){
 								cdt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
 								Query query2 = query(where("_id").is(cdt.getId()));
@@ -365,7 +365,7 @@ public class IGDocumentConverterFromOldToNew{
 						}
 						
 						if(c.getTable() != null){
-							Table t =  appPreLib.getProfile().getTables().findOneTableById(c.getTable());
+							Table t =  appPreLib.getProfile().getTables().findOneTableById(c.getTable().getId());
 							if(t == null){
 								log.error(c.getTable() + "is missing!!!!!");
 							}else {
@@ -420,7 +420,7 @@ public class IGDocumentConverterFromOldToNew{
 	private void updateDatatypeId(String oldDatatypeId, String newDatatypeId, ProfilePreLib profilePreLib) {
 		for(Segment s: profilePreLib.getSegments().getChildren()){
 			for(Field f:s.getFields()){
-				if(f.getDatatype() != null && f.getDatatype().equals(oldDatatypeId)) f.setDatatype(newDatatypeId);
+				if(f.getDatatype() != null && f.getDatatype().getId().equals(oldDatatypeId)) f.getDatatype().setId(newDatatypeId);
 			}
 			
 			for(Mapping map:s.getDynamicMapping().getMappings()){
@@ -434,7 +434,7 @@ public class IGDocumentConverterFromOldToNew{
 		
 		for(Datatype dt: profilePreLib.getDatatypes().getChildren()){
 			for(Component c:dt.getComponents()){
-				if(c.getDatatype() != null && c.getDatatype().equals(oldDatatypeId)) c.setDatatype(newDatatypeId);
+				if(c.getDatatype() != null && c.getDatatype().getId().equals(oldDatatypeId)) c.getDatatype().setId(newDatatypeId);
 			}
 		}
 		
@@ -468,13 +468,13 @@ public class IGDocumentConverterFromOldToNew{
 	private void updateTableId(String oldTableId, String newTableId, ProfilePreLib profilePreLib) {
 		for(Segment s: profilePreLib.getSegments().getChildren()){
 			for(Field f:s.getFields()){
-				if(f.getTable() != null && f.getTable().equals(oldTableId)) f.setTable(newTableId);
+				if(f.getTable() != null && f.getTable().getId().equals(oldTableId)) f.getTable().setId(newTableId);
 			}
 		}
 		
 		for(Datatype dt: profilePreLib.getDatatypes().getChildren()){
 			for(Component c:dt.getComponents()){
-				if(c.getTable() != null && c.getTable().equals(oldTableId)) c.setTable(newTableId);
+				if(c.getTable() != null && c.getTable().getId().equals(oldTableId)) c.getTable().setId(newTableId);
 			}
 		}
 		

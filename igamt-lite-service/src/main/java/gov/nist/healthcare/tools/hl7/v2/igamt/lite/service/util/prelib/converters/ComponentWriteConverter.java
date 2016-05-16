@@ -8,7 +8,7 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
@@ -16,26 +16,28 @@ import org.springframework.data.convert.WritingConverter;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 31, 2015
  */
 @WritingConverter
-public class SegmentRefWriteConverter implements
-		Converter<SegmentRef, DBObject> {
+public class ComponentWriteConverter implements Converter<Component, DBObject> {
 
 	@Override
-	public DBObject convert(SegmentRef source) {
+	public DBObject convert(Component source) {
 		DBObject dbo = new BasicDBObject();
-		dbo.put("_id", source.getId());
-		dbo.put("min", source.getMin());
-		dbo.put("max", source.getMax());
+  		dbo.put("_id", source.getId());
 		dbo.put("type", source.getType());
+		dbo.put("name", source.getName());
 		dbo.put("usage", source.getUsage().value());
+		dbo.put("minLength", source.getMinLength() );
+		dbo.put("maxLength", source.getMaxLength());
+		dbo.put("confLength", source.getConfLength());
+		dbo.put("table", source.getTable());
 		dbo.put("position", source.getPosition());
 		dbo.put("comment", source.getComment());
-		dbo.put("ref", source.getRef());
+		dbo.put("datatype", source.getDatatype());
 		return dbo;
 	}
 
