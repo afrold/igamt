@@ -48,7 +48,7 @@ public class DatatypeLink extends AbstractLink implements Cloneable, Comparable<
 	}
 
 	public String getLabel() {
-		return name + (ext != null ? ext : "");
+		return name + (ext != null ? "_" + ext : "");
 	}
 
 	@Override

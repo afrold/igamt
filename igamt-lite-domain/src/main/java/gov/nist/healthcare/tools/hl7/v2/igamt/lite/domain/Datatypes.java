@@ -85,11 +85,10 @@ public class Datatypes extends TextbasedSectionModel implements java.io.Serializ
 		return null;
 	}
 
-	public Datatype findOneByNameAndByLabelAndByVersion(String name, String label, String version) {
+	public Datatype findOneByNameAndByLabelAndByVersion(String name, String version) {
 		if (this.children != null) {
 			for (Datatype dt : this.children) {
 				if (dt.getName().equals(name) 
-						&& dt.getLabel().equals(label)
 						&& dt.getHl7Version().equals(version)) {
 					return dt;
 				}
@@ -124,16 +123,6 @@ public class Datatypes extends TextbasedSectionModel implements java.io.Serializ
 				}
 			}
 		}
-		return null;
-	}
-
-	public Datatype findOneDatatypeByLabel(String label) {
-		if (this.children != null)
-			for (Datatype d : this.children) {
-				if (d.getLabel().equals(label)) {
-					return d;
-				}
-			}
 		return null;
 	}
 	
@@ -208,10 +197,10 @@ public class Datatypes extends TextbasedSectionModel implements java.io.Serializ
 	
 	public void merge(Datatypes dts){
 		for (Datatype dt : dts.getChildren()){
-			if (this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getLabel(), dt.getHl7Version()) == null){
+			if (this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getHl7Version()) == null){
 				this.addDatatype(dt);
 			} else {
-				dt.setId(this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getLabel(), dt.getHl7Version()).getId()); //FIXME Probably useless...
+				dt.setId(this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getHl7Version()).getId()); //FIXME Probably useless...
 			}
 		}
 		

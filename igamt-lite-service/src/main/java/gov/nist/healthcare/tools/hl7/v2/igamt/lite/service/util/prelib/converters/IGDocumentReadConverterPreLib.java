@@ -28,6 +28,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
@@ -463,7 +464,11 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 			dl= this.findDatatypeLinkOnDBList(id, datatypesDBObjects);
 		}else {
 			dl.setName(dt.getName());
-			dl.setExt(dt.getExt());	
+			if(dt.getLabel().equals(dt.getName())){
+				dl.setExt(null);
+			}else{
+				dl.setExt(dt.getLabel().replace(dt.getName() + "_", ""));
+			}
 		}
 		return dl;
 	}
@@ -477,9 +482,16 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 				String dtid = readMongoId(datatypeObject);
 				
 				if(dtid.equals(id)){
-					dl.setName((String) datatypeObject.get("name"));
+					String name = (String) datatypeObject.get("name");
 					String label = (String) datatypeObject.get("label");
-					dl.setExt(label.replace(dl.getName() + "_", ""));
+					
+					if(name.equals(label)){
+						dl.setExt(null);
+					}else {
+						dl.setExt(label.replace(name + "_", ""));
+					}
+
+					dl.setName(name);
 					
 					return dl;
 				}
@@ -661,8 +673,24 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		segRef.setPosition((Integer) source.get("position"));
 		segRef.setMin((Integer) source.get("min"));
 		segRef.setMax((String) source.get("max"));
-		segRef.setRef((String) source.get("ref"));
+		segRef.setRef(segmentLink((String) source.get("ref"), segments));
 		return segRef;
+	}
+	
+	private SegmentLink segmentLink(String id, Segments segments){
+		if(id == null || id.isEmpty()) return null;
+		
+		SegmentLink sl = new SegmentLink();
+		sl.setId(id);
+		Segment s = segments.findOneSegmentById(id);
+		sl.setName(s.getName());
+		if(s.getName().equals(s.getLabel())){
+			sl.setExt(null);
+		}else {
+			sl.setExt(s.getLabel().replace(s.getName() + "_", ""));
+		}
+		
+		return sl;
 	}
 
 	private Group group(DBObject source, Segments segments) {
