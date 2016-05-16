@@ -275,16 +275,17 @@ angular.module('igl')
                 datatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
             }
             DatatypeService.save(datatype).then(function (result) {
-                if ($rootScope.datatypesMap[result.id] === null || $rootScope.datatypesMap[result.id] == undefined) { // new datatype
-                    $rootScope.datatypes.push(result);
-                    $rootScope.datatypesMap[result.id] = result;
-                    var newLink = DatatypeLibrarySvc.createEmptyLink();
-                    newLink.id = result.id;
+                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary);
+                if (oldLink != null) {
+                    DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                    var newLink = DatatypeService.getDatatypeLink(result);
                     newLink.ext = ext;
-                    newLink.name = datatype.name;
-                    // save link to datatypeLibrary
-                    DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
-                        $rootScope.igdocument.profile.datatypeLibrary.children.push(newLink);
+                    DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
+                        oldLink.ext = newLink;
+                        $scope.saving = false;
+                        $scope.selectedChildren = [];
+                        if ($scope.datatypesParams)
+                            $scope.datatypesParams.refresh();
                         $rootScope.$broadcast('event:SetToC');
                     }, function (error) {
                         $scope.saving = false;
@@ -292,27 +293,7 @@ angular.module('igl')
                         $rootScope.msg().type = error.data.type;
                         $rootScope.msg().show = true;
                     });
-                } else {
-                    var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary);
-                    if (oldLink != null) {
-                        DatatypeService.merge($rootScope.datatypesMap[result.id], result);
-                        var newLink = DatatypeService.getDatatypeLink(result);
-                        newLink.ext = ext;
-                        DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
-                            oldLink.ext = newLink;
-                            $rootScope.$broadcast('event:SetToC');
-                        }, function (error) {
-                            $scope.saving = false;
-                            $rootScope.msg().text = error.data.text;
-                            $rootScope.msg().type = error.data.type;
-                            $rootScope.msg().show = true;
-                        });
-                    }
                 }
-                $scope.saving = false;
-                $scope.selectedChildren = [];
-                if ($scope.datatypesParams)
-                    $scope.datatypesParams.refresh();
                 //TODO update Toc
             }, function (error) {
                 $scope.saving = false;
@@ -464,11 +445,11 @@ angular.module('igl')
         $scope.loadFlavors = function (library) {
             if (library != null) {
                 $scope.selection.library = library;
-                 $scope.libariesError = null;
+                $scope.libariesError = null;
                 $scope.librariesLoading = true;
                 $scope.results = [];
                 $scope.tmpResults = [];
-                if($scope.selection.library.length > 0) {
+                if ($scope.selection.library.length > 0) {
                     for (var i = 0; i < $scope.selection.library.length; i++) {
                         var link = $scope.selection.library.children[i];
                         if (link.name === $scope.selection.name) {

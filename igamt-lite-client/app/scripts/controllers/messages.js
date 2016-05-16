@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, MastermapSvc, FilteringSvc) {
+    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService) {
 
         $scope.init = function () {
         };
@@ -19,6 +19,39 @@ angular.module('igl')
                 $scope.messagesParams.refresh();
             }
         };
+
+
+        var findIndex = function (id) {
+            for (var i = 0; i < $rootScope.igdocument.profile.messages.children.length; i++) {
+                if ($rootScope.igdocument.profile.messages.children[i].id === i) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+
+        $scope.save = function () {
+            $scope.saving = true;
+            var message = $rootScope.message;
+            MessageService.save(message).then(function (result) {
+                $rootScope.processElement(message);
+                var index = findIndex(message.id);
+                if (index < 0) {
+                    $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
+                    FilteringSvc.addMsgInFilter(message.name, message.id);
+                }
+                MastermapSvc.addMessage(message, []);
+                $rootScope.$broadcast('event:SetToC');
+                $rootScope.message = angular.copy(message);
+                waitingDialog.hide();
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+                waitingDialog.hide();
+            });
+        };
+
 
         $scope.delete = function (message) {
             CloneDeleteSvc.deleteMessage(message);

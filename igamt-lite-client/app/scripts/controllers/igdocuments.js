@@ -318,8 +318,14 @@ angular.module('igl')
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();
                                 waitingDialog.hide();
+                            },function(){
+                                waitingDialog.hide();
                             });
+                        },function(){
+                            waitingDialog.hide();
                         });
+                    },function(){
+                        waitingDialog.hide();
                     });
                 }, 100);
             }
@@ -813,7 +819,7 @@ angular.module('igl')
         $scope.selectMessage = function (message) {
             $scope.subview = "EditMessages.html";
             $scope.loadingSelection = true;
-            $rootScope.message = message;
+            $rootScope.message = angular.copy(message);
             $timeout(
                 function () {
                     $rootScope.tableWidth = null;
@@ -1029,11 +1035,13 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
 
     $scope.save = function () {
         $scope.saving = true;
+        waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
         $scope.saved = false;
         if($rootScope.igDocument != null && $rootScope.metaData != null) {
             IgDocumentService.saveMetadata($rootScope.igDocument.id, $rootScope.metaData).then(function (result) {
                 $scope.saving = false;
                 $scope.saved = true;
+                waitingDialog.hide();
                 $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
             }, function (error) {
                 $scope.saving = false;
@@ -1041,6 +1049,8 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
                 $scope.saved = false;
+                waitingDialog.hide();
+
             });
         }
     };
@@ -1053,16 +1063,19 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
     $scope.saving = false;
     $scope.saved = false;
     $scope.save = function () {
+        waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
         $scope.saving = true;
         $scope.saved = false;
         if($rootScope.igDocument != null && $rootScope.metaData != null) {
             ProfileSvc.save($rootScope.igDocument.id, $rootScope.metaData).then(function (result) {
                 $scope.saving = false;
                 $scope.saved = true;
+                waitingDialog.hide();
                 $rootScope.igdocument.profile.metaData = angular.copy($rootScope.metaData);
             }, function (error) {
                 $scope.saving = false;
                 $scope.saved = false;
+                waitingDialog.hide();
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;

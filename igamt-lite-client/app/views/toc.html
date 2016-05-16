@@ -1,252 +1,231 @@
 <style id="antiClickjack">
-body {
-	display: none !important;
-}
+    body {
+        display: none !important;
+    }
 </style>
 <script type="text/javascript">
-	if (self === top) {
-		var antiClickjack = document.getElementById("antiClickjack");
-		antiClickjack.parentNode.removeChild(antiClickjack);
-	} else {
-		top.location = self.location;
-	}
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
 </script>
 <style>
-.selected {
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#87e0fd+0,05abe0+100 */
-	background: #87e0fd; /* Old browsers */
-	background: -moz-linear-gradient(top, #87e0fd 0%, #05abe0 100%);
-	/* FF3.6-15 */
-	background: -webkit-linear-gradient(top, #87e0fd 0%, #05abe0 100%);
-	/* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom, #87e0fd 0%, #05abe0 100%);
-	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd',
-		endColorstr='#05abe0', GradientType=0); /* IE6-9 */
-	color: white;
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#356aa0+0,356aa0+100;Blue+Flat */
-	background: #356aa0; /* Old browsers */
-	background: -moz-linear-gradient(top, #356aa0 0%, #356aa0 100%);
-	/* FF3.6-15 */
-	background: -webkit-linear-gradient(top, #356aa0 0%, #356aa0 100%);
-	/* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom, #356aa0 0%, #356aa0 100%);
-	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#356aa0',
-		endColorstr='#356aa0', GradientType=0); /* IE6-9 */
-}
 
-.panel-body {
-	
-}
-/* .fa{ */
-/* font-size: 18px; */
-/* } */
-.treeRoot {
-	font-size: 18px;
-}
+    .selected {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#87e0fd+0,05abe0+100 */
+        background: #87e0fd; /* Old browsers */
+        background: -moz-linear-gradient(top, #87e0fd 0%, #05abe0 100%);
+        /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #87e0fd 0%, #05abe0 100%);
+        /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #87e0fd 0%, #05abe0 100%);
+        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd',
+        endColorstr='#05abe0', GradientType=0); /* IE6-9 */
+        color: white;
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#356aa0+0,356aa0+100;Blue+Flat */
+        background: #356aa0; /* Old browsers */
+        background: -moz-linear-gradient(top, #356aa0 0%, #356aa0 100%);
+        /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #356aa0 0%, #356aa0 100%);
+        /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #356aa0 0%, #356aa0 100%);
+        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#356aa0',
+        endColorstr='#356aa0', GradientType=0); /* IE6-9 */
+    }
 
-.treeSection {
-	font-size: 16px;
-	margin-left: -10px;
-}
+    .panel-body {
 
-.treeSubSection {
-	font-size: 14px;
-}
+    }
+    /* .fa{ */
+    /* font-size: 18px; */
+    /* } */
+    .treeRoot {
+        font-size: 18px;
+    }
 
-.treeUnderSubSection {
-	font-size: 13px;
-}
+    .treeSection {
+        font-size: 16px;
+        margin-left: -10px;
+    }
 
-.message {
-	font-size: 17px;
-}
+    .treeSubSection {
+        font-size: 14px;
+    }
 
-.messageContent {
-	font-size: 16;
-}
+    .treeUnderSubSection {
+        font-size: 13px;
+    }
+    cursorMove
+    .message {
+        font-size: 17px;
+    }
 
-.messageSubContent {
-	font-size: 12px;
-	margin-left:14px;
-}
+    .messageContent {
+        font-size: 16;
+    }
+
+    .messageSubContent {
+        font-size: 12px;
+        margin-left:14px;
+    }
+    .uitree{
+
+    }
+
 </style>
 <div ng-controller="IGDocumentListCtrl" class="uitree">
-<button ng-click= "print(igdocument)"></button>
-	<div ng-controller="TreeCtrl">
-		<div ui-tree="treeOptions">
-			<ol ui-tree-nodes="" ng-model="TreeIgs">
-				<li ng-repeat="ig in TreeIgs" ui-tree-node ng-init="updatePositions(ig.childSections)">
-					<div ui-tree-handle class="treeRoot">
-						<span data-nodrag ng-click="editIg(ig)">{{ig.metaData.title}}</span>
-					</div>
-
-					<ol ui-tree-nodes="" ng-model="ig.childSections"
-						data-type="sections">
-
-						<li ng-repeat="section in ig.childSections " ui-tree-node
-							data-type="section" ng-if="!collapsed">
-							<div ui-tree-handle context-menu="sectionOption"
-								class="treeSection">
-								<span class="glyphicon glyphicon-move"></span> <i
-									ng-show="section.childSections.length>0" data-nodrag
-									ng-click="toggle(this);" class="fa fa-caret-right"
-									ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i>
-								<span data-nodrag data-nodrag
-									ng-class="{selected : section.id===activeModel}"
-									ng-click="editSection(section);Activate(section.id)">
-								[{{section.sectionPosition}}]	{{section.sectionTitle}} </span>
-							</div>
-
-							<ol ui-tree-nodes="" ng-model="section.childSections"
-								data-type={{section.sectionTitle}}>
-								<li ng-repeat="subsection in section.childSections " ui-tree-node
-									ng-if="!collapsed" data-type="subsection">
-									<div ui-tree-handle class="treeSubSection"
-										context-menu="sectionOption">
-										<span class="glyphicon glyphicon-move"></span> <i
-											ng-show="subsection.childSections.length>0" data-nodrag
-											ng-click="toggle(this);" class="fa fa-caret-right"
-											ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i>
-										<span data-nodrag ng-class="{selected : subsection.id===activeModel}"
-											ng-click="editSection(subsection); Activate(subsection.id)">
-											{{section.sectionPosition}}.{{subsection.sectionPosition}}	{{subsection.sectionTitle}} </span>
-									</div>
+    <div ng-controller="TreeCtrl">
+        <div ui-tree="treeOptions">
+            <ol ui-tree-nodes="" ng-model="TreeIgs">
+                <li ng-repeat="ig in TreeIgs" ui-tree-node ng-init="updatePositions(ig.childSections)">
+                    <div ui-tree-handle class="treeRoot">
+                        <span data-nodrag ng-click="editIg(ig)">{{igdocument.metaData.title}}</span>
+                    </div>
 
 
-									<ol ui-tree-nodes="" ng-model="subsection.childSections"
-										data-type={{subsection.sectionTitle}}>
-										<li ng-repeat="undersubsection in subsection.childSections"
-											ui-tree-node ng-if="!collapsed" data-type="undersubsection">
-											<div ui-tree-handle class="treeUnderSubSection"
-												context-menu="sectionOption">
-												<span class="glyphicon glyphicon-move"></span> <span
-													ng-class="{selected : undersubsection.id===activeModel}" data-nodrag
-													ng-click="editSection(undersubsection);Activate(undersubsection.id)"> {{section.sectionPosition}}.{{subsection.sectionPosition}}.{{undersubsection.sectionPosition}}.{{undersubsection.sectionTitle}}</span>
-											</div>
-										</li>
-									</ol>
-								</li>
-							</ol>
-						</li>
-					</ol>
+                    <script type="text/ng-template" id="nodes_renderer.html">
 
-					<div ui-tree-handle class="message">
-						<i data-nodrag ng-click="switcherprofile()"
-							class="fa fa-caret-down"
-							ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !profilecollapded}"></i>
+                        <div ui-tree-handle context-menu="sectionOption" style="font-size:{{-2*this.depth()}}px;">
+                            <span class="glyphicon glyphicon-move cursorMove" ></span> <i
+                                ng-show="section.childSections.length>0" data-nodrag
+                                ng-click="toggle(this);" class="fa fa-caret-right"
+                                ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i>
+ 								<span data-nodrag data-nodrag
+                                      ng-class="{selected : section.id===activeModel}"
+                                      ng-click="editSection(section);Activate(section.id)">
+ 								{{getLabel(this)}}.{{section.sectionTitle}} </span>
+                        </div>
 
-						<span data-nodrag ng-click="editProfile();"> 
+                        <ol ui-tree-nodes="" ng-model="section.childSections" data-type="sections" ng-if="section.childSections">
+                            <li ng-repeat="section in section.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=concat(x,section.sectionPosition)">
+                            </li>
+                        </ol>
+                        {{updatePositions(section.childSections)}}
+                    </script>
+                    <ol  ui-tree-nodes="" ng-model="ig.childSections" data-type="sections">
+                        <li ng-repeat="section in ig.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition"></li>
+
+                    </ol>
+
+
+                    <div ui-tree-handle class="message">
+                        <i data-nodrag ng-click="switcherprofile()"
+                           class="fa fa-caret-down"
+                           ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !profilecollapded}"></i>
+
+						<span data-nodrag ng-click="editProfile();">
 						Message Infrastructure</span>
-					</div>
+                    </div>
 
-					<ol ui-tree-nodes="" ng-model="ig.profile.messages.children"
-						ng-show="!profilecollapsed" data-type="messages">
-						<div ui-tree-handle class="messageContent">
+                    <ol ui-tree-nodes="" ng-model="ig.profile.messages.children"
+                        ng-show="!profilecollapsed" data-type="messages">
+                        <div ui-tree-handle class="messageContent">
 
-							<i data-nodrag ng-click="switchermsg()" class="fa fa-caret-right"
-								ng-class="{'fa-caret-down': !collapsemessage, 'fa-caret-right': collapsemessage}"></i>
+                            <i data-nodrag ng-click="switchermsg()" class="fa fa-caret-right"
+                               ng-class="{'fa-caret-down': !collapsemessage, 'fa-caret-right': collapsemessage}"></i>
 
-							<span class="label label-component label-icon">M</span> <span
-								ng-click="editRoutSection('conformance Profiles');" data-nodrag>
+							 <span context-menu="MessagesRootOption"
+                                   ng-click="editRoutSection('conformance Profiles');" data-nodrag>
 								Conformance Profiles </span>
-						</div>
-						<li ng-repeat="msg in ig.profile.messages.children | filter:showToC" ui-tree-node
-							ng-if="!collapsemessage" data-type="message">
-							<div ui-tree-handle class="messageSubContent"
-								context-menu="MessagesOption">
-								<span class="glyphicon glyphicon-move"></span> <span data-nodrag
+                        </div>
+                        <li ng-repeat="msg in ig.profile.messages.children | filter:showToC" ui-tree-node
+                            ng-if="!collapsemessage" data-type="message">
+                            <div ui-tree-handle class="messageSubContent"
+                                 context-menu="MessagesOption">
+                                <span class="glyphicon glyphicon-move"></span> <span data-nodrag
 
-									ng-class="{selected : msg.id===activeModel}"
-									ng-click="editMessage(msg);Activate(msg.id)">
+                                                                                     ng-class="{selected : msg.id===activeModel}"
+                                                                                     ng-click="editMessage(msg);Activate(msg.id)">
+									{{updatePositions(ig.profile.messages.children)}}
 								[{{msg.position}}]	{{msg.name}}-{{msg.description}}</span>
 
-							</div>
-						</li>
-					</ol>
+                            </div>
+                        </li>
+                    </ol>
 
 
-					<ol ui-tree-nodes="" ng-model="segments"
-						ng-show="!profilecollapsed" data-type="segments">
-						<div ui-tree-handle class="messageContent">
-							<i data-nodrag ng-click="switcherseg()" class="fa fa-caret-right"
-								ng-class="{'fa-caret-down': !collapsesegment, 'fa-caret-right': collapsesegment}"></i>
+                    <ol ui-tree-nodes="" ng-model="segments"
+                        ng-show="!profilecollapsed" data-type="segments">
+                        <div ui-tree-handle class="messageContent">
+                            <i data-nodrag ng-click="switcherseg()" class="fa fa-caret-right"
+                               ng-class="{'fa-caret-down': !collapsesegment, 'fa-caret-right': collapsesegment}"></i>
 
-							<span class="label label-segment label-icon">S</span>
 							<span data-nodrag
-								ng-click="editRoutSection('Segments and field descriptions')">
+                                  ng-click="editRoutSection('Segments and field descriptions')">
 								Segments and field descriptions</span>
-						</div>
-						<li ng-repeat="segment in segments | filter:showToC"
-							ui-tree-node ng-if="!collapsesegment" data-type="segment">
-							<div ui-tree-handle class="messageSubContent" data-nodrag
-								ng-click="editSeg(segment)" context-menu="fieldOption">
-								<span data-nodrag 
-									ng-class="{selected : segment.id===activeModel}"
-									ng-click=" editSeg(segment);Activate(segment.id)"> [{{segment.sectionPosition}}]	{{segment.name}}-{{segment.description}}</span>
-							</div>
-						</li>
-					</ol>
+                        </div>
+                        <li ng-repeat="segment in segments  | orderBy :'label'"
+                            ui-tree-node ng-if="!collapsesegment" data-type="segment">
+                            <div ui-tree-handle class="messageSubContent" data-nodrag
+                                 ng-click="editSeg(segment)" context-menu="SegmentOptions">
+								<span data-nodrag
+                                      ng-class="{selected : segment.id===activeModel}"
+                                      ng-click=" editSeg(segment);Activate(segment.id)">{{segment.label}}-{{segment.description}}</span>
+                            </div>
+                        </li>
+                    </ol>
 
-					<ol ui-tree-nodes="" ng-model="datatypes" ng-show="!profilecollapsed" data-type="datatypes">
-						<div ui-tree-handle class="messageContent">
-							<i data-nodrag ng-click="switcherdata()"
-								class="fa fa-caret-right"
-								ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i>
+                    <ol ui-tree-nodes="" ng-model="datatypes" ng-show="!profilecollapsed" data-type="datatypes">
+                        <div ui-tree-handle class="messageContent">
+                            <i data-nodrag ng-click="switcherdata()"
+                               class="fa fa-caret-right"
+                               ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i>
 
-							<span class="label label-datatype label-icon">D</span><span
-								data-nodrag ng-click="editRoutSection('Datatypes')">Datatypes</span>
-						</div>
+							<span
+                                    data-nodrag ng-click="editRoutSection('Datatypes')">Datatypes</span>
+                        </div>
 
-						<li ng-repeat="data in datatypes| filter:showToC" ui-tree-node
-							ng-if="!collapsedata" data-type="datatype">
-							<div ui-tree-handle class="messageSubContent" data-nodrag
-								ng-click="editDataType(data)" context-menu="fieldOption">
-								<span data-nodrag 
-									ng-class="{selected : data.id===activeModel}"
-									ng-click="editDataType(data); Activate(data.id)">{{data.name}}-{{data.description}}</span>
+                        <li ng-repeat="data in datatypes  | orderBy :'label'" ui-tree-node
+                            ng-if="!collapsedata" data-type="datatype">
+                            <div ui-tree-handle class="messageSubContent" data-nodrag
+                                 ng-click="editDataType(data)" context-menu="DataTypeOptions">
+								<span data-nodrag
+                                      ng-class="{selected : data.id===activeModel}"
+                                      ng-click="editDataType(data); Activate(data.id)">{{data.label}}-{{data.description}}</span>
 
-							</div>
-						</li>
-					</ol>
+                            </div>
+                        </li>
+                    </ol>
 
-					<ol ui-tree-nodes="" ng-model="tables"
-						ng-show="!profilecollapsed" data-type="tables">
-						<div ui-tree-handle class="messageContent">
-							<i data-nodrag ng-click="switchertable()"
-								class="fa fa-caret-right"
-								ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i>
+                    <ol ui-tree-nodes="" ng-model="tables"
+                        ng-show="!profilecollapsed" data-type="tables">
+                        <div ui-tree-handle class="messageContent">
+                            <i data-nodrag ng-click="switchertable()"
+                               class="fa fa-caret-right"
+                               ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i>
 
-							<span class="label label-datatype label-icon">T</span><span
-								data-nodrag ng-click="editRoutSection('Value Sets')">Value
-								Sets</span>
-						</div>
+						<span
+                                data-nodrag ng-click="editRoutSection('Value Sets')" context-menu="ValueSetRootOptions">Value Sets</span>
+                        </div>
 
-						<li ng-repeat="table in tables| filter:showToC" ui-tree-node
-							data-type="table" ng-if="!collapsetable">
-							<div ui-tree-handle class="messageSubContent" data-nodrag
-								ng-click="editTable(table);Activate(table.bindingIdentifier)"
-								context-menu="fieldOption">
-								<span 
-									ng-class="{selected : table.bindingIdentifier===activeModel}"
-									data-nodrag
-									ng-click="editTable(table);Activate(table.bindingIdentifier)">
-									{{table.bindingIdentifier}}-{{table.description}} {{table.position}}</span>
-							</div>
-						</li>
-					</ol>
+                        <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node
+                            data-type="table" ng-if="!collapsetable">
+                            <div ui-tree-handle class="messageSubContent" data-nodrag
+                                 ng-click="editTable(table);Activate(table.id)"
+                                 context-menu="ValueSetOptions">
+								<span
+                                        ng-class="{selected : table.id===activeModel}"
+                                        data-nodrag
+                                        ng-click="editTable(table);Activate(table.id)">
+									{{table.bindingIdentifier}}-{{table.description}}</span>
+                            </div>
+                        </li>
+                    </ol>
 
-				</li>
+                </li>
 
-				</li>
-			</ol>
+                </li>
+            </ol>
 
-		</div>
+        </div>
 
-		<!-- 	<trunk trunk="tocData"></trunk> -->
+        <!-- 	<trunk trunk="tocData"></trunk> -->
 
-	</div>
+    </div>
 
 </div>
 
@@ -254,84 +233,84 @@ body {
 	Context menu partials.
 -->
 <div class="dropdown position-fixed" id="headContextDiv.html"
-	ng-controller="ContextMenuCtl">
-	<ul class="dropdown-menu" role="menu">
-		<li><a class="pointer" role="menuitem" tabindex="1"
-			ng-click="clicked('Copy')"> <i class="fa fa-plus fa-fw"></i>Copy
-		</a></li>
-	</ul>
+     ng-controller="ContextMenuCtl">
+    <ul class="dropdown-menu" role="menu">
+        <li><a class="pointer" role="menuitem" tabindex="1"
+               ng-click="clicked('Copy')"> <i class="fa fa-plus fa-fw"></i>Copy
+        </a></li>
+    </ul>
 </div>
 
 <div class="dropdown position-fixed" id="messageHeadContextDiv.html"
-	ng-controller="HL7VersionsDlgCtrl">
-	<ul class="dropdown-menu" role="menu">
-		<li><a class="pointer" role="menuitem" tabindex="1"
-			ng-click="hl7Versions('ctx')"><i class="fa fa-plus fa-fw"></i>Add</a></li>
-		<li><a class="pointer" role="menuitem" tabindex="2"
-			ng-click="selectMessages(igdocument)"><i
-				class="fa fa-download fa-fw"></i>Export</a></li>
-	</ul>
+     ng-controller="HL7VersionsDlgCtrl">
+    <ul class="dropdown-menu" role="menu">
+        <li><a class="pointer" role="menuitem" tabindex="1"
+               ng-click="hl7Versions('ctx')"><i class="fa fa-plus fa-fw"></i>Add</a></li>
+        <li><a class="pointer" role="menuitem" tabindex="2"
+               ng-click="selectMessages(igdocument)"><i
+                class="fa fa-download fa-fw"></i>Export</a></li>
+    </ul>
 </div>
 
 <div class="dropdown position-fixed" id="tableHeadContextDiv.html"
-	ng-controller="HL7VersionsDlgCtrl">
-	<ul class="dropdown-menu" role="menu">
-		<li><a class="pointer" role="menuitem" tabindex="1"
-			ng-click="addTable(igdocument)"><i class="fa fa-plus fa-fw"></i>Add</a></li>
-	</ul>
+     ng-controller="HL7VersionsDlgCtrl">
+    <ul class="dropdown-menu" role="menu">
+        <li><a class="pointer" role="menuitem" tabindex="1"
+               ng-click="addTable(igdocument)"><i class="fa fa-plus fa-fw"></i>Add</a></li>
+    </ul>
 </div>
 
 <div class="dropdown position-fixed" id="messageContextDiv.html"
-	ng-controller="ContextMenuCtl">
-	<ul class="dropdown-menu" role="menu">
-		<li><a class="pointer" role="menuitem" tabindex="1"
-			ng-click="clicked('Copy')"><i class="fa fa-plus fa-fw"></i>Copy</a></li>
-		<li><a class="pointer" role="menuitem" tabindex="2"
-			ng-click="clicked('Delete')"><i class="fa fa-trash-o fa-fw"></i>Delete</a></li>
-		<li><a class="pointer" role="menuitem" tabindex="3"
-			ng-click="selectMessages(igdocument)"><i
-				class="fa fa-download fa-fw"></i>Export</a></li>
-	</ul>
+     ng-controller="ContextMenuCtl">
+    <ul class="dropdown-menu" role="menu">
+        <li><a class="pointer" role="menuitem" tabindex="1"
+               ng-click="clicked('Copy')"><i class="fa fa-plus fa-fw"></i>Copy</a></li>
+        <li><a class="pointer" role="menuitem" tabindex="2"
+               ng-click="clicked('Delete')"><i class="fa fa-trash-o fa-fw"></i>Delete</a></li>
+        <li><a class="pointer" role="menuitem" tabindex="3"
+               ng-click="selectMessages(igdocument)"><i
+                class="fa fa-download fa-fw"></i>Export</a></li>
+    </ul>
 </div>
 
 <div class="dropdown position-fixed" id="contextDiv.html"
-	ng-controller="ContextMenuCtl">
-	<ul class="dropdown-menu" role="menu">
-		<li><a class="pointer" role="menuitem" tabindex="1"
-			ng-click="clicked('Copy')"><i class="fa fa-plus fa-fw"></i>Copy</a></li>
-		<li><a class="pointer" role="menuitem" tabindex="2"
-			ng-click="clicked('Delete')"><i class="fa fa-trash-o fa-fw"></i>Delete</a></li>
-	</ul>
+     ng-controller="ContextMenuCtl">
+    <ul class="dropdown-menu" role="menu">
+        <li><a class="pointer" role="menuitem" tabindex="1"
+               ng-click="clicked('Copy')"><i class="fa fa-plus fa-fw"></i>Copy</a></li>
+        <li><a class="pointer" role="menuitem" tabindex="2"
+               ng-click="clicked('Delete')"><i class="fa fa-trash-o fa-fw"></i>Delete</a></li>
+    </ul>
 </div>
 
 <script type="text/ng-template" id="Metadata.html">
     <a class="point txt" ng-click="tocSelection(node.title, node)">
-<!--<span class="fa"-->
-      <!--ng-class="{-->
-	          <!--'': !collapsed[node.title]-->
-	        <!--}"></span>-->
+        <!--<span class="fa"-->
+        <!--ng-class="{-->
+        <!--'': !collapsed[node.title]-->
+        <!--}"></span>-->
         <span class="">{{node.title}}</span></a>
 </script>
 <script type="text/ng-template" id="DefaultEntry.html">
     <a class="point txt">
-	<span class="fa" ng-class="{'': !collapsed[member.label]}">{{member.label}}</span>
-<!--
-    <span class="" ng-show="nnode.type === 'segment'">{{nnode.label}}</span>
-    <span class="" ng-show="nnode.type === 'table'">{{nnode.bindingIdentifier}}</span>
-    <span class="" ng-show="nnode.type === 'datatype'">{{nnode.label}}</span>
-    <span class="" ng-show="nnode.type === 'message'">{{nnode.structID}}</span>
--->
+        <span class="fa" ng-class="{'': !collapsed[member.label]}">{{member.label}}</span>
+        <!--
+            <span class="" ng-show="nnode.type === 'segment'">{{nnode.label}}</span>
+            <span class="" ng-show="nnode.type === 'table'">{{nnode.bindingIdentifier}}</span>
+            <span class="" ng-show="nnode.type === 'datatype'">{{nnode.label}}</span>
+            <span class="" ng-show="nnode.type === 'message'">{{nnode.structID}}</span>
+        -->
     </a>
 </script>
 <script type="text/ng-template" id="Message.html">
     <a class="point txt" ng-click="tocSelection(node.title, nnode)">
-<!--<span class="fa"-->
-      <!--ng-class="{-->
-	          <!--'': !collapsed[node.title]-->
-	        <!--}"></span>-->
+        <!--<span class="fa"-->
+        <!--ng-class="{-->
+        <!--'': !collapsed[node.title]-->
+        <!--}"></span>-->
         <span class="" ng-show="nnode.type === 'segment'">{{nnode.label}}</span>
         <span class="" ng-show="nnode.type === 'table'">{{nnode.bindingIdentifier}}</span>
         <span class="" ng-show="nnode.type === 'datatype'">{{nnode.label}}</span>
         <span class="" ng-show="nnode.type === 'message'">{{nnode.structID}}</span>
-     </a>
+    </a>
 </script>

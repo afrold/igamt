@@ -24,23 +24,6 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
             table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
         }
         TableService.save(table).then(function (result) {
-            if ($rootScope.tablesMap[result.id] === null || $rootScope.tablesMap[result.id] == undefined) { // new table
-                $rootScope.tables.push(result);
-                $rootScope.tablesMap[result.id] = result;
-                var newLink = TableLibrarySvc.createEmptyLink();
-                newLink.id = result.id;
-                newLink.bindingIdentifier = bindingIdentifier;
-                // save link to tableLibrary
-                TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                    $rootScope.igdocument.profile.tableLibrary.children.push(newLink);
-                    $rootScope.$broadcast('event:SetToC');
-                }, function (error) {
-                    $scope.saving = false;
-                    $rootScope.msg().text = error.data.text;
-                    $rootScope.msg().type = error.data.type;
-                    $rootScope.msg().show = true;
-                });
-            } else {
                 var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary);
                 if (oldLink != null) {
                     TableService.merge($rootScope.tablesMap[result.id], result);
@@ -48,6 +31,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                     newLink.ext = ext;
                     TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
                         oldLink.ext = newLink;
+                        $scope.saving = false;
+                        $scope.selectedChildren = [];
                         $rootScope.$broadcast('event:SetToC');
                     }, function (error) {
                         $scope.saving = false;
@@ -56,10 +41,6 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                         $rootScope.msg().show = true;
                     });
                 }
-            }
-            $scope.saving = false;
-            $scope.selectedChildren = [];
-
         }, function (error) {
             $scope.saving = false;
             $rootScope.msg().text = error.data.text;
@@ -266,6 +247,8 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
 
     $scope.delete = function () {
         $scope.loading = true;
+        waitingDialog.show('Copying Data Type...', {dialogSize: 'xs', progressType: 'success'});
+
         TableService.delete($scope.tableToDelete).then(function (result) {
                 TableLibrarySvc.deleteChild($scope.tableToDelete.id).then(function (res) {
                     // We must delete from two collections.
@@ -287,12 +270,14 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
                     $scope.loading = false;
                     $rootScope.$broadcast('event:SetToC');
                     $modalInstance.close($scope.tableToDelete);
+                    waitingDialog.hide();
                 }, function (error) {
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = "danger";
                     $rootScope.msg().show = true;
                     $rootScope.manualHandle = true;
                     $scope.loading = false;
+                    waitingDialog.hide();
                 });
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
@@ -300,6 +285,7 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
                 $rootScope.msg().show = true;
                 $rootScope.manualHandle = true;
                 $scope.loading = false;
+                waitingDialog.hide();
             }
         );
     };

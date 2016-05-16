@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService, FilteringSvc, MastermapSvc,SegmentLibrarySvc) {
+    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc) {
 //        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
@@ -25,13 +25,13 @@ angular.module('igl')
             $scope.loadingSelection = false;
         };
 
-        $scope.copy = function(segment) {
-        		CloneDeleteSvc.copySegment(segment);
+        $scope.copy = function (segment) {
+            CloneDeleteSvc.copySegment(segment);
         }
 
         $scope.delete = function (segment) {
-        		CloneDeleteSvc.deleteSegment(segment);
-			$rootScope.$broadcast('event:SetToC');
+            CloneDeleteSvc.deleteSegment(segment);
+            $rootScope.$broadcast('event:SetToC');
         };
 
         $scope.hasChildren = function (node) {
@@ -158,8 +158,8 @@ angular.module('igl')
         };
 
         $scope.countPredicateOnComponent = function (position, componentId) {
-        	var dt = $scope.findDTByComponentId(componentId);
-        	if (dt != null)
+            var dt = $scope.findDTByComponentId(componentId);
+            if (dt != null)
                 for (var i = 0, len1 = dt.predicates.length; i < len1; i++) {
                     if (dt.predicates[i].constraintTarget.indexOf(position + '[') === 0)
                         return 1;
@@ -169,7 +169,7 @@ angular.module('igl')
         };
 
         $scope.isRelevant = function (node) {
-           return SegmentService.isRelevant(node);
+            return SegmentService.isRelevant(node);
         };
 
         $scope.isBranch = function (node) {
@@ -189,7 +189,7 @@ angular.module('igl')
         };
 
         $scope.getSegmentLevelConfStatements = function (element) {
-             return SegmentService.getSegmentLevelConfStatements(element);
+            return SegmentService.getSegmentLevelConfStatements(element);
         };
 
         $scope.getSegmentLevelPredicates = function (element) {
@@ -273,57 +273,43 @@ angular.module('igl')
 
         $scope.save = function () {
             $scope.saving = true;
+            waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
             var segment = $rootScope.segment;
             var ext = segment.ext;
             segment.ext = null;
-            if(segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1){
+            if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1) {
                 segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
             }
             SegmentService.save($rootScope.segment).then(function (result) {
-                if ($rootScope.segmentsMap[result.id] === null || $rootScope.segmentsMap[result.id] == undefined) { // new segment
-                    $rootScope.segments.push(result);
-                    $rootScope.segmentsMap[result.id] = result;
-                    var newLink = SegmentLibrarySvc.createEmptyLink();
-                    newLink.id = result.id;
+                var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
+                if (oldLink != null) {
+                    SegmentService.merge($rootScope.segmentsMap[result.id], result);
+                    var newLink = SegmentService.getSegmentLink(result);
                     newLink.ext = ext;
-                    newLink.name = segment.name;
-                    // save link to segmentLibrary
-                    SegmentLibrarySvc.addChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
-                        $rootScope.igdocument.profile.segmentLibrary.children.push(newLink);
+                    SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
+                        oldLink.ext = newLink;
+                        $scope.saving = false;
+                        $scope.selectedChildren = [];
+                        if ($scope.segmentsParams)
+                            $scope.segmentsParams.refresh();
                         $rootScope.$broadcast('event:SetToC');
+                        waitingDialog.hide();
                     }, function (error) {
                         $scope.saving = false;
                         $rootScope.msg().text = error.data.text;
                         $rootScope.msg().type = error.data.type;
                         $rootScope.msg().show = true;
+                        waitingDialog.hide();
                     });
-                } else {
-                    var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
-                    if (oldLink != null) {
-                        SegmentService.merge($rootScope.segmentsMap[result.id], result);
-                        var newLink = SegmentService.getSegmentLink(result);
-                        newLink.ext = ext;
-                        SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
-                            oldLink.ext = newLink;
-                            $rootScope.$broadcast('event:SetToC');
-                        }, function (error) {
-                            $scope.saving = false;
-                            $rootScope.msg().text = error.data.text;
-                            $rootScope.msg().type = error.data.type;
-                            $rootScope.msg().show = true;
-                        });
-                    }
                 }
-                $scope.saving = false;
-                $scope.selectedChildren = [];
-                if ($scope.segmentsParams)
-                    $scope.segmentsParams.refresh();
                 //TODO update Toc
             }, function (error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
+                waitingDialog.hide();
+
             });
         };
 
@@ -381,7 +367,7 @@ angular.module('igl')
                 if (!$rootScope.datatypesMap[field.datatype] || $rootScope.datatypesMap[field.datatype] == null) {
                     $rootScope.datatypesMap[field.datatype] = datatype;
                 }
-                MastermapSvc.addDatatype(datatype.id, [field.id,field.type]);
+                MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
             });
@@ -396,7 +382,7 @@ angular.module('igl')
     });
 
 angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
-	$scope.changed = false;
+    $scope.changed = false;
     $scope.selectedNode = selectedNode;
     $scope.selectedTable = null;
     if (selectedNode.table != undefined) {
@@ -434,16 +420,16 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     angular.copy($rootScope.segment.predicates, $scope.tempPredicates);
 
     $scope.setChanged = function () {
-    	$scope.changed = true;
+        $scope.changed = true;
     }
 
     $scope.initPredicate = function () {
-    	$scope.newConstraint = angular.fromJson({
-    		position_1: null,
+        $scope.newConstraint = angular.fromJson({
+            position_1: null,
             position_2: null,
             location_1: null,
             location_2: null,
-        	segment: '',
+            segment: '',
             field_1: null,
             component_1: null,
             subComponent_1: null,
@@ -465,7 +451,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     }
 
     $scope.initComplexPredicate = function () {
-    	$scope.firstConstraint = null;
+        $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
         $scope.complexConstraintTrueUsage = null;
@@ -475,7 +461,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     $scope.initPredicate();
 
     $scope.deletePredicate = function (predicate) {
-    	$scope.tempPredicates.splice($scope.tempPredicates.indexOf(predicate), 1);
+        $scope.tempPredicates.splice($scope.tempPredicates.indexOf(predicate), 1);
         $scope.changed = true;
     };
 
@@ -508,13 +494,13 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         return false;
     };
 
-    $scope.addComplexPredicate = function(){
+    $scope.addComplexPredicate = function () {
         $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
         $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
-    	$scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
-    	$scope.tempPredicates.push($scope.complexConstraint);
-    	$scope.initComplexPredicate();
+        $scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
+        $scope.tempPredicates.push($scope.complexConstraint);
+        $scope.initComplexPredicate();
         $scope.changed = true;
     };
 
@@ -522,27 +508,27 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
 
         $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-        $scope.newConstraint.position_2  = $scope.genPosition($scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+        $scope.newConstraint.position_2 = $scope.genPosition($scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
         $scope.newConstraint.location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
         $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 
         if ($scope.newConstraint.position_1 != null) {
-        	var positionPath = $scope.selectedNode.position + '[1]';
-        	var cp = $rootScope.generatePredicate(positionPath, $scope.newConstraint);
-        	$scope.tempPredicates.push(cp);
+            var positionPath = $scope.selectedNode.position + '[1]';
+            var cp = $rootScope.generatePredicate(positionPath, $scope.newConstraint);
+            $scope.tempPredicates.push(cp);
             $scope.changed = true;
         }
         $scope.initPredicate();
     };
 
-    $scope.genLocation= function (segment, field, component, subComponent) {
+    $scope.genLocation = function (segment, field, component, subComponent) {
         var location = null;
         if (field != null && component == null && subComponent == null) {
-        	location = segment + '-' + field.position + "(" + field.name + ")";
+            location = segment + '-' + field.position + "(" + field.name + ")";
         } else if (field != null && component != null && subComponent == null) {
-        	location = segment + '-' + field.position + '.' + component.position + "(" + component.name + ")";
+            location = segment + '-' + field.position + '.' + component.position + "(" + component.name + ")";
         } else if (field != null && component != null && subComponent != null) {
-        	location = segment + '-' + field.position + '.' + component.position + '.' + subComponent.position + "(" + subComponent.name + ")";
+            location = segment + '-' + field.position + '.' + component.position + '.' + subComponent.position + "(" + subComponent.name + ")";
         }
 
         return location;
@@ -551,11 +537,11 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     $scope.genPosition = function (field, component, subComponent) {
         var position = null;
         if (field != null && component == null && subComponent == null) {
-        	position = field.position + '[1]';
+            position = field.position + '[1]';
         } else if (field != null && component != null && subComponent == null) {
-        	position = field.position + '[1].' + component.position + '[1]';
+            position = field.position + '[1].' + component.position + '[1]';
         } else if (field != null && component != null && subComponent != null) {
-        	position = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
+            position = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
         }
 
         return position;
@@ -566,8 +552,8 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     };
 
     $scope.saveclose = function () {
-    	angular.copy($scope.tempPredicates, $rootScope.segment.predicates);
-    	$rootScope.recordChanged();
+        angular.copy($scope.tempPredicates, $rootScope.segment.predicates);
+        $rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);
     };
 
@@ -587,12 +573,12 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     angular.copy($rootScope.segment.conformanceStatements, $scope.tempComformanceStatements);
 
     $scope.setChanged = function () {
-    	$scope.changed = true;
+        $scope.changed = true;
     }
 
     $scope.initConformanceStatement = function () {
-    	$scope.newConstraint = angular.fromJson({
-    		position_1: null,
+        $scope.newConstraint = angular.fromJson({
+            position_1: null,
             position_2: null,
             location_1: null,
             location_2: null,
@@ -617,7 +603,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     }
 
     $scope.initComplexStatement = function () {
-    	$scope.firstConstraint = null;
+        $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
         $scope.newComplexConstraintId = '';
@@ -648,14 +634,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         $scope.newConstraint.subComponent_2 = null;
     };
 
-    $scope.genLocation= function (segment, field, component, subComponent) {
+    $scope.genLocation = function (segment, field, component, subComponent) {
         var location = null;
         if (field != null && component == null && subComponent == null) {
-        	location = segment + '-' + field.position + "(" + field.name + ")";
+            location = segment + '-' + field.position + "(" + field.name + ")";
         } else if (field != null && component != null && subComponent == null) {
-        	location = segment + '-' + field.position + '.' + component.position + "(" + component.name + ")";
+            location = segment + '-' + field.position + '.' + component.position + "(" + component.name + ")";
         } else if (field != null && component != null && subComponent != null) {
-        	location = segment + '-' + field.position + '.' + component.position + '.' + subComponent.position + "(" + subComponent.name + ")";
+            location = segment + '-' + field.position + '.' + component.position + '.' + subComponent.position + "(" + subComponent.name + ")";
         }
 
         return location;
@@ -664,21 +650,21 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     $scope.genPosition = function (field, component, subComponent) {
         var position = null;
         if (field != null && component == null && subComponent == null) {
-        	position = field.position + '[1]';
+            position = field.position + '[1]';
         } else if (field != null && component != null && subComponent == null) {
-        	position = field.position + '[1].' + component.position + '[1]';
+            position = field.position + '[1].' + component.position + '[1]';
         } else if (field != null && component != null && subComponent != null) {
-        	position = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
+            position = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
         }
 
         return position;
     };
 
-    $scope.addComplexConformanceStatement = function(){
-    	$scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
-    	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
-    	$scope.tempComformanceStatements.push($scope.complexConstraint);
-    	$scope.initComplexStatement();
+    $scope.addComplexConformanceStatement = function () {
+        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+        $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+        $scope.tempComformanceStatements.push($scope.complexConstraint);
+        $scope.initComplexStatement();
         $scope.changed = true;
     };
 
@@ -690,9 +676,9 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 
         if ($scope.newConstraint.position_1 != null) {
-        	$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
-        	var positionPath = $scope.selectedNode.position + '[1]';
-        	var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
+            $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
+            var positionPath = $scope.selectedNode.position + '[1]';
+            var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
             $scope.tempComformanceStatements.push(cs);
             $scope.changed = true;
         }
@@ -700,30 +686,30 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     };
 
     $scope.ok = function () {
-    	angular.forEach($scope.tempComformanceStatements, function (cs) {
-    		$rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
-    	});
+        angular.forEach($scope.tempComformanceStatements, function (cs) {
+            $rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
+        });
 
-    	angular.forEach($rootScope.segment.conformanceStatements, function (cs) {
-    		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
-    	});
+        angular.forEach($rootScope.segment.conformanceStatements, function (cs) {
+            if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+        });
 
         $modalInstance.close($scope.selectedNode);
     };
 
     $scope.saveclose = function () {
-    	angular.forEach($scope.tempComformanceStatements, function (cs) {
-    		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
-    	});
-    	angular.copy($scope.tempComformanceStatements, $rootScope.segment.conformanceStatements);
-    	$rootScope.recordChanged();
+        angular.forEach($scope.tempComformanceStatements, function (cs) {
+            if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+        });
+        angular.copy($scope.tempComformanceStatements, $rootScope.segment.conformanceStatements);
+        $rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);
     };
 
 });
 
 
-angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService,SegmentLibrarySvc) {
+angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
 

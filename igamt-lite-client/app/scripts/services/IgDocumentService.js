@@ -67,8 +67,6 @@ angular.module('igl').factory('IgDocumentService',
                  });
                 return delay.promise;
             }
-
-
     };
 return IgDocumentService;
 }])
