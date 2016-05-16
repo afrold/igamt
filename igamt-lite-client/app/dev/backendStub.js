@@ -1,7 +1,7 @@
 /**
  * Created by gcr
  */
-angular.module('igl').run(function ($httpBackend, $q, $http) {
+angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
 
 
     function getDatatypes() {
@@ -127,7 +127,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
         request.send(null);
         var datatypeLib = [angular.fromJson(request.response)];
-        return [request.status, datatypeLib, {}];
+        return [200, datatypeLib, {}];
     });
 
     $httpBackend.whenPOST('api/datatype-library/findByScopesAndVersion').respond(function (method, url, data, headers) {
@@ -143,7 +143,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         request.open('GET', '../../resources/datatypeLibraries/dtLib-USER-2.5.1.json', false);
         request.send(null);
         datatypeLibs.push(angular.fromJson(request.response));
-        return [request.status, datatypeLibs, {}];
+        return [200, datatypeLibs, {}];
     });
 
 //    $httpBackend.whenGET(/^api\/datatype-library\/.*\/datatypes/).respond(function (method, url, data, headers) {
@@ -162,14 +162,14 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
         request.send(null);
         var datatypeLib = angular.fromJson(request.response);
-        return [request.status, datatypeLib, {}];
+        return [200, datatypeLib, {}];
     });
 
     $httpBackend.whenPOST('api/datatype-library/save').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/save begin=' + data);
         var response = angular.fromJson(request.response);
-        return [request.status, response, {}];
+        return [200, response, {}];
     });
 
     $httpBackend.whenGET(/^api\/segment-library\/.*/).respond(function (method, url, data, headers, params) {
@@ -190,8 +190,9 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
             var url_parts = url.split('?');
             var params = parseKeyValue( url_parts[1]);
             return [200, findDatatypeFlavors(params.name,params.hl7Version,params.scope), {}];
-
-         }else{
+        } else if(path.indexOf('delete') >= 0){
+            return [200, true, {}];
+        }else{
             return [200, findDatatype(path), {}];
          }
      });
@@ -200,16 +201,55 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         var request = new XMLHttpRequest();
         console.log('api/save begin=' + datatype);
         var response = angular.fromJson(datatype);
-        return [request.status, response, {}];
+        return [200, response, {}];
     });
 
     $httpBackend.whenGET(/^api\/segments\/.*/).respond(function (method, url, data, headers) {
-        var id = url.split('/')[1];
+        var id = url.split('/')[2];
         return [200, findSegment(id), {}];
     });
 
     $httpBackend.whenGET(/^api\/tables\/.*/).respond(function (method, url, data, headers) {
-        var id = url.split('/')[1];
+        var id = url.split('/')[2];
         return [200, findTable(id), {}];
-    });  
+    });
+
+    $httpBackend.whenPOST(/^api\/datatype-library\/.*/).respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        var libId = url.split('/')[2];
+        var action = url.split('/')[3];
+        if(action === 'updateChild'){
+            return [200, data, {}];
+        }else if(action === 'deleteChild'){
+            return [200, true, {}];
+        }else{
+            return [200, {}, {}];
+        }
+    });
+
+    $httpBackend.whenPOST(/^api\/segment-library\/.*/).respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        var libId = url.split('/')[2];
+        var action = url.split('/')[3];
+        if(action === 'updateChild'){
+            return [200, data, {}];
+        }else if(action === 'deleteChild'){
+            return [200, true, {}];
+        }else{
+            return [200, {}, {}];
+        }
+    });
+
+
+
+    $httpBackend.whenPOST('api/segments/save').respond(function (method, url, datatype, headers) {
+        var request = new XMLHttpRequest();
+        console.log('api/save begin=' + datatype);
+        var response = angular.fromJson(datatype);
+        return [200, response, {}];
+    });
+
+
+
+
 });

@@ -209,20 +209,17 @@ angular.module('igl')
             $rootScope.igs = [];
             $scope.tmpIgs = [].concat($rootScope.igs);
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
-                waitingDialog.show('Loading IG Documents...', {dialogSize: 'xs', progressType: 'info'});
-                $scope.loading = true;
+                 $scope.loading = true;
                 StorageService.setSelectedIgDocumentType($scope.igDocumentConfig.selectedType);
                 $http.get('api/igdocuments', {params: {"type": $scope.igDocumentConfig.selectedType}}).then(function (response) {
-                    waitingDialog.hide();
-                    $rootScope.igs = angular.fromJson(response.data);
+                     $rootScope.igs = angular.fromJson(response.data);
                     $scope.tmpIgs = [].concat($rootScope.igs);
                     $scope.loading = false;
                     delay.resolve(true);
                 }, function (error) {
                     $scope.loading = false;
                     $scope.error = error.data;
-                    waitingDialog.hide();
-                    delay.reject(false);
+                     delay.reject(false);
                 });
             } else {
                 delay.reject(false);
@@ -232,8 +229,7 @@ angular.module('igl')
 
         $scope.clone = function (igdocument) {
             $scope.toEditIGDocumentId = igdocument.id;
-            waitingDialog.show('Copying IG Document...', {dialogSize: 'xs', progressType: 'info'});
-            $http.post('api/igdocuments/' + igdocument.id + '/clone').then(function (response) {
+             $http.post('api/igdocuments/' + igdocument.id + '/clone').then(function (response) {
                 $scope.toEditIGDocumentId = null;
                 if ($scope.igDocumentConfig.selectedType === 'USER') {
                     $rootScope.igs.push(angular.fromJson(response.data));
@@ -244,14 +240,12 @@ angular.module('igl')
                 $rootScope.msg().text = "igClonedSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
-                waitingDialog.hide();
-            }, function (error) {
+             }, function (error) {
                 $scope.toEditIGDocumentId = null;
                 $rootScope.msg().text = "igClonedFailed";
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
-                waitingDialog.hide();
-            });
+             });
         };
 
         $scope.findOne = function (id) {
@@ -296,8 +290,7 @@ angular.module('igl')
 
         $scope.openIGDocument = function (igdocument) {
             if (igdocument != null) {
-                waitingDialog.show('Opening IG Document...', {dialogSize: 'xs', progressType: 'info'});
-                $scope.selectIgTab(1);
+                 $scope.selectIgTab(1);
                 $timeout(function () {
                  $rootScope.TreeIgs =[];
                  $rootScope.TreeIgs.push(igdocument);
@@ -317,16 +310,12 @@ angular.module('igl')
                                 $scope.loadToc();
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();
-                                waitingDialog.hide();
-                            },function(){
-                                waitingDialog.hide();
-                            });
+                             },function(){
+                             });
                         },function(){
-                            waitingDialog.hide();
-                        });
+                         });
                     },function(){
-                        waitingDialog.hide();
-                    });
+                     });
                 }, 100);
             }
         };
@@ -629,10 +618,8 @@ angular.module('igl')
             if ($rootScope.hasChanges()) {
                 $scope.confirmClose();
             } else {
-                waitingDialog.show('Closing igdocument...', {dialogSize: 'xs', progressType: 'info'});
-                $rootScope.closeIGDocument();
-                waitingDialog.hide();
-            }
+                 $rootScope.closeIGDocument();
+             }
         };
 
         $scope.gotoSection = function (obj, type) {
@@ -796,7 +783,7 @@ angular.module('igl')
                 $scope.loadingSelection = true;
                 DatatypeService.getOne(datatype.id).then(function (result) {
                     $rootScope.datatype = angular.copy(result);
-                    $rootScope.datatype.ext = $rootScope.getExtension($rootScope.datatype);
+                    $rootScope.datatype.ext = $rootScope.getDatatypeExtension($rootScope.datatype);
                     $scope.loadingSelection = false;
                     $rootScope.datatype["type"] = "datatype";
                     $rootScope.tableWidth = null;
@@ -879,16 +866,14 @@ angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalIn
     $scope.loading = false;
     $scope.exportChanges = function () {
         $scope.loading = true;
-        waitingDialog.show('Exporting changes...', {dialogSize: 'xs', progressType: 'success'});
-        var form = document.createElement("form");
+         var form = document.createElement("form");
         form.action = 'api/igdocuments/export/changes';
         form.method = "POST";
         form.target = "_target";
         form.style.display = 'none';
         form.params = document.body.appendChild(form);
         form.submit();
-        waitingDialog.hide();
-    };
+     };
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
@@ -1035,21 +1020,18 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
 
     $scope.save = function () {
         $scope.saving = true;
-        waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
-        $scope.saved = false;
+         $scope.saved = false;
         if($rootScope.igDocument != null && $rootScope.metaData != null) {
             IgDocumentService.saveMetadata($rootScope.igDocument.id, $rootScope.metaData).then(function (result) {
                 $scope.saving = false;
                 $scope.saved = true;
-                waitingDialog.hide();
-                $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
+                 $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
             }, function (error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
                 $scope.saved = false;
-                waitingDialog.hide();
 
             });
         }
@@ -1063,20 +1045,17 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
     $scope.saving = false;
     $scope.saved = false;
     $scope.save = function () {
-        waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
-        $scope.saving = true;
+         $scope.saving = true;
         $scope.saved = false;
         if($rootScope.igDocument != null && $rootScope.metaData != null) {
             ProfileSvc.save($rootScope.igDocument.id, $rootScope.metaData).then(function (result) {
                 $scope.saving = false;
                 $scope.saved = true;
-                waitingDialog.hide();
-                $rootScope.igdocument.profile.metaData = angular.copy($rootScope.metaData);
+                 $rootScope.igdocument.profile.metaData = angular.copy($rootScope.metaData);
             }, function (error) {
                 $scope.saving = false;
                 $scope.saved = false;
-                waitingDialog.hide();
-                $rootScope.msg().text = error.data.text;
+                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
             });

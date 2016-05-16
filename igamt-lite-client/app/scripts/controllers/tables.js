@@ -247,7 +247,6 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
 
     $scope.delete = function () {
         $scope.loading = true;
-        waitingDialog.show('Copying Data Type...', {dialogSize: 'xs', progressType: 'success'});
 
         TableService.delete($scope.tableToDelete).then(function (result) {
                 TableLibrarySvc.deleteChild($scope.tableToDelete.id).then(function (res) {
@@ -270,23 +269,20 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
                     $scope.loading = false;
                     $rootScope.$broadcast('event:SetToC');
                     $modalInstance.close($scope.tableToDelete);
-                    waitingDialog.hide();
-                }, function (error) {
+                 }, function (error) {
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = "danger";
                     $rootScope.msg().show = true;
                     $rootScope.manualHandle = true;
                     $scope.loading = false;
-                    waitingDialog.hide();
-                });
+                 });
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
                 $rootScope.manualHandle = true;
                 $scope.loading = false;
-                waitingDialog.hide();
-            }
+             }
         );
     };
 

@@ -97,7 +97,7 @@ angular.module('igl').factory('SegmentService',
                 to.hl7Version = from.hl7Version;
                 to.accountId = from.accountId;
                 to.participants =  from.participants;
-                to.libId = from.libId;
+                to.libIds = from.libIds;
                 to.predicates = from.predicates;
                 to.conformanceStatements = from.conformanceStatements;
                 to.sectionPosition = from.sectionPosition;

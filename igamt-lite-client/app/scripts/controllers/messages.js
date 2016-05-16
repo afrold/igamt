@@ -71,6 +71,9 @@ angular.module('igl')
                     currentNode: function () {
                         return segmentRef;
                     },
+                    segmentLibrary: function () {
+                        return $rootScope.igdocument.profile.segmentLibrary;
+                    },
                     hl7Version: function () {
                         return $rootScope.igdocument.metaData.hl7Version;
                     }
