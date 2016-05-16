@@ -117,7 +117,7 @@ public class Datatypes extends TextbasedSectionModel implements java.io.Serializ
 					return c;
 				} else {
 					Component r = findOneComponent(id,
-							this.findOne(c.getDatatype()));
+							this.findOne(c.getDatatype().getId()));
 					if (r != null) {
 						return r;
 					}

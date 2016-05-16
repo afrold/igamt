@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,8 @@ import com.mongodb.DBObject;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -143,11 +145,29 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
 		c.setMaxLength((String) source.get(MAX_LENGTH));
 		c.setConfLength(getConfLength(source));
 		c.setPosition((Integer) source.get(POSITION));
-		c.setTable(((String) source.get(Constant.TABLE)));
+		c.setTable((tableLink((DBObject) source.get(Constant.TABLE))));
 		c.setUsage(Usage.valueOf((String) source.get(USAGE)));
-		c.setBindingLocation((String) source.get(BINDING_LOCATION));
-		c.setBindingStrength((String) source.get(BINDING_STRENGTH));
-		c.setDatatype(((String) source.get(Constant.DATATYPE)));
+		c.setDatatype((datatypeLink((DBObject) source.get(Constant.DATATYPE))));
 		return c;
+	}
+	
+	private DatatypeLink datatypeLink(DBObject source){
+		DatatypeLink dl = new DatatypeLink();
+		dl.setId(readMongoId(source));
+		dl.setName((String) source.get("name"));
+		dl.setExt((String) source.get("ext"));
+		
+		return dl;
+	}
+
+	private TableLink tableLink(DBObject source){
+		if(source == null) return null;
+		TableLink tl = new TableLink();
+		tl.setId(readMongoId(source));
+		tl.setBindingIdentifier((String) source.get("bindingIdentifier"));
+		tl.setBindingLocation((String) source.get("bindingLocation"));
+		tl.setBindingStrength((String) source.get("bindingStrength"));
+		
+		return tl;
 	}
 }
