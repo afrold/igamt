@@ -8,7 +8,7 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters;
 
 import java.util.HashSet;
 
@@ -19,33 +19,32 @@ import org.springframework.data.convert.ReadingConverter;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibraryMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 
 /**
  * @author gcr1 12.Feb.16
  */
 @ReadingConverter
-public class SegmentLibraryReadConverter extends AbstractReadConverter<DBObject, SegmentLibrary> {
-	
-	private static final Logger log = LoggerFactory.getLogger(SegmentLibraryReadConverter.class);
+public class TableLibraryReadConverter extends AbstractReadConverter<DBObject, TableLibrary> {
 
-	public SegmentLibraryReadConverter() {
-		log.info("SegmentLibraryReadConverter Read Converter Created");
+	private static final Logger log = LoggerFactory.getLogger(TableLibraryReadConverter.class);
+
+	public TableLibraryReadConverter() {
+		log.info("TableReadConverter Read Converter Created");
 	}
 
 	@Override
-	public SegmentLibrary convert(DBObject source) {
-		SegmentLibrary lib = new SegmentLibrary();
-		return lib(source, lib);
+	public TableLibrary convert(DBObject source) {
+		TableLibrary dts = new TableLibrary();
+		return lib(source, dts);
 	} 
 	
-	private SegmentLibrary lib(DBObject source, SegmentLibrary lib) {
+	private TableLibrary lib(DBObject source, TableLibrary lib) {
 		lib.setId(readMongoId(source));
-		lib.setType(Constant.SEGMENTS);
+		lib.setType(TABLES);
 		lib.setAccountId((Long) source.get(ACCOUNT_ID));
 		lib.setMetaData(metaData((DBObject)source.get(METADATA)));
 		lib.setScope(SCOPE.valueOf((String) source.get(SCOPE_)));
@@ -55,24 +54,25 @@ public class SegmentLibraryReadConverter extends AbstractReadConverter<DBObject,
 		lib.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		lib.setSectionTitle((String) source.get(SECTION_TITLE));
 		BasicDBList libDBObjects = (BasicDBList) source.get(CHILDREN);
-		lib.setChildren(new HashSet<SegmentLink>());
+		lib.setChildren(new HashSet<TableLink>());
 		
 		if (libDBObjects != null) {
 			for (Object childObj : libDBObjects) {
 				DBObject dbObj = (DBObject)childObj;
 				String id = readMongoId(dbObj);
-				String name = (String)dbObj.get(NAME);
-				String ext = (String)dbObj.get(EXT);
-				SegmentLink sgl = new SegmentLink(id, name, ext);
-				lib.addSegment(sgl);
+				String bindingIdentifier = (String)dbObj.get("bindingIdentifier");
+				String bindingStrength = (String)dbObj.get("bindingStrength");
+				String bindingLocation = (String)dbObj.get("bindingLocation");
+				TableLink tbl = new TableLink(id, bindingIdentifier, bindingStrength, bindingLocation);
+				lib.addTable(tbl);
 			}
 		}
 
 		return lib;
 	}
 	
-	SegmentLibraryMetaData metaData(DBObject source) {
-		SegmentLibraryMetaData metaData = new SegmentLibraryMetaData();
+	TableLibraryMetaData metaData(DBObject source) {
+		TableLibraryMetaData metaData = new TableLibraryMetaData();
 		metaData.setDate((String)source.get(DATE));
 		metaData.setExt((String)source.get(EXTENSION));
 		metaData.setHl7Version((String)source.get(HL7_VERSION));

@@ -1,38 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -81,6 +55,32 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCo
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/igdocuments")
@@ -143,7 +143,8 @@ public class IGDocumentController extends CommonController {
 	 * @throws IGDocumentException
 	 */
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public List<IGDocument> getIGDocumentListByType(@RequestParam("type") String type)
+	public List<IGDocument> getIGDocumentListByType(
+			@RequestParam("type") String type)
 			throws UserAccountNotFoundException, IGDocumentListException {
 		try {
 			if ("PRELOADED".equalsIgnoreCase(type)) {
@@ -175,10 +176,12 @@ public class IGDocumentController extends CommonController {
 	 * @return
 	 * @throws UserAccountNotFoundException
 	 */
-	private List<IGDocument> userIGDocuments() throws UserAccountNotFoundException {
+	private List<IGDocument> userIGDocuments()
+			throws UserAccountNotFoundException {
 		log.info("Fetching all custom IGDocuments...");
 		User u = userService.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+		Account account = accountRepository.findByTheAccountsUsername(u
+				.getUsername());
 		if (account == null) {
 			throw new UserAccountNotFoundException();
 		}
@@ -187,28 +190,34 @@ public class IGDocumentController extends CommonController {
 
 	@RequestMapping(value = "/{id}/clone", method = RequestMethod.POST)
 	public IGDocument clone(@PathVariable("id") String id)
-			throws IGDocumentNotFoundException, UserAccountNotFoundException, IGDocumentException {
+			throws IGDocumentNotFoundException, UserAccountNotFoundException,
+			IGDocumentException {
 		try {
 			log.info("Clone IGDocument with id=" + id);
 
-			HashMap<String, SegmentLink> segmentIdChangeMap = new HashMap<String, SegmentLink>();
-			HashMap<String, DatatypeLink> datatypeIdChangeMap = new HashMap<String, DatatypeLink>();
-			HashMap<String, TableLink> tableIdChangeMap = new HashMap<String, TableLink>();
+			HashMap<String, String> segmentIdChangeMap = new HashMap<String, String>();
+			HashMap<String, String> datatypeIdChangeMap = new HashMap<String, String>();
+			HashMap<String, String> tableIdChangeMap = new HashMap<String, String>();
 
 			User u = userService.getCurrentUser();
-			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+			Account account = accountRepository.findByTheAccountsUsername(u
+					.getUsername());
 			if (account == null)
 				throw new UserAccountNotFoundException();
 			IGDocument igDocument = this.findIGDocument(id);
 
-			for (Message m : igDocument.getProfile().getMessages().getChildren()) {
+			for (Message m : igDocument.getProfile().getMessages()
+					.getChildren()) {
 				m.setId(null);
 				messageService.save(m);
 			}
 
-			DatatypeLibrary datatypeLibrary = igDocument.getProfile().getDatatypeLibrary();
-			SegmentLibrary segmentLibrary = igDocument.getProfile().getSegmentLibrary();
-			TableLibrary tableLibrary = igDocument.getProfile().getTableLibrary();
+			DatatypeLibrary datatypeLibrary = igDocument.getProfile()
+					.getDatatypeLibrary();
+			SegmentLibrary segmentLibrary = igDocument.getProfile()
+					.getSegmentLibrary();
+			TableLibrary tableLibrary = igDocument.getProfile()
+					.getTableLibrary();
 
 			DatatypeLibrary clonedDatatypeLibrary = datatypeLibrary.clone();
 			SegmentLibrary clonedSegmentLibrary = segmentLibrary.clone();
@@ -222,12 +231,14 @@ public class IGDocumentController extends CommonController {
 			segmentLibraryService.save(clonedSegmentLibrary);
 			tableLibraryService.save(clonedTableLibrary);
 
-			List<Datatype> datatypes = datatypeService.findByFullDTsLibIds(datatypeLibrary.getId());
+			List<Datatype> datatypes = datatypeService
+					.findByFullDTsLibIds(datatypeLibrary.getId());
 			if (datatypes != null) {
 				for (int i = 0; i < datatypes.size(); i++) {
 					String oldDatatypeId = null;
 					Datatype d = datatypes.get(i);
-					DatatypeLink dl = datatypeLibrary.findOne(d.getId()).clone();
+					DatatypeLink dl = datatypeLibrary.findOne(d.getId())
+							.clone();
 					if (d.getScope().equals(SCOPE.USER)) {
 						oldDatatypeId = d.getId();
 						d.setId(null);
@@ -239,12 +250,13 @@ public class IGDocumentController extends CommonController {
 					dl.setId(d.getId());
 					clonedDatatypeLibrary.addDatatype(dl);
 					if (oldDatatypeId != null) {
-						datatypeIdChangeMap.put(oldDatatypeId, dl);
+						datatypeIdChangeMap.put(oldDatatypeId, d.getId());
 					}
 				}
 			}
 
-			List<Segment> segments = segmentService.findByLibIds(segmentLibrary.getId());
+			List<Segment> segments = segmentService.findByLibIds(segmentLibrary
+					.getId());
 			if (segments != null) {
 				for (int i = 0; i < segments.size(); i++) {
 					String oldSegmentId = null;
@@ -260,13 +272,14 @@ public class IGDocumentController extends CommonController {
 					sl.setId(s.getId());
 					clonedSegmentLibrary.addSegment(sl);
 					if (oldSegmentId != null) {
-						segmentIdChangeMap.put(oldSegmentId, sl);
+						segmentIdChangeMap.put(oldSegmentId, s.getId());
 					}
 				}
 
 			}
 
-			List<Table> tables = tableService.findByLibIds(tableLibrary.getId());
+			List<Table> tables = tableService
+					.findByLibIds(tableLibrary.getId());
 			if (tables != null) {
 				for (int i = 0; i < tables.size(); i++) {
 					String oldTableId = null;
@@ -282,7 +295,7 @@ public class IGDocumentController extends CommonController {
 					tl.setId(t.getId());
 					clonedTableLibrary.addTable(tl);
 					if (oldTableId != null) {
-						tableIdChangeMap.put(oldTableId, tl);
+						tableIdChangeMap.put(oldTableId, t.getId());
 					}
 				}
 			}
@@ -295,7 +308,8 @@ public class IGDocumentController extends CommonController {
 			igDocument.getProfile().setSegmentLibrary(clonedSegmentLibrary);
 			igDocument.getProfile().setTableLibrary(clonedTableLibrary);
 
-			updateModifiedId(tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap, igDocument.getProfile());
+			updateModifiedId(tableIdChangeMap, datatypeIdChangeMap,
+					segmentIdChangeMap, igDocument.getProfile());
 
 			igDocument.setId(null);
 			igDocument.setScope(IGDocumentScope.USER);
@@ -310,22 +324,21 @@ public class IGDocumentController extends CommonController {
 		}
 	}
 
-	private void updateModifiedId(HashMap<String, TableLink> tableIdChangeMap,
-			HashMap<String, DatatypeLink> datatypeIdChangeMap, HashMap<String, SegmentLink> segmentIdChangeMap,
-			Profile profile) {
+	private void updateModifiedId(HashMap<String, String> tableIdChangeMap,
+			HashMap<String, String> datatypeIdChangeMap,
+			HashMap<String, String> segmentIdChangeMap, Profile profile) {
 		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
 			Segment s = segmentService.findById(sl.getId());
 			for (Field f : s.getFields()) {
-				if (f.getDatatype() != null && datatypeIdChangeMap.containsKey(f.getDatatype()))
-					f.setDatatype(datatypeIdChangeMap.get(f.getDatatype()));
-				if (f.getTable() != null && tableIdChangeMap.containsKey(f.getTable()))
-					f.setTable(tableIdChangeMap.get(f.getTable().getId()));
+				if (f.getDatatype() != null && f.getDatatype().getId() != null && datatypeIdChangeMap.containsKey(f.getDatatype().getId()))
+					f.getDatatype().setId(datatypeIdChangeMap.get(f.getDatatype().getId()));
+				if (f.getTable() != null && f.getTable().getId() != null && tableIdChangeMap.containsKey(f.getTable().getId()))
+					f.getDatatype().setId(tableIdChangeMap.get(f.getTable().getId()));
 			}
-
-			for (Mapping map : s.getDynamicMapping().getMappings()) {
-				for (Case c : map.getCases()) {
-					if (c.getDatatype() != null && datatypeIdChangeMap.containsKey(c.getDatatype()))
-						c.setDatatype(datatypeIdChangeMap.get(c.getDatatype()));
+			
+			for(Mapping map:s.getDynamicMapping().getMappings()){
+				for(Case c : map.getCases()){
+					if(c.getDatatype() != null && datatypeIdChangeMap.containsKey(c.getDatatype())) c.setDatatype(datatypeIdChangeMap.get(c.getDatatype()));
 				}
 			}
 			segmentService.save(s);
@@ -334,24 +347,25 @@ public class IGDocumentController extends CommonController {
 		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
 			Datatype d = datatypeService.findById(dl.getId());
 			for (Component c : d.getComponents()) {
-				if (c.getDatatype() != null && datatypeIdChangeMap.containsKey(c.getDatatype()))
-					c.setDatatype(datatypeIdChangeMap.get(c.getDatatype()));
-				if (c.getTable() != null && tableIdChangeMap.containsKey(c.getTable()))
-					c.setTable(tableIdChangeMap.get(c.getTable()));
+				if (c.getDatatype() != null && c.getDatatype().getId() != null && datatypeIdChangeMap.containsKey(c.getDatatype().getId()))
+					c.getDatatype().setId(datatypeIdChangeMap.get(c.getDatatype().getId()));
+				if (c.getTable() != null && c.getTable().getId() != null && tableIdChangeMap.containsKey(c.getTable().getId()))
+					c.getTable().setId(tableIdChangeMap.get(c.getTable().getId()));
 			}
 			datatypeService.save(d);
 		}
 
 		for (Message m : profile.getMessages().getChildren()) {
 			for (SegmentRefOrGroup sog : m.getChildren()) {
-				this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap, sog);
+				this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap,
+						sog);
 			}
 			messageService.save(m);
 		}
 	}
 
-	private void udateModifiedSegmentIdAndVisitChild(HashMap<String, String> segmentIdChangeMap,
-			SegmentRefOrGroup sog) {
+	private void udateModifiedSegmentIdAndVisitChild(
+			HashMap<String, String> segmentIdChangeMap, SegmentRefOrGroup sog) {
 		if (sog instanceof SegmentRef) {
 			SegmentRef segmentRef = (SegmentRef) sog;
 			if (segmentIdChangeMap.containsKey(segmentRef.getRef()))
@@ -362,18 +376,21 @@ public class IGDocumentController extends CommonController {
 			Group g = (Group) sog;
 
 			for (SegmentRefOrGroup child : g.getChildren()) {
-				this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap, child);
+				this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap,
+						child);
 			}
 		}
 
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public IGDocument get(@PathVariable("id") String id) throws IGDocumentNotFoundException {
+	public IGDocument get(@PathVariable("id") String id)
+			throws IGDocumentNotFoundException {
 		try {
 			log.info("Fetching profile with id=" + id);
 			User u = userService.getCurrentUser();
-			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+			Account account = accountRepository.findByTheAccountsUsername(u
+					.getUsername());
 			if (account == null)
 				throw new UserAccountNotFoundException();
 			IGDocument d = findIGDocument(id);
@@ -386,17 +403,20 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
-	public ResponseMessage delete(@PathVariable("id") String id) throws IGDocumentDeleteException {
+	public ResponseMessage delete(@PathVariable("id") String id)
+			throws IGDocumentDeleteException {
 		try {
 			User u = userService.getCurrentUser();
-			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+			Account account = accountRepository.findByTheAccountsUsername(u
+					.getUsername());
 			if (account == null)
 				throw new UserAccountNotFoundException();
 			log.info("Delete IGDocument with id=" + id);
 			IGDocument d = findIGDocument(id);
 			if (d.getAccountId() == account.getId()) {
 				igDocumentService.delete(id);
-				return new ResponseMessage(ResponseMessage.Type.success, "igDocumentDeletedSuccess", null);
+				return new ResponseMessage(ResponseMessage.Type.success,
+						"igDocumentDeletedSuccess", null);
 			} else {
 				throw new OperationNotAllowException("delete");
 			}
@@ -408,16 +428,21 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public IGDocumentSaveResponse save(@RequestBody IGDocumentChangeCommand command) throws IGDocumentSaveException {
+	public IGDocumentSaveResponse save(
+			@RequestBody IGDocumentChangeCommand command)
+			throws IGDocumentSaveException {
 		try {
 			User u = userService.getCurrentUser();
-			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+			Account account = accountRepository.findByTheAccountsUsername(u
+					.getUsername());
 			if (account == null)
 				throw new UserAccountNotFoundException();
-			log.info("Applying changes to IGDocument=" + command.getIgDocument().getId() + " for account="
+			log.info("Applying changes to IGDocument="
+					+ command.getIgDocument().getId() + " for account="
 					+ command.getIgDocument().getAccountId());
 			IGDocument saved = igDocumentService.apply(command.getIgDocument());
-			return new IGDocumentSaveResponse(saved.getMetaData().getDate(), saved.getMetaData().getVersion());
+			return new IGDocumentSaveResponse(saved.getMetaData().getDate(),
+					saved.getMetaData().getVersion());
 		} catch (RuntimeException e) {
 			throw new IGDocumentSaveException(e);
 		} catch (Exception e) {
@@ -426,114 +451,146 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/export/xml", method = RequestMethod.POST, produces = "text/xml", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-	public void export(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
+	public void export(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException {
 		log.info("Exporting as xml file IGDcoument with id=" + id);
 		IGDocument d = this.findIGDocument(id);
 		InputStream content = null;
 		content = igDocumentExport.exportAsXml(d);
 		response.setContentType("text/xml");
-		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ escapeSpace(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".xml");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/{id}/export/html", method = RequestMethod.POST, produces = "text/html", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-	public void exportHtml(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
+	public void exportHtml(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException {
 		log.info("Exporting as html file IGDcoument with id=" + id);
 		IGDocument d = this.findIGDocument(id);
 		InputStream content = null;
 		content = igDocumentExport.exportAsHtml(d);
 		response.setContentType("text/html");
-		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ escapeSpace(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".html");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/{id}/export/zip", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-	public void exportZip(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
+	public void exportZip(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException {
 		log.info("Exporting as xml file profile with id=" + id);
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
 		content = igDocumentExport.exportAsZip(d);
 		response.setContentType("application/zip");
-		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ escapeSpace(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/{id}/export/Validation/{mIds}", method = RequestMethod.POST, produces = "application/zip")
-	public void exportValidationXMLByMessages(@PathVariable("id") String id, @PathVariable("mIds") String[] messageIds,
+	public void exportValidationXMLByMessages(@PathVariable("id") String id,
+			@PathVariable("mIds") String[] messageIds,
 			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
-		log.info("Exporting as xml file profile with id=" + id + " for selected messages="
-				+ Arrays.toString(messageIds));
+			throws IOException, IGDocumentNotFoundException,
+			CloneNotSupportedException {
+		log.info("Exporting as xml file profile with id=" + id
+				+ " for selected messages=" + Arrays.toString(messageIds));
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
-		content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
+		content = igDocumentExport.exportAsValidationForSelectedMessages(d,
+				messageIds);
 		response.setContentType("application/zip");
-		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ escapeSpace(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/{id}/export/Gazelle/{mIds}", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-	public void exportGazelleXMLByMessages(@PathVariable("id") String id, @PathVariable("mIds") String[] messageIds,
+	public void exportGazelleXMLByMessages(@PathVariable("id") String id,
+			@PathVariable("mIds") String[] messageIds,
 			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
-		log.info("Exporting as xml file profile with id=" + id + " for selected messages=" + messageIds);
+			throws IOException, IGDocumentNotFoundException,
+			CloneNotSupportedException {
+		log.info("Exporting as xml file profile with id=" + id
+				+ " for selected messages=" + messageIds);
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
-		content = igDocumentExport.exportAsGazelleForSelectedMessages(d, messageIds);
+		content = igDocumentExport.exportAsGazelleForSelectedMessages(d,
+				messageIds);
 		response.setContentType("application/zip");
-		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ escapeSpace(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/{id}/export/Display/{mIds}", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-	public void exportDisplayXMLByMessages(@PathVariable("id") String id, @PathVariable("mIds") String[] messageIds,
+	public void exportDisplayXMLByMessages(@PathVariable("id") String id,
+			@PathVariable("mIds") String[] messageIds,
 			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+			throws IOException, IGDocumentNotFoundException,
+			CloneNotSupportedException {
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
-		content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageIds);
+		content = igDocumentExport.exportAsDisplayForSelectedMessage(d,
+				messageIds);
 		response.setContentType("application/zip");
-		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ escapeSpace(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/{id}/export/pdf", method = RequestMethod.POST, produces = "application/pdf", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-	public void exportPdfFromXsl(@PathVariable("id") String id, HttpServletRequest request,
-			HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
+	public void exportPdfFromXsl(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, IGDocumentNotFoundException {
 		log.info("Exporting as pdf file profile with id=" + id);
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
 		content = igDocumentExport.exportAsPdf(d);
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ escapeSpace(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/{id}/export/docx", method = RequestMethod.POST, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-	public void exportDocx(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
+	public void exportDocx(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException {
 		log.info("Exporting as docx file profile with id=" + id);
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
 		content = igDocumentExport.exportAsDocx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ escapeSpace(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".docx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/{id}/delta/pdf", method = RequestMethod.POST, produces = "application/pdf", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-	public void deltaPdf(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
+	public void deltaPdf(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException {
 		log.info("Exporting delta as pdf file IGDocument with id=" + id);
 		IGDocument d = findIGDocument(id);
@@ -542,12 +599,15 @@ public class IGDocumentController extends CommonController {
 		// TODO need to implement igDocumentService.diffToPdf
 		content = igDocumentService.diffToPdf(d);
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment;filename=" + d.getMetaData().getTitle() + "-Delta-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ d.getMetaData().getTitle() + "-Delta-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	private IGDocument findIGDocument(String documentId) throws IGDocumentNotFoundException {
+	private IGDocument findIGDocument(String documentId)
+			throws IGDocumentNotFoundException {
 		IGDocument d = igDocumentService.findOne(documentId);
 		if (d == null) {
 			throw new IGDocumentNotFoundException(documentId);
@@ -556,15 +616,18 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/export/xslx", method = RequestMethod.POST, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-	public void exportXlsx(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
+	public void exportXlsx(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException {
 		log.info("Exporting as spreadsheet profile with id=" + id);
 		InputStream content = null;
 		IGDocument d = findIGDocument(id);
 		content = igDocumentExport.exportAsXlsx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ escapeSpace(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".xlsx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -574,8 +637,10 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/verify/segment/{sId}", method = RequestMethod.POST, produces = "application/json")
-	public ElementVerification verifySegment(@PathVariable("id") String id, @PathVariable("sId") String sId,
-			HttpServletRequest request, HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
+	public ElementVerification verifySegment(@PathVariable("id") String id,
+			@PathVariable("sId") String sId, HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			IGDocumentNotFoundException {
 		log.info("Verifying segment " + sId + " from profile " + id);
 		IGDocument d = igDocumentService.findOne(id);
 		if (d == null) {
@@ -585,8 +650,10 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/verify/datatype/{dtId}", method = RequestMethod.POST, produces = "application/json")
-	public ElementVerification verifyDatatype(@PathVariable("id") String id, @PathVariable("dtId") String dtId,
-			HttpServletRequest request, HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
+	public ElementVerification verifyDatatype(@PathVariable("id") String id,
+			@PathVariable("dtId") String dtId, HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			IGDocumentNotFoundException {
 		log.info("Verifying datatype " + dtId + " from profile " + id);
 		IGDocument d = igDocumentService.findOne(id);
 		if (d == null) {
@@ -596,8 +663,10 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/verify/valueset/{vsId}", method = RequestMethod.POST, produces = "application/json")
-	public ElementVerification verifyValueSet(@PathVariable("id") String id, @PathVariable("vsId") String vsId,
-			HttpServletRequest request, HttpServletResponse response) throws IOException, ProfileNotFoundException {
+	public ElementVerification verifyValueSet(@PathVariable("id") String id,
+			@PathVariable("vsId") String vsId, HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			ProfileNotFoundException {
 		log.info("Verifying segment " + vsId + " from profile " + id);
 		IGDocument d = igDocumentService.findOne(id);
 		if (d == null) {
@@ -614,15 +683,19 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{hl7Version}/tables", method = RequestMethod.GET, produces = "application/json")
-	public Set<Table> findHl7Tables(@PathVariable("hl7Version") String hl7Version) {
+	public Set<Table> findHl7Tables(
+			@PathVariable("hl7Version") String hl7Version) {
 		log.info("Fetching all Tables for " + hl7Version);
 
 		Set<Table> result = new HashSet<Table>();
 
-		List<IGDocument> igDocuments = igDocumentCreation.findIGDocumentsByHl7Versions();
+		List<IGDocument> igDocuments = igDocumentCreation
+				.findIGDocumentsByHl7Versions();
 		for (IGDocument igd : igDocuments) {
-			if (igd.getProfile().getMetaData().getHl7Version().equals(hl7Version)) {
-				for (TableLink link : igd.getProfile().getTableLibrary().getChildren()) {
+			if (igd.getProfile().getMetaData().getHl7Version()
+					.equals(hl7Version)) {
+				for (TableLink link : igd.getProfile().getTableLibrary()
+						.getChildren()) {
 					Table t = tableService.findById(link.getId());
 					t.setBindingIdentifier(link.getBindingIdentifier());
 					result.add(t);
@@ -633,7 +706,9 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{searchText}/PHINVADS/tables", method = RequestMethod.GET, produces = "application/json")
-	public Set<Table> findPHINVADSTables(@PathVariable("searchText") String searchText) throws MalformedURLException {
+	public Set<Table> findPHINVADSTables(
+			@PathVariable("searchText") String searchText)
+			throws MalformedURLException {
 		log.info("Fetching all Tables for " + searchText);
 		return new PhinvadsWSCallService().generateTableList(searchText);
 	}
@@ -645,8 +720,8 @@ public class IGDocumentController extends CommonController {
 	// public List<String[]> getMessageListByVersion(@PathVariable("hl7Version")
 	// String hl7Version, MessageByListCommand command) {
 	@RequestMapping(value = "/messageListByVersion", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public List<MessageEvents> getMessageListByVersion(@RequestBody String hl7Version)
-			throws IGDocumentNotFoundException {
+	public List<MessageEvents> getMessageListByVersion(
+			@RequestBody String hl7Version) throws IGDocumentNotFoundException {
 		log.info("Fetching messages of version hl7Version=" + hl7Version);
 		List<MessageEvents> messages = igDocumentCreation.summary(hl7Version);
 		if (messages.isEmpty()) {
@@ -656,14 +731,17 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public IGDocument createIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw) throws IGDocumentException {
+	public IGDocument createIG(
+			@RequestBody IntegrationIGDocumentRequestWrapper idrw)
+			throws IGDocumentException {
 		log.info("Creation of IGDocument.");
 		log.debug("idrw.getMsgEvts()=" + idrw.getMsgEvts());
 		log.debug("idrw.getAccountId()=" + idrw.getAccountId());
 		User u = userService.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-		IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(), idrw.getHl7Version(),
-				account.getId());
+		Account account = accountRepository.findByTheAccountsUsername(u
+				.getUsername());
+		IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(
+				idrw.getMsgEvts(), idrw.getHl7Version(), account.getId());
 
 		assert (igDocument.getId() != null);
 		assert (igDocument.getAccountId() != null);
@@ -671,18 +749,23 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public IGDocument updateIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw) throws IGDocumentException {
+	public IGDocument updateIG(
+			@RequestBody IntegrationIGDocumentRequestWrapper idrw)
+			throws IGDocumentException {
 		log.info("Update profile with additional messages.");
 		log.debug("getMsgEvts()" + idrw.getMsgEvts());
 		log.debug("getIgdocument()" + idrw.getIgdocument());
-		IGDocument igDocument = igDocumentCreation.updateIntegratedIGDocument(idrw.getMsgEvts(), idrw.getIgdocument());
+		IGDocument igDocument = igDocumentCreation.updateIntegratedIGDocument(
+				idrw.getMsgEvts(), idrw.getIgdocument());
 		return igDocument;
 	}
 
 	@RequestMapping(value = "/{id}/deleteMessage", method = RequestMethod.POST, produces = "application/json")
-	public boolean deleteMessage(@PathVariable("id") String id, @RequestParam("messageId") String messageId,
+	public boolean deleteMessage(@PathVariable("id") String id,
+			@RequestParam("messageId") String messageId,
 			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, IGDocumentNotFoundException, IGDocumentException {
+			throws IOException, IGDocumentNotFoundException,
+			IGDocumentException {
 		IGDocument d = igDocumentService.findOne(id);
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
@@ -703,9 +786,10 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/metadata/save", method = RequestMethod.POST)
-	public boolean saveIgDocMetadata(@PathVariable("id") String id, @RequestBody DocumentMetaData metaData,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, IGDocumentNotFoundException, IGDocumentException {
+	public boolean saveIgDocMetadata(@PathVariable("id") String id,
+			@RequestBody DocumentMetaData metaData, HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
 		IGDocument d = igDocumentService.findOne(id);
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
@@ -716,9 +800,10 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/profile/metadata/save", method = RequestMethod.POST)
-	public boolean saveProfileMetadata(@PathVariable("id") String id, @RequestBody ProfileMetaData metaData,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, IGDocumentNotFoundException, IGDocumentException {
+	public boolean saveProfileMetadata(@PathVariable("id") String id,
+			@RequestBody ProfileMetaData metaData, HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
 		IGDocument d = igDocumentService.findOne(id);
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
@@ -729,9 +814,10 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/section/save", method = RequestMethod.POST)
-	public boolean updateSection(@PathVariable("id") String id, @RequestBody Section section,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, IGDocumentNotFoundException, IGDocumentException {
+	public boolean updateSection(@PathVariable("id") String id,
+			@RequestBody Section section, HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
 		IGDocument d = igDocumentService.findOne(id);
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
@@ -745,9 +831,11 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/section/delete", method = RequestMethod.POST)
-	public boolean updateSection(@PathVariable("id") String id, @RequestParam("sectionId") String sectionId,
+	public boolean updateSection(@PathVariable("id") String id,
+			@RequestParam("sectionId") String sectionId,
 			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, IGDocumentNotFoundException, IGDocumentException {
+			throws IOException, IGDocumentNotFoundException,
+			IGDocumentException {
 		IGDocument d = igDocumentService.findOne(id);
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
@@ -825,8 +913,9 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "{id}/dropped", method = RequestMethod.POST)
-	public String updateAfterDrop(@PathVariable("id") String id, @RequestBody SectionArrow arrow)
-			throws IOException, IGDocumentNotFoundException, IGDocumentException {
+	public String updateAfterDrop(@PathVariable("id") String id,
+			@RequestBody SectionArrow arrow) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
 		System.out.println(id);
 
 		IGDocument d = igDocumentService.findOne(id);
@@ -851,8 +940,9 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/updateChildSections", method = RequestMethod.POST)
-	public String updateChildSections(@PathVariable("id") String id, @RequestBody Set<Section> childSections)
-			throws IOException, IGDocumentNotFoundException, IGDocumentException {
+	public String updateChildSections(@PathVariable("id") String id,
+			@RequestBody Set<Section> childSections) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
 		System.out.println(id);
 
 		IGDocument d = igDocumentService.findOne(id);

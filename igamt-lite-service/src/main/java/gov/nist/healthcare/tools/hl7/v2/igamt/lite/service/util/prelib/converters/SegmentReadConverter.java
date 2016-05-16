@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,24 +165,13 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
 		f.setMaxLength((String) source.get(MAX_LENGTH));
 		f.setConfLength(getConfLength(source));
 		f.setPosition((Integer) source.get(POSITION));
-		DBObject tabObj = (DBObject)source.get(TABLE);
-		String tabId = readMongoId(tabObj);
-		String bindingIdentifier = (String)tabObj.get("bindingIdentifier");
-		String bindingStrength = (String)tabObj.get("bindingStrength");
-		String bindingLocation = (String)tabObj.get("bindingLocation");
-		TableLink tabLink = new TableLink(tabId, bindingIdentifier, bindingStrength, bindingLocation);
-		f.setTable(tabLink);
+		f.setTable((tableLink((DBObject) source.get(TABLE))));
 		f.setUsage(Usage.valueOf((String) source.get(USAGE)));
 		f.setItemNo((String) source.get(ITEM_NO));
 		f.setMin((Integer) source.get(MIN));
 		f.setMax((String) source.get(MAX));
 		f.setText(readString(source, TEXT));
-		DBObject dtObj = (DBObject)source.get(TABLE);
-		String dtId = readMongoId(dtObj);
-		String name = (String)dtObj.get("name");
-		String ext = (String)dtObj.get("ext");
-		DatatypeLink dtLink = new DatatypeLink(dtId, name, ext);
-		f.setDatatype(dtLink);
+		f.setDatatype((datatypeLink((DBObject) source.get(Constant.DATATYPE))));
 		return f;
 	}
 
@@ -220,5 +209,26 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
 		p.setFalseUsage(source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source.get(FALSE_USAGE))) : null);
 		p.setTrueUsage(source.get(TRUE_USAGE) != null ? Usage.valueOf(((String) source.get(TRUE_USAGE))) : null);
 		return p;
+	}
+	
+	private DatatypeLink datatypeLink(DBObject source){
+		DatatypeLink dl = new DatatypeLink();
+		dl.setId(readMongoId(source));
+		dl.setName((String) source.get("name"));
+		dl.setExt((String) source.get("ext"));
+		
+		return dl;
+	}
+
+	private TableLink tableLink(DBObject source){
+		if(source == null) return null;
+		
+		TableLink tl = new TableLink();
+		tl.setId(readMongoId(source));
+		tl.setBindingIdentifier((String) source.get("bindingIdentifier"));
+		tl.setBindingLocation((String) source.get("bindingLocation"));
+		tl.setBindingStrength((String) source.get("bindingStrength"));
+		
+		return tl;
 	}
 }

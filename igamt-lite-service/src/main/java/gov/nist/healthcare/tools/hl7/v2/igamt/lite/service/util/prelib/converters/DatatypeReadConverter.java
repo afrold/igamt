@@ -1,10 +1,12 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 
 import com.mongodb.BasicDBList;
@@ -143,20 +145,29 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
 		c.setMaxLength((String) source.get(MAX_LENGTH));
 		c.setConfLength(getConfLength(source));
 		c.setPosition((Integer) source.get(POSITION));
-		DBObject tabObj = (DBObject)source.get(TABLE);
-		String tabId = readMongoId(tabObj);
-		String bindingIdentifier = (String)tabObj.get("bindingIdentifier");
-		String bindingStrength = (String)tabObj.get("bindingStrength");
-		String bindingLocation = (String)tabObj.get("bindingLocation");
-		TableLink tabLink = new TableLink(tabId, bindingIdentifier, bindingStrength, bindingLocation);
-		c.setTable(tabLink);
+		c.setTable((tableLink((DBObject) source.get(Constant.TABLE))));
 		c.setUsage(Usage.valueOf((String) source.get(USAGE)));
-		DBObject dtObj = (DBObject)source.get(TABLE);
-		String dtId = readMongoId(dtObj);
-		String name = (String)dtObj.get("name");
-		String ext = (String)dtObj.get("ext");
-		DatatypeLink dtLink = new DatatypeLink(dtId, name, ext);
-		c.setDatatype(dtLink);
+		c.setDatatype((datatypeLink((DBObject) source.get(Constant.DATATYPE))));
 		return c;
+	}
+	
+	private DatatypeLink datatypeLink(DBObject source){
+		DatatypeLink dl = new DatatypeLink();
+		dl.setId(readMongoId(source));
+		dl.setName((String) source.get("name"));
+		dl.setExt((String) source.get("ext"));
+		
+		return dl;
+	}
+
+	private TableLink tableLink(DBObject source){
+		if(source == null) return null;
+		TableLink tl = new TableLink();
+		tl.setId(readMongoId(source));
+		tl.setBindingIdentifier((String) source.get("bindingIdentifier"));
+		tl.setBindingLocation((String) source.get("bindingLocation"));
+		tl.setBindingStrength((String) source.get("bindingStrength"));
+		
+		return tl;
 	}
 }

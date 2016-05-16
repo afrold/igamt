@@ -292,9 +292,11 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 			if (dt != null) {
 				addDatatype(dt, pSource, pTarget);
 			}
-			Table vsd = tableRepository.findOne(f.getTable().getId());
-			if (vsd != null) {
-				addTable(vsd, pSource, pTarget);
+			if(f.getTable() != null){
+				Table vsd = tableRepository.findOne(f.getTable().getId());
+				if (vsd != null) {
+					addTable(vsd, pSource, pTarget);
+				}
 			}
 		}
 	}
@@ -323,9 +325,11 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 			for (Component cpt : dt.getComponents()) {
 				Datatype dt1 = datatypeRepository.findOne(cpt.getDatatype().getId());
 				addDatatype(dt1, pSource, pTarget);
-				Table vsd = tableRepository.findOne(cpt.getTable().getId());
-				if (vsd != null) {
-					addTable(vsd, pSource, pTarget);
+				if(cpt.getTable() != null){
+					Table vsd = tableRepository.findOne(cpt.getTable().getId());
+					if (vsd != null) {
+						addTable(vsd, pSource, pTarget);
+					}
 				}
 			}
 			dtsTarget.addDatatype(link);
