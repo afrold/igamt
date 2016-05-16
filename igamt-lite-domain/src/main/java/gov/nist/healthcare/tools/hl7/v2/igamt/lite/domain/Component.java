@@ -41,8 +41,6 @@ public class Component extends DataElement implements Cloneable {
 	public Component clone() throws CloneNotSupportedException {
 		Component clonedObj = new Component();
 		clonedObj.setId(id);
-		clonedObj.setBindingLocation(this.bindingLocation);
-		clonedObj.setBindingStrength(this.bindingStrength);
 		clonedObj.setComment(comment);
 		clonedObj.setConfLength(confLength);
 		clonedObj.setDatatype(datatype);
@@ -57,7 +55,7 @@ public class Component extends DataElement implements Cloneable {
 		clonedObj.setMinLength(minLength);
 		clonedObj.setName(name);
 		clonedObj.setPosition(position);
-		clonedObj.setTable(table);
+		clonedObj.setTable(table.clone());
 		// if (table != null) {
 		// if (tableRecords.containsKey(table.getId())) {
 		// clonedObj.setTable(tableRecords.get(table.getId()));

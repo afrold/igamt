@@ -70,8 +70,7 @@ public class Field extends DataElement implements java.io.Serializable,
 				+ ", max=" + max + ", name=" + name + ", usage=" + usage
 				+ ", minLength=" + minLength + ", maxLength=" + maxLength
 				+ ", confLength=" + confLength + ", table=" + table
-				+ ", bindingStrength=" + bindingStrength + ", bindingLocation="
-				+ bindingLocation + ", datatype=" + datatype + ", position="
+				+ ", datatype=" + datatype + ", position="
 				+ position + ", comment=" + comment + ", text=" + text
 				+ ", type=" + type + "]";
 	}
@@ -89,11 +88,9 @@ public class Field extends DataElement implements java.io.Serializable,
 		Field clonedField = new Field();
 
 		clonedField.setId(id);
-		clonedField.setBindingLocation(bindingLocation);
-		clonedField.setBindingStrength(bindingStrength);
 		clonedField.setComment(comment);
 		clonedField.setConfLength(confLength);
-		clonedField.setDatatype(datatype);
+		clonedField.setDatatype(datatype.clone());
 
 		// if (dtRecords.containsKey(datatype)) {
 		// clonedField.setDatatype(dtRecords.get(datatype.getId()));
@@ -109,7 +106,7 @@ public class Field extends DataElement implements java.io.Serializable,
 		clonedField.setMinLength(minLength);
 		clonedField.setName(name);
 		clonedField.setPosition(position);
-		clonedField.setTable(table);
+		clonedField.setTable(table.clone());
 
 		// if (table != null) {
 		// if (tableRecords.containsKey(table.getId())) {
