@@ -45,6 +45,7 @@
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/video.min.css" />
     <link rel="stylesheet" href="bower_components/ng-notifications-bar/dist/ngNotificationsBar.min.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.css" />
+    <link rel="stylesheet" href="bower_components/angular-block-ui/dist/angular-block-ui.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -74,7 +75,11 @@
         }
     </script>
 </head>
+<<<<<<< HEAD
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit>
+=======
+<body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit block-ui="main">
+>>>>>>> 8496481c66b8c111ab0e1e0bd4a44d0ee3f9e8f6
 <notifications-bar class="notifications" closeIcon="fa fa-times-circle"></notifications-bar>
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
@@ -103,7 +108,11 @@
     <div ng-include="'views/footer.html'"></div>
     <div ng-include="'views/templates.html'"></div>
  	<div ng-include="'views/edit/editDatatypes.html'"></div>
-
+    <ng-include src="'views/edit/editDocument.html'"></ng-include>
+    <ng-include src="'views/edit/editSegments.html'"></ng-include>
+    <ng-include src="'views/edit/editMessages.html'"></ng-include>
+    <ng-include src="'views/edit/editValueSets.html'"></ng-include>
+    <ng-include src="'views/edit/editSections.html'"></ng-include>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <!--<script>-->
     <!--(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){-->
@@ -176,6 +185,10 @@
     <script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
     <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
     <script src="bower_components/angular-bootstrap-contextmenu/contextMenu.js"></script>
+<<<<<<< HEAD
+=======
+    <script src="bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
+>>>>>>> 8496481c66b8c111ab0e1e0bd4a44d0ee3f9e8f6
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js scripts/modules.js -->

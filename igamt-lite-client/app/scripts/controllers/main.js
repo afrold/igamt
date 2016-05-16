@@ -1503,12 +1503,22 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.isDuplicated = function (obj, context, list) {
-//            if (obj == null || obj == undefined) return false;
-
+            if (obj == null || obj == undefined || obj[context] == null) return false;
             return _.find(_.without(list, obj), function (item) {
-                return item[context] == obj[context];
+                return item[context] == obj[context] && item.id != obj.id;
             });
         };
+
+//        $rootScope.validateExtension = function (obj, context, list) {
+////            if (obj == null || obj == undefined) return false;
+//            if(obj[context] == null) return false;
+//            return _.find(_.without(list, obj), function (item) {
+//                return item[context] == obj[context];
+//            });
+//
+//
+//        };
+
         
         $rootScope.isDuplicatedTwoContexts = function (obj, context1, context2,  list) {
             if (obj == null || obj == undefined) return false;

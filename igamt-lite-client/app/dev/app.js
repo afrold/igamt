@@ -29,7 +29,8 @@ var app = angular
         'froala',
         'ngNotificationsBar',
         'ngMockE2E'
-        ,'ui.tree'
+        ,'ui.tree',
+        'blockUI'
     ]);
 
 var
@@ -49,7 +50,7 @@ var
 var msg = {};
 
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider,blockUIConfig) {
 
     app.requires.push('ngMockE2E');
 
@@ -310,6 +311,11 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         spinner = true;
         return data;
     };
+
+    blockUIConfig.message = 'Please wait...';
+    blockUIConfig.blockBrowserNavigation = true;
+    blockUIConfig.autoBlock = true;
+
     $httpProvider.defaults.transformRequest.push(spinnerStarter);
 
     httpHeaders = $httpProvider.defaults.headers;
