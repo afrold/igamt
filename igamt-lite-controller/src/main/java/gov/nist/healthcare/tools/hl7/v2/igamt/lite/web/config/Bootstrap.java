@@ -55,7 +55,7 @@ public class Bootstrap implements InitializingBean {
 
 	private void covertOldToNew() {
 		IGDocumentConverterFromOldToNew old2New = new IGDocumentConverterFromOldToNew();
-		old2New.convert();
+		// old2New.convert();
 	}
 
 	private void loadPreloadedIGDocuments() throws Exception {

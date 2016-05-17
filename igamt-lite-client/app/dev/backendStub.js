@@ -169,7 +169,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
     $httpBackend.whenPOST('api/datatype-library/save').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/save begin=' + data);
-        var response = angular.fromJson(request.response);
+        var response = "response";
         return [200, response, {}];
     });
 

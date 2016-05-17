@@ -56,8 +56,9 @@
 							<tr class="tbl-header">
 								<th st-ratio="2" style="text-align: center;">#</th>
 								<th st-ratio="10" st-sort="datatypeLibsDisplay(dtLib)"
-									st-sort-default="true">Label</th>
-								<th st-ratio="30">Description</th>
+									st-sort-default="true">Name</th>
+								<th st-ratio="30">Extension</th>
+								<th st-ratio="30">Date</th>
 								<th st-ratio="10">Scope</th>
 								<th st-ratio="10">HL7 Version</th>
 								<th st-ratio="38">Actions</th>
@@ -67,8 +68,9 @@
 							<tr ng-class="{'new' : dtLib.new}"
 								ng-repeat="dtLib in datatypeLibsDisplay">
 								<td st-ratio="2" style="text-align: right;">{{$index + 1}}</td>
-								<td st-ratio="10">{{dtLib.sectionTitle}}</td>
-								<td st-ratio="30">{{dtLib.sectionDescription}}
+								<td st-ratio="10">{{dtLib.metaData.name}}</td>
+								<td st-ratio="10">{{dtLib.metaData.ext}}</td>
+								<td st-ratio="30">{{dtLib.metaData.date}}
 								<td st-ratio="10">{{dtLib.scope}}</td>
 								<td st-ratio="10">{{dtLib.metaData.hl7Version}}</td>
 								<td st-ratio="38">
@@ -110,7 +112,6 @@
 	<div class="row">
 		<tabset> <tab index="0" heading="Metadata">
 		<div class="panel panel-primary" ng-show="datatypeLibMetaDataCopy">
-			<div class="panel-heading">Metadata</div>
 			<div class="panel-body" style="padding-bottom: 100px">
 				<div id="meta" style="width: 100%">
 					<ng-include src="metaDataView"></ng-include>
@@ -119,7 +120,6 @@
 		</div>
 		</tab> <tab index="1" heading="Data Types">
 		<div class="panel panel-primary" ng-show="datatypesJoinStruct">
-			<div class="panel-heading">Data Type List</div>
 			<div class="panel-body" style="padding-bottom: 100px">
 				<div id="meta" style="width: 100%">
 					<ng-include src="datatypeListView"></ng-include>
@@ -243,7 +243,7 @@
   </tr>
 </thead>
 <tbody>
-	<tr class="row" ng-repeat="dt in datatypeDisplay" ng-class="{'new': dt.new}">
+	<tr class="row" ng-repeat="dt in datatypeDisplay">
     <td st-ratio="10">{{dt.label}}</td>
     <td st-ratio="30" ng-bind="dt.description"></td>
     <td st-ratio="58">
@@ -344,7 +344,7 @@
 <tbody>
   <tr class="row" ng-repeat="dtLib in datatypeLibDisplay">
     <td st-ratio="2"><input id="dtLib.id" name="dtLibs" type="radio" ng-bind="selectedLib" ng-click="libSelected(dtLib)"/></td>
-    <td st-ratio="48">{{dtLib.sectionTitle}}</td>
+    <td st-ratio="48">{{getLabel(dtLib.metaData.name, dtLib.metaData.ext)}}</td>
     <td st-ratio="48">{{dtLib.scope}}</td>
   </tr>
 </tbody>
