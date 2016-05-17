@@ -17,11 +17,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,10 +62,6 @@ public class TestDbConfig extends AbstractMongoConfiguration {
 	@Bean
 	public CustomConversions customConversions() {
 		List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
-		converterList.add(new FieldWriteConverter());
-		converterList.add(new ComponentWriteConverter());
-		converterList.add(new SegmentRefWriteConverter());
-		converterList.add(new ProfileReadConverter());
 		return new CustomConversions(converterList);
 	}
 
