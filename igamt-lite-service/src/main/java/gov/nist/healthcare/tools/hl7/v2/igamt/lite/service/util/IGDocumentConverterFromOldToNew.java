@@ -310,7 +310,7 @@ public class IGDocumentConverterFromOldToNew{
 		dtMetaData.setDatatypeLibId(UUID.randomUUID().toString());
 		dtMetaData.setDate(Constant.mdy.format(new Date()));
 		dtMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
-		// dtMetaData.setName(ppl.getMetaData().getName());
+		dtMetaData.setName(Constant.DefaultDatatypeLibrary);
 		dtMetaData.setOrgName("NIST");
 		// dtMetaData.setVersion(ppl.getMetaData().getVersion());
 		app.getProfile().getDatatypeLibrary().setScope(Constant.SCOPE.USER);

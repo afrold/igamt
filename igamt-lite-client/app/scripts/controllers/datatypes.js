@@ -36,7 +36,7 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function (node) {
-            return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype) != undefined && $rootScope.getDatatype(node.datatype).components != null && $rootScope.getDatatype(node.datatype).components.length > 0;
+            return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype.id) != undefined && $rootScope.getDatatype(node.datatype.id).components != null && $rootScope.getDatatype(node.datatype.id).components.length > 0;
         };
 
         $scope.validateLabel = function (label, name) {
@@ -387,7 +387,7 @@ angular.module('igl')
         $scope.tmpResults = [].concat($scope.results);
 
         $scope.currentNode = currentNode;
-        $scope.currentDatatype = $rootScope.datatypesMap[currentNode.datatype];
+        $scope.currentDatatype = $rootScope.datatypesMap[currentNode.datatype.id];
         $scope.selection = {library: null, scope: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.scope : null, hl7Version: hl7Version, datatype: null, name: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name : null};
 
         $scope.datatypeFlavorParams = new ngTreetableParams({
@@ -435,7 +435,7 @@ angular.module('igl')
 
 
         $scope.hasChildren = function (node) {
-            return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype) != undefined && $rootScope.getDatatype(node.datatype).components != null && $rootScope.getDatatype(node.datatype).components.length > 0;
+            return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype.id) != undefined && $rootScope.getDatatype(node.datatype.id).components != null && $rootScope.getDatatype(node.datatype.id).components.length > 0;
         };
 
         $scope.validateLabel = function (label, name) {
