@@ -579,7 +579,8 @@
 </script>
 <script type="text/ng-template" id="DatatypeLibraryEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
-        <td class="col-xs-1 col-fixed-100">{{$index}}
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('name')">
             <div>-</div>
@@ -608,7 +609,7 @@
 	id="DatatypeLibraryComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)"
         ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
-         <td class="col-xs-1 col-fixed-100">1
+         <td class="col-xs-1 col-fixed-100">{{node.position}}
         </td>
        <td class="col-xs-2 col-fixed-250" ng-controller="DatatypeRowCtrl">
             <ng-form name="{{formName}}" class="form-inline">
@@ -653,7 +654,7 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.table != undefined && node.table !== null">
                 <a ng-click="goToTable(tablesMap[node.table])" class="point">
-                    <span>{{linkRef.bindingIdentifier}}</span>
+                    <span>{{node.table.bindingIdentifier}}</span>
                 </a>
                 <a ng-click="mapTable(node)" class="point">
                     <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -705,20 +706,6 @@
                 </p>
             </div>
         </td>
-<!--
-        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">
-            <div>
-                <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
-                   class="point">
-                    <i class="fa fa-pencil fa-fw" ng-show="node.text !== '' && node.text !== null"></i>
-                    <i class="fa fa-plus fa-fw" ng-show="node.text === '' || node.text === null"></i>
-                </a>
-                <a ng-click="node.text = ''" ng-show="node.text !== '' && node.text !== null">
-                    <i class="fa fa-times fa-fw"></i>
-                </a>
-            </div>
-        </td>
--->
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')"
             style="text-align:center">
             <a
@@ -779,8 +766,8 @@
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
-                <a ng-click="goToDatatype(datatypesStruct)"
-                   class="point">{{getDatatypeLabel(datatypesStruct)}}
+                <a ng-click="goToDatatype(datatypesCopy)"
+                   class="point">{{getDatatypeLabel(datatypesCopy)}}
                 </a>
             </div>
         </td>
@@ -788,7 +775,7 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <a ng-click="goToTable(tablesMap[node.table])"
                class="point" ng-show="node.table !== null && node.table !== undefined">
-                {{tablesMap[node.table].bindingIdentifier}}
+                {{node.table.bindingIdentifier}}
             </a>
         </td>
 
