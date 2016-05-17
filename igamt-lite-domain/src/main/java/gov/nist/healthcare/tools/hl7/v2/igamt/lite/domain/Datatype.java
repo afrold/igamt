@@ -1,30 +1,27 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-
 @Document(collection = "datatype")
-public class Datatype extends SectionModelWithConstraints implements java.io.Serializable,
+public class Datatype extends DataModelWithConstraints implements java.io.Serializable,
 Cloneable, Comparable<Datatype> {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	public Datatype() {
 		super();
 		this.type = Constant.DATATYPE;
-		this.id = ObjectId.get().toString();
 	}
 
 	@Id
@@ -32,20 +29,21 @@ Cloneable, Comparable<Datatype> {
 
 	private String label;
 
+	private String ext;
+	
+	private String purposeAndUse;
+
 	protected List<Component> components = new ArrayList<Component>();
 
 	private String name;
 
 	private String description;
 
-	private String hl7Version;
-
-	private SCOPE scope;
-	
 	protected String comment = "";
 
 	protected String usageNote = "";
 
+	
 	public String getId() {
 		return id;
 	}
@@ -58,8 +56,17 @@ Cloneable, Comparable<Datatype> {
 		return label;
 	}
 
+
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
 	}
 
 	public List<Component> getComponents() {
@@ -93,13 +100,13 @@ Cloneable, Comparable<Datatype> {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public String getHl7Version() {
-		return hl7Version;
+	
+	public String getPurposeAndUse() {
+		return purposeAndUse;
 	}
 
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
+	public void setPurposeAndUse(String purposeAndUse) {
+		this.purposeAndUse = purposeAndUse;
 	}
 
 	public void addComponent(Component c) {
@@ -122,6 +129,8 @@ Cloneable, Comparable<Datatype> {
 	public void setUsageNote(String usageNote) {
 		this.usageNote = usageNote;
 	}
+	
+ 
 
 	@Override
 	public String toString() {
@@ -180,9 +189,9 @@ Cloneable, Comparable<Datatype> {
 	@Override
 	public int compareTo(Datatype o) {
 		int x = String.CASE_INSENSITIVE_ORDER.compare(this.getName() != null && this.label != null ? this.getName() + this.getLabel() : "",
-				o.getName() != null && this.getLabel() != null ? o.getName() + this.getLabel() : "");
+				o.getName() != null && o.getLabel() != null ? o.getName() + o.getLabel() : "");
 		if (x == 0) {
-			x = (this.getName() != null  && this.getLabel() != null ? this.getName() + this.getLabel() : "").compareTo(o.getName() != null && this.getLabel() != null ? o.getName()+o.getLabel(): "");
+			x = (this.getName() != null  && this.getLabel() != null ? this.getName() + this.getLabel() : "").compareTo(o.getName() != null && o.getLabel() != null ? o.getName()+o.getLabel(): "");
 		}
 		return x;
 	}

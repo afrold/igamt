@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 146,
+  "id" : "565f3ab7d4c6e52cfd44801d",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0191",
+  "name" : "Type Of Data",
+  "description" : "Type Of Data",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44801e",
+    "value" : "FT",
+    "label" : "Formatted Text",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44801f",
+    "value" : "NS",
+    "label" : "Non-scanned Image",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448020",
+    "value" : "SD",
+    "label" : "Scanned Document",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448021",
+    "value" : "SI",
+    "label" : "Scanned Image",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448022",
+    "value" : "TX",
+    "label" : "Machine Readable Text Document",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

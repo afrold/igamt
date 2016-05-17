@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 383,
+  "id" : "569eac0ed4c623dc6550b31e",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0778",
+  "name" : "Item Type",
+  "description" : "Item Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.778",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b31f",
+    "value" : "EQP",
+    "label" : "Equipment",
+    "codeSystem" : "HL70778",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b320",
+    "value" : "IMP",
+    "label" : "Implant",
+    "codeSystem" : "HL70778",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b321",
+    "value" : "MED",
+    "label" : "Medication",
+    "codeSystem" : "HL70778",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b322",
+    "value" : "SUP",
+    "label" : "Supply",
+    "codeSystem" : "HL70778",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b323",
+    "value" : "TDC",
+    "label" : "Tubes, Drains, and Catheters",
+    "codeSystem" : "HL70778",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

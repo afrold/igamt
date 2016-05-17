@@ -217,6 +217,11 @@
 			<artifactId>json-path</artifactId>
 			<version>2.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>gov.cdc.phinvads</groupId>
+			<artifactId>vocabServiceClient</artifactId>
+			<version>1.0</version>
+		</dependency>	
 	</dependencies>
 
 	<repositories>

@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 24,
+  "id" : "565f3ab7d4c6e52cfd447ee5",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0044",
+  "name" : "CONTRACT CODE",
+  "description" : "CONTRACT CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ee6",
+    "value" : "C",
+    "label" : "Chefarzt",
+    "codeSystem" : "HL70044",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ee7",
+    "value" : "K",
+    "label" : "Kasse",
+    "codeSystem" : "HL70044",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ee8",
+    "value" : "P",
+    "label" : "Privatliquidation",
+    "codeSystem" : "HL70044",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ee9",
+    "value" : "S",
+    "label" : "Selbstzahler",
+    "codeSystem" : "HL70044",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

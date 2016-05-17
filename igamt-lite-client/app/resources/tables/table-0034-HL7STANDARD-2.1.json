@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 86,
+  "id" : "565f3ab7d4c6e52cfd44831d",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0034",
+  "name" : "SITE ADMINISTERED",
+  "description" : "SITE ADMINISTERED",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44831e",
+    "value" : "B",
+    "label" : "Buttock",
+    "codeSystem" : "HL70034",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44831f",
+    "value" : "L",
+    "label" : "Left arm",
+    "codeSystem" : "HL70034",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

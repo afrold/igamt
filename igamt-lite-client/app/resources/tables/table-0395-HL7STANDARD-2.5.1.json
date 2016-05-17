@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 210,
+  "id" : "569eac0fd4c623dc6550dec5",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0395",
+  "name" : "Modify indicator",
+  "description" : "Modify indicator",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.395",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dec6",
+    "value" : "M",
+    "label" : "Modified Subscription",
+    "codeSystem" : "HL70395",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dec7",
+    "value" : "N",
+    "label" : "New Subscription",
+    "codeSystem" : "HL70395",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -12,13 +12,32 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
-@Service
 public interface DatatypeService {
+
+	Datatype findById(String id);
+	
+	Datatype save(Datatype datatype);
 
 	List<Datatype> findAll();
 
+	List<Datatype> findByLibIds(String dtLibId);
+	
+	List<Datatype> findByFullDTsLibIds(String dtLibId);
+
+	List<Datatype> findByIds(List<String> ids);
+
+	List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+
+	void delete(Datatype dt);
+
+	void delete(String id);
+	
+	void save(List<Datatype> datatypes);
+	
+
+	
 }

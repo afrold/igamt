@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 339,
+  "id" : "569eac0ed4c623dc6550b7b2",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0215",
+  "name" : "Publicity Code",
+  "description" : "Publicity Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.215",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7b3",
+    "value" : "F",
+    "label" : "Family only",
+    "codeSystem" : "HL70215",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7b4",
+    "value" : "N",
+    "label" : "No Publicity",
+    "codeSystem" : "HL70215",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7b5",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70215",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7b6",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70215",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,11 +1,17 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications', 'IdleService','AutoSaveService','StorageService',
-    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle,notifications,IdleService,AutoSaveService,StorageService) {
+angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications', 'IdleService','AutoSaveService','StorageService','ViewSettings','DatatypeService','ElementUtils',
+    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle,notifications,IdleService,AutoSaveService,StorageService,ViewSettings,DatatypeService,ElementUtils) {
         //This line fetches the info from the server if the user is currently logged in.
         //If success, the app is updated according to the role.
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
+
+        $rootScope.csWidth = null;
+        $rootScope.predWidth = null;
+        $rootScope.tableWidth = null;
+        $rootScope.commentWidth = null;
+        $scope.viewSettings = ViewSettings;
 
         $scope.language = function () {
             return i18n.language;
@@ -737,7 +743,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         if (parent) {
                             $rootScope.parentsMap[element.id] = parent;
                         }
-                        $rootScope.processElement($rootScope.segmentsMap[element.ref], element);
+                        $rootScope.processElement($rootScope.segmentsMap[element.ref.id], element);
                     } else if (element.type === "segment") {
                         element.fields = $filter('orderBy')(element.fields, 'position');
                         angular.forEach(element.conformanceStatements, function (cs) {
@@ -748,10 +754,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         });
                     } else if (element.type === "field") {
                         $rootScope.parentsMap[element.id] = parent;
-                        $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+                        $rootScope.processElement($rootScope.datatypesMap[element.datatype.id], element);
                     } else if (element.type === "component") {
                         $rootScope.parentsMap[element.id] = parent;
-                        $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+                        $rootScope.processElement($rootScope.datatypesMap[element.datatype.id], element);
                     } else if (element.type === "datatype") {
                         element.components = $filter('orderBy')(element.components, 'position');
                         angular.forEach(element.conformanceStatements, function (cs) {
@@ -805,7 +811,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         }
                         parent.children.push(s);
 
-                        var ref = $rootScope.segmentsMap[element.ref];
+                        var ref = $rootScope.segmentsMap[element.ref.id];
                         $rootScope.processMessageTree(ref, s);
 
                     } else if (element.type === "segment") {
@@ -819,14 +825,14 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         f.path = parent.path + "." + element.position + "[1]";
                         f.children = [];
                         parent.children.push(f);
-                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], f);
+                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], f);
                     } else if (element.type === "component") {
                         var c = new Object();
                         c.obj = element;
                         c.path = parent.path + "." + element.position + "[1]";
                         c.children = [];
                         parent.children.push(c);
-                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], c);
+                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], c);
                     } else if (element.type === "datatype") {
                         element.components = $filter('orderBy')(element.components, 'position');
                         angular.forEach(element.components, function (component) {
@@ -851,6 +857,18 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
         };
 
+        $rootScope.createNewExtension = function (ext) {
+            if ($rootScope.igdocument != null) {
+                var rand = (Math.floor(Math.random() * 10000000) + 1);
+                if($rootScope.igdocument.metaData["ext"] === null){
+                    return ext != null && ext != "" ? ext + "_" + rand: rand;
+                }else {
+                    return  ext != null && ext != "" ? ext + "_" + $rootScope.igdocument.metaData["ext"] + "_" + rand + 1: rand +1;
+                }
+            } else {
+                return null;
+            }
+        };
 
         $rootScope.isSubComponent = function (node) {
             node.type === 'component' && $rootScope.parentsMap[node.id] && $rootScope.parentsMap[node.id].type === 'component';
@@ -858,10 +876,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.findDatatypeRefs = function (datatype, obj) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
-                if ($rootScope.datatypesMap[obj.datatype] === datatype && $rootScope.references.indexOf(obj) === -1) {
+                if ($rootScope.datatypesMap[obj.datatype.id] === datatype && $rootScope.references.indexOf(obj) === -1) {
                     $rootScope.references.push(obj);
                 }
-                $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype]);
+                $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id]);
             } else if (angular.equals(obj.type, 'segment')) {
                 angular.forEach($rootScope.segments, function (segment) {
                     angular.forEach(segment.fields, function (field) {
@@ -880,11 +898,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.findTableRefs = function (table, obj) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
                 if (obj.table != undefined) {
-                    if (obj.table === table.id && $rootScope.references.indexOf(obj) === -1) {
+                    if (obj.table.id === table.id && $rootScope.references.indexOf(obj) === -1) {
                         $rootScope.references.push(obj);
                     }
                 }
-                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype]);
+                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id]);
             } else if (angular.equals(obj.type, 'segment')) {
                 angular.forEach($rootScope.segments, function (segment) {
                     angular.forEach(segment.fields, function (field) {
@@ -1691,12 +1709,22 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.isDuplicated = function (obj, context, list) {
-            if (obj == null || obj == undefined) return false;
-
+            if (obj == null || obj == undefined || obj[context] == null) return false;
             return _.find(_.without(list, obj), function (item) {
-                return item[context] == obj[context];
+                return item[context] == obj[context] && item.id != obj.id;
             });
         };
+
+//        $rootScope.validateExtension = function (obj, context, list) {
+////            if (obj == null || obj == undefined) return false;
+//            if(obj[context] == null) return false;
+//            return _.find(_.without(list, obj), function (item) {
+//                return item[context] == obj[context];
+//            });
+//
+//
+//        };
+
         
         $rootScope.isDuplicatedTwoContexts = function (obj, context1, context2,  list) {
             if (obj == null || obj == undefined) return false;
@@ -1723,6 +1751,190 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
             return '';
         };
+
+        $rootScope.getLabel = function (name, ext) {
+            if (ext && ext !== null && ext !== "") {
+                return name + "_" + ext;
+            } else {
+                return name;
+            }
+        };
+
+        $rootScope.getDynamicWidth = function (a, b, otherColumsWidth) {
+            var tableWidth = $rootScope.getTableWidth();
+            if (tableWidth > 0) {
+                var left = tableWidth - otherColumsWidth;
+                return {"width": a * parseInt(left / b) + "px"};
+            }
+            return "";
+        };
+
+
+
+        $rootScope.getTableWidth = function () {
+            if ($rootScope.tableWidth === null || $scope.tableWidth == 0) {
+                $rootScope.tableWidth = $("#nodeDetailsPanel").width();
+            }
+            return $rootScope.tableWidth;
+        };
+
+
+        $rootScope.getConstraintAsString = function (constraint) {
+            return constraint.constraintId + " - " + constraint.description;
+        };
+
+        $rootScope.getConformanceStatementAsString = function (constraint) {
+            return "[" + constraint.constraintId + "]" + constraint.description;
+        };
+
+        $rootScope.getPredicateAsString = function (constraint) {
+            return constraint.description;
+        };
+
+        $rootScope.getConstraintsAsString = function (constraints) {
+            var str = '';
+            for (var index in constraints) {
+                str = str + "<p style=\"text-align: left\">" + constraints[index].id + " - " + constraints[index].description + "</p>";
+            }
+            return str;
+        };
+
+        $rootScope.getPredicatesAsMultipleLinesString = function (node) {
+            var html = "";
+            angular.forEach(node.predicates, function (predicate) {
+                html = html + "<p>" + predicate.description + "</p>";
+            });
+            return html;
+        };
+
+        $rootScope.getPredicatesAsOneLineString = function (node) {
+            var html = "";
+            angular.forEach(node.predicates, function (predicate) {
+                html = html + predicate.description;
+            });
+            return $sce.trustAsHtml(html);
+        };
+
+
+        $rootScope.getConfStatementsAsMultipleLinesString = function (node) {
+            var html = "";
+            angular.forEach(node.conformanceStatements, function (conStatement) {
+                html = html + "<p>" + conStatement.id + " : " + conStatement.description + "</p>";
+            });
+            return html;
+        };
+
+        $rootScope.getConfStatementsAsOneLineString = function (node) {
+            var html = "";
+            angular.forEach(node.conformanceStatements, function (conStatement) {
+                html = html + conStatement.id + " : " + conStatement.description;
+            });
+            return $sce.trustAsHtml(html);
+        };
+
+        $rootScope.getSegmentRefNodeName = function (node) {
+            var seg = $rootScope.segmentsMap[node.ref];
+            return node.position + "." + $rootScope.getSegmentLabel(seg)  + ":" + seg.description;
+        };
+
+        $rootScope.getSegmentLabel = function (seg) {
+            var ext = $rootScope.getSegmentExtension(seg);
+            return $rootScope.getLabel(seg.name,ext);
+        };
+
+        $rootScope.getSegmentExtension = function (seg) {
+            return $rootScope.getExtensionInLibrary(seg.id, $rootScope.igdocument.profile.segmentLibrary,"ext");
+        };
+
+        $rootScope.getDatatypeExtension = function (datatype) {
+            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary,"ext");
+        };
+
+        $rootScope.getTableBindingIdentifier = function (datatype) {
+            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.tableLibrary,"bindingIdentifier");
+        };
+
+
+
+        $rootScope.getDatatypeLabel = function (datatype) {
+            if(datatype && datatype != null) {
+                var ext = $rootScope.getDatatypeExtension(datatype);
+                return $rootScope.getLabel(datatype.name, ext);
+            }
+            return "";
+        };
+
+        $rootScope.getTableLabel = function (table) {
+             return $rootScope.getTableBindingIdentifier(table);
+        };
+
+        $rootScope.getExtensionInLibrary = function (id, library,propertyType) {
+            console.log("main Here id=" + id);
+            if(propertyType && library.children){
+                for(var i=0;  i< library.children.length;i ++){
+                    if(library.children[i].id === id){
+                        return library.children[i][propertyType];
+                    }
+                }
+            }
+            return "";
+        };
+
+
+
+
+        $rootScope.getGroupNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $rootScope.getFieldNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $rootScope.getComponentNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $rootScope.getDatatypeNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $rootScope.onColumnToggle = function (item) {
+            $rootScope.viewSettings.save();
+        };
+
+        $rootScope.getDatatypeLevelConfStatements = function (element) {
+            return DatatypeService.getDatatypeLevelConfStatements(element);
+        };
+
+        $rootScope.getDatatypeLevelPredicates = function (element) {
+            return DatatypeService.getDatatypeLevelPredicates(element);
+        };
+
+        $rootScope.isDatatypeSubDT = function (component) {
+            return DatatypeService.isDatatypeSubDT(component,$rootScope.datatype);
+        };
+
+
+        $rootScope.setUsage = function (node) {
+            ElementUtils.setUsage(node);
+            $scope.recordChanged();
+        };
+
+
+        $rootScope.findDatatypeInLibrary = function (datatypeId, datatypeLibary) {
+            if(datatypeLibary.children){
+                for(var i=0;  i< datatypeLibary.children.length;i ++){
+                    if(datatypeLibary.children[i].id === id){
+                        return datatypeLibary.children[i];
+                    }
+                }
+            }
+            return null;
+        };
+
+
+
 
     }]);
 

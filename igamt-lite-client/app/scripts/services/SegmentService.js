@@ -3,20 +3,24 @@
  */
 'use strict';
 angular.module('igl').factory('SegmentService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', function ($rootScope, ViewSettings,ElementUtils) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http', 'FilteringSvc','userInfoService', function ($rootScope, ViewSettings,ElementUtils,$q,$http, FilteringSvc,userInfoService) {
         var SegmentService = {
-            getNodes: function (parent) {
-                return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
+            getNodes: function (parent,root) {
+                var children = parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components : parent.children : root != null ? root.fields : [];
+                return children;
             },
             getParent: function (child) {
-                return $rootScope.parentsMap && $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
+                var parent = $rootScope.parentsMap && $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
+                return parent;
             },
-            getTemplate: function (node) {
-                if (ViewSettings.tableReadonly) {
-                    return node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
+            getTemplate: function (node,root) {
+                var template = null;
+                if (ViewSettings.tableReadonly || (root != null && root.scope === 'HL7STANDARD') || root.scope === null) {
+                    template = node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
                 } else {
-                    return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
+                    template = node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
                 }
+                return template;
             },
             getSegmentLevelConfStatements: function (element) {
                 var parent = SegmentService.getParent(element.id);
@@ -41,7 +45,8 @@ angular.module('igl').factory('SegmentService',
                 return children != null && children.length > 0;
             },
             isVisible: function (node) {
-                return  node ? SegmentService.isRelevant(node) ? SegmentService.isVisible(SegmentService.getParent(node)) : false : true;
+              return FilteringSvc.show(node);
+//                 return  node ? SegmentService.isRelevant(node) ? SegmentService.isVisible(SegmentService.getParent(node)) : false : true;
             },
             isRelevant: function (node) {
                 if (node === undefined || !ViewSettings.tableRelevance)
@@ -52,6 +57,68 @@ angular.module('igl').factory('SegmentService',
                 } else {
                     return false;
                 }
+            },
+            save: function (segment) {
+                var delay = $q.defer();
+                segment.accountId = userInfoService.getAccountID();
+                $http.post('api/segments/save', segment).then(function (response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    segment.date = saveResponse.date;
+                    segment.version = saveResponse.version;
+                    delay.resolve(saveResponse);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            get: function (id) {
+                var delay = $q.defer();
+                if($rootScope.segmentsMap[id] === undefined || $rootScope.segmentsMap[id] === undefined) {
+                    $http.get('api/segments/' + id).then(function (response) {
+                        var segment = angular.fromJson(response.data);
+                        delay.resolve(segment);
+                    }, function (error) {
+                        delay.reject(error);
+                    });
+                }else{
+                    delay.resolve($rootScope.segmentsMap[id]);
+                }
+                return delay.promise;
+            },
+            merge: function (to, from) {
+                to.name = from.name;
+                to.ext = from.ext;
+                to.label = from.label;
+                to.description = from.description;
+                to.status = from.status;
+                to.comment = from.comment;
+                to.usageNote = from.usageNote;
+                to.scope = from.scope;
+                to.hl7Version = from.hl7Version;
+                to.accountId = from.accountId;
+                to.participants =  from.participants;
+                to.libIds = from.libIds;
+                to.predicates = from.predicates;
+                to.conformanceStatements = from.conformanceStatements;
+                to.sectionPosition = from.sectionPosition;
+                to.fields = from.fields;
+                to.version = from.version;
+                to.date = from.date;
+                to.purposeAndUse = from.purposeAndUse;
+                return to;
+            },
+            delete: function (segmentId) {
+                var delay = $q.defer();
+                $http.post('api/segments/'+ segmentId+ '/delete').then(function (response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    delay.resolve(saveResponse);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            getSegmentLink : function(segment){
+                return {id:segment.id, ext: null, name: segment.name};
             }
 
         };

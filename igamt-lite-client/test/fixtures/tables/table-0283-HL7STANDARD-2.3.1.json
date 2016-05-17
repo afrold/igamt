@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 151,
+  "id" : "565f3ab7d4c6e52cfd445b92",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0283",
+  "name" : "Referral Status",
+  "description" : "Referral Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b93",
+    "value" : "A",
+    "label" : "Accepted",
+    "codeSystem" : "HL70283",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b94",
+    "value" : "E",
+    "label" : "Expired",
+    "codeSystem" : "HL70283",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b95",
+    "value" : "P",
+    "label" : "Pending",
+    "codeSystem" : "HL70283",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b96",
+    "value" : "R",
+    "label" : "Rejected",
+    "codeSystem" : "HL70283",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

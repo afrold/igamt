@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 142,
+  "id" : "565f3ab7d4c6e52cfd44738e",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0317",
+  "name" : "Annotations",
+  "description" : "Annotations",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44738f",
+    "value" : "9900",
+    "label" : "Pace spike",
+    "codeSystem" : "HL70317",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447390",
+    "value" : "9901",
+    "label" : "SAS marker",
+    "codeSystem" : "HL70317",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447391",
+    "value" : "9902",
+    "label" : "Sense marker",
+    "codeSystem" : "HL70317",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447392",
+    "value" : "9903",
+    "label" : "Beat marker",
+    "codeSystem" : "HL70317",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447393",
+    "value" : "9904",
+    "label" : "etc.",
+    "codeSystem" : "HL70317",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

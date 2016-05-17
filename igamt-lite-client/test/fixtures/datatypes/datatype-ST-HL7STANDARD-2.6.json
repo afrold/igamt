@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 21,
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "57237656da0805ce1eab391d" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550bbaf",
+  "label" : "ST",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "ST",
+  "description" : "String Data",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : "PUBLISHED"
+}

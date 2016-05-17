@@ -112,30 +112,33 @@ angular
 
 					var leafMetadata = "<li class='point leaf'"
 						+ "  prevent-right-click> "
-						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.label}}</a>" 
+						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.label}}</a>"
 						+ "</li>";
-					
+
 					var leafMessage = "<li class='point leaf'"
+			            + " ng-show='show(leaf)'"
 			            + " dnd-draggable='leaf'"
 			            + " dnd-effect-allowed='move'"
 			            + " dnd-moved='moved(index, leaf)'"
 			            + " dnd-selected='models.selected = leaf'"
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='messageContextDiv.html'> "
-						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.name}} - {{leaf.reference.description}}</a>" 
+						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.name}} - {{leaf.reference.description}}</a>"
 						+ "</li>";
-					
+
 					var leafValueSet = "<li class='point leaf'"
+            + " ng-show='show(leaf)'"
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html'> "
-						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.bindingIdentifier}} - {{leaf.reference.name}}</a>" 
+						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.bindingIdentifier}} - {{leaf.reference.name}}</a>"
 						+ "</li>";
 
 					var leafSection = "<li class='point leaf'"
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html'> "
-						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.sectionTitle}}</a>" 
+						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.sectionTitle}}</a>"
 
 					var leafDefault = "<li class='point leaf'"
+            + " ng-show='show(leaf)'"
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html'> "
-						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.label}} - {{leaf.reference.description}}</a>" 
+						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.label}} - {{leaf.reference.description}}</a>"
 						+ "</li>";
 
 					var linker = function(scope, element, attrs) {
@@ -153,6 +156,7 @@ angular
 //								console.log("leafTable=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent);
 						} else {
 							element.html(leafDefault).show();
+							console.log("ToCDir leafDefault label=" + scope.leaf.label + " type=" + scope.leaf.type);
 //							console.log("leafDefault=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						}
 						$compile(element.contents())(scope);

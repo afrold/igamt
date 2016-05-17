@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 212,
+  "id" : "565f3ab7d4c6e52cfd445ed1",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0326",
+  "name" : "Visit indicator",
+  "description" : "Visit indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ed2",
+    "value" : "A",
+    "label" : "Account level (default)",
+    "codeSystem" : "HL70326",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ed3",
+    "value" : "V",
+    "label" : "Visit level",
+    "codeSystem" : "HL70326",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -23,13 +23,14 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular',
-        'ng-context-menu',
+        'ui.bootstrap.contextMenu',
         'angularjs-dropdown-multiselect',
         'dndLists',
         'froala',
-        'ngNotificationsBar'
-        ,
+        'ngNotificationsBar',
         'ngMockE2E'
+        ,'ui.tree',
+        'blockUI'
     ]);
 
 var
@@ -49,7 +50,7 @@ var
 var msg = {};
 
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider,blockUIConfig) {
 
     app.requires.push('ngMockE2E');
 
@@ -63,8 +64,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .when('/ig', {
             templateUrl: 'views/ig.html'
         })
-        .when('/masterDTLib', {
-            templateUrl: 'views/masterDTLib.html',
+        .when('/datatypeLibrary', {
+            templateUrl: 'views/datatypeLibrary.html',
             controller: 'DatatypeLibraryCtl'
         })
         .when('/doc', {
@@ -310,9 +311,16 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         spinner = true;
         return data;
     };
+
+    blockUIConfig.message = 'Please wait...';
+    blockUIConfig.blockBrowserNavigation = true;
+    blockUIConfig.autoBlock = true;
+
     $httpProvider.defaults.transformRequest.push(spinnerStarter);
 
     httpHeaders = $httpProvider.defaults.headers;
+
+//    uiSelectConfig.theme = 'bootstrap';
 
 
 });
@@ -413,7 +421,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
             $http.get('api/accounts/cuser').success(function (data) {
-                console.log("setCurrentUser=" + data);
+//                console.log("setCurrentUser=" + data);
                 userInfoService.setCurrentUser(data);
                 $rootScope.$broadcast('event:loginConfirmed');
             });

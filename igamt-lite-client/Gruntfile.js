@@ -183,7 +183,7 @@ module.exports = function(grunt) {
 				includeSource : {
 					// Task to include files into index.html
 					options : {
-						basePath : 'app',
+						basePath : 'app'
 					},
 					dev : {
 						files : {
@@ -471,8 +471,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('half-build', [ 'clean:dist', 
 					              'includeSource:prod',
 	                              'wiredep:prod',
-	                              'concurrent:server', 
-	                              'copy:dev'
+	                              'concurrent:dist'
 								]);
 
 	grunt.registerTask('build', [ 'clean:dist', 

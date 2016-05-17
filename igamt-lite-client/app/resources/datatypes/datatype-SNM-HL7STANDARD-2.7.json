@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 14,
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "57237657da0805ce1eab6b54" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc6550868b",
+  "label" : "SNM",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "SNM",
+  "description" : "String of Telephone Number Digits",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : "PUBLISHED"
+}

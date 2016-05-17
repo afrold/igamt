@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 215,
+  "id" : "569eac0ed4c623dc6550b93b",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0100",
+  "name" : "Invocation event",
+  "description" : "Invocation event",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.100",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b93c",
+    "value" : "D",
+    "label" : "On discharge",
+    "codeSystem" : "HL70100",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b93d",
+    "value" : "O",
+    "label" : "On receipt of order",
+    "codeSystem" : "HL70100",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b93e",
+    "value" : "R",
+    "label" : "At time service is completed",
+    "codeSystem" : "HL70100",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b93f",
+    "value" : "S",
+    "label" : "At time service is started",
+    "codeSystem" : "HL70100",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b940",
+    "value" : "T",
+    "label" : "At a designated date/time",
+    "codeSystem" : "HL70100",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

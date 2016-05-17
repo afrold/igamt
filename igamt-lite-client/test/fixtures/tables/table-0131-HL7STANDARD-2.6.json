@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 432,
+  "id" : "569eac0ed4c623dc6550a4c1",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0131",
+  "name" : "Contact Role",
+  "description" : "Contact Role",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.131",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4c2",
+    "value" : "C",
+    "label" : "Emergency Contact",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4c3",
+    "value" : "E",
+    "label" : "Employer",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4c4",
+    "value" : "F",
+    "label" : "Federal Agency",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4c5",
+    "value" : "I",
+    "label" : "Insurance Company",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4c6",
+    "value" : "N",
+    "label" : "Next-of-Kin",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4c7",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4c8",
+    "value" : "S",
+    "label" : "State Agency",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4c9",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

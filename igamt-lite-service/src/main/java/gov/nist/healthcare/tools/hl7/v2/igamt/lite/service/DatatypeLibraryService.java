@@ -14,17 +14,41 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 
 @Service
 public interface DatatypeLibraryService {
 
 	List<DatatypeLibrary> findAll();
 
-	List<DatatypeLibrary> findByScope(SCOPE scope);
+	List<DatatypeLibrary> findByScope(SCOPE scope, Long accountId);
 
-	List<DatatypeLibrary> findByAccountId(Long accountId);
+	DatatypeLibrary findById(String id);
 
-	DatatypeLibrary apply(DatatypeLibrary library);
-}
+	List<DatatypeLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+
+	List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version);
+
+	DatatypeLibrary save(DatatypeLibrary library);
+
+	DatatypeLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
+
+	void delete(DatatypeLibrary library);
+
+	List<String> findHl7Versions();
+
+	List<Datatype> bindDatatypes(List<String> datatypeIds, String datatyeLibraryId, String datatypeLibraryExt,
+			Long accountId);
+
+	void delete(String id);
+
+	List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name,
+			Long accountId); 
+	
+	List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope,
+			String hl7Version, String name, Long accountId);
+ }

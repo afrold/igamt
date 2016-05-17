@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 235,
+  "id" : "569eac0dd4c623dc65507edb",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0431",
+  "name" : "Recreational Drug Use Code",
+  "description" : "Recreational Drug Use Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507edc",
+    "value" : "A",
+    "label" : "Alcohol",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507edd",
+    "value" : "C",
+    "label" : "Tobacco - chewed",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ede",
+    "value" : "K",
+    "label" : "Kava",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507edf",
+    "value" : "M",
+    "label" : "Marijuana",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ee0",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ee1",
+    "value" : "T",
+    "label" : "Tobacco - smoked",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ee2",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

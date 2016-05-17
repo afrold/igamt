@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 377,
+  "id" : "569eac0dd4c623dc65507c8f",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0749",
+  "name" : "DRG Grouping Status",
+  "description" : "DRG Grouping Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c90",
+    "value" : "0",
+    "label" : "Valid code; not used for grouping",
+    "codeSystem" : "HL70749",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c91",
+    "value" : "1",
+    "label" : "Valid code; used for grouping",
+    "codeSystem" : "HL70749",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c92",
+    "value" : "2",
+    "label" : "Invalid code; not used for grouping",
+    "codeSystem" : "HL70749",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c93",
+    "value" : "3",
+    "label" : "Invalid code; code is relevant for grouping",
+    "codeSystem" : "HL70749",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -62,20 +62,6 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations   {
 	    return list;
  	}
 	
-//	@Override
-//	public List<IGDocument> findIn0354Table(List<String> structIDs, String hl7Verson) {
-//		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD)
-//		.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Verson));
-////		Criteria fields = Criteria.where("profile").elemMatch(Criteria.where("tables.children.bindingIdentifier").is("0354"));
-////		.andOperator(Criteria.where("profile.tables.children.codes.value").in(structIDs));
-//		Query query = Query.query(where);
-//		query.fields().include("profile.tables.children");
-////		BasicQuery query = new BasicQuery(where.getCriteriaObject(), fields.getCriteriaObject());
-//		List<IGDocument> rval = null;
-//		DBObjec                               rval1 =  (DBObject) mongo.find(query, IGDocument.class);
-//		return rval;
-//	}
-	
 	@Override
 	public List<String> findHl7Versions() {
 		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD);

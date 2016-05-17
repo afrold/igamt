@@ -10,155 +10,124 @@
     }
 </script>
 <script type="text/ng-template" id="EditSegments.html">
-    <div ng-controller="SegmentListCtrl" ng-init="init()" class="container">
-        <div ng-show="loadingSelection"
-             style="text-align: center;">
-            <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
-        </div>
-        <div ng-show="!loadingSelection">
-            <div ng-show="segment !== null" id="executionPanel">
-                <form name="segmentForm" id="segmentForm" novalidate class="form-horizontal">
+<div ng-controller="SegmentListCtrl" ng-init="init()" class="container">
+<div ng-show="loadingSelection"
+     style="text-align: center;">
+    <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+</div>
+<div ng-show="!loadingSelection">
+<div ng-show="segment !== null" id="executionPanel">
+<form name="segmentForm" id="segmentForm" novalidate class="form-horizontal">
+<div class="row" style="margin-left:0px; margin-right: 20px">
+<div class="page-header" style="margin-bottom: 20px">
+    <span class="header4">Segment: {{getSegmentLabel(segment)}}</span>
+            <span class="pull-right">
+         <button title="Save Changes" type="button" class="btn btn-md btn-primary"
+                 ng-disabled="segmentForm.$invalid"
+                 ng-hide="viewSettings.tableReadonly ||(segment.scope !== 'USER' && segment.scope !== 'MASTER')"
+                 ng-click="save()">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </button>
 
-                    <div class="igl-page-header">
-									<span class="header4 pull-left">Segment: {{segment.label}}</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="page-header">
-                                <span class="header5">MetaData</span>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error has-feedback' : segmentForm.name.$invalid}">
-                                    <label class="control-label">Name</label> <input type="text" disabled
-                                                                                     name="identifier"
-                                                                                     class="form-control"
-                                                                                     ng-model="segment.name"
-                                                                                     ng-change="recordChanged('segment','edit',segment.id,'name', segment.name)"
-                                                                                     required>
-                                </div>
-                            </div>
+                         <button title="Cancel Changes" type="button" class="btn btn-md btn-warning"
+                                 ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') "
+                                 ng-click="cancel()">
+                             <span><i class="fa fa-times fa-fw"></i> Cancel</span>
+                         </button>
+    </span>
+</div>
+    <tabset>
+        <tab heading="MetaData">
+            <div class="form-group"
+                 ng-class="{'igl-has-error has-feedback' : segmentForm.name.$invalid}">
+                <label class="col-md-2 control-label">Name</label>
 
-                            <div class="col-md-2 col-margin">
+                <div class="col-md-10">
+                    <input type="text" disabled
+                           name="identifier"
+                           class="form-control"
+                           ng-model="segment.name"
+                           ng-change="recordChanged('segment','edit',segment.id,'name', segment.name)"
+                           required>
+                </div>
+            </div>
 
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error has-feedback' : segmentForm.description.$invalid}">
-                                    <label class="control-label">Description</label> <input type="text" disabled
-                                                                                            ng-change="recordChanged('segment','edit',segment.id,'description', segment.description)"
-                                                                                            name="description"
-                                                                                            class="form-control"
-                                                                                            ng-model="segment.description"
-                                                                                            required>
-                                </div>
-                            </div>
+            <div class="form-group"
+                 ng-class="{'igl-has-error has-feedback' : segmentForm.ext.$invalid}">
+                <label class="col-md-2 control-label">Extension</label>
 
-
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error has-feedback' : segmentForm.label.$invalid}">
-                                    <label class="control-label">Label</label>
-                                    <input type="text" ng-disabled="viewSettings.tableReadonly"
-                                           class="form-control"
-                                           ng-change="recordChanged()"
-                                           name="label" class="form-control"
-                                           ng-model="segment.label"
-                                           required required aria-describedby="helpBlock2">
+                <div class="col-md-10">
+                    <input type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
+                           class="form-control"
+                           ng-change="recordChanged()"
+                           name="label" class="form-control"
+                           ng-model="segment.ext"
+                           required required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(segment,'label', segments)">Label already used</span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error has-feedback' : segmentForm.comment.$invalid}">
-                                    <label class="control-label">Comment</label> <input
-                                        ng-disabled="viewSettings.tableReadonly"
-                                        class="form-control" type="text"
-                                        name="comment"
-                                        ng-change="recordChanged()"
-                                        ng-model="segment.comment">
-
-                                </div>
-                            </div>
+                                          ng-show="isDuplicated(segment,'ext', segments)">Extension already used</span>
+                </div>
+            </div>
 
 
-                        </div>
+            <div class="form-group"
+                 ng-class="{'igl-has-error has-feedback' : segmentForm.description.$invalid}">
+                <label class="col-md-2 control-label">Description</label>
 
-                        <div class="col-md-12">
-                            <div class="col-md-12 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error has-feedback' : segmentForm.text1.$invalid}">
-                                    <label class="control-label">Definition Pre-Text</label>
-
-                                    <div ng-if="!viewSettings.tableReadonly">
-                                        <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1"
-                                                  name="text1"
-                                                  ng-change="recordChanged()"></textarea>
-                                    </div>
-                                    <div ng-if="viewSettings.tableReadonly">
-                                        <div froala-view="segment.text1"></div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-12 col-margin">
-                            <div class="col-md-12">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error has-feedback' : segmentForm.text2.$invalid}">
-                                    <label class="control-label">Definition Post-Text</label>
-
-                                    <div ng-if="!viewSettings.tableReadonly">
-                                         <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2"
-                                                  name="text2"
-                                                  ng-change="recordChanged()"></textarea>
-                                     </div>
-                                    <div ng-if="viewSettings.tableReadonly">
-                                        <div class="fr-view">
-                                        <div froala-view="segment.text2"></div>
-                                            </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                <div class="col-md-10">
+                    <input type="text" disabled
+                           ng-change="recordChanged('segment','edit',segment.id,'description', segment.description)"
+                           name="description"
+                           class="form-control"
+                           ng-model="segment.description" required>
+                </div>
+            </div>
 
 
+            <div class="form-group"
+                 ng-class="{'igl-has-error has-feedback' : segmentForm.comment.$invalid}">
+                <label class="col-md-2 control-label">Comment</label>
+                <div class="col-md-10">
+                    <textarea rows="3" cols="20"
+                              ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
+                              ng-change="recordChanged()"
+                              name="comment" id="comment" class="form-control"
+                              ng-model="segment.comment"
+                            />
+                </div>
+
+            </div>
+
+            <div class="form-group"
+                 ng-class="{'igl-has-error has-feedback' : segmentForm.text1.$invalid}">
+                <label class="col-md-2 control-label">Definition Pre-Text</label>
+                <div class="col-md-10">
+                <div ng-if="!viewSettings.tableReadonly">
+                    <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1"
+                              name="text1"
+                              ng-change="recordChanged()"></textarea>
+                </div>
+                <div ng-if="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                    <div froala-view="segment.text1"></div>
+                </div>
+</div>
+            </div>
+
+            <div class="form-group"
+                 ng-class="{'igl-has-error has-feedback' : segmentForm.text2.$invalid}">
+                <label class="col-md-2 control-label">Definition Post-Text</label>
+                <div class="col-md-10">
+                <div ng-if="!viewSettings.tableReadonly && segment.scope === 'USER'">
+                    <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2"
+                              name="text2"
+                              ng-change="recordChanged()"></textarea>
+                </div>
+                <div ng-if="viewSettings.tableReadonly || (segment.scope === 'MASTER' || segment.scope === 'HL7STANDARD')">
+                    <div class="fr-view">
+                        <div froala-view="segment.text2"></div>
                     </div>
-
-                    <div class="row" style="margin-top:20px">
-                        <div class="col-md-12 igl-page-header">
-<span class="pull-left">
-    <span class="header5">Definition</span>
-                                    <!--<div style="margin-left:15px" class="btn-group btn-group-xs" data-toggle="buttons">-->
-                                        <!--<label class="btn btn-primary" ng-click="viewSettings.setTableRelevance(true)"-->
-                                               <!--ng-class="{'active': viewSettings.tableRelevance}">-->
-                                            <!--<input type="radio" ng-model="viewSettings.tableRelevance"-->
-                                                   <!--ng-click="viewSettings.setTableRelevance(viewSettings.tableRelevance)"-->
-                                                   <!--autocomplete="off" checked>R,RE,C(only)-->
-                                        <!--</label>-->
-                                        <!--<label class="btn  btn-primary" ng-click="viewSettings.setTableRelevance(false)"-->
-                                               <!--ng-class="{'active': !viewSettings.tableRelevance}">-->
-                                            <!--<input type="radio" ng-model="viewSettings.tableRelevance"-->
-                                                   <!--autocomplete="off">R,RE,C,O,X (All)-->
-                                        <!--</label>-->
-                                    <!--</div>-->
-
-                             </span>
-                            <span class="pull-right">
-                                     <div style="margin-right: 20px" ng-dropdown-multiselect=""
-                                          options="viewSettings.columnOptions"
-                                          selected-model="viewSettings.visibleColumns"
-                                          events="viewSettings.events" extra-settings="viewSettings.extra"
-                                          translation-texts="viewSettings.translations"></div>
-                                     </span>
-
-                        </div>
-
+                </div>
+                    </div>
+            </div>
                         <div class="col-md-12">
                             <div class="table-responsive">
                                 <table tt-table tt-params="segmentsParams"
@@ -295,14 +264,65 @@
                     </div>
 
                 </form>
-
-            </div>
-        </div>
-    </div>
+                 <div class="table-responsive">
+                    <table tt-table tt-params="segmentsParams"
+                           class="table table-bordered table-fix-header table-condensed profile-table">
+                        <thead>
+                        <tr class="tbl-header"
+                            style="margin-right: {{scrollbarWidth}}px;">
+                            <th class="col-xs-2 col-fixed-250">
+                                <!--<input type="checkbox" ng-checked="isSelectedAllChildren()"-->
+                                <!--ng-click="selectAllChildren($event)">-->
+                                Name
+                            </th>
+                            <th class="col-xs-1 col-fixed-80"
+                                ng-show="viewSettings.isVisibleColumn('usage')">Usage
+                            </th>
+                            <th class="col-xs-1 col-fixed-100"
+                                ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
+                            </th>
+                            <th class="col-xs-1 col-fixed-100"
+                                ng-show="viewSettings.isVisibleColumn('length')">Length
+                            </th>
+                            <th class="col-xs-1 col-fixed-80"
+                                ng-show="viewSettings.isVisibleColumn('confLength')">Conformance Length
+                            </th>
+                            <th class="col-xs-1 col-fixed-100"
+                                ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
+                            </th>
+                            <th class="col-xs-1 col-fixed-130"
+                                ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                            </th>
+                            <th class="col-xs-1" ng-style="predWidth"
+                                ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
+                            </th>
+                            <th class="col-xs-1" ng-style="csWidth"
+                                ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance
+                                Statement
+                            </th>
+                            <th class="col-xs-1 col-fixed-80"
+                                ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
+                            </th>
+                            <th class="col-xs-1" ng-style="commentWidth"
+                                ng-show="viewSettings.isVisibleColumn('comment')">Comment
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+         </tab>
+    </tabset>
+</div>
+</form>
+ </div>
+</div>
+</div>
+</div>
 </script>
 
 <script type="text/ng-template" id="SegmentEditTree.html">
-    <tr tt-node  is-branch="hasChildren(node)" ng-show="isVisible(node)">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-2 col-fixed-250">
 
             <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
@@ -347,7 +367,7 @@
 </script>
 
 <script type="text/ng-template" id="SegmentReadTree.html">
-    <tr tt-node  is-branch="hasChildren(node)" ng-show="isVisible(node)">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-2 col-fixed-250">
             <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
             <span ng-if="node.type === 'component'" class="label label-component label-icon">C</span>
@@ -390,22 +410,32 @@
 </script>
 
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
-    <tr tt-node  is-branch="hasChildren(node)" ng-show="isVisible(node)">
-        <td class="col-xs-2 col-fixed-250">
-            <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
-            <span ng-if="node.type === 'component'" class="label label-component label-icon">C</span>
-            <span ng-if="node.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
-
-            <span
-                    tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"
-                    tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger
-                    tooltip-animation="false" tooltip-placement="left"
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)"
+        ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
+        <td class="col-xs-2 col-fixed-250" ng-controller="DatatypeRowCtrl">
+            <ng-form name="{{formName}}" class="form-inline">
+                <!--<input type="checkbox" ng-checked="isChildSelected(node)" ng-click="selectChild($event,node)">-->
+                <span class="label label-field label-icon">F</span>
+            <span ng-hide="isChildNew(node)"
+                  tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"
+                  tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger
+                  tooltip-animation="false" tooltip-placement="left"
                     ></span>
-
-
+             <span ng-show="isChildNew(node)">
+                  {{node.position}}.
+                <input
+                        class="form-control focus"
+                        autofocus
+                        style="width:65%"
+                        name="name"
+                        ng-change="recordDatatypeChange('field','edit',node.id,'name', node.name)"
+                        ng-class="{ 'igl-has-error has-feedback' : {{formName}}.name.$invalid}"
+                        ng-model="node.name" required>
+            </span>
+            </ng-form>
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
-            <div>
+            <div class="form-inline">
                 <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
                 	<select class="form-control input-sm" name="usage"
                             ng-change="setUsage(node)"
@@ -421,7 +451,7 @@
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">
             <div ng-controller="SegmentRowCtrl">
-                                            <span ng-form name="{{formName}}">
+                                            <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:45%" class="form-control"
                                                        name="min"
                                                        ng-change="recordChangeForEdit2('field','edit',node.id,'min', node.min)"
@@ -439,7 +469,7 @@
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
             <div ng-controller="SegmentRowCtrl">
-                                            <span ng-form name="{{formName}}">
+                                            <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:45%" class="form-control"
                                                        name="minLength"
                                                        ng-change="recordChangeForEdit2('field','edit',node.id,'minLength', node.minLength)"
@@ -457,7 +487,7 @@
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
             <div ng-controller="SegmentRowCtrl">
-                                            <span ng-form name="{{formName}}">
+                                            <span ng-form name="{{formName}}" class="form-inline">
                                             <input style="width:50%" class="form-control" type="text"
                                                    name="confLength"
                                                    ng-change="recordChangeForEdit2('field','edit',node.id,'confLength', node.confLength)"
@@ -468,20 +498,25 @@
             </div>
         </td>
 
-        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <select class="form-control input-sm"
-                    name="segment"
-                    ng-change="onDatatypeChange(node)"
-                    required
-                    ng-model="node.datatype"
-                    ng-selected="dt.id === node.datatype"
-                    ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">
-            </select>
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" class="form-inline">
+            <!--<select class="form-control input-sm"-->
+            <!--name="segment"-->
+            <!--ng-change="onDatatypeChange(node)"-->
+            <!--required-->
+            <!--ng-model="node.datatype"-->
+            <!--ng-selected="dt.id === node.datatype"-->
+            <!--ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name">-->
+            <!--</select>-->
+
+            <a ng-click="showSelectDatatypeFlavorDlg(node)">
+                {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            </a>
+
         </td>
-        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="node.table != undefined && node.table !== null">
-                <a ng-click="goToTable(tablesMap[node.table])" class="point">
-                    <span>{{tablesMap[node.table].bindingIdentifier}}</span>
+                <a ng-click="goToTable(tablesMap[node.table.id])" class="point">
+                    <span>{{getTableLabel(tablesMap[node.table.id])}}</span>
                 </a>
                 <a ng-click="mapTable(node)" class="point">
                     <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -490,7 +525,7 @@
                     <span><i class="fa fa-times fa-fw"></i></span>
                 </a>
             </div>
-            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTable(datatypesMap[node.datatype])">
+            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTable(datatypesMap[node.datatype.id])">
                 <a ng-click="mapTable(node)" class="point">
                     <span><i class="fa fa-plus fa-fw"></i></span>
                 </a>
@@ -530,35 +565,44 @@
             </p>
         </td>
 
-        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
-            <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
-               class="point">
-                <i class="fa fa-pencil fa-fw"></i>
-            </a>
-            <a ng-click="node.text = ''" ng-show="node.text !== '' && node.text !== null">
-                <i class="fa fa-times fa-fw"></i>
-            </a>
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">
+            <div>
+                <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
+                   class="point">
+                    <i class="fa fa-pencil fa-fw" ng-show="node.text !== '' && node.text !== null"></i>
+                    <i class="fa fa-plus fa-fw" ng-show="node.text === '' || node.text === null"></i>
+                </a>
+                <a ng-click="node.text = ''" ng-show="node.text !== '' && node.text !== null">
+                    <i class="fa fa-times fa-fw"></i>
+                </a>
+            </div>
         </td>
 
-        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <!--<a ng-show="node.comment === '' || node.comment === null"-->
-               <!--ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="point">-->
-                <!--<i class="fa fa-plus fa-fw"></i>-->
-            <!--</a>-->
-            <!--<a class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)"-->
-               <!--tooltip-html="node.comment" tooltip-append-to-body="true"-->
-               <!--tooltip-class="constraints-tooltip"-->
-               <!--tooltip-trigger tooltip-animation="false" tooltip-placement="left"-->
-               <!--ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></a>-->
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment">
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')"
+            style="text-align:center">
+            <a
+                    ng-show="node.comment === null || node.comment == undefined || node.comment == ''"
+                    ng-click="node.comment = ' '" class="point">
+                <i class="fa fa-plus fa-fw"></i>
+            </a>
+            <textarea style="width:100%;height:100%"
+                      class="form-control"
+                      ng-model="node.comment"
+                      ng-show="node.comment !== null && node.comment != undefined && node.comment != ''">
             </textarea>
+            <a
+                    ng-show="node.comment !== null && node.comment !== undefined && node.comment != ''"
+                    ng-click="node.comment = null"
+                    class="point">
+                <i class="fa fa-times fa-fw"></i>
+            </a>
 
         </td>
     </tr>
 </script>
 
 <script type="text/ng-template" id="SegmentFieldReadTree.html">
-    <tr tt-node  is-branch="hasChildren(node)" ng-show="isVisible(node)">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
 
         <td class="col-xs-2 col-fixed-250">
             <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
@@ -595,14 +639,13 @@
         </td>
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <a ng-click="goToDatatype(datatypesMap[node.datatype])"
-               class="point">{{::datatypesMap[node.datatype].label}}
-            </a>
+            <span>{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            </span>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a ng-click="goToTable(tablesMap[node.table])" class="point"
+            <a ng-click="goToTable(tablesMap[node.table.id])" class="point"
                ng-show="node.table != undefined && node.table !== null">
-                {{::tablesMap[node.table].bindingIdentifier}}
+                {{::getTableLabel(tablesMap[node.table.id])}}
             </a>
         </td>
         <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
@@ -634,14 +677,15 @@
         </td>
 
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null"  disabled>
-            </textarea>
+            <span class="form-control" style="width:100%;height:100%" ng-bind="node.comment"
+                  ng-show="node.comment !== '' && node.comment !== null" disabled>
+            </span>
         </td>
     </tr>
 </script>
 
 <script type="text/ng-template" id="SegmentComponentEditTree.html">
-    <tr tt-node  is-branch="hasChildren(node)" ng-show="isVisible(node)">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-2 col-fixed-250">
                              <span>
                                  <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
@@ -683,16 +727,14 @@
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
-                <a ng-click="goToDatatype(datatypesMap[node.datatype])" class="point">
-                    <span>{{datatypesMap[node.datatype].label}}</span>
-                </a>
+                <span>{{getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>
 				<span ng-show="node.table != undefined && node.table != null">
-					<a ng-click="goToTable(tablesMap[node.table])" class="point">
-                        <span>{{tablesMap[node.table].bindingIdentifier}}</span>
+					<a ng-click="goToTable(tablesMap[node.table.id])" class="point">
+                        <span>{{getTableLabel(tablesMap[node.table.id])}}</span>
                     </a>
                 </span>
             </div>
@@ -727,14 +769,15 @@
             </div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" disabled ng-show="node.comment != null && node.comment != ''">
-            </textarea>
+            <span class="form-control" style="width:100%;height:100%" ng-bind="node.comment" disabled
+                  ng-show="node.comment != null && node.comment != ''">
+            </span>
         </td>
     </tr>
 </script>
 
 <script type="text/ng-template" id="SegmentComponentReadTree.html">
-    <tr tt-node  is-branch="hasChildren(node)" ng-show="isVisible(node)">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-2 col-fixed-250">
                              <span>
                                 <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
@@ -775,15 +818,14 @@
         </td>
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <a ng-click="goToDatatype(datatypesMap[node.datatype])"
-               class="point">{{::datatypesMap[node.datatype].label}}
-            </a>
+            <span>{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            </span>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a type="button" ng-click="goToTable(tablesMap[node.table])"
+            <a type="button" ng-click="goToTable(tablesMap[node.table.id])"
                ng-show="node.table != undefined && node.table != null"
                class="point">
-                {{::tablesMap[node.table].bindingIdentifier}}
+                {{::getTableLabel(tablesMap[node.table.id])}}
             </a>
         </td>
 
@@ -814,8 +856,9 @@
             </a>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null"  disabled>
-            </textarea>
+            <span class="form-control" style="width:100%;height:100%" ng-bind="node.comment"
+                  ng-show="node.comment !== '' && node.comment !== null" disabled>
+            </span>
         </td>
     </tr>
 </script>
@@ -911,6 +954,7 @@
     				<td class="col-md-2">
 						<span>{{newConstraint.segment}}-</span>
     					<select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'segment')}" ng-change="updateField_1()" ng-model="newConstraint.field_1" placeholder="Field" ng-options="field as field.position for field in segment.fields"/>
+
         				<span ng-show="datatypesMap[newConstraint.field_1.datatype].components.length > 0">.
         					<select class="form-control form-control-short"
                                     placeholder="Component"
@@ -1007,7 +1051,8 @@
                         	</select>
 							<br/>
 							<span>BindingLocation: </span>
-							<input class="form-control form-control-short" ng-model="newConstraint.bindingLocation" type="text"/>
+							<input class="form-control form-control-short" ng-model="newConstraint.bindingLocation"
+                                   type="text"/>
                 		</span>
     				</td>
     				<td class="col-md-1" align="center">
@@ -1077,9 +1122,12 @@
 </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-	<button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-    <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
+        &nbsp; </i>Save</span></button>
+    <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        &nbsp; </i>Close</span></button>
+    <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        &nbsp; </i>Close</span></button>
 </div>
 </script>
 
@@ -1349,9 +1397,12 @@
 </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-	<button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-    <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
+        &nbsp; </i>Save</span></button>
+    <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        &nbsp; </i>Close</span></button>
+    <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        &nbsp; </i>Close</span></button>
 </div>
 </script>
 
@@ -1365,59 +1416,65 @@
                 <div class="col-md-6">
                     <h5>List of Tables</h5>
 
-					<div class="igl-table">
-                    	<table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-							<thead>
-                            	<tr class="tbl-header">
-									<th data-ng-click="predicate = 'bindingIdentifier'; reverse=!reverse">ID 
-    									<i ng-show="reverse && predicate==='bindingIdentifier'" class="fa fa-sort-desc"></i>
-										<i ng-show="!reverse && predicate==='bindingIdentifier'" class="fa fa-sort-asc"></i>
-										<i ng-show="predicate!=='bindingIdentifier'" class="fa fa-sort"></i>
-									</th>
-									<th data-ng-click="predicate = 'name'; reverse=!reverse">Name 
-    									<i ng-show="reverse && predicate==='name'" class="fa fa-sort-desc"></i>
-										<i ng-show="!reverse && predicate==='name'" class="fa fa-sort-asc"></i>
-										<i ng-show="predicate!=='name'" class="fa fa-sort"></i>
-									</th>
-                            	</tr>
-                            	<tr>
-                                	<th>
-										<input type="text" class="form-control" placeholder="Search by id" ng-model="searchTableValue.bindingIdentifier"/>
-                                	</th>
-									<th>
-										<input type="text" class="form-control" placeholder="Search by name" ng-model="searchTableValue.name"/>
-                                	</th>
-                            	</tr>
+                    <div class="igl-table">
+                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                            <thead>
+                            <tr class="tbl-header">
+                                <th data-ng-click="predicate = 'bindingIdentifier'; reverse=!reverse">ID
+                                    <i ng-show="reverse && predicate==='bindingIdentifier'" class="fa fa-sort-desc"></i>
+                                    <i ng-show="!reverse && predicate==='bindingIdentifier'" class="fa fa-sort-asc"></i>
+                                    <i ng-show="predicate!=='bindingIdentifier'" class="fa fa-sort"></i>
+                                </th>
+                                <th data-ng-click="predicate = 'name'; reverse=!reverse">Name
+                                    <i ng-show="reverse && predicate==='name'" class="fa fa-sort-desc"></i>
+                                    <i ng-show="!reverse && predicate==='name'" class="fa fa-sort-asc"></i>
+                                    <i ng-show="predicate!=='name'" class="fa fa-sort"></i>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="Search by id"
+                                           ng-model="searchTableValue.bindingIdentifier"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="Search by name"
+                                           ng-model="searchTableValue.name"/>
+                                </th>
+                            </tr>
                             </thead>
-							<tbody>
-								<tr ng-repeat="table in tables|filter:searchTableValue|orderBy:predicate:reverse">
-                                	<td>
-                                    	<a ng-click="selectTable(table)">{{table.bindingIdentifier}}</a>
-                                	</td>
-                                	<td ng-bind-html="table.name"></td>
-                            	</tr>
+                            <tbody>
+                            <tr ng-repeat="table in tables|filter:searchTableValue|orderBy:predicate:reverse">
+                                <td>
+                                    <a ng-click="selectTable(table)">{{table.bindingIdentifier}}</a>
+                                </td>
+                                <td ng-bind-html="table.name"></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="col-md-6">
-				<h5>Selected Table for {{segment.name}}-{{selectedNode.position}}</h5>
+                    <h5>Selected Table for {{segment.name}}-{{selectedNode.position}}</h5>
 	 			<span ng-show="selectedTable != undefined">
 	 				<div class="row">
                         <div class="col-sm-2">
                             <p>ID:</p>
+
                             <p>Extensibility:</p>
                         </div>
                         <div class="col-sm-4">
                             <p>{{selectedTable.bindingIdentifier}}</p>
+
                             <p>{{selectedTable.extensibility}}</p>
                         </div>
-						<div class="col-sm-2">
+                        <div class="col-sm-2">
                             <p>Name:</p>
+
                             <p>Stability:</p>
                         </div>
                         <div class="col-sm-4">
                             <p>{{selectedTable.name}}</p>
+
                             <p>{{selectedTable.stability}}</p>
                         </div>
                     </div>
@@ -1425,38 +1482,40 @@
 					<h5>List of Codes</h5>
 					
 					<div class="igl-table">
-                    	<table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-							<thead>
-                            	<tr class="tbl-header">
-									<th data-ng-click="predicate = 'value'; reverse=!reverse">Value 
-    									<i ng-show="reverse && predicate==='value'" class="fa fa-sort-desc"></i>
-										<i ng-show="!reverse && predicate==='value'" class="fa fa-sort-asc"></i>
-										<i ng-show="predicate!=='value'" class="fa fa-sort"></i>
-									</th>
-									<th data-ng-click="predicate = 'label'; reverse=!reverse">Description 
-    									<i ng-show="reverse && predicate==='label'" class="fa fa-sort-desc"></i>
-										<i ng-show="!reverse && predicate==='label'" class="fa fa-sort-asc"></i>
-										<i ng-show="predicate!=='label'" class="fa fa-sort"></i>
-									</th>
-									<th>Codesys</th>
-                                	<th>Usage</th>
-                            	</tr>
-                            	<tr>
-                                	<th>
-										<input type="text" class="form-control" placeholder="Search by value" ng-model="searchCodeValue.value"/>
-                                	</th>
-									<th>
-										<input type="text" class="form-control" placeholder="Search by description" ng-model="searchCodeValue.label"/>
-                                	</th>
-                            	</tr>
+                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                            <thead>
+                            <tr class="tbl-header">
+                                <th data-ng-click="predicate = 'value'; reverse=!reverse">Value
+                                    <i ng-show="reverse && predicate==='value'" class="fa fa-sort-desc"></i>
+                                    <i ng-show="!reverse && predicate==='value'" class="fa fa-sort-asc"></i>
+                                    <i ng-show="predicate!=='value'" class="fa fa-sort"></i>
+                                </th>
+                                <th data-ng-click="predicate = 'label'; reverse=!reverse">Description
+                                    <i ng-show="reverse && predicate==='label'" class="fa fa-sort-desc"></i>
+                                    <i ng-show="!reverse && predicate==='label'" class="fa fa-sort-asc"></i>
+                                    <i ng-show="predicate!=='label'" class="fa fa-sort"></i>
+                                </th>
+                                <th>Codesys</th>
+                                <th>Usage</th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="Search by value"
+                                           ng-model="searchCodeValue.value"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="Search by description"
+                                           ng-model="searchCodeValue.label"/>
+                                </th>
+                            </tr>
                             </thead>
-							<tbody>
-								<tr ng-repeat="c in selectedTable.codes|filter:searchCodeValue|orderBy:predicate:reverse">
-                                	<td ng-bind-html="c.value"></td>
-                                	<td ng-bind-html="c.label"></td>
-                               		<td ng-bind-html="c.codeSystem"></td>
-                                	<td ng-bind-html="c.codeUsage"></td>
-                            	</tr>
+                            <tbody>
+                            <tr ng-repeat="c in selectedTable.codes|filter:searchCodeValue|orderBy:predicate:reverse">
+                                <td ng-bind-html="c.value"></td>
+                                <td ng-bind-html="c.label"></td>
+                                <td ng-bind-html="c.codeSystem"></td>
+                                <td ng-bind-html="c.codeUsage"></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -1466,9 +1525,14 @@
         </div>
     </div>
     <div class="modal-footer">
-		<button ng-show="changed" type="button" ng-click="mappingTable()" class="btn btn-primary btn-sm"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</button>
-		<button ng-show="changed" type="button" ng-click="ok()" class="btn btn-warning btn-sm"><i class="fa fa-times fa-fw">&nbsp; </i>Close</button>
-		<button ng-show="!changed" class="btn btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
+        <button ng-show="changed" type="button" ng-click="mappingTable()" class="btn btn-primary btn-sm"><i
+                class="fa fa-plus fa-fw">&nbsp; </i>Save
+        </button>
+        <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-warning btn-sm"><i
+                class="fa fa-times fa-fw">&nbsp; </i>Close
+        </button>
+        <button ng-show="!changed" class="btn btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+            &nbsp; </i>Cancel</span></button>
     </div>
 </script>
 
@@ -1477,7 +1541,7 @@
         <h3 class="modal-title">Delete Confirmation</h3>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want to delete Segment {{segToDelete.label}} ? </p>
+        <p>Are you sure you want to delete Segment {{getSegmentLabel(segToDelete)}} ? </p>
     </div>
     </div>
     <div class="modal-footer">

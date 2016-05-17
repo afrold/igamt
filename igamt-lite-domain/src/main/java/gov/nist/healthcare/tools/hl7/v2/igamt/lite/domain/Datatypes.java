@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.bson.types.ObjectId;
 
+@Deprecated
 public class Datatypes extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -84,11 +85,10 @@ public class Datatypes extends TextbasedSectionModel implements java.io.Serializ
 		return null;
 	}
 
-	public Datatype findOneByNameAndByLabelAndByVersion(String name, String label, String version) {
+	public Datatype findOneByNameAndByLabelAndByVersion(String name, String version) {
 		if (this.children != null) {
 			for (Datatype dt : this.children) {
 				if (dt.getName().equals(name) 
-						&& dt.getLabel().equals(label)
 						&& dt.getHl7Version().equals(version)) {
 					return dt;
 				}
@@ -116,23 +116,13 @@ public class Datatypes extends TextbasedSectionModel implements java.io.Serializ
 					return c;
 				} else {
 					Component r = findOneComponent(id,
-							this.findOne(c.getDatatype()));
+							this.findOne(c.getDatatype().getId()));
 					if (r != null) {
 						return r;
 					}
 				}
 			}
 		}
-		return null;
-	}
-
-	public Datatype findOneDatatypeByLabel(String label) {
-		if (this.children != null)
-			for (Datatype d : this.children) {
-				if (d.getLabel().equals(label)) {
-					return d;
-				}
-			}
 		return null;
 	}
 	
@@ -207,21 +197,21 @@ public class Datatypes extends TextbasedSectionModel implements java.io.Serializ
 	
 	public void merge(Datatypes dts){
 		for (Datatype dt : dts.getChildren()){
-			if (this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getLabel(), dt.getHl7Version()) == null){
+			if (this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getHl7Version()) == null){
 				this.addDatatype(dt);
 			} else {
-				dt.setId(this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getLabel(), dt.getHl7Version()).getId()); //FIXME Probably useless...
+				dt.setId(this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getHl7Version()).getId()); //FIXME Probably useless...
 			}
 		}
 		
 	}
 	
-	public void setPositionsOrder(){
-		List<Datatype> sortedList = new ArrayList<Datatype>(this.getChildren());
-		Collections.sort(sortedList);
-		for (Datatype elt: sortedList) {
-			elt.setSectionPosition(sortedList.indexOf(elt));
-		}
-	}
+//	public void setPositionsOrder(){
+//		List<Datatype> sortedList = new ArrayList<Datatype>(this.getChildren());
+//		Collections.sort(sortedList);
+//		for (Datatype elt: sortedList) {
+//			elt.setSectionPosition(sortedList.indexOf(elt));
+//		}
+//	}
 
 }

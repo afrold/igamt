@@ -1,0 +1,144 @@
+{
+  "type" : "table",
+  "sectionPosition" : 415,
+  "id" : "569eac0ed4c623dc6550b6d0",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0200",
+  "name" : "Name type",
+  "description" : "Name type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.200",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6d1",
+    "value" : "A",
+    "label" : "Alias Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6d2",
+    "value" : "B",
+    "label" : "Name at Birth",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6d3",
+    "value" : "C",
+    "label" : "Adopted Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6d4",
+    "value" : "D",
+    "label" : "Display Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6d5",
+    "value" : "I",
+    "label" : "Licensing Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6d6",
+    "value" : "K",
+    "label" : "Artist Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6d7",
+    "value" : "L",
+    "label" : "Legal Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6d8",
+    "value" : "M",
+    "label" : "Maiden Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6d9",
+    "value" : "N",
+    "label" : "Nickname /\"Call me\" Name/Street Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6da",
+    "value" : "P",
+    "label" : "Name of Partner/Spouse (retained for backward compatibility only)",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6db",
+    "value" : "R",
+    "label" : "Registered Name (animals only)",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6dc",
+    "value" : "S",
+    "label" : "Coded Pseudo-Name to ensure anonymity",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6dd",
+    "value" : "T",
+    "label" : "Indigenous/Tribal/Community Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6de",
+    "value" : "U",
+    "label" : "Unspecified",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

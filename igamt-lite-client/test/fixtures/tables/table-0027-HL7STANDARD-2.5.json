@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 430,
+  "id" : "565f3ab6d4c6e52cfd4408bd",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0027",
+  "name" : "Priority",
+  "description" : "Priority",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.27",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408be",
+    "value" : "A",
+    "label" : "As soon as possible (a priority lower than stat)",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408bf",
+    "value" : "P",
+    "label" : "Preoperative (to be done prior to surgery)",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408c0",
+    "value" : "R",
+    "label" : "Routine",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408c1",
+    "value" : "S",
+    "label" : "Stat (do immediately)",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408c2",
+    "value" : "T",
+    "label" : "Timing critical (do as near as possible to requested time)",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 160,
+  "id" : "569eac0dd4c623dc6550837d",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0351",
+  "name" : "Occurrence Span",
+  "description" : "Occurrence Span",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550837e",
+    "value" : "�",
+    "label" : "use NUBC codes",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

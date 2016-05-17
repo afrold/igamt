@@ -9,12 +9,6 @@
         top.location = self.location;
     }
 </script>
-<ng-include src="'views/edit/editDocument.html'"></ng-include>
-<ng-include src="'views/edit/editDatatypes.html'"></ng-include>
-<ng-include src="'views/edit/editSegments.html'"></ng-include>
-<ng-include src="'views/edit/editMessages.html'"></ng-include>
-<ng-include src="'views/edit/editValueSets.html'"></ng-include>
-<ng-include src="'views/edit/editSections.html'"></ng-include>
 <div ng-show="!loadingIGDocument">
 <div class="row" ng-show="!isEditing">
     <div class="col-md-12">
@@ -31,33 +25,50 @@
     <!--</div>-->
     <!---->
     <div class="col-md-12 igl-page-header">
-        <span class="header4 pull-left">IG Document: {{igdocument.metaData.title}}
-            <span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>
-            <span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>
-        </span>
-                     <span class="pull-right">
-         <button title="Save Changes" type="button" class="btn btn-xs btn-success"
-                 ng-hide="viewSettings.tableReadonly"
-                 ng-show="igDocumentConfig.selectedType === 'USER'"
-                 ng-click="save()">
-             <span><i class="fa fa-check fa-fw"></i> Save</span>
-         </button>
+      <span class="header4 pull-left">
+        <div ng-controller="FilteringCtl">
+           <div class="row form-inline" style="margin:10px">
+            <label class="label label-default">Filters:</label>
+            <label>Conf Profiles</label>
+            <span  ng-dropdown-multiselect="" options="filtermsgdata()" selected-model="filtermsgmodel()" extra-settings="filtermsgsettings()" translation-texts="filtermsgtexts()">
+            </span>
+            <label>Usages</label>
+            <span  ng-dropdown-multiselect="" options="filterusagesdata()" selected-model="filterusagesmodel()" extra-settings="filterusagessettings()" translation-texts="filterusagestexts()">
+            </span>
+          </div>
+<!--           <div class="row" style="margin:10px">
+<!--             <div class="col-md-4" />
+ -->
+<!--             <div class="col-md-4" ng-dropdown-multiselect="" options="filterusagesdata()" selected-model="filterusagesmodel()" extra-settings="filterusagessettings()" translation-texts="filterusagestexts()">
+            </div>
+          </div> -->
+         </div>
+
+        <!--<span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>-->
+        <!--<span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>-->
+      </span>
+      <span class="pull-right">
+         <!--<button title="Save Changes" type="button" class="btn btn-xs btn-success"-->
+                 <!--ng-hide="viewSettings.tableReadonly"-->
+                 <!--ng-show="igDocumentConfig.selectedType === 'USER'"-->
+                 <!--ng-click="save()">-->
+             <!--<span><i class="fa fa-check fa-fw"></i> Save</span>-->
+         <!--</button>-->
 
                     <button ng-show="viewSettings.tableReadonly && igDocumentConfig.selectedType === 'USER'"
                             title="Edit"
-                            type="button" class="btn btn-xs btn-primary"
+                            type="button" class="btn btn-md btn-primary"
                             ng-click="edit(igdocument)">
                                         <span><i
                                                 class="fa fa-pencil fa-fw"></i>Edit</span>
                     </button>
-
                     <div class="btn-group">
                         <button type="button"
-                                class="btn btn-info btn-xs"><span><i
+                                class="btn btn-info btn-md"><span><i
                                 class="fa fa-download fa-fw"></i> Export</span>
                         </button>
                         <button type="button"
-                                class="btn btn-info btn-xs dropdown-toggle"
+                                class="btn btn-info btn-md dropdown-toggle"
                                 data-toggle="dropdown" aria-expanded="false">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
@@ -69,21 +80,19 @@
                         </ul>
                     </div>
 
-                    <button title="Close the IG Document" type="button" class="btn btn-xs btn-warning"
+                    <button title="Close the IG Document" type="button" class="btn btn-md btn-warning"
                             ng-click="close()">
                         <span><i class="fa fa-close fa-fw"></i>Close</span>
-                    </button>
+                       </button>
 
-                    <button title="Delete permanently" type="button" class="btn btn-xs btn-danger"
-                            ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"
-                            ng-click="confirmDelete(igdocument)">
-                        <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
-                    </button>
-    </span>
+                       <button title="Delete permanently" type="button" class="btn btn-md btn-danger"
+                               ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"
+                               ng-click="confirmDelete(igdocument)">
+                         <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
+                       </button>
+      </span>
 
-
-    </div>
-    <div class="col-md-12">
+  <div class="col-md-12">
                 <span>version: {{igdocument.metaData.version}}
                 </span>
     </div>
@@ -111,11 +120,10 @@
 
             </div>
 
-            <div class="panel-body"
-                    >
-                <div class="toc-container">
+            <div class="panel-body toc-container">
+             
                     <div ng-include="'views/toc.html'"></div>
-                </div>
+              
             </div>
         </div>
     </div>
@@ -130,101 +138,56 @@
         </div>
     </div>
 
+    <!--<div class="col-md-12">-->
+        <!--<nav class="navbar navbar-default navbar-fixed-bottom">-->
+             <!--<span class="pull-right">-->
+         <!--&lt;!&ndash;<button title="Save Changes" type="button" class="btn btn-xs btn-success"&ndash;&gt;-->
+                 <!--&lt;!&ndash;ng-hide="viewSettings.tableReadonly"&ndash;&gt;-->
+                 <!--&lt;!&ndash;ng-show="igDocumentConfig.selectedType === 'USER'"&ndash;&gt;-->
+                 <!--&lt;!&ndash;ng-click="save()">&ndash;&gt;-->
+             <!--&lt;!&ndash;<span><i class="fa fa-check fa-fw"></i> Save</span>&ndash;&gt;-->
+         <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                    <!--<button ng-show="viewSettings.tableReadonly && igDocumentConfig.selectedType === 'USER'"-->
+                            <!--title="Edit"-->
+                            <!--type="button" class="btn btn-md btn-primary"-->
+                            <!--ng-click="edit(igdocument)">-->
+                                        <!--<span><i-->
+                                                <!--class="fa fa-pencil fa-fw"></i>Edit</span>-->
+                    <!--</button>-->
+                    <!--<div class="btn-group dropup">-->
+                        <!--<button type="button"-->
+                                <!--class="btn btn-info btn-md"><span><i-->
+                                <!--class="fa fa-download fa-fw"></i> Export</span>-->
+                        <!--</button>-->
+                        <!--<button type="button"-->
+                                <!--class="btn btn-info btn-md dropdown-toggle"-->
+                                <!--data-toggle="dropdown" aria-expanded="false">-->
+                            <!--<span class="caret"></span>-->
+                            <!--<span class="sr-only">Toggle Dropdown</span>-->
+                        <!--</button>-->
+                        <!--<ul class="dropdown-menu igl-menu" role="menu">-->
+                            <!--<li><a class="point" ng-click="exportAs('pdf')">As PDF</a></li>-->
+                            <!--<li><a class="point" ng-click="exportAs('docx')">As WORD</a></li>-->
+                            <!--<li><a class="point" ng-click="exportAs('html')">As HTML</a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
 
-    <!--<div class="row" ng-init="hideToc = true">-->
-    <!--<div ng-class="hideToc ? 'col-md-3' : 'col-md-1 col-fixed-100'">-->
-    <!--<div class="panel panel-primary">-->
-    <!--<div class="panel-heading">-->
-    <!--<div ng-show="hideToc">-->
-    <!--Table of Contents-->
-    <!--<a class="btn btn-onc btn-xs" ng-click="hideToc = !hideToc">-->
-    <!--<span class="fa fa-lg"-->
-    <!--ng-class="{-->
-    <!--'fa-caret-left': hideToc-->
-    <!--}">-->
+                    <!--<button title="Close the IG Document" type="button" class="btn btn-md btn-warning"-->
+                            <!--ng-click="close()">-->
+                        <!--<span><i class="fa fa-close fa-fw"></i>Close</span>-->
+                    <!--</button>-->
+
+                    <!--<button title="Delete permanently" type="button" class="btn btn-md btn-danger"-->
+                            <!--style="margin-right: 10px"-->
+                            <!--ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"-->
+                            <!--ng-click="confirmDelete(igdocument)">-->
+                        <!--<span><i class="fa fa-trash-o fa-fw"></i>Delete</span>-->
+                    <!--</button>-->
     <!--</span>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div ng-show="!hideToc">-->
-    <!--<a class="btn btn-onc btn-xs" ng-click="hideToc = !hideToc">-->
-    <!--<span class="fa fa-lg"-->
-    <!--ng-class="{-->
-    <!--'fa-caret-right': !hideToc-->
-    <!--}">-->
-    <!--</span>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="panel-body" ng-show="hideToc"-->
-    <!--style="max-width: 100%; overflow-x: auto; max-height: 900px; overflow-y: auto;white-space:nowrap;">-->
-    <!--<div ng-class="hideToc ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div ng-class="hideToc ? 'col-md-9' : 'col-md-11'">-->
-    <!--<div class="panel panel-primary">-->
-    <!--<div class="panel-heading">Edit Area</div>-->
-    <!--<div class="panel-body" style="padding-bottom:100px">-->
-    <!--<div id="edit" ng-show="subview !== undefined" style="width:100%">-->
-    <!--<ng-include src="subview"></ng-include>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-
-    <div class="col-md-12">
-        <nav class="navbar navbar-default navbar-fixed-bottom">
-             <span class="pull-right">
-         <button title="Save Changes" type="button" class="btn btn-xs btn-success"
-                 ng-hide="viewSettings.tableReadonly"
-                 ng-show="igDocumentConfig.selectedType === 'USER'"
-                 ng-click="save()">
-             <span><i class="fa fa-check fa-fw"></i> Save</span>
-         </button>
-                    <button ng-show="viewSettings.tableReadonly && igDocumentConfig.selectedType === 'USER'"
-                            title="Edit"
-                            type="button" class="btn btn-xs btn-primary"
-                            ng-click="edit(igdocument)">
-                                        <span><i
-                                                class="fa fa-pencil fa-fw"></i>Edit</span>
-                    </button>
-
-                    <div class="btn-group dropup">
-                        <button type="button"
-                                class="btn btn-info btn-xs"><span><i
-                                class="fa fa-download fa-fw"></i> Export</span>
-                        </button>
-                        <button type="button"
-                                class="btn btn-info btn-xs dropdown-toggle"
-                                data-toggle="dropdown" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu igl-menu" role="menu">
-                            <li><a class="point" ng-click="exportAs('pdf')">As PDF</a></li>
-                            <li><a class="point" ng-click="exportAs('docx')">As WORD</a></li>
-                            <li><a class="point" ng-click="exportAs('html')">As HTML</a></li>
-                        </ul>
-                    </div>
-
-                    <button title="Close the IG Document" type="button" class="btn btn-xs btn-warning"
-                            ng-click="close()">
-                        <span><i class="fa fa-close fa-fw"></i>Close</span>
-                    </button>
-
-                    <button title="Delete permanently" type="button" class="btn btn-xs btn-danger"
-                            style="margin-right: 10px"
-                            ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"
-                            ng-click="confirmDelete(igdocument)">
-                        <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
-                    </button>
-    </span>
-        </nav>
+        <!--</nav>-->
 
 
-    </div>
+    <!--</div>-->
 </div>
 
 
@@ -234,4 +197,5 @@
 <div ng-show="loadingIGDocument"
      style="text-align: center;">
     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+</div>
 </div>

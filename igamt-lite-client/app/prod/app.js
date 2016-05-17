@@ -23,12 +23,14 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular',
-        'ng-context-menu',
+        'ui.bootstrap.contextMenu',
         'angularjs-dropdown-multiselect',
         'dndLists',
         'froala',
         'ngNotificationsBar',
-        'ngDragDrop'
+        'ngDragDrop',
+        'ui.tree',
+        'blockUI'
     ]);
 
 var
@@ -47,7 +49,7 @@ var
 //the message to be shown to the user
 var msg = {};
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, notificationsConfigProvider) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, notificationsConfigProvider,blockUIConfig) {
 
 
     $routeProvider
@@ -60,8 +62,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .when('/ig', {
             templateUrl: 'views/ig.html'
         })
-        .when('/masterDTLib', {
-            templateUrl: 'views/masterDTLib.html',
+        .when('/datatypeLibrary', {
+            templateUrl: 'views/datatypeLibrary.html',
             controller: 'DatatypeLibraryCtl'
         })
         .when('/doc', {
@@ -282,6 +284,11 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         spinner = true;
         return data;
     };
+
+    blockUIConfig.message = 'Please wait...';
+    blockUIConfig.blockBrowserNavigation = true;
+
+
     $httpProvider.defaults.transformRequest.push(spinnerStarter);
 
     httpHeaders = $httpProvider.defaults.headers;
@@ -368,6 +375,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
      * On 'event:loginConfirmed', resend all the 401 requests.
      */
     $rootScope.$on('event:loginConfirmed', function () {
+//    	console.log("event:loginConfirmed 0");
         var i,
             requests = $rootScope.requests401,
             retry = function (req) {
@@ -380,7 +388,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             retry(requests[i]);
         }
         $rootScope.requests401 = [];
-
+//console.log("event:loginConfirmed 1");
         $location.url('/ig');
     });
 
@@ -389,7 +397,8 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
      * On 'event:loginRequest' send credentials to the server.
      */
     $rootScope.$on('event:loginRequest', function (event, username, password) {
-        httpHeaders.common['Accept'] = 'application/json';
+//       	console.log("event:loginRequest 0");
+       httpHeaders.common['Accept'] = 'application/json';
         httpHeaders.common['Authorization'] = 'Basic ' + base64.encode(username + ':' + password);
 //        httpHeaders.common['withCredentials']=true;
 //        httpHeaders.common['Origin']="http://localhost:9000";
@@ -409,6 +418,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
                 userInfoService.setCurrentUser(null);
             });
         });
+//       	console.log("event:loginRequest 1");
     });
 
     /**

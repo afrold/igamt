@@ -425,20 +425,20 @@ select.form-control:checked {
 }
 
 select.form-control-node {
-	display: block;
-	height: 34px;
-	padding: 6px 12px;
-	font-size: 14px;
-	line-height: 1.428571429;
-	color: #555;
-	vertical-align: middle;
-	background-color: #fff;
-	background-image: none;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-	cursor: pointer;
+  display: block;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  cursor: pointer;
 }
 
 select.form-control-node:checked {
@@ -448,10 +448,10 @@ select.form-control-node:checked {
 }
 
 input.form-control {
-    background-color: #efefef;
+  background-color: #efefef;
   //  color: black;
   cursor: pointer;
-//  border: 1px solid #cccccc;
+  //  border: 1px solid #cccccc;
 }
 
 input.form-control-warning {
@@ -1335,17 +1335,17 @@ input.account-input {
 }
 
 .account-input {
-//  background-color: white;
-//  background-image: none;
-//  border: 1px solid #cccccc;
-//  border-radius: 4px;
-//  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-//  color: #555555;
-//  font-size: 14px;
-//  height: 34px;
-//  line-height: 1.42857;
-//  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-//  width: 270px;
+  //  background-color: white;
+  //  background-image: none;
+  //  border: 1px solid #cccccc;
+  //  border-radius: 4px;
+  //  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  //  color: #555555;
+  //  font-size: 14px;
+  //  height: 34px;
+  //  line-height: 1.42857;
+  //  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  //  width: 270px;
 }
 
 .login-input {
@@ -1697,7 +1697,7 @@ table.table-fix-header tfoot td {
 }
 
 table.profile-table {
-  max-height: 800px !important;
+  max-height: 100% !important;
 }
 
 table.profile-table td {
@@ -1906,11 +1906,11 @@ table.igl-list-table {
 
 
 .dropdown-menu{
-//  z-index: -1;
+  //  z-index: -1;
 }
 
 .left-content {
-   text-align:left;
+  text-align:left;
 }
 
 .form-group{
@@ -1973,19 +1973,19 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 }
 
 
-.nav-tabs > li > a {
-  border-color: #ffec9d;
-  background-color: #ffec9d;
-  color: black;
-}
+//.nav-tabs > li > a {
+//  border-color: #ffec9d;
+//  background-color: #ffec9d;
+//  color: black;
+//}
 
-.nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
-  background-color: #ffcc00;
-  border-color: #ffcc00;
-  //border: 0px;
-  color: white;
-  cursor: pointer;
-}
+//.nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
+//  background-color: #ffcc00;
+//  border-color: #ffcc00;
+//  //border: 0px;
+//  color: white;
+//  cursor: pointer;
+//}
 
 
 
@@ -2021,9 +2021,9 @@ ul.dropdown-menu, ul.dropdown-menu > li {
   color:black;
 }
 
-.nav-tabs > .active > a:hover {
-  background-color: #ffcc00;
-}
+//.nav-tabs > .active > a:hover {
+//  background-color: #ffcc00;
+//}
 
 .nav-tabs > a:hover {
   color: black;
@@ -2038,35 +2038,44 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 }
 
 
-.nav-tabs > li > a {
-  color: #ffef8f;
-  border-radius: 0px;
-}
-
-.nav-tabs > li > a:hover {
-  color: #ffef8f;
-}
+//.nav-tabs > li > a {
+//  color: #ffef8f;
+//  border-radius: 0px;
+//}
+//
+//.nav-tabs > li > a:hover {
+//  color: #ffef8f;
+//}
 
 .nav-tabs {
   cursor: pointer;
 }
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+//
+//.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
+//  background-color: #ffcc00;
+//  border-color: #ffcc00;
+//  color: black;
+//}
 
-.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
-  background-color: #ffcc00;
-  border-color: #ffcc00;
-  color: black;
-}
-
-li.active {
+li.nav-header.active {
   background-color: #ffcc00;
 }
 
 
 tr.current {
-  background-color: #ffef8f;
+  background-color: #fff1c8;
 }
+
+tr.selected {
+  background-color: #fff1c8;
+}
+
+tr.new {
+  background-color: #dcffd1;
+}
+
 
 div.col-margin{
   margin-right:15px;
@@ -2229,10 +2238,51 @@ table.conformance-profiles-table td {
 }
 
 .btn-xxs {
-	padding: 5px 10px !important;
-    font-size: 12px;
-    line-height: 1;
-    border-radius: 3px !important;
-    margin: 0px !important;
+  padding: 5px 10px !important;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 3px !important;
+  margin: 0px !important;
 }
 
+.select2 > .select2-choice.ui-select-match {
+  /* Because of the inclusion of Bootstrap */
+  height: 29px;
+}
+
+.selectize-control > .selectize-dropdown {
+  top: 36px;
+}
+/* Some additional styling to demonstrate that append-to-body helps achieve the proper z-index layering. */
+.select-box {
+  background: #fff;
+  position: relative;
+  z-index: 1;
+}
+.alert-info.positioned {
+  margin-top: 1em;
+  position: relative;
+  z-index: 10000; /* The select2 dropdown has a z-index of 9999 */
+}
+
+.search-modal-window .modal-dialog {
+  width: 50%;
+  height: 500px;
+  overflow-y: auto;
+}
+
+
+.toc-container {
+  max-width: 100% !important;
+  max-height: 700px !important;
+  overflow: auto;
+  white-space:nowrap;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f6f6f6+47,ededed+100;White+3D+%231 */
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+
+
+}

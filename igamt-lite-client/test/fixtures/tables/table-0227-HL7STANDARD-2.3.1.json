@@ -1,0 +1,396 @@
+{
+  "type" : "table",
+  "sectionPosition" : 263,
+  "id" : "565f3ab7d4c6e52cfd445fe7",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0227",
+  "name" : "Manufacturers of vaccines (code=MVX)",
+  "description" : "Manufacturers of vaccines (code=MVX)",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fe8",
+    "value" : "AB",
+    "label" : "Abbott Laboratories",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fe9",
+    "value" : "AD",
+    "label" : "Adams Laboratories",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fea",
+    "value" : "ALP",
+    "label" : "Alpha Therapeutic Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445feb",
+    "value" : "AR",
+    "label" : "Armour (Inactive – use CEN)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fec",
+    "value" : "AVI",
+    "label" : "Aviron",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fed",
+    "value" : "BA",
+    "label" : "Baxter Healthcare Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fee",
+    "value" : "BAY",
+    "label" : "Bayer Corporation (includes Miles, Inc. and Cutter Laboratories)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fef",
+    "value" : "BP",
+    "label" : "Berna Products (Inactive – use BPC)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ff0",
+    "value" : "BPC",
+    "label" : "Berna Products Corporation (includes Swiss Serum and Vaccine Institute Berna)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ff1",
+    "value" : "CEN",
+    "label" : "Centeon L.L.C. (includes Armour Pharmaceutical Company)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ff2",
+    "value" : "CHI",
+    "label" : "Chiron Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ff3",
+    "value" : "CON",
+    "label" : "Connaught (inactive – use PMC)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ff4",
+    "value" : "EVN",
+    "label" : "Evans Medical Limited",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ff5",
+    "value" : "GRE",
+    "label" : "Greer Laboratories, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ff6",
+    "value" : "IAG",
+    "label" : "Immuno International AG",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ff7",
+    "value" : "IM",
+    "label" : "Merieux (inactive – Use PMC)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ff8",
+    "value" : "IUS",
+    "label" : "Immuno-US, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ff9",
+    "value" : "JPN",
+    "label" : "The Research Foundation for Microbial Diseases of Osaka University (BIKEN)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ffa",
+    "value" : "KGC",
+    "label" : "Korea Green Cross Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ffb",
+    "value" : "LED",
+    "label" : "Lederle (inactive – use WAL)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ffc",
+    "value" : "MA",
+    "label" : "Massachusetts Public Health Biologic Laboratories)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ffd",
+    "value" : "MED",
+    "label" : "Medimmune, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ffe",
+    "value" : "MIL",
+    "label" : "Miles (inactive – use BAY)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fff",
+    "value" : "MIP",
+    "label" : "Michigan Biologic Products Institute",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446000",
+    "value" : "MSD",
+    "label" : "Merck & Co., Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446001",
+    "value" : "NAB",
+    "label" : "NABI (formerly North American Biologicals, Inc.)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446002",
+    "value" : "NAV",
+    "label" : "North American Vaccine, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446003",
+    "value" : "NOV",
+    "label" : "Novartis Pharmaceutical Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446004",
+    "value" : "NYB",
+    "label" : "New York Blood Center",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446005",
+    "value" : "ORT",
+    "label" : "Ortho Diagnostic Systems, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446006",
+    "value" : "OTC",
+    "label" : "Organon Teknika Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446007",
+    "value" : "OTH",
+    "label" : "Other",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446008",
+    "value" : "PD",
+    "label" : "Parkdale Pharmaceuticals (formerly Parke-Davis)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446009",
+    "value" : "PMC",
+    "label" : "Pasteur Merieux Connaught (includes Connaught Laboratories and Pasteur Merieux)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44600a",
+    "value" : "PRX",
+    "label" : "Praxis Biologics (inactive – use WAL)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44600b",
+    "value" : "SCL",
+    "label" : "Sclavo, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44600c",
+    "value" : "SI",
+    "label" : "Swiss Serum and Vaccine Inst. (inactive – use BPC)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44600d",
+    "value" : "SKB",
+    "label" : "SmithKline Beecham",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44600e",
+    "value" : "UNK",
+    "label" : "Unknown manufacturer",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44600f",
+    "value" : "USA",
+    "label" : "United States Army Medical Research and Materiel Command",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446010",
+    "value" : "WA",
+    "label" : "Wyeth-Ayerst (inactive – use WAL)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446011",
+    "value" : "WAL",
+    "label" : "Wyeth-Ayerst (includes Wyeth-Lederle Vaccines and Pediatrics, Wyeth Laboratories, Lederle Laboratories, and Praxis Biologics)",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

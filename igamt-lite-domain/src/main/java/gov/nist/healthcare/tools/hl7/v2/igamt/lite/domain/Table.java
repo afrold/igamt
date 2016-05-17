@@ -1,19 +1,27 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 
  * @author Harold Affo (harold.affo@nist.gov) Feb 26, 2015
  * 
  */
-public class Table extends SectionModel implements Serializable,
+@Document(collection = "table")
+public class Table extends DataModel implements Serializable,
 		Comparable<Table>, Cloneable {
 
 	/**
@@ -21,32 +29,43 @@ public class Table extends SectionModel implements Serializable,
 	 */
 	private static final long serialVersionUID = 734059059225906039L;
 
+	@Id
 	private String id;
 
-	// @NotNull
+	private String hl7Version;
+
+	private Set<String> libIds = new HashSet<String>();
+
 	private String bindingIdentifier;
 
-	// @NotNull
-	private String name;
+ 	private String name;
 
 	private String description;
 	private String version;
 	private String oid;
 	private Stability stability;
 	private Extensibility extensibility;
+
 	private ContentDefinition contentDefinition;
 	private String group;
 	private int order;
 
 	private List<Code> codes = new ArrayList<Code>();
 
-	// @DBRef
-	// private Tables tables;
-
+	private Constant.SCOPE scope;
+	
+	protected Long accountId; 
+		
+	protected String date;
+			
+	protected STATUS status; 
+	
+	
+	
+	
 	public Table() {
 		super();
 		this.type = Constant.TABLE;
-		this.id = ObjectId.get().toString();
 	}
 
 	public String getId() {
@@ -57,12 +76,36 @@ public class Table extends SectionModel implements Serializable,
 		this.id = id;
 	}
 
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
+
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<String> getLibIds() {
+		return libIds;
+	}
+
+	public void setLibIds(Set<String> libIds) {
+		this.libIds = libIds;
 	}
 
 	public String getBindingIdentifier() {
@@ -234,4 +277,30 @@ public class Table extends SectionModel implements Serializable,
             append(id, rhs.id).
             isEquals();
     }
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public STATUS getStatus() {
+		return status;
+	}
+
+	public void setStatus(STATUS status) {
+		this.status = status;
+	}
+    
+    
 }

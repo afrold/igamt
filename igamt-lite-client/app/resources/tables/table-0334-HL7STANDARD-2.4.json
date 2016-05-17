@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 186,
+  "id" : "565f3ab6d4c6e52cfd443c64",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0334",
+  "name" : "Disabled person",
+  "description" : "Disabled person",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c65",
+    "value" : "AP",
+    "label" : "Associated party",
+    "codeSystem" : "HL70334",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c66",
+    "value" : "GT",
+    "label" : "Guarantor",
+    "codeSystem" : "HL70334",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c67",
+    "value" : "IN",
+    "label" : "Insured",
+    "codeSystem" : "HL70334",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c68",
+    "value" : "PT",
+    "label" : "Patient",
+    "codeSystem" : "HL70334",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

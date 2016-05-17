@@ -33,7 +33,7 @@ public class ProfileCloneTest {
 	public void testClone() throws CloneNotSupportedException {
 		Profile profile = profile().clone();
 
-		assertEquals(80, profile.getDatatypes().getChildren().size());
+		assertEquals(80, profile.getDatatypeLibrary().getChildren().size());
 	}
 
 	private Profile profile() {

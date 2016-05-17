@@ -18,18 +18,32 @@ public class ResponseMessage {
         success, warn, danger, info;
     }
 
-    private final Type type;
-    private final String text;
-    private final String resourceId;
-    private final String manualHandle;
+    private   Type type;
+    private   String text;
+    private   String resourceId;
+    private   String manualHandle;
     private   boolean skip;
+    private   String id;
+	private String date;
+	private String scope;
+	private String version;
 
+    public ResponseMessage(String date, String scope, String version,
+			String id) { 
+    	this.date = date; 
+    	this.version = version;
+    	this.scope = scope;
+    	this.id = id;
+ 		this.version = version;
+	}
+    
     public ResponseMessage(Type type, String text, String resourceId, String manualHandle) {
         this.type = type;
         this.text = text;
         this.resourceId = resourceId;
         this.manualHandle = manualHandle;
     }
+    
     
 
     public ResponseMessage(Type type, String text, String resourceId) {
@@ -78,6 +92,56 @@ public class ResponseMessage {
 
 	public void setSkip(boolean skip) {
 		this.skip = skip;
+	}
+
+
+	public String getId() {
+		return id;
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getScope() {
+		return scope;
+	}
+
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public void setResourceId(String resourceId) {
+		this.resourceId = resourceId;
+	}
+
+	public void setManualHandle(String manualHandle) {
+		this.manualHandle = manualHandle;
 	}
     
     

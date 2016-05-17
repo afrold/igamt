@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 185,
+  "id" : "565f3ab6d4c6e52cfd44165b",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0110",
+  "name" : "Transfer to Bad Debt Code",
+  "description" : "Transfer to Bad Debt Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.110",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

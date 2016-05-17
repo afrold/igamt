@@ -21,10 +21,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentW
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.IGDocumentReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentLibraryReadConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.TableLibraryReadConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.TableReadConverter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -42,7 +45,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
 
@@ -59,13 +61,16 @@ public class PersistenceContextUnit extends AbstractMongoConfiguration {
 	@Override
 	@Bean
 	public Mongo mongo() throws Exception {
-		MongoCredential credential = MongoCredential.createMongoCRCredential(
-				env.getProperty("mongo.username"),
-				env.getProperty("mongo.dbname"),
-				env.getProperty("mongo.password").toCharArray());
-		return new MongoClient(new ServerAddress(env.getProperty("mongo.host"),
-				Integer.valueOf(env.getProperty("mongo.port"))),
-				Arrays.asList(credential));
+		return new MongoClient(
+				new ServerAddress(env.getProperty("mongo.host"), Integer.valueOf(env.getProperty("mongo.port"))));
+
+//		MongoCredential credential = MongoCredential.createMongoCRCredential(
+//				env.getProperty("mongo.username"),
+//				env.getProperty("mongo.dbname"),
+//				env.getProperty("mongo.password").toCharArray());
+//		return new MongoClient(new ServerAddress(env.getProperty("mongo.host"),
+//				Integer.valueOf(env.getProperty("mongo.port"))),
+//				Arrays.asList(credential));
 
 //		return new Fongo("igl").getMongo();
 	}
@@ -77,7 +82,14 @@ public class PersistenceContextUnit extends AbstractMongoConfiguration {
 		converterList.add(new FieldWriteConverter());
 		converterList.add(new ComponentWriteConverter());
 		converterList.add(new SegmentRefWriteConverter());
+		converterList.add(new ProfileReadConverter());
 		converterList.add(new IGDocumentReadConverter());
+		converterList.add(new SegmentReadConverter());
+		// converterList.add(new DatatypeReadConverter());
+		converterList.add(new TableReadConverter());
+		// converterList.add(new DatatypeLibraryReadConverter());
+		converterList.add(new SegmentLibraryReadConverter());
+		converterList.add(new TableLibraryReadConverter());
 		return new CustomConversions(converterList);
 	}
 

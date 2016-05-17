@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 364,
+  "id" : "569eac0ed4c623dc6550af63",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0297",
+  "name" : "CN ID source",
+  "description" : "CN ID source",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.297",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af64",
+    "value" : "...",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70297",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 129,
+  "id" : "569eac0dd4c623dc65507634",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0152",
+  "name" : "Second Opinion Documentation Received",
+  "description" : "Second Opinion Documentation Received",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507635",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70152",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

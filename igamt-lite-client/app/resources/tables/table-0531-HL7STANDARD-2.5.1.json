@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 281,
+  "id" : "569eac0fd4c623dc6550e4d1",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0531",
+  "name" : "Institution",
+  "description" : "Institution",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.531",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4d2",
+    "value" : "...",
+    "label" : "No suggested values",
+    "codeSystem" : "HL70531",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

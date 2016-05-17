@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 82,
+  "id" : "565f3ab7d4c6e52cfd445a23",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0032",
+  "name" : "Charge/Price Indicator",
+  "description" : "Charge/Price Indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

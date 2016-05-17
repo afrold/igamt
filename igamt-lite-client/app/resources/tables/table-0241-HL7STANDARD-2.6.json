@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 224,
+  "id" : "569eac0ed4c623dc6550b96e",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0241",
+  "name" : "Patient Outcome",
+  "description" : "Patient Outcome",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.241",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b96f",
+    "value" : "D",
+    "label" : "Died",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b970",
+    "value" : "F",
+    "label" : "Fully recovered",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b971",
+    "value" : "N",
+    "label" : "Not recovering/unchanged",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b972",
+    "value" : "R",
+    "label" : "Recovering",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b973",
+    "value" : "S",
+    "label" : "Sequelae",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b974",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b975",
+    "value" : "W",
+    "label" : "Worsening",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

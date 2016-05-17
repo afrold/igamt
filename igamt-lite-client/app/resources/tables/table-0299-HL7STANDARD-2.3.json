@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 13,
+  "id" : "565f3ab7d4c6e52cfd44720b",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0299",
+  "name" : "Encoding",
+  "description" : "Encoding",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

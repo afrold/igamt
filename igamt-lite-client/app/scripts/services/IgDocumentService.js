@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('IgDocumentService',
-    ['$rootScope', 'ViewSettings', '$q', 'userInfoService', '$http', 'StorageService', '$cookies',function ($rootScope, ViewSettings, $q, userInfoService, $http,StorageService,$cookies) {
+    ['$rootScope', 'ViewSettings', '$q', 'userInfoService', '$http', 'StorageService', '$cookies', function ($rootScope, ViewSettings, $q, userInfoService, $http, StorageService, $cookies) {
         var IgDocumentService = {
             save: function (igDocument) {
                 $rootScope.saved = false;
@@ -23,7 +23,7 @@ angular.module('igl').factory('IgDocumentService',
                 });
                 return delay.promise;
             },
-            exportAs: function(igDocument,format){
+            exportAs: function (igDocument, format) {
                 var form = document.createElement("form");
                 form.action = $rootScope.api('api/igdocuments/' + igDocument.id + '/export/' + format);
                 form.method = "POST";
@@ -35,7 +35,39 @@ angular.module('igl').factory('IgDocumentService',
                 form.style.display = 'none';
                 document.body.appendChild(form);
                 form.submit();
+            },
+
+            addMessage: function (igId, child) {
+                var delay = $q.defer();
+                $http.post('api/igdocuments/' + igId + '/addMessage', child).then(function (response) {
+                    var link = angular.fromJson(response.data);
+                    delay.resolve(link);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            deleteMessage: function (igId, messageId) {
+                var delay = $q.defer();
+                $http.post('api/igdocuments/' + igId + '/deleteMessage', {params:{messageId:messageId}}).then(function (response) {
+                    var res = angular.fromJson(response.data);
+                    delay.resolve(res);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            saveMetadata: function (id, metaData) {
+                var delay = $q.defer();
+                $http.post('api/igdocuments/'+ id+ '/metadata/save', metaData).then(function (response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    delay.resolve(saveResponse);
+                }, function (error) {
+                    delay.reject(error);
+                 });
+                return delay.promise;
             }
-        };
-        return IgDocumentService;
-    }]);
+    };
+return IgDocumentService;
+}])
+;

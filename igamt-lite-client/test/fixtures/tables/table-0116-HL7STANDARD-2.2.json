@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 25,
+  "id" : "565f3ab7d4c6e52cfd44806c",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0116",
+  "name" : "BED STATUS",
+  "description" : "BED STATUS",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44806d",
+    "value" : "C",
+    "label" : "Closed",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44806e",
+    "value" : "H",
+    "label" : "Beim Reinigungsdienst",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44806f",
+    "value" : "I",
+    "label" : "Isoliert",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448070",
+    "value" : "K",
+    "label" : "Kontaminiert",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448071",
+    "value" : "O",
+    "label" : "Belegt",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448072",
+    "value" : "U",
+    "label" : "Frei",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

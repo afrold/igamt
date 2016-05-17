@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 62,
+  "id" : "565f3ab7d4c6e52cfd44729a",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0192",
+  "name" : "Visit ID Type",
+  "description" : "Visit ID Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

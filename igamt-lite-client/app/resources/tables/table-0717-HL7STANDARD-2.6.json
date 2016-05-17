@@ -1,0 +1,135 @@
+{
+  "type" : "table",
+  "sectionPosition" : 498,
+  "id" : "569eac0ed4c623dc6550b15b",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0717",
+  "name" : "Access Restriction Value",
+  "description" : "Access Restriction Value",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.717",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b15c",
+    "value" : "ALL",
+    "label" : "All",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b15d",
+    "value" : "DEM",
+    "label" : "All demographic data",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b15e",
+    "value" : "DRG",
+    "label" : "Drug",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b15f",
+    "value" : "HIV",
+    "label" : "HIV status and results",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b160",
+    "value" : "LOC",
+    "label" : "Patient Location",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b161",
+    "value" : "NO",
+    "label" : "None",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b162",
+    "value" : "OI",
+    "label" : "Opt in all registries (HIPAA)",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b163",
+    "value" : "OO",
+    "label" : "Opt out all registries (HIPAA)",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b164",
+    "value" : "PID-17",
+    "label" : "Religion",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b165",
+    "value" : "PID-7",
+    "label" : "Date of Birth",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b166",
+    "value" : "PSY",
+    "label" : "Psychiatric Mental health",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b167",
+    "value" : "SMD",
+    "label" : "Sensitive medical data",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b168",
+    "value" : "STD",
+    "label" : "Sexually transmitted diseases",
+    "codeSystem" : "HL70717",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

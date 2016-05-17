@@ -1,0 +1,135 @@
+{
+  "type" : "table",
+  "sectionPosition" : 252,
+  "id" : "565f3ab7d4c6e52cfd445e3b",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0191",
+  "name" : "Type of referenced data",
+  "description" : "Type of referenced data",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e3c",
+    "value" : "AP",
+    "label" : "Other application data, typically uninterpreted binary data  (new with HL7 v 2.3)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e3d",
+    "value" : "Application",
+    "label" : "Other application data, typically uninterpreted binary data  (HL7 V2.3 and later)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e3e",
+    "value" : "AU",
+    "label" : "Audio data  (new with HL7 v 2.3)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e3f",
+    "value" : "Audio",
+    "label" : "Audio data  (HL7 V2.3 and later)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e40",
+    "value" : "FT",
+    "label" : "Formatted text (HL7 V2.2 only)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e41",
+    "value" : "IM",
+    "label" : "Image data  (new  with HL7 v 2.3)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e42",
+    "value" : "Image",
+    "label" : "Image data  (HL7 V2.3 and later)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e43",
+    "value" : "NS",
+    "label" : "Non-scanned image (HL7 V2.2 only)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e44",
+    "value" : "SD",
+    "label" : "Scanned document (HL7 V2.2 only)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e45",
+    "value" : "SGML",
+    "label" : "Structured Generalized Markup Language (HL7 V2.3 and later)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e46",
+    "value" : "SI",
+    "label" : "Scanned image (HL7 V2.2 only)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e47",
+    "value" : "TEXT",
+    "label" : "Machine readable text document (HL7 V2.3.1 and later)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e48",
+    "value" : "TX",
+    "label" : "Machine readable text document (HL7 V2.2 only)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

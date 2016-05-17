@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 203,
+  "id" : "565f3ab6d4c6e52cfd4408b4",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0268",
+  "name" : "Override",
+  "description" : "Override",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.268",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408b5",
+    "value" : "A",
+    "label" : "Override allowed",
+    "codeSystem" : "HL70268",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408b6",
+    "value" : "R",
+    "label" : "Override required",
+    "codeSystem" : "HL70268",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408b7",
+    "value" : "X",
+    "label" : "Override not allowed",
+    "codeSystem" : "HL70268",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

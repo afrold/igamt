@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 0,
+  "hl7Version" : "2.2",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "5723765eda0805ce1eabdf8d" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd4480db",
+  "label" : "varies",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "varies",
+  "description" : "variable data type",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : "PUBLISHED"
+}

@@ -1,0 +1,288 @@
+{
+  "type" : "table",
+  "sectionPosition" : 185,
+  "id" : "565f3ab7d4c6e52cfd447efe",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0064",
+  "name" : "FINANCIAL CLASS",
+  "description" : "FINANCIAL CLASS",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eff",
+    "value" : "01",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f00",
+    "value" : "02",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f01",
+    "value" : "03",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f02",
+    "value" : "10",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f03",
+    "value" : "11",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f04",
+    "value" : "12",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f05",
+    "value" : "13",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f06",
+    "value" : "14",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f07",
+    "value" : "15",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f08",
+    "value" : "16",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f09",
+    "value" : "17",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f0a",
+    "value" : "18",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f0b",
+    "value" : "20",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f0c",
+    "value" : "21",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f0d",
+    "value" : "22",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f0e",
+    "value" : "23",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f0f",
+    "value" : "24",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f10",
+    "value" : "25",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f11",
+    "value" : "26",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f12",
+    "value" : "27",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f13",
+    "value" : "28",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f14",
+    "value" : "29",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f15",
+    "value" : "40",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f16",
+    "value" : "41",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f17",
+    "value" : "42",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f18",
+    "value" : "43",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f19",
+    "value" : "44",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f1a",
+    "value" : "45",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f1b",
+    "value" : "46",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f1c",
+    "value" : "50",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70064",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

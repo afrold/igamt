@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 1,
+  "id" : "569eac0dd4c623dc655074e4",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0497",
+  "name" : "Consent Mode",
+  "description" : "Consent Mode",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074e5",
+    "value" : "T",
+    "label" : "Telephone",
+    "codeSystem" : "HL70497",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074e6",
+    "value" : "V",
+    "label" : "Verbal",
+    "codeSystem" : "HL70497",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074e7",
+    "value" : "W",
+    "label" : "Written",
+    "codeSystem" : "HL70497",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -24,15 +24,17 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
@@ -43,18 +45,25 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEventFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageEventFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.EventNotSetException;
 
 @Service
@@ -66,8 +75,26 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	private IGDocumentRepository igdocumentRepository;
 
 	@Autowired
-	private IGDocumentService igdocumentService;
-
+	private MessageRepository messageRepository;
+	
+	@Autowired
+	private SegmentLibraryRepository segmentLibraryRepository;
+	
+	@Autowired
+	private SegmentRepository segmentRepository;
+	
+	@Autowired
+	private DatatypeLibraryRepository datatypeLibraryRepository;
+	
+	@Autowired
+	private DatatypeRepository datatypeRepository;
+	
+	@Autowired
+	private TableLibraryRepository tableLibraryRepository;
+	
+	@Autowired
+	private TableRepository tableRepository;
+	
 	@Override
 	public List<String> findHl7Versions() {
 		// fetching messages of version hl7Version
@@ -81,7 +108,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		List<MessageEvents> messageEvents = new ArrayList<MessageEvents>();
 		if (!igds.isEmpty()) {
 			IGDocument igd = igds.get(0);
-			MessageEventFactory mef = new MessageEventFactory(igd);
+			MessageEventFactory mef = new MessageEventFactory(tableRepository);
 			Messages msgs = igd.getProfile().getMessages();
 			messageEvents = mef.createMessageEvents(msgs);
 		} else {
@@ -142,31 +169,44 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		msgsTarget.setSectionContents(dSource.getProfile().getMessages().getSectionContents());
 		msgsTarget.setSectionDescription(dSource.getProfile().getMessages().getSectionDescription());
 		msgsTarget.setSectionPosition(dSource.getProfile().getMessages().getSectionPosition());
-		Segments sgtsTarget = new Segments();
-		sgtsTarget.setSectionTitle(dSource.getProfile().getSegments().getSectionTitle());
-		sgtsTarget.setSectionContents(dSource.getProfile().getSegments().getSectionContents());
-		sgtsTarget.setSectionDescription(dSource.getProfile().getSegments().getSectionDescription());
-		sgtsTarget.setSectionPosition(dSource.getProfile().getSegments().getSectionPosition());
-		Datatypes dtsTarget = new Datatypes();
-		dtsTarget.setSectionTitle(dSource.getProfile().getDatatypes().getSectionTitle());
-		dtsTarget.setSectionContents(dSource.getProfile().getDatatypes().getSectionContents());
-		dtsTarget.setSectionDescription(dSource.getProfile().getDatatypes().getSectionDescription());
-		dtsTarget.setSectionPosition(dSource.getProfile().getDatatypes().getSectionPosition());
-		Tables tabTarget = new Tables();
-		tabTarget.setSectionTitle(dSource.getProfile().getTables().getSectionTitle());
-		tabTarget.setSectionContents(dSource.getProfile().getTables().getSectionContents());
-		tabTarget.setSectionDescription(dSource.getProfile().getTables().getSectionDescription());
-		tabTarget.setSectionPosition(dSource.getProfile().getTables().getSectionPosition());
+		SegmentLibrary sgtsTarget = new SegmentLibrary();
+		sgtsTarget.setMetaData(dSource.getProfile().getSegmentLibrary().getMetaData());
+		sgtsTarget.setScope(Constant.SCOPE.USER);
+		segmentLibraryRepository.save(sgtsTarget);
+		
+		sgtsTarget.setSectionTitle(dSource.getProfile().getSegmentLibrary().getSectionTitle());
+		sgtsTarget.setSectionContents(dSource.getProfile().getSegmentLibrary().getSectionContents());
+		sgtsTarget.setSectionDescription(dSource.getProfile().getSegmentLibrary().getSectionDescription());
+		sgtsTarget.setSectionPosition(dSource.getProfile().getSegmentLibrary().getSectionPosition());
+		DatatypeLibrary dtsTarget = new DatatypeLibrary();
+		dtsTarget.setMetaData(dSource.getProfile().getDatatypeLibrary().getMetaData());
+		dtsTarget.setScope(Constant.SCOPE.USER);
+		datatypeLibraryRepository.save(dtsTarget);
+		dtsTarget.setSectionTitle(dSource.getProfile().getDatatypeLibrary().getSectionTitle());
+		dtsTarget.setSectionContents(dSource.getProfile().getDatatypeLibrary().getSectionContents());
+		dtsTarget.setSectionDescription(dSource.getProfile().getDatatypeLibrary().getSectionDescription());
+		dtsTarget.setSectionPosition(dSource.getProfile().getDatatypeLibrary().getSectionPosition());
+		TableLibrary tabTarget = new TableLibrary();
+		tabTarget.setMetaData(dSource.getProfile().getTableLibrary().getMetaData());
+		tabTarget.setScope(Constant.SCOPE.USER);
+		tableLibraryRepository.save(tabTarget);
+		tabTarget.setSectionTitle(dSource.getProfile().getTableLibrary().getSectionTitle());
+		tabTarget.setSectionContents(dSource.getProfile().getTableLibrary().getSectionContents());
+		tabTarget.setSectionDescription(dSource.getProfile().getTableLibrary().getSectionDescription());
+		tabTarget.setSectionPosition(dSource.getProfile().getTableLibrary().getSectionPosition());
 		pTarget.setMessages(msgsTarget);
-		pTarget.setSegments(sgtsTarget);
-		pTarget.setDatatypes(dtsTarget);
-		pTarget.setTables(tabTarget);
+		pTarget.setSegmentLibrary(sgtsTarget);
+		pTarget.setDatatypeLibrary(dtsTarget);
+		pTarget.setTableLibrary(tabTarget);
 
 		addSections(dSource, dTarget);
 		addMessages(msgEvts, dSource.getProfile(), pTarget);
 
 		dTarget.setProfile(pTarget);
-
+		segmentLibraryRepository.save(sgtsTarget);
+		datatypeLibraryRepository.save(dtsTarget);
+		tableLibraryRepository.save(tabTarget);
+		igdocumentRepository.save(dTarget);
 		return dTarget;
 	}
 
@@ -177,6 +217,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		String hl7Version = dTarget.getProfile().getMetaData().getHl7Version();
 		IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
 		addMessages(msgEvts, dSource.getProfile(), dTarget.getProfile());
+		igdocumentRepository.save(dTarget);
 		return dTarget;
 	}
 
@@ -186,6 +227,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	private void addMessages(List<MessageEvents> msgEvts, Profile pSource, Profile pTarget) throws IGDocumentException {
 		Messages messages = pTarget.getMessages();
+		messages.setSectionTitle(pSource.getMessages().getSectionTitle());
+		messages.setSectionPosition(pSource.getMessages().getSectionPosition());
 		messages.setType(pSource.getMessages().getType());
 		try {
 			for (MessageEvents msgEvt : msgEvts) {
@@ -193,7 +236,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 				int maxPos = findMaxPosition(pSource.getMessages());
 				Message m1 = null;
 				m1 = m.clone();
-				m1.setId(ObjectId.get().toString());
+				m1.setId(null);
+				m1.setScope(Constant.SCOPE.USER);
 				Iterator<Event> itr = msgEvt.getChildren().iterator();
 				if (itr.hasNext()) {
 					String event = itr.next().getName();
@@ -206,6 +250,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 				log.debug("Message.name=" + name);
 				m1.setName(name);
 				m1.setPosition(++maxPos);
+				messageRepository.save(m1);
 				messages.addMessage(m1);
 				for (SegmentRefOrGroup sg : m.getChildren()) {
 					if (sg instanceof SegmentRef) {
@@ -230,15 +275,29 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	private void addSegment(SegmentRef sref, Profile pSource, Profile pTarget) {
-		Segments sgtsTarget = pTarget.getSegments();
-		sgtsTarget.setType(pSource.getSegments().getType());
-		Segment sgt = pSource.getSegments().findOneSegmentById(sref.getRef());
+		SegmentLibrary sgtsSource = pSource.getSegmentLibrary();
+		SegmentLibrary sgtsTarget = pTarget.getSegmentLibrary();
+		sgtsTarget.setType(pSource.getSegmentLibrary().getType());
+		SegmentLink sgt = sref.getRef();
 		sgtsTarget.addSegment(sgt);
-		for (Field f : sgt.getFields()) {
-			Datatype dt = pSource.getDatatypes().findOne(f.getDatatype());
-			Table vsd = pSource.getTables().findOneTableById(f.getTable());
-			addDatatype(dt, pSource, pTarget);
-			addTable(vsd, pSource, pTarget);
+		Segment seg = segmentRepository.findOne(sref.getRef().getId());
+		if (SCOPE.USER == seg.getScope()) {
+			seg.setId(null);
+			seg.getLibIds().remove(sgtsSource.getId());
+		}
+		seg.getLibIds().add(sgtsTarget.getId());
+		segmentRepository.save(seg);
+		for (Field f : seg.getFields()) {
+			Datatype dt = datatypeRepository.findOne(f.getDatatype().getId());
+			if (dt != null) {
+				addDatatype(dt, pSource, pTarget);
+			}
+			if(f.getTable() != null){
+				Table vsd = tableRepository.findOne(f.getTable().getId());
+				if (vsd != null) {
+					addTable(vsd, pSource, pTarget);
+				}
+			}
 		}
 	}
 
@@ -253,25 +312,41 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
-		Datatypes dtsSource = pSource.getDatatypes();
-		Datatypes dtsTarget = pTarget.getDatatypes();
-		dtsTarget.setType(dtsSource.getType());
-		Tables vsdTarget = pTarget.getTables();
-		if (dt != null && !dtsTarget.getChildren().contains(dt)) {
-			dtsTarget.addDatatype(dt);
+		DatatypeLibrary dtsSource = pSource.getDatatypeLibrary();
+		DatatypeLibrary dtsTarget = pTarget.getDatatypeLibrary();
+		if (SCOPE.USER == dt.getScope()) {
+			dt.setId(null);
+			dt.getLibIds().remove(dtsSource.getId());
+		}
+		dt.getLibIds().add(dtsTarget.getId());
+		datatypeRepository.save(dt);
+		DatatypeLink link = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());
+			if (!dtsTarget.getChildren().contains(link)) {
 			for (Component cpt : dt.getComponents()) {
-				addDatatype(dtsSource.findOne(cpt.getDatatype()), pSource, pTarget);
-				addTable(vsdTarget.findOneTableById(cpt.getTable()), pSource, pTarget);
+				Datatype dt1 = datatypeRepository.findOne(cpt.getDatatype().getId());
+				addDatatype(dt1, pSource, pTarget);
+				if(cpt.getTable() != null){
+					Table vsd = tableRepository.findOne(cpt.getTable().getId());
+					if (vsd != null) {
+						addTable(vsd, pSource, pTarget);
+					}
+				}
 			}
+			dtsTarget.addDatatype(link);
 		}
 	}
 
 	private void addTable(Table vsd, Profile pSource, Profile pTarget) {
-		Tables vsdTarget = pTarget.getTables();
-		vsdTarget.setType(pSource.getTables().getType());
-		if (vsd != null && !vsdTarget.getChildren().contains(vsd)) {
-			vsdTarget.addTable(vsd);
+		TableLibrary vsdSource = pTarget.getTableLibrary();
+		TableLibrary vsdTarget = pTarget.getTableLibrary();
+		
+		if (SCOPE.USER == vsd.getScope()) {
+			vsd.setId(null);
+			vsd.getLibIds().remove(vsdSource.getId());
 		}
+		vsd.getLibIds().add(vsdTarget.getId());
+		tableRepository.save(vsd);
+		vsdTarget.addTable(vsd);
 	}
 
 	@Override
@@ -279,5 +354,4 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// Fetching all HL7Standard profiles
 		return igdocumentRepository.findByScope(IGDocumentScope.HL7STANDARD);
 	}
-
 }

@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 86,
+  "id" : "565f3ab7d4c6e52cfd447cb7",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0136",
+  "name" : "Y/N Indicator",
+  "description" : "Y/N Indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cb8",
+    "value" : "N",
+    "label" : "Nein",
+    "codeSystem" : "HL70136",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cb9",
+    "value" : "Y",
+    "label" : "Ja",
+    "codeSystem" : "HL70136",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

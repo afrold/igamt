@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 112,
+  "id" : "565f3ab6d4c6e52cfd443df2",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0241",
+  "name" : "Patient outcome",
+  "description" : "Patient outcome",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443df3",
+    "value" : "D",
+    "label" : "Died",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443df4",
+    "value" : "F",
+    "label" : "Fully recovered",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443df5",
+    "value" : "N",
+    "label" : "Not recovering/unchanged",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443df6",
+    "value" : "R",
+    "label" : "Recovering",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443df7",
+    "value" : "S",
+    "label" : "Sequelae",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443df8",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443df9",
+    "value" : "W",
+    "label" : "Worsening",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

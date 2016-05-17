@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 40,
+  "id" : "565f3ab7d4c6e52cfd4482d0",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0011",
+  "name" : "CHARGING SYSTEM",
+  "description" : "CHARGING SYSTEM",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482d1",
+    "value" : "R",
+    "label" : "System that received and processed the order",
+    "codeSystem" : "HL70011",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482d2",
+    "value" : "S",
+    "label" : "System that sent the order",
+    "codeSystem" : "HL70011",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 147,
+  "id" : "565f3ab6d4c6e52cfd440f0b",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0525",
+  "name" : "Privilege",
+  "description" : "Privilege",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.525",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

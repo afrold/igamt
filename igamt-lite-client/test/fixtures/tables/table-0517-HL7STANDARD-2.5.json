@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 259,
+  "id" : "565f3ab6d4c6e52cfd440eaa",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0517",
+  "name" : "Inform person code",
+  "description" : "Inform person code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.517",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440eab",
+    "value" : "HD",
+    "label" : "Inform help desk",
+    "codeSystem" : "HL70517",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440eac",
+    "value" : "NPAT",
+    "label" : "Do NOT inform patient",
+    "codeSystem" : "HL70517",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ead",
+    "value" : "PAT",
+    "label" : "Inform patient",
+    "codeSystem" : "HL70517",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440eae",
+    "value" : "USR",
+    "label" : "Inform User",
+    "codeSystem" : "HL70517",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

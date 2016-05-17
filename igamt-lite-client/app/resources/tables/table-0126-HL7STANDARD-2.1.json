@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 66,
+  "id" : "565f3ab7d4c6e52cfd44825a",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0126",
+  "name" : "QUANTITY LIMITED REQUEST",
+  "description" : "QUANTITY LIMITED REQUEST",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44825b",
+    "value" : "CH",
+    "label" : "Characters",
+    "codeSystem" : "HL70126",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44825c",
+    "value" : "LI",
+    "label" : "Lines",
+    "codeSystem" : "HL70126",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44825d",
+    "value" : "PG",
+    "label" : "Pages",
+    "codeSystem" : "HL70126",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44825e",
+    "value" : "ZO",
+    "label" : "Locally defined",
+    "codeSystem" : "HL70126",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

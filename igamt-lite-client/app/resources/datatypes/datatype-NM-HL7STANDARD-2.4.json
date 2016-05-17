@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 73,
+  "hl7Version" : "2.4",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "5723765bda0805ce1eabb9e7" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd444035",
+  "label" : "NM",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "NM",
+  "description" : "numeric",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : "PUBLISHED"
+}

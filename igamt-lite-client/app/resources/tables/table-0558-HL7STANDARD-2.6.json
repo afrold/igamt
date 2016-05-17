@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 179,
+  "id" : "569eac0ed4c623dc6550b5fa",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0558",
+  "name" : "Payee Relationship to Invoice",
+  "description" : "Payee Relationship to Invoice",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.558",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5fb",
+    "value" : "FM",
+    "label" : "Family Member",
+    "codeSystem" : "HL70558",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5fc",
+    "value" : "GT",
+    "label" : "Guarantor",
+    "codeSystem" : "HL70558",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5fd",
+    "value" : "PT",
+    "label" : "Patient",
+    "codeSystem" : "HL70558",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5fe",
+    "value" : "SB",
+    "label" : "Subscriber",
+    "codeSystem" : "HL70558",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

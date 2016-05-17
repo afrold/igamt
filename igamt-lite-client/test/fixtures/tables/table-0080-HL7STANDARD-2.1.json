@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 61,
+  "id" : "565f3ab7d4c6e52cfd4483d1",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0080",
+  "name" : "NATURE OF ABNORMAL TESTING",
+  "description" : "NATURE OF ABNORMAL TESTING",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483d2",
+    "value" : "A",
+    "label" : "An aged based population",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483d3",
+    "value" : "N",
+    "label" : "None - generic normal range",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483d4",
+    "value" : "R",
+    "label" : "A race based population",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483d5",
+    "value" : "S",
+    "label" : "A sexed based population",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

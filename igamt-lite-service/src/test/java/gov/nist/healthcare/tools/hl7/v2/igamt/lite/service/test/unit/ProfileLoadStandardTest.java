@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
@@ -25,7 +25,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
@@ -164,7 +164,7 @@ public class ProfileLoadStandardTest {
 		ArrayList<Group> grp = new ArrayList<Group>(); 
 		for (Object sg : m.getChildren().toArray()){
 			if (sg instanceof SegmentRef){
-				sgt.add(profile251.getSegments().findOneSegmentById(((SegmentRef) sg).getRef()));
+				sgt.add(profile251.getSegmentLibrary().findOneSegmentById(((SegmentRef) sg).getRef()));
 			}
 			if (sg instanceof Group){
 				this.printSubGroup((Group)sg, sgt, grp);
@@ -184,7 +184,7 @@ public class ProfileLoadStandardTest {
 	private void printSubGroup(Group sgs, ArrayList<Segment> sgt, ArrayList<Group> grp){
 		for (Object sg : sgs.getChildren()){
 			if (sg instanceof SegmentRef){
-				sgt.add(profile251.getSegments().findOneSegmentById(((SegmentRef) sg).getRef()));
+				sgt.add(profile251.getSegmentLibrary().findOneSegmentById(((SegmentRef) sg).getRef()));
 			}
 			if (sg instanceof Group){
 				this.printSubGroup((Group)sg, sgt, grp);
@@ -198,7 +198,7 @@ public class ProfileLoadStandardTest {
 		//Test EVN - Event Type Segment in version 2.5.1 (chap 03 p.69)
 		logger.debug("Testing EVN segment");
 
-		Segment sgt = profile251.getSegments().findOneSegmentByName("EVN");
+		Segment sgt = profile251.getSegmentLibrary().findOneSegmentByName("EVN");
 
 		assertNotNull(sgt);
 		assertEquals("event type", sgt.getDescription().toLowerCase());
@@ -207,13 +207,13 @@ public class ProfileLoadStandardTest {
 		Field f1 = sgt.getFields().get(0);
 		assertEquals( "-1" , String.valueOf(f1.getMinLength()));
 		assertEquals("3", f1.getMaxLength());
-		Datatype dt = profile251.getDatatypes().findOneDatatypeByBase("ID");
+		Datatype dt = profile251.getDatatypeLibrary().findOneDatatypeByBase("ID");
 		assertEquals(dt.getName(), f1.getDatatype());
 		assertEquals(Usage.B, f1.getUsage());
 		assertEquals("0",String.valueOf(f1.getMin()));
 		assertEquals("1", f1.getMax());
 
-		Table t = profile251.getTables().findOneTableByName("0003");
+		Table t = profile251.getTableLibrary().findOneTableByName("0003");
 		assertEquals(t.getId(), f1.getTable());
 		assertEquals("00099", f1.getItemNo());
 		assertEquals("event type code", f1.getName().toLowerCase());
@@ -229,7 +229,7 @@ public class ProfileLoadStandardTest {
 		logger.debug("Testing CWE datatype");
 
 		//Retrieve datatype library
-		Datatypes dtps = profile251.getDatatypes();
+		DatatypeLibrary dtps = profile251.getDatatypeLibrary();
 
 		//Checking datatype info
 		Datatype dt = dtps.findOneDatatypeByLabel("CWE"); //For standard data types, label and name are not flavored yet and therefore equal)
@@ -243,7 +243,7 @@ public class ProfileLoadStandardTest {
 		assertEquals("name of coding system", cp.getName().toLowerCase());
 		assertEquals("20", cp.getMaxLength());
 		assertEquals(dtps.findOneDatatypeByBase("ID").getId(), cp.getDatatype());
-		Table t = profile251.getTables().findOneTableByName("0396");
+		Table t = profile251.getTableLibrary().findOneTableByName("0396");
 		assertNotNull(t);
 		assertEquals(t.getName(), cp.getTable()); 
 
@@ -255,7 +255,7 @@ public class ProfileLoadStandardTest {
 		logger.debug("Testing Administrative sex datatype");
 
 		// Retrieve value set library
-		Tables tbls = profile251.getTables();
+		TableLibrary tbls = profile251.getTableLibrary();
 		//Retrieve value set
 		Table tbl = tbls.findOneTableByName("0001");
 		//Check value set definition

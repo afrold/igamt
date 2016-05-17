@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 101,
+  "id" : "565f3ab7d4c6e52cfd447c99",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0020",
+  "name" : "UNUSED TABLE",
+  "description" : "UNUSED TABLE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c9a",
+    "value" : "1",
+    "label" : "(Tabelle 20 ist veraltet und wird nicht mehr verwendet)",
+    "codeSystem" : "HL70020",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c9b",
+    "value" : "2",
+    "label" : "Moderate Manifestation",
+    "codeSystem" : "HL70020",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c9c",
+    "value" : "3",
+    "label" : "Major Manifestation",
+    "codeSystem" : "HL70020",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c9d",
+    "value" : "4",
+    "label" : "Catastrophic Manifestation",
+    "codeSystem" : "HL70020",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

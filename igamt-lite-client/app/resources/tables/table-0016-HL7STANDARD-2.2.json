@@ -1,0 +1,108 @@
+{
+  "type" : "table",
+  "sectionPosition" : 143,
+  "id" : "565f3ab7d4c6e52cfd447cba",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0016",
+  "name" : "ISOLATION",
+  "description" : "ISOLATION",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cbb",
+    "value" : "0",
+    "label" : "(Tabelle 16 ist veraltet und wird nicht mehr verwendet)",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cbc",
+    "value" : "1",
+    "label" : "Blood and Needle Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cbd",
+    "value" : "2",
+    "label" : "Enteric Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cbe",
+    "value" : "3",
+    "label" : "Neutropenic Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cbf",
+    "value" : "4",
+    "label" : "Pregnant Women Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cc0",
+    "value" : "5",
+    "label" : "Respiratory Isolation",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cc1",
+    "value" : "6",
+    "label" : "Secretion / Excretion Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cc2",
+    "value" : "7",
+    "label" : "Strict Isolation",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cc3",
+    "value" : "8",
+    "label" : "Wound and skin Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cc4",
+    "value" : "9",
+    "label" : "Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

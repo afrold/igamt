@@ -1,0 +1,99 @@
+{
+  "type" : "table",
+  "sectionPosition" : 64,
+  "id" : "569eac0fd4c623dc6550dc52",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0484",
+  "name" : "Dispense Type",
+  "description" : "Dispense Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.484",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc53",
+    "value" : "B",
+    "label" : "Trial Quantity Balance",
+    "codeSystem" : "HL70484",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc54",
+    "value" : "C",
+    "label" : "Compassionate Fill",
+    "codeSystem" : "HL70484",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc55",
+    "value" : "N",
+    "label" : "New/Renew - Full Fill",
+    "codeSystem" : "HL70484",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc56",
+    "value" : "P",
+    "label" : "New/Renew - Part Fill",
+    "codeSystem" : "HL70484",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc57",
+    "value" : "Q",
+    "label" : "Refill - Part Fill",
+    "codeSystem" : "HL70484",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc58",
+    "value" : "R",
+    "label" : "Refill - Full Fill",
+    "codeSystem" : "HL70484",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc59",
+    "value" : "S",
+    "label" : "Manufacturer Sample",
+    "codeSystem" : "HL70484",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc5a",
+    "value" : "T",
+    "label" : "Trial Quantity",
+    "codeSystem" : "HL70484",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc5b",
+    "value" : "Z",
+    "label" : "Non-Prescription Fill",
+    "codeSystem" : "HL70484",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

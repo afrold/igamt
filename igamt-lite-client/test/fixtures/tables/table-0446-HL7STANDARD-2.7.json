@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 199,
+  "id" : "569eac0dd4c623dc65508111",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0446",
+  "name" : "Species Code",
+  "description" : "Species Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508112",
+    "value" : "�",
+    "label" : "no suggested values",
+    "codeSystem" : "HL70446",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

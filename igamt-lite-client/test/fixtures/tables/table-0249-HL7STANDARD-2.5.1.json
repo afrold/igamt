@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 360,
+  "id" : "569eac0fd4c623dc6550d94e",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0249",
+  "name" : "Generic Product",
+  "description" : "Generic Product",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.249",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d94f",
+    "value" : "...",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70249",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

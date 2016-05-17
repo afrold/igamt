@@ -27,9 +27,7 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 		this.sectionTitle = title;
 	}
 	
-	@Id
 	private String id;
-	
 	
 	protected Set<?> childSections = new HashSet<Section>();
 
@@ -45,7 +43,7 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 		return childSections;
 	}
 
-	public void setChildSections(Set<Section> childSections) {
+	public void setChildSections(Set<?> childSections) {
 		this.childSections = childSections;
 	}
 	
@@ -73,7 +71,16 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 		}
 		
 		return clonedSection;
-	}
+	} 
+	
+	public void merge(Section from) {		
+		this.setSectionContents(from.sectionContents);
+		this.setSectionDescription(from.sectionDescription);
+		this.setSectionPosition(from.sectionPosition);
+		this.setSectionTitle(from.sectionTitle);
+ 		this.setChildSections(from.getChildSections());	
+ 	}
+	
 	
 	@Override
 	public int compareTo(Section o) {

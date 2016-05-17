@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 22,
+  "id" : "565f3ab6d4c6e52cfd4413f4",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0339",
+  "name" : "Advanced Beneficiary Notice Code",
+  "description" : "Advanced Beneficiary Notice Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.339",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413f5",
+    "value" : "1",
+    "label" : "Service is subject to medical necessity procedures",
+    "codeSystem" : "HL70339",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413f6",
+    "value" : "2",
+    "label" : "Patient has been informed of responsibility, and agrees to pay for service",
+    "codeSystem" : "HL70339",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413f7",
+    "value" : "3",
+    "label" : "Patient has been informed of responsibility, and asks that the payer be billed",
+    "codeSystem" : "HL70339",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413f8",
+    "value" : "4",
+    "label" : "Advanced Beneficiary Notice has not been signed",
+    "codeSystem" : "HL70339",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

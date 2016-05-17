@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
-////@Entity
-////@Table(name = "DYNAMIC_MAPPING")
 public class DynamicMapping implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;

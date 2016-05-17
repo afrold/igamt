@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 47,
+  "id" : "565f3ab6d4c6e52cfd4413a8",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0456",
+  "name" : "Revenue code",
+  "description" : "Revenue code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.456",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4413a9",
+    "value" : "...",
+    "label" : "No suggested values",
+    "codeSystem" : "HL70456",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 45,
+  "id" : "569eac0fd4c623dc6550e3fa",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0509",
+  "name" : "Indication For Use",
+  "description" : "Indication For Use",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.509",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e3fb",
+    "value" : "...",
+    "label" : "No suggested values",
+    "codeSystem" : "HL70509",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

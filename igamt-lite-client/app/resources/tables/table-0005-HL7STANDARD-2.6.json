@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 520,
+  "id" : "569eac0ed4c623dc6550a61b",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0005",
+  "name" : "Race",
+  "description" : "Race",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.5",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a61c",
+    "value" : "...",
+    "label" : "see chapter 3",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a61d",
+    "value" : "1002-5",
+    "label" : "American Indian or Alaska Native",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a61e",
+    "value" : "2028-9",
+    "label" : "Asian",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a61f",
+    "value" : "2054-5",
+    "label" : "Black or African American",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a620",
+    "value" : "2076-8",
+    "label" : "Native Hawaiian or Other Pacific Islander",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a621",
+    "value" : "2106-3",
+    "label" : "White",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a622",
+    "value" : "2131-1",
+    "label" : "Other Race",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

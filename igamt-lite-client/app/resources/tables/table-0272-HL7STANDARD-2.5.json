@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 338,
+  "id" : "565f3ab6d4c6e52cfd44088c",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0272",
+  "name" : "Document Confidentiality Status",
+  "description" : "Document Confidentiality Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.272",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44088d",
+    "value" : "R",
+    "label" : "Restricted",
+    "codeSystem" : "HL70272",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44088e",
+    "value" : "U",
+    "label" : "Usual control",
+    "codeSystem" : "HL70272",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44088f",
+    "value" : "V",
+    "label" : "Very restricted",
+    "codeSystem" : "HL70272",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

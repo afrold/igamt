@@ -1,9 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-////@Entity
-//@javax.persistence.Table(name = "DATAELEMENT")
-////@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-////@JsonIgnoreProperties({ "datatype" })
 public abstract class DataElement extends DataModel implements
 		java.io.Serializable, Cloneable, Comparable<DataElement> {
 
@@ -41,25 +37,15 @@ public abstract class DataElement extends DataModel implements
 	// //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
 	// CascadeType.PERSIST, CascadeType.MERGE })
 	// //@JoinColumn(name = "TABLE_ID")
-	protected String table = "";
+	protected TableLink table;
 
-	// protected String tableId;
-
-	// //@Column(nullable = true, name = "BINDING_STRENGTH")
-	protected String bindingStrength = "";
-
-	// //@Column(nullable = true, name = "BINDING_LOCATION")
-	protected String bindingLocation = "";
-
-	// //@Column(nullable = true, name = "DATATYPE_LABEL")
-	// protected String datatypeLabel;
 
 	// //@JsonIgnore
 
 	// @JsonIgnoreProperties({ "label", "components", "name", "description",
 	// "predicates", "conformanceStatements", "comment", "usageNote",
 	// "type" })
-	protected String datatype;
+	protected DatatypeLink datatype;
 
 	// protected String datatypeId;
 
@@ -81,16 +67,13 @@ public abstract class DataElement extends DataModel implements
 	public void setText(String text) {
 		this.text = text;
 	}
-
-	// Caution, not persisted. Use at your own risk
-	public String getDatatype() {
+	
+	public DatatypeLink getDatatype() {
 		return datatype;
 	}
 
-	public void setDatatype(String datatype) {
+	public void setDatatype(DatatypeLink datatype) {
 		this.datatype = datatype;
-		// this.datatypeId = datatype != null ? datatype.getId() : null;
-		// this.setDatatypeLabel(datatype != null ? datatype.getLabel() : null);
 	}
 
 	public String getName() {
@@ -133,38 +116,14 @@ public abstract class DataElement extends DataModel implements
 		this.confLength = confLength;
 	}
 
-	public String getTable() {
+	public TableLink getTable() {
 		return table;
 	}
 
-	public void setTable(String table) {
+	public void setTable(TableLink table) {
 		this.table = table;
-		// this.tableId = table != null ? table.getId() : null;
 	}
 
-	public String getBindingStrength() {
-		return bindingStrength;
-	}
-
-	public void setBindingStrength(String bindingStrength) {
-		this.bindingStrength = bindingStrength;
-	}
-
-	public String getBindingLocation() {
-		return bindingLocation;
-	}
-
-	public void setBindingLocation(String bindingLocation) {
-		this.bindingLocation = bindingLocation;
-	}
-
-	// public String getId() {
-	// return id;
-	// }
-	//
-	// public void setId(String id) {
-	// this.id = id;
-	// }
 
 	public Integer getPosition() {
 		return position;
@@ -210,9 +169,9 @@ public abstract class DataElement extends DataModel implements
 	@Override
 	protected DataElement clone() throws CloneNotSupportedException {
 		DataElement de = (DataElement) super.clone();
-		de.setTable(this.table);
+		de.setTable(this.table.clone());
 		// de.setDatatype(this.datatype.clone());
-		de.setDatatype(this.datatype); // Changed by Harold
+		de.setDatatype(this.datatype.clone()); // Changed by Harold
 
 		return de;
 	}

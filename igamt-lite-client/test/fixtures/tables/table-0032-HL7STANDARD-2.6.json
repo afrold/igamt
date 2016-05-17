@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 392,
+  "id" : "569eac0ed4c623dc6550ab4a",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0032",
+  "name" : "Charge/Price Indicator",
+  "description" : "Charge/Price Indicator",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.32",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab4b",
+    "value" : "...",
+    "label" : "no suggested values",
+    "codeSystem" : "HL70032",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

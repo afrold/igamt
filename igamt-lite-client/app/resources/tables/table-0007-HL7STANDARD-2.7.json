@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 37,
+  "id" : "569eac0dd4c623dc6550707b",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0007",
+  "name" : "Admission Type",
+  "description" : "Admission Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550707c",
+    "value" : "A",
+    "label" : "Accident",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550707d",
+    "value" : "C",
+    "label" : "Elective",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550707e",
+    "value" : "E",
+    "label" : "Emergency",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550707f",
+    "value" : "L",
+    "label" : "Labor and Delivery",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507080",
+    "value" : "N",
+    "label" : "Newborn (Birth in healthcare facility)",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507081",
+    "value" : "R",
+    "label" : "Routine",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507082",
+    "value" : "U",
+    "label" : "Urgent",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

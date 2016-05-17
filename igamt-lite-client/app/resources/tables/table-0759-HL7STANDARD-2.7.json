@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 7,
+  "id" : "569eac0dd4c623dc65507cf7",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0759",
+  "name" : "Status Admission",
+  "description" : "Status Admission",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cf8",
+    "value" : "0",
+    "label" : "Admission status is valid; used for grouping",
+    "codeSystem" : "HL70759",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cf9",
+    "value" : "1",
+    "label" : "Admission status is valid; not used for grouping",
+    "codeSystem" : "HL70759",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cfa",
+    "value" : "2",
+    "label" : "Admission status is invalid; not used for grouping",
+    "codeSystem" : "HL70759",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cfb",
+    "value" : "3",
+    "label" : "Admission status is invalid; default value used for grouping",
+    "codeSystem" : "HL70759",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

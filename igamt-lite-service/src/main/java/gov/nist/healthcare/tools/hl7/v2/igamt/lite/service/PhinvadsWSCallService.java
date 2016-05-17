@@ -1,10 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import java.net.MalformedURLException;
-import java.util.List;
-
-import com.caucho.hessian.client.HessianProxyFactory;
-
 import gov.cdc.vocab.service.VocabService;
 import gov.cdc.vocab.service.bean.ValueSet;
 import gov.cdc.vocab.service.bean.ValueSetConcept;
@@ -14,8 +9,20 @@ import gov.cdc.vocab.service.dto.input.ValueSetSearchCriteriaDto;
 import gov.cdc.vocab.service.dto.output.ValueSetConceptResultDto;
 import gov.cdc.vocab.service.dto.output.ValueSetResultDto;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+
+import java.net.MalformedURLException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.caucho.hessian.client.HessianProxyFactory;
 
 public class PhinvadsWSCallService {
 	private VocabService service;
@@ -42,10 +49,8 @@ public class PhinvadsWSCallService {
 	}
 	
 	
-	public Tables generateTableList(String searchText) throws MalformedURLException {
-		Tables tables = new Tables();
-        System.out.println("Finding: " + searchText);
-        
+	public Set<Table> generateTableList(String searchText) throws MalformedURLException {
+		Set<Table> tables = new HashSet<Table>();
         ValueSetSearchCriteriaDto vsSearchCrit = new ValueSetSearchCriteriaDto();
         vsSearchCrit.setFilterByViews(false);
         vsSearchCrit.setFilterByGroups(false);
@@ -68,11 +73,19 @@ public class PhinvadsWSCallService {
             ValueSetConceptResultDto vscByVSVid = this.getService().getValueSetConceptsByValueSetVersionId(vsvByVSOid.get(0).getId(), 1, 100000);
             List<ValueSetConcept> valueSetConcepts = vscByVSVid.getValueSetConcepts();
             
-            table.setBindingIdentifier(vs.getId());
+            table.setBindingIdentifier(searchText);
             table.setDescription(vs.getDefinitionText());
             table.setName(vs.getName());
             table.setOid(vs.getOid());
             table.setVersion("" + vsvByVSOid.get(0).getVersionNumber());
+            table.setContentDefinition(ContentDefinition.Extensional);
+            table.setExtensibility(Extensibility.Closed);
+            table.setId(null);
+            table.setLibIds(new HashSet<String>());
+            table.setScope(SCOPE.USER);
+            table.setStability(Stability.Static);
+            table.setStatus(STATUS.UNPUBLISHED);
+            table.setType(Constant.TABLE);
 
             for (ValueSetConcept pcode : valueSetConcepts) {
             	Code code = new Code();
@@ -91,22 +104,16 @@ public class PhinvadsWSCallService {
                 code.setCodeSystem(this.getService().findCodeSystems(csSearchCritDto, 1, 5).getCodeSystems().get(0).getHl70396Identifier());
             	table.addCode(code);
             }
-            tables.addTable(table);
+            tables.add(table);
         }
-
         return tables;
-
     }
 	
 	public static void main(String[] args) throws Exception {
     	PhinvadsWSCallService service = new PhinvadsWSCallService();
-    	Tables tables = service.generateTableList("2.16.840.1.114222.4.11.3338");
+    	Set<Table> tables = service.generateTableList("2.16.840.1.114222.4.11.3338");
     	
     	System.out.println(tables);
-    	
-    	
-    	
-    	
-    	
    }
+
 }

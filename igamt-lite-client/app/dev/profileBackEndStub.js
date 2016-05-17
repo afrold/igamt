@@ -23,6 +23,9 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         var profile = angular.fromJson(request.response);
         return [request.status, profile, {}];
     });
+    
+
+
 
     $httpBackend.whenGET('api/shortaccounts?filter=accountType::author').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
@@ -198,26 +201,25 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         request.send(null);
         var d = angular.fromJson(request.response);
         userDocs.push(d);
-        var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/igDocuments/igdocument-2.6.1-USER-ABC.json', false);
-       request.send(null);
-       var d = angular.fromJson(request.response);
-       userDocs.push(d);
-       var request = new XMLHttpRequest();
-       request.open('GET', '../../resources/igDocuments/igdocument-2.6.1-USER-DEI.json', false);
-      request.send(null);
-      var d = angular.fromJson(request.response);
-      userDocs.push(d);
+//        var request = new XMLHttpRequest();
+//        request.open('GET', '../../resources/igDocuments/igdocument-2.6.1-USER-ABC.json', false);
+//       request.send(null);
+//       var d = angular.fromJson(request.response);
+//       userDocs.push(d);
+//       var request = new XMLHttpRequest();
+//       request.open('GET', '../../resources/igDocuments/igdocument-2.6.1-USER-DEI.json', false);
+//      request.send(null);
+//      var d = angular.fromJson(request.response);
+//      userDocs.push(d);
        console.log('api/igdocuments?type=USER end');
         return [request.status, userDocs, {}];
     });
 
-    
     $httpBackend.whenGET('api/igdocuments/findVersions').respond(function (method, url, data, headers) {
     	console.log('api/igdocuments/hl7/findVersions');
         return [200, ["2.5.1","2.6","2.7"], {}];
     });
-    
+
     $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/igdocuments/messageListByVersion start' + ' data=' + data);
@@ -229,8 +231,8 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
         return [200, d, {}];
     });
-    
-    
+
+
     $httpBackend.whenPOST('api/igdocuments/createIntegrationProfile').respond(function (method, url, data, headers) {
     	console.log('api/igdocuments/hl7/createIntegrationProfile start' + ' data=' + data);
         var profile = null;
@@ -272,21 +274,75 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
-    $httpBackend.whenGET('api/datatype-library').respond(function (method, url, data, headers) {
-         var request = new XMLHttpRequest();
-         console.log('api/datatype-library begin');
-         request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
-        request.send(null);
-        var d = angular.fromJson(request.response);
-        console.log('api/datatype-library end');
-        return [request.status, d, {}];
-    });
-
     $httpBackend.whenGET('api/appInfo').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/appInfo/appInfo.json', false);
         request.send(null);
         var d = angular.fromJson(request.response);
+        return [request.status, d, {}];
+    });
+
+    $httpBackend.whenGET('api/datatypes/565f3ab5d4c6e52cfd43b928').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatypes/datatype1.json', false);
+        request.send(null);
+        var datatype = angular.fromJson(request.response);
+        return [request.status, datatype, {}];
+    });
+
+//    $httpBackend.whenPOST('api/datatypes/save').respond(function (method, url, data, headers) {
+//        var request = new XMLHttpRequest();
+//        data.version = "4";
+//        return [200, data, {}];
+//    });
+
+//    $httpBackend.whenGET('api/segments/565f3ab5d4c6e52cfd43be67').respond(function (method, url, data, headers) {
+//        var request = new XMLHttpRequest();
+//        request.open('GET', '../../resources/segments/segment1.json', false);
+//        request.send(null);
+//        var segment1 = angular.fromJson(request.response);
+//        return [request.status, segment1, {}];
+//    });
+//
+//    $httpBackend.whenPOST('api/segments/save').respond(function (method, url, data, headers) {
+//        var request = new XMLHttpRequest();
+//        data.version = "4";
+//        return [200, data, {}];
+//    });
+
+    $httpBackend.whenGET('api/datatypes/searchByLabel?search=X').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatypes/searchResults.json', false);
+        request.send(null);
+        var results = angular.fromJson(request.response);
+        return [request.status, results, {}];
+    });
+
+//    $httpBackend.whenGET('api/datatypes/1').respond(function (method, url, data, headers) {
+//        var request = new XMLHttpRequest();
+//        request.open('GET', '../../resources/datatypes/datatype1.json', false);
+//        request.send(null);
+//        var datatype = angular.fromJson(request.response);
+//        return [request.status, datatype, {}];
+//    });
+
+    $httpBackend.whenPOST('api/datatype-library/getDataTypeLibraryByScope').respond(function (method, url, data, headers) {
+         var request = new XMLHttpRequest();
+         console.log('api/datatype-library/getDataTypeLibraryByScope begin');
+         var scope = data;
+         var d = null;
+         if (scope === 'MASTER') {
+        	 	request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
+//        	 	request.open('GET', 'test/fixtures/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
+//        	 	request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+         	request.send(null);
+        		d = angular.fromJson(request.response);
+         } else {
+             request.open('GET', '../../resources/datatypes/dtLib-2.5.1-HL7STANDARD.json', false);
+             request.send(null);
+             d = angular.fromJson(request.response);
+         }
+        console.log('api/datatype-library/getDataTypeLibraryByScope end');
         return [request.status, d, {}];
     });
 

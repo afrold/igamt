@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 391,
+  "id" : "569eac0dd4c623dc65507ec9",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0434",
+  "name" : "Patient Condition Code",
+  "description" : "Patient Condition Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507eca",
+    "value" : "A",
+    "label" : "Satisfactory",
+    "codeSystem" : "HL70434",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ecb",
+    "value" : "C",
+    "label" : "Critical",
+    "codeSystem" : "HL70434",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ecc",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70434",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ecd",
+    "value" : "P",
+    "label" : "Poor",
+    "codeSystem" : "HL70434",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ece",
+    "value" : "S",
+    "label" : "Stable",
+    "codeSystem" : "HL70434",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ecf",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70434",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,17 +1,19 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-
-public class Segment extends SectionModelWithConstraints implements java.io.Serializable,
+@Document(collection = "segment")
+public class Segment extends DataModelWithConstraints implements java.io.Serializable,
 Cloneable, Comparable<Segment> {
 
 	private static final long serialVersionUID = 1L;
@@ -19,28 +21,20 @@ Cloneable, Comparable<Segment> {
 	public Segment() {
 		super();
 		type = Constant.SEGMENT;
-		this.id = ObjectId.get().toString();
 	}
 
+	@Id
 	private String id;
 
-	//
-	// @DBRef
-	// private Segments segments;
-
-	// //@NotNull
 	private String label;
 
 	private List<Field> fields = new ArrayList<Field>();
 
 	private DynamicMapping dynamicMapping = new DynamicMapping();
 
-	// //@NotNull
 	private String name;
 
 	private String description;
-
-	private String hl7Version;
 
 	protected String comment = "";
 
@@ -48,6 +42,7 @@ Cloneable, Comparable<Segment> {
 
 	private String text2 = "";
 
+ 	
 	public String getId() {
 		return id;
 	}
@@ -60,6 +55,7 @@ Cloneable, Comparable<Segment> {
 		return label;
 	}
 
+	 
 	public void setLabel(String label) {
 		this.label = label;
 	}
@@ -78,14 +74,6 @@ Cloneable, Comparable<Segment> {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getHl7Version() {
-		return hl7Version;
-	}
-
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
 	}
 
 	public List<Field> getFields() {
@@ -127,6 +115,7 @@ Cloneable, Comparable<Segment> {
 		}
 		return null;
 	}
+	
 	public String getComment() {
 		return comment;
 	}

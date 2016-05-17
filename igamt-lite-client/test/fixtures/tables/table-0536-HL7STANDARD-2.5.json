@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 460,
+  "id" : "565f3ab6d4c6e52cfd440f4b",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0536",
+  "name" : "Certificate Status",
+  "description" : "Certificate Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.536",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440f4c",
+    "value" : "E",
+    "label" : "Expired",
+    "codeSystem" : "HL70536",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440f4d",
+    "value" : "I",
+    "label" : "Inactive",
+    "codeSystem" : "HL70536",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440f4e",
+    "value" : "P",
+    "label" : "Provisional",
+    "codeSystem" : "HL70536",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440f4f",
+    "value" : "R",
+    "label" : "Revoked",
+    "codeSystem" : "HL70536",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440f50",
+    "value" : "V",
+    "label" : "Active/Valid",
+    "codeSystem" : "HL70536",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

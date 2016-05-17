@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 116,
+  "id" : "565f3ab6d4c6e52cfd443dd8",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0349",
+  "name" : "PSRO/UR approval indicator",
+  "description" : "PSRO/UR approval indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dd9",
+    "value" : "1",
+    "label" : "Approved by the PSRO/UR as billed",
+    "codeSystem" : "HL70349",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dda",
+    "value" : "2",
+    "label" : "Automatic approval as billed based on focused review",
+    "codeSystem" : "HL70349",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ddb",
+    "value" : "3",
+    "label" : "Partial approval",
+    "codeSystem" : "HL70349",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ddc",
+    "value" : "4",
+    "label" : "Admission denied",
+    "codeSystem" : "HL70349",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ddd",
+    "value" : "5",
+    "label" : "Postpayment review applicable",
+    "codeSystem" : "HL70349",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

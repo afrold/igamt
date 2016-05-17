@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 177,
+  "id" : "565f3ab7d4c6e52cfd447399",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0325",
+  "name" : "Location Relationship ID",
+  "description" : "Location Relationship ID",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44739a",
+    "value" : "ALI",
+    "label" : "Location alias(es)",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44739b",
+    "value" : "DTY",
+    "label" : "Nearest Dietary",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44739c",
+    "value" : "LAB",
+    "label" : "Nearest Lab",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44739d",
+    "value" : "LB2",
+    "label" : "Second Lab",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44739e",
+    "value" : "PAR",
+    "label" : "Parent location",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44739f",
+    "value" : "RX",
+    "label" : "Nearest Pharmacy",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473a0",
+    "value" : "RX2",
+    "label" : "Second Pharmacy",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

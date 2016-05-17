@@ -1,0 +1,567 @@
+<div class="container" ng-controller="DatatypeLibraryCtl"
+	ng-init="initDatatypeLibrary()">
+
+	<div class="row">
+		<div ng-hide="!loading" style="text-align: center">
+			<img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..." />
+		</div>
+		<div ng-show="!loading">
+			<div class="page-header">
+				<h3>Data Type Libraries</h3>
+			</div>
+			<div class="col-md-12">
+				<form id="selectDtTypeForm" class="form-horizontal">
+					<div class="form-group">
+						<div style="margin-left: 15px"
+							class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+							<label class="btn  btn-primary btn-sm"
+								ng-click="selectDTLibraryType(tt.type)"
+								ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}"
+								ng-repeat="tt in datatypeLibraryTypes | uppercase"
+								ng-show="tt.visible"> <input ng-disabled="loading"
+								type="radio" ng-value="tt.type"
+								ng-model="$parent.datatypeLibrariesConfig.selectedType"><i
+								class="fa fa-th-list"></i> {{tt.name}}
+							</label>
+						</div>
+						<div class="pull-right" style="margin-right: 20px" ng-show="admin">
+							<button type="button" class="btn btn-primary btn-sm"
+								ng-click="openStandardDataypes('MASTER')" ng-show="isAdmin()">
+								<i class="fa fa-plus"></i> Create Master Data Type Library
+							</button>
+							<button type="button" class="btn btn-primary btn-sm"
+								ng-click="openStandardDataypes('USER')">
+								<i class="fa fa-plus"></i> Create user Data Type Library
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div ng-show="datatypeLibsStruct">
+		<div class="row">
+			<form>
+				<div class="form-group">
+					<table st-table="datatypeLibsDisplay"
+						st-safe-src="datatypeLibsStruct"
+						class="table table-bordered table-fix-header">
+						<thead>
+							<tr class="tbl-header">
+								<th st-ratio="2" style="text-align: center;">#</th>
+								<th st-ratio="10" st-sort="datatypeLibsDisplay(dt)"
+									st-sort-default="true">Label</th>
+								<th st-ratio="30">Description</th>
+								<th st-ratio="10">Scope</th>
+								<th st-ratio="10">HL7 Version</th>
+								<th st-ratio="38">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-class="{'new' : dt.new}"
+								ng-repeat="dt in datatypeLibsDisplay">
+								<td st-ratio="2" style="text-align: right;">{{$index + 1}}</td>
+								<td st-ratio="10">{{dt.sectionTitle}}</td>
+								<td st-ratio="30">{{dt.sectionDescription}}
+								<td st-ratio="10">{{dt.scope}}</td>
+								<td st-ratio="10">{{dt.metaData.hl7Version}}</td>
+								<td st-ratio="38">
+									<button title="Edit" type="button"
+										class="btn btn-xs btn-primary" ng-click="edit(dt)">
+										<span><i class="fa fa-pencil fa-fw"></i> Edit</span>
+									</button>
+									<button title="Create Copy" type="button"
+										class="btn btn-xs btn-info" ng-click="copy(dt)">
+										<span><i class="fa fa-plus fa-fw"></i> Copy</span>
+									</button>
+									<button title="Delete" type="button"
+										class="btn btn-xs btn-danger" ng-click="delete(dt)">
+										<span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</form>
+		</div>
+		<div class="row">
+			<tabset> <tab index="0" heading="Metadata">
+			<div class="panel panel-primary" ng-show="datatypeLibStruct">
+				<div class="panel-heading">Metadata</div>
+				<div class="panel-body" style="padding-bottom: 100px">
+					<div id="meta" style="width: 100%">
+						<ng-include src="metaDataView"></ng-include>
+					</div>
+				</div>
+			</div>
+			</tab> <tab index="1" heading="Data Types">
+			<div class="panel panel-primary" ng-show="datatypeLibStruct.children">
+				<div class="panel-heading">Data Type List</div>
+				<div class="panel-body" style="padding-bottom: 100px">
+					<div id="meta" style="width: 100%">
+						<ng-include src="datatypeListView"></ng-include>
+					</div>
+				</div>
+			</div>
+			</tab> </tabset>
+		</div>
+		<div class="row" ng-show="datatypeView">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Edit Area</div>
+				<div class="panel-body" style="padding-bottom: 100px">
+					<div id="editDatatype" ng-show="datatypeView !== undefined"
+						style="width: 100%">
+						<ng-include src="datatypeView"></ng-include>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script type="text/ng-template" id="LibraryMetaData.html">
+<div class="container>
+<div class="row">
+<div class="col-sm-3 pull-right" style="margin-right:20px">
+  <button type="button" class="btn btn-success btn-sm"
+          ng-click="saveLib()"><i class="fa fa-plus"></i>
+    Save Library
+  </button>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-9 pull-left" style="margin-right:20px">
+<form>
+  <div class="container form-group">
+  <div class="row">
+   <div class="col-sm-6">
+   <label class="control-label" for="hl7Version">HL7 Version</label>
+    <input class="form-control"  type="text"
+           name="hl7Version"
+           ng-model="datatypeLibStruct.metaData.hl7Version"
+           required/>
+	</div>
+   <div class="col-sm-6">
+   <label class="control-label" for="name">Name</label>
+    <input class="form-control"  type="text"
+           name="name"
+           ng-model="datatypeLibStruct.metaData.name"
+           required/>
+	</div>
+	</div>
+  <div class="row">
+   <div class="col-sm-6">
+   <label class="control-label" for="ext">Extension</label>
+    <input class="form-control"  type="text"
+           name="ext"
+           ng-model="datatypeLibStruct.metaData.ext"
+           required/>
+	</div>
+   <div class="col-sm-6">
+   <label class="control-label" for="orgName">Organization Name</label>
+    <input class="form-control"  type="text"
+           name="orgName"
+           ng-model="datatypeLibStruct.metaData.orgName"
+           required/>
+	</div>
+	</div>
+  <div class="row">
+   <div class="col-sm-6">
+   <label class="control-label" for="version">Version</label>
+    <input class="form-control"  type="text"
+           name="version"
+           ng-model="datatypeLibStruct.metaData.version"
+           required/>
+	</div>
+   <div class="col-sm-6">
+   <label class="control-label" for="date">Date</label>
+    <input class="form-control"  type="text"
+           name="date"
+           ng-model="datatypeLibStruct.metaData.date"
+           required/>
+	</div>
+	</div>
+	</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</script>
+<script type="text/ng-template" id="DatatypeList.html">
+<div class="pull-right" style="margin-right:20px">
+  <button type="button" class="btn btn-success btn-sm"
+          ng-click="saveLib()"><i class="fa fa-plus"></i>
+    Save Library
+  </button>
+  <button type="button" class="btn btn-primary btn-sm"
+          ng-click="openDataypeList(hl7Version)"><i class="fa fa-plus"></i>
+    Add data types.
+  </button>
+</div>
+<table st-table="datatypeDisplay" st-safe-src="datatypeLibStruct.children" st-sticky-header class="table table-bordered">
+<thead>
+  <tr class="row tbl-header">
+    <th st-ratio="10" st-sort="getLabel(dt.name, datatypeLibStruct.ext)" st-sort-default="true">Label</th>
+    <th st-ratio="30">Description</th>
+    <th st-ratio="58">Actions</th>
+    <th st-ratio="2">Publish</th>
+  </tr>
+  <tr>
+    <th colspan="3"><input st-search="label" class="form-control" placeholder="Search Label..." type="search"/></th>
+  </tr>
+</thead>
+<tbody>
+	<tr class="row" ng-repeat="dt in datatypeDisplay" ng-class="{'new': dt.new}">
+    <td st-ratio="10">{{getLabel(dt.name, datatypeLibStruct.ext)}}</td>
+    <td st-ratio="30" ng-bind="dt.description"></td>
+    <td st-ratio="58">
+     <button
+              title="Edit"
+              type="button" class="btn btn-xs btn-primary"
+              ng-click="editDatatype(dt)">
+        <span><i class="fa fa-pencil fa-fw"></i> Edit</span>
+      </button>
+      <button
+              title="Create Copy" type="button" class="btn btn-xs btn-info"
+              ng-click="copyDatatype(dt)">
+        <span><i class="fa fa-plus fa-fw"></i> Copy</span>
+      </button>
+      <button title="Delete" type="button" class="btn btn-xs btn-danger"
+              ng-click="deleteDatatype(dt)">
+        <span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
+      </button>
+    </td>
+    <td st-ratio="2" style="text-align : center; vertical-align : bottom;"><label for="publish + $index"><input name="publish + $index" ng-model="dt.publish" type="checkbox" ng-hide="true"/><i ng-class="{'fa fa-check fa-2x' : !dt.publish}" style="color : #88A888"></i></label></td>
+  </tr>
+</tbody>
+
+<tfoot ng-show="datatypeLibStruct.children.length >= 10">
+<tr style="margin-right: {{scrollbarWidth}}px;">
+<td colspan="7" class="text-center">
+<span st-pagination="" st-items-by-page="10" st-displayed-pages="7"></span>
+</td>
+</tr>
+</tfoot>
+
+</table>
+</script>
+<script type="text/ng-template" id="standardDatatypeDlg.html">
+<div id="standard-datatypelibrary-dialog">
+  <div class="modal-content" style="padding : 10px 10px 10px 10px;">
+  <div class="modal-header">
+    <h3 class="modal-title">New Data Type Library</h3>
+  </div>
+  <form>
+  <div class="form-group">
+  <div class="modal-body">
+  <div class="container" style="max-width: 200%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
+      <div class="row">
+        <label for="name" class="control-label">Name</label>
+          <input type="text"
+                 name="name" class="form-control" ng-model="standard.name"
+                         required style="width : 250px; height : 30px;"/>
+      </div>
+      <div class="row">
+        <div class="btn-group btn-group-sm" data-toggle="buttons">
+          <label class="btn btn-primary btn-xs" ng-click="standard.hl7Version = vr; $parent.okDisabled = false"
+                 ng-class="{'active':vr === hl7Version}"
+                 ng-repeat="vr in hl7Versions | orderBy:'toString()' track by vr" style="width : 50px; height : 30px;">
+            <input ng-disabled="loading" type="radio" ng-value="vr"
+                   ng-model="$parent.hl7Version"/>{{vr}}
+          </label>
+        </div>
+        </div>
+       <div class="row">
+      <label class="control-label" for="ext">Ext</label>
+          <input type="text"
+                 name="ext" class="form-control" ng-model="standard.ext"
+                         required  style="width : 150px; height : 30px;"/>
+      </div>
+    </div>
+  </div>
+  </div>
+  </form>
+    <div class="modal-footer">
+      <button class="btn btn-primary" ng-disabled="okDisabled" type="button" ng-click="ok()">Ok</button>
+      <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+  </div>
+</div>
+</script>
+<script type="text/ng-template" id="datatypeListDlg.html">
+<div id="datatypelibrary-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="modal-title">Data Types</h3>
+  </div>
+  <form>
+  <div class="modal-body">
+        <div class="container">
+           <div class="row">HL7 Version:{{hl7Version}}</div>
+        <div class="row" style="margin-top : 20px;">
+            <div class="col-sm-6">
+              <div class="form-group">
+<table st-table="datatypeLibDisplay" st-safe-src="datatypesLibStruct" st-sticky-header class="table table-striped table-bordered">
+<thead>
+  <tr class="row tbl-header">
+    <th st-ratio="2">&nbsp;</th>
+    <th st-ratio="48">Title</th>
+    <th st-ratio="48">Scope</th>
+  </tr>
+</thead>
+<tbody>
+  <tr class="row" ng-repeat="dtLib in datatypeLibDisplay">
+    <td st-ratio="2"><input id="dtLib.id" name="dtLibs" type="radio" ng-bind="selectedLib" ng-click="libSelected(dtLib)"/></td>
+    <td st-ratio="48">{{dtLib.sectionTitle}}</td>
+    <td st-ratio="48">{{dtLib.scope}}</td>
+  </tr>
+</tbody>
+</table>
+            </div>
+           </div>
+             <div class="col-sm-6" ng-show="selectedLib" style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
+<table st-table="datatypesDisplay" st-safe-src="selectedLib.children" st-sticky-header class="table table-striped table-bordered">
+<thead>
+  <tr class="row tbl-header">
+    <th st-ratio="2">&nbsp;</th>
+    <th st-ratio="48">Label</th>
+    <th st-ratio="48">Ext</th>
+  </tr>
+</thead>
+<tbody>
+  <tr class="row" ng-repeat="dt in datatypesDisplay">
+    <td st-ratio="2"><input value="1" name="datatypesDisplay.id" type="checkbox" ng-model="bool" ng-click="trackSelections(bool, dt)"/></td>
+    <td st-ratio="48">{{dt.label}}</td>
+    <td st-ratio="48">{{dt.ext}}</td>
+  </tr>
+</tbody>
+</table>
+           </div>
+        </div>
+        </div>
+  </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-disabled="okDisabled" type="button" ng-click="ok()">Ok</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </form>
+</div>
+</div>
+</script>
+<script type="text/ng-template" id="EditDatatypeLibraryDatatype.html">
+<div class="container">
+<div ng-show="loadingSelection"
+     style="text-align: center;">
+    <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+</div>
+<div ng-show="!loadingSelection">
+<div ng-show="datatype !== null" id="executionPanel">
+<form name="datatypeForm" novalidate class="form-horizontal">
+<div class="row">
+    <div class="col-md-12 igl-page-header">
+        <span class="header4 pull-left">Data Type: {{getLabel(datatypeStruct.name, datatypeLibStruct.ext)}}</span>
+                     <span class="pull-right">
+  		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng.model="datatypeStruct.publish" style="margin-right : 8px"/>Publish</label>
+         <button title="Save Changes" type="button" class="btn btn-xs btn-success"
+                 ng-disabled="datatypeForm.$invalid"
+                 ng-hide="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                 ng-click="saveDatatype()">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </button>
+                         <button title="Cancel Changes" type="button" class="btn btn-xs btn-warning"
+                                 ng-hide="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                                 ng-click="cancel()">
+                             <span><i class="fa fa-times fa-fw"></i> Cancel</span>
+                         </button>
+    </span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <span class="header5">MetaData</span>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-1 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
+                <label class="control-label">Flavor</label>
+                <input type="text" ng-disabled="viewSettings.tableReadonly"
+                       ng-change="recordChanged()"
+                       name="label" id="label" class="form-control" ng-model="datatypeStruct.label"
+                       required aria-describedby="helpBlock2">
+                                    <span id="helpBlock2" class="help-block" style="color:red"
+                                          ng-show="isDuplicated(datatypeStruct,'label', datatypes)">Label already used</span>
+            </div>
+        </div>
+        <div class="col-md-1 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
+                <label class="control-label">Root</label>
+                <input type="text" disabled
+                       name="name" class="form-control" ng-model="datatypeStruct.name"
+                       required>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
+                <label class="control-label">Description</label>
+                <input type="text" disabled
+                       ng-change="recordChanged()"
+                       ng-disabled="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                       name="description" class="form-control" ng-model="datatypeStruct.description"
+                       required>
+            </div>
+        </div>
+        <div class="col-md-1 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
+                <label class="control-label">Extension</label>
+                <input type="text"
+                       ng-change="recordChanged()"
+                       ng-disabled="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                       name="label" id="ext" class="form-control" ng-model="datatypeStruct.ext"
+                       required aria-describedby="helpBlock2">
+                                    <span id="helpBlock2" class="help-block" style="color:red"
+                                          ng-show="isDuplicated(datatypeStruct,'label', datatypes)">Extension already used</span>
+            </div>
+        </div>
+         <div class="col-md-1 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
+                <label class="control-label">HL7 Version</label>
+                <input type="text" disabled
+                       ng-change="recordChanged()"
+                       name="description" class="form-control" ng-model="datatypeStruct.hl7Version"
+                       required>
+            </div>
+        </div>
+         <div class="col-md-6 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
+                <label class="control-label">Purpose and Use</label>
+                <textarea rows="3" cols="20"
+                       ng-change="recordChanged()"
+                       name="description" class="form-control" ng-model="datatypeStruct.purposeUse"
+                       required/>
+            </div>
+        </div>
+      <div class="col-md-6 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.comment.$invalid}">
+                <label class="control-label">Comment</label>
+                <input type="text"
+                       ng-disabled="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                       ng-change="recordDatatypeChange('datatypeStruct','edit',datatypeStruct.id,'comment', datatypeStruct.comment)"
+                       name="comment" class="form-control"
+                       ng-model="datatypeStruct.comment">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-12 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.purposeAndUse.$invalid}">
+                <label class="control-label">Purpose And Use</label>
+                <textarea style="width:100%;height:100%"
+                          ng-disabled="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'"
+                          ng-change="recordDatatypeChange('datatypeStruct','edit',datatypeStruct.id,'purposeAndUse', datatypeStruct.purposeAndUse)"
+                          name="comment" class="form-control"
+                          class="form-control"
+                          ng-model="node.purposeAndUse">
+                </textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-12 col-margin">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
+                <label class="control-label">Definition Text</label>
+
+                <div ng-if="!viewSettings.tableReadonly && datatypeStruct.scope === 'USER'">
+                    <textarea froala="froalaEditorOptions" ng-model="datatypeStruct.usageNote" name="text"
+                              id="text"
+                              ng-change="recordChanged()"></textarea>
+                </div>
+
+                <div ng-if="viewSettings.tableReadonly || datatypeStruct.scope !== 'USER'">
+                    <div class="fr-view">
+                        <div froala-view="datatypeStruct.usageNote"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="row" style="margin-top:20px">
+    <div class="col-md-12 igl-page-header">
+<span class="pull-left">
+    <span class="header5">Definition</span>
+  </span>
+                            <span class="pull-right">
+                                <span style="margin-right: 20px" ng-dropdown-multiselect=""
+                                      options="viewSettings.columnOptions"
+
+                                      selected-model="viewSettings.visibleColumns"
+                                      events="viewSettings.events" extra-settings="viewSettings.extra"
+                                      translation-texts="viewSettings.translations"></span>
+  </span>
+
+    </div>
+
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table tt-table tt-params="datatypesParams"
+                   class="table table-bordered table-fix-header table-condensed profile-table">
+                <thead>
+                <tr class="tbl-header"
+                    style="margin-right: {{scrollbarWidth}}px;">
+                    <th class="col-xs-1 col-fixed-100"
+                        ng-show="viewSettings.isVisibleColumn('length')">SEQ
+                    </th>
+                    <th class="col-xs-2 col-fixed-250">
+                        Component Name
+                    </th>
+                    <th class="col-xs-1 col-fixed-80"
+                        ng-show="viewSettings.isVisibleColumn('usage')">Usage
+                    </th>
+                    <th class="col-xs-1 col-fixed-100"
+                        ng-show="viewSettings.isVisibleColumn('datatypeStruct')">DT
+                    </th>
+                    <th class="col-xs-1 col-fixed-130"
+                        ng-show="viewSettings.isVisibleColumn('valueSet')">Concept Domain/ Minimum Code System
+                    </th>
+                    <th class="col-xs-1" ng-style="predWidth"
+                        ng-show="viewSettings.isVisibleColumn('predicate')">Condition Predicate
+                    </th>
+                    <th class="col-xs-2" ng-style="csWidth"
+                        ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement
+                    </th>
+                    <th class="col-xs-1" ng-style="commentWidth"
+                        ng-show="viewSettings.isVisibleColumn('comment')">Comments
+                    </th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</script>

@@ -167,41 +167,41 @@ public class ProfileChangeService {
 	}
 
 	private void resolveReferences() {
-		for (Segment segment : p.getSegments().getChildren()) {
-			for (Field f : segment.getFields()) {
-				if (newDatatypesMap.containsKey(f.getDatatype())) {
-					f.setDatatype(newDatatypesMap.get(f.getDatatype()).getId());
-				}
-				if (f.getTable() != null) {
-					if (newTablesMap.containsKey(f.getTable())) {
-						f.setTable(newTablesMap.get(f.getTable()).getId());
-					}
-				}
-
-				resolveReferences(p.getDatatypes().findOne(f.getDatatype()));
-			}
-		}
+//		for (Segment segment : p.getSegmentLibrary().getChildren()) {
+//			for (Field f : segment.getFields()) {
+//				if (newDatatypesMap.containsKey(f.getDatatype())) {
+//					f.setDatatype(newDatatypesMap.get(f.getDatatype()).getId());
+//				}
+//				if (f.getTable() != null) {
+//					if (newTablesMap.containsKey(f.getTable())) {
+//						f.setTable(newTablesMap.get(f.getTable()).getId());
+//					}
+//				}
+//
+//				resolveReferences(p.getDatatypeLibrary().findOne(f.getDatatype()));
+//			}
+//		}
 	}
 
 	private void resolveReferences(Datatype datatype) {
-		if (datatype.getComponents() != null
-				&& !datatype.getComponents().isEmpty()) {
-			for (Component component : datatype.getComponents()) {
-				if (newDatatypesMap.containsKey(component.getDatatype())) {
-					component.setDatatype(newDatatypesMap.get(
-							component.getDatatype()).getId());
-				}
-
-				if (component.getTable() != null) {
-					if (newTablesMap.containsKey(component.getTable())) {
-						component.setTable(newTablesMap.get(
-								component.getTable()).getId());
-					}
-				}
-				resolveReferences(p.getDatatypes().findOne(
-						component.getDatatype()));
-			}
-		}
+//		if (datatype.getComponents() != null
+//				&& !datatype.getComponents().isEmpty()) {
+//			for (Component component : datatype.getComponents()) {
+//				if (newDatatypesMap.containsKey(component.getDatatype())) {
+//					component.setDatatype(newDatatypesMap.get(
+//							component.getDatatype()).getId());
+//				}
+//
+//				if (component.getTable() != null) {
+//					if (newTablesMap.containsKey(component.getTable())) {
+//						component.setTable(newTablesMap.get(
+//								component.getTable()).getId());
+//					}
+//				}
+//				resolveReferences(p.getDatatypeLibrary().findOne(
+//						component.getDatatype()));
+//			}
+//		}
 
 	}
 
@@ -310,244 +310,244 @@ public class ProfileChangeService {
 	private void setTableValues(Iterator<Entry<String, JsonNode>> nodes)
 			throws ProfileSaveException, JsonParseException,
 			JsonMappingException, IOException {
-		while (nodes.hasNext()) {
-			Entry<String, JsonNode> node = nodes.next();
-			if (node.getKey().equals(EDIT_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					Iterator<Entry<String, JsonNode>> fields = newValue
-							.fields();
-					Table target = p.getTables().findOneTableById(id);
-					if (target != null) {
-						setEditValues(fields, new BeanWrapperImpl(target));
-					} else {
-						target = newTablesMap.get(id);
-						if (target != null) {
-							setEditValues(fields, new BeanWrapperImpl(target));
-						} else {
-							errors.add(new ProfilePropertySaveError(id,
-									"table", "Table with id=" + id
-											+ " not found"));
-						}
-					}
-				}
-			} else if (node.getKey().equals(ADD_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					Table t = toTable(newValue);
-					newTablesMap.put(id, t);
-					p.getTables().addTable(t);
-				}
-			} else if (node.getKey().equals(DELETE_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					p.getTables().delete(id);
-				}
-			}
-		}
+//		while (nodes.hasNext()) {
+//			Entry<String, JsonNode> node = nodes.next();
+//			if (node.getKey().equals(EDIT_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					Iterator<Entry<String, JsonNode>> fields = newValue
+//							.fields();
+//					Table target = p.getTableLibrary().findOneTableById(id);
+//					if (target != null) {
+//						setEditValues(fields, new BeanWrapperImpl(target));
+//					} else {
+//						target = newTablesMap.get(id);
+//						if (target != null) {
+//							setEditValues(fields, new BeanWrapperImpl(target));
+//						} else {
+//							errors.add(new ProfilePropertySaveError(id,
+//									"table", "Table with id=" + id
+//											+ " not found"));
+//						}
+//					}
+//				}
+//			} else if (node.getKey().equals(ADD_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					Table t = toTable(newValue);
+//					newTablesMap.put(id, t);
+//					p.getTableLibrary().addTable(t);
+//				}
+//			} else if (node.getKey().equals(DELETE_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					p.getTableLibrary().delete(id);
+//				}
+//			}
+//		}
 	}
 
 	private void setCodeValues(Iterator<Entry<String, JsonNode>> nodes)
 			throws ProfileSaveException, JsonParseException,
 			JsonMappingException, IOException {
-		while (nodes.hasNext()) {
-			Entry<String, JsonNode> node = nodes.next();
-			if (node.getKey().equals(EDIT_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					Iterator<Entry<String, JsonNode>> fields = newValue
-							.fields();
-					Code target = p.getTables().findOneCodeById(id);
-					if (target != null) {
-						setEditValues(fields, new BeanWrapperImpl(target));
-					} else {
-						target = newCodesMap.get(id);
-						if (target != null) {
-							setEditValues(fields, new BeanWrapperImpl(target));
-						} else {
-							errors.add(new ProfilePropertySaveError(id, "code",
-									"Code with id=" + id + " not found"));
-						}
-					}
-				}
-			} else if (node.getKey().equals(ADD_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String targetId = newValue.findValue("targetId").asText();
-					JsonNode objectNode = newValue.findValue("obj");
-					String id = objectNode.findValue("id").asText();
-					Code code = toCode(objectNode);
-					Table table = p.getTables().findOneTableById(targetId);
-					if (table != null) {
-						table.addCode(code);
-					} else {
-						table = newTablesMap.get(targetId);
-						if (table != null) {
-							table.addCode(code);
-						} else {
-							errors.add(new ProfilePropertySaveError(targetId,
-									"table", "Failed to add new code with id "
-											+ id + ", Table with id="
-											+ targetId + " not found"));
-						}
-					}
-
-				}
-			} else if (node.getKey().equals(DELETE_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					if (!p.getTables().deleteCode(id)) {
-						errors.add(new ProfilePropertySaveError(id,
-								"predicate", "Failed to delete code with id="
-										+ id));
-					}
-				}
-			}
-		}
+//		while (nodes.hasNext()) {
+//			Entry<String, JsonNode> node = nodes.next();
+//			if (node.getKey().equals(EDIT_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					Iterator<Entry<String, JsonNode>> fields = newValue
+//							.fields();
+//					Code target = p.getTableLibrary().findOneCodeById(id);
+//					if (target != null) {
+//						setEditValues(fields, new BeanWrapperImpl(target));
+//					} else {
+//						target = newCodesMap.get(id);
+//						if (target != null) {
+//							setEditValues(fields, new BeanWrapperImpl(target));
+//						} else {
+//							errors.add(new ProfilePropertySaveError(id, "code",
+//									"Code with id=" + id + " not found"));
+//						}
+//					}
+//				}
+//			} else if (node.getKey().equals(ADD_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String targetId = newValue.findValue("targetId").asText();
+//					JsonNode objectNode = newValue.findValue("obj");
+//					String id = objectNode.findValue("id").asText();
+//					Code code = toCode(objectNode);
+//					Table table = p.getTableLibrary().findOneTableById(targetId);
+//					if (table != null) {
+//						table.addCode(code);
+//					} else {
+//						table = newTablesMap.get(targetId);
+//						if (table != null) {
+//							table.addCode(code);
+//						} else {
+//							errors.add(new ProfilePropertySaveError(targetId,
+//									"table", "Failed to add new code with id "
+//											+ id + ", Table with id="
+//											+ targetId + " not found"));
+//						}
+//					}
+//
+//				}
+//			} else if (node.getKey().equals(DELETE_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					if (!p.getTableLibrary().deleteCode(id)) {
+//						errors.add(new ProfilePropertySaveError(id,
+//								"predicate", "Failed to delete code with id="
+//										+ id));
+//					}
+//				}
+//			}
+//		}
 	}
 
 	private void setPredicateValues(Iterator<Entry<String, JsonNode>> nodes)
 			throws ProfileSaveException, JsonParseException,
 			JsonMappingException, IOException {
-		while (nodes.hasNext()) {
-			Entry<String, JsonNode> node = nodes.next();
-			if (node.getKey().equals(EDIT_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					Iterator<Entry<String, JsonNode>> fields = newValue
-							.fields();
-					Predicate target = p.findOnePredicate(id);
-					if (target != null) {
-						setEditValues(fields, new BeanWrapperImpl(target));
-					} else {
-						target = newPredicatesMap.get(id);
-						if (target != null) {
-							setEditValues(fields, new BeanWrapperImpl(target));
-						} else {
-							errors.add(new ProfilePropertySaveError(id,
-									"predicate", "Predicate with id=" + id
-											+ " not found"));
-						}
-					}
-				}
-
-			} else if (node.getKey().equals(ADD_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String targetId = newValue.findValue("targetId").asText();
-					String targetType = newValue.findValue("targetType")
-							.asText();
-					JsonNode objectNode = newValue.findValue("obj");
-					Predicate predicate = toPredicate(objectNode);
-					if ("segment".equals(targetType)) {
-						Segment segment = p.getSegments().findOneSegmentById(targetId);
-						segment.addPredicate(predicate);
-					} else if ("datatype".equals(targetType)) {
-						Datatype d = p.getDatatypes().findOne(targetId);
-						d.addPredicate(predicate);
-					}
-				}
-			} else if (node.getKey().equals(DELETE_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					if (!p.deletePredicate(id)) {
-						errors.add(new ProfilePropertySaveError(id,
-								"predicate",
-								"Failed to delete predicate with id=" + id));
-					}
-				}
-			}
-		}
+//		while (nodes.hasNext()) {
+//			Entry<String, JsonNode> node = nodes.next();
+//			if (node.getKey().equals(EDIT_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					Iterator<Entry<String, JsonNode>> fields = newValue
+//							.fields();
+//					Predicate target = p.findOnePredicate(id);
+//					if (target != null) {
+//						setEditValues(fields, new BeanWrapperImpl(target));
+//					} else {
+//						target = newPredicatesMap.get(id);
+//						if (target != null) {
+//							setEditValues(fields, new BeanWrapperImpl(target));
+//						} else {
+//							errors.add(new ProfilePropertySaveError(id,
+//									"predicate", "Predicate with id=" + id
+//											+ " not found"));
+//						}
+//					}
+//				}
+//
+//			} else if (node.getKey().equals(ADD_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String targetId = newValue.findValue("targetId").asText();
+//					String targetType = newValue.findValue("targetType")
+//							.asText();
+//					JsonNode objectNode = newValue.findValue("obj");
+//					Predicate predicate = toPredicate(objectNode);
+//					if ("segment".equals(targetType)) {
+//						Segment segment = p.getSegmentLibrary().findOneSegmentById(targetId);
+//						segment.addPredicate(predicate);
+//					} else if ("datatype".equals(targetType)) {
+//						Datatype d = p.getDatatypeLibrary().findOne(targetId);
+//						d.addPredicate(predicate);
+//					}
+//				}
+//			} else if (node.getKey().equals(DELETE_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					if (!p.deletePredicate(id)) {
+//						errors.add(new ProfilePropertySaveError(id,
+//								"predicate",
+//								"Failed to delete predicate with id=" + id));
+//					}
+//				}
+//			}
+//		}
 	}
 
 	private void setConformanceStatementValues(
 			Iterator<Entry<String, JsonNode>> nodes)
 			throws ProfileSaveException, JsonParseException,
 			JsonMappingException, IOException {
-		while (nodes.hasNext()) {
-			Entry<String, JsonNode> node = nodes.next();
-			if (node.getKey().equals(EDIT_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					Iterator<Entry<String, JsonNode>> fields = newValue
-							.fields();
-					ConformanceStatement target = p
-							.findOneConformanceStatement(id);
-					if (target != null) {
-						setEditValues(fields, new BeanWrapperImpl(target));
-					} else {
-						target = newConfStatementsMap.get(id);
-						if (target != null) {
-							setEditValues(fields, new BeanWrapperImpl(target));
-						} else {
-							errors.add(new ProfilePropertySaveError(id,
-									"conformanceStatement",
-									"ConformanceStatement with id=" + id
-											+ " not found"));
-						}
-					}
-				}
-			} else if (node.getKey().equals(ADD_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String targetId = newValue.findValue("targetId").asText();
-					String targetType = newValue.findValue("targetType")
-							.asText();
-					JsonNode objectNode = newValue.findValue("obj");
-					ConformanceStatement conf = toConformanceStatement(objectNode);
-					if ("segment".equals(targetType)) {
-						Segment segment = p.getSegments().findOneSegmentById(targetId);
-						segment.addConformanceStatement(conf);
-					} else if ("datatype".equals(targetType)) {
-						Datatype d = p.getDatatypes().findOne(targetId);
-						d.addConformanceStatement(conf);
-					}
-				}
-			} else if (node.getKey().equals(DELETE_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					if (!p.deleteConformanceStatement(id)) {
-						errors.add(new ProfilePropertySaveError(id,
-								"conformanceStatement",
-								"Failed to delete conformanceStatement with id="
-										+ id));
-					}
-				}
-			}
-		}
+//		while (nodes.hasNext()) {
+//			Entry<String, JsonNode> node = nodes.next();
+//			if (node.getKey().equals(EDIT_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					Iterator<Entry<String, JsonNode>> fields = newValue
+//							.fields();
+//					ConformanceStatement target = p
+//							.findOneConformanceStatement(id);
+//					if (target != null) {
+//						setEditValues(fields, new BeanWrapperImpl(target));
+//					} else {
+//						target = newConfStatementsMap.get(id);
+//						if (target != null) {
+//							setEditValues(fields, new BeanWrapperImpl(target));
+//						} else {
+//							errors.add(new ProfilePropertySaveError(id,
+//									"conformanceStatement",
+//									"ConformanceStatement with id=" + id
+//											+ " not found"));
+//						}
+//					}
+//				}
+//			} else if (node.getKey().equals(ADD_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String targetId = newValue.findValue("targetId").asText();
+//					String targetType = newValue.findValue("targetType")
+//							.asText();
+//					JsonNode objectNode = newValue.findValue("obj");
+//					ConformanceStatement conf = toConformanceStatement(objectNode);
+//					if ("segment".equals(targetType)) {
+//						Segment segment = p.getSegmentLibrary().findOneSegmentById(targetId);
+//						segment.addConformanceStatement(conf);
+//					} else if ("datatype".equals(targetType)) {
+//						Datatype d = p.getDatatypeLibrary().findOne(targetId);
+//						d.addConformanceStatement(conf);
+//					}
+//				}
+//			} else if (node.getKey().equals(DELETE_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					if (!p.deleteConformanceStatement(id)) {
+//						errors.add(new ProfilePropertySaveError(id,
+//								"conformanceStatement",
+//								"Failed to delete conformanceStatement with id="
+//										+ id));
+//					}
+//				}
+//			}
+//		}
 	}
 
 	private void setMessageValues(Iterator<Entry<String, JsonNode>> nodes)
@@ -636,182 +636,182 @@ public class ProfileChangeService {
 	private void setSegmentValues(Iterator<Entry<String, JsonNode>> nodes)
 			throws ProfileSaveException, JsonParseException,
 			JsonMappingException, IOException {
-		while (nodes.hasNext()) {
-			Entry<String, JsonNode> node = nodes.next();
-			if (node.getKey().equals(EDIT_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					Iterator<Entry<String, JsonNode>> fields = newValue
-							.fields();
-					Segment target = p.getSegments().findOneSegmentById(id);
-					if (target != null) {
-						setEditValues(fields, new BeanWrapperImpl(target));
-					} else {
-						errors.add(new ProfilePropertySaveError(id, "segment",
-								"Segment with id=" + id + " not found"));
-					}
-				}
-			}
-		}
+//		while (nodes.hasNext()) {
+//			Entry<String, JsonNode> node = nodes.next();
+//			if (node.getKey().equals(EDIT_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					Iterator<Entry<String, JsonNode>> fields = newValue
+//							.fields();
+//					Segment target = p.getSegmentLibrary().findOneSegmentById(id);
+//					if (target != null) {
+//						setEditValues(fields, new BeanWrapperImpl(target));
+//					} else {
+//						errors.add(new ProfilePropertySaveError(id, "segment",
+//								"Segment with id=" + id + " not found"));
+//					}
+//				}
+//			}
+//		}
 	}
 
 	private void setFieldValues(Iterator<Entry<String, JsonNode>> nodes)
 			throws ProfileSaveException, JsonParseException,
 			JsonMappingException, IOException {
-		while (nodes.hasNext()) {
-			Entry<String, JsonNode> node = nodes.next();
-			if (node.getKey().equals(EDIT_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					Iterator<Entry<String, JsonNode>> fields = newValue
-							.fields();
-					Field target = p.getSegments().findOneField(id);
-					if (target != null) {
-						setEditValues(fields, new BeanWrapperImpl(target));
-					} else {
-						errors.add(new ProfilePropertySaveError(id, "field",
-								"Field with id=" + id + " not found"));
-					}
-				}
-			}
-		}
+//		while (nodes.hasNext()) {
+//			Entry<String, JsonNode> node = nodes.next();
+//			if (node.getKey().equals(EDIT_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					Iterator<Entry<String, JsonNode>> fields = newValue
+//							.fields();
+//					Field target = p.getSegmentLibrary().findOneField(id);
+//					if (target != null) {
+//						setEditValues(fields, new BeanWrapperImpl(target));
+//					} else {
+//						errors.add(new ProfilePropertySaveError(id, "field",
+//								"Field with id=" + id + " not found"));
+//					}
+//				}
+//			}
+//		}
 	}
 
 	private void setEditValues(Iterator<Entry<String, JsonNode>> fields,
 			BeanWrapper wrapper) {
-
-		while (fields.hasNext()) {
-			Entry<String, JsonNode> field = fields.next();
-			try {
-				if (!field.getKey().equals("id")) {
-					String key = field.getKey();
-					JsonNode value = field.getValue();
-					if (key.equals("usage")
-							&& StringUtils.isNotBlank(value.asText())) {
-						wrapper.setPropertyValue(key,
-								Usage.valueOf(value.asText()));
-					} else if ((key.equals("min") || key.equals("minLength"))
-							&& StringUtils.isNotBlank(value.asText())) {
-						wrapper.setPropertyValue(key, value.asInt());
-					} else if (key.equals("datatype")) {
-						String datatypeId = value.findValue("id").asText();
-						Datatype datatype = p.getDatatypes()
-								.findOne(datatypeId);
-						if (datatype == null) {
-							datatype = new Datatype();
-							datatype.setId(datatypeId);
-						}
-						wrapper.setPropertyValue(key, datatype);
-					} else if (key.equals("table")) {
-						if (("".equals(value.asText()) || value.asText() == null)) {
-							wrapper.setPropertyValue(key, null);
-						} else {
-							String tableId = value.asText();
-							Table table = p.getTables().findOneTableById(tableId);
-							if (table == null) {
-								table = new Table();
-								table.setId(tableId);
-							}
-							wrapper.setPropertyValue(key, table);
-						}
-					} else {
-						wrapper.setPropertyValue(key, value.asText());
-					}
-				}
-			} catch (NotWritablePropertyException e) {
-				errors.add(new ProfilePropertySaveError(wrapper
-						.getPropertyValue("id").toString(), wrapper
-						.getPropertyValue("type").toString(), e
-						.getPropertyName(), "", EDIT_NODE));
-			}
-		}
+//
+//		while (fields.hasNext()) {
+//			Entry<String, JsonNode> field = fields.next();
+//			try {
+//				if (!field.getKey().equals("id")) {
+//					String key = field.getKey();
+//					JsonNode value = field.getValue();
+//					if (key.equals("usage")
+//							&& StringUtils.isNotBlank(value.asText())) {
+//						wrapper.setPropertyValue(key,
+//								Usage.valueOf(value.asText()));
+//					} else if ((key.equals("min") || key.equals("minLength"))
+//							&& StringUtils.isNotBlank(value.asText())) {
+//						wrapper.setPropertyValue(key, value.asInt());
+//					} else if (key.equals("datatype")) {
+//						String datatypeId = value.findValue("id").asText();
+//						Datatype datatype = p.getDatatypeLibrary()
+//								.findOne(datatypeId);
+//						if (datatype == null) {
+//							datatype = new Datatype();
+//							datatype.setId(datatypeId);
+//						}
+//						wrapper.setPropertyValue(key, datatype);
+//					} else if (key.equals("table")) {
+//						if (("".equals(value.asText()) || value.asText() == null)) {
+//							wrapper.setPropertyValue(key, null);
+//						} else {
+//							String tableId = value.asText();
+//							Table table = p.getTableLibrary().findOneTableById(tableId);
+//							if (table == null) {
+//								table = new Table();
+//								table.setId(tableId);
+//							}
+//							wrapper.setPropertyValue(key, table);
+//						}
+//					} else {
+//						wrapper.setPropertyValue(key, value.asText());
+//					}
+//				}
+//			} catch (NotWritablePropertyException e) {
+//				errors.add(new ProfilePropertySaveError(wrapper
+//						.getPropertyValue("id").toString(), wrapper
+//						.getPropertyValue("type").toString(), e
+//						.getPropertyName(), "", EDIT_NODE));
+//			}
+//		}
 	}
 
 	private void setComponentValues(Iterator<Entry<String, JsonNode>> nodes)
 			throws ProfileSaveException, JsonParseException,
 			JsonMappingException, IOException {
-		while (nodes.hasNext()) {
-			Entry<String, JsonNode> node = nodes.next();
-			if (node.getKey().equals(EDIT_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					Iterator<Entry<String, JsonNode>> fields = newValue
-							.fields();
-					Component target = p.getSegments().findOneComponent(id,
-							p.getDatatypes());
-					if (target != null) {
-						setEditValues(fields, new BeanWrapperImpl(target));
-					} else {
-						target = newComponentsMap.get(id);
-						if (target != null) {
-							setEditValues(fields, new BeanWrapperImpl(target));
-						} else {
-							errors.add(new ProfilePropertySaveError(id,
-									"component", "Component with id=" + id
-											+ " not found"));
-						}
-					}
-				}
-			}
-		}
+//		while (nodes.hasNext()) {
+//			Entry<String, JsonNode> node = nodes.next();
+//			if (node.getKey().equals(EDIT_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					Iterator<Entry<String, JsonNode>> fields = newValue
+//							.fields();
+//					Component target = p.getSegmentLibrary().findOneComponent(id,
+//							p.getDatatypeLibrary());
+//					if (target != null) {
+//						setEditValues(fields, new BeanWrapperImpl(target));
+//					} else {
+//						target = newComponentsMap.get(id);
+//						if (target != null) {
+//							setEditValues(fields, new BeanWrapperImpl(target));
+//						} else {
+//							errors.add(new ProfilePropertySaveError(id,
+//									"component", "Component with id=" + id
+//											+ " not found"));
+//						}
+//					}
+//				}
+//			}
+//		}
 	}
 
 	private void setDatatypeValues(Iterator<Entry<String, JsonNode>> nodes)
 			throws ProfileSaveException, JsonParseException,
 			JsonMappingException, IOException {
-		while (nodes.hasNext()) {
-			Entry<String, JsonNode> node = nodes.next();
-			if (node.getKey().equals(EDIT_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					Iterator<Entry<String, JsonNode>> fields = newValue
-							.fields();
-					Datatype target = p.getDatatypes().findOne(id);
-					if (target != null) {
-						setEditValues(fields, new BeanWrapperImpl(target));
-					} else {
-						target = newDatatypesMap.get(id);
-						if (target != null) {
-							setEditValues(fields, new BeanWrapperImpl(target));
-						} else {
-							errors.add(new ProfilePropertySaveError(id,
-									"datatype", "Datatype with id=" + id
-											+ " not found"));
-						}
-					}
-				}
-			} else if (node.getKey().equals(ADD_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					Datatype dt = toDatatype(newValue);
-					newDatatypesMap.put(id, dt);
-					p.getDatatypes().addDatatype(dt);
-				}
-			} else if (node.getKey().equals(DELETE_NODE)) {
-				JsonNode individualChanges = node.getValue();
-				Iterator<JsonNode> contentIt = individualChanges.iterator();
-				while (contentIt.hasNext()) {
-					JsonNode newValue = contentIt.next();
-					String id = newValue.findValue("id").asText();
-					p.getDatatypes().delete(id);
-				}
-			}
-		}
+//		while (nodes.hasNext()) {
+//			Entry<String, JsonNode> node = nodes.next();
+//			if (node.getKey().equals(EDIT_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					Iterator<Entry<String, JsonNode>> fields = newValue
+//							.fields();
+//					Datatype target = p.getDatatypeLibrary().findOne(id);
+//					if (target != null) {
+//						setEditValues(fields, new BeanWrapperImpl(target));
+//					} else {
+//						target = newDatatypesMap.get(id);
+//						if (target != null) {
+//							setEditValues(fields, new BeanWrapperImpl(target));
+//						} else {
+//							errors.add(new ProfilePropertySaveError(id,
+//									"datatype", "Datatype with id=" + id
+//											+ " not found"));
+//						}
+//					}
+//				}
+//			} else if (node.getKey().equals(ADD_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					Datatype dt = toDatatype(newValue);
+//					newDatatypesMap.put(id, dt);
+//					p.getDatatypeLibrary().addDatatype(dt);
+//				}
+//			} else if (node.getKey().equals(DELETE_NODE)) {
+//				JsonNode individualChanges = node.getValue();
+//				Iterator<JsonNode> contentIt = individualChanges.iterator();
+//				while (contentIt.hasNext()) {
+//					JsonNode newValue = contentIt.next();
+//					String id = newValue.findValue("id").asText();
+//					p.getDatatypeLibrary().delete(id);
+//				}
+//			}
+//		}
 	}
 
 	public JsonNode merge(JsonNode mainNode, JsonNode updateNode) {

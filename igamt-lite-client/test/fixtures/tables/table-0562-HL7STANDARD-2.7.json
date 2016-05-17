@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 243,
+  "id" : "569eac0dd4c623dc65508275",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0562",
+  "name" : "Processing Consideration Codes",
+  "description" : "Processing Consideration Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508276",
+    "value" : "DFADJ",
+    "label" : "Deferred Adjudication Processing",
+    "codeSystem" : "HL70562",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508277",
+    "value" : "EFORM",
+    "label" : "Electronic form to follow",
+    "codeSystem" : "HL70562",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508278",
+    "value" : "FAX",
+    "label" : "Fax to follow",
+    "codeSystem" : "HL70562",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508279",
+    "value" : "PAPER",
+    "label" : "Paper documentation to follow",
+    "codeSystem" : "HL70562",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550827a",
+    "value" : "PYRDELAY",
+    "label" : "Delayed by a Previous Payer",
+    "codeSystem" : "HL70562",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550827b",
+    "value" : "RTADJ",
+    "label" : "Real Time Adjudication Processing",
+    "codeSystem" : "HL70562",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

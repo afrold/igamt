@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 19,
+  "id" : "565f3ab7d4c6e52cfd446074",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0108",
+  "name" : "Query results level",
+  "description" : "Query results level",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446075",
+    "value" : "O",
+    "label" : "Order plus order status",
+    "codeSystem" : "HL70108",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446076",
+    "value" : "R",
+    "label" : "Results without bulk text",
+    "codeSystem" : "HL70108",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446077",
+    "value" : "S",
+    "label" : "Status only",
+    "codeSystem" : "HL70108",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446078",
+    "value" : "T",
+    "label" : "Full results",
+    "codeSystem" : "HL70108",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

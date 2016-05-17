@@ -1,0 +1,414 @@
+{
+  "type" : "table",
+  "sectionPosition" : 116,
+  "id" : "565f3ab7d4c6e52cfd445fa0",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0350",
+  "name" : "Occurrence code",
+  "description" : "Occurrence code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fa1",
+    "value" : "01",
+    "label" : "Auto accident",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fa2",
+    "value" : "02",
+    "label" : "No fault insurance involved-including auto accident/other",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fa3",
+    "value" : "03",
+    "label" : "Accident/tort liability",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fa4",
+    "value" : "04",
+    "label" : "Accident/employment related",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fa5",
+    "value" : "05",
+    "label" : "Other accident",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fa6",
+    "value" : "06",
+    "label" : "Crime victim",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fa7",
+    "value" : "09",
+    "label" : "Start of infertility treatment cycle",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fa8",
+    "value" : "10",
+    "label" : "Last menstrual period",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fa9",
+    "value" : "11",
+    "label" : "Onset of symptoms/illness",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445faa",
+    "value" : "12",
+    "label" : "Date of onset for a chronically dependent individual",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fab",
+    "value" : "17",
+    "label" : "Date outpatient occupational therapy plan established or last reviewed",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fac",
+    "value" : "18",
+    "label" : "Date of retirement patient/beneficiary",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fad",
+    "value" : "19",
+    "label" : "Date of retirement spouse",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fae",
+    "value" : "20",
+    "label" : "Guarantee of payment began",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445faf",
+    "value" : "21",
+    "label" : "UR notice received",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fb0",
+    "value" : "22",
+    "label" : "Date active care ended",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fb1",
+    "value" : "24",
+    "label" : "Date insurance denied",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fb2",
+    "value" : "25",
+    "label" : "Date benefits terminated by primary payor",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fb3",
+    "value" : "26",
+    "label" : "Date SNF bed available",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fb4",
+    "value" : "27",
+    "label" : "Date home health plan established",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fb5",
+    "value" : "28",
+    "label" : "Spouse’s date of birth",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fb6",
+    "value" : "29",
+    "label" : "Date outpatient physical therapy plan established or last reviewed",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fb7",
+    "value" : "30",
+    "label" : "Date outpatient speech pathology plan established or last reviewed",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fb8",
+    "value" : "31",
+    "label" : "Date beneficiary notified of intent to bill (accommodations)",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fb9",
+    "value" : "32",
+    "label" : "Date beneficiary notified of intent to bill (procedures or treatments)",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fba",
+    "value" : "33",
+    "label" : "First day of the Medicare coordination period for ESRD beneficiaries covered by EGHP",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fbb",
+    "value" : "34",
+    "label" : "Date of election of extended care facilities",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fbc",
+    "value" : "35",
+    "label" : "Date treatment started for P.T.",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fbd",
+    "value" : "36",
+    "label" : "Date of inpatient hospital discharge for covered transplant patients",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fbe",
+    "value" : "37",
+    "label" : "Date of inpatient hospital discharge for non-covered transplant patient",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fbf",
+    "value" : "40",
+    "label" : "Scheduled date of admission",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fc0",
+    "value" : "41",
+    "label" : "Date of first test for pre-admission testing",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fc1",
+    "value" : "42",
+    "label" : "Date of discharge",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fc2",
+    "value" : "43",
+    "label" : "Scheduled date of canceled surgery",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fc3",
+    "value" : "44",
+    "label" : "Date treatment started for O.T.",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fc4",
+    "value" : "45",
+    "label" : "Date treatment started for S.T.",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fc5",
+    "value" : "46",
+    "label" : "Date treatment started for cardiac rehab.",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fc6",
+    "value" : "47 ... 49",
+    "label" : "Payer codes",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fc7",
+    "value" : "50",
+    "label" : "Date lien released",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fc8",
+    "value" : "51",
+    "label" : "Date treatment started for psychiatric care",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fc9",
+    "value" : "70 ... 99",
+    "label" : "Occurrence span codes and dates",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fca",
+    "value" : "A1",
+    "label" : "Birthdate - insured A",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fcb",
+    "value" : "A2",
+    "label" : "Effective date - insured A policy",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fcc",
+    "value" : "A3",
+    "label" : "Benefits exhausted payer A",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

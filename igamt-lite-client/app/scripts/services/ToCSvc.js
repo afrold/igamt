@@ -2,7 +2,7 @@ angular
 		.module('igl')
 		.factory(
 				'ToCSvc',
-				function() {
+				function(FilteringSvc, MastermapSvc,$rootScope) {
 
 					var svc = this;
 
@@ -47,8 +47,8 @@ angular
 								+ igdocument.id);
 						toc = [];
 
-						// console.log("childSections=" +
-						// igdocument.childSections.length);
+//						console.log("childSections=" +
+//						igdocument.childSections.length);
 						var documentMetadata = getMetadata(igdocument,
 								"documentMetadata");
 						toc.push(documentMetadata);
@@ -59,6 +59,7 @@ angular
 						});
 						var conformanceProfile = getMessageInfrastructure(igdocument);
 						toc.push(conformanceProfile);
+             console.log("toc=" + toc);
 						return toc;
 					};
 
@@ -100,16 +101,26 @@ angular
 								igdocument.profile.sectionTitle,
 								igdocument.profile.sectionPosition,
 								igdocument.profile.type, 0, igdocument.profile);
-						var children = [];
+
+                        var datatypes = angular.copy(igdocument.profile.datatypeLibrary);
+                        datatypes.children = $rootScope.datatypes;
+                        var segments = angular.copy(igdocument.profile.segmentLibrary);
+                        segments.children = $rootScope.segments;
+                        var tables = angular.copy(igdocument.profile.tableLibrary);
+                        tables.children = $rootScope.tables;
+
+                        console.log("datatypes TOC = " + datatypes.children.length);
+                        console.log("datatypeLibrary TOC = " + igdocument.profile.datatypeLibrary.children.length);
+                        var children = [];
 						children.push(getMetadata(igdocument.profile,
 								"profileMetadata"));
 						children.push(getTopEntry(igdocument.profile.messages,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.segments,
+						children.push(getTopEntry(segments,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.datatypes,
+						children.push(getTopEntry(datatypes,
 								igdocument.profile));
-						children.push(getTopEntry(igdocument.profile.tables,
+						children.push(getTopEntry(tables,
 								igdocument.profile));
 						rval.children = children;
 						return rval;
@@ -164,13 +175,19 @@ angular
 														child,
 														child.bindingIdentifier,
 														parent);
-											} else {
+											} else if (parentType === "datatype") {
+												var label = $rootScope.getDatatypeLabel(child);
+												console.log("ToC datatype label=" + label);
+												entry = createEntry(child,
+														label, parent);
+											}  else {
 												entry = createEntry(child,
 														child.label, parent);
 											}
 											rval.push(entry);
 										});
-						return _.sortBy(rval, "reference.position");
+						return rval;
+//						return _.sortBy(rval, "label");
 					}
 					;
 
@@ -180,8 +197,7 @@ angular
 								child.sectionPosition, child.type, parent,
 								child);
 						return rval;
-					}
-					;
+					};
 
-					return svc;
+          return svc;
 				})

@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 291,
+  "id" : "565f3ab6d4c6e52cfd4409b7",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0279",
+  "name" : "Allow Substitution Codes",
+  "description" : "Allow Substitution Codes",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.279",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409b8",
+    "value" : "Confirm",
+    "label" : "Contact the Placer Contact Person prior to making any substitutions of this resource",
+    "codeSystem" : "HL70279",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409b9",
+    "value" : "No",
+    "label" : "Substitution of this resource is not allowed",
+    "codeSystem" : "HL70279",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409ba",
+    "value" : "Notify",
+    "label" : "Notify the Placer Contact Person, through normal institutional procedures, that a substitution of this resource has been made",
+    "codeSystem" : "HL70279",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409bb",
+    "value" : "Yes",
+    "label" : "Substitution of this resource is allowed",
+    "codeSystem" : "HL70279",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

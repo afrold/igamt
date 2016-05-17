@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 80,
+  "id" : "569eac0dd4c623dc655083d2",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0469",
+  "name" : "Packaging Status Code",
+  "description" : "Packaging Status Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083d3",
+    "value" : "0",
+    "label" : "Not packaged",
+    "codeSystem" : "HL70469",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083d4",
+    "value" : "1",
+    "label" : "Packaged service (status indicator N, or no HCPCS code and certain revenue codes)",
+    "codeSystem" : "HL70469",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083d5",
+    "value" : "2",
+    "label" : "Packaged as part of partial hospitalization per diem or daily mental health service per diem",
+    "codeSystem" : "HL70469",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

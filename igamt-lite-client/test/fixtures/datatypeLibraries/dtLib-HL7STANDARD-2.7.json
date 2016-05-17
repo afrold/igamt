@@ -1,0 +1,364 @@
+{
+  "type" : "datatypes",
+  "sectionPosition" : 2,
+  "sectionTitle" : "Datatypes",
+  "sectionDescription" : null,
+  "sectionContents" : null,
+  "id" : "57237657da0805ce1eab6b54",
+  "accountId" : null,
+  "date" : null,
+  "metaData" : {
+    "name" : null,
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.7",
+    "date" : "April 29, 2016",
+    "ext" : null
+  },
+  "scope" : "HL7STANDARD",
+  "children" : [ {
+    "id" : "569eac0dd4c623dc6550866b",
+    "label" : "EIP",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550866c",
+    "label" : "RCD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550866a",
+    "label" : "-",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086a1",
+    "label" : "CP",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550866f",
+    "label" : "XON",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086a2",
+    "label" : "OSP",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550866d",
+    "label" : "VH",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550866e",
+    "label" : "NA",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086a0",
+    "label" : "ICD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508679",
+    "label" : "FC",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508684",
+    "label" : "FN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508685",
+    "label" : "WVI",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508682",
+    "label" : "DLN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508683",
+    "label" : "DDI",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508688",
+    "label" : "PPN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508689",
+    "label" : "CWE",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508686",
+    "label" : "DLT",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508687",
+    "label" : "FT",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086a5",
+    "label" : "VID",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086a6",
+    "label" : "CCP",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086a3",
+    "label" : "CQ",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086a4",
+    "label" : "MOP",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508680",
+    "label" : "UVC",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086a9",
+    "label" : "PIP",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508681",
+    "label" : "NR",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086a7",
+    "label" : "OCD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086a8",
+    "label" : "CX",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550867c",
+    "label" : "DTN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550867d",
+    "label" : "NM",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550867a",
+    "label" : "ERL",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550867b",
+    "label" : "RP",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550867e",
+    "label" : "CNN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550867f",
+    "label" : "XCN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508695",
+    "label" : "LA1",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508696",
+    "label" : "MOC",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508693",
+    "label" : "SN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508694",
+    "label" : "LA2",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086aa",
+    "label" : "TM",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508699",
+    "label" : "CD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086ab",
+    "label" : "XAD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508697",
+    "label" : "MSG",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508698",
+    "label" : "QSC",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508691",
+    "label" : "RPT",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508692",
+    "label" : "XPN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508690",
+    "label" : "NDL",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550868d",
+    "label" : "SRT",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550868e",
+    "label" : "WVS",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550868b",
+    "label" : "SNM",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550868c",
+    "label" : "XTN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550868f",
+    "label" : "SI",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508659",
+    "label" : "TX",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086ac",
+    "label" : "HD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc655086ad",
+    "label" : "PL",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508658",
+    "label" : "PT",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550868a",
+    "label" : "PLN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508662",
+    "label" : "ID",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508663",
+    "label" : "ED",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508660",
+    "label" : "MA",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508661",
+    "label" : "AUI",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508666",
+    "label" : "AD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508667",
+    "label" : "EI",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508664",
+    "label" : "RFR",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508665",
+    "label" : "MO",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550865a",
+    "label" : "SPD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550869e",
+    "label" : "DIN",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550869f",
+    "label" : "RMC",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550865b",
+    "label" : "GTS",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550869c",
+    "label" : "CSU",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550869d",
+    "label" : "CCD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550865e",
+    "label" : "DR",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550865f",
+    "label" : "DT",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550865c",
+    "label" : "SCV",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550865d",
+    "label" : "PRL",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508668",
+    "label" : "IS",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508669",
+    "label" : "JCC",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550869a",
+    "label" : "ST",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc6550869b",
+    "label" : "CF",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508673",
+    "label" : "QIP",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508674",
+    "label" : "CNE",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508671",
+    "label" : "SAD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508672",
+    "label" : "varies",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508677",
+    "label" : "VR",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508678",
+    "label" : "DLD",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508675",
+    "label" : "DTM",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508676",
+    "label" : "PTA",
+    "ext" : null
+  }, {
+    "id" : "569eac0dd4c623dc65508670",
+    "label" : "RI",
+    "ext" : null
+  } ]
+}

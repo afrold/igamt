@@ -1,0 +1,1809 @@
+{
+  "type" : "table",
+  "sectionPosition" : 102,
+  "id" : "565f3ab7d4c6e52cfd447df0",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0171",
+  "name" : "Country Code",
+  "description" : "Country Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447df1",
+    "value" : "_1",
+    "label" : "Mongolia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447df2",
+    "value" : "_10",
+    "label" : "Comoros",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447df3",
+    "value" : "_11",
+    "label" : "Equatorial Guinea",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447df4",
+    "value" : "_12",
+    "label" : "Marshall Islands",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447df5",
+    "value" : "_2",
+    "label" : "Armenia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447df6",
+    "value" : "_3",
+    "label" : "Azerbaijan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447df7",
+    "value" : "_4",
+    "label" : "Vanuatu",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447df8",
+    "value" : "_5",
+    "label" : "Guinea-Bissau",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447df9",
+    "value" : "_6",
+    "label" : "Tuvalu",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dfa",
+    "value" : "_7",
+    "label" : "Kiribati",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dfb",
+    "value" : "_8",
+    "label" : "Tonga",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dfc",
+    "value" : "_9",
+    "label" : "Djibouti",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dfd",
+    "value" : "A",
+    "label" : "Austria",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dfe",
+    "value" : "ADN",
+    "label" : "Yemen",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dff",
+    "value" : "AFG",
+    "label" : "Afghanistan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e00",
+    "value" : "AGO",
+    "label" : "Angola",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e01",
+    "value" : "AL",
+    "label" : "Albania",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e02",
+    "value" : "AND",
+    "label" : "Andorra",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e03",
+    "value" : "ANT",
+    "label" : "Antigua and Barbuda",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e04",
+    "value" : "AUS",
+    "label" : "Australia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e05",
+    "value" : "B",
+    "label" : "Belgium",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e06",
+    "value" : "BD",
+    "label" : "Bangladesh",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e07",
+    "value" : "BDS",
+    "label" : "Barbados",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e08",
+    "value" : "BG",
+    "label" : "Bulgaria",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e09",
+    "value" : "BH",
+    "label" : "Belize",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e0a",
+    "value" : "BHT",
+    "label" : "Bhutan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e0b",
+    "value" : "BIO",
+    "label" : "Maldives",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e0c",
+    "value" : "BOL",
+    "label" : "Bolivia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e0d",
+    "value" : "BOS",
+    "label" : "Bosnia and Herzegovina",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e0e",
+    "value" : "BR",
+    "label" : "Brazil",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e0f",
+    "value" : "BRN",
+    "label" : "Bahrain",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e10",
+    "value" : "BRU",
+    "label" : "Brunei",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e11",
+    "value" : "BS",
+    "label" : "Bahamas",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e12",
+    "value" : "BUR",
+    "label" : "Myanmar",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e13",
+    "value" : "BY",
+    "label" : "Belarus",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e14",
+    "value" : "C",
+    "label" : "Cuba",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e15",
+    "value" : "CAM",
+    "label" : "Cameroon",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e16",
+    "value" : "CDN",
+    "label" : "Canada",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e17",
+    "value" : "CH",
+    "label" : "Switzerland",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e18",
+    "value" : "CHD",
+    "label" : "Chad",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e19",
+    "value" : "CI",
+    "label" : "Ivory Coast",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e1a",
+    "value" : "CL",
+    "label" : "Sri Lanka",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e1b",
+    "value" : "CO",
+    "label" : "Colombia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e1c",
+    "value" : "CR",
+    "label" : "Costa Rica",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e1d",
+    "value" : "CV",
+    "label" : "Cape Verde",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e1e",
+    "value" : "CY",
+    "label" : "Cyprus",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e1f",
+    "value" : "CZ",
+    "label" : "Czech Republic",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e20",
+    "value" : "D",
+    "label" : "Germany",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e21",
+    "value" : "DCM",
+    "label" : "Dominican Republic",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e22",
+    "value" : "DK",
+    "label" : "Denmark",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e23",
+    "value" : "DY",
+    "label" : "Benin",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e24",
+    "value" : "DZ",
+    "label" : "Algeria",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e25",
+    "value" : "E",
+    "label" : "Spain",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e26",
+    "value" : "EAK",
+    "label" : "Kenya",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e27",
+    "value" : "EAT",
+    "label" : "Tanzania",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e28",
+    "value" : "EAU",
+    "label" : "Uganda",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e29",
+    "value" : "EAZ",
+    "label" : "Zanzibar",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e2a",
+    "value" : "EC",
+    "label" : "Ecuador",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e2b",
+    "value" : "ES",
+    "label" : "El Salvador",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e2c",
+    "value" : "ET",
+    "label" : "Egypt",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e2d",
+    "value" : "ETH",
+    "label" : "Ethiopia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e2e",
+    "value" : "EW",
+    "label" : "Estonia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e2f",
+    "value" : "F",
+    "label" : "France",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e30",
+    "value" : "FAL",
+    "label" : "Falkland Islands",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e31",
+    "value" : "FJL",
+    "label" : "Fiji",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e32",
+    "value" : "FL",
+    "label" : "Liechtenstein",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e33",
+    "value" : "FR",
+    "label" : "Faeroe Islands",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e34",
+    "value" : "FRJ",
+    "label" : "Yugoslavia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e35",
+    "value" : "FSM",
+    "label" : "Micronesia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e36",
+    "value" : "GAB",
+    "label" : "Gabon",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e37",
+    "value" : "GB",
+    "label" : "United Kingdom",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e38",
+    "value" : "GBA",
+    "label" : "Channel Islands - Alderney",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e39",
+    "value" : "GBG",
+    "label" : "Channel Islands - Guernsey",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e3a",
+    "value" : "GBJ",
+    "label" : "Channel Islands - Jersey",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e3b",
+    "value" : "GBM",
+    "label" : "Isle of Man",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e3c",
+    "value" : "GBZ",
+    "label" : "Gibraltar",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e3d",
+    "value" : "GCA",
+    "label" : "Guatemala",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e3e",
+    "value" : "GEO",
+    "label" : "Georgia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e3f",
+    "value" : "GH",
+    "label" : "Ghana",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e40",
+    "value" : "GR",
+    "label" : "Greece",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e41",
+    "value" : "GUY",
+    "label" : "Guyana",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e42",
+    "value" : "H",
+    "label" : "Hungary",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e43",
+    "value" : "HCA",
+    "label" : "Honduras",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e44",
+    "value" : "HK",
+    "label" : "Hongkong",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e45",
+    "value" : "HR",
+    "label" : "Croatia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e46",
+    "value" : "HV",
+    "label" : "Burkina Faso",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e47",
+    "value" : "I",
+    "label" : "Italy",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e48",
+    "value" : "IL",
+    "label" : "Israel",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e49",
+    "value" : "IND",
+    "label" : "India",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e4a",
+    "value" : "IR",
+    "label" : "Iran",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e4b",
+    "value" : "IRL",
+    "label" : "Ireland",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e4c",
+    "value" : "IRQ",
+    "label" : "Iraq",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e4d",
+    "value" : "IS",
+    "label" : "Iceland",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e4e",
+    "value" : "J",
+    "label" : "Japan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e4f",
+    "value" : "JA",
+    "label" : "Jamaica",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e50",
+    "value" : "JOR",
+    "label" : "Jordan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e51",
+    "value" : "K",
+    "label" : "Cambodia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e52",
+    "value" : "KAS",
+    "label" : "Kazakhstan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e53",
+    "value" : "KIS",
+    "label" : "Kyrgyzstan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e54",
+    "value" : "KWT",
+    "label" : "Kuwait",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e55",
+    "value" : "L",
+    "label" : "Luxembourg",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e56",
+    "value" : "LAO",
+    "label" : "Laos",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e57",
+    "value" : "LAR",
+    "label" : "Libya",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e58",
+    "value" : "LB",
+    "label" : "Liberia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e59",
+    "value" : "LS",
+    "label" : "Lesotho",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e5a",
+    "value" : "LT",
+    "label" : "Lithuania",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e5b",
+    "value" : "LV",
+    "label" : "Latvia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e5c",
+    "value" : "M",
+    "label" : "Malta",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e5d",
+    "value" : "MA",
+    "label" : "Morocco",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e5e",
+    "value" : "MAK",
+    "label" : "Macedonia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e5f",
+    "value" : "MAL",
+    "label" : "Malaysia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e60",
+    "value" : "MAO",
+    "label" : "Oman",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e61",
+    "value" : "MC",
+    "label" : "Monaco",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e62",
+    "value" : "MEX",
+    "label" : "Mexico",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e63",
+    "value" : "MOL",
+    "label" : "Moldova",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e64",
+    "value" : "MOZ",
+    "label" : "Mozambique",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e65",
+    "value" : "MS",
+    "label" : "Mauritius",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e66",
+    "value" : "MW",
+    "label" : "Malawi",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e67",
+    "value" : "N",
+    "label" : "Norway",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e68",
+    "value" : "NA",
+    "label" : "Netherlands Antilles",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e69",
+    "value" : "NAU",
+    "label" : "Nauru",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e6a",
+    "value" : "NEP",
+    "label" : "Nepal",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e6b",
+    "value" : "NIC",
+    "label" : "Nicaragua",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e6c",
+    "value" : "NL",
+    "label" : "Netherlands",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e6d",
+    "value" : "NZ",
+    "label" : "New Zealand",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e6e",
+    "value" : "P",
+    "label" : "Portugal",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e6f",
+    "value" : "PA",
+    "label" : "Panama",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e70",
+    "value" : "PAK",
+    "label" : "Pakistan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e71",
+    "value" : "PE",
+    "label" : "Peru",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e72",
+    "value" : "PL",
+    "label" : "Poland",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e73",
+    "value" : "PNG",
+    "label" : "Papua New Guinea",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e74",
+    "value" : "PY",
+    "label" : "Paraguay",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e75",
+    "value" : "QAT",
+    "label" : "Qatar",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e76",
+    "value" : "RA",
+    "label" : "Argentina",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e77",
+    "value" : "RB",
+    "label" : "Botswana",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e78",
+    "value" : "RC",
+    "label" : "Taiwan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e79",
+    "value" : "RCA",
+    "label" : "Central African Republic",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e7a",
+    "value" : "RCB",
+    "label" : "Congo",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e7b",
+    "value" : "RCH",
+    "label" : "Chile",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e7c",
+    "value" : "RG",
+    "label" : "Guinea",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e7d",
+    "value" : "RH",
+    "label" : "Haiti",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e7e",
+    "value" : "RI",
+    "label" : "Indonesia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e7f",
+    "value" : "RIM",
+    "label" : "Mauritania",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e80",
+    "value" : "RL",
+    "label" : "Lebanon",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e81",
+    "value" : "RM",
+    "label" : "Madagascar",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e82",
+    "value" : "RMM",
+    "label" : "Mali",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e83",
+    "value" : "RN",
+    "label" : "Niger",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e84",
+    "value" : "RO",
+    "label" : "Romania",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e85",
+    "value" : "ROK",
+    "label" : "Korea",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e86",
+    "value" : "ROU",
+    "label" : "Uruguay",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e87",
+    "value" : "RP",
+    "label" : "Philippines",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e88",
+    "value" : "RSM",
+    "label" : "San Marino",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e89",
+    "value" : "RU",
+    "label" : "Burundi",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e8a",
+    "value" : "RUS",
+    "label" : "Russia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e8b",
+    "value" : "RWA",
+    "label" : "Rwanda",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e8c",
+    "value" : "S",
+    "label" : "Sweden",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e8d",
+    "value" : "SAU",
+    "label" : "Saudi Arabia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e8e",
+    "value" : "SCN",
+    "label" : "St. Kitts and Nevis",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e8f",
+    "value" : "SD",
+    "label" : "Swaziland",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e90",
+    "value" : "SF",
+    "label" : "Finland",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e91",
+    "value" : "SGP",
+    "label" : "Singapore",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e92",
+    "value" : "SK",
+    "label" : "Slovakia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e93",
+    "value" : "SLO",
+    "label" : "Slovenia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e94",
+    "value" : "SME",
+    "label" : "Suriname",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e95",
+    "value" : "SN",
+    "label" : "Senegal",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e96",
+    "value" : "SOL",
+    "label" : "Solomon Islands",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e97",
+    "value" : "SP",
+    "label" : "Somalia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e98",
+    "value" : "STP",
+    "label" : "Sao Tome and Principe",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e99",
+    "value" : "SUD",
+    "label" : "Sudan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e9a",
+    "value" : "SWA",
+    "label" : "Namibia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e9b",
+    "value" : "SY",
+    "label" : "Seychelles",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e9c",
+    "value" : "SYR",
+    "label" : "Syria",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e9d",
+    "value" : "T",
+    "label" : "Thailand",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e9e",
+    "value" : "TAD",
+    "label" : "Tajikistan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447e9f",
+    "value" : "TG",
+    "label" : "Togo",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ea0",
+    "value" : "TJ",
+    "label" : "China",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ea1",
+    "value" : "TMN",
+    "label" : "Turkmenistan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ea2",
+    "value" : "TN",
+    "label" : "Tunisia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ea3",
+    "value" : "TR",
+    "label" : "Turkey",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ea4",
+    "value" : "TT",
+    "label" : "Trinidad and Tobago",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ea5",
+    "value" : "UA",
+    "label" : "Ukraine",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ea6",
+    "value" : "UAE",
+    "label" : "United Arab Emirates",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ea7",
+    "value" : "USA",
+    "label" : "United States of America",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ea8",
+    "value" : "USB",
+    "label" : "Uzbekistan",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ea9",
+    "value" : "V",
+    "label" : "Vatican City State",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eaa",
+    "value" : "VN",
+    "label" : "Vietnam",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eab",
+    "value" : "WAG",
+    "label" : "Gambia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eac",
+    "value" : "WAL",
+    "label" : "Sierra Leone",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ead",
+    "value" : "WAN",
+    "label" : "Nigeria",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eae",
+    "value" : "WD",
+    "label" : "Dominica",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eaf",
+    "value" : "WG",
+    "label" : "Grenada",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eb0",
+    "value" : "WL",
+    "label" : "St. Lucia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eb1",
+    "value" : "WS",
+    "label" : "Western Samoa",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eb2",
+    "value" : "WV",
+    "label" : "St. Vincent and the Grenadines",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eb3",
+    "value" : "YV",
+    "label" : "Venezuela",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eb4",
+    "value" : "Z",
+    "label" : "Zambia",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eb5",
+    "value" : "ZA",
+    "label" : "South Africa",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eb6",
+    "value" : "ZRE",
+    "label" : "Zaire",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eb7",
+    "value" : "ZW",
+    "label" : "Zimbabwe",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

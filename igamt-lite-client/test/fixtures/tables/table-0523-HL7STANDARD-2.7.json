@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 84,
+  "id" : "569eac0dd4c623dc65507d1b",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0523",
+  "name" : "Computation Type",
+  "description" : "Computation Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d1c",
+    "value" : "%",
+    "label" : "Indicates a percent change",
+    "codeSystem" : "HL70523",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d1d",
+    "value" : "a",
+    "label" : "Absolute Change",
+    "codeSystem" : "HL70523",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

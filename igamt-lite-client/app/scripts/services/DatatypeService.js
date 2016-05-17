@@ -3,38 +3,50 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', function ($rootScope, ViewSettings, ElementUtils) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', 'userInfoService', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc,userInfoService) {
         var DatatypeService = {
-            getNodes: function (parent) {
+            getNodes: function (parent, root) {
+                var children = [];
                 if (parent && parent != null) {
                     if (parent.datatype) {
-                        var dt = $rootScope.datatypesMap[parent.datatype];
-                        return dt.components;
+                        var dt = $rootScope.datatypesMap[parent.datatype.id];
+                        children = dt.components;
                     } else {
-                        return parent.components;
+                        children = parent.components;
                     }
                 } else {
-                    if ($rootScope.datatype != null) {
-                        return $rootScope.datatype.components;
+                    if (root != null) {
+                        children = root.components;
                     } else {
-                        return [];
+                        children = [];
                     }
                 }
+                return children;
             },
             getParent: function (child) {
-                return $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
+                var template =  $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
+                return template;
             },
-            getTemplate: function (node) {
-                if (ViewSettings.tableReadonly) {
-                    return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node) ? 'DatatypeSubComponentReadTree.html' : '';
+            getTemplate: function (node, root) {
+                if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
+                    return DatatypeService.getReadTemplate(node,root);
                 } else {
-                    return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
+                    return DatatypeService.getEditTemplate(node,root);
                 }
             },
-            isDatatypeSubDT: function (component) {
-                if ($rootScope.datatype != null) {
-                    for (var i = 0, len = $rootScope.datatype.components.length; i < len; i++) {
-                        if ($rootScope.datatype.components[i].id === component.id)
+
+            getReadTemplate: function (node, root) {
+               return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeSubComponentReadTree.html' : '';
+            },
+
+            getEditTemplate: function (node, root) {
+                return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeSubComponentEditTree.html' : '';
+            },
+
+            isDatatypeSubDT: function (component,root) {
+                if (root != null) {
+                    for (var i = 0, len = root.components.length; i < len; i++) {
+                        if (root.components[i].id === component.id)
                             return false;
                     }
                 }
@@ -45,7 +57,8 @@ angular.module('igl').factory('DatatypeService',
                 return children != null && children.length > 0;
             },
             isVisible: function (node) {
-                return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
+//                return FilteringSvc.show(node);
+                 return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
             },
             isRelevant: function (node) {
                 if (node === undefined || !ViewSettings.tableRelevance)
@@ -73,7 +86,86 @@ angular.module('igl').factory('DatatypeService',
                     return ElementUtils.filterConstraints(element, datatype.predicates);
                 }
                 return predicates;
+            },
+            save: function (datatype) {
+                var delay = $q.defer();
+                datatype.accountId = userInfoService.getAccountID();
+                $http.post('api/datatypes/save', datatype).then(function (response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    datatype.date = saveResponse.date;
+                    datatype.version = saveResponse.version;
+                    datatype.id = saveResponse.id;
+                    delay.resolve(datatype);
+                }, function (error) {
+                	console.log("DatatypeService.save error=" + error);
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            getOne: function (id) {
+                var delay = $q.defer();
+                if ($rootScope.datatypesMap[id] === undefined || $rootScope.datatypesMap[id] === null) {
+                    $http.get('api/datatypes/' + id).then(function (response) {
+                        var datatype = angular.fromJson(response.data);
+                        delay.resolve(datatype);
+                    }, function (error) {
+                        delay.reject(error);
+                    });
+                } else {
+                    delay.resolve($rootScope.datatypesMap[id]);
+                }
+                return delay.promise;
+            },
+            get: function (ids) {
+                var delay = $q.defer();
+                $http.post('api/datatypes/findByIds', ids).then(function (response) {
+                    var datatypes = angular.fromJson(response.data);
+                    delay.resolve(datatypes);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            merge: function (to, from) {
+                to.name = from.name;
+                to.ext = from.ext;
+                to.label = from.label;
+                to.description = from.description;
+                to.status = from.status;
+                to.comment = from.comment;
+                to.usageNote = from.usageNote;
+                to.scope = from.scope;
+                to.hl7Version = from.hl7Version;
+                to.accountId = from.accountId;
+                to.participants = from.participants;
+                to.libId = from.libId;
+                to.predicates = from.predicates;
+                to.conformanceStatements = from.conformanceStatements;
+                to.sectionPosition = from.sectionPosition;
+                to.components = from.components;
+                to.version = from.version;
+                to.date = from.date;
+                to.purposeAndUse = from.purposeAndUse;
+                return to;
+            },
+            findFlavors: function (name, scope, hl7Version) {
+                var delay = $q.defer();
+                $http.get('api/datatypes/findFlavors', {params: {"name": name, "scope": scope, "hl7Version": hl7Version}}).then(function (response) {
+                    var datatypes = angular.fromJson(response.data);
+                    delay.resolve(datatypes);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            delete_: function(datatype) {
+                 return $http.post('api/datatypes/'+ datatype.id+ '/delete');
+            },
+            getDatatypeLink : function(datatype){
+                return {id:datatype.id, ext: null, name: datatype.name};
             }
+
         };
         return DatatypeService;
-    }]);
+    }])
+;

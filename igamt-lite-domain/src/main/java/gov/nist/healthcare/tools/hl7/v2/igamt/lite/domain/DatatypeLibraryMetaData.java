@@ -1,34 +1,37 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.Date;
+import java.util.UUID;
 
-public class DatatypeLibraryMetaData extends MetaData{
+
+public class DatatypeLibraryMetaData extends MetaData {
 
 	private static final long serialVersionUID = 1L;
+	
+	private String datatypeLibId = "";
 	
 	public DatatypeLibraryMetaData() {
 		super();
 	}
 
-	private String datatypLibId = ""; 				//ConformanceProfile/@ID
-	
 	@Override
 	public DatatypeLibraryMetaData clone() throws CloneNotSupportedException {
 		DatatypeLibraryMetaData clonedProfileMetaData = new DatatypeLibraryMetaData();
 
 		clonedProfileMetaData.setName(this.getName());
 		clonedProfileMetaData.setOrgName(this.getOrgName());
-		clonedProfileMetaData.setDate(this.getDate());
+		clonedProfileMetaData.setDate(Constant.mdy.format(new Date()));
 		clonedProfileMetaData.setVersion(this.getVersion());
-		clonedProfileMetaData.setDatatypLibId(datatypLibId);
+		clonedProfileMetaData.setDatatypeLibId(UUID.randomUUID().toString());
 		return clonedProfileMetaData;
 	}
 
-	public String getDatatypLibId() {
-		return datatypLibId;
+	public String getDatatypeLibId() {
+		return datatypeLibId;
 	}
 
-	public void setDatatypLibId(String datatypLibId) {
-		this.datatypLibId = datatypLibId;
+	public void setDatatypeLibId(String datatypeLibId) {
+		this.datatypeLibId = datatypeLibId;
 	}
 
 }

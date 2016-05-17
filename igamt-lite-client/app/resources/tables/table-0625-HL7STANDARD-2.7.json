@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 534,
+  "id" : "569eac0dd4c623dc65507cb8",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0625",
+  "name" : "Item Status Codes",
+  "description" : "Item Status Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cb9",
+    "value" : "1",
+    "label" : "Active",
+    "codeSystem" : "HL70625",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cba",
+    "value" : "2",
+    "label" : "Pending Inactive",
+    "codeSystem" : "HL70625",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cbb",
+    "value" : "3",
+    "label" : "Inactive",
+    "codeSystem" : "HL70625",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

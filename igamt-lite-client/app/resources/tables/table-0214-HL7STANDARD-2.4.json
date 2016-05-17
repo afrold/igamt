@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 172,
+  "id" : "565f3ab6d4c6e52cfd443c6d",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0214",
+  "name" : "Special Program Codes",
+  "description" : "Special Program Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

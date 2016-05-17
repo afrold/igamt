@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 408,
+  "id" : "569eac0dd4c623dc655077ae",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0161",
+  "name" : "Allow Substitution",
+  "description" : "Allow Substitution",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077af",
+    "value" : "G",
+    "label" : "Allow generic substitutions.",
+    "codeSystem" : "HL70161",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077b0",
+    "value" : "N",
+    "label" : "Substitutions are NOT authorized.  (This is the default - null.)",
+    "codeSystem" : "HL70161",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077b1",
+    "value" : "T",
+    "label" : "Allow therapeutic substitutions",
+    "codeSystem" : "HL70161",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

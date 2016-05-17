@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 292,
+  "id" : "565f3ab6d4c6e52cfd440886",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0392",
+  "name" : "Match reason",
+  "description" : "Match reason",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.392",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440887",
+    "value" : "DB",
+    "label" : "Match on Date of Birth",
+    "codeSystem" : "HL70392",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440888",
+    "value" : "NA",
+    "label" : "Match on Name (Alpha Match)",
+    "codeSystem" : "HL70392",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440889",
+    "value" : "NP",
+    "label" : "Match on Name (Phonetic Match)",
+    "codeSystem" : "HL70392",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44088a",
+    "value" : "SS",
+    "label" : "Match on Social Security Number",
+    "codeSystem" : "HL70392",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

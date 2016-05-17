@@ -24,11 +24,6 @@ public class Constraints implements Serializable {
 	// @JoinColumn(name = "SEGMENTS_ID")
 	private Context segments;
 
-	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
-	// CascadeType.ALL, orphanRemoval = true)
-	// @JoinColumn(name = "GROUPS_ID")
-	private Context groups;
-	
 	private Context messages;
 
 	public String getId() {
@@ -53,14 +48,6 @@ public class Constraints implements Serializable {
 
 	public void setSegments(Context segments) {
 		this.segments = segments;
-	}
-
-	public Context getGroups() {
-		return groups;
-	}
-
-	public void setGroups(Context groups) {
-		this.groups = groups;
 	}
 
 	public Context getMessages() {

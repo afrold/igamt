@@ -17,15 +17,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,6 +33,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.MongoException;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {

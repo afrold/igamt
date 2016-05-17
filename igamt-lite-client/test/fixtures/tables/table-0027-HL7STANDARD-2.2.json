@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 21,
+  "id" : "565f3ab7d4c6e52cfd447cfb",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0027",
+  "name" : "PRIORITY (COMPONENT 6 QTY/TIMING[735])",
+  "description" : "PRIORITY (COMPONENT 6 QTY/TIMING[735])",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cfc",
+    "value" : "A",
+    "label" : "As soon as possible (a priority lower than stat)",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cfd",
+    "value" : "P",
+    "label" : "Preoperative (to be done prior to surgery)",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cfe",
+    "value" : "R",
+    "label" : "Routine (default)",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cff",
+    "value" : "S",
+    "label" : "Stat (do immediately)",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d00",
+    "value" : "T",
+    "label" : "Timing critical (do as near as possible to requested time)",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

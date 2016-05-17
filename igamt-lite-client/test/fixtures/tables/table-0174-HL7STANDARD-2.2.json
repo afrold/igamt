@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 92,
+  "id" : "565f3ab7d4c6e52cfd447dcc",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0174",
+  "name" : "NATURE OF TEST/OBSERVATION",
+  "description" : "NATURE OF TEST/OBSERVATION",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dcd",
+    "value" : "A",
+    "label" : "Atomic test/observation",
+    "codeSystem" : "HL70174",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dce",
+    "value" : "C",
+    "label" : "Calculated single observation",
+    "codeSystem" : "HL70174",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dcf",
+    "value" : "F",
+    "label" : "Functional procedure",
+    "codeSystem" : "HL70174",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dd0",
+    "value" : "P",
+    "label" : "Profile or battery",
+    "codeSystem" : "HL70174",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dd1",
+    "value" : "S",
+    "label" : "Superset--a set of batteries ordered",
+    "codeSystem" : "HL70174",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

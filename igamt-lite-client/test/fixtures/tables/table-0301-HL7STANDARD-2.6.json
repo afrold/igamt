@@ -1,0 +1,117 @@
+{
+  "type" : "table",
+  "sectionPosition" : 211,
+  "id" : "569eac0ed4c623dc6550b340",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0301",
+  "name" : "Universal ID type",
+  "description" : "Universal ID type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.301",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b341",
+    "value" : "DNS",
+    "label" : "An Internet dotted name. Either in ASCII or as integers",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b342",
+    "value" : "GUID",
+    "label" : "Same as UUID.",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b343",
+    "value" : "HCD",
+    "label" : "The CEN Healthcare Coding Scheme Designator. (Identifiers used in DICOM follow this assignment scheme.)",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b344",
+    "value" : "HL7",
+    "label" : "Reserved for future HL7 registration schemes",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b345",
+    "value" : "ISO",
+    "label" : "An International Standards Organization Object Identifier",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b346",
+    "value" : "L,M,N",
+    "label" : "These are reserved for locally defined coding schemes.",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b347",
+    "value" : "Random",
+    "label" : "Usually a base64 encoded string of random bits.<p>The uniqueness depends on the length of the bits. Mail systems often generate ASCII string \"unique names,\" from a combination of random bits and system names. Obviously, such identifiers will not be constr",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b348",
+    "value" : "URI",
+    "label" : "Uniform Resource Identifier",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b349",
+    "value" : "UUID",
+    "label" : "The DCE Universal Unique Identifier",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b34a",
+    "value" : "x400",
+    "label" : "An X.400 MHS format identifier",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b34b",
+    "value" : "x500",
+    "label" : "An X.500 directory name",
+    "codeSystem" : "HL70301",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

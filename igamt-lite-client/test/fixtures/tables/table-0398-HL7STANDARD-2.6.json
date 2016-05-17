@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 42,
+  "id" : "569eac0ed4c623dc6550ad39",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0398",
+  "name" : "Continuation style code",
+  "description" : "Continuation style code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.398",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad3a",
+    "value" : "F",
+    "label" : "Fragmentation",
+    "codeSystem" : "HL70398",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ad3b",
+    "value" : "I",
+    "label" : "Interactive Continuation",
+    "codeSystem" : "HL70398",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 284,
+  "id" : "569eac0fd4c623dc6550e9c0",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0351",
+  "name" : "Occurrence span",
+  "description" : "Occurrence span",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.351",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e9c1",
+    "value" : "...",
+    "label" : "use NUBC codes",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

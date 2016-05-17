@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 68,
+  "id" : "565f3ab6d4c6e52cfd44383d",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0181",
+  "name" : "MFN record-level error return",
+  "description" : "MFN record-level error return",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44383e",
+    "value" : "S",
+    "label" : "Successful posting of the record defined by the MFE segment",
+    "codeSystem" : "HL70181",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44383f",
+    "value" : "U",
+    "label" : "Unsuccessful posting of the record defined by the MFE segment",
+    "codeSystem" : "HL70181",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

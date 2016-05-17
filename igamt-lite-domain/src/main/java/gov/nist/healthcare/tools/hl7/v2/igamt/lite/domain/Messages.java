@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 public class Messages extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
@@ -23,6 +25,7 @@ public class Messages extends TextbasedSectionModel implements java.io.Serializa
 		this.id = ObjectId.get().toString();
 	}
 
+	@DBRef
 	private Set<Message> children = new HashSet<Message>();
 
 	public String getId() {
@@ -109,7 +112,7 @@ public class Messages extends TextbasedSectionModel implements java.io.Serializa
 		List<Message> sortedList = new ArrayList<Message>(this.getChildren());
 		Collections.sort(sortedList);
 		for (Message elt: sortedList) {
-			elt.setSectionPosition(sortedList.indexOf(elt));
+			elt.setPosition(sortedList.indexOf(elt));
 		}
 	}
 }

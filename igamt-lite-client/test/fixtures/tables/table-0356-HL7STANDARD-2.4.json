@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 391,
+  "id" : "565f3ab6d4c6e52cfd443e4a",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0356",
+  "name" : "Alternate character set handling scheme",
+  "description" : "Alternate character set handling scheme",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e4b",
+    "value" : "<null>",
+    "label" : "This is the default, indicating that there is no character set switching occurring in this message.",
+    "codeSystem" : "HL70356",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e4c",
+    "value" : "2.3",
+    "label" : "The character set switching mode specified in HL7 2.3, sections 2.8.28.6.1, and 2.9.2.  Note that the escape sequences used in this mode do not use the ASCII \"esc\" character. They are \"HL7 escape sequences\" as defined in HL7 2.3, sec.  2.9 as defined in I",
+    "codeSystem" : "HL70356",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e4d",
+    "value" : "ISO 2022-1994",
+    "label" : "This standard is titled \"Information Technology - Character Code Structure and Extension Technique\". This standard specifies an escape sequence from basic one byte character set to specified other character set, and vice versa.  The escape sequence explic",
+    "codeSystem" : "HL70356",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,189 @@
+{
+  "type" : "table",
+  "sectionPosition" : 234,
+  "id" : "565f3ab6d4c6e52cfd440e33",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0078",
+  "name" : "Abnormal flags",
+  "description" : "Abnormal flags",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.78",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e34",
+    "value" : "<",
+    "label" : "Below absolute low-off instrument scale",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e35",
+    "value" : ">",
+    "label" : "Above absolute high-off instrument scale",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e36",
+    "value" : "A",
+    "label" : "Abnormal (applies to non-numeric results)",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e37",
+    "value" : "AA",
+    "label" : "Very abnormal (applies to non-numeric units, analogous to panic limits for numeric units)",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e38",
+    "value" : "B",
+    "label" : "Better--use when direction not relevant",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e39",
+    "value" : "D",
+    "label" : "Significant change down",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e3a",
+    "value" : "H",
+    "label" : "Above high normal",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e3b",
+    "value" : "HH",
+    "label" : "Above upper panic limits",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e3c",
+    "value" : "I",
+    "label" : "Intermediate. Indicates for microbiology susceptibilities only.",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e3d",
+    "value" : "L",
+    "label" : "Below low normal",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e3e",
+    "value" : "LL",
+    "label" : "Below lower panic limits",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e3f",
+    "value" : "MS",
+    "label" : "Moderately susceptible. Indicates for microbiology susceptibilities only.",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e40",
+    "value" : "N",
+    "label" : "Normal (applies to non-numeric results)",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e41",
+    "value" : "null",
+    "label" : "No range defined, or normal ranges don't apply",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e42",
+    "value" : "R",
+    "label" : "Resistant. Indicates for microbiology susceptibilities only.",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e43",
+    "value" : "S",
+    "label" : "Susceptible. Indicates for microbiology susceptibilities only.",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e44",
+    "value" : "U",
+    "label" : "Significant change up",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e45",
+    "value" : "VS",
+    "label" : "Very susceptible. Indicates for microbiology susceptibilities only.",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e46",
+    "value" : "W",
+    "label" : "Worse--use when direction not relevant",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

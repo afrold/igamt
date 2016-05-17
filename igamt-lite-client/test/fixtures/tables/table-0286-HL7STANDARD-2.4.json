@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 355,
+  "id" : "565f3ab6d4c6e52cfd4437f1",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0286",
+  "name" : "Provider role",
+  "description" : "Provider role",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4437f2",
+    "value" : "CP",
+    "label" : "Consulting Provider",
+    "codeSystem" : "HL70286",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4437f3",
+    "value" : "PP",
+    "label" : "Primary Care Provider",
+    "codeSystem" : "HL70286",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4437f4",
+    "value" : "RP",
+    "label" : "Referring Provider",
+    "codeSystem" : "HL70286",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4437f5",
+    "value" : "RT",
+    "label" : "Referred to Provider",
+    "codeSystem" : "HL70286",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

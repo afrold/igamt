@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 485,
+  "id" : "569eac0dd4c623dc65507dd3",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0539",
+  "name" : "Cost Center Code",
+  "description" : "Cost Center Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507dd4",
+    "value" : "�",
+    "label" : "no suggested values",
+    "codeSystem" : "HL70539",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

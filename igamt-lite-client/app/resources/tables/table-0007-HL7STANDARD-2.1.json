@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 24,
+  "id" : "565f3ab7d4c6e52cfd448242",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0007",
+  "name" : "ADMISSION TYPE",
+  "description" : "ADMISSION TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448243",
+    "value" : "A",
+    "label" : "Accident",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448244",
+    "value" : "E",
+    "label" : "Emergency",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448245",
+    "value" : "L",
+    "label" : "Labor and Delivery",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448246",
+    "value" : "R",
+    "label" : "Routine",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -19,6 +19,7 @@ import java.util.Set;
 public class IGDocumentConfiguration {
 
 	private Set<String> usages = new HashSet<String>();
+	private Set<String> conditionalUsage = new HashSet<String>();
 	private Set<String> codeUsages = new HashSet<String>();
 	private Set<String> codeSources = new HashSet<String>();
 	private Set<String> tableStabilities = new HashSet<String>();
@@ -125,6 +126,14 @@ public class IGDocumentConfiguration {
 
 	public void setTableContentDefinitions(Set<String> tableContentDefinitions) {
 		this.tableContentDefinitions = tableContentDefinitions;
+	}
+
+	public Set<String> getConditionalUsage() {
+		return conditionalUsage;
+	}
+
+	public void setConditionalUsage(Set<String> conditionalUsage) {
+		this.conditionalUsage = conditionalUsage;
 	}
 
 }

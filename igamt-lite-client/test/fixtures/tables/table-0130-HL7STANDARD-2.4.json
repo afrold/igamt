@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 218,
+  "id" : "565f3ab6d4c6e52cfd442f67",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0130",
+  "name" : "Visit user code",
+  "description" : "Visit user code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442f68",
+    "value" : "HO",
+    "label" : "Home",
+    "codeSystem" : "HL70130",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442f69",
+    "value" : "MO",
+    "label" : "Mobile Unit",
+    "codeSystem" : "HL70130",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442f6a",
+    "value" : "PH",
+    "label" : "Phone",
+    "codeSystem" : "HL70130",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442f6b",
+    "value" : "TE",
+    "label" : "Teaching",
+    "codeSystem" : "HL70130",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

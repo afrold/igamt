@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 33,
+  "id" : "565f3ab6d4c6e52cfd4431a9",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0366",
+  "name" : "Local/remote control state",
+  "description" : "Local/remote control state",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431aa",
+    "value" : "L",
+    "label" : "Local",
+    "codeSystem" : "HL70366",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431ab",
+    "value" : "R",
+    "label" : "Remote",
+    "codeSystem" : "HL70366",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

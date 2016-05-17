@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 210,
+  "id" : "565f3ab7d4c6e52cfd447498",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0109",
+  "name" : "Report Priority",
+  "description" : "Report Priority",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447499",
+    "value" : "R",
+    "label" : "Routine",
+    "codeSystem" : "HL70109",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44749a",
+    "value" : "S",
+    "label" : "STAT",
+    "codeSystem" : "HL70109",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}
