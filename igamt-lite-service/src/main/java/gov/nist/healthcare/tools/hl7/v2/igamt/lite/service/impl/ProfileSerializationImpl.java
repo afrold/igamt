@@ -195,7 +195,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		@Override
 	public nu.xom.Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary) {
 		nu.xom.Element e = new nu.xom.Element("DatatypeLibrary");
-		e.addAttribute(new Attribute("ID",datatypeLibrary.getMetaData().getDatatypLibId()));
+		e.addAttribute(new Attribute("ID",datatypeLibrary.getMetaData().getDatatypeLibId()));
 		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
 		elmMetaData.addAttribute(new Attribute("Name", datatypeLibrary.getMetaData().getName()));
 		elmMetaData.addAttribute(new Attribute("OrgName", datatypeLibrary.getMetaData().getOrgName()));

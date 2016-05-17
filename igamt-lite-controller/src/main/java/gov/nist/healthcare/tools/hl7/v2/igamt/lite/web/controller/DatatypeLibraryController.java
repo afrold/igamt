@@ -168,7 +168,7 @@ public class DatatypeLibraryController extends CommonController {
 		DatatypeLibrary saved = datatypeLibraryService.save(datatypeLibrary);
 		log.debug("saved.getId()=" + saved.getId());
 		log.debug("saved.getScope()=" + saved.getScope());
-		return new LibrarySaveResponse(saved.getDate(), saved.getScope().name());
+		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
 	}
 
 	@RequestMapping(value = "/bindDatatypes", method = RequestMethod.POST)

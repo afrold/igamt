@@ -811,7 +811,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         }
                         parent.children.push(s);
 
-                        var ref = $rootScope.segmentsMap[element.ref];
+                        var ref = $rootScope.segmentsMap[element.ref.id];
                         $rootScope.processMessageTree(ref, s);
 
                     } else if (element.type === "segment") {

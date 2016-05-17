@@ -7,6 +7,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -304,6 +305,7 @@ public class IGDocumentController extends CommonController {
 			segmentLibraryService.save(clonedSegmentLibrary);
 			tableLibraryService.save(clonedTableLibrary);
 
+			igDocument.getProfile().setMetaData(igDocument.getProfile().getMetaData().clone());
 			igDocument.getProfile().setDatatypeLibrary(clonedDatatypeLibrary);
 			igDocument.getProfile().setSegmentLibrary(clonedSegmentLibrary);
 			igDocument.getProfile().setTableLibrary(clonedTableLibrary);
@@ -314,7 +316,7 @@ public class IGDocumentController extends CommonController {
 			igDocument.setId(null);
 			igDocument.setScope(IGDocumentScope.USER);
 			igDocument.setAccountId(account.getId());
-			igDocument.getMetaData().setDate(DateUtils.getCurrentTime());
+			igDocument.getMetaData().setDate(Constant.mdy.format(new Date()));
 			igDocumentService.save(igDocument);
 			return igDocument;
 		} catch (UserAccountNotFoundException e) {
