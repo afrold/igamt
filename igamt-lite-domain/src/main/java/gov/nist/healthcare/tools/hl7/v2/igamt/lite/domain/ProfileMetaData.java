@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -104,6 +105,7 @@ public class ProfileMetaData extends MetaData {
 		clonedProfileMetaData.setVersion(this.getVersion());
 		clonedProfileMetaData.setSubTitle(subTitle);
 		clonedProfileMetaData.setVersion(getHl7Version());
+		clonedProfileMetaData.setProfileID(UUID.randomUUID().toString());
 		return clonedProfileMetaData;
 	}
 

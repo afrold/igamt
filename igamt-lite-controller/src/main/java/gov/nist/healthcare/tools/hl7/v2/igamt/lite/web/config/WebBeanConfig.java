@@ -64,7 +64,8 @@ public class WebBeanConfig {
 				"greater than",
 				"equal to or greater than",
 				"less than",
-				"equal to or less than"
+				"equal to or less than",
+				"valued sequentially starting with the value '1'"
 		}));
 		config.setPredefinedFormats(toSet(new String[] { "ISO-compliant OID",
 				"Alphanumeric", "YYYY", "YYYYMM", "YYYYMMDD", "YYYYMMDDhh",

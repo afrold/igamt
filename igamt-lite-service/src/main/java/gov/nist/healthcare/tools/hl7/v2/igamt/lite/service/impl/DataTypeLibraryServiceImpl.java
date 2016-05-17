@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +97,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	@Override
 	public DatatypeLibrary saveMetaData(DatatypeLibraryMetaData datatypeLibraryMetaData) {
 		log.info("DataypeServiceImpl.save=" + datatypeLibraryMetaData.getName());
-		DatatypeLibrary dataTypeLibrary = datatypeLibraryRepository.findOne(datatypeLibraryMetaData.getDatatypLibId());
+		DatatypeLibrary dataTypeLibrary = datatypeLibraryRepository.findOne(datatypeLibraryMetaData.getDatatypeLibId());
 		dataTypeLibrary.setMetaData(datatypeLibraryMetaData);
 		return datatypeLibraryRepository.save(dataTypeLibrary);
 	}
@@ -114,12 +115,13 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		DatatypeLibraryMetaData metaData = defaultMetadata();
 		metaData.setName(name);
 		metaData.setHl7Version(hl7Version);
+		metaData.setDatatypeLibId(UUID.randomUUID().toString());
+		metaData.setDate(Constant.mdy.format(new Date()));
 		metaData.setExt(ext);
 		DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
 		datatypeLibrary.setMetaData(metaData);
 		datatypeLibrary.setScope(scope);
 		datatypeLibrary.setAccountId(accountId);
-		datatypeLibrary.setDate(Constant.mdy.format(new Date()));
 		datatypeLibrary.setSectionDescription("Default description");
 		datatypeLibrary.setSectionTitle("Default title");
 		datatypeLibrary.setSectionContents("Default contents");

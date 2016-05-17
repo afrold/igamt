@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -16,9 +17,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	private String id;
 
 	private Long accountId;
-
-	private String date;
-
+	
 	private String ext;
 
 	private SegmentLibraryMetaData metaData;
@@ -46,14 +45,6 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 
 	public void setAccountId(Long accountId) {
 		this.accountId = accountId;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
 	}
 
 	public Set<SegmentLink> getChildren() {
@@ -187,7 +178,6 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		clone.setSectionPosition(this.getSectionPosition());
 		clone.setSectionTitle(this.getSectionTitle());
 		clone.setType(this.getType());
-		clone.setDate(this.getDate());
 		return clone;	
 	}
 	

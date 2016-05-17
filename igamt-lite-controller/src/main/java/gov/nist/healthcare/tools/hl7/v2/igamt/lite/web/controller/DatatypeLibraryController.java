@@ -146,7 +146,7 @@ public class DatatypeLibraryController extends CommonController {
 			throws LibrarySaveException {
 		log.info("Saving the " + datatypeLibraryMetaData.getName() + " datatype library.");
 		DatatypeLibrary saved = datatypeLibraryService.saveMetaData(datatypeLibraryMetaData);
-		return new LibrarySaveResponse(saved.getDate(), saved.getScope().name());
+		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)

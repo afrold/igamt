@@ -13,6 +13,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,11 +99,12 @@ public class TableLibraryServiceImpl implements TableLibraryService {
 		metaData.setName(name);
 		metaData.setHl7Version(hl7Version);
 		metaData.setExt(ext);
+		metaData.setDate(Constant.mdy.format(new Date()));
+		metaData.setTableLibId(UUID.randomUUID().toString());
 		TableLibrary tableLibrary = new TableLibrary();
 		tableLibrary.setMetaData(metaData);
 		tableLibrary.setScope(scope);
 		tableLibrary.setAccountId(accountId);
-		tableLibrary.setDate(Constant.mdy.format(new Date()));
 		tableLibrary.setSectionDescription("Default description");
 		tableLibrary.setSectionTitle("Default title");
 		tableLibrary.setSectionContents("Default contents");

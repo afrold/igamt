@@ -432,6 +432,7 @@ angular.module('igl')
     });
 
 angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $modalInstance, selectedNode, selectedMessage, $rootScope) {
+	$scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.selectedMessage = selectedMessage;
     $scope.firstConstraint = null;
@@ -491,6 +492,14 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                 $scope.newConstraint.childNodes_2.push(segmentModel);
             }
         }
+    }
+    
+    $scope.initComplexPredicate = function () {
+    	$scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
+        $scope.complexConstraintTrueUsage = null;
+        $scope.complexConstraintFalseUsage = null;
     }
 
     $scope.deletePredicate = function (predicate) {
@@ -679,14 +688,14 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
 
 
 angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($scope, $modalInstance, selectedMessage, selectedNode, $rootScope) {
+	$scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.selectedMessage = selectedMessage;
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = '';
-
+    $scope.newComplexConstraintId = $rootScope.calNextCSID();
     $scope.changed = false;
     $scope.tempComformanceStatements = [];
     angular.copy($scope.selectedMessage.conformanceStatements, $scope.tempComformanceStatements);
@@ -699,7 +708,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = '';
+        $scope.newComplexConstraintId = $rootScope.calNextCSID();
     }
 
     $scope.initConformanceStatement = function () {
@@ -744,7 +753,9 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             }
         }
     }
-
+    
+    $scope.initConformanceStatement();
+    
     $scope.updateLocation1 = function () {
         $scope.newConstraint.location_1 = $scope.newConstraint.currentNode_1.name;
         if ($scope.newConstraint.position_1 != null) {
@@ -790,12 +801,12 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var componentModel = {
                     name: $scope.newConstraint.location_1 + '.' + $scope.newConstraint.currentNode_1.node.components[i].position,
                     position: $scope.newConstraint.currentNode_1.node.components[i].position,
-                    type: 'subComponent',
+                    type: 'component',
                     node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.components[i].datatype]
                 };
                 $scope.newConstraint.childNodes_1.push(componentModel);
             }
-        } else if ($scope.newConstraint.currentNode_1.type === 'subComponent') {
+        } else if ($scope.newConstraint.currentNode_1.type === 'component') {
             for (var i = 0, len1 = $scope.newConstraint.currentNode_1.node.components.length; i < len1; i++) {
                 var componentModel = {
                     name: $scope.newConstraint.location_1 + '.' + $scope.newConstraint.currentNode_1.node.components[i].position,
@@ -856,12 +867,12 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var componentModel = {
                     name: $scope.newConstraint.location_2 + '.' + $scope.newConstraint.currentNode_2.node.components[i].position,
                     position: $scope.newConstraint.currentNode_2.node.components[i].position,
-                    type: 'subComponent',
+                    type: 'component',
                     node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.components[i].datatype]
                 };
                 $scope.newConstraint.childNodes_2.push(componentModel);
             }
-        } else if ($scope.newConstraint.currentNode_2.type === 'subComponent') {
+        } else if ($scope.newConstraint.currentNode_2.type === 'component') {
             for (var i = 0, len1 = $scope.newConstraint.currentNode_2.node.components.length; i < len1; i++) {
                 var componentModel = {
                     name: $scope.newConstraint.location_2 + '.' + $scope.newConstraint.currentNode_2.node.components[i].position,
@@ -884,9 +895,10 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
 
     $scope.addComplexConformanceStatement = function () {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
-        $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
-        $scope.tempComformanceStatements.push($scope.complexConstraint);
-        $scope.initComplexStatement();
+    	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+    	if($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
+    	$scope.tempComformanceStatements.push($scope.complexConstraint);
+    	$scope.initComplexStatement();
         $scope.changed = true;
     };
 
@@ -896,6 +908,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             var positionPath = selectedNode.path;
             var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
             $scope.tempComformanceStatements.push(cs);
+            if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
             $scope.changed = true;
         }
 
@@ -921,8 +934,6 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         $rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);
     };
-
-    $scope.initConformanceStatement();
 });
 
 

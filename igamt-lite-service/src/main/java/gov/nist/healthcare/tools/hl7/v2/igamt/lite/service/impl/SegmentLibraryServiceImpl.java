@@ -13,6 +13,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,11 +102,12 @@ public class SegmentLibraryServiceImpl implements SegmentLibraryService {
 		metaData.setName(name);
 		metaData.setHl7Version(hl7Version);
 		metaData.setExt(ext);
+		metaData.setDate(Constant.mdy.format(new Date()));
+		metaData.setSegmentLibId(UUID.randomUUID().toString());
 		SegmentLibrary segmentLibrary = new SegmentLibrary();
 		segmentLibrary.setMetaData(metaData);
 		segmentLibrary.setScope(scope);
 		segmentLibrary.setAccountId(accountId);
-		segmentLibrary.setDate(Constant.mdy.format(new Date()));
 		segmentLibrary.setSectionDescription("Default description");
 		segmentLibrary.setSectionTitle("Default title");
 		segmentLibrary.setSectionContents("Default contents");
