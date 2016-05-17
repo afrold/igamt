@@ -18,7 +18,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $scope.datatypeListView = null;
       $scope.accordi = {metaData: false, definition: true, dtList: true, dtDetails: false};
 
-	    $scope.tableWidth = null;
+      $scope.tableWidth = null;
   //    $scope.datatypeLibrary = "";
       $scope.hl7Version = null;
       $scope.datatypeView = null;
@@ -29,10 +29,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
       $scope.datatypesParams = new ngTreetableParams({
           getNodes: function (parent) {
-              return $scope.getNodes(parent, $scope.datatypeStruct);
+              return $scope.getNodes(parent, $scope.datatypeCopy);
           },
           getTemplate: function (node) {
-              return $scope.getEditTemplate(node, $scope.datatypeStruct);
+              return $scope.getEditTemplate(node, $scope.datatypeCopy);
           }
        });
 
@@ -47,6 +47,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 		IGDocumentSvc.loadIgDocumentMetaData();
 		$scope.start = false;
 	};
+	
+	$scope.seq = function(idx) {
+		return idx + 1;
+	}
 
 // $scope.getMetaData = function(datatypeLibrary) {
 // $scope.metaDataView = "LibraryMetaData.html";
@@ -151,8 +155,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                  $timeout(
           function () {
             $scope.loadingSelection = false;
+            $scope.accordi.dtDetails = true;
           }, 100);
 			            $scope.loadingSelection = false;
+			            $scope.accordi.dtDetails = true;
 				}, 100);
 			};
 			
@@ -221,21 +227,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       if (datatypeJoinStruct && datatypeJoinStruct != null) {
         $scope.loadingSelection = true;
         
-//        var queryId = null;
-//        if (datatypeStruct.oldId) {
-//        	queryId = datatypeJoinStruct.oldId;
-//        } else {
-//        	queryId = datatypeJoinStruct.id;
-//        }
-
-        $scope.datatypeStruct = datatypeJoinStruct.dtRef;
-//        DatatypeService.getOne(queryId).then(function (result) {
-//          $scope.datatypeStruct = result;
-//          if (datatypeJoinStruct.oldId) {
-//        	  $scope.datatypeStruct.id = null;
-//        	  delete datatypeJoinStruct.oldId;
-//          }
-          $scope.datatypeStruct["type"] = "datatype";
+        $scope.datatypeCopy  = angular.copy(datatypeJoinStruct.dtRef);
           $scope.tableWidth = null;
           $scope.scrollbarWidth = $scope.getScrollbarWidth();
           $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
@@ -246,12 +238,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
           if ($scope.datatypeStruct) {
         	  $scope.datatypeLibrariesConfig.selectedType = 'USER';
           }
-//          }, function (error) {
-//          $scope.loadingSelection = false;
-//          $rootScope.msg().text = error.data.text;
-//          $rootScope.msg().type = error.data.type;
-//          $rootScope.msg().show = true;
-//        });
       }
     };
     
