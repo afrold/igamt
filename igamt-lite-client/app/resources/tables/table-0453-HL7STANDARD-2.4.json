@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 193,
   "id" : "565f3ab6d4c6e52cfd443ca5",
   "hl7Version" : "2.4",
+  "libIds" : [ "573b0847da08c28cd04847b8" ],
   "bindingIdentifier" : "0453",
-  "name" : "Health care provider classification",
+  "name" : "0453",
   "description" : "Health care provider classification",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -23,5 +23,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

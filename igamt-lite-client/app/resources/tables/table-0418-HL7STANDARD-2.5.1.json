@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 321,
   "id" : "569eac0fd4c623dc6550e4e6",
   "hl7Version" : "2.5.1",
+  "libIds" : [ "573b083dda08c28cd0479666" ],
   "bindingIdentifier" : "0418",
-  "name" : "Procedure Priority",
+  "name" : "0418",
   "description" : "Procedure Priority",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.418",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

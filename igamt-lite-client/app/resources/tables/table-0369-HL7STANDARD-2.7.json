@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 70,
   "id" : "569eac0dd4c623dc6550706f",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0369",
-  "name" : "Specimen Role",
+  "name" : "0369",
   "description" : "Specimen Role",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -113,5 +113,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

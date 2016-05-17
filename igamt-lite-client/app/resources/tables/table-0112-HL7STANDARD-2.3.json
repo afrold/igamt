@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 145,
   "id" : "565f3ab7d4c6e52cfd4474e9",
   "hl7Version" : "2.3",
+  "libIds" : [ "573b084ada08c28cd04867f9" ],
   "bindingIdentifier" : "0112",
-  "name" : "Discharged Disposition",
+  "name" : "0112",
   "description" : "Discharged Disposition",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

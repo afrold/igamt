@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 278,
   "id" : "565f3ab6d4c6e52cfd440335",
   "hl7Version" : "2.5",
+  "libIds" : [ "573b0845da08c28cd04822c4" ],
   "bindingIdentifier" : "0494",
-  "name" : "Specimen Child Role",
+  "name" : "0494",
   "description" : "Specimen Child Role",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.494",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

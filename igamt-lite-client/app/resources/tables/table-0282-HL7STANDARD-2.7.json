@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 206,
   "id" : "569eac0dd4c623dc655077b2",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0282",
-  "name" : "Referral Disposition",
+  "name" : "0282",
   "description" : "Referral Disposition",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -50,5 +50,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

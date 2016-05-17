@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 295,
   "id" : "569eac0fd4c623dc6550d9d4",
   "hl7Version" : "2.5.1",
+  "libIds" : [ "573b083dda08c28cd0479666" ],
   "bindingIdentifier" : "0489",
-  "name" : "Risk Codes",
+  "name" : "0489",
   "description" : "Risk Codes",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.489",
@@ -113,5 +113,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 29,
   "id" : "565f3ab7d4c6e52cfd44829c",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0122",
-  "name" : "CHARGE TYPE",
+  "name" : "0122",
   "description" : "CHARGE TYPE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -86,5 +86,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

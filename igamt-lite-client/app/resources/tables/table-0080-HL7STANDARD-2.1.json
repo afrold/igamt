@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 61,
   "id" : "565f3ab7d4c6e52cfd4483d1",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0080",
-  "name" : "NATURE OF ABNORMAL TESTING",
+  "name" : "0080",
   "description" : "NATURE OF ABNORMAL TESTING",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -50,5 +50,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

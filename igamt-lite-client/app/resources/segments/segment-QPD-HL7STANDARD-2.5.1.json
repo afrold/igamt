@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 61,
   "hl7Version" : "2.5.1",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212935d4c64f1ebfd435d1" ],
+  "libIds" : [ "573b083dda08c28cd0479664" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0fd4c623dc6550ee9f",
@@ -19,10 +19,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e9b9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecd0",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e9b9",
+      "bindingIdentifier" : "0471",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +46,13 @@
     "minLength" : 0,
     "maxLength" : "32",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550eccf",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -52,7 +63,7 @@
     "max" : "1"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024b1208a2adb7dbfb0f",
+    "id" : "573b083dda08c28cd04784a1",
     "mappings" : [ ]
   },
   "name" : "QPD",

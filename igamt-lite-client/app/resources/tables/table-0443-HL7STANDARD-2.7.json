@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 280,
   "id" : "569eac0dd4c623dc655081e3",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0443",
-  "name" : "Provider Role",
+  "name" : "0443",
   "description" : "Provider Role",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -221,5 +221,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

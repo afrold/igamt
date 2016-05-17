@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 138,
   "hl7Version" : "2.3",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "5723765dda0805ce1eabda1c" ],
+  "libIds" : [ "573b084ada08c28cd04867f8" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd44758d",
   "label" : "DR",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "range start date/time",
@@ -20,10 +21,13 @@
     "minLength" : 0,
     "maxLength" : "-1",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab7d4c6e52cfd447587",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447587",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +40,13 @@
     "minLength" : 0,
     "maxLength" : "-1",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab7d4c6e52cfd447587",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447587",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -49,6 +56,5 @@
   "name" : "DR",
   "description" : "Date Time Range (2.8.12)",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

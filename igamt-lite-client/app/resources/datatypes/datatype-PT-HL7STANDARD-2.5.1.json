@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 32,
   "hl7Version" : "2.5.1",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "57237653da0805ce1eab08ad" ],
+  "libIds" : [ "573b083dda08c28cd0479665" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0fd4c623dc6550ec8d",
   "label" : "PT",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "Processing ID",
@@ -20,10 +21,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550ea17",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec98",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550ea17",
+      "bindingIdentifier" : "0103",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +45,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e8e4",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec98",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e8e4",
+      "bindingIdentifier" : "0207",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -49,6 +66,5 @@
   "name" : "PT",
   "description" : "Processing Type",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

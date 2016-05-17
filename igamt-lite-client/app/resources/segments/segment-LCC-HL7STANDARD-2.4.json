@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 50,
   "hl7Version" : "2.4",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212934d4c64f1ebfd3e0cb" ],
+  "libIds" : [ "573b0847da08c28cd04847b6" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab6d4c6e52cfd444989",
@@ -19,10 +19,13 @@
     "minLength" : 0,
     "maxLength" : "200",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd444045",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd444045",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +41,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd443420",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd443fbd",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443420",
+      "bindingIdentifier" : "0264",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fbd",
+      "name" : "CE_0264",
+      "ext" : null,
+      "label" : "CE_0264"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -57,10 +68,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd4431f2",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd443fb3",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd4431f2",
+      "bindingIdentifier" : "0129",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fb3",
+      "name" : "CE_0129",
+      "ext" : null,
+      "label" : "CE_0129"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -76,10 +95,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd4432eb",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd443fa1",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd4432eb",
+      "bindingIdentifier" : "0132",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fa1",
+      "name" : "CE_0132",
+      "ext" : null,
+      "label" : "CE_0132"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -90,7 +117,7 @@
     "max" : "*"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dcae0d",
+    "id" : "573b0847da08c28cd048381b",
     "mappings" : [ ]
   },
   "name" : "LCC",

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 452,
   "id" : "569eac0ed4c623dc6550ae9a",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0048",
-  "name" : "What subject filter",
+  "name" : "0048",
   "description" : "What subject filter",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.48",
@@ -347,5 +347,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

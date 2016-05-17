@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 79,
   "id" : "569eac0dd4c623dc655081d4",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0201",
-  "name" : "Telecommunication Use Code",
+  "name" : "0201",
   "description" : "Telecommunication Use Code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -95,5 +95,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

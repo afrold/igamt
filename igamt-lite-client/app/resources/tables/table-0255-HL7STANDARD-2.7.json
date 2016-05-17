@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 347,
   "id" : "569eac0dd4c623dc655074b7",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0255",
-  "name" : "Duration Categories",
+  "name" : "0255",
   "description" : "Duration Categories",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -248,5 +248,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

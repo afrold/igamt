@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 140,
   "id" : "565f3ab6d4c6e52cfd443ad9",
   "hl7Version" : "2.4",
+  "libIds" : [ "573b0847da08c28cd04847b8" ],
   "bindingIdentifier" : "0312",
-  "name" : "Policy scope",
+  "name" : "0312",
   "description" : "Policy scope",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

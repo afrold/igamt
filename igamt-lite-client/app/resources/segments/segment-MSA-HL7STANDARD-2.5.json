@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 130,
   "hl7Version" : "2.5",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212934d4c64f1ebfd40afb" ],
+  "libIds" : [ "573b0845da08c28cd04822c2" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab6d4c6e52cfd441b8f",
@@ -19,10 +19,18 @@
     "minLength" : 0,
     "maxLength" : "2",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440640",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416ba",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440640",
+      "bindingIdentifier" : "0008",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416ba",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +46,13 @@
     "minLength" : 0,
     "maxLength" : "20",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f1",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f1",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -53,14 +64,17 @@
   }, {
     "type" : "field",
     "name" : "Text Message",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "80",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f1",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f1",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -76,10 +90,13 @@
     "minLength" : 0,
     "maxLength" : "15",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416d4",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416d4",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -91,14 +108,17 @@
   }, {
     "type" : "field",
     "name" : "Delayed Acknowledgment Type",
-    "usage" : "W",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "0",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416ba",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416ba",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 5,
     "comment" : "",
     "text" : "",
@@ -110,14 +130,22 @@
   }, {
     "type" : "field",
     "name" : "Error Condition",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd44155c",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f2",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd44155c",
+      "bindingIdentifier" : "0357",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 6,
     "comment" : "",
     "text" : "",
@@ -128,7 +156,7 @@
     "max" : "1"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dc8888",
+    "id" : "573b0845da08c28cd0481277",
     "mappings" : [ ]
   },
   "name" : "MSA",

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 45,
   "id" : "565f3ab7d4c6e52cfd448292",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0121",
-  "name" : "RESPONSE FLAG",
+  "name" : "0121",
   "description" : "RESPONSE FLAG",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

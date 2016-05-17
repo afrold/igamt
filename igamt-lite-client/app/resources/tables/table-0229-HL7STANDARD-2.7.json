@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 384,
   "id" : "569eac0dd4c623dc65508440",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0229",
-  "name" : "DRG Payor",
+  "name" : "0229",
   "description" : "DRG Payor",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

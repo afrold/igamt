@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 11,
   "hl7Version" : "2.5",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212934d4c64f1ebfd40afb" ],
+  "libIds" : [ "573b0845da08c28cd04822c2" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab6d4c6e52cfd441ac5",
@@ -19,10 +19,13 @@
     "minLength" : 0,
     "maxLength" : "4",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416e5",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416e5",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +41,18 @@
     "minLength" : 0,
     "maxLength" : "8",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd441410",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416ba",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd441410",
+      "bindingIdentifier" : "0105",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416ba",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -57,10 +68,13 @@
     "minLength" : 0,
     "maxLength" : "*",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416de",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416de",
+      "name" : "FT",
+      "ext" : null,
+      "label" : "FT"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -76,10 +90,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440629",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f2",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440629",
+      "bindingIdentifier" : "0364",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -90,7 +112,7 @@
     "max" : "1"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dc85b0",
+    "id" : "573b0845da08c28cd0480f9f",
     "mappings" : [ ]
   },
   "name" : "NTE",

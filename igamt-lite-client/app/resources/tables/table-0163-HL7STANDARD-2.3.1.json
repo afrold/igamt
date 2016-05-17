@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 168,
   "id" : "565f3ab7d4c6e52cfd445add",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0163",
-  "name" : "Administrative site",
+  "name" : "0163",
   "description" : "Administrative site",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -500,5 +500,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

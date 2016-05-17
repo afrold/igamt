@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 41,
   "hl7Version" : "2.5",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212934d4c64f1ebfd40afb" ],
+  "libIds" : [ "573b0845da08c28cd04822c2" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab6d4c6e52cfd441c6d",
@@ -19,10 +19,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440e57",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f2",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440e57",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +46,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd441534",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f2",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd441534",
+      "bindingIdentifier" : "0358",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -57,10 +73,18 @@
     "minLength" : 0,
     "maxLength" : "3",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440b88",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416c0",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440b88",
+      "bindingIdentifier" : "0186",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416c0",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -76,10 +100,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440e14",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416ba",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440e14",
+      "bindingIdentifier" : "0187",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416ba",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -95,10 +127,18 @@
     "minLength" : 0,
     "maxLength" : "112",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd44134c",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416b1",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd44134c",
+      "bindingIdentifier" : "0337",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416b1",
+      "name" : "SPD",
+      "ext" : null,
+      "label" : "SPD"
+    },
     "position" : 5,
     "comment" : "",
     "text" : "",
@@ -110,14 +150,22 @@
   }, {
     "type" : "field",
     "name" : "Practitioner ID Numbers",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "99",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd4413e1",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416e1",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd4413e1",
+      "bindingIdentifier" : "0338",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416e1",
+      "name" : "PLN",
+      "ext" : null,
+      "label" : "PLN"
+    },
     "position" : 6,
     "comment" : "",
     "text" : "",
@@ -133,10 +181,13 @@
     "minLength" : 0,
     "maxLength" : "770",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd441701",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd441701",
+      "name" : "PIP",
+      "ext" : null,
+      "label" : "PIP"
+    },
     "position" : 7,
     "comment" : "",
     "text" : "",
@@ -152,10 +203,13 @@
     "minLength" : 0,
     "maxLength" : "8",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416b6",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416b6",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
     "position" : 8,
     "comment" : "",
     "text" : "",
@@ -171,10 +225,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440f57",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f2",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440f57",
+      "bindingIdentifier" : "0537",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 9,
     "comment" : "",
     "text" : "",
@@ -190,10 +252,13 @@
     "minLength" : 0,
     "maxLength" : "8",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416b6",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416b6",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
     "position" : 10,
     "comment" : "",
     "text" : "",
@@ -209,10 +274,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440ed7",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f2",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440ed7",
+      "bindingIdentifier" : "0401",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 11,
     "comment" : "",
     "text" : "",
@@ -228,10 +301,13 @@
     "minLength" : 0,
     "maxLength" : "60",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416e5",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416e5",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
     "position" : 12,
     "comment" : "",
     "text" : "",
@@ -242,7 +318,7 @@
     "max" : "1"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dc87b1",
+    "id" : "573b0845da08c28cd04811a0",
     "mappings" : [ ]
   },
   "name" : "PRA",

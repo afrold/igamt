@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 476,
   "id" : "569eac0dd4c623dc65507e3e",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0542",
-  "name" : "Specimen Source Type Modifier",
+  "name" : "0542",
   "description" : "Specimen Source Type Modifier",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -23,5 +23,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

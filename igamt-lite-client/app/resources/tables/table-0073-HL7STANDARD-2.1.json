@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 12,
   "id" : "565f3ab7d4c6e52cfd448366",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0073",
-  "name" : "INTEREST RATE CODE",
+  "name" : "0073",
   "description" : "INTEREST RATE CODE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

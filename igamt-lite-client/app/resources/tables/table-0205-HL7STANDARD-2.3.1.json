@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 249,
   "id" : "565f3ab7d4c6e52cfd445ec9",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0205",
-  "name" : "Price type",
+  "name" : "0205",
   "description" : "Price type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -77,5 +77,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

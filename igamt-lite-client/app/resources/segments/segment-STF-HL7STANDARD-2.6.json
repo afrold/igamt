@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 107,
   "hl7Version" : "2.6",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212935d4c64f1ebfd466e3" ],
+  "libIds" : [ "573b0840da08c28cd047c6da" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0ed4c623dc6550bd98",
@@ -19,10 +19,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b131",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b131",
+      "bindingIdentifier" : "9999",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +46,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550af45",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbbe",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550af45",
+      "bindingIdentifier" : "0061",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbbe",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -57,10 +73,13 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bba6",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bba6",
+      "name" : "XPN",
+      "ext" : null,
+      "label" : "XPN"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -76,10 +95,18 @@
     "minLength" : 0,
     "maxLength" : "2",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550af4b",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb7d",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550af4b",
+      "bindingIdentifier" : "0182",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -95,10 +122,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a8e9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb7d",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a8e9",
+      "bindingIdentifier" : "0001",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 5,
     "comment" : "",
     "text" : "",
@@ -114,10 +149,13 @@
     "minLength" : 0,
     "maxLength" : "24",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb8a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
     "position" : 6,
     "comment" : "",
     "text" : "",
@@ -133,10 +171,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550af1c",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb77",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550af1c",
+      "bindingIdentifier" : "0183",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 7,
     "comment" : "",
     "text" : "",
@@ -152,10 +198,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550af40",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550af40",
+      "bindingIdentifier" : "0184",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 8,
     "comment" : "",
     "text" : "",
@@ -171,10 +225,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b0c9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b0c9",
+      "bindingIdentifier" : "0069",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 9,
     "comment" : "",
     "text" : "",
@@ -190,10 +252,13 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bba0",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bba0",
+      "name" : "XTN",
+      "ext" : null,
+      "label" : "XTN"
+    },
     "position" : 10,
     "comment" : "",
     "text" : "",
@@ -209,10 +274,13 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbc1",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbc1",
+      "name" : "XAD",
+      "ext" : null,
+      "label" : "XAD"
+    },
     "position" : 11,
     "comment" : "",
     "text" : "",
@@ -228,10 +296,18 @@
     "minLength" : 0,
     "maxLength" : "276",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b32a",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbb4",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b32a",
+      "bindingIdentifier" : "0537",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbb4",
+      "name" : "DIN",
+      "ext" : null,
+      "label" : "DIN"
+    },
     "position" : 12,
     "comment" : "",
     "text" : "",
@@ -247,10 +323,18 @@
     "minLength" : 0,
     "maxLength" : "276",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b32a",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbb4",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b32a",
+      "bindingIdentifier" : "0537",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbb4",
+      "name" : "DIN",
+      "ext" : null,
+      "label" : "DIN"
+    },
     "position" : 13,
     "comment" : "",
     "text" : "",
@@ -266,10 +350,13 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 14,
     "comment" : "",
     "text" : "",
@@ -285,10 +372,13 @@
     "minLength" : 0,
     "maxLength" : "40",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbaf",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbaf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 15,
     "comment" : "",
     "text" : "",
@@ -304,10 +394,18 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550af05",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550af05",
+      "bindingIdentifier" : "0185",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 16,
     "comment" : "",
     "text" : "",
@@ -323,10 +421,18 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a656",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a656",
+      "bindingIdentifier" : "0002",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 17,
     "comment" : "",
     "text" : "",
@@ -342,10 +448,13 @@
     "minLength" : 0,
     "maxLength" : "20",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbaf",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbaf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 18,
     "comment" : "",
     "text" : "",
@@ -361,10 +470,13 @@
     "minLength" : 0,
     "maxLength" : "20",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb7e",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7e",
+      "name" : "JCC",
+      "ext" : null,
+      "label" : "JCC"
+    },
     "position" : 19,
     "comment" : "",
     "text" : "",
@@ -380,10 +492,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b0cf",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b0cf",
+      "bindingIdentifier" : "0066",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 20,
     "comment" : "",
     "text" : "",
@@ -399,10 +519,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a9a9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb77",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 21,
     "comment" : "",
     "text" : "",
@@ -418,10 +546,13 @@
     "minLength" : 0,
     "maxLength" : "25",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb97",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb97",
+      "name" : "DLN",
+      "ext" : null,
+      "label" : "DLN"
+    },
     "position" : 22,
     "comment" : "",
     "text" : "",
@@ -437,10 +568,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a9a9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb77",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 23,
     "comment" : "",
     "text" : "",
@@ -456,10 +595,13 @@
     "minLength" : 0,
     "maxLength" : "8",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb73",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb73",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
     "position" : 24,
     "comment" : "",
     "text" : "",
@@ -475,10 +617,13 @@
     "minLength" : 0,
     "maxLength" : "8",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb73",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb73",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
     "position" : 25,
     "comment" : "",
     "text" : "",
@@ -494,10 +639,13 @@
     "minLength" : 0,
     "maxLength" : "8",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb73",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb73",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
     "position" : 26,
     "comment" : "",
     "text" : "",
@@ -513,10 +661,18 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a61b",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a61b",
+      "bindingIdentifier" : "0005",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 27,
     "comment" : "",
     "text" : "",
@@ -532,10 +688,18 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b0c4",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b0c4",
+      "bindingIdentifier" : "0189",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 28,
     "comment" : "",
     "text" : "",
@@ -551,10 +715,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a9a9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb77",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 29,
     "comment" : "",
     "text" : "",
@@ -570,10 +742,18 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550ae1b",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550ae1b",
+      "bindingIdentifier" : "0171",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 30,
     "comment" : "",
     "text" : "",
@@ -589,10 +769,13 @@
     "minLength" : 0,
     "maxLength" : "8",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb8a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
     "position" : 31,
     "comment" : "",
     "text" : "",
@@ -608,10 +791,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a9a9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb77",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 32,
     "comment" : "",
     "text" : "",
@@ -627,10 +818,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b2ff",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b2ff",
+      "bindingIdentifier" : "0538",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 33,
     "comment" : "",
     "text" : "",
@@ -646,10 +845,13 @@
     "minLength" : 0,
     "maxLength" : "52",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb72",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb72",
+      "name" : "DR",
+      "ext" : null,
+      "label" : "DR"
+    },
     "position" : 34,
     "comment" : "",
     "text" : "",
@@ -665,10 +867,13 @@
     "minLength" : 0,
     "maxLength" : "8",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb73",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb73",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
     "position" : 35,
     "comment" : "",
     "text" : "",
@@ -684,10 +889,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b30f",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b30f",
+      "bindingIdentifier" : "0539",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 36,
     "comment" : "",
     "text" : "",
@@ -703,10 +916,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a9a9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb77",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 37,
     "comment" : "",
     "text" : "",
@@ -722,10 +943,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b365",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b365",
+      "bindingIdentifier" : "0540",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 38,
     "comment" : "",
     "text" : "",
@@ -741,10 +970,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b2ef",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b2ef",
+      "bindingIdentifier" : "0771",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 39,
     "comment" : "",
     "text" : "",
@@ -755,7 +992,7 @@
     "max" : "*"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dc299e",
+    "id" : "573b0840da08c28cd047b34f",
     "mappings" : [ ]
   },
   "name" : "STF",

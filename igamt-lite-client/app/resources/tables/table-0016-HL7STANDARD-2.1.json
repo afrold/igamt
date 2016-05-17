@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 37,
   "id" : "565f3ab7d4c6e52cfd4482c6",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0016",
-  "name" : "ISOLATION",
+  "name" : "0016",
   "description" : "ISOLATION",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -77,5 +77,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

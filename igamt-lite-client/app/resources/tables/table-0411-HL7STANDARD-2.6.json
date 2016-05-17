@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 161,
   "id" : "569eac0ed4c623dc6550b2c3",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0411",
-  "name" : "Supplemental Service Information Values",
+  "name" : "0411",
   "description" : "Supplemental Service Information Values",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.411",
@@ -23,5 +23,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

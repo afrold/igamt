@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 208,
   "id" : "565f3ab6d4c6e52cfd443a22",
   "hl7Version" : "2.4",
+  "libIds" : [ "573b0847da08c28cd04847b8" ],
   "bindingIdentifier" : "0404",
-  "name" : "Language proficiency",
+  "name" : "0404",
   "description" : "Language proficiency",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -68,5 +68,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

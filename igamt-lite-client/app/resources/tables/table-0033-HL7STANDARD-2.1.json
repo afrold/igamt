@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 63,
   "id" : "565f3ab7d4c6e52cfd448300",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0033",
-  "name" : "ROUTE",
+  "name" : "0033",
   "description" : "ROUTE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -266,5 +266,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

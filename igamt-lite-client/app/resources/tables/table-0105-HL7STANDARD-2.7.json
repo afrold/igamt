@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 405,
   "id" : "569eac0dd4c623dc6550838e",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0105",
-  "name" : "Source of Comment",
+  "name" : "0105",
   "description" : "Source of Comment",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

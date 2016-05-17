@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 79,
   "hl7Version" : "2.5.1",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212935d4c64f1ebfd435d1" ],
+  "libIds" : [ "573b083dda08c28cd0479664" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0fd4c623dc6550f23a",
@@ -19,10 +19,13 @@
     "minLength" : 0,
     "maxLength" : "60",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecc3",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecc3",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +41,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e0cc",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecd0",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e0cc",
+      "bindingIdentifier" : "0296",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -57,10 +68,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e465",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecd0",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e465",
+      "bindingIdentifier" : "0403",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -76,10 +95,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e49e",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecd0",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e49e",
+      "bindingIdentifier" : "0404",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecd0",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -90,7 +117,7 @@
     "max" : "1"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024b1208a2adb7dbfbd1",
+    "id" : "573b083dda08c28cd0478563",
     "mappings" : [ ]
   },
   "name" : "LAN",

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 116,
   "id" : "565f3ab7d4c6e52cfd447d6e",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0162",
-  "name" : "ROUTE OF ADMINISTRATION",
+  "name" : "0162",
   "description" : "ROUTE OF ADMINISTRATION",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -275,5 +275,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 341,
   "id" : "569eac0ed4c623dc6550b8ef",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0466",
-  "name" : "Ambulatory Payment Classification Code",
+  "name" : "0466",
   "description" : "Ambulatory Payment Classification Code",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.466",
@@ -50,5 +50,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

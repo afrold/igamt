@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 84,
   "id" : "565f3ab7d4c6e52cfd447c6e",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0001",
-  "name" : "SEX",
+  "name" : "0001",
   "description" : "SEX",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -50,5 +50,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

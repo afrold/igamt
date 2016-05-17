@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 83,
   "id" : "569eac0dd4c623dc65507b95",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0909",
-  "name" : "Patient Results Release Categorization Scheme",
+  "name" : "0909",
   "description" : "Patient Results Release Categorization Scheme",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -68,5 +68,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

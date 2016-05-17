@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 330,
   "id" : "569eac0dd4c623dc65507cdd",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0871",
-  "name" : "Supply Risk Codes",
+  "name" : "0871",
   "description" : "Supply Risk Codes",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -77,5 +77,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

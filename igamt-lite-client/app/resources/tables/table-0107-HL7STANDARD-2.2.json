@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 149,
   "id" : "565f3ab7d4c6e52cfd44804e",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0107",
-  "name" : "DEFERRED RESPONSE TYPE",
+  "name" : "0107",
   "description" : "DEFERRED RESPONSE TYPE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -32,5 +32,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 284,
   "id" : "565f3ab6d4c6e52cfd44030c",
   "hl7Version" : "2.5",
+  "libIds" : [ "573b0845da08c28cd04822c4" ],
   "bindingIdentifier" : "0493",
-  "name" : "Specimen Condition",
+  "name" : "0493",
   "description" : "Specimen Condition",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.493",
@@ -95,5 +95,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 61,
   "id" : "569eac0fd4c623dc6550e397",
   "hl7Version" : "2.5.1",
+  "libIds" : [ "573b083dda08c28cd0479666" ],
   "bindingIdentifier" : "0066",
-  "name" : "Employment Status",
+  "name" : "0066",
   "description" : "Employment Status",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.66",
@@ -113,5 +113,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

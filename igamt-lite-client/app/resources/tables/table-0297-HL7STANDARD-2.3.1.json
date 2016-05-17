@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 217,
   "id" : "565f3ab7d4c6e52cfd445d1f",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0297",
-  "name" : "CN ID source",
+  "name" : "0297",
   "description" : "CN ID source",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

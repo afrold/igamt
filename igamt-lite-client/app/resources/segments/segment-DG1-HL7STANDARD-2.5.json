@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 47,
   "hl7Version" : "2.5",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212934d4c64f1ebfd40afb" ],
+  "libIds" : [ "573b0845da08c28cd04822c2" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab6d4c6e52cfd441915",
@@ -19,10 +19,13 @@
     "minLength" : 0,
     "maxLength" : "4",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416e5",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416e5",
+      "name" : "SI",
+      "ext" : null,
+      "label" : "SI"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +41,18 @@
     "minLength" : 0,
     "maxLength" : "2",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440a5a",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416ba",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440a5a",
+      "bindingIdentifier" : "0053",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416ba",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -57,10 +68,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440a71",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f2",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440a71",
+      "bindingIdentifier" : "0051",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -72,14 +91,17 @@
   }, {
     "type" : "field",
     "name" : "Diagnosis Description",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "40",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f1",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f1",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -95,10 +117,13 @@
     "minLength" : 0,
     "maxLength" : "26",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd441708",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd441708",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
     "position" : 5,
     "comment" : "",
     "text" : "",
@@ -114,10 +139,18 @@
     "minLength" : 0,
     "maxLength" : "2",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440a74",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416c0",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440a74",
+      "bindingIdentifier" : "0052",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416c0",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 6,
     "comment" : "",
     "text" : "",
@@ -129,14 +162,22 @@
   }, {
     "type" : "field",
     "name" : "Major Diagnostic Category",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd441676",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f2",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd441676",
+      "bindingIdentifier" : "0118",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 7,
     "comment" : "",
     "text" : "",
@@ -148,14 +189,22 @@
   }, {
     "type" : "field",
     "name" : "Diagnostic Related Group",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440bd2",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f2",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440bd2",
+      "bindingIdentifier" : "0055",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 8,
     "comment" : "",
     "text" : "",
@@ -167,14 +216,22 @@
   }, {
     "type" : "field",
     "name" : "DRG Approval Indicator",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd4406ce",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416ba",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd4406ce",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416ba",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 9,
     "comment" : "",
     "text" : "",
@@ -186,14 +243,22 @@
   }, {
     "type" : "field",
     "name" : "DRG Grouper Review Code",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "2",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440bd4",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416c0",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440bd4",
+      "bindingIdentifier" : "0056",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416c0",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 10,
     "comment" : "",
     "text" : "",
@@ -205,14 +270,22 @@
   }, {
     "type" : "field",
     "name" : "Outlier Type",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd440e28",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f2",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd440e28",
+      "bindingIdentifier" : "0083",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f2",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 11,
     "comment" : "",
     "text" : "",
@@ -224,14 +297,17 @@
   }, {
     "type" : "field",
     "name" : "Outlier Days",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "3",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416d4",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416d4",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
     "position" : 12,
     "comment" : "",
     "text" : "",
@@ -243,14 +319,17 @@
   }, {
     "type" : "field",
     "name" : "Outlier Cost",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "12",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f9",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f9",
+      "name" : "CP",
+      "ext" : null,
+      "label" : "CP"
+    },
     "position" : 13,
     "comment" : "",
     "text" : "",
@@ -262,14 +341,17 @@
   }, {
     "type" : "field",
     "name" : "Grouper Version And Type",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "4",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f1",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f1",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 14,
     "comment" : "",
     "text" : "",
@@ -285,10 +367,18 @@
     "minLength" : 0,
     "maxLength" : "2",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd44153b",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416ba",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd44153b",
+      "bindingIdentifier" : "0359",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416ba",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 15,
     "comment" : "",
     "text" : "",
@@ -304,10 +394,13 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416d6",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416d6",
+      "name" : "XCN",
+      "ext" : null,
+      "label" : "XCN"
+    },
     "position" : 16,
     "comment" : "",
     "text" : "",
@@ -323,10 +416,18 @@
     "minLength" : 0,
     "maxLength" : "3",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd4414b0",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416c0",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd4414b0",
+      "bindingIdentifier" : "0228",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416c0",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 17,
     "comment" : "",
     "text" : "",
@@ -342,10 +443,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd4406ce",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416ba",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd4406ce",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416ba",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 18,
     "comment" : "",
     "text" : "",
@@ -361,10 +470,13 @@
     "minLength" : 0,
     "maxLength" : "26",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd441708",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd441708",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
     "position" : 19,
     "comment" : "",
     "text" : "",
@@ -380,10 +492,13 @@
     "minLength" : 0,
     "maxLength" : "427",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416bf",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416bf",
+      "name" : "EI",
+      "ext" : null,
+      "label" : "EI"
+    },
     "position" : 20,
     "comment" : "",
     "text" : "",
@@ -399,10 +514,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd441326",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416ba",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd441326",
+      "bindingIdentifier" : "0206",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416ba",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 21,
     "comment" : "",
     "text" : "",
@@ -413,7 +536,7 @@
     "max" : "1"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dc849a",
+    "id" : "573b0845da08c28cd0480e89",
     "mappings" : [ ]
   },
   "name" : "DG1",

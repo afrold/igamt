@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 156,
   "hl7Version" : "2.6",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212935d4c64f1ebfd466e3" ],
+  "libIds" : [ "573b0840da08c28cd047c6da" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0ed4c623dc6550c0b4",
@@ -19,10 +19,13 @@
     "minLength" : 0,
     "maxLength" : "24",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb8a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +41,18 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550ae19",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550ae19",
+      "bindingIdentifier" : "0050",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -57,10 +68,13 @@
     "minLength" : 0,
     "maxLength" : "25",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbaf",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbaf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -72,14 +86,22 @@
   }, {
     "type" : "field",
     "name" : "Auto Accident State",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "0",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b899",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b899",
+      "bindingIdentifier" : "0347",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -95,10 +117,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a9a9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb77",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 5,
     "comment" : "",
     "text" : "",
@@ -114,10 +144,18 @@
     "minLength" : 0,
     "maxLength" : "12",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a9a9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb77",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 6,
     "comment" : "",
     "text" : "",
@@ -133,10 +171,13 @@
     "minLength" : 0,
     "maxLength" : "3220",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb94",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb94",
+      "name" : "XCN",
+      "ext" : null,
+      "label" : "XCN"
+    },
     "position" : 7,
     "comment" : "",
     "text" : "",
@@ -152,10 +193,13 @@
     "minLength" : 0,
     "maxLength" : "25",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbaf",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbaf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 8,
     "comment" : "",
     "text" : "",
@@ -171,10 +215,13 @@
     "minLength" : 0,
     "maxLength" : "80",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbaf",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbaf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 9,
     "comment" : "",
     "text" : "",
@@ -190,10 +237,18 @@
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550a9a9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb77",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a9a9",
+      "bindingIdentifier" : "0136",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 10,
     "comment" : "",
     "text" : "",
@@ -209,10 +264,13 @@
     "minLength" : 0,
     "maxLength" : "250",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbc1",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbc1",
+      "name" : "XAD",
+      "ext" : null,
+      "label" : "XAD"
+    },
     "position" : 11,
     "comment" : "",
     "text" : "",
@@ -223,7 +281,7 @@
     "max" : "1"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dc2ccc",
+    "id" : "573b0840da08c28cd047b67d",
     "mappings" : [ ]
   },
   "name" : "ACC",

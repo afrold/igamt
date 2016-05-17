@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 305,
   "id" : "565f3ab7d4c6e52cfd445e50",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0188",
-  "name" : "Operator ID",
+  "name" : "0188",
   "description" : "Operator ID",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

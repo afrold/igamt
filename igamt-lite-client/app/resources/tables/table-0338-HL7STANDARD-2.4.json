@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 107,
   "id" : "565f3ab6d4c6e52cfd443cc3",
   "hl7Version" : "2.4",
+  "libIds" : [ "573b0847da08c28cd04847b8" ],
   "bindingIdentifier" : "0338",
-  "name" : "Practitioner ID number type",
+  "name" : "0338",
   "description" : "Practitioner ID number type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -113,5 +113,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

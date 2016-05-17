@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 474,
   "id" : "569eac0dd4c623dc65507c78",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0502",
-  "name" : "Non-Subject Consenter Reason",
+  "name" : "0502",
   "description" : "Non-Subject Consenter Reason",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

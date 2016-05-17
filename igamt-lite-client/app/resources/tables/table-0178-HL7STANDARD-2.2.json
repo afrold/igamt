@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 182,
   "id" : "565f3ab7d4c6e52cfd447f46",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0178",
-  "name" : "FILE-LEVEL EVENT CODE",
+  "name" : "0178",
   "description" : "FILE-LEVEL EVENT CODE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -32,5 +32,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 18,
   "id" : "565f3ab6d4c6e52cfd440ef6",
   "hl7Version" : "2.5",
+  "libIds" : [ "573b0845da08c28cd04822c4" ],
   "bindingIdentifier" : "0528",
-  "name" : "Event related period",
+  "name" : "0528",
   "description" : "Event related period",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.528",
@@ -131,5 +131,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 35,
   "id" : "565f3ab7d4c6e52cfd447edc",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0047",
-  "name" : "DANGER CODE",
+  "name" : "0047",
   "description" : "DANGER CODE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 473,
   "id" : "569eac0dd4c623dc65507c61",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0615",
-  "name" : "User Authentication Credential Type Code",
+  "name" : "0615",
   "description" : "User Authentication Credential Type Code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -32,5 +32,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

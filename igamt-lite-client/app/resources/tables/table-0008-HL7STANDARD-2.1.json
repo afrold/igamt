@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 50,
   "id" : "565f3ab7d4c6e52cfd4482a5",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0008",
-  "name" : "ACKNOWLEDGMENT CODE",
+  "name" : "0008",
   "description" : "ACKNOWLEDGMENT CODE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -32,5 +32,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

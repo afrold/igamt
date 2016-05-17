@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 76,
   "id" : "565f3ab7d4c6e52cfd447bdb",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0093",
-  "name" : "RELEASE OF INFORMATION",
+  "name" : "0093",
   "description" : "RELEASE OF INFORMATION",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -32,5 +32,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

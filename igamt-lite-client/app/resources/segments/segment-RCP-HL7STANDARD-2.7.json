@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 45,
   "hl7Version" : "2.7",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212935d4c64f1ebfd499c0" ],
+  "libIds" : [ "573b0842da08c28cd047f917" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0dd4c623dc65508ae9",
@@ -19,10 +19,18 @@
     "minLength" : 1,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0dd4c623dc65507b8c",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc65508662",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507b8c",
+      "bindingIdentifier" : "0091",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +46,18 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "",
-    "table" : "569eac0dd4c623dc655070ee",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc655086a3",
+    "table" : {
+      "id" : "569eac0dd4c623dc655070ee",
+      "bindingIdentifier" : "0126",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc655086a3",
+      "name" : "CQ",
+      "ext" : null,
+      "label" : "CQ"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -57,10 +73,18 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "",
-    "table" : "569eac0dd4c623dc6550763b",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc65508674",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550763b",
+      "bindingIdentifier" : "0394",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508674",
+      "name" : "CNE",
+      "ext" : null,
+      "label" : "CNE"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -76,10 +100,13 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc65508675",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508675",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -95,10 +122,18 @@
     "minLength" : 1,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0dd4c623dc65507643",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc65508662",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507643",
+      "bindingIdentifier" : "0395",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 5,
     "comment" : "",
     "text" : "",
@@ -114,10 +149,13 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc6550868d",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550868d",
+      "name" : "SRT",
+      "ext" : null,
+      "label" : "SRT"
+    },
     "position" : 6,
     "comment" : "",
     "text" : "",
@@ -133,10 +171,18 @@
     "minLength" : 1,
     "maxLength" : "256",
     "confLength" : "",
-    "table" : "569eac0dd4c623dc65507670",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc65508662",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507670",
+      "bindingIdentifier" : "0391",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 7,
     "comment" : "",
     "text" : "",
@@ -147,7 +193,7 @@
     "max" : "*"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dc5601",
+    "id" : "573b0842da08c28cd047dfd1",
     "mappings" : [ ]
   },
   "name" : "RCP",

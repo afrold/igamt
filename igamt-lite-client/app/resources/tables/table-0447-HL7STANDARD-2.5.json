@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 443,
   "id" : "565f3ab6d4c6e52cfd441204",
   "hl7Version" : "2.5",
+  "libIds" : [ "573b0845da08c28cd04822c4" ],
   "bindingIdentifier" : "0447",
-  "name" : "Breed Code",
+  "name" : "0447",
   "description" : "Breed Code",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.447",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

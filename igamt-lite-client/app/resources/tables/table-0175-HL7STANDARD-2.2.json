@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 78,
   "id" : "565f3ab7d4c6e52cfd447dd2",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0175",
-  "name" : "MASTER FILE IDENTIFIER CODE",
+  "name" : "0175",
   "description" : "MASTER FILE IDENTIFIER CODE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -95,5 +95,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

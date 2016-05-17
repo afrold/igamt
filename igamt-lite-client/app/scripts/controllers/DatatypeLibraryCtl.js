@@ -25,7 +25,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $scope.scopes = [];
       $scope.datatypeLibrariesConfig = {};
       $scope.datatypeLibrariesConfig.selectedType
-	  $scope.admin = userInfoService.isAdmin();
+	  $scope.admin = true; //userInfoService.isAdmin();
 
       $scope.datatypesParams = new ngTreetableParams({
           getNodes: function (parent) {
@@ -118,11 +118,18 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 				$timeout(
 					function () {
             $scope.hl7Version = datatypeLibrary.metaData.hl7Version;
-                  $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibrary.metaData);
-                  var datatypes = null;
-                  DatatypeLibrarySvc.getDatatypesByLibrary($scope.datatypeLibStruct.id).then(function(response){
+            
+            // gcr We need the metaData to know its library.  Eventually, the datatypLibId will be prepopulated
+            // and this can be removed.
+            if (datatypeLibrary.metaData.datatypLibId !== datatypeLibrary.id) {
+            	datatypeLibrary.metaData.datatypLibId = datatypeLibrary.id;
+            }
+            $scope.datatypeLibStruct = datatypeLibrary;
+            $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibrary.metaData);
+                   var datatypes = null;
+                  DatatypeLibrarySvc.getDatatypesByLibrary(datatypeLibrary.id).then(function(response){
                 	  datatypes = response;
-                	  var sortedLinks = _.sortBy($scope.datatypeLibStruct.children, 'id');
+                	  var sortedLinks = _.sortBy(datatypeLibrary.children, 'id');
                 	  var sortedDts = _.sortBy(datatypes, 'id');
                 	  console.log("Verify synch=" + sortedLinks.length === sortedDts.length + " sortedLinks.length" + sortedLinks.length + " sortedDts.length" + sortedDts.length);
                 	  for (i = 0; i < sortedLinks.length; i++) {
@@ -138,7 +145,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 		  $scope.datatypesJoinStruct.push(datatypeJoinStruct);
                 	  }
                   });
-                  console.log("$scope.edit.datatypeLibStruct=" + JSON.stringify($scope.datatypeLibStruct.children.length));
+                  console.log("edit().datatypeLibrary=" + JSON.stringify(datatypeLibrary.children.length));
                   $scope.metaDataView = "LibraryMetaData.html";
                   $scope.datatypeListView = "DatatypeList.html";
                  $timeout(

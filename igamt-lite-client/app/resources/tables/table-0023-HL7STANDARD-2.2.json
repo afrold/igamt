@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 172,
   "id" : "565f3ab7d4c6e52cfd447d1c",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0023",
-  "name" : "ADMIT SOURCE",
+  "name" : "0023",
   "description" : "ADMIT SOURCE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

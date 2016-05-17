@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 107,
   "id" : "569eac0dd4c623dc655070bc",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0488",
-  "name" : "Specimen Collection Method",
+  "name" : "0488",
   "description" : "Specimen Collection Method",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -392,5 +392,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

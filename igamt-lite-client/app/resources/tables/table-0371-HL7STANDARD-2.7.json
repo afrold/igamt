@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 171,
   "id" : "569eac0dd4c623dc65506fbd",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0371",
-  "name" : "Additive/Preservative",
+  "name" : "0371",
   "description" : "Additive/Preservative",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -527,5 +527,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

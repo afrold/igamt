@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 70,
   "id" : "565f3ab7d4c6e52cfd447ed7",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0046",
-  "name" : "CREDIT RATING",
+  "name" : "0046",
   "description" : "CREDIT RATING",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

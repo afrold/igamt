@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 265,
   "id" : "569eac0ed4c623dc6550b795",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0206",
-  "name" : "Segment action code",
+  "name" : "0206",
   "description" : "Segment action code",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.206",
@@ -50,5 +50,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

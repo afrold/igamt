@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 102,
   "id" : "565f3ab7d4c6e52cfd447df0",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0171",
-  "name" : "Country Code",
+  "name" : "0171",
   "description" : "Country Code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -1805,5 +1805,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

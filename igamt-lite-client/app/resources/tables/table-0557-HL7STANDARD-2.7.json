@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 189,
   "id" : "569eac0dd4c623dc65507eb2",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0557",
-  "name" : "Payee Type",
+  "name" : "0557",
   "description" : "Payee Type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -50,5 +50,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

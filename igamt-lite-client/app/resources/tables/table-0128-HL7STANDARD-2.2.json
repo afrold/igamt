@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 46,
   "id" : "565f3ab7d4c6e52cfd447bef",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0128",
-  "name" : "ALLERGY SEVERITY",
+  "name" : "0128",
   "description" : "ALLERGY SEVERITY",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

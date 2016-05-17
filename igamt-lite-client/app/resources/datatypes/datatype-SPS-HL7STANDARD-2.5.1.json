@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 65,
   "hl7Version" : "2.5.1",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "57237653da0805ce1eab08ad" ],
+  "libIds" : [ "573b083dda08c28cd0479665" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0fd4c623dc6550ec97",
   "label" : "SPS",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "Specimen Source Name or Code",
@@ -20,10 +21,13 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecbe",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecbe",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +40,18 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550d885",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecbe",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550d885",
+      "bindingIdentifier" : "0371",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecbe",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -52,10 +64,13 @@
     "minLength" : 0,
     "maxLength" : "200",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec8e",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec8e",
+      "name" : "TX",
+      "ext" : null,
+      "label" : "TX"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -68,10 +83,18 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550df72",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecbe",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550df72",
+      "bindingIdentifier" : "0163",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecbe",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -84,10 +107,18 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550dda5",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecbe",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dda5",
+      "bindingIdentifier" : "0495",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecbe",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 5,
     "comment" : "",
     "text" : "",
@@ -100,10 +131,13 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecbe",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecbe",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 6,
     "comment" : "",
     "text" : "",
@@ -116,10 +150,18 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550d935",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecbe",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550d935",
+      "bindingIdentifier" : "0369",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecbe",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 7,
     "comment" : "",
     "text" : "",
@@ -129,6 +171,5 @@
   "name" : "SPS",
   "description" : "Specimen Source",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

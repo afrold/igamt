@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 276,
   "id" : "565f3ab7d4c6e52cfd447043",
   "hl7Version" : "2.3",
+  "libIds" : [ "573b084ada08c28cd04867f9" ],
   "bindingIdentifier" : "0266",
-  "name" : "Gender Indicator",
+  "name" : "0266",
   "description" : "Gender Indicator",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

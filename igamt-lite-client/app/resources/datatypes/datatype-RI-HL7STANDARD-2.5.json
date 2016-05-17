@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 82,
   "hl7Version" : "2.5",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "57237659da0805ce1eab94f9" ],
+  "libIds" : [ "573b0845da08c28cd04822c3" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab6d4c6e52cfd4416c7",
   "label" : "RI",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "Repeat Pattern",
@@ -20,10 +21,18 @@
     "minLength" : 0,
     "maxLength" : "6",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd44138b",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416c0",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd44138b",
+      "bindingIdentifier" : "0335",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416c0",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +45,13 @@
     "minLength" : 0,
     "maxLength" : "199",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd4416f1",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd4416f1",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -49,6 +61,5 @@
   "name" : "RI",
   "description" : "Repeat Interval",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

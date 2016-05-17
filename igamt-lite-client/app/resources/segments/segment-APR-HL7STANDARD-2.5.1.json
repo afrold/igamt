@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 15,
   "hl7Version" : "2.5.1",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212935d4c64f1ebfd435d1" ],
+  "libIds" : [ "573b083dda08c28cd0479664" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0fd4c623dc6550ee99",
@@ -19,10 +19,18 @@
     "minLength" : 0,
     "maxLength" : "80",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e0db",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec91",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e0db",
+      "bindingIdentifier" : "0294",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec91",
+      "name" : "SCV",
+      "ext" : null,
+      "label" : "SCV"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +46,18 @@
     "minLength" : 0,
     "maxLength" : "80",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e0db",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec91",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e0db",
+      "bindingIdentifier" : "0294",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec91",
+      "name" : "SCV",
+      "ext" : null,
+      "label" : "SCV"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -57,10 +73,18 @@
     "minLength" : 0,
     "maxLength" : "80",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e0db",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec91",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e0db",
+      "bindingIdentifier" : "0294",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec91",
+      "name" : "SCV",
+      "ext" : null,
+      "label" : "SCV"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -76,10 +100,13 @@
     "minLength" : 0,
     "maxLength" : "5",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecb2",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecb2",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -95,10 +122,13 @@
     "minLength" : 0,
     "maxLength" : "80",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec91",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec91",
+      "name" : "SCV",
+      "ext" : null,
+      "label" : "SCV"
+    },
     "position" : 5,
     "comment" : "",
     "text" : "",
@@ -109,7 +139,7 @@
     "max" : "*"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024b1208a2adb7dbf7fc",
+    "id" : "573b083dda08c28cd047818e",
     "mappings" : [ ]
   },
   "name" : "APR",

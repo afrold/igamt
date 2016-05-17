@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 62,
   "hl7Version" : "2.7",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "57237657da0805ce1eab6b54" ],
+  "libIds" : [ "573b0842da08c28cd047f918" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0dd4c623dc6550868a",
   "label" : "PLN",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "ID Number",
@@ -20,10 +21,13 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "20",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc6550869a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +40,18 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "",
-    "table" : "569eac0dd4c623dc6550835b",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc65508689",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550835b",
+      "bindingIdentifier" : "0338",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508689",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -52,10 +64,13 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "62",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc6550869a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -68,10 +83,13 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "8",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc6550865f",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550865f",
+      "name" : "DT",
+      "ext" : null,
+      "label" : "DT"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -81,6 +99,5 @@
   "name" : "PLN",
   "description" : "Practitioner License or Other ID Number",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

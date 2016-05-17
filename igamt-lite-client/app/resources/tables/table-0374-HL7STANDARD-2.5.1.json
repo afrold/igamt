@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 4,
   "id" : "569eac0fd4c623dc6550dda3",
   "hl7Version" : "2.5.1",
+  "libIds" : [ "573b083dda08c28cd0479666" ],
   "bindingIdentifier" : "0374",
-  "name" : "System induced contaminants",
+  "name" : "0374",
   "description" : "System induced contaminants",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.374",
@@ -23,5 +23,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

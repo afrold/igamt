@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 288,
   "id" : "565f3ab7d4c6e52cfd445f1f",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0321",
-  "name" : "Dispense method",
+  "name" : "0321",
   "description" : "Dispense method",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -50,5 +50,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

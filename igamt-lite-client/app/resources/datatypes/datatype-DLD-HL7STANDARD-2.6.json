@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 6,
   "hl7Version" : "2.6",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "57237656da0805ce1eab391d" ],
+  "libIds" : [ "573b0840da08c28cd047c6db" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0ed4c623dc6550bb8d",
   "label" : "DLD",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "Discharge to Location",
@@ -20,10 +21,18 @@
     "minLength" : 0,
     "maxLength" : "705",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550bb00",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb9e",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550bb00",
+      "bindingIdentifier" : "0113",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb9e",
+      "name" : "CWE",
+      "ext" : null,
+      "label" : "CWE"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +45,13 @@
     "minLength" : 0,
     "maxLength" : "24",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb8a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -49,6 +61,5 @@
   "name" : "DLD",
   "description" : "Discharge to Location and Date",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

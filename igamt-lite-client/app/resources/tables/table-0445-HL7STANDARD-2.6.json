@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 1,
   "id" : "569eac0ed4c623dc6550b6cb",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0445",
-  "name" : "Identity Reliability Code",
+  "name" : "0445",
   "description" : "Identity Reliability Code",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.445",
@@ -50,5 +50,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

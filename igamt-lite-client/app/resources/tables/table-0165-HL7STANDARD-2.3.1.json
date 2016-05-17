@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 188,
   "id" : "565f3ab7d4c6e52cfd445cc7",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0165",
-  "name" : "Administration method",
+  "name" : "0165",
   "description" : "Administration method",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -149,5 +149,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

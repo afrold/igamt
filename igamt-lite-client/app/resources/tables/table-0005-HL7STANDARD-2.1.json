@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 62,
   "id" : "565f3ab7d4c6e52cfd448255",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0005",
-  "name" : "ETHNIC GROUP",
+  "name" : "0005",
   "description" : "ETHNIC GROUP",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -50,5 +50,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

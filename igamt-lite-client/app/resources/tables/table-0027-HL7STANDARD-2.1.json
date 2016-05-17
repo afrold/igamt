@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 120,
   "id" : "565f3ab7d4c6e52cfd4482dd",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0027",
-  "name" : "PRIORITY (COMPONENT 6 QTY/TIMING[735])",
+  "name" : "0027",
   "description" : "PRIORITY (COMPONENT 6 QTY/TIMING[735])",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

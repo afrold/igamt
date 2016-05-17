@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 508,
   "id" : "569eac0dd4c623dc655084fd",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0233",
-  "name" : "Non-Concur Code/Description",
+  "name" : "0233",
   "description" : "Non-Concur Code/Description",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -23,5 +23,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 301,
   "id" : "565f3ab7d4c6e52cfd445bbc",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0159",
-  "name" : "Diet code specification type",
+  "name" : "0159",
   "description" : "Diet code specification type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

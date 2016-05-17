@@ -1,22 +1,22 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 10,
   "hl7Version" : "2.1",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "5723765eda0805ce1eabe128" ],
+  "libIds" : [ "573b084bda08c28cd0486f10" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd448424",
   "label" : "ID",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ ],
   "name" : "ID",
   "description" : "CODED VALUE",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 55,
   "hl7Version" : "2.3",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "5723765dda0805ce1eabda1c" ],
+  "libIds" : [ "573b084ada08c28cd04867f8" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd447589",
   "label" : "CM_PRL",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "OBX-3 observation identifier of parent result",
@@ -20,10 +21,13 @@
     "minLength" : 0,
     "maxLength" : "-1",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab7d4c6e52cfd44756b",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44756b",
+      "name" : "CE",
+      "ext" : null,
+      "label" : "CE"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +40,13 @@
     "minLength" : 0,
     "maxLength" : "-1",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab7d4c6e52cfd44756a",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44756a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -52,10 +59,13 @@
     "minLength" : 0,
     "maxLength" : "-1",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab7d4c6e52cfd447588",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447588",
+      "name" : "TX",
+      "ext" : null,
+      "label" : "TX"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -65,6 +75,5 @@
   "name" : "CM_PRL",
   "description" : "parent result link",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

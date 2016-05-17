@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 60,
   "id" : "565f3ab7d4c6e52cfd4461c1",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0239",
-  "name" : "Event expected",
+  "name" : "0239",
   "description" : "Event expected",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

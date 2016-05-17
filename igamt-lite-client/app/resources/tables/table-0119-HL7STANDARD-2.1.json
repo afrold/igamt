@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 80,
   "id" : "565f3ab7d4c6e52cfd4483f4",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0119",
-  "name" : "ORDER CONTROL",
+  "name" : "0119",
   "description" : "ORDER CONTROL",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -257,5 +257,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

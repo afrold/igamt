@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 499,
   "id" : "569eac0dd4c623dc655083da",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0224",
-  "name" : "Transport Arranged",
+  "name" : "0224",
   "description" : "Transport Arranged",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

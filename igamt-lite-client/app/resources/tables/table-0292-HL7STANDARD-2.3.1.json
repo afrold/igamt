@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 38,
   "id" : "565f3ab7d4c6e52cfd445c2a",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0292",
-  "name" : "Vaccines administered (code = CVX)(parenteral, unless oral is noted)",
+  "name" : "0292",
   "description" : "Vaccines administered (code = CVX)(parenteral, unless oral is noted)",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -842,5 +842,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

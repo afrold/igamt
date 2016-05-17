@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 467,
   "id" : "569eac0dd4c623dc65507c64",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0616",
-  "name" : "Address Expiration Reason",
+  "name" : "0616",
   "description" : "Address Expiration Reason",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -50,5 +50,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

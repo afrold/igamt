@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 117,
   "id" : "565f3ab7d4c6e52cfd447faa",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0072",
-  "name" : "INS. PLAN ID",
+  "name" : "0072",
   "description" : "INS. PLAN ID",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

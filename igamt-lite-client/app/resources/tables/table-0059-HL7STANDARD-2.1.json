@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 111,
   "id" : "565f3ab7d4c6e52cfd448354",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0059",
-  "name" : "CONSENT CODE",
+  "name" : "0059",
   "description" : "CONSENT CODE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

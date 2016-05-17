@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 48,
   "id" : "565f3ab6d4c6e52cfd443dbf",
   "hl7Version" : "2.4",
+  "libIds" : [ "573b0847da08c28cd04847b8" ],
   "bindingIdentifier" : "0341",
-  "name" : "Guarantor credit rating code",
+  "name" : "0341",
   "description" : "Guarantor credit rating code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

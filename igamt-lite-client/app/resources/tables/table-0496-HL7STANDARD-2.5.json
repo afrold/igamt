@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 116,
   "id" : "565f3ab6d4c6e52cfd4407df",
   "hl7Version" : "2.5",
+  "libIds" : [ "573b0845da08c28cd04822c4" ],
   "bindingIdentifier" : "0496",
-  "name" : "Consent Type",
+  "name" : "0496",
   "description" : "Consent Type",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.496",
@@ -1247,5 +1247,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

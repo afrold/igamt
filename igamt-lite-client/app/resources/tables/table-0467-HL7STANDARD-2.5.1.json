@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 332,
   "id" : "569eac0fd4c623dc6550ea35",
   "hl7Version" : "2.5.1",
+  "libIds" : [ "573b083dda08c28cd0479666" ],
   "bindingIdentifier" : "0467",
-  "name" : "Modifier Edit Code",
+  "name" : "0467",
   "description" : "Modifier Edit Code",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.467",
@@ -68,5 +68,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

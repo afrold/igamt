@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 28,
   "id" : "569eac0ed4c623dc6550b191",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0618",
-  "name" : "Protection Code",
+  "name" : "0618",
   "description" : "Protection Code",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.618",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

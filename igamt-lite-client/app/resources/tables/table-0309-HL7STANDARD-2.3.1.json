@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 191,
   "id" : "565f3ab7d4c6e52cfd445e9b",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0309",
-  "name" : "Coverage type",
+  "name" : "0309",
   "description" : "Coverage type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

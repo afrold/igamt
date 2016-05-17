@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 314,
   "id" : "569eac0dd4c623dc65507eea",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0432",
-  "name" : "Admission Level of Care Code",
+  "name" : "0432",
   "description" : "Admission Level of Care Code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -68,5 +68,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

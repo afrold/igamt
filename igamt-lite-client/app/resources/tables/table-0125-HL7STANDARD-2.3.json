@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 213,
   "id" : "565f3ab7d4c6e52cfd446e2a",
   "hl7Version" : "2.3",
+  "libIds" : [ "573b084ada08c28cd04867f9" ],
   "bindingIdentifier" : "0125",
-  "name" : "Value Type",
+  "name" : "0125",
   "description" : "Value Type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -248,5 +248,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

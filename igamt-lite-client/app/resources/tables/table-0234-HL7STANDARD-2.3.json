@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 288,
   "id" : "565f3ab7d4c6e52cfd4474ec",
   "hl7Version" : "2.3",
+  "libIds" : [ "573b084ada08c28cd04867f9" ],
   "bindingIdentifier" : "0234",
-  "name" : "Report Timing",
+  "name" : "0234",
   "description" : "Report Timing",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -104,5 +104,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 190,
   "id" : "565f3ab6d4c6e52cfd443a6c",
   "hl7Version" : "2.4",
+  "libIds" : [ "573b0847da08c28cd04847b8" ],
   "bindingIdentifier" : "0304",
-  "name" : "Bed",
+  "name" : "0304",
   "description" : "Bed",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

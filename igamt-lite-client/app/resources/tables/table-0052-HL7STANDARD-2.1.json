@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 107,
   "id" : "565f3ab7d4c6e52cfd448323",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0052",
-  "name" : "DIAGNOSIS TYPE",
+  "name" : "0052",
   "description" : "DIAGNOSIS TYPE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -122,5 +122,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

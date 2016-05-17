@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 265,
   "id" : "569eac0dd4c623dc655078e6",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0174",
-  "name" : "Nature of Service/Test/Observation",
+  "name" : "0174",
   "description" : "Nature of Service/Test/Observation",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -59,5 +59,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

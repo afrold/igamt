@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 2,
   "hl7Version" : "2.7",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "57237657da0805ce1eab6b54" ],
+  "libIds" : [ "573b0842da08c28cd047f918" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0dd4c623dc65508698",
   "label" : "QSC",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "Segment Field Name",
@@ -20,10 +21,13 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc6550869a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +40,18 @@
     "minLength" : 2,
     "maxLength" : "2",
     "confLength" : "",
-    "table" : "569eac0dd4c623dc65508284",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc65508662",
+    "table" : {
+      "id" : "569eac0dd4c623dc65508284",
+      "bindingIdentifier" : "0209",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -52,10 +64,13 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "199",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc6550869a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -68,10 +83,18 @@
     "minLength" : 3,
     "maxLength" : "3",
     "confLength" : "",
-    "table" : "569eac0dd4c623dc6550834b",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc65508662",
+    "table" : {
+      "id" : "569eac0dd4c623dc6550834b",
+      "bindingIdentifier" : "0210",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -81,6 +104,5 @@
   "name" : "QSC",
   "description" : "Query Selection Criteria",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 439,
   "id" : "565f3ab6d4c6e52cfd4404d3",
   "hl7Version" : "2.5",
+  "libIds" : [ "573b0845da08c28cd04822c4" ],
   "bindingIdentifier" : "0003",
-  "name" : "Event type",
+  "name" : "0003",
   "description" : "Event type",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.3",
@@ -2588,5 +2588,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 329,
   "id" : "569eac0dd4c623dc65507bf9",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0811",
-  "name" : "Maintenance Type",
+  "name" : "0811",
   "description" : "Maintenance Type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -23,5 +23,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

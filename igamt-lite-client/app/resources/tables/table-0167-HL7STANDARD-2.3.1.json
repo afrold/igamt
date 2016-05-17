@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 12,
   "id" : "565f3ab7d4c6e52cfd445cb0",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0167",
-  "name" : "Substitution status",
+  "name" : "0167",
   "description" : "Substitution status",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -113,5 +113,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

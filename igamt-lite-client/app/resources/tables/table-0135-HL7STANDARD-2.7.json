@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 379,
   "id" : "569eac0dd4c623dc655074e8",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0135",
-  "name" : "Assignment of Benefits",
+  "name" : "0135",
   "description" : "Assignment of Benefits",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

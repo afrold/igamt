@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 362,
   "id" : "565f3ab6d4c6e52cfd443228",
   "hl7Version" : "2.4",
+  "libIds" : [ "573b0847da08c28cd04847b8" ],
   "bindingIdentifier" : "0384",
-  "name" : "Substance type",
+  "name" : "0384",
   "description" : "Substance type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -122,5 +122,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

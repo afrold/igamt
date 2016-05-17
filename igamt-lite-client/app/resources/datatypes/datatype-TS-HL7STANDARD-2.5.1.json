@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 15,
   "hl7Version" : "2.5.1",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "57237653da0805ce1eab08ad" ],
+  "libIds" : [ "573b083dda08c28cd0479665" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0fd4c623dc6550ece7",
   "label" : "TS",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "Time",
@@ -20,10 +21,13 @@
     "minLength" : 0,
     "maxLength" : "24",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ecaa",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecaa",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -32,14 +36,22 @@
   }, {
     "type" : "component",
     "name" : "Degree of Precision",
-    "usage" : "B",
+    "usage" : "X",
     "minLength" : 0,
     "maxLength" : "1",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e474",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec98",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e474",
+      "bindingIdentifier" : "0529",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -49,6 +61,5 @@
   "name" : "TS",
   "description" : "Time Stamp",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

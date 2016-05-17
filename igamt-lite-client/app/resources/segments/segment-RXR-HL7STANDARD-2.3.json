@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 3,
   "hl7Version" : "2.3",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212934d4c64f1ebfd3a6c9" ],
+  "libIds" : [ "573b084ada08c28cd04867f7" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd44787a",
@@ -19,10 +19,18 @@
     "minLength" : 0,
     "maxLength" : "60",
     "confLength" : "",
-    "table" : "565f3ab7d4c6e52cfd4470d0",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab7d4c6e52cfd447576",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4470d0",
+      "bindingIdentifier" : "0162",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447576",
+      "name" : "CE_0162",
+      "ext" : null,
+      "label" : "CE_0162"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -38,10 +46,18 @@
     "minLength" : 0,
     "maxLength" : "60",
     "confLength" : "",
-    "table" : "565f3ab7d4c6e52cfd44707d",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab7d4c6e52cfd447573",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd44707d",
+      "bindingIdentifier" : "0163",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447573",
+      "name" : "CE_0163",
+      "ext" : null,
+      "label" : "CE_0163"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -57,10 +73,18 @@
     "minLength" : 0,
     "maxLength" : "60",
     "confLength" : "",
-    "table" : "565f3ab7d4c6e52cfd4470bc",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab7d4c6e52cfd44757b",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4470bc",
+      "bindingIdentifier" : "0164",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44757b",
+      "name" : "CE_0164",
+      "ext" : null,
+      "label" : "CE_0164"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -76,10 +100,18 @@
     "minLength" : 0,
     "maxLength" : "60",
     "confLength" : "",
-    "table" : "565f3ab7d4c6e52cfd4471bd",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab7d4c6e52cfd447579",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4471bd",
+      "bindingIdentifier" : "0165",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd447579",
+      "name" : "CE_0165",
+      "ext" : null,
+      "label" : "CE_0165"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -90,7 +122,7 @@
     "max" : "1"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dcdb14",
+    "id" : "573b084ada08c28cd0486560",
     "mappings" : [ ]
   },
   "name" : "RXR",

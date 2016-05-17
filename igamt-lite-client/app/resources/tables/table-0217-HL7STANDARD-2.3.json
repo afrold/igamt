@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 165,
   "id" : "565f3ab7d4c6e52cfd44743f",
   "hl7Version" : "2.3",
+  "libIds" : [ "573b084ada08c28cd04867f9" ],
   "bindingIdentifier" : "0217",
-  "name" : "Visit Priority",
+  "name" : "0217",
   "description" : "Visit Priority",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

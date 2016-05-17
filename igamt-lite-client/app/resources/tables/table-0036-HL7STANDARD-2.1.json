@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 19,
   "id" : "565f3ab7d4c6e52cfd4482f5",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0036",
-  "name" : "UNITS OF MEASURE - ISO528,1977",
+  "name" : "0036",
   "description" : "UNITS OF MEASURE - ISO528,1977",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -104,5 +104,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 294,
   "id" : "565f3ab6d4c6e52cfd4438e0",
   "hl7Version" : "2.4",
+  "libIds" : [ "573b0847da08c28cd04847b8" ],
   "bindingIdentifier" : "0074",
-  "name" : "Diagnostic service section ID",
+  "name" : "0074",
   "description" : "Diagnostic service section ID",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -401,5 +401,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

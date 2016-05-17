@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 73,
   "hl7Version" : "2.6",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "57237656da0805ce1eab391d" ],
+  "libIds" : [ "573b0840da08c28cd047c6db" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0ed4c623dc6550bba4",
   "label" : "NDL",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "Name",
@@ -20,10 +21,13 @@
     "minLength" : 0,
     "maxLength" : "406",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb93",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb93",
+      "name" : "CNN",
+      "ext" : null,
+      "label" : "CNN"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +40,13 @@
     "minLength" : 0,
     "maxLength" : "24",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb8a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -52,10 +59,13 @@
     "minLength" : 0,
     "maxLength" : "24",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb8a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb8a",
+      "name" : "DTM",
+      "ext" : null,
+      "label" : "DTM"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -68,10 +78,18 @@
     "minLength" : 0,
     "maxLength" : "20",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b355",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb7d",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b355",
+      "bindingIdentifier" : "0302",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -84,10 +102,18 @@
     "minLength" : 0,
     "maxLength" : "20",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b32f",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb7d",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b32f",
+      "bindingIdentifier" : "0303",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 5,
     "comment" : "",
     "text" : "",
@@ -100,10 +126,18 @@
     "minLength" : 0,
     "maxLength" : "20",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b335",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb7d",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b335",
+      "bindingIdentifier" : "0304",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 6,
     "comment" : "",
     "text" : "",
@@ -116,10 +150,13 @@
     "minLength" : 0,
     "maxLength" : "227",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bbc3",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbc3",
+      "name" : "HD",
+      "ext" : null,
+      "label" : "HD"
+    },
     "position" : 7,
     "comment" : "",
     "text" : "",
@@ -132,10 +169,18 @@
     "minLength" : 0,
     "maxLength" : "20",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b3a1",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb7d",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b3a1",
+      "bindingIdentifier" : "0306",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 8,
     "comment" : "",
     "text" : "",
@@ -148,10 +193,18 @@
     "minLength" : 0,
     "maxLength" : "20",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b385",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb7d",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b385",
+      "bindingIdentifier" : "0305",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 9,
     "comment" : "",
     "text" : "",
@@ -164,10 +217,18 @@
     "minLength" : 0,
     "maxLength" : "20",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b36e",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb7d",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b36e",
+      "bindingIdentifier" : "0307",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 10,
     "comment" : "",
     "text" : "",
@@ -180,10 +241,18 @@
     "minLength" : 0,
     "maxLength" : "20",
     "confLength" : "",
-    "table" : "569eac0ed4c623dc6550b376",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0ed4c623dc6550bb7d",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b376",
+      "bindingIdentifier" : "0308",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 11,
     "comment" : "",
     "text" : "",
@@ -193,6 +262,5 @@
   "name" : "NDL",
   "description" : "Name with Date and Location",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

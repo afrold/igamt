@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 290,
   "id" : "565f3ab7d4c6e52cfd4461c5",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0119",
-  "name" : "Order control codes and their meaning",
+  "name" : "0119",
   "description" : "Order control codes and their meaning",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -437,5 +437,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

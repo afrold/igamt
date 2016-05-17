@@ -1,13 +1,13 @@
 {
   "type" : "segment",
-  "sectionPosition" : 46,
   "hl7Version" : "2.3.1",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212934d4c64f1ebfd3bb5c" ],
+  "libIds" : [ "573b0849da08c28cd0485c0a" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd446824",
@@ -19,10 +19,13 @@
     "minLength" : 0,
     "maxLength" : "80",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab7d4c6e52cfd44624c",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44624c",
+      "name" : "ELD",
+      "ext" : null,
+      "label" : "ELD"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -33,7 +36,7 @@
     "max" : "*"
   } ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dcccb4",
+    "id" : "573b0849da08c28cd04856e1",
     "mappings" : [ ]
   },
   "name" : "ERR",

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 89,
   "id" : "565f3ab7d4c6e52cfd445a68",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0151",
-  "name" : "Second Opinion Status",
+  "name" : "0151",
   "description" : "Second Opinion Status",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

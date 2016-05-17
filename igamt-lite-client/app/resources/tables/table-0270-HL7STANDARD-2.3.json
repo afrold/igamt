@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 170,
   "id" : "565f3ab7d4c6e52cfd44700e",
   "hl7Version" : "2.3",
+  "libIds" : [ "573b084ada08c28cd04867f9" ],
   "bindingIdentifier" : "0270",
-  "name" : "Report Type Code",
+  "name" : "0270",
   "description" : "Report Type Code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -149,5 +149,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

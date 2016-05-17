@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 428,
   "id" : "569eac0dd4c623dc655082fd",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0335",
-  "name" : "Repeat Pattern",
+  "name" : "0335",
   "description" : "Repeat Pattern",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -266,5 +266,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

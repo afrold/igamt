@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 371,
   "id" : "569eac0dd4c623dc65507e13",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0422",
-  "name" : "Triage Code",
+  "name" : "0422",
   "description" : "Triage Code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -68,5 +68,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

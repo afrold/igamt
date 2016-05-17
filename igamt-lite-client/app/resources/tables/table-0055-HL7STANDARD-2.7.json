@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 177,
   "id" : "569eac0dd4c623dc65507a3e",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0055",
-  "name" : "Diagnosis Related Group",
+  "name" : "0055",
   "description" : "Diagnosis Related Group",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -23,5 +23,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

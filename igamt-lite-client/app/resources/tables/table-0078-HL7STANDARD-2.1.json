@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 85,
   "id" : "565f3ab7d4c6e52cfd4483e3",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0078",
-  "name" : "ABNORMAL FLAGS",
+  "name" : "0078",
   "description" : "ABNORMAL FLAGS",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -140,5 +140,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

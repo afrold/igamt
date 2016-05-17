@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 283,
   "id" : "569eac0dd4c623dc6550713e",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0244",
-  "name" : "Single Use Device",
+  "name" : "0244",
   "description" : "Single Use Device",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -23,5 +23,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 73,
   "id" : "565f3ab6d4c6e52cfd4408e8",
   "hl7Version" : "2.5",
+  "libIds" : [ "573b0845da08c28cd04822c4" ],
   "bindingIdentifier" : "0022",
-  "name" : "Billing Status",
+  "name" : "0022",
   "description" : "Billing Status",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.22",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

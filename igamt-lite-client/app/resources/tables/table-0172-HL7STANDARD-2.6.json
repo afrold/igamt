@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 377,
   "id" : "569eac0ed4c623dc6550adfd",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0172",
-  "name" : "Veterans Military Status",
+  "name" : "0172",
   "description" : "Veterans Military Status",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.172",
@@ -23,5 +23,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

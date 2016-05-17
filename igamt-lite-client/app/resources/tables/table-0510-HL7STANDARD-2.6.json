@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 122,
   "id" : "569eac0ed4c623dc6550b202",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0510",
-  "name" : "Blood Product Dispense Status",
+  "name" : "0510",
   "description" : "Blood Product Dispense Status",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.510",
@@ -113,5 +113,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

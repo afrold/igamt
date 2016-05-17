@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 99,
   "id" : "565f3ab7d4c6e52cfd447fb0",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0190",
-  "name" : "Adress Type",
+  "name" : "0190",
   "description" : "Adress Type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -68,5 +68,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

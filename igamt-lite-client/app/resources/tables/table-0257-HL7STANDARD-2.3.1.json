@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 49,
   "id" : "565f3ab7d4c6e52cfd445949",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0257",
-  "name" : "Nature of challenge",
+  "name" : "0257",
   "description" : "Nature of challenge",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

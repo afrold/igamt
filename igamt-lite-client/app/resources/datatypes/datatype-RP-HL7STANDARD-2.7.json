@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 31,
   "hl7Version" : "2.7",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "57237657da0805ce1eab6b54" ],
+  "libIds" : [ "573b0842da08c28cd047f918" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0dd4c623dc6550867b",
   "label" : "RP",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "Pointer",
@@ -20,10 +21,13 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "999",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc6550869a",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc6550869a",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +40,13 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc655086ac",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0dd4c623dc655086ac",
+      "name" : "HD",
+      "ext" : null,
+      "label" : "HD"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -52,10 +59,18 @@
     "minLength" : 4,
     "maxLength" : "11",
     "confLength" : "",
-    "table" : "569eac0dd4c623dc65507c37",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc65508662",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507c37",
+      "bindingIdentifier" : "0834",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -68,10 +83,18 @@
     "minLength" : 1,
     "maxLength" : "*",
     "confLength" : "32",
-    "table" : "569eac0dd4c623dc65507919",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0dd4c623dc65508662",
+    "table" : {
+      "id" : "569eac0dd4c623dc65507919",
+      "bindingIdentifier" : "0291",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0dd4c623dc65508662",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -81,6 +104,5 @@
   "name" : "RP",
   "description" : "Reference Pointer",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

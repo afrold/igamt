@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 490,
   "id" : "569eac0ed4c623dc6550b022",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0193",
-  "name" : "Amount class",
+  "name" : "0193",
   "description" : "Amount class",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.193",
@@ -50,5 +50,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

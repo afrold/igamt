@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 64,
   "id" : "565f3ab7d4c6e52cfd445a86",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0268",
-  "name" : "Override",
+  "name" : "0268",
   "description" : "Override",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

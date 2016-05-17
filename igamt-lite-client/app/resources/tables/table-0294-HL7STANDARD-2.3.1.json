@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 5,
   "id" : "565f3ab7d4c6e52cfd445c0b",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0294",
-  "name" : "Time selection criteria parameter class codes",
+  "name" : "0294",
   "description" : "Time selection criteria parameter class codes",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -95,5 +95,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,22 +1,22 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 172,
   "hl7Version" : "2.4",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "5723765bda0805ce1eabb9e7" ],
+  "libIds" : [ "573b0847da08c28cd04847b7" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab6d4c6e52cfd443f9d",
   "label" : "TX",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ ],
   "name" : "TX",
   "description" : "text data",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

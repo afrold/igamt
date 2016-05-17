@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 315,
   "id" : "569eac0ed4c623dc6550af75",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0076",
-  "name" : "Message type",
+  "name" : "0076",
   "description" : "Message type",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.76",
@@ -1166,5 +1166,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

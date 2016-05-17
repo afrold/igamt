@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 166,
   "id" : "565f3ab7d4c6e52cfd447bd4",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0097",
-  "name" : "UNUSED TABLE",
+  "name" : "0097",
   "description" : "UNUSED TABLE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

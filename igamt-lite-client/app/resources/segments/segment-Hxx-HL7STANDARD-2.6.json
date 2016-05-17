@@ -1,20 +1,20 @@
 {
   "type" : "segment",
-  "sectionPosition" : 123,
   "hl7Version" : "2.6",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : null,
   "participants" : [ ],
-  "libIds" : [ "57212935d4c64f1ebfd466e3" ],
+  "libIds" : [ "573b0840da08c28cd047c6da" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0ed4c623dc6550c062",
   "label" : "Hxx",
   "fields" : [ ],
   "dynamicMapping" : {
-    "id" : "5721024c1208a2adb7dc2aca",
+    "id" : "573b0840da08c28cd047b47b",
     "mappings" : [ ]
   },
   "name" : "Hxx",

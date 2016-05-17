@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 119,
   "id" : "565f3ab7d4c6e52cfd4482a8",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0009",
-  "name" : "AMBULATORY STATUS",
+  "name" : "0009",
   "description" : "AMBULATORY STATUS",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -131,5 +131,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

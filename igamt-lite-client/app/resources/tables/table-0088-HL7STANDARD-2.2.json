@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 119,
   "id" : "565f3ab7d4c6e52cfd447c67",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0088",
-  "name" : "PROCEDURE CODE",
+  "name" : "0088",
   "description" : "PROCEDURE CODE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

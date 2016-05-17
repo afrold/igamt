@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 145,
   "id" : "569eac0dd4c623dc65506f6b",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0251",
-  "name" : "Action Taken in Response to the Event",
+  "name" : "0251",
   "description" : "Action Taken in Response to the Event",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -68,5 +68,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

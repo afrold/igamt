@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 487,
   "id" : "569eac0dd4c623dc655079fc",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0063",
-  "name" : "Relationship",
+  "name" : "0063",
   "description" : "Relationship",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -302,5 +302,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

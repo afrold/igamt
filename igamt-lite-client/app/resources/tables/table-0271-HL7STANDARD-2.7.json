@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 71,
   "id" : "569eac0dd4c623dc6550764b",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0271",
-  "name" : "Document Completion Status",
+  "name" : "0271",
   "description" : "Document Completion Status",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -77,5 +77,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

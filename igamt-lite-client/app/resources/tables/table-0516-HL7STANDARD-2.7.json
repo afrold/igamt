@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 327,
   "id" : "569eac0dd4c623dc65507ceb",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0516",
-  "name" : "Error Severity",
+  "name" : "0516",
   "description" : "Error Severity",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -50,5 +50,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

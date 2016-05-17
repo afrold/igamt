@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 504,
   "id" : "569eac0dd4c623dc65507817",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0278",
-  "name" : "Filler status codes",
+  "name" : "0278",
   "description" : "Filler status codes",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -113,5 +113,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

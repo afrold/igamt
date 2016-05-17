@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 183,
   "id" : "565f3ab7d4c6e52cfd4461b0",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0110",
-  "name" : "Transfer to Bad Debt Code",
+  "name" : "0110",
   "description" : "Transfer to Bad Debt Code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

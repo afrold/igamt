@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 376,
   "id" : "569eac0fd4c623dc6550e544",
   "hl7Version" : "2.5.1",
+  "libIds" : [ "573b083dda08c28cd0479666" ],
   "bindingIdentifier" : "0429",
-  "name" : "Production Class Code",
+  "name" : "0429",
   "description" : "Production Class Code",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.429",
@@ -122,5 +122,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 470,
   "id" : "569eac0dd4c623dc655079d8",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0287",
-  "name" : "Problem/Goal Action Code",
+  "name" : "0287",
   "description" : "Problem/Goal Action Code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -77,5 +77,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 44,
   "hl7Version" : "2.5.1",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "57237653da0805ce1eab08ad" ],
+  "libIds" : [ "573b083dda08c28cd0479665" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0fd4c623dc6550ec99",
   "label" : "ED",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "Source Application",
@@ -20,10 +21,13 @@
     "minLength" : 0,
     "maxLength" : "227",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ece4",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ece4",
+      "name" : "HD",
+      "ext" : null,
+      "label" : "HD"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +40,18 @@
     "minLength" : 0,
     "maxLength" : "9",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e380",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec98",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e380",
+      "bindingIdentifier" : "0191",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -52,10 +64,18 @@
     "minLength" : 0,
     "maxLength" : "18",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e0e9",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec98",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e0e9",
+      "bindingIdentifier" : "0291",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 3,
     "comment" : "",
     "text" : "",
@@ -68,10 +88,18 @@
     "minLength" : 0,
     "maxLength" : "6",
     "confLength" : "",
-    "table" : "569eac0fd4c623dc6550e22a",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec98",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e22a",
+      "bindingIdentifier" : "0299",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
     "position" : 4,
     "comment" : "",
     "text" : "",
@@ -84,10 +112,13 @@
     "minLength" : 0,
     "maxLength" : "*",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "569eac0fd4c623dc6550ec8e",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec8e",
+      "name" : "TX",
+      "ext" : null,
+      "label" : "TX"
+    },
     "position" : 5,
     "comment" : "",
     "text" : "",
@@ -97,6 +128,5 @@
   "name" : "ED",
   "description" : "Encapsulated Data",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

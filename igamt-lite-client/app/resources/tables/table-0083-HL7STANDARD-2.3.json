@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 26,
   "id" : "565f3ab7d4c6e52cfd447344",
   "hl7Version" : "2.3",
+  "libIds" : [ "573b084ada08c28cd04867f9" ],
   "bindingIdentifier" : "0083",
-  "name" : "Outlier Type",
+  "name" : "0083",
   "description" : "Outlier Type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

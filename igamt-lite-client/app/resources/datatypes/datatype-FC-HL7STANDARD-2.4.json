@@ -1,18 +1,19 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 22,
   "hl7Version" : "2.4",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "5723765bda0805ce1eabb9e7" ],
+  "libIds" : [ "573b0847da08c28cd04847b7" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab6d4c6e52cfd443fcf",
   "label" : "FC",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ {
     "type" : "component",
     "name" : "Financial Class",
@@ -20,10 +21,18 @@
     "minLength" : 0,
     "maxLength" : "-1",
     "confLength" : "",
-    "table" : "565f3ab6d4c6e52cfd443802",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd443ffd",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443802",
+      "bindingIdentifier" : "0064",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443ffd",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
     "position" : 1,
     "comment" : "",
     "text" : "",
@@ -36,10 +45,13 @@
     "minLength" : 0,
     "maxLength" : "-1",
     "confLength" : "",
-    "table" : "",
-    "bindingStrength" : "",
-    "bindingLocation" : "",
-    "datatype" : "565f3ab6d4c6e52cfd443f9c",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f9c",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
     "position" : 2,
     "comment" : "",
     "text" : "",
@@ -49,6 +61,5 @@
   "name" : "FC",
   "description" : "financial class",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

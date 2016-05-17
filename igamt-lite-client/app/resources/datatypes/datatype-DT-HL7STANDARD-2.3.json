@@ -1,22 +1,22 @@
 {
   "type" : "datatype",
-  "sectionPosition" : 16,
   "hl7Version" : "2.3",
   "accountId" : null,
   "scope" : "HL7STANDARD",
   "date" : null,
   "version" : null,
+  "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "5723765dda0805ce1eabda1c" ],
+  "libIds" : [ "573b084ada08c28cd04867f8" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd44758f",
   "label" : "DT",
   "ext" : null,
+  "purposeAndUse" : null,
   "components" : [ ],
   "name" : "DT",
   "description" : "Date (2.8.13)",
   "comment" : "",
-  "usageNote" : "",
-  "status" : "PUBLISHED"
+  "usageNote" : ""
 }

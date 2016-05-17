@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 103,
   "id" : "565f3ab7d4c6e52cfd447be2",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0092",
-  "name" : "RE-ADMISSION INDICATOR",
+  "name" : "0092",
   "description" : "RE-ADMISSION INDICATOR",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -23,5 +23,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

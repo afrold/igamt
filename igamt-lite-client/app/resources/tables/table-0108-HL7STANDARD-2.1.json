@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 99,
   "id" : "565f3ab7d4c6e52cfd4483c1",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0108",
-  "name" : "QUERY RESULTS LEVEL",
+  "name" : "0108",
   "description" : "QUERY RESULTS LEVEL",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

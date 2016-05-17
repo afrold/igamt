@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 190,
   "id" : "569eac0fd4c623dc6550e04b",
   "hl7Version" : "2.5.1",
+  "libIds" : [ "573b083dda08c28cd0479666" ],
   "bindingIdentifier" : "0396",
-  "name" : "Coding system",
+  "name" : "0396",
   "description" : "Coding system",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.396",
@@ -797,5 +797,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

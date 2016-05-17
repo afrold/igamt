@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 60,
   "id" : "565f3ab7d4c6e52cfd44803c",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0102",
-  "name" : "DELAYED ACKNOWLEDGMENT TYPE",
+  "name" : "0102",
   "description" : "DELAYED ACKNOWLEDGMENT TYPE",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -32,5 +32,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

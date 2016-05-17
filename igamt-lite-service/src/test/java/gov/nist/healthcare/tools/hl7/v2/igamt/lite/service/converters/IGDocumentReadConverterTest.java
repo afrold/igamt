@@ -15,6 +15,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.hl7tools2lite.converter.IGDocumentReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 
 public class IGDocumentReadConverterTest {

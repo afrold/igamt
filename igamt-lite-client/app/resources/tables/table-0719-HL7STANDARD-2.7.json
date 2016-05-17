@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 34,
   "id" : "569eac0dd4c623dc65507c1d",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0719",
-  "name" : "Access Restriction Reason Code",
+  "name" : "0719",
   "description" : "Access Restriction Reason Code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -77,5 +77,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

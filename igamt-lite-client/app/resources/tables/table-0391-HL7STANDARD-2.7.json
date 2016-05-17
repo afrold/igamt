@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 32,
   "id" : "569eac0dd4c623dc65507670",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0391",
-  "name" : "Segment Group",
+  "name" : "0391",
   "description" : "Segment Group",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -1193,5 +1193,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

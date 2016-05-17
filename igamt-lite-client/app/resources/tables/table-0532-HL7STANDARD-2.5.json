@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 407,
   "id" : "565f3ab6d4c6e52cfd440f1c",
   "hl7Version" : "2.5",
+  "libIds" : [ "573b0845da08c28cd04822c4" ],
   "bindingIdentifier" : "0532",
-  "name" : "Expanded yes/no indicator",
+  "name" : "0532",
   "description" : "Expanded yes/no indicator",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.532",
@@ -95,5 +95,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

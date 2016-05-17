@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 282,
   "id" : "569eac0dd4c623dc655074a7",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0499",
-  "name" : "Consent Bypass Reason",
+  "name" : "0499",
   "description" : "Consent Bypass Reason",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -32,5 +32,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

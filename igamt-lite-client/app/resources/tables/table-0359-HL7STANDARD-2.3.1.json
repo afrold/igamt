@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 56,
   "id" : "565f3ab7d4c6e52cfd4460cf",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0359",
-  "name" : "Diagnosis priority",
+  "name" : "0359",
   "description" : "Diagnosis priority",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

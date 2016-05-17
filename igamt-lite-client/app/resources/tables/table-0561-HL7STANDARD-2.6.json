@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 361,
   "id" : "569eac0ed4c623dc6550b768",
   "hl7Version" : "2.6",
+  "libIds" : [ "573b0840da08c28cd047c6dc" ],
   "bindingIdentifier" : "0561",
-  "name" : "Product/Services Clarification Codes",
+  "name" : "0561",
   "description" : "Product/Services Clarification Codes",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.561",
@@ -77,5 +77,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

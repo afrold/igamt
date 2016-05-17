@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 69,
   "id" : "565f3ab7d4c6e52cfd447f2c",
   "hl7Version" : "2.2",
+  "libIds" : [ "573b084bda08c28cd0486d70" ],
   "bindingIdentifier" : "0186",
-  "name" : "Practioner Category",
+  "name" : "0186",
   "description" : "Practioner Category",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 401,
   "id" : "565f3ab6d4c6e52cfd4414e9",
   "hl7Version" : "2.5",
+  "libIds" : [ "573b0845da08c28cd04822c4" ],
   "bindingIdentifier" : "0360",
-  "name" : "Degree/license/certificate",
+  "name" : "0360",
   "description" : "Degree/license/certificate",
   "version" : null,
   "oid" : "2.16.840.1.113883.12.360",
@@ -536,5 +536,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

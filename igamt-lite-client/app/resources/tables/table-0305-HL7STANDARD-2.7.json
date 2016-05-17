@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 196,
   "id" : "569eac0dd4c623dc65507e60",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0305",
-  "name" : "Person Location Type",
+  "name" : "0305",
   "description" : "Person Location Type",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -77,5 +77,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

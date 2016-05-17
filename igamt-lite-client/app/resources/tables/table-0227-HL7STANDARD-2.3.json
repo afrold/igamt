@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 269,
   "id" : "565f3ab7d4c6e52cfd44744f",
   "hl7Version" : "2.3",
+  "libIds" : [ "573b084ada08c28cd04867f9" ],
   "bindingIdentifier" : "0227",
-  "name" : "Manufacturers of Vaccines",
+  "name" : "0227",
   "description" : "Manufacturers of Vaccines",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -284,5 +284,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

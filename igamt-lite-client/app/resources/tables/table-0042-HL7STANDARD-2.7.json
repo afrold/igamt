@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 224,
   "id" : "569eac0dd4c623dc65507762",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0042",
-  "name" : "Company Plan Code",
+  "name" : "0042",
   "description" : "Company Plan Code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -23,5 +23,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

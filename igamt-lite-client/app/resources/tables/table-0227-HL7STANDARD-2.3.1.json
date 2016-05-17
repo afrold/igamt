@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 263,
   "id" : "565f3ab7d4c6e52cfd445fe7",
   "hl7Version" : "2.3.1",
+  "libIds" : [ "573b0849da08c28cd0485c0c" ],
   "bindingIdentifier" : "0227",
-  "name" : "Manufacturers of vaccines (code=MVX)",
+  "name" : "0227",
   "description" : "Manufacturers of vaccines (code=MVX)",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -392,5 +392,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

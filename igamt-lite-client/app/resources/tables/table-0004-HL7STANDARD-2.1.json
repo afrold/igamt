@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 83,
   "id" : "565f3ab7d4c6e52cfd448247",
   "hl7Version" : "2.1",
+  "libIds" : [ "573b084bda08c28cd0486f11" ],
   "bindingIdentifier" : "0004",
-  "name" : "PATIENT CLASS",
+  "name" : "0004",
   "description" : "PATIENT CLASS",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -50,5 +50,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

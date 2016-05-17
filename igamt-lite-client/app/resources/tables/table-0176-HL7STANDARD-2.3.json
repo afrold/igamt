@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 59,
   "id" : "565f3ab7d4c6e52cfd447212",
   "hl7Version" : "2.3",
+  "libIds" : [ "573b084ada08c28cd04867f9" ],
   "bindingIdentifier" : "0176",
-  "name" : "Master File Application Identifier",
+  "name" : "0176",
   "description" : "Master File Application Identifier",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -14,5 +14,8 @@
   "group" : null,
   "order" : 0,
   "codes" : [ ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

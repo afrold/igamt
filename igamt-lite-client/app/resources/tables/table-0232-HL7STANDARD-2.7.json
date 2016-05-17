@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 304,
   "id" : "569eac0dd4c623dc6550860d",
   "hl7Version" : "2.7",
+  "libIds" : [ "573b0842da08c28cd047f919" ],
   "bindingIdentifier" : "0232",
-  "name" : "Insurance Company Contact Reason",
+  "name" : "0232",
   "description" : "Insurance Company Contact Reason",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "F",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }
