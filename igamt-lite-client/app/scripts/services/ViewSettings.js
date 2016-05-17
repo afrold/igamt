@@ -34,7 +34,6 @@ angular.module('igl').factory('ViewSettings',
                     ViewSettings.setVisibleColumns();
                 }
             },
-
             setVisibleColumns: function () {
                 StorageService.set(StorageService.TABLE_COLUMN_SETTINGS_KEY, angular.toJson(ViewSettings.visibleColumns));
             },

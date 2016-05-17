@@ -11,6 +11,35 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -39,39 +68,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerializationDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Serializer;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class IGDocumentSerialization4ExportImpl implements ProfileSerializationDocument {
@@ -1147,9 +1146,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 			if (f.getConfLength() != null && !f.getConfLength().equals(""))
 				elmField.addAttribute(new Attribute("ConfLength", f
 						.getConfLength()));
-			if (f.getTable() != null && !f.getTable().equals(""))
+			if (f.getTable() != null && !f.getTable().getBindingIdentifier().equals(""))
 				elmField.addAttribute(new Attribute("Binding", tables.findOneTableById(
-						f.getTable()).getBindingIdentifier()+""));
+						f.getTable().getId()).getBindingIdentifier()+""));
 			if (f.getItemNo() != null && !f.getItemNo().equals(""))
 				elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
 			if (f.getComment() != null && !f.getComment().isEmpty())
@@ -1263,13 +1262,13 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 					elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
 				}
 
-				if (c.getTable() != null && !c.getTable().isEmpty())
-					if (tables.findOneTableById(c.getTable()) != null){
+				if (c.getTable() != null && c.getTable().getBindingIdentifier() != null)
+					if (tables.findOneTableById(c.getTable().getId()) != null){
 						elmComponent.addAttribute(new Attribute("Binding", tables
-								.findOneTableById(c.getTable()).getBindingIdentifier() + ""));
+								.findOneTableById(c.getTable().getId()).getBindingIdentifier() + ""));
 					} else {
 						logger.warn("Value set not found in library " + c.getTable());
-						elmComponent.addAttribute(new Attribute("Binding", c.getTable()));
+						elmComponent.addAttribute(new Attribute("Binding", c.getTable().getBindingIdentifier()));
 					}
 
 				List<Constraint> constraints = findConstraints( i, d.getPredicates(), d.getConformanceStatements());

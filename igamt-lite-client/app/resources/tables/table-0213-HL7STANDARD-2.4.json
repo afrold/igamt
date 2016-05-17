@@ -1,10 +1,10 @@
 {
   "type" : "table",
-  "sectionPosition" : 125,
   "id" : "565f3ab6d4c6e52cfd443c60",
   "hl7Version" : "2.4",
+  "libIds" : [ "573b5103da08bdc5ada9c71f" ],
   "bindingIdentifier" : "0213",
-  "name" : "Purge status code",
+  "name" : "0213",
   "description" : "Purge status code",
   "version" : null,
   "oid" : "UNSPECIFIED",
@@ -41,5 +41,8 @@
     "codeUsage" : "P",
     "comments" : ""
   } ],
-  "scope" : "HL7STANDARD"
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
 }

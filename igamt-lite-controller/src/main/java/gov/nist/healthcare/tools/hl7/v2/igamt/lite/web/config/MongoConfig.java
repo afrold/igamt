@@ -70,17 +70,17 @@ public class MongoConfig extends AbstractMongoConfiguration {
 	@Bean
 	public CustomConversions customConversions() {
 		List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
-//		converterList.add(new FieldWriteConverter());
-//		converterList.add(new ComponentWriteConverter());
-//		converterList.add(new SegmentRefWriteConverter());
-//		converterList.add(new ProfileReadConverter());
-//		converterList.add(new IGDocumentReadConverter());
-//		converterList.add(new SegmentReadConverter());
-//		converterList.add(new DatatypeReadConverter());
-//		converterList.add(new TableReadConverter());
-//		converterList.add(new DatatypeLibraryReadConverter());
-//		converterList.add(new SegmentLibraryReadConverter());
-//		converterList.add(new TableLibraryReadConverter());
+		// converterList.add(new FieldWriteConverter());
+		// converterList.add(new ComponentWriteConverter());
+		// converterList.add(new SegmentRefWriteConverter());
+		// converterList.add(new ProfileReadConverter());
+		// converterList.add(new IGDocumentReadConverter());
+		// converterList.add(new SegmentReadConverter());
+		// converterList.add(new DatatypeReadConverter());
+		// converterList.add(new TableReadConverter());
+		// converterList.add(new DatatypeLibraryReadConverter());
+		// converterList.add(new SegmentLibraryReadConverter());
+		// converterList.add(new TableLibraryReadConverter());
 		return new CustomConversions(converterList);
 	}
 
