@@ -21,9 +21,11 @@ angular.module('igl').factory('TableService',
             getOne: function (id) {
                 var delay = $q.defer();
                 if ($rootScope.tablesMap[id] === undefined || $rootScope.tablesMap[id] === undefined) {
+                	console.log("getOne==>");
                     $http.get('api/tables/' + id).then(function (response) {
                         var table = angular.fromJson(response.data);
-                        delay.resolve(table);
+                       	console.log("<==getOne" + table);
+                       delay.resolve(table);
                     }, function (error) {
                         delay.reject(error);
                     });
@@ -42,11 +44,13 @@ angular.module('igl').factory('TableService',
                 });
                 return delay.promise;
             },
+            getBindingIdentifiers : function(ids) {
+            	
+            },
             merge: function (to, from) {
 
                 return to;
             },
-
             delete: function(table) {
                  return $http.post('api/tables/'+ table.id+ '/delete');
             },

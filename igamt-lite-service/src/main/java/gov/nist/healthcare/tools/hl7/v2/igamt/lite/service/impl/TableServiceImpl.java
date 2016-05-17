@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,4 +84,12 @@ public class TableServiceImpl implements TableService {
 		// TODO Auto-generated method stub
 		tableRepository.save(tables);
 	}
+		
+//	@Override
+//	Map<String, String> findBindingIdentifiers(List<String> tableIds) {
+//		List<Table> tables = tableRepository.findBindingIdentifiers(tableIds);
+//		for
+//	}
+		
+
 }

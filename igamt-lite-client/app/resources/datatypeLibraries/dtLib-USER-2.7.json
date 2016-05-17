@@ -1,0 +1,22 @@
+{
+  "type" : "datatypes",
+  "sectionPosition" : null,
+  "sectionTitle" : "Default title",
+  "sectionDescription" : "Default description",
+  "sectionContents" : "Default contents",
+  "id" : "573b220dda08e75fd562922c",
+  "accountId" : 45,
+  "date" : "May 17, 2016",
+  "ext" : null,
+  "metaData" : {
+    "name" : "First User",
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.7",
+    "date" : "May 17, 2016",
+    "ext" : "Tex",
+    "datatypLibId" : ""
+  },
+  "scope" : "USER",
+  "children" : [ ]
+}

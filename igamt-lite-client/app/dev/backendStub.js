@@ -107,14 +107,11 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         return obj;
     }
 
-
-
     $httpBackend.whenPOST('api/updateSections').respond(function (data, status, headers, config) {
         console.log('updating Sections');
         
         return null;
     });
-    
     
     $httpBackend.whenGET('api/datatype-library/findHl7Versions').respond(function (method, url, data, headers) {
         console.log('api/igdocuments/hl7/findHl7Versions');
@@ -123,43 +120,47 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
 
     $httpBackend.whenPOST('api/datatype-library/findByScope').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
-        console.log('api/findByScopes begin=' + data);
-        request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
-        request.send(null);
+        console.log('api/findByScope begin=' + data);
+        if ("MASTER" === data) {
+        	request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.7.json', false);
+	    } else {
+	        request.open('GET', '../../resources/datatypeLibraries/dtLib-USER-2.7.json', false);
+	    }
+      request.send(null);
         var datatypeLib = [angular.fromJson(request.response)];
         return [200, datatypeLib, {}];
     });
 
-    $httpBackend.whenPOST('api/datatype-library/findByScopesAndVersion').respond(function (method, url, data, headers) {
+    $httpBackend.whenPOST('api/datatype-library/findByScopeAndVersion').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         var datatypeLibs = [];
         console.log('api/findByScopesAndVersion begin=' + data);
-        request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
+        request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.7.json', false);
         request.send(null);
         datatypeLibs.push(angular.fromJson(request.response));
-        request.open('GET', '../../resources/datatypeLibraries/dtLib-HL7STANDARD-2.5.1.json', false);
+        request.open('GET', '../../resources/datatypeLibraries/dtLib-HL7STANDARD-2.7.json', false);
         request.send(null);
         datatypeLibs.push(angular.fromJson(request.response));
-        request.open('GET', '../../resources/datatypeLibraries/dtLib-USER-2.5.1.json', false);
+        request.open('GET', '../../resources/datatypeLibraries/dtLib-USER-2.7.json', false);
         request.send(null);
         datatypeLibs.push(angular.fromJson(request.response));
         return [200, datatypeLibs, {}];
     });
 
-//    $httpBackend.whenGET(/^api\/datatype-library\/.*\/datatypes/).respond(function (method, url, data, headers) {
-//        var request = new XMLHttpRequest();
-//         console.log('api\\/.*\\/ url=' + url);
-//        request.open('GET', '../../resources/datatypes/datatype-AD-HL7STANDARD-2.5.1.json', false);
-//        request.send(null);
-//        var datatype = [];
-//            datatype.push(angular.fromJson(request.response));
-//        return [request.status, datatype, {}];
-//    });
+    $httpBackend.whenGET(/^api\/datatype-library\/.*\/datatypes/).respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+         console.log('api\\/.*\\/ url=' + url);
+        request.open('GET', '../../resources/datatypes/datatype-AD-HL7STANDARD-2.7.json', false);
+        request.send(null);
+        var datatype = [];
+            datatype.push(angular.fromJson(request.response));
+        return [request.status, datatype, {}];
+    });
 
     $httpBackend.whenPOST('api/datatype-library/create').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/findByScopes begin=' + data);
-        request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
+        request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.7.json', false);
         request.send(null);
         var datatypeLib = angular.fromJson(request.response);
         return [200, datatypeLib, {}];

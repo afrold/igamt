@@ -9,7 +9,7 @@ angular.module('igl').factory('DatatypeService',
                 var children = [];
                 if (parent && parent != null) {
                     if (parent.datatype) {
-                        var dt = $rootScope.datatypesMap[parent.datatype];
+                        var dt = $rootScope.datatypesMap[parent.datatype.id];
                         children = dt.components;
                     } else {
                         children = parent.components;
@@ -158,8 +158,8 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
-            delete_: function(datatype) {
-                 return $http.post('api/datatypes/'+ datatype.id+ '/delete');
+            delete: function(datatype) {
+                 return $http.get('api/datatypes/'+ datatype.id+ '/delete');
             },
             getDatatypeLink : function(datatype){
                 return {id:datatype.id, ext: null, name: datatype.name};

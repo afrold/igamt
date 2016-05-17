@@ -16,6 +16,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
@@ -112,8 +113,16 @@ public class MessagesReadConverter extends AbstractReadConverter<DBObject, Messa
 		segRef.setPosition((Integer) source.get("position"));
 		segRef.setMin((Integer) source.get("min"));
 		segRef.setMax((String) source.get("max"));
-		segRef.setRef((String) source.get("ref"));
+		segRef.setRef(segmentLink((DBObject) source.get("ref")));
 		return segRef;
+	}
+
+	private SegmentLink segmentLink(DBObject source) {
+		SegmentLink sl = new SegmentLink();
+		sl.setExt((String) source.get("ext"));
+		sl.setId(readMongoId(source));
+		sl.setName((String) source.get("name"));
+		return null;
 	}
 
 	private Group group(DBObject source) {

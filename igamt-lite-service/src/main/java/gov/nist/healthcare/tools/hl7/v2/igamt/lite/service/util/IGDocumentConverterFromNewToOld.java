@@ -141,7 +141,7 @@ public class IGDocumentConverterFromNewToOld {
 		ppl.setSegments(segments);
 
 		Tables tables = new Tables();
-		tables.setDateCreated(p.getTableLibrary().getDate());
+		tables.setDateCreated(p.getTableLibrary().getMetaData().getDate());
 		tables.setDescription(p.getTableLibrary().getDescription());
 		tables.setId(p.getTableLibrary().getId());
 		tables.setName(p.getTableLibrary().getProfileName());

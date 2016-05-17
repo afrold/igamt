@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 
@@ -78,7 +80,7 @@ public class DatatypeServiceImpl implements DatatypeService {
 
 		@Override
 	public Datatype save(Datatype datatype) {
-		log.info("DataypeServiceImpl.save=" + datatype.getLabel());
+		log.info("DataypeServiceImpl.save=" + datatype.getId());
 		return datatypeRepository.save(datatype);
 	}
 		

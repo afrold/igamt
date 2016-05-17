@@ -1,0 +1,27 @@
+{
+  "type" : "datatypes",
+  "sectionPosition" : null,
+  "sectionTitle" : "Default title",
+  "sectionDescription" : "Default description",
+  "sectionContents" : "Default contents",
+  "id" : "573b21e2da08e75fd562922b",
+  "accountId" : 45,
+  "date" : "May 17, 2016",
+  "ext" : null,
+  "metaData" : {
+    "name" : "First Master",
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.7",
+    "date" : "May 17, 2016",
+    "ext" : "Tex",
+    "datatypLibId" : ""
+  },
+  "scope" : "MASTER",
+  "children" : [ {
+    "id" : "569eac0dd4c623dc65508666",
+    "name" : "AD",
+    "ext" : "",
+    "label" : "AD_"
+  }]
+}

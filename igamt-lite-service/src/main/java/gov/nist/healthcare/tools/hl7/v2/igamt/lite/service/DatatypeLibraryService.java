@@ -18,6 +18,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 
 @Service
@@ -33,11 +34,7 @@ public interface DatatypeLibraryService {
 
 	List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version);
 
-	DatatypeLibrary save(DatatypeLibrary library);
-
 	DatatypeLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
-
-	void delete(DatatypeLibrary library);
 
 	List<String> findHl7Versions();
 
@@ -51,4 +48,8 @@ public interface DatatypeLibraryService {
 	
 	List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope,
 			String hl7Version, String name, Long accountId);
- }
+
+	DatatypeLibrary save(DatatypeLibrary library);
+	
+ 	DatatypeLibrary saveMetaData(DatatypeLibraryMetaData datatypeLibraryMetaData);
+}

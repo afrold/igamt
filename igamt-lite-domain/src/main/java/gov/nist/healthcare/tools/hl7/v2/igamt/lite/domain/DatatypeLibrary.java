@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,8 +17,6 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	private String id;
 
 	private Long accountId;
-
-	private String date;
 
 	private String ext;
 
@@ -48,14 +45,6 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 	public void setAccountId(Long accountId) {
 		this.accountId = accountId;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
 	}
 
 	public Set<DatatypeLink> getChildren() {
@@ -170,7 +159,6 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		clone.setSectionPosition(this.getSectionPosition());
 		clone.setSectionTitle(this.getSectionTitle());
 		clone.setType(this.getType());
-		clone.setDate(this.getDate());
 		return clone;	
 	}
 	

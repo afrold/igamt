@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -18,8 +19,6 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 	private String id;
 
 	private Long accountId;
-
-	private String date;
 
 	private String ext;
 
@@ -64,13 +63,6 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		this.accountId = accountId;
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
 
 	public String getExt() {
 		return ext;
@@ -260,7 +252,6 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		clone.setSectionPosition(this.getSectionPosition());
 		clone.setSectionTitle(this.getSectionTitle());
 		clone.setType(this.getType());
-		clone.setDate(this.getDate());
 		return clone;
 	}
 

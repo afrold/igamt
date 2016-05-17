@@ -12,20 +12,18 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.BasicQuery;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
@@ -48,7 +46,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;
-	
+
 	private Random rand = new Random();
 
 	@Override
@@ -96,6 +94,14 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		return datatypeLibrary;
 	}
 
+	@Override
+	public DatatypeLibrary saveMetaData(DatatypeLibraryMetaData datatypeLibraryMetaData) {
+		log.info("DataypeServiceImpl.save=" + datatypeLibraryMetaData.getName());
+		DatatypeLibrary dataTypeLibrary = datatypeLibraryRepository.findOne(datatypeLibraryMetaData.getDatatypeLibId());
+		dataTypeLibrary.setMetaData(datatypeLibraryMetaData);
+		return datatypeLibraryRepository.save(dataTypeLibrary);
+	}
+
 	DatatypeLibraryMetaData defaultMetadata() {
 		DatatypeLibraryMetaData metaData = new DatatypeLibraryMetaData();
 		metaData.setName("Master data type library");
@@ -109,12 +115,13 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		DatatypeLibraryMetaData metaData = defaultMetadata();
 		metaData.setName(name);
 		metaData.setHl7Version(hl7Version);
+		metaData.setDatatypeLibId(UUID.randomUUID().toString());
+		metaData.setDate(Constant.mdy.format(new Date()));
 		metaData.setExt(ext);
 		DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
 		datatypeLibrary.setMetaData(metaData);
 		datatypeLibrary.setScope(scope);
 		datatypeLibrary.setAccountId(accountId);
-		datatypeLibrary.setDate(Constant.mdy.format(new Date()));
 		datatypeLibrary.setSectionDescription("Default description");
 		datatypeLibrary.setSectionTitle("Default title");
 		datatypeLibrary.setSectionContents("Default contents");
@@ -123,19 +130,22 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public void delete(DatatypeLibrary library) {
-		datatypeLibraryRepository.delete(library);
-	}
-	
-	@Override
-	public void delete(String id) {
-		datatypeLibraryRepository.delete(id);
+	public void delete(String dtLibId) {
+		List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId);
+		for (Datatype datatype : datatypes) {
+			Set<String> libIds = datatype.getLibIds();
+			libIds.remove(dtLibId);
+			if (libIds.isEmpty()) {
+				datatypeRepository.delete(datatype);
+			}
+		}
+		datatypeLibraryRepository.delete(dtLibId);
 	}
 
 	@Override
 	public List<Datatype> bindDatatypes(List<String> datatypeIds, String datatypeLibraryId, String datatypeLibraryExt,
 			Long accountId) {
-		
+
 		DatatypeLibrary dtLib = datatypeLibraryRepository.findById(datatypeLibraryId);
 		dtLib.setExt(deNull(datatypeLibraryExt));
 		List<DatatypeLibrary> dtLibDups = datatypeLibraryRepository.findDups(dtLib);
@@ -145,7 +155,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		}
 		dtLib.getMetaData().setExt(dtLib.getExt());
 		dtLib.setAccountId(accountId);
-		
+
 		List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
 		for (Datatype dt : datatypes) {
 			dt.setId(null);
@@ -156,7 +166,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 			dt.setHl7Version(dtLib.getMetaData().getHl7Version());
 			dt.setDate(Constant.mdy.format(new Date()));
 			dt.setAccountId(accountId);
-			//  We save at this point in order to have an id for the link.
+			// We save at this point in order to have an id for the link.
 			datatypeRepository.save(dt);
 			dtLib.addDatatype(dt);
 		}
@@ -167,20 +177,18 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	boolean checkDup(Datatype dt, DatatypeLibrary dtLib, String ext) {
 		return dtLib.getChildren().contains(new DatatypeLink(dt.getId(), dt.getName(), ext));
 	}
-	
+
 	String decorateExt(String ext) {
 		return ext + "-" + genRand();
 	}
-	
+
 	String deNull(String ext) {
 		return (ext != null && ext.trim().length() > 0) ? ext : genRand();
 	}
-	
+
 	String genRand() {
 		return Integer.toString(rand.nextInt(100));
 	}
-	
-	
 
 	class DatatypeByLabel implements Comparator<Datatype> {
 
@@ -191,16 +199,14 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version,
-			String name, Long accountId) {
-		 return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
+	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name, Long accountId) {
+		return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
 	}
-	
+
 	@Override
-	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope,
-			String hl7Version, String name, Long accountId) {
+	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version, String name,
+			Long accountId) {
 		return datatypeLibraryRepository.findLibrariesByFlavorName(scope, hl7Version, name, accountId);
 	}
 
-	 
 }

@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -143,6 +144,7 @@ public class IGDocumentConverterFromOldToNew{
 		profileMetaData.setSubTitle(pmdpl.getSubTitle());
 		profileMetaData.setTopics(pmdpl.getTopics());
 		profileMetaData.setType(pmdpl.getType());
+		profileMetaData.setProfileID(UUID.randomUUID().toString());
 		prof.setMetaData(profileMetaData);
 		prof.setScope(ppl.getScope());
 		prof.setSectionContents(ppl.getSectionContents());
@@ -180,6 +182,7 @@ public class IGDocumentConverterFromOldToNew{
 		Set<Table> userTables = new HashSet<Table>();
 		
 		TableLibraryMetaData tabMetaData = new TableLibraryMetaData();
+		tabMetaData.setTableLibId(UUID.randomUUID().toString());
 		tabMetaData.setDate(Constant.mdy.format(new Date()));
 		tabMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
 		tabMetaData.setOrgName("NIST");
@@ -199,6 +202,7 @@ public class IGDocumentConverterFromOldToNew{
 		Set<Segment> segs = appPreLib.getProfile().getSegments().getChildren();
 		Set<Segment> newsegs = new HashSet<Segment>();
 		SegmentLibraryMetaData segMetaData = new SegmentLibraryMetaData();
+		segMetaData.setSegmentLibId(UUID.randomUUID().toString());
 		segMetaData.setDate(Constant.mdy.format(new Date()));
 		segMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
 		segMetaData.setOrgName("NIST");
@@ -303,6 +307,7 @@ public class IGDocumentConverterFromOldToNew{
 		Set<Datatype> dts = appPreLib.getProfile().getDatatypes().getChildren();
 		Set<Datatype> newdts = new HashSet<Datatype>();
 		DatatypeLibraryMetaData dtMetaData = new DatatypeLibraryMetaData();
+		dtMetaData.setDatatypeLibId(UUID.randomUUID().toString());
 		dtMetaData.setDate(Constant.mdy.format(new Date()));
 		dtMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
 		// dtMetaData.setName(ppl.getMetaData().getName());
@@ -452,7 +457,7 @@ public class IGDocumentConverterFromOldToNew{
 	private void updateSegmentIdAndVisitChild(String oldSegmentId, String newSegmentId, SegmentRefOrGroup sog) {
 		if(sog instanceof SegmentRef){
 			SegmentRef segmentRef = (SegmentRef)sog;
-			if(segmentRef.getRef().equals(oldSegmentId)) segmentRef.setRef(newSegmentId);
+			if(segmentRef.getRef().getId().equals(oldSegmentId)) segmentRef.getRef().setId(newSegmentId);
 		}
 		
 		if (sog instanceof Group) {
@@ -555,7 +560,7 @@ public class IGDocumentConverterFromOldToNew{
 			seg.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 			if (seg.getId() != null) {
 				seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
-				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), seg.getLabel().replace(seg.getName() + "_", "")));
+				app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), ""));
 			} else {
 				log.error("Null id seg=" + seg.toString());
 			}
@@ -583,7 +588,7 @@ public class IGDocumentConverterFromOldToNew{
 				dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 				dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
 				app.getProfile().getDatatypeLibrary()
-						.addDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getLabel().replace(dt.getName() + "_", "")));
+						.addDatatype(new DatatypeLink(dt.getId(), dt.getName(), ""));
 			} else {
 				log.error("Null id dt=" + dt.toString());
 			}

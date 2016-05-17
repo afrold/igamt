@@ -48,31 +48,34 @@ public class SegmentLink extends AbstractLink implements Cloneable{
 	}
 
 	public String getLabel() {
-		return name + "_" + ext;
+		return name + (ext != null ? "_" + ext : "");
 	}
 
 	@Override
 	public int hashCode() {
-		return (getId() + getName()).hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-
-		SegmentLink link = null;
-
-		if (obj == null) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-
-		if (obj instanceof SegmentLink) {
-			link = (SegmentLink) obj;
-		} else {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-
-		return getId().equals(link.getId());
-	}
+		SegmentLink other = (SegmentLink) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	} 
+	
 	
 	public SegmentLink clone(){
 		SegmentLink clonedLink = new SegmentLink();

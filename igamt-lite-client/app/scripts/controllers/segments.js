@@ -35,7 +35,7 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function (node) {
-            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype) && $rootScope.getDatatype(node.datatype).components && $rootScope.getDatatype(node.datatype).components.length > 0));
+            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype.id) && $rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0));
         };
 
 
@@ -47,7 +47,7 @@ angular.module('igl')
         };
 
         $scope.onDatatypeChange = function (node) {
-            $rootScope.recordChangeForEdit2('field', 'edit', node.id, 'datatype', node.datatype);
+            $rootScope.recordChangeForEdit2('field', 'edit', node.id, 'datatype', node.datatype.id);
             $scope.refreshTree();
         };
 
@@ -362,10 +362,10 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (datatype) {
-                field.datatype = datatype.id;
+                field.datatype.id = datatype.id;
                 //TODO: load master map
-                if (!$rootScope.datatypesMap[field.datatype] || $rootScope.datatypesMap[field.datatype] == null) {
-                    $rootScope.datatypesMap[field.datatype] = datatype;
+                if (!$rootScope.datatypesMap[field.datatype.id] || $rootScope.datatypesMap[field.datatype.id] == null) {
+                    $rootScope.datatypesMap[field.datatype.id] = datatype;
                 }
                 MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
@@ -386,7 +386,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
     $scope.selectedNode = selectedNode;
     $scope.selectedTable = null;
     if (selectedNode.table != undefined) {
-        $scope.selectedTable = $rootScope.tablesMap[selectedNode.table];
+        $scope.selectedTable = $rootScope.tablesMap[selectedNode.table.id];
     }
 
     $scope.selectTable = function (table) {
@@ -395,8 +395,8 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
     };
 
     $scope.mappingTable = function () {
-        $scope.selectedNode.table = $scope.selectedTable.id;
-        $rootScope.recordChangeForEdit2('field', 'edit', $scope.selectedNode.id, 'table', $scope.selectedNode.table);
+        $scope.selectedNode.table.id = $scope.selectedTable.id;
+        $rootScope.recordChangeForEdit2('field', 'edit', $scope.selectedNode.id, 'table', $scope.selectedNode.table.id);
         $scope.ok();
     };
 
@@ -407,6 +407,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
 });
 
 angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+	$scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -444,8 +445,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
             falseUsage: null,
             valueSetId: null,
             bindingStrength: 'R',
-            bindingLocation: '1',
-            constraintClassification: 'E'
+            bindingLocation: '1'
         });
         $scope.newConstraint.segment = $rootScope.segment.name;
     }
@@ -498,13 +498,17 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
         $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
-        $scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
-        $scope.tempPredicates.push($scope.complexConstraint);
-        $scope.initComplexPredicate();
+        if($scope.selectedNode === null) {
+        	$scope.complexConstraint.constraintId = '.';
+    	}else {
+    		$scope.complexConstraint.constraintId = $scope.newConstraint.segment + '-' + $scope.selectedNode.position;
+    	}
+    	$scope.tempPredicates.push($scope.complexConstraint);
+    	$scope.initComplexPredicate();
         $scope.changed = true;
     };
-
-    $scope.updatePredicate = function () {
+    
+    $scope.addPredicate = function () {
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
 
         $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
@@ -513,9 +517,13 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 
         if ($scope.newConstraint.position_1 != null) {
-            var positionPath = $scope.selectedNode.position + '[1]';
-            var cp = $rootScope.generatePredicate(positionPath, $scope.newConstraint);
-            $scope.tempPredicates.push(cp);
+        	var cp = null;
+        	if($scope.selectedNode === null) {
+        		var cp = $rootScope.generatePredicate(".", $scope.newConstraint);
+        	}else {
+        		var cp = $rootScope.generatePredicate($scope.selectedNode.position + '[1]', $scope.newConstraint);
+        	}
+        	$scope.tempPredicates.push(cp);
             $scope.changed = true;
         }
         $scope.initPredicate();
@@ -560,12 +568,13 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 });
 
 angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+	$scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraintId = $rootScope.calNextCSID();
     $scope.newComplexConstraint = [];
 
     $scope.changed = false;
@@ -596,8 +605,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
             value2: null,
             valueSetId: null,
             bindingStrength: 'R',
-            bindingLocation: '1',
-            constraintClassification: 'E'
+            bindingLocation: '1'
         });
         $scope.newConstraint.segment = $rootScope.segment.name;
     }
@@ -606,7 +614,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = '';
+        $scope.newComplexConstraintId = $rootScope.calNextCSID();
     }
 
     $scope.initConformanceStatement();
@@ -659,12 +667,12 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 
         return position;
     };
-
-    $scope.addComplexConformanceStatement = function () {
-        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
-        $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
-        $scope.tempComformanceStatements.push($scope.complexConstraint);
-        $scope.initComplexStatement();
+    $scope.addComplexConformanceStatement = function(){
+    	$scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+    	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+    	if($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
+    	$scope.tempComformanceStatements.push($scope.complexConstraint);
+    	$scope.initComplexStatement();
         $scope.changed = true;
     };
 
@@ -676,10 +684,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 
         if ($scope.newConstraint.position_1 != null) {
-            $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
-            var positionPath = $scope.selectedNode.position + '[1]';
-            var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
+        	$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
+        	if($scope.selectedNode === null) {
+        		var cs = $rootScope.generateConformanceStatement(".", $scope.newConstraint);
+        	}else {
+        		var cs = $rootScope.generateConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
+        	}
             $scope.tempComformanceStatements.push(cs);
+            if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
             $scope.changed = true;
         }
         $scope.initConformanceStatement();
