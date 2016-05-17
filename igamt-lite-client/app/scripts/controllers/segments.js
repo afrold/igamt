@@ -35,7 +35,7 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function (node) {
-            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype) && $rootScope.getDatatype(node.datatype).components && $rootScope.getDatatype(node.datatype).components.length > 0));
+            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype.id) && $rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0));
         };
 
 
@@ -47,7 +47,7 @@ angular.module('igl')
         };
 
         $scope.onDatatypeChange = function (node) {
-            $rootScope.recordChangeForEdit2('field', 'edit', node.id, 'datatype', node.datatype);
+            $rootScope.recordChangeForEdit2('field', 'edit', node.id, 'datatype', node.datatype.id);
             $scope.refreshTree();
         };
 
@@ -362,10 +362,10 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (datatype) {
-                field.datatype = datatype.id;
+                field.datatype.id = datatype.id;
                 //TODO: load master map
-                if (!$rootScope.datatypesMap[field.datatype] || $rootScope.datatypesMap[field.datatype] == null) {
-                    $rootScope.datatypesMap[field.datatype] = datatype;
+                if (!$rootScope.datatypesMap[field.datatype.id] || $rootScope.datatypesMap[field.datatype.id] == null) {
+                    $rootScope.datatypesMap[field.datatype.id] = datatype;
                 }
                 MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
@@ -386,7 +386,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
     $scope.selectedNode = selectedNode;
     $scope.selectedTable = null;
     if (selectedNode.table != undefined) {
-        $scope.selectedTable = $rootScope.tablesMap[selectedNode.table];
+        $scope.selectedTable = $rootScope.tablesMap[selectedNode.table.id];
     }
 
     $scope.selectTable = function (table) {
@@ -395,8 +395,8 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
     };
 
     $scope.mappingTable = function () {
-        $scope.selectedNode.table = $scope.selectedTable.id;
-        $rootScope.recordChangeForEdit2('field', 'edit', $scope.selectedNode.id, 'table', $scope.selectedNode.table);
+        $scope.selectedNode.table.id = $scope.selectedTable.id;
+        $rootScope.recordChangeForEdit2('field', 'edit', $scope.selectedNode.id, 'table', $scope.selectedNode.table.id);
         $scope.ok();
     };
 

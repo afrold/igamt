@@ -14,12 +14,12 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  * @author gcr1
  *
  */
-public class TableLink extends AbstractLink implements Cloneable {
+public class TableLink extends AbstractLink implements Cloneable{
 
 	private String bindingIdentifier;
-
+	
 	private String bindingStrength;
-
+	
 	private String bindingLocation;
 
 	public TableLink() {
@@ -32,14 +32,6 @@ public class TableLink extends AbstractLink implements Cloneable {
 		this.bindingIdentifier = bindingIdentifier;
 	}
 
-	public TableLink(String id, String bindingIdentifier, String bindingStrength, String bindingLocation) {
-		super();
-		this.setId(id);
-		this.bindingIdentifier = bindingIdentifier;
-		this.bindingStrength = bindingStrength;
-		this.bindingLocation = bindingLocation;
-	}
-
 	public String getBindingIdentifier() {
 		return bindingIdentifier;
 	}
@@ -50,28 +42,30 @@ public class TableLink extends AbstractLink implements Cloneable {
 
 	@Override
 	public int hashCode() {
-		return getId().hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-
-		TableLink link = null;
-
-		if (obj == null) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-
-		if (obj instanceof SegmentLink) {
-			link = (TableLink) obj;
-		} else {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-
-		return getId().equals(link.getId());
-	}
-
-	public TableLink clone() {
+		TableLink other = (TableLink) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	} 
+	
+	public TableLink clone(){
 		TableLink clonedLink = new TableLink();
 		clonedLink.setBindingIdentifier(this.getBindingIdentifier());
 		clonedLink.setBindingLocation(this.bindingLocation);

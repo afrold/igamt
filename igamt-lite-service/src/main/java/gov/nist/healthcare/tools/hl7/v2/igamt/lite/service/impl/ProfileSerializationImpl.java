@@ -820,7 +820,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private nu.xom.Element serializeDisplaySegment(SegmentRef segmentRef, Profile profile, Message message, String path) {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		
-		Segment segment = segmentService.findById(segmentRef.getId());
+		Segment segment = segmentService.findById(segmentRef.getRef().getId());
+		
 		
 		elmSegment.addAttribute(new Attribute("ID", ExportUtil.str(segmentRef.getRef().getLabel())));
 		elmSegment.addAttribute(new Attribute("Usage", ExportUtil.str(segmentRef.getUsage().value())));
