@@ -162,6 +162,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 				}, 100);
 			};
 			
+			$scope.copyLibrary = function(datatypeLibrary) {
+				var newDatatypeLibrary = angular.copy(datatypeLibrary);
+				newDatatypeLibrary.id = null;
+				newDatatypeLibrary.metaData.ext = newDatatypeLibrary.metaData.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
+				newDatatypeLibrary.accountId = userInfoService.getAccountID();
+				DatatypeLibrarySvc.save(newDatatypeLibrary).then(function(response) {
+					$scope.datatypeLibsStruct.push(newDatatypeLibrary);
+				});
+			};
+
 			$scope.deleteLibrary = function(datatypeLibrary) {
 				DatatypeLibrarySvc.delete($scope.datatypeLibStruct.id);
 			}
@@ -223,7 +233,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 	
     $scope.editDatatype = function(datatypeJoinStruct) {
       $scope.datatypeView = "EditDatatypeLibraryDatatype.html";
-		console.log("edit datatypeJoinStruct=" + JSON.stringify(datatypeJoinStruct.label));
       if (datatypeJoinStruct && datatypeJoinStruct != null) {
         $scope.loadingSelection = true;
         
@@ -348,14 +357,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             return "";
         };
 
-        $scope.getBindingIdentifier = function(tableId) {
-        	console.log("getBindingIdentifier==>" + tableId);
-        	var bindingIdentifier;
-        	bindingIdentifier = TableService.getOne(tableId);
-        	console.log("<==getBindingIdentifier=" + bindingIdentifier);
-        	return bindingIdentifier;
-        };
-
 			$scope.openStandardDataypes = function(scope) {
 					var standardDatatypesInstance = $modal.open({
 						templateUrl : 'standardDatatypeDlg.html',
@@ -406,7 +407,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         	DatatypeLibrarySvc.bindDatatypes(ids, $scope.datatypeLibStruct.id, $scope.datatypeLibStruct.metaData.ext).then(function(results) {
         	console.log("$scope.openDataypeList.bindDatatypes results=" + results.length);
           angular.forEach(results, function(result){
-            result.new = true;
             $scope.datatypesJoinStruct.push(result);
            });
         });

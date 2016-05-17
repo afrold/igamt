@@ -149,6 +149,13 @@ public class DatatypeLibraryController extends CommonController {
 		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
 	}
 
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public LibrarySaveResponse save(@RequestBody DatatypeLibrary datatypeLibrary) throws LibrarySaveException {
+		log.info("Saving the " + datatypeLibrary.getMetaData().getName() + " datatype library.");
+		DatatypeLibrary saved = datatypeLibraryService.save(datatypeLibrary);
+		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
+	}
+
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public void delete(@PathVariable String id) {
 		datatypeLibraryService.delete(id);

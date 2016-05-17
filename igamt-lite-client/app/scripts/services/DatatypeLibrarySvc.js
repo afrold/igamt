@@ -87,14 +87,13 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
             });
     };
 
-// gcr We're not saving the entire library anymore.    
-//    svc.save = function (datatypeLibrary) {
-//    	
-//        return $http.post(
-//            'api/datatype-library/save', angular.toJson(datatypeLibrary)).then(function (response) {
-//                return angular.fromJson(response.data)
-//            });
-//    };
+    svc.save = function (datatypeLibrary) {
+    	
+        return $http.post(
+            'api/datatype-library/save', angular.toJson(datatypeLibrary)).then(function (response) {
+                return angular.fromJson(response.data)
+            });
+    };
     
    svc.delete = function (datatypeLibraryId) {
     	
