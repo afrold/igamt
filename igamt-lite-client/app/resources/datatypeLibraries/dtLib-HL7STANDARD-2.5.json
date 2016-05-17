@@ -4,9 +4,8 @@
   "sectionTitle" : "Datatypes",
   "sectionDescription" : null,
   "sectionContents" : null,
-  "id" : "573b0845da08c28cd04822c3",
+  "id" : "573b5101da08bdc5ada9a22a",
   "accountId" : null,
-  "date" : null,
   "ext" : null,
   "metaData" : {
     "name" : null,
@@ -15,7 +14,7 @@
     "hl7Version" : "2.5",
     "date" : "May 17, 2016",
     "ext" : null,
-    "datatypLibId" : ""
+    "datatypeLibId" : ""
   },
   "scope" : "HL7STANDARD",
   "children" : [ {

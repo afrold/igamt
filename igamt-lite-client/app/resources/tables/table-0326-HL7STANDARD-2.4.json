@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "565f3ab6d4c6e52cfd443b3c",
   "hl7Version" : "2.4",
-  "libIds" : [ "573b0847da08c28cd04847b8" ],
+  "libIds" : [ "573b5103da08bdc5ada9c71f" ],
   "bindingIdentifier" : "0326",
   "name" : "0326",
   "description" : "Visit indicator",

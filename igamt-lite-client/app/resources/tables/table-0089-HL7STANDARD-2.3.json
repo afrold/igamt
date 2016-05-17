@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "565f3ab7d4c6e52cfd44736c",
   "hl7Version" : "2.3",
-  "libIds" : [ "573b084ada08c28cd04867f9" ],
+  "libIds" : [ "573b5106da08bdc5ada9e760" ],
   "bindingIdentifier" : "0089",
   "name" : "0089",
   "description" : "Procedure Coding Method",

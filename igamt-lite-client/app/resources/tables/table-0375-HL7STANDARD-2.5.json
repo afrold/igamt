@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "565f3ab6d4c6e52cfd4407dc",
   "hl7Version" : "2.5",
-  "libIds" : [ "573b0845da08c28cd04822c4" ],
+  "libIds" : [ "573b5101da08bdc5ada9a22b" ],
   "bindingIdentifier" : "0375",
   "name" : "0375",
   "description" : "Artificial blood",

@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "565f3ab7d4c6e52cfd447f5e",
   "hl7Version" : "2.2",
-  "libIds" : [ "573b084bda08c28cd0486d70" ],
+  "libIds" : [ "573b5107da08bdc5ada9ecd7" ],
   "bindingIdentifier" : "0076",
   "name" : "0076",
   "description" : "MESSAGE TYPE",

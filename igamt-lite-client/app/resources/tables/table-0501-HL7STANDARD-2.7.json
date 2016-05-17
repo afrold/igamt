@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "569eac0dd4c623dc65507c74",
   "hl7Version" : "2.7",
-  "libIds" : [ "573b0842da08c28cd047f919" ],
+  "libIds" : [ "573b50ffda08bdc5ada97880" ],
   "bindingIdentifier" : "0501",
   "name" : "0501",
   "description" : "Consent Non-Disclosure Reason",

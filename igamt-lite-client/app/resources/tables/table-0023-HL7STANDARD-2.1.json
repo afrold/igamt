@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "565f3ab7d4c6e52cfd4482e5",
   "hl7Version" : "2.1",
-  "libIds" : [ "573b084bda08c28cd0486f11" ],
+  "libIds" : [ "573b5107da08bdc5ada9ee78" ],
   "bindingIdentifier" : "0023",
   "name" : "0023",
   "description" : "ADMIT SOURCE",

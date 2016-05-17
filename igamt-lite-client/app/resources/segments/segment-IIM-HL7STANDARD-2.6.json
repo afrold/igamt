@@ -7,7 +7,7 @@
   "version" : null,
   "status" : null,
   "participants" : [ ],
-  "libIds" : [ "573b0840da08c28cd047c6da" ],
+  "libIds" : [ "573b50fcda08bdc5ada94641" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0ed4c623dc6550bf3a",
@@ -354,7 +354,7 @@
     "max" : "*"
   } ],
   "dynamicMapping" : {
-    "id" : "573b0840da08c28cd047aff7",
+    "id" : "573b50fcda08bdc5ada92f5e",
     "mappings" : [ ]
   },
   "name" : "IIM",
