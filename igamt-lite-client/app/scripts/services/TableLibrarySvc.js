@@ -121,6 +121,17 @@ angular.module('igl').factory('TableLibrarySvc', function($http, $httpBackend, $
         });
         return delay.promise;
     };
+    
+    svc.deleteChild = function (libId, id) {
+        var delay = $q.defer();
+        $http.post('api/table-library/'+ libId+ '/deleteChild/' + id).then(function (response) {
+            var link = angular.fromJson(response.data);
+            delay.resolve(link);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
 
 
     return svc;

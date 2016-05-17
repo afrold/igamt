@@ -545,6 +545,7 @@ public class IGDocumentConverterFromOldToNew{
 		segMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
 		// segMetaData.setName(ppl.getMetaData().getName());
 		segMetaData.setOrgName("NIST");
+		segMetaData.setSegmentLibId(UUID.randomUUID().toString());
 		// segMetaData.setVersion(ppl.getMetaData().getVersion());
 		app.getProfile().getSegmentLibrary().setScope(Constant.SCOPE.HL7STANDARD);
 		app.getProfile().getSegmentLibrary().setMetaData(segMetaData);
@@ -570,6 +571,7 @@ public class IGDocumentConverterFromOldToNew{
 		DatatypeLibraryMetaData dtMetaData = new DatatypeLibraryMetaData();
 		dtMetaData.setDate(Constant.mdy.format(new Date()));
 		dtMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
+		dtMetaData.setDatatypeLibId(UUID.randomUUID().toString());
 		// dtMetaData.setName(ppl.getMetaData().getName());
 		dtMetaData.setOrgName("NIST");
 		// dtMetaData.setVersion(ppl.getMetaData().getVersion());
@@ -598,6 +600,7 @@ public class IGDocumentConverterFromOldToNew{
 		TableLibraryMetaData tabMetaData = new TableLibraryMetaData();
 		tabMetaData.setDate(Constant.mdy.format(new Date()));
 		tabMetaData.setHl7Version(ppl.getMetaData().getHl7Version());
+		tabMetaData.setTableLibId(UUID.randomUUID().toString());
 		// tabMetaData.setName(ppl.getMetaData().getName());
 		tabMetaData.setOrgName("NIST");
 		// tabMetaData.setVersion(ppl.getMetaData().getVersion());

@@ -532,7 +532,7 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
     $scope.delete = function () {
         $scope.loading = true;
         DatatypeService.delete($scope.dtToDelete).then(function (result) {
-                DatatypeLibrarySvc.deleteChild($scope.dtToDelete.id).then(function (res) {
+                DatatypeLibrarySvc.deleteChild($rootScope.igdocument.profile.datatypeLibrary.id, $scope.dtToDelete.id).then(function (res) {
                     // We must delete from two collections.
                     var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
                     $rootScope.datatypes.splice(index, 1);

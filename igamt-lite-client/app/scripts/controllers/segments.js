@@ -728,7 +728,7 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
     $scope.delete = function () {
         $scope.loading = true;
         SegmentService.delete($scope.segToDelete).then(function (result) {
-                SegmentLibrarySvc.deleteChild($scope.segToDelete.id).then(function (res) {
+                SegmentLibrarySvc.deleteChild($rootScope.igdocument.profile.segmentLibrary.id, $scope.segToDelete.id).then(function (res) {
                     // We must delete from two collections.
                     var index = $rootScope.segments.indexOf($scope.segToDelete);
                     $rootScope.segments.splice(index, 1);
