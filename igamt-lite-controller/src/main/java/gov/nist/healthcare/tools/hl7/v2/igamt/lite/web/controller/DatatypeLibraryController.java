@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
@@ -157,8 +158,9 @@ public class DatatypeLibraryController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
-	public void delete(@PathVariable String id) {
+	public ResponseMessage delete(@PathVariable String id) {
 		datatypeLibraryService.delete(id);
+		return new ResponseMessage(ResponseMessage.Type.success, "datatypeLibraryDeletedSuccess", null);
 	}
 
 	@RequestMapping(value = "/bindDatatypes", method = RequestMethod.POST)
