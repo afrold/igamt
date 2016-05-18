@@ -159,6 +159,9 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
             delete: function(datatype) {
+            	
+            	
+            	
                  return $http.get('api/datatypes/'+ datatype.id+ '/delete');
             },
             getDatatypeLink : function(datatype){
