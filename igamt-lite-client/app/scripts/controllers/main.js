@@ -876,16 +876,14 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.findDatatypeRefs = function (datatype, obj) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
-                if ($rootScope.datatypesMap[obj.datatype.id] === datatype && $rootScope.references.indexOf(obj) === -1) {
+                if (obj.datatype.id === datatype.id && $rootScope.references.indexOf(obj) === -1) {
                     $rootScope.references.push(obj);
                 }
                 $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id]);
             } else if (angular.equals(obj.type, 'segment')) {
-                angular.forEach($rootScope.segments, function (segment) {
-                    angular.forEach(segment.fields, function (field) {
-                        $rootScope.findDatatypeRefs(datatype, field);
-                    });
-                });
+            	angular.forEach(obj.fields, function (field) {
+            		$rootScope.findDatatypeRefs(datatype, field);
+            	});
             } else if (angular.equals(obj.type, 'datatype')) {
                 if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                     angular.forEach(obj.components, function (component) {
