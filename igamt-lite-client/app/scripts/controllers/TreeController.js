@@ -17,11 +17,23 @@ angular
             $scope.collapsetable = false;
             $scope.collapsevalueSet=false;
             $scope.profilecollapsed = false;
+            $scope.openMetadata=false;
+            $scope.dataTypeLibraryCollapsed=false;
             $scope.activeModel = "";
             $scope.Activate = function (param) {
                 $scope.activeModel = param;
             }
-      
+
+            $rootScope.switcherDatatypeLibrary = function () {
+            
+                $scope.dataTypeLibraryCollapsed = !$scope.dataTypeLibraryCollapsed;
+
+            };
+            $rootScope.openMetadata = function () {
+                
+                $scope.openMetadata = !$scope.openMetadata;
+
+            };
 
             $rootScope.switcherprofile = function () {
                 $scope.profilecollapsed = !$scope.profilecollapsed;
@@ -50,7 +62,7 @@ angular
 
             };
             
-
+            
             $scope.treeOptions = {
 
                 accept: function (sourceNodeScope, destNodesScope, destIndex) {
@@ -339,7 +351,29 @@ angular
                 } ]
 
             ];
+            $scope.DataTypeOptionsInLib = [
 
+                                           ['create a copy',
+                                               function ($itemScope) {
+                                         	 	console.log("************");	
+                                           	console.log($itemScope.data);
+                                           	$scope.copyDatatype($itemScope.data); 
+
+                                                 
+                                               } ],
+                                           null,
+                                           ['delete',
+                                               function ($itemScope) {
+                                        	   $scope.deleteDatatype($itemScope.data);
+                                               } ]
+                                         
+                                           
+                                            
+                                              
+                                       ];
+            
+            
+            
 
             $scope.editSeg = function (seg) {
                 //console.log("EditSeg")
@@ -509,7 +543,19 @@ angular
             };
             
 
-            
+            $rootScope.getLabelOfData = function (name, ext) {
+            	//console.log("*********"+name+ext);
+            	var label="";
+                if (ext && ext !== null && ext !== "") {
+                	console.log("*********"+name + "_" + ext);
+                	label= name + "_" + ext;
+               
+                } else {
+                    label =name;
+                }
+                console.log(label);
+                return label; 
+            };
             
 
 

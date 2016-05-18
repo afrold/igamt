@@ -4,12 +4,12 @@
   "sectionTitle" : "Default title",
   "sectionDescription" : "Default description",
   "sectionContents" : "Default contents",
-  "id" : "573b220dda08e75fd562922c",
+  "id" : "573b21e2da08e75fd562922b",
   "accountId" : 45,
   "date" : "May 17, 2016",
   "ext" : null,
   "metaData" : {
-    "name" : "First User",
+    "name" : "First Master",
     "orgName" : "NIST",
     "version" : null,
     "hl7Version" : "2.7",
@@ -17,6 +17,11 @@
     "ext" : "Tex",
     "datatypLibId" : ""
   },
-  "scope" : "USER",
-  "children" : [ ]
+  "scope" : "MASTER",
+  "children" : [ {
+    "id" : "569eac0dd4c623dc65508666",
+    "name" : "AD",
+    "ext" : "xxx",
+    "label" : "AD_"
+  }]
 }
