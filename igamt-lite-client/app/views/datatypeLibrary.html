@@ -1,11 +1,5 @@
 <div class="container" ng-controller="DatatypeLibraryCtl"
-	ng-init="initDatatypeLibrary()">
-
-	<div ng-show="!loading">
-		<div class="page-header">
-			<h3>Data Type Libraries</h3>
-		</div>
-	</div>
+	ng-init="initDatatypeLibrary()" style="margin-top : 20px">
 	<accordion close-others="false"> 
 	<accordion-group is-open="accordi.dtList" panel-class="panel-primary">
 	<accordion-heading> 
@@ -65,8 +59,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-class="{'new' : dtLib.new}"
-								ng-repeat="dtLib in datatypeLibsDisplay">
+							<tr ng-repeat="dtLib in datatypeLibsDisplay">
 								<td st-ratio="2" style="text-align: right;">{{$index + 1}}</td>
 								<td st-ratio="10">{{dtLib.metaData.name}}</td>
 								<td st-ratio="10">{{dtLib.metaData.ext}}</td>
@@ -392,7 +385,7 @@
 <div class="row">
     <div class="col-md-12 igl-page-header">
         <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeLibStruct.ext)}}</span>
-                     <span class="pull-right"><pre>datatypeCopy.scope={{datatypeCopy.scope}}</pre>
+                     <span class="pull-right">
   		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng.model="datatypeCopy.publish" style="margin-right : 8px"/>Publish</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"
@@ -827,7 +820,6 @@
     <div class="modal-body">
         <p>Are you sure you want to delete the Data Type Library? This operation is irreversible</p>
     </div>
-    </div>
     <div class="modal-footer">
         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
@@ -839,10 +831,7 @@
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>
     </div>
-    </div>
 </script>
-
-
 <script type="text/ng-template" id="ConfirmDatatypeLibraryCloseCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Close Confirmation

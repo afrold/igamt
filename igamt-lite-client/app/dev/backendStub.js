@@ -150,11 +150,17 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
     $httpBackend.whenGET(/^api\/datatype-library\/.*\/datatypes/).respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
          console.log('api\\/.*\\/ url=' + url);
-        request.open('GET', '../../resources/datatypes/datatype-AD-HL7STANDARD-2.7.json', false);
-        request.send(null);
-        var datatype = [];
-            datatype.push(angular.fromJson(request.response));
-        return [request.status, datatype, {}];
+         var datatypes = [];
+         request.open('GET', '../../resources/datatypes/datatype-AD-USER-2.7.json', false);
+         request.send(null);
+         datatypes.push(angular.fromJson(request.response));
+         request.open('GET', '../../resources/datatypes/datatype-AUI-USER-2.7.json', false);
+         request.send(null);
+         datatypes.push(angular.fromJson(request.response));
+         request.open('GET', '../../resources/datatypes/datatype-CCP-USER-2.7.json', false);
+         request.send(null);
+         datatypes.push(angular.fromJson(request.response));
+        return [request.status, datatypes, {}];
     });
 
     $httpBackend.whenPOST('api/datatype-library/create').respond(function (method, url, data, headers) {
@@ -177,11 +183,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         return [200, getSegments(), {}];
     });
 
-    $httpBackend.whenGET(/^api\/datatype-library\/.*/).respond(function (method, url, data, headers, params) {
-        return [200, getDatatypes(), {}];
-    });
-
-    $httpBackend.whenPOST(/^api\/datatype-library\/.*/).respond(function (method, url, data, headers) {
+     $httpBackend.whenPOST(/^api\/datatype-library\/.*/).respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         var libId = url.split('/')[2];
         var action = url.split('/')[3];
@@ -281,8 +283,5 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         var response = angular.fromJson(datatype);
         return [200, response, {}];
     });
-
-
-
 
 });
