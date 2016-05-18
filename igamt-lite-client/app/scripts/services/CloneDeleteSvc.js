@@ -81,12 +81,8 @@ angular.module('igl').factory(
         };
 
         svc.copyDatatype = function (datatype) {
-             console.log("CHECK-pre: " + datatype.components.length);
             var newDatatype = angular.copy(datatype, {});
-            
-            console.log("CHECK: " + newDatatype.components.length);
             var newLink = angular.copy(DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.igdocument.profile.datatypeLibrary));
-            
             newDatatype.participants = [];
 
             newDatatype.ext = $rootScope.createNewExtension(newLink.ext);
@@ -124,7 +120,11 @@ angular.module('igl').factory(
                     console.log("rootscope.datatypeLibrary = " + $rootScope.igdocument.profile.datatypeLibrary.children.length);
                     $rootScope.datatype = newDatatype;
                     $rootScope.datatypesMap[newDatatype.id] = newDatatype;
-                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
+                    
+                    //TODO need to add MasterMap
+//                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
+                    //TODO END
+                    
                     $rootScope.processElement(newDatatype);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openDatatype', newDatatype);
@@ -324,6 +324,42 @@ angular.module('igl').factory(
                 confirmDatatypeDelete(datatype);
             }
         }
+        
+        svc.deleteDatatypeAndDatatypeLink = function (datatype) {
+        	DatatypeService.delete(datatype).then(function (result) {
+        		svc.deleteDatatypeLink(datatype);
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+            });
+        };
+        
+        svc.deleteDatatypeLink = function (datatype) {
+            DatatypeLibrarySvc.deleteChild($rootScope.igdocument.profile.datatypeLibrary.id, datatype.id).then(function (res) {
+                var index = $rootScope.datatypes.indexOf(datatype);
+                $rootScope.datatypes.splice(index, 1);
+                var tmp = DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.igdocument.profile.datatypeLibrary);
+                index = $rootScope.igdocument.profile.datatypeLibrary.children.indexOf(tmp);
+                $rootScope.igdocument.profile.datatypeLibrary.children.splice(index, 1);
+                $rootScope.datatypesMap[datatype.id] = null;
+                $rootScope.references = [];
+                if ($rootScope.datatype === datatype) {
+                    $rootScope.datatype = null;
+                }
+                $rootScope.recordDelete("datatype", "edit", datatype.id);
+                $rootScope.msg().text = "DatatypeDeleteSuccess";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+                //TODO MasterMap pending
+//                MastermapSvc.deleteDatatype($scope.segToDelete.id);
+                $rootScope.$broadcast('event:SetToC');
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+            });
+        };
 
         function abortDatatypeDelete(datatype) {
             var dtToDelete;
@@ -499,7 +535,6 @@ angular.module('igl').factory(
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
                 $rootScope.manualHandle = true;
-                $scope.loading = false;
             });
         }
 
