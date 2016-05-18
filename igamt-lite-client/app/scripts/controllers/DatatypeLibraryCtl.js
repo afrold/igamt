@@ -131,21 +131,20 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.datatypeLibStruct = datatypeLibrary;
             $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibrary.metaData);
                    var datatypes = null;
-                  DatatypeLibrarySvc.getDatatypesByLibrary(datatypeLibrary.id).then(function(response){
+                  DatatypeLibrarySvc.getDatatypesByLibrary(datatypeLibrary.id).then(function(response) {
                 	  datatypes = response;
                 	  var sortedLinks = _.sortBy(datatypeLibrary.children, 'id');
                 	  var sortedDts = _.sortBy(datatypes, 'id');
                 	  console.log("Verify synch=" + sortedLinks.length === sortedDts.length + " sortedLinks.length" + sortedLinks.length + " sortedDts.length" + sortedDts.length);
                 	  for (i = 0; i < sortedLinks.length; i++) {
                 		  var datatypeJoinStruct = {
-                				  label : $rootScope.getLabel(sortedLinks[i].name, sortedLinks[i].ext),
+                				  label : $rootScope.getLabel(sortedLinks[i].name, datatypeLibrary.metaData.ext),
                 				  description : sortedDts[i].description,
                 		  		  publish : sortedDts[i].publish,
                 		  		  linkRef : sortedLinks[i],
                 		  		  dtRef : sortedDts[i]
                 		  };
-                 		  console.log("datatypeJoinStruct=" + JSON.stringify(datatypeJoinStruct));
-
+ 
                 		  $scope.datatypesJoinStruct.push(datatypeJoinStruct);
                 	  }
                   });
@@ -173,7 +172,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			};
 
 			$scope.deleteLibrary = function(datatypeLibrary) {
-				DatatypeLibrarySvc.delete($scope.datatypeLibStruct.id);
+				DatatypeLibrarySvc.delete(datatypeLibrary.id);
+                var idxP = _.findIndex($scope.datatypeLibsStruct, function (child) {
+                    return child.id === datatypeLibrary.id;
+                });
+                $scope.datatypeLibsStruct.splice(idxP, 1);
 			}
 
 	        $scope.confirmDelete = function (datatypeLibrary) {
@@ -187,7 +190,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 	                }
 	            });
 	            modalInstance.result.then(function (datatypeLibrary) {
-	                $scope.datatypeLibraryToDelete = datatypeLibrary;
+					DatatypeLibrarySvc.delete(datatypeLibrary.id);
 	                var idxP = _.findIndex($scope.datatypeLibsStruct, function (child) {
 	                    return child.id === datatypeLibrary.id;
 	                });
@@ -287,7 +290,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 		var newDatatype = angular.copy(datatype);
 		newDatatype.oldId = newDatatype.id;
 		newDatatype.id = new ObjectId().toString();
-		newDatatype.ext = newDatatype.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
+		newDatatype.label = newDatatype.label + "-" + (Math.floor(Math.random() * 10000000) + 1);
 		$scope.datatypesJoinStruct.push(newDatatype);
   	}
   
@@ -332,12 +335,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
     $scope.deleteDatatype = function(datatype) {
 		console.log("delete datatype=" + JSON.stringify(datatype.label));
- 				var idx = _.findIndex($scope.datatypeLibStruct.children, function (
-						child) {
+ 				var idx = _.findIndex($scope.datatypesJoinStruct, function (child) {
 					return datatype.id === child.id;
 				});
 
-				$scope.datatypeLibStruct.children.splice(idx, 1);
+				$scope.datatypesJoinStruct.splice(idx, 1);
 				DatatypeService.delete(datatype);
       };
 
@@ -404,10 +406,22 @@ angular.module('igl').controller('DatatypeLibraryCtl',
            ids.push(result.id);
         });
 
-        	DatatypeLibrarySvc.bindDatatypes(ids, $scope.datatypeLibStruct.id, $scope.datatypeLibStruct.metaData.ext).then(function(results) {
+        	DatatypeLibrarySvc.bindDatatypes(ids, $scope.datatypeLibStruct.id, $scope.datatypeLibStruct.metaData.ext).then(function(datatypes) {
         	console.log("$scope.openDataypeList.bindDatatypes results=" + results.length);
-          angular.forEach(results, function(result){
-            $scope.datatypesJoinStruct.push(result);
+          angular.forEach(datatypes, function(datatype){
+        	  var lbl = $rootScope.getLabel(datatype.name, datatypeLibraryCopy.metaData.ext);
+    		  var datatypeJoinStruct = {
+    				  label : lbl,
+    				  description : datatype.description,
+    		  		  publish : datatype.publish,
+    		  		  linkRef : { id : datatype.id,
+    		  			  name : datatype.name,
+    		  			  ext : datatypeLibraryCopy.metaData.ext,
+    		  			  label : lbl
+    		  		  },
+    		  		  dtRef : datatype
+    		  };
+    		  $scope.datatypesJoinStruct.push(datatypeJoinStruct);
            });
         });
     });
@@ -489,10 +503,11 @@ angular.module('igl').controller('DatatypeListInstanceDlgCtl',
 			};
 });
 
-
-angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function ($scope, $modalInstance, datatypeLibStructToDelete, $rootScope, $http) {
+angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function ($scope, $rootScope, $http, $modalInstance, datatypeLibStructToDelete) {
+	
     $scope.datatypeLibStructToDelete = datatypeLibStructToDelete;
     $scope.loading = false;
+    
     $scope.delete = function () {
         $scope.loading = true;
         $http.post($rootScope.api('api/datatype-library/' + $scope.datatypeLibStructToDelete.id + '/delete')).then(function (response) {

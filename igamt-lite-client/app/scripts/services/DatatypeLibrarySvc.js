@@ -42,7 +42,6 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
             'api/datatype-library/findByScopesAndVersion', angular.toJson(scopesAndVersion))
             .then(function (response) {
                 console.log("getDataTypeLibraryByScopesAndVersion response size=" + response.data.length);
-//   					  console.log("getDataTypeLibraryByScopesAndVersion response=" + JSON.stringify(response.data));
                 return angular.fromJson(response.data);
             });
     };
