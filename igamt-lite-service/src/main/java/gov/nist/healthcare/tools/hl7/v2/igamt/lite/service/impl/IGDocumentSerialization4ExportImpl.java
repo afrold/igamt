@@ -424,7 +424,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 			//				ds.appendChild(this.serializeDatatype(d, profile.getTableLibrary(), profile.getDatatypeLibrary()));
 			//			}
 			if (dl.getId()!= null && datatypeService != null && datatypeService.findById(dl.getId()) != null){	
-						ds.appendChild(this.serializeDatatype(dl, profile.getTableLibrary(), profile.getDatatypeLibrary(), prefix + "." + String.valueOf(sgtList.indexOf(dl)+1), dtList.indexOf(dl)));
+						ds.appendChild(this.serializeDatatype(dl, profile.getTableLibrary(), profile.getDatatypeLibrary(), prefix + "." + String.valueOf(dtList.indexOf(dl)+1), dtList.indexOf(dl)));
 			}
 		}
 		xsect.appendChild(ds);
@@ -454,7 +454,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 		for (TableLink link : tables) {
 			if (tableService != null){
 				if (tableService.findById(link.getId()) != null){
-					ts.appendChild(this.serializeTable(link, prefix + String.valueOf(tables.indexOf(link)), tables.indexOf(link)));
+					ts.appendChild(this.serializeTable(link, prefix +"." + String.valueOf(tables.indexOf(link)), tables.indexOf(link)));
 				}
 			}
 		}
