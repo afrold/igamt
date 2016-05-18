@@ -1872,7 +1872,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getExtensionInLibrary = function (id, library,propertyType) {
-            console.log("main Here id=" + id);
+//            console.log("main Here id=" + id);
             if(propertyType && library.children){
                 for(var i=0;  i< library.children.length;i ++){
                     if(library.children[i].id === id){

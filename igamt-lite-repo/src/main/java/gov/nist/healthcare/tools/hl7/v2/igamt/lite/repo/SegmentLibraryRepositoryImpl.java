@@ -12,6 +12,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,118 +24,142 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 
 public class SegmentLibraryRepositoryImpl implements SegmentLibraryOperations {
-	
-	private Logger log = LoggerFactory.getLogger(SegmentLibraryRepositoryImpl.class);
 
-	 @Autowired
-	 private MongoOperations mongo;
+	private Logger log = LoggerFactory
+			.getLogger(SegmentLibraryRepositoryImpl.class);
 
-		@Override
-		public List<SegmentLibrary> findByScopes(List<SCOPE> scopes) {
-			Criteria where = Criteria.where("scope").in(scopes);
-			Query qry = Query.query(where);
-			List<SegmentLibrary> list =  mongo.find(qry, SegmentLibrary.class);
-			log.debug("SegmentLibraryRespositoryImpl.findByScopes list.size()=" + list.size());
-		    return list;
+	@Autowired
+	private MongoOperations mongo;
+
+	@Override
+	public List<SegmentLibrary> findByScopes(List<SCOPE> scopes) {
+		Criteria where = Criteria.where("scope").in(scopes);
+		Query qry = Query.query(where);
+		List<SegmentLibrary> list = mongo.find(qry, SegmentLibrary.class);
+		log.debug("SegmentLibraryRespositoryImpl.findByScopes list.size()="
+				+ list.size());
+		return list;
+	}
+
+	@Override
+	public List<SegmentLibrary> findScopesNVersion(List<SCOPE> scopes,
+			String hl7Version) {
+		log.info("SegmentLibraryRespositoryImpl.findByScopesAndVersion="
+				+ hl7Version);
+		Criteria where = Criteria.where("scope").in(scopes);
+		if (hl7Version != null) {
+			where.andOperator(Criteria.where("metaData.hl7Version").is(
+					hl7Version));
 		}
+		Query qry = Query.query(where);
+		List<SegmentLibrary> list = mongo.find(qry, SegmentLibrary.class);
+		log.info("SegmentLibraryRespositoryImpl.findByScopesAndVersion list.size()="
+				+ list.size());
+		return list;
+	}
 
-		@Override
-		public List<SegmentLibrary> findScopesNVersion(List<SCOPE> scopes, String hl7Version) {
-			log.info("SegmentLibraryRespositoryImpl.findByScopesAndVersion=" + hl7Version);
-			Criteria where = Criteria.where("scope").in(scopes);
-			if (hl7Version != null) {
-				where.andOperator(Criteria.where("metaData.hl7Version").is(hl7Version));
-			}
-			Query qry = Query.query(where);
-			List<SegmentLibrary> list =  mongo.find(qry, SegmentLibrary.class);
-			log.info("SegmentLibraryRespositoryImpl.findByScopesAndVersion list.size()=" + list.size());
-		    return list;
-	 	}
+	@Override
+	public List<SegmentLibrary> findByAccountId(Long accountId,
+			String hl7Version) {
+		log.debug("SegmentLibraryRespositoryImpl.findStandardByVersion="
+				+ hl7Version);
+		Criteria where = Criteria
+				.where("accountId")
+				.is(accountId)
+				.andOperator(Criteria.where("scope").is(SCOPE.USER))
+				.andOperator(
+						Criteria.where("metaData.hl7Version").is(hl7Version));
+		Query qry = Query.query(where);
+		List<SegmentLibrary> list = mongo.find(qry, SegmentLibrary.class);
+		log.debug("SegmentLibraryRespositoryImpl.findStandardByVersion list.size()="
+				+ list.size());
+		return list;
+	}
 
-		@Override
-		public List<SegmentLibrary> findByAccountId(Long accountId, String hl7Version) {
-			log.debug("SegmentLibraryRespositoryImpl.findStandardByVersion=" + hl7Version);
-			Criteria where = Criteria.where("accountId").is(accountId)
-					.andOperator(Criteria.where("scope").is(SCOPE.USER))
-					.andOperator(Criteria.where("metaData.hl7Version").is(hl7Version));
-			Query qry = Query.query(where);
-			List<SegmentLibrary> list =  mongo.find(qry, SegmentLibrary.class);
-			log.debug("SegmentLibraryRespositoryImpl.findStandardByVersion list.size()=" + list.size());
-		    return list;
+	@Override
+	public List<String> findHl7Versions() {
+		Query qry = new Query();
+		qry.fields().include("metaData.hl7Version");
+		List<SegmentLibrary> dtLibs = mongo.findAll(SegmentLibrary.class);
+		List<String> versions = new ArrayList<String>();
+		for (SegmentLibrary dtLib : dtLibs) {
+			versions.add(dtLib.getMetaData().getHl7Version());
 		}
-		
-		@Override
-		public List<String> findHl7Versions() {
-			Query qry = new Query();
-			qry.fields().include("metaData.hl7Version");
-			List<SegmentLibrary> dtLibs = mongo.findAll(SegmentLibrary.class);
-			List<String> versions = new ArrayList<String>();
-			for (SegmentLibrary dtLib : dtLibs) {
-				versions.add(dtLib.getMetaData().getHl7Version());
-			}
-			return versions;
-		}
+		return versions;
+	}
 
-		@Override
-		public SegmentLibrary findById(String id) {
-			log.debug("SegmentLibraryRespositoryImpl.findById=" + id);
-			Criteria where = Criteria.where("id").is(id);
-			Query qry = Query.query(where);
-			SegmentLibrary segmentLibrary = null;
-			List<SegmentLibrary> segmentLibraries = mongo.find(qry, SegmentLibrary.class);
-			if (segmentLibraries != null && segmentLibraries.size() > 0) {
-				segmentLibrary = segmentLibraries.get(0);
-			}
-			return segmentLibrary;
+	@Override
+	public SegmentLibrary findById(String id) {
+		log.debug("SegmentLibraryRespositoryImpl.findById=" + id);
+		Criteria where = Criteria.where("id").is(id);
+		Query qry = Query.query(where);
+		SegmentLibrary segmentLibrary = null;
+		List<SegmentLibrary> segmentLibraries = mongo.find(qry,
+				SegmentLibrary.class);
+		if (segmentLibraries != null && segmentLibraries.size() > 0) {
+			segmentLibrary = segmentLibraries.get(0);
 		}
+		return segmentLibrary;
+	}
 
-		@Override
-		public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version,
-				String name, Long accountId) {
-			Criteria libCriteria = Criteria
+	@Override
+	public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version,
+			String name, Long accountId) {
+		Criteria libCriteria = Criteria
+				.where("scope")
+				.is(scope)
+				.andOperator(
+						Criteria.where("metaData.hl7Version").is(hl7Version))
+				.andOperator(
+						Criteria.where("accountId")
+								.is(accountId)
+								.orOperator(
+										Criteria.where("accountId").is(null)));
+		Criteria linksCriteria = Criteria.where("children").elemMatch(
+				Criteria.where("name").is(name));
+		BasicQuery query = new BasicQuery(libCriteria.getCriteriaObject(),
+				linksCriteria.getCriteriaObject());
+		List<SegmentLink> links = mongo.find(query, SegmentLink.class);
+
+		return links;
+	}
+
+	@Override
+	public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope,
+			String hl7Version, String name, Long accountId) {
+		List<SegmentLibrary> libraries = null;
+		Criteria libCriteria = null;
+		if (scope.equals(SCOPE.HL7STANDARD) || scope.equals(SCOPE.MASTER)) {
+			libCriteria = Criteria
 					.where("scope")
 					.is(scope)
 					.andOperator(
-							Criteria.where("metaData.hl7Version").is(hl7Version))
-					.andOperator(
-							Criteria.where("accountId")
-									.is(accountId)
-									.orOperator(
-											Criteria.where("accountId").is(null)));
+							Criteria.where("metaData.hl7Version")
+									.is(hl7Version));
 			Criteria linksCriteria = Criteria.where("children").elemMatch(
 					Criteria.where("name").is(name));
 			BasicQuery query = new BasicQuery(libCriteria.getCriteriaObject(),
 					linksCriteria.getCriteriaObject());
-			List<SegmentLink> links = mongo.find(query, SegmentLink.class);
-
-		 return links;
+			libraries = mongo.find(query, SegmentLibrary.class);
 		}
+		return libraries;
+	}
+	
+	@Override
+	public List<Segment> findByIds(Set<String> ids) {
+		Criteria where = Criteria.where("id").in(ids);
+		Query qry = Query.query(where);
+ 		List<Segment> segments = mongo.find(qry, Segment.class);
+		return segments;
+	}
+	
 
-		@Override
-		public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope,
-				String hl7Version, String name, Long accountId) {
-			Criteria libCriteria = Criteria
-					.where("scope")
-					.is(scope)
-					.andOperator(
-							Criteria.where("metaData.hl7Version").is(hl7Version))
-					.andOperator(
-							Criteria.where("accountId")
-									.is(accountId)
-									.orOperator(
-											Criteria.where("accountId").is(null)));
-			Criteria linksCriteria = Criteria.where("children").elemMatch(
-					Criteria.where("name").is(name).andOperator(Criteria.where("status").is(STATUS.PUBLISHED)));
-			BasicQuery query = new BasicQuery(libCriteria.getCriteriaObject(),
-					linksCriteria.getCriteriaObject());
-			List<SegmentLibrary> libraries = mongo.find(query, SegmentLibrary.class);
-
-		 return libraries;
-		}
 }

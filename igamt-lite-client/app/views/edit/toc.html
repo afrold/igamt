@@ -150,7 +150,7 @@ body {
 								ng-click="editRoutSection('conformance Profile');" data-nodrag>
 								Conformance Profiles </span>
 						</div>
-						<li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
+						<li ng-repeat="msg in ig.profile.messages.children | filter:showToC" ui-tree-node
 							ng-if="!collapsemessage" data-type="message">
 							<div ui-tree-handle class="messageSubContent"
 								context-menu="MessagesOption">
@@ -175,7 +175,7 @@ body {
 								ng-click="editRoutSection('Segments and field descriptions')">Segments
 								and field descriptions</span>
 						</div>
-						<li ng-repeat="segment in ig.profile.segments.children"
+						<li ng-repeat="segment in ig.profile.segments.children | filter:showToC"
 							ui-tree-node ng-if="!collapsesegment" data-type="segment">
 							<div ui-tree-handle class="messageSubContent" data-nodrag
 								ng-click="editSeg(segment)" context-menu="fieldOption">
@@ -197,7 +197,7 @@ body {
 								data-nodrag ng-click="editRoutSection('Datatypes')">Datatypes</span>
 						</div>
 
-						<li ng-repeat="data in ig.profile.datatypes.children" ui-tree-node
+						<li ng-repeat="data in ig.profile.datatypes.children | filter:showToC" ui-tree-node
 							ng-if="!collapsedata" data-type="datatype">
 							<div ui-tree-handle class="messageSubContent" data-nodrag
 								ng-click="editDataType(data)" context-menu="fieldOption">
@@ -221,7 +221,7 @@ body {
 								Sets</span>
 						</div>
 
-						<li ng-repeat="table in ig.profile.tables.children" ui-tree-node
+						<li ng-repeat="table in ig.profile.tables.children | filter:showToC" ui-tree-node
 							data-type="table" ng-if="!collapsetable">
 							<div ui-tree-handle class="messageSubContent" data-nodrag
 								ng-click="editTable(table);Activate(table.bindingIdentifier)"

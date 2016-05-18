@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,4 +82,12 @@ public class SegmentServiceImpl implements SegmentService {
 		// TODO Auto-generated method stub
 		segmentRepository.save(segments);
 	}
+	
+	@Override
+	public List<Segment> findByIds(Set<String> ids) {
+		log.info("DataypeServiceImpl.findByIds=" + ids);
+		return segmentRepository.findByIds(ids);
+	}
+
+ 
 }

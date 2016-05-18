@@ -12,13 +12,16 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +52,7 @@ public class DatatypeController extends CommonController {
 	AccountRepository accountRepository;
 
 	@RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
-	public List<Datatype> findByIds(@RequestBody List<String> ids) {
+	public List<Datatype> findByIds(@RequestBody Set<String> ids) {
 		log.info("Fetching datatypeByIds..." + ids);
 		List<Datatype> result = datatypeService.findByIds(ids);
 		return result;
@@ -87,4 +90,17 @@ public class DatatypeController extends CommonController {
 		return true;
 	}
 
+	@RequestMapping(value = "/{id}/datatypes", method = RequestMethod.GET, produces = "application/json")
+	public Set<Datatype> collectDatatypes(@PathVariable("id") String id) {
+		Datatype datatype = datatypeService.findById(id);
+		Set<Datatype> datatypes = new HashSet<Datatype>();
+		if (datatype != null) {
+			List<Component> components = datatype.getComponents();
+			for (Component c : components) {
+				Datatype dt = datatypeService.findById(c.getDatatype().getId());
+				datatypes.addAll(datatypeService.collectDatatypes(dt));
+			}
+		}
+		return datatypes;
+	}
 }

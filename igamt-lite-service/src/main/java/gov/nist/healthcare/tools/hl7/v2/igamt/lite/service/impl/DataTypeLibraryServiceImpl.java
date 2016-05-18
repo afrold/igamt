@@ -143,7 +143,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public List<Datatype> bindDatatypes(List<String> datatypeIds, String datatypeLibraryId, String datatypeLibraryExt,
+	public List<Datatype> bindDatatypes(Set<String> datatypeIds, String datatypeLibraryId, String datatypeLibraryExt,
 			Long accountId) {
 
 		DatatypeLibrary dtLib = datatypeLibraryRepository.findById(datatypeLibraryId);
@@ -207,6 +207,12 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version, String name,
 			Long accountId) {
 		return datatypeLibraryRepository.findLibrariesByFlavorName(scope, hl7Version, name, accountId);
+	}
+
+	@Override
+	public List<Datatype> getChildren(String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -191,6 +191,5 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
         return delay.promise;
     };
 
-
     return svc;
 });

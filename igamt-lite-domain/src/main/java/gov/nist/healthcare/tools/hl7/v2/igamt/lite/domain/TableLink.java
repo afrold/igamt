@@ -32,11 +32,16 @@ public class TableLink extends AbstractLink implements Cloneable, Comparable<Tab
 		this.setId(id);
 		this.bindingIdentifier = bindingIdentifier;
 	}
-	
+ 
 
+	/**
+	 * @param bindingIdentifier
+	 * @param bindingStrength
+	 * @param bindingLocation
+	 */
 	public TableLink(String id, String bindingIdentifier, String bindingStrength,
 			String bindingLocation) {
-		this.id = id;
+ 		this.id = id;
 		this.bindingIdentifier = bindingIdentifier;
 		this.bindingStrength = bindingStrength;
 		this.bindingLocation = bindingLocation;

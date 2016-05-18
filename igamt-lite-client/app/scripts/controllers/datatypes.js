@@ -271,7 +271,7 @@ angular.module('igl')
             var datatype = $rootScope.datatype;
             var ext = datatype.ext;
             datatype.ext = null;
-            if(datatype.libIds == undefined) datatype.libIds = [];
+            if (datatype.libIds == undefined) datatype.libIds = [];
             if (datatype.libIds.indexOf($rootScope.igdocument.profile.datatypeLibrary.id) == -1) {
                 datatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
             }
@@ -295,7 +295,7 @@ angular.module('igl')
                         $rootScope.msg().text = error.data.text;
                         $rootScope.msg().type = error.data.type;
                         $rootScope.msg().show = true;
-                     });
+                    });
                 }
                 //TODO update Toc
             }, function (error) {
@@ -357,6 +357,7 @@ angular.module('igl')
             modalInstance.result.then(function (datatype) {
                 component.datatype = datatype.id;
                 //TODO: load master map
+
                 $rootScope.datatypesMap[component.datatype] = datatype;
                 MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
                 if ($scope.datatypesParams)
@@ -388,7 +389,7 @@ angular.module('igl')
 
         $scope.currentNode = currentNode;
         $scope.currentDatatype = $rootScope.datatypesMap[currentNode.datatype.id];
-        $scope.selection = {library: null, scope: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.scope : null, hl7Version: hl7Version, datatype: null, name: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name : null};
+        $scope.selection = {library: null, scope : null, hl7Version: hl7Version, datatype: null, name: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name : null};
 
         $scope.datatypeFlavorParams = new ngTreetableParams({
             getNodes: function (parent) {
@@ -448,24 +449,31 @@ angular.module('igl')
 
         $scope.loadFlavors = function (library) {
             if (library != null) {
+                $scope.resetMap();
                 $scope.selection.library = library;
-                $scope.libariesError = null;
-                $scope.librariesLoading = true;
+                $scope.resultsError = null;
+                $scope.resultsLoading = true;
                 $scope.results = [];
                 $scope.tmpResults = [];
-                if ($scope.selection.library.length > 0) {
-                    for (var i = 0; i < $scope.selection.library.length; i++) {
-                        var link = $scope.selection.library.children[i];
-                        if (link.name === $scope.selection.name) {
-                            $scope.results.push(link);
-                        }
-                    }
-                }
-                $scope.tmpResults = [].concat($scope.results);
+                var ids = [];
+                _.each(library.children, function (link) {
+                    ids.push(link.id);
+                });
+                DatatypeService.get(ids).then(function (datatypes) {
+                    $scope.resultsLoading = false;
+                    $scope.results = datatypes;
+                    $scope.tmpResults = [].concat($scope.results);
+                }, function (error) {
+                    $scope.resultsLoading = false;
+                    $scope.resultsError = error;
+                });
             }
         };
 
-        $scope.loadLibrariesByFlavorName = function () {
+        $scope.loadLibrariesByFlavorName = function (scope) {
+            $scope.selection.scope = scope;
+            $scope.selection.datatype = null;
+            $scope.resetMap();
             $scope.librariesError = null;
             $scope.librariesLoading = true;
             $scope.libraries = [];
@@ -473,11 +481,13 @@ angular.module('igl')
             $scope.results = [];
             $scope.tmpResults = [];
             DatatypeLibrarySvc.findLibrariesByFlavorName($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (libraries) {
-                $scope.libraries = libraries;
-                $scope.tmpLibraries = [].concat($scope.libraries);
+                if(libraries != null) {
+                    $scope.libraries = libraries;
+                    $scope.tmpLibraries = [].concat($scope.libraries);
+                }
                 $scope.librariesLoading = false;
             }, function (error) {
-                $scope.librariesError = null;
+                $scope.librariesError = error;
                 $scope.librariesLoading = false;
             });
         };
@@ -494,12 +504,21 @@ angular.module('igl')
             return  $scope.selection.library != null && library != null && $scope.selection.library.id == library.id;
         };
 
-        $scope.showDatatype = function (datatypeLink) {
-            if (datatypeLink && datatypeLink != null) {
-                $scope.datatypeError = null;
+        $scope.showDatatype = function (datatype) {
+            if (datatype && datatype != null) {
                 $scope.loadingSelection = true;
-                DatatypeService.getOne(datatypeLink.id).then(function (result) {
-                    $scope.selection.datatype = result;
+                $scope.selection.datatype = null;
+                $scope.resetMap();
+                $scope.bindingError = null;
+                $scope.added = [];
+                DatatypeService.collectDatatypes(datatype.id).then(function (datatypes) {
+                    angular.forEach(datatypes, function (child) {
+                        if ($rootScope.datatypesMap[child.id] === null || $rootScope.datatypesMap[child.id] === undefined) {
+                            $rootScope.datatypesMap[child.id] = child;
+                            $scope.added.push(child.id);
+                        }
+                    });
+                    $scope.selection.datatype = datatype;
                     $scope.selection.datatype["type"] = "datatype";
                     $rootScope.tableWidth = null;
                     $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
@@ -511,8 +530,8 @@ angular.module('igl')
                         $scope.datatypeFlavorParams.refresh();
                 }, function (error) {
                     $scope.loadingSelection = false;
-                    $scope.datatypeError = error.data.text;
-
+                    $scope.bindingError = error;
+                    $scope.selection.datatype = null;
                 });
             }
         };
@@ -521,12 +540,30 @@ angular.module('igl')
             $modalInstance.close($scope.selection.datatype);
         };
         $scope.cancel = function () {
+            $scope.resetMap();
             $modalInstance.dismiss('cancel');
         };
-    });
+
+        $scope.getLocalDatatypeLabel = function (datatype) {
+            return $scope.selection.library != null ? $rootScope.getExtensionInLibrary(datatype.id, $scope.selection.library, "ext") : datatype.name;
+        };
 
 
-angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope, DatatypeLibrarySvc, DatatypeService,MastermapSvc) {
+        $scope.resetMap = function () {
+            if ($scope.added = null) {
+                angular.forEach($scope.added, function (child) {
+                    delete $rootScope.datatypesMap[child];
+                });
+            }
+        };
+
+
+    }
+)
+;
+
+
+angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope, DatatypeLibrarySvc, DatatypeService, MastermapSvc) {
     $scope.dtToDelete = dtToDelete;
     $scope.loading = false;
     $scope.delete = function () {
@@ -616,8 +653,8 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
 });
 
 angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
-	$scope.constraintType = 'Plain';
-	$scope.selectedNode = selectedNode;
+    $scope.constraintType = 'Plain';
+    $scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
@@ -717,13 +754,13 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
         $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 
         if ($scope.newConstraint.position_1 != null) {
-        	$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
-        	var cs = null;
-        	if($scope.selectedNode === null) {
-        		var cs = $rootScope.generateConformanceStatement(".", $scope.newConstraint);
-        	}else {
-        		var cs = $rootScope.generateConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
-        	}
+            $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
+            var cs = null;
+            if ($scope.selectedNode === null) {
+                var cs = $rootScope.generateConformanceStatement(".", $scope.newConstraint);
+            } else {
+                var cs = $rootScope.generateConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
+            }
             $scope.tempComformanceStatements.push(cs);
             $scope.changed = true;
             if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
@@ -757,8 +794,8 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 
 
 angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
-	$scope.constraintType = 'Plain';
-	$scope.selectedNode = selectedNode;
+    $scope.constraintType = 'Plain';
+    $scope.selectedNode = selectedNode;
 
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -863,17 +900,17 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
         $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
 
-        if($scope.selectedNode === null) {
-        	$scope.complexConstraint.constraintId = '.';
-    	}else {
-    		$scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
-    	}
-        
-    	$scope.tempPredicates.push($scope.complexConstraint);
-    	$scope.initComplexPredicate();
+        if ($scope.selectedNode === null) {
+            $scope.complexConstraint.constraintId = '.';
+        } else {
+            $scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
+        }
+
+        $scope.tempPredicates.push($scope.complexConstraint);
+        $scope.initComplexPredicate();
         $scope.changed = true;
     };
-    
+
     $scope.addPredicate = function () {
 
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
@@ -884,12 +921,12 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 
         if ($scope.newConstraint.position_1 != null) {
-        	var cp = null;
-        	if($scope.selectedNode === null) {
-        		var cp = $rootScope.generatePredicate(".", $scope.newConstraint);
-        	}else {
-        		var cp = $rootScope.generatePredicate($scope.selectedNode.position + '[1]', $scope.newConstraint);
-        	}
+            var cp = null;
+            if ($scope.selectedNode === null) {
+                var cp = $rootScope.generatePredicate(".", $scope.newConstraint);
+            } else {
+                var cp = $rootScope.generatePredicate($scope.selectedNode.position + '[1]', $scope.newConstraint);
+            }
 
             $scope.tempPredicates.push(cp);
             $scope.changed = true;

@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +76,7 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	}
 
 	@Override
-	public List<Datatype> findByIds(List<String> ids) {
+	public List<Datatype> findByIds(Set<String> ids) {
 		Criteria where = Criteria.where("id").in(ids);
 		Query qry = Query.query(where);
 //		qry = set4Brevis(qry);

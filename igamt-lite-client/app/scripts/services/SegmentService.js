@@ -119,6 +119,26 @@ angular.module('igl').factory('SegmentService',
             },
             getSegmentLink : function(segment){
                 return {id:segment.id, ext: null, name: segment.name};
+            },
+            findByIds: function (ids) {
+                var delay = $q.defer();
+                $http.post('api/segments/findByIds', ids).then(function (response) {
+                    var datatypes = angular.fromJson(response.data);
+                    delay.resolve(datatypes);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            collectDatatypes: function (id) {
+                var delay = $q.defer();
+                $http.get('api/segments/'+ id+'/datatypes').then(function (response) {
+                    var datatypes = angular.fromJson(response.data);
+                    delay.resolve(datatypes);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
         };

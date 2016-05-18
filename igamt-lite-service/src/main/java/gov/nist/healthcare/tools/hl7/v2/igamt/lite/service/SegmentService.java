@@ -11,9 +11,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SegmentService {
 	
@@ -33,4 +35,8 @@ public interface SegmentService {
 
 	List<Segment> findAll();
 
+	List<Segment> findByIds(Set<String> ids);
+
+ 
+	
 }

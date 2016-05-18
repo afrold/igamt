@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', 'userInfoService', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc,userInfoService) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', 'userInfoService', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService) {
         var DatatypeService = {
             getNodes: function (parent, root) {
                 var children = [];
@@ -24,26 +24,26 @@ angular.module('igl').factory('DatatypeService',
                 return children;
             },
             getParent: function (child) {
-                var template =  $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
+                var template = $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
                 return template;
             },
             getTemplate: function (node, root) {
                 if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
-                    return DatatypeService.getReadTemplate(node,root);
+                    return DatatypeService.getReadTemplate(node, root);
                 } else {
-                    return DatatypeService.getEditTemplate(node,root);
+                    return DatatypeService.getEditTemplate(node, root);
                 }
             },
 
             getReadTemplate: function (node, root) {
-               return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeSubComponentReadTree.html' : '';
+                return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentReadTree.html' : '';
             },
 
             getEditTemplate: function (node, root) {
-                return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeSubComponentEditTree.html' : '';
+                return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentEditTree.html' : '';
             },
 
-            isDatatypeSubDT: function (component,root) {
+            isDatatypeSubDT: function (component, root) {
                 if (root != null) {
                     for (var i = 0, len = root.components.length; i < len; i++) {
                         if (root.components[i].id === component.id)
@@ -58,7 +58,7 @@ angular.module('igl').factory('DatatypeService',
             },
             isVisible: function (node) {
 //                return FilteringSvc.show(node);
-                 return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
+                return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
             },
             isRelevant: function (node) {
                 if (node === undefined || !ViewSettings.tableRelevance)
@@ -97,7 +97,7 @@ angular.module('igl').factory('DatatypeService',
                     datatype.id = saveResponse.id;
                     delay.resolve(datatype);
                 }, function (error) {
-                	console.log("DatatypeService.save error=" + error);
+                    console.log("DatatypeService.save error=" + error);
                     delay.reject(error);
                 });
                 return delay.promise;
@@ -159,13 +159,19 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
             delete: function(datatype) {
-            	
-            	
-            	
                  return $http.get('api/datatypes/'+ datatype.id+ '/delete');
+             },
+            getDatatypeLink: function (datatype) {
+                return {id: datatype.id, ext: null, name: datatype.name};
             },
-            getDatatypeLink : function(datatype){
-                return {id:datatype.id, ext: null, name: datatype.name};
+            collectDatatypes: function (id) {
+                var delay = $q.defer();
+                $http.get('api/datatypes/'+ id+'/datatypes').then(function (response) {
+                     delay.resolve(angular.fromJson(response.data));
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
         };

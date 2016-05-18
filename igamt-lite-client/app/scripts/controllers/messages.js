@@ -43,11 +43,11 @@ angular.module('igl')
                 MastermapSvc.addMessage(message, []);
                 $rootScope.$broadcast('event:SetToC');
                 $rootScope.message = angular.copy(message);
-             }, function (error) {
+            }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
-             });
+            });
         };
 
 
@@ -222,33 +222,38 @@ angular.module('igl')
             }
         });
 
-        $scope.loadFlavors = function () {
-            if ($scope.selection.library != null) {
-                $scope.libariesError = null;
-                $scope.librariesLoading = true;
-                $scope.results = [];
-                $scope.tmpResults = [];
-                var lib = $scope.selection.library;
-                for (var i = 0; i < $scope.selection.library.length; i++) {
-                    var link = $scope.selection.library.children[i];
-                    if (link.name === $scope.selection.name) {
-                        $scope.results.push(link);
-                    }
-                }
-                $scope.tmpResults = [].concat($scope.results);
-            }
-        };
+//        $scope.loadFlavors = function () {
+//            if ($scope.selection.library != null) {
+//                $scope.libariesError = null;
+//                $scope.librariesLoading = true;
+//                $scope.results = [];
+//                $scope.tmpResults = [];
+//                var lib = $scope.selection.library;
+//                for (var i = 0; i < $scope.selection.library.length; i++) {
+//                    var link = $scope.selection.library.children[i];
+//                    if (link.name === $scope.selection.name) {
+//                        $scope.results.push(link);
+//                    }
+//                }
+//                $scope.tmpResults = [].concat($scope.results);
+//            }
+//        };
 
-        $scope.loadLibrariesByFlavorName = function () {
+        $scope.loadLibrariesByFlavorName = function (scope) {
+            $scope.selection.scope = scope;
+            $scope.resetMap();
             $scope.librariesError = null;
             $scope.librariesLoading = true;
             $scope.libraries = [];
             $scope.tmpLibraries = [].concat($scope.libraries);
             $scope.results = [];
             $scope.tmpResults = [];
+            $scope.added = [];
             SegmentLibrarySvc.findLibrariesByFlavorName($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (libraries) {
-                $scope.libraries = libraries;
-                $scope.tmpLibraries = [].concat($scope.libraries);
+                if(libraries != null) {
+                    $scope.libraries = libraries;
+                    $scope.tmpLibraries = [].concat($scope.libraries);
+                }
                 $scope.librariesLoading = false;
             }, function (error) {
                 $scope.librariesError = null;
@@ -259,30 +264,42 @@ angular.module('igl')
 
         $scope.loadFlavors = function (library) {
             if (library != null) {
+                $scope.resetMap();
                 $scope.selection.library = library;
-                $scope.libariesError = null;
-                $scope.librariesLoading = true;
+                $scope.resultsError = null;
+                $scope.resultsLoading = true;
                 $scope.results = [];
                 $scope.tmpResults = [];
-                if ($scope.selection.library.length > 0) {
-                    for (var i = 0; i < $scope.selection.library.length; i++) {
-                        var link = $scope.selection.library.children[i];
-                        if (link.name === $scope.selection.name) {
-                            $scope.results.push(link);
-                        }
-                    }
-                }
-                $scope.tmpResults = [].concat($scope.results);
+                var ids = [];
+                _.each(library.children, function (link) {
+                    ids.push(link.id);
+                });
+                SegmentService.findByIds(ids).then(function (segments) {
+                    $scope.resultsLoading = false;
+                    $scope.results = segments;
+                    $scope.tmpResults = [].concat($scope.results);
+                }, function (error) {
+                    $scope.resultsLoading = false;
+                    $scope.resultsError = error;
+                });
             }
         };
 
         $scope.showSegment = function (segment) {
-            $scope.bindingError = null;
             if (segment && segment != null) {
-                $scope.segmentError = null;
                 $scope.loadingSelection = true;
-                SegmentService.getOne(segment.id).then(function (result) {
+                $scope.resetMap();
+                $scope.bindingError = null;
+                $scope.added = [];
+                SegmentService.collectDatatypes(segment.id).then(function (datatypes) {
+                    $scope.segmentError = null;
                     $scope.selection.segment = segment;
+                    angular.forEach(datatypes, function (child) {
+                        if( $rootScope.datatypesMap[child.id] === null ||  $rootScope.datatypesMap[child.id] === undefined) {
+                            $rootScope.datatypesMap[child.id] = child;
+                            $scope.added.push(child.id);
+                        }
+                    });
                     $scope.selection.segment["type"] = "segment";
                     $rootScope.tableWidth = null;
                     $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
@@ -294,9 +311,9 @@ angular.module('igl')
                         $scope.segmentFlavorParams.refresh();
                 }, function (error) {
                     $scope.loadingSelection = false;
-                    $scope.segmentError = error.data.text;
-
+                    $scope.bindingError = error;
                 });
+
             }
         };
 
@@ -383,11 +400,28 @@ angular.module('igl')
 
 
         $scope.cancel = function () {
+            $scope.resetMap();
             $modalInstance.dismiss('cancel');
         };
 
+        $scope.resetMap = function () {
+            if( $scope.added = null) {
+                angular.forEach( $scope.added, function (child) {
+                    delete $rootScope.datatypesMap[child];
+                });
+            }
+         };
 
-        var fu
+
+        $scope.getLocalDatatypeLabel = function (datatype) {
+            return $scope.selection.library != null ? $rootScope.getExtensionInLibrary(datatype.id, $scope.selection.library, "ext") : datatype.name;
+        };
+
+        $scope.getLocalSegmentLabel = function (segment) {
+            return $scope.selection.library != null ? $rootScope.getExtensionInLibrary(segment.id, $scope.selection.library, "ext") : segment.name;
+        }
+
+
     });
 
 
@@ -432,7 +466,7 @@ angular.module('igl')
     });
 
 angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $modalInstance, selectedNode, selectedMessage, $rootScope) {
-	$scope.constraintType = 'Plain';
+    $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.selectedMessage = selectedMessage;
     $scope.firstConstraint = null;
@@ -493,9 +527,9 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             }
         }
     }
-    
+
     $scope.initComplexPredicate = function () {
-    	$scope.firstConstraint = null;
+        $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
         $scope.complexConstraintTrueUsage = null;
@@ -688,7 +722,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
 
 
 angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($scope, $modalInstance, selectedMessage, selectedNode, $rootScope) {
-	$scope.constraintType = 'Plain';
+    $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.selectedMessage = selectedMessage;
     $scope.firstConstraint = null;
@@ -753,9 +787,9 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             }
         }
     }
-    
+
     $scope.initConformanceStatement();
-    
+
     $scope.updateLocation1 = function () {
         $scope.newConstraint.location_1 = $scope.newConstraint.currentNode_1.name;
         if ($scope.newConstraint.position_1 != null) {
@@ -895,10 +929,10 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
 
     $scope.addComplexConformanceStatement = function () {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
-    	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
-    	if($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
-    	$scope.tempComformanceStatements.push($scope.complexConstraint);
-    	$scope.initComplexStatement();
+        $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+        if ($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
+        $scope.tempComformanceStatements.push($scope.complexConstraint);
+        $scope.initComplexStatement();
         $scope.changed = true;
     };
 
@@ -908,7 +942,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             var positionPath = selectedNode.path;
             var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
             $scope.tempComformanceStatements.push(cs);
-            if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+            if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
             $scope.changed = true;
         }
 
