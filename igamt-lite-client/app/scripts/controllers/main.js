@@ -1833,7 +1833,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getSegmentRefNodeName = function (node) {
-            var seg = $rootScope.segmentsMap[node.ref];
+            var seg = $rootScope.segmentsMap[node.ref.id];
             return node.position + "." + $rootScope.getSegmentLabel(seg)  + ":" + seg.description;
         };
 
@@ -1850,8 +1850,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary,"ext");
         };
 
-        $rootScope.getTableBindingIdentifier = function (datatype) {
-            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.tableLibrary,"bindingIdentifier");
+        $rootScope.getTableBindingIdentifier = function (table) {
+            return $rootScope.getExtensionInLibrary(table.id, $rootScope.igdocument.profile.tableLibrary,"bindingIdentifier");
         };
 
 
@@ -1865,7 +1865,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getTableLabel = function (table) {
-             return $rootScope.getTableBindingIdentifier(table);
+        	if(table && table != null){
+        		return $rootScope.getTableBindingIdentifier(table);
+        	}
+        	return "";
         };
 
         $rootScope.getExtensionInLibrary = function (id, library,propertyType) {

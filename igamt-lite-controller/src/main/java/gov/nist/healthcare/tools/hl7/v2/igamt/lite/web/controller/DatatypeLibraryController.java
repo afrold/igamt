@@ -193,8 +193,8 @@ public class DatatypeLibraryController extends CommonController {
 		return datatypeLink;
 	}
 
-	@RequestMapping(value = "/{libId}/deleteChild", method = RequestMethod.POST)
-	public boolean deleteChild(@PathVariable String libId, @RequestParam("id") String id) throws DatatypeSaveException {
+	@RequestMapping(value = "/{libId}/deleteChild/{id}", method = RequestMethod.POST)
+	public boolean deleteChild(@PathVariable String libId, @PathVariable String id) throws DatatypeSaveException {
 		log.debug("Deleting a link to the library");
 		DatatypeLibrary lib = datatypeLibraryService.findById(libId);
 		DatatypeLink found = lib.findOne(id);

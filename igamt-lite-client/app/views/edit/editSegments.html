@@ -262,55 +262,7 @@
 							</table>
 						<div>
                     </div>
-
                 </form>
-                 <div class="table-responsive">
-                    <table tt-table tt-params="segmentsParams"
-                           class="table table-bordered table-fix-header table-condensed profile-table">
-                        <thead>
-                        <tr class="tbl-header"
-                            style="margin-right: {{scrollbarWidth}}px;">
-                            <th class="col-xs-2 col-fixed-250">
-                                <!--<input type="checkbox" ng-checked="isSelectedAllChildren()"-->
-                                <!--ng-click="selectAllChildren($event)">-->
-                                Name
-                            </th>
-                            <th class="col-xs-1 col-fixed-80"
-                                ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                            </th>
-                            <th class="col-xs-1 col-fixed-100"
-                                ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
-                            </th>
-                            <th class="col-xs-1 col-fixed-100"
-                                ng-show="viewSettings.isVisibleColumn('length')">Length
-                            </th>
-                            <th class="col-xs-1 col-fixed-80"
-                                ng-show="viewSettings.isVisibleColumn('confLength')">Conformance Length
-                            </th>
-                            <th class="col-xs-1 col-fixed-100"
-                                ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
-                            </th>
-                            <th class="col-xs-1 col-fixed-130"
-                                ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
-                            </th>
-                            <th class="col-xs-1" ng-style="predWidth"
-                                ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
-                            </th>
-                            <th class="col-xs-1" ng-style="csWidth"
-                                ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance
-                                Statement
-                            </th>
-                            <th class="col-xs-1 col-fixed-80"
-                                ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
-                            </th>
-                            <th class="col-xs-1" ng-style="commentWidth"
-                                ng-show="viewSettings.isVisibleColumn('comment')">Comment
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
          </tab>
     </tabset>
 </div>
