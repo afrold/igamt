@@ -26,9 +26,14 @@ angular.module('igl').factory(
             var newSegment = angular.copy(segment);
             var newLink = angular.copy(SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary));
 
+            console.log("CHECK:::" + newSegment.name);
+            console.log("CHECK:::" + newLink.id);
+            console.log("CHECK:::" + newLink.ext);
+            
+            
             newSegment.participants = [];
             newSegment.ext = $rootScope.createNewExtension(newLink.ext);
-            
+            console.log("CHECK new EXT:::" + newSegment.ext);
             if (newSegment.fields != undefined && newSegment.fields != null && newSegment.fields.length != 0) {
                 for (var i = 0; i < newSegment.fields.length; i++) {
                     newSegment.fields[i].id = new ObjectId().toString();
@@ -49,20 +54,20 @@ angular.module('igl').factory(
             newSegment.id = null;
             newSegment.libIds = [];
             newSegment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
-
+        	
+            newLink.ext = newSegment.ext;
+            
             SegmentService.save(newSegment).then(function (result){
             	newSegment = result;
-            	newLink.ext = newSegment.ext;
-                newLink.id = newSegment.id;
-            	
+            	newLink.id = newSegment.id;
+                
                 SegmentLibrarySvc.addChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
                 	$rootScope.igdocument.profile.segmentLibrary.children.splice(0, 0, newLink);
                 	$rootScope.segments.splice(0, 0, newSegment);
                 	$rootScope.segment = newSegment;
                 	$rootScope.segmentsMap[newSegment.id] = newSegment;
-                	console.log(newSegment);
-                	console.log([[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                	//TODO pending MASTERMAP
+//                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 	$rootScope.processElement(newSegment);
                 	$rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openSegment', newSegment);
@@ -116,8 +121,6 @@ angular.module('igl').factory(
                 DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
                 	$rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
                     $rootScope.datatypes.splice(0, 0, newDatatype);
-                    console.log("rootscope.datatypes = " + $rootScope.datatypes.length);
-                    console.log("rootscope.datatypeLibrary = " + $rootScope.igdocument.profile.datatypeLibrary.children.length);
                     $rootScope.datatype = newDatatype;
                     $rootScope.datatypesMap[newDatatype.id] = newDatatype;
                     
@@ -316,7 +319,10 @@ angular.module('igl').factory(
         svc.deleteDatatype = function (datatype) {
             $rootScope.references = [];
             angular.forEach($rootScope.segments, function (segment) {
-                $rootScope.findDatatypeRefs(datatype, segment);
+                $rootScope.findDatatypeRefs(datatype, segment, $rootScope.getSegmentLabel(segment));
+            });
+            angular.forEach($rootScope.datatypes, function (dt) {
+            	if(dt.id !== datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt));
             });
             if ($rootScope.references != null && $rootScope.references.length > 0) {
                 abortDatatypeDelete(datatype);
@@ -324,6 +330,44 @@ angular.module('igl').factory(
                 confirmDatatypeDelete(datatype);
             }
         }
+        
+        svc.deleteSegmentAndSegmentLink = function (segment) {
+        	SegmentService.delete(segment).then(function (result) {
+        		svc.deleteSegmentLink(segment);
+        	}, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+            });
+        };
+        
+        svc.deleteSegmentLink = function (segment){
+        	SegmentLibrarySvc.deleteChild($rootScope.igdocument.profile.segmentLibrary.id, segment.id).then(function (res) {
+                // We must delete from two collections.
+                var index = $rootScope.segments.indexOf(segment);
+                $rootScope.segments.splice(index, 1);
+                var tmp = SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary);
+                index = $rootScope.igdocument.profile.segmentLibrary.children.indexOf(tmp);
+                $rootScope.igdocument.profile.segmentLibrary.children.splice(index, 1);
+                $rootScope.segmentsMap[segment.id] = null;
+                $rootScope.references = [];
+                if ($rootScope.segment === segment) {
+                    $rootScope.segment = null;
+                }
+                $rootScope.recordDelete("segment", "edit", segment.id);
+                $rootScope.msg().text = "segDeleteSuccess";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+                //TODO pending MASTERMAP
+//                MastermapSvc.deleteSegment($scope.dtToDelete.id);
+                $rootScope.$broadcast('event:SetToC');
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+            });
+        };
+        
         
         svc.deleteDatatypeAndDatatypeLink = function (datatype) {
         	DatatypeService.delete(datatype).then(function (result) {
@@ -415,13 +459,14 @@ angular.module('igl').factory(
         }
 
         svc.deleteSegment = function (segment) {
-            $rootScope.references = ProfileAccessSvc.Segments().getParentalDependencies(segment);
+        	angular.forEach($rootScope.messages, function (message) {
+        		$rootScope.findSegmentRefs(segment, message, message.name);
+        	});
             
             if ($rootScope.references != null && $rootScope.references.length > 0) {
                 abortSegmentDelete(segment);
             } else {
                 confirmSegmentDelete(segment);
-                MastermapSvc.deleteSegment(segment.id);
             }
         }
 

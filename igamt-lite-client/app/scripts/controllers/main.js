@@ -874,23 +874,39 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             node.type === 'component' && $rootScope.parentsMap[node.id] && $rootScope.parentsMap[node.id].type === 'component';
         };
 
-        $rootScope.findDatatypeRefs = function (datatype, obj) {
+        $rootScope.findDatatypeRefs = function (datatype, obj, path) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
-                if (obj.datatype.id === datatype.id && $rootScope.references.indexOf(obj) === -1) {
-                    $rootScope.references.push(obj);
+                if (obj.datatype.id === datatype.id) {
+                	var found = angular.copy(obj);
+                	found.path = path;
+                    $rootScope.references.push(found);
                 }
-                $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id]);
+                $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path);
             } else if (angular.equals(obj.type, 'segment')) {
             	angular.forEach(obj.fields, function (field) {
-            		$rootScope.findDatatypeRefs(datatype, field);
+            		$rootScope.findDatatypeRefs(datatype, field, path + "-" + field.position);
             	});
             } else if (angular.equals(obj.type, 'datatype')) {
                 if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                     angular.forEach(obj.components, function (component) {
-                        $rootScope.findDatatypeRefs(datatype, component);
+                        $rootScope.findDatatypeRefs(datatype, component, path + "." + component.position);
                     });
                 }
             }
+        };
+        
+        $rootScope.findSegmentRefs = function (segment, obj, path){
+        	if (angular.equals(obj.type, 'message') || angular.equals(obj.type, 'group')) {
+        		angular.forEach(obj.children, function (child) {
+        			$rootScope.findSegmentRefs(segment, child, path + "." + child.position);
+        		});
+        	}else if (angular.equals(obj.type, 'segmentRef')) {
+        		if(obj.ref.id === segment.id){
+        			var found = angular.copy(obj);
+        			found.path = path;
+        			$rootScope.references.push(found);
+        		}
+        	}
         };
 
         $rootScope.findTableRefs = function (table, obj) {

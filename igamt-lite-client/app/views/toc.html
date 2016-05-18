@@ -183,10 +183,7 @@
                                       
                                        <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
                                    'label-USE':  getScopeLabel(segment)==='USE','label-MASTER':getScopeLabel(segment)==='MAS'}" >  {{getScopeLabel(segment)}}</span> 
-                                    
-                                      
-                                      
-                                       {{segment.label}}-{{segment.description}} {{isUnused(segment)}}</span>
+                                       {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                             </div>
                         </li>
                     </ol>
