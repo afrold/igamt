@@ -263,7 +263,7 @@
         <span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
       </button>
     </td>
-    <td st-ratio="2" style="text-align : center; vertical-align : bottom;"><label for="publish + $index"><input name="publish + $index" ng-model="dt.publish" type="checkbox" ng-hide="true"/><i ng-class="{'fa fa-check fa-2x' : !dt.publish}" style="color : #88A888"></i></label></td>
+    <td st-ratio="2" style="text-align : center; vertical-align : bottom;"><label for="publish + $index"><input name="publish + $index" ng-model="dt.publish" type="checkbox" ng-hide="!dt.publish"/><i ng-class="{'fa fa-check fa-2x' : !dt.publish}" style="color : #88A888"></i></label></td>
   </tr>
 </tbody>
 
@@ -392,16 +392,16 @@
 <div class="row">
     <div class="col-md-12 igl-page-header">
         <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeLibStruct.ext)}}</span>
-                     <span class="pull-right">
+                     <span class="pull-right"><pre>datatypeCopy.scope={{datatypeCopy.scope}}</pre>
   		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng.model="datatypeCopy.publish" style="margin-right : 8px"/>Publish</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"
-                 ng-hide="viewSettings.tableReadonly || datatypeCopy.scope !== 'USER'"
+                 ng-hide="datatypeCopy.scope !== 'USER'"
                  ng-click="saveDatatype(datatypeCopy)">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
                          <button title="Cancel Changes" type="button" class="btn btn-xs btn-warning"
-                                 ng-hide="viewSettings.tableReadonly || datatypeCopy.scope !== 'USER'"
+                                 ng-hide="datatypeCopy.scope !== 'USER'"
                                  ng-click="cancel()">
                              <span><i class="fa fa-times fa-fw"></i> Cancel</span>
                          </button>

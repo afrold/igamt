@@ -131,6 +131,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 	  var sortedLinks = _.sortBy(datatypeLibrary.children, 'id');
                 	  var sortedDts = _.sortBy(datatypes, 'id');
                 	  console.log("Verify synch=" + sortedLinks.length === sortedDts.length + " sortedLinks.length" + sortedLinks.length + " sortedDts.length" + sortedDts.length);
+                	  $scope.datatypesJoinStruct = [];
                 	  for (i = 0; i < sortedLinks.length; i++) {
                 		  var datatypeJoinStruct = {
                 				  label : $rootScope.getLabel(sortedLinks[i].name, datatypeLibrary.metaData.ext),
