@@ -651,6 +651,16 @@
                 </p>
             </div>
         </td>
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+            <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
+                <div ng-show="node.datatype != null && datatypesJoinStruct != null && datatypesJoinStruct != undefined">
+                    <a ng-click="showSelectDatatypeFlavorDlg(node)">
+                        {{getLabel(datatypeCopy.name, datatypeLibStruct.metaData.ext)}}
+                    </a>
+                </div>
+
+            </ng-form>
+        </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.table != undefined && node.table !== null">
                 <a ng-click="goToTable(tablesMap[node.table])" class="point">

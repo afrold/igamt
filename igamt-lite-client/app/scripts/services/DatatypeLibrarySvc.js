@@ -78,10 +78,10 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
             });
     };
 
-    svc.saveMetaData = function (datatypeLibrary) {
-    	
+    svc.saveMetaData = function (datatypeLibraryId, datatypeLibraryMetaData) {
+    	console.log("datatypeLibraryMetaData=" + JSON.stringify(datatypeLibraryMetaData));
         return $http.post(
-            'api/datatype-library/saveMetaData', angular.toJson(datatypeLibrary)).then(function (response) {
+            'api/datatype-library/saveMetaData/' + datatypeLibraryId, datatypeLibraryMetaData).then(function (response) {
                 return angular.fromJson(response.data)
             });
     };

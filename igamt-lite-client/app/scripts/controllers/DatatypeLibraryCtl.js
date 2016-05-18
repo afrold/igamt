@@ -108,8 +108,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			};
 
 			$scope.saveMetaData = function() {
-				$scope.datatypeLibStruct.metaData = angular.copy($scope.datatypeLibCopy);
-				DatatypeLibrarySvc.saveMetaData($scope.datatypeLibCopy);
+				$scope.datatypeLibStruct.metaData = angular.copy($scope.datatypeLibMetaDataCopy);
+				DatatypeLibrarySvc.saveMetaData($scope.datatypeLibStruct.id, $scope.datatypeLibMetaDataCopy);
 			};
 			
 			$scope.cancel = function() {
@@ -123,11 +123,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 					function () {
             $scope.hl7Version = datatypeLibrary.metaData.hl7Version;
             
-            // gcr We need the metaData to know its library.  Eventually, the datatypLibId will be prepopulated
-            // and this can be removed.
-            if (datatypeLibrary.metaData.datatypLibId !== datatypeLibrary.id) {
-            	datatypeLibrary.metaData.datatypLibId = datatypeLibrary.id;
-            }
             $scope.datatypeLibStruct = datatypeLibrary;
             $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibrary.metaData);
                    var datatypes = null;
@@ -416,7 +411,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     		  		  publish : datatype.publish,
     		  		  linkRef : { id : datatype.id,
     		  			  name : datatype.name,
-    		  			  ext : datatypeLibraryCopy.metaData.ext,
+    		  			  ext : $scope.datatypeLibraryCopy.metaData.ext,
     		  			  label : lbl
     		  		  },
     		  		  dtRef : datatype
