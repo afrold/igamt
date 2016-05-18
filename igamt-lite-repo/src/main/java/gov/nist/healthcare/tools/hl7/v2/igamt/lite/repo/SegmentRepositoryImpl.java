@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,5 +44,13 @@ public class SegmentRepositoryImpl implements SegmentOperations {
 		where.andOperator(Criteria.where("hl7Version").is(hl7Version));
 		Query qry = Query.query(where);
 		return mongo.find(qry, Segment.class);
+	} 
+	
+	@Override
+	public List<Segment> findByIds(Set<String> ids) {
+		Criteria where = Criteria.where("id").in(ids);
+		Query qry = Query.query(where);
+ 		List<Segment> segments = mongo.find(qry, Segment.class);
+		return segments;
 	}
 }

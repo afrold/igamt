@@ -265,7 +265,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	private void addSegmentMsgInfra(List<List<String>> rows, SegmentRef s,
 			Integer depth, SegmentLibrary segments) {
 		String indent = StringUtils.repeat(".", 4 * depth);
-		Segment segment = segmentService.findById(s.getRef());
+		Segment segment = segmentService.findById(s.getRef().getId());
 		List<String> row = Arrays.asList(indent + segment.getName(), 
 				segment.getLabel().equals(segment.getName()) ? "" : segment.getLabel(),
 						segment.getDescription(),
@@ -780,7 +780,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	private void addSegmentInfoXlsx(List<List<String>> rows, SegmentRef s,
 			Integer depth, SegmentLibrary segments) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
-		Segment segment = segmentService.findById(s.getRef());
+		Segment segment = segmentService.findById(s.getRef().getId());
 		List<String> row = Arrays.asList(indent + segment.getName(), s
 				.getUsage().value(), "", "[" + String.valueOf(s.getMin())
 				+ ".." + String.valueOf(s.getMax()) + "]", "", segment

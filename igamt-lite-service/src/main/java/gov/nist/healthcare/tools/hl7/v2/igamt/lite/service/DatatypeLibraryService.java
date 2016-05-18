@@ -52,9 +52,7 @@ public interface DatatypeLibraryService {
 
 	DatatypeLibrary save(DatatypeLibrary library);
 	
- 	DatatypeLibrary saveMetaData(DatatypeLibraryMetaData datatypeLibraryMetaData);
- 	
  	List<Datatype> getChildren(String id);
 
- 	
-}
+ 	DatatypeLibrary saveMetaData(String libId, DatatypeLibraryMetaData datatypeLibraryMetaData);
+ }

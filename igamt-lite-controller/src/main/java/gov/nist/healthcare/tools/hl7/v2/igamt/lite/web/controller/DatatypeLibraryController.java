@@ -153,14 +153,26 @@ public class DatatypeLibraryController extends CommonController {
 				scope, dtlcw.getHl7Version(), dtlcw.getAccountId());
 	}
 
-	@RequestMapping(value = "/saveMetaData", method = RequestMethod.POST)
+	// @RequestMapping(value = "/saveMetaData", method = RequestMethod.POST)
+	// public LibrarySaveResponse saveMetaData(
+	// @RequestBody DatatypeLibraryMetaData datatypeLibraryMetaData)
+	// throws LibrarySaveException {
+	// log.info("Saving the " + datatypeLibraryMetaData.getName()
+	// + " datatype library.");
+	// DatatypeLibrary saved = datatypeLibraryService
+	// .saveMetaData(datatypeLibraryMetaData);
+	// return new LibrarySaveResponse(saved.getMetaData().getDate(), saved
+	// .getScope().name());
+	// }
+	@RequestMapping(value = "/saveMetaData/{libId}", method = RequestMethod.POST)
 	public LibrarySaveResponse saveMetaData(
+			@PathVariable("libId") String libId,
 			@RequestBody DatatypeLibraryMetaData datatypeLibraryMetaData)
 			throws LibrarySaveException {
 		log.info("Saving the " + datatypeLibraryMetaData.getName()
 				+ " datatype library.");
-		DatatypeLibrary saved = datatypeLibraryService
-				.saveMetaData(datatypeLibraryMetaData);
+		DatatypeLibrary saved = datatypeLibraryService.saveMetaData(libId,
+				datatypeLibraryMetaData);
 		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved
 				.getScope().name());
 	}
@@ -216,9 +228,9 @@ public class DatatypeLibraryController extends CommonController {
 		return datatypeLink;
 	}
 
-	@RequestMapping(value = "/{libId}/deleteChild", method = RequestMethod.POST)
+	@RequestMapping(value = "/{libId}/deleteChild/{id}", method = RequestMethod.POST)
 	public boolean deleteChild(@PathVariable String libId,
-			@RequestParam("id") String id) throws DatatypeSaveException {
+			@PathVariable String id) throws DatatypeSaveException {
 		log.debug("Deleting a link to the library");
 		DatatypeLibrary lib = datatypeLibraryService.findById(libId);
 		DatatypeLink found = lib.findOne(id);

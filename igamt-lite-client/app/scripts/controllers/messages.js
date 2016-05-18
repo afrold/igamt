@@ -413,7 +413,9 @@ angular.module('igl')
          };
 
 
-
+        $scope.getLocalDatatypeLabel = function (datatype) {
+            return $scope.selection.library != null ? $rootScope.getExtensionInLibrary(datatype.id, $scope.selection.library, "ext") : datatype.name;
+        };
 
         $scope.getLocalSegmentLabel = function (segment) {
             return $scope.selection.library != null ? $rootScope.getExtensionInLibrary(segment.id, $scope.selection.library, "ext") : segment.name;

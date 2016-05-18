@@ -42,7 +42,6 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
             'api/datatype-library/findByScopesAndVersion', angular.toJson(scopesAndVersion))
             .then(function (response) {
                 console.log("getDataTypeLibraryByScopesAndVersion response size=" + response.data.length);
-//   					  console.log("getDataTypeLibraryByScopesAndVersion response=" + JSON.stringify(response.data));
                 return angular.fromJson(response.data);
             });
     };
@@ -79,10 +78,10 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
             });
     };
 
-    svc.saveMetaData = function (datatypeLibrary) {
-    	
+    svc.saveMetaData = function (datatypeLibraryId, datatypeLibraryMetaData) {
+    	console.log("datatypeLibraryMetaData=" + JSON.stringify(datatypeLibraryMetaData));
         return $http.post(
-            'api/datatype-library/saveMetaData', angular.toJson(datatypeLibrary)).then(function (response) {
+            'api/datatype-library/saveMetaData/' + datatypeLibraryId, datatypeLibraryMetaData).then(function (response) {
                 return angular.fromJson(response.data)
             });
     };
@@ -161,7 +160,7 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
 
     svc.deleteChild = function (libId, id) {
         var delay = $q.defer();
-        $http.post('api/datatype-library/'+ libId+ '/deleteChild', {params:{id:id}}).then(function (response) {
+        $http.post('api/datatype-library/'+ libId+ '/deleteChild/' + id).then(function (response) {
             var link = angular.fromJson(response.data);
             delay.resolve(link);
         }, function (error) {

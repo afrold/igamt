@@ -95,9 +95,9 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public DatatypeLibrary saveMetaData(DatatypeLibraryMetaData datatypeLibraryMetaData) {
+	public DatatypeLibrary saveMetaData(String libId, DatatypeLibraryMetaData datatypeLibraryMetaData) {
 		log.info("DataypeServiceImpl.save=" + datatypeLibraryMetaData.getName());
-		DatatypeLibrary dataTypeLibrary = datatypeLibraryRepository.findOne(datatypeLibraryMetaData.getDatatypeLibId());
+		DatatypeLibrary dataTypeLibrary = datatypeLibraryRepository.findOne(libId);
 		dataTypeLibrary.setMetaData(datatypeLibraryMetaData);
 		return datatypeLibraryRepository.save(dataTypeLibrary);
 	}

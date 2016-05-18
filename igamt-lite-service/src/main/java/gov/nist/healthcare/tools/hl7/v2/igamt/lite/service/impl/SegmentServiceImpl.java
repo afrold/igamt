@@ -88,4 +88,6 @@ public class SegmentServiceImpl implements SegmentService {
 		log.info("DataypeServiceImpl.findByIds=" + ids);
 		return segmentRepository.findByIds(ids);
 	}
+
+ 
 }

@@ -37,7 +37,6 @@ public interface SegmentService {
 
 	List<Segment> findByIds(Set<String> ids);
 
-	List<Datatype> collectDatatypes(String id);
-
+ 
 	
 }

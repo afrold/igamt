@@ -259,5 +259,17 @@ public class SegmentLibraryController extends CommonController {
 						account.getId());
 		return libraries;
 	}
+	
+	@RequestMapping(value = "/{libId}/deleteChild/{id}", method = RequestMethod.POST)
+	public boolean deleteChild(@PathVariable String libId, @PathVariable String id) throws SegmentSaveException {
+		log.debug("Deleting a link to the library");
+		SegmentLibrary lib = segmentLibraryService.findById(libId);
+		SegmentLink found = lib.findOne(id);
+		if (found != null) {
+			lib.getChildren().remove(found);
+			segmentLibraryService.save(lib);
+		}
+		return true;
+	}
 
 }

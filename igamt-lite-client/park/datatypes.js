@@ -551,7 +551,7 @@ angular.module('igl')
         };
 
         $scope.getLocalDatatypeLabel = function (datatype) {
-            return $scope.selection.library != null ? $rootScope.getExtensionInLibrary(datatype.id, $scope.selection.library, "ext") : datatype.name;
+            return $scope.selection.library != null && datatype != null ? $rootScope.getExtensionInLibrary(datatype.id, $scope.selection.library, "ext") :null;
         };
 
 
@@ -574,7 +574,7 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-        DatatypeService.delete_($scope.dtToDelete).then(function (result) {
+        DatatypeService.delete($scope.dtToDelete).then(function (result) {
                 DatatypeLibrarySvc.deleteChild($scope.dtToDelete.id).then(function (res) {
                     // We must delete from two collections.
                     var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
