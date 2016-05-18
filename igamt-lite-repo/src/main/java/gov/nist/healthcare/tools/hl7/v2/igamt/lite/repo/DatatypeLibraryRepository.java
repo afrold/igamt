@@ -20,13 +20,17 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 
-public interface DatatypeLibraryRepository extends MongoRepository<DatatypeLibrary, String>, DatatypeLibraryOperations {
+public interface DatatypeLibraryRepository extends
+		MongoRepository<DatatypeLibrary, String>, DatatypeLibraryOperations {
 
 	public List<DatatypeLibrary> findAll();
-	
 
-} 
+	@Query(value = "{ 'children.name' : ?0, 'metaData.hl7Version':?1,'scope':?2}")
+	public List<DatatypeLibrary> findByNameAndHl7VersionAndScope(String name, String hl7Version, String scope);
+
+}

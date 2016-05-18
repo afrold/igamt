@@ -31,7 +31,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibrarySaveExce
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,7 +167,7 @@ public class DatatypeLibraryController extends CommonController {
 	// return new LibrarySaveResponse(saved.getMetaData().getDate(), saved
 	// .getScope().name());
 	// }
-	@RequestMapping(value = "/saveMetaData/{libId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{libId}/saveMetaData", method = RequestMethod.POST)
 	public LibrarySaveResponse saveMetaData(
 			@PathVariable("libId") String libId,
 			@RequestBody DatatypeLibraryMetaData datatypeLibraryMetaData)
@@ -270,7 +273,22 @@ public class DatatypeLibraryController extends CommonController {
 		List<DatatypeLibrary> libraries = datatypeLibraryService
 				.findLibrariesByFlavorName(scope, hl7Version, name,
 						account.getId());
+		if (libraries != null) {
+			for (int i = 0; i < libraries.size(); i++) {
+				DatatypeLibrary lib = libraries.get(i);
+				Set<DatatypeLink> results = new HashSet<DatatypeLink>();
+				Set<DatatypeLink> links = lib.getChildren();
+				Iterator<DatatypeLink> it = links.iterator();
+				while (it.hasNext()) {
+					DatatypeLink link = it.next();
+					if (link.getName().equals(name)) {
+						results.add(link);
+					}
+				}
+				lib.setChildren(results);
+			}
+		}
+
 		return libraries;
 	}
-
 }

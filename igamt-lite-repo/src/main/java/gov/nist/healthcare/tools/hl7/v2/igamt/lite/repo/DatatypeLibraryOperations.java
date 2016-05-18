@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -41,5 +42,7 @@ public interface DatatypeLibraryOperations {
 	
 	List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope,
 			String hl7Version, String name, Long accountId);
+
+	List<DatatypeLibrary> findByIds(Set<String> ids);
 	
 }
