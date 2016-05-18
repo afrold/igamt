@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public interface DatatypeLibraryService {
 
 	List<String> findHl7Versions();
 
-	List<Datatype> bindDatatypes(List<String> datatypeIds, String datatyeLibraryId, String datatypeLibraryExt,
+	List<Datatype> bindDatatypes(Set<String> datatypeIds, String datatyeLibraryId, String datatypeLibraryExt,
 			Long accountId);
 
 	void delete(String id);
@@ -52,4 +53,8 @@ public interface DatatypeLibraryService {
 	DatatypeLibrary save(DatatypeLibrary library);
 	
  	DatatypeLibrary saveMetaData(DatatypeLibraryMetaData datatypeLibraryMetaData);
+ 	
+ 	List<Datatype> getChildren(String id);
+
+ 	
 }

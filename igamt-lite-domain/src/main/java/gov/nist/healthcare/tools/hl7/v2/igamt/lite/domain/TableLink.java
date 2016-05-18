@@ -39,9 +39,10 @@ public class TableLink extends AbstractLink implements Cloneable{
 	 * @param bindingStrength
 	 * @param bindingLocation
 	 */
-	public TableLink(String bindingIdentifier, String bindingStrength,
+	public TableLink(String id, String bindingIdentifier, String bindingStrength,
 			String bindingLocation) {
 		super();
+		this.id = id;
 		this.bindingIdentifier = bindingIdentifier;
 		this.bindingStrength = bindingStrength;
 		this.bindingLocation = bindingLocation;

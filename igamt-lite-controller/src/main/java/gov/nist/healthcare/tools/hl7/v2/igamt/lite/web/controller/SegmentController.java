@@ -12,12 +12,19 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentSaveException;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +57,9 @@ public class SegmentController extends CommonController {
 	@Autowired
 	AccountRepository accountRepository;
 
+	@Autowired
+	private DatatypeService datatypeService;
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	public Segment getSegmentById(@PathVariable("id") String id) {
 		log.info("Fetching segmentById..." + id);
@@ -78,4 +88,24 @@ public class SegmentController extends CommonController {
 		return true;
 	}
 
+	@RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
+	public List<Segment> findByIds(@RequestBody Set<String> ids) {
+		log.info("Fetching datatypeByIds..." + ids);
+		List<Segment> result = segmentService.findByIds(ids);
+		return result;
+	}
+
+	@RequestMapping(value = "/{id}/datatypes", method = RequestMethod.GET, produces = "application/json")
+	public Set<Datatype> collectDatatypes(@PathVariable("id") String id) {
+		Segment segment = segmentService.findById(id);
+		Set<Datatype> datatypes = new HashSet<Datatype>();
+		if (segment != null) {
+			List<Field> fields = segment.getFields();
+			for (Field f : fields) {
+				Datatype dt = datatypeService.findById(f.getDatatype().getId());
+				datatypes.addAll(datatypeService.collectDatatypes(dt));
+			}
+		}
+		return datatypes;
+	}
 }

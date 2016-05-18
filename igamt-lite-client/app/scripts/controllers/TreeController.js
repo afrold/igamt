@@ -90,12 +90,14 @@ angular
                     $scope.updatePositions(event.dest.nodesScope.$modelValue);
                     $scope.updatePositions(event.source.nodesScope.$modelValue);
                     console.log(sourceNode);
-                    if (dest.type === "document" || source.type === "document") {
-                        $scope.updateChildeSections($rootScope.igdocument.childSections);
-                    }
-                    else if (dest.type === "section" && source.type === "section") {
-                        $scope.updateAfterDrop(source, dest);
-                    }
+                    $scope.updateChildeSections($rootScope.igdocument.childSections);
+//
+//                    if (dest.type === "document" || source.type === "document") {
+//                        $scope.updateChildeSections($rootScope.igdocument.childSections);
+//                    }
+//                    else if (dest.type === "section" && source.type === "section") {
+//                        $scope.updateAfterDrop(source, dest);
+//                    }
 
                 }
             };

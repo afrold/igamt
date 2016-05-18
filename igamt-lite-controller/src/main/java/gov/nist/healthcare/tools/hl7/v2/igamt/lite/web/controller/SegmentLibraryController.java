@@ -175,7 +175,8 @@ public class SegmentLibraryController extends CommonController {
 		SegmentLibrary saved = segmentLibraryService.save(segmentLibrary);
 		log.debug("saved.getId()=" + saved.getId());
 		log.debug("saved.getScope()=" + saved.getScope());
-		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
+		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved
+				.getScope().name());
 	}
 
 	@RequestMapping(value = "/{segLibId}/addSegment", method = RequestMethod.POST)

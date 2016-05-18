@@ -1,10 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers;
 
-import java.util.List;
+import java.util.Set;
 
 public class BindingWrapper {
 
-	private List<String> datatypeIds;
+	private Set<String> datatypeIds;
 
 	private String datatypeLibraryId;
 
@@ -12,11 +12,11 @@ public class BindingWrapper {
 
 	private Long accountId;
 
-	public List<String> getDatatypeIds() {
+	public Set<String> getDatatypeIds() {
 		return datatypeIds;
 	}
 
-	public void setDatatypeIds(List<String> datatypeIds) {
+	public void setDatatypeIds(Set<String> datatypeIds) {
 		this.datatypeIds = datatypeIds;
 	}
 
