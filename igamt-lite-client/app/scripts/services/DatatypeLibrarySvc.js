@@ -160,7 +160,7 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
 
     svc.deleteChild = function (libId, id) {
         var delay = $q.defer();
-        $http.post('api/datatype-library/'+ libId+ '/deleteChild', {params:{id:id}}).then(function (response) {
+        $http.post('api/datatype-library/'+ libId+ '/deleteChild/' + id).then(function (response) {
             var link = angular.fromJson(response.data);
             delay.resolve(link);
         }, function (error) {

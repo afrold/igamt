@@ -472,7 +472,7 @@ angular.module('igl')
                     });
                 } else if (node.type === 'segmentRef') {
                     segRefOrGroups.push(node);
-                    $scope.collectData($rootScope.segmentsMap[node.ref], segRefOrGroups, segments, datatypes);
+                    $scope.collectData($rootScope.segmentsMap[node.ref.id], segRefOrGroups, segments, datatypes);
                 } else if (node.type === 'component' || node.type === 'subcomponent' || node.type === 'field') {
                     $scope.collectData($rootScope.datatypesMap[node.datatype.id], segRefOrGroups, segments, datatypes);
                 } else if (node.type === 'datatype') {
@@ -821,7 +821,7 @@ angular.module('igl')
         };
 
         $scope.selectTable = function (t) {
-            var table = angular.copy(table);
+            var table = angular.copy(t);
             $scope.subview = "EditValueSets.html";
             $scope.loadingSelection = true;
             $timeout(

@@ -167,7 +167,8 @@ public class TableLibraryController extends CommonController {
 		TableLibrary saved = tableLibraryService.save(tableLibrary);
 		log.debug("saved.getId()=" + saved.getId());
 		log.debug("saved.getScope()=" + saved.getScope());
-		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
+		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved
+				.getScope().name());
 	}
 
 	@RequestMapping(value = "/{libId}/addChild", method = RequestMethod.POST)
@@ -191,5 +192,18 @@ public class TableLibraryController extends CommonController {
 		}
 		tableLibraryService.save(lib);
 		return child;
+	}
+
+	@RequestMapping(value = "/{libId}/deleteChild/{id}", method = RequestMethod.POST)
+	public boolean deleteChild(@PathVariable String libId,
+			@PathVariable String id) throws TableSaveException {
+		log.debug("Deleting a link to the library");
+		TableLibrary lib = tableLibraryService.findById(libId);
+		TableLink found = lib.findOneTableById(id);
+		if (found != null) {
+			lib.getChildren().remove(found);
+			tableLibraryService.save(lib);
+		}
+		return true;
 	}
 }

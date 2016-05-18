@@ -380,11 +380,12 @@ angular.module('igl').factory(
 
         svc.deleteSegment = function (segment) {
             $rootScope.references = ProfileAccessSvc.Segments().getParentalDependencies(segment);
+            
             if ($rootScope.references != null && $rootScope.references.length > 0) {
                 abortSegmentDelete(segment);
             } else {
                 confirmSegmentDelete(segment);
-                MastermapSvc.deleteSegment(segment.id)
+                MastermapSvc.deleteSegment(segment.id);
             }
         }
 

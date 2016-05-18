@@ -78,10 +78,10 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (segment) {
-                segmentRef.ref = segment.id;
+                segmentRef.ref.id = segment.id;
                 //TODO: load master map
-                if (!$rootScope.segmentsMap[segmentRef.ref] || $rootScope.segmentsMap[segmentRef.ref] == null) {
-                    $rootScope.segmentsMap[segmentRef.ref] = segment;
+                if (!$rootScope.segmentsMap[segmentRef.ref.id] || $rootScope.segmentsMap[segmentRef.ref.id] == null) {
+                    $rootScope.segmentsMap[segmentRef.ref.id] = segment;
                 }
                 MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
                 if ($scope.messagesParams)
@@ -102,9 +102,9 @@ angular.module('igl')
                 if (node.type === 'group') {
                     return node.children && node.children.length > 0;
                 } else if (node.type === 'segmentRef') {
-                    return $rootScope.segmentsMap[node.ref].fields && $rootScope.segmentsMap[node.ref].fields.length > 0;
+                    return $rootScope.segmentsMap[node.ref.id].fields && $rootScope.segmentsMap[node.ref.id].fields.length > 0;
                 } else if (node.type === 'field' || node.type === 'component') {
-                    return $rootScope.datatypesMap[node.datatype].components && $rootScope.datatypesMap[node.datatype].components.length > 0;
+                    return $rootScope.datatypesMap[node.datatype.id].components && $rootScope.datatypesMap[node.datatype.id].components.length > 0;
                 }
                 return false;
             } else {
@@ -320,7 +320,7 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function (node) {
-            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype) && $rootScope.getDatatype(node.datatype).components && $rootScope.getDatatype(node.datatype).components.length > 0));
+            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype.id) && $rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0));
         };
 
         $scope.isRelevant = function (node) {
@@ -483,10 +483,10 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                 $scope.newConstraint.childNodes_2.push(groupModel);
             } else if ($scope.selectedMessage.children[i].type === 'segmentRef') {
                 var segmentModel = {
-                    name: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref].name,
+                    name: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref.id].name,
                     position: $scope.selectedMessage.children[i].position,
                     type: 'segment',
-                    node: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref]
+                    node: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref.id]
                 };
                 $scope.newConstraint.childNodes_1.push(segmentModel);
                 $scope.newConstraint.childNodes_2.push(segmentModel);
@@ -540,10 +540,10 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                     $scope.newConstraint.childNodes_1.push(groupModel);
                 } else if ($scope.newConstraint.currentNode_1.node.children[i].type === 'segmentRef') {
                     var segmentModel = {
-                        name: $scope.newConstraint.location_1 + '.' + $rootScope.segmentsMap[$scope.newConstraint.currentNode_1.node.children[i].ref].name,
+                        name: $scope.newConstraint.location_1 + '.' + $rootScope.segmentsMap[$scope.newConstraint.currentNode_1.node.children[i].ref.id].name,
                         position: $scope.newConstraint.currentNode_1.node.children[i].position,
                         type: 'segment',
-                        node: $rootScope.segmentsMap[$scope.newConstraint.currentNode_1.node.children[i].ref]
+                        node: $rootScope.segmentsMap[$scope.newConstraint.currentNode_1.node.children[i].ref.id]
                     };
                     $scope.newConstraint.childNodes_1.push(segmentModel);
                 }
@@ -554,7 +554,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                     name: $scope.newConstraint.location_1 + '-' + $scope.newConstraint.currentNode_1.node.fields[i].position,
                     position: $scope.newConstraint.currentNode_1.node.fields[i].position,
                     type: 'field',
-                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.fields[i].datatype]
+                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.fields[i].datatype.id]
                 };
                 $scope.newConstraint.childNodes_1.push(fieldModel);
             }
@@ -564,7 +564,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                     name: $scope.newConstraint.location_1 + '.' + $scope.newConstraint.currentNode_1.node.components[i].position,
                     position: $scope.newConstraint.currentNode_1.node.components[i].position,
                     type: 'subComponent',
-                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.components[i].datatype]
+                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.components[i].datatype.id]
                 };
                 $scope.newConstraint.childNodes_1.push(componentModel);
             }
@@ -606,10 +606,10 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                     $scope.newConstraint.childNodes_2.push(groupModel);
                 } else if ($scope.newConstraint.currentNode_2.node.children[i].type === 'segmentRef') {
                     var segmentModel = {
-                        name: $scope.newConstraint.location_2 + '.' + $rootScope.segmentsMap[$scope.newConstraint.currentNode_2.node.children[i].ref].name,
+                        name: $scope.newConstraint.location_2 + '.' + $rootScope.segmentsMap[$scope.newConstraint.currentNode_2.node.children[i].ref.id].name,
                         position: $scope.newConstraint.currentNode_2.node.children[i].position,
                         type: 'segment',
-                        node: $rootScope.segmentsMap[$scope.newConstraint.currentNode_2.node.children[i].ref]
+                        node: $rootScope.segmentsMap[$scope.newConstraint.currentNode_2.node.children[i].ref.id]
                     };
                     $scope.newConstraint.childNodes_2.push(segmentModel);
                 }
@@ -620,7 +620,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                     name: $scope.newConstraint.location_2 + '-' + $scope.newConstraint.currentNode_2.node.fields[i].position,
                     position: $scope.newConstraint.currentNode_2.node.fields[i].position,
                     type: 'field',
-                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.fields[i].datatype]
+                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.fields[i].datatype.id]
                 };
                 $scope.newConstraint.childNodes_2.push(fieldModel);
             }
@@ -630,7 +630,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                     name: $scope.newConstraint.location_2 + '.' + $scope.newConstraint.currentNode_2.node.components[i].position,
                     position: $scope.newConstraint.currentNode_2.node.components[i].position,
                     type: 'subComponent',
-                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.components[i].datatype]
+                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.components[i].datatype.id]
                 };
                 $scope.newConstraint.childNodes_2.push(componentModel);
             }
@@ -654,7 +654,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
         $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
-        $scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
+        $scope.complexConstraint.constraintId = $scope.newConstraint.datatype.id + '-' + $scope.selectedNode.position;
         $scope.tempPredicates.push($scope.complexConstraint);
         $scope.initComplexPredicate();
         $scope.changed = true;
@@ -743,10 +743,10 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 $scope.newConstraint.childNodes_2.push(groupModel);
             } else if ($scope.selectedMessage.children[i].type === 'segmentRef') {
                 var segmentModel = {
-                    name: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref].name,
+                    name: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref.id].name,
                     position: $scope.selectedMessage.children[i].position,
                     type: 'segment',
-                    node: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref]
+                    node: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref.id]
                 };
                 $scope.newConstraint.childNodes_1.push(segmentModel);
                 $scope.newConstraint.childNodes_2.push(segmentModel);
@@ -778,10 +778,10 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                     $scope.newConstraint.childNodes_1.push(groupModel);
                 } else if ($scope.newConstraint.currentNode_1.node.children[i].type === 'segmentRef') {
                     var segmentModel = {
-                        name: $scope.newConstraint.location_1 + '.' + $rootScope.segmentsMap[$scope.newConstraint.currentNode_1.node.children[i].ref].name,
+                        name: $scope.newConstraint.location_1 + '.' + $rootScope.segmentsMap[$scope.newConstraint.currentNode_1.node.children[i].ref.id].name,
                         position: $scope.newConstraint.currentNode_1.node.children[i].position,
                         type: 'segment',
-                        node: $rootScope.segmentsMap[$scope.newConstraint.currentNode_1.node.children[i].ref]
+                        node: $rootScope.segmentsMap[$scope.newConstraint.currentNode_1.node.children[i].ref.id]
                     };
                     $scope.newConstraint.childNodes_1.push(segmentModel);
                 }
@@ -792,7 +792,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                     name: $scope.newConstraint.location_1 + '-' + $scope.newConstraint.currentNode_1.node.fields[i].position,
                     position: $scope.newConstraint.currentNode_1.node.fields[i].position,
                     type: 'field',
-                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.fields[i].datatype]
+                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.fields[i].datatype.id]
                 };
                 $scope.newConstraint.childNodes_1.push(fieldModel);
             }
@@ -802,7 +802,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                     name: $scope.newConstraint.location_1 + '.' + $scope.newConstraint.currentNode_1.node.components[i].position,
                     position: $scope.newConstraint.currentNode_1.node.components[i].position,
                     type: 'component',
-                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.components[i].datatype]
+                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.components[i].datatype.id]
                 };
                 $scope.newConstraint.childNodes_1.push(componentModel);
             }
@@ -844,10 +844,10 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                     $scope.newConstraint.childNodes_2.push(groupModel);
                 } else if ($scope.newConstraint.currentNode_2.node.children[i].type === 'segmentRef') {
                     var segmentModel = {
-                        name: $scope.newConstraint.location_2 + '.' + $rootScope.segmentsMap[$scope.newConstraint.currentNode_2.node.children[i].ref].name,
+                        name: $scope.newConstraint.location_2 + '.' + $rootScope.segmentsMap[$scope.newConstraint.currentNode_2.node.children[i].ref.id].name,
                         position: $scope.newConstraint.currentNode_2.node.children[i].position,
                         type: 'segment',
-                        node: $rootScope.segmentsMap[$scope.newConstraint.currentNode_2.node.children[i].ref]
+                        node: $rootScope.segmentsMap[$scope.newConstraint.currentNode_2.node.children[i].ref.id]
                     };
                     $scope.newConstraint.childNodes_2.push(segmentModel);
                 }
@@ -858,7 +858,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                     name: $scope.newConstraint.location_2 + '-' + $scope.newConstraint.currentNode_2.node.fields[i].position,
                     position: $scope.newConstraint.currentNode_2.node.fields[i].position,
                     type: 'field',
-                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.fields[i].datatype]
+                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.fields[i].datatype.id]
                 };
                 $scope.newConstraint.childNodes_2.push(fieldModel);
             }
@@ -868,7 +868,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                     name: $scope.newConstraint.location_2 + '.' + $scope.newConstraint.currentNode_2.node.components[i].position,
                     position: $scope.newConstraint.currentNode_2.node.components[i].position,
                     type: 'component',
-                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.components[i].datatype]
+                    node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.components[i].datatype.id]
                 };
                 $scope.newConstraint.childNodes_2.push(componentModel);
             }

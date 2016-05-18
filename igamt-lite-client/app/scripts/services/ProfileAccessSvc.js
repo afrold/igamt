@@ -52,7 +52,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 			_.each(message.children, function(groupORsegment) {
 				var refs = fetchSegmentRefs(groupORsegment);
 				_.each(refs, function(ref){
-					segRefs.push(ref);
+					segRefs.push(ref.id);
 				});
 			});
 			

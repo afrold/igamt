@@ -14,7 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  * @author gcr1
  *
  */
-public class TableLink extends AbstractLink implements Cloneable{
+public class TableLink extends AbstractLink implements Cloneable, Comparable<TableLink>{
 
 	private String bindingIdentifier;
 	
@@ -25,11 +25,21 @@ public class TableLink extends AbstractLink implements Cloneable{
 	public TableLink() {
 		super();
 	}
-
+	
+	
 	public TableLink(String id, String bindingIdentifier) {
 		super();
 		this.setId(id);
 		this.bindingIdentifier = bindingIdentifier;
+	}
+	
+
+	public TableLink(String id, String bindingIdentifier, String bindingStrength,
+			String bindingLocation) {
+		this.id = id;
+		this.bindingIdentifier = bindingIdentifier;
+		this.bindingStrength = bindingStrength;
+		this.bindingLocation = bindingLocation;
 	}
 
 	public String getBindingIdentifier() {
@@ -72,6 +82,16 @@ public class TableLink extends AbstractLink implements Cloneable{
 		clonedLink.setBindingStrength(this.bindingStrength);
 		clonedLink.setId(this.getId());
 		return clonedLink;
+	}
+
+	@Override
+	public int compareTo(TableLink o) {
+		int x = String.CASE_INSENSITIVE_ORDER.compare(this.getBindingIdentifier() != null ? this.getBindingIdentifier() : "",
+				o.getBindingIdentifier() != null ? o.getBindingIdentifier() : "");
+		if (x == 0) {
+			x = (this.getBindingIdentifier() != null ? this.getBindingIdentifier() : "").compareTo(o.getBindingIdentifier() != null ? o.getBindingIdentifier(): "");
+		}
+		return x;
 	}
 
 	public String getBindingStrength() {

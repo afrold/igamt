@@ -216,7 +216,7 @@ angular
 
     svc.addSegmentRef = function (segmentRef, parent){
         var segRefId = segmentRef.id;
-        var segRef = segmentRef.ref;
+        var segRef = segmentRef.ref.id;
 
         svc.createMMElement(segRefId, "segmentRef");
         svc.setElement(segRefId, "segmentRef", "usage", segmentRef["usage"]);

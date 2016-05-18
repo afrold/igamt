@@ -17,15 +17,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.hl7tools2lite.converter.IGDocumentReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.hl7tools2lite.converter.ProfileReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.hl7tools2lite.converter.SegmentLibraryReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.hl7tools2lite.converter.SegmentReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.hl7tools2lite.converter.TableLibraryReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.hl7tools2lite.converter.TableReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,17 +70,6 @@ public class PersistenceContextUnit extends AbstractMongoConfiguration {
 	@Bean
 	public CustomConversions customConversions() {
 		List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
-		converterList.add(new FieldWriteConverter());
-		converterList.add(new ComponentWriteConverter());
-		converterList.add(new SegmentRefWriteConverter());
-		converterList.add(new ProfileReadConverter());
-		converterList.add(new IGDocumentReadConverter());
-		converterList.add(new SegmentReadConverter());
-		// converterList.add(new DatatypeReadConverter());
-		converterList.add(new TableReadConverter());
-		// converterList.add(new DatatypeLibraryReadConverter());
-		converterList.add(new SegmentLibraryReadConverter());
-		converterList.add(new TableLibraryReadConverter());
 		return new CustomConversions(converterList);
 	}
 

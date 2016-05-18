@@ -14,7 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  * @author gcr1
  *
  */
-public class SegmentLink extends AbstractLink implements Cloneable{
+public class SegmentLink extends AbstractLink implements Cloneable, Comparable<SegmentLink>{
 
 	private String name;
 
@@ -83,6 +83,16 @@ public class SegmentLink extends AbstractLink implements Cloneable{
 		clonedLink.setName(this.name);
 		clonedLink.setId(this.getId());
 		return clonedLink;
+	}
+
+	@Override
+	public int compareTo(SegmentLink o) {
+		int x = String.CASE_INSENSITIVE_ORDER.compare(this.getLabel() != null ? this.getLabel() : "",
+				o.getLabel() != null ? o.getLabel() : "");
+		if (x == 0) {
+			x = (this.getLabel() != null ? this.getLabel() : "").compareTo(o.getLabel() != null ? o.getLabel(): "");
+		}
+		return x;
 	}
 
 	@Override
