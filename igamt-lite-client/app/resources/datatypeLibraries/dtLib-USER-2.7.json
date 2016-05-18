@@ -18,5 +18,19 @@
     "datatypLibId" : ""
   },
   "scope" : "USER",
-  "children" : [ ]
+  "children" : [{
+    "id" : "569eac0dd4c623dc65508666",
+    "name" : "AD",
+    "ext" : "",
+    "label" : "AD_"
+  }, {
+    "id" : "569eac0dd4c623dc65508661",
+    "name" : "AUI",
+    "ext" : "",
+    "label" : "AUI_"
+  }, {
+    "id" : "569eac0dd4c623dc655086a6",
+    "name" : "CCP",
+    "ext" : "",
+    "label" : "CCP_"}]
 }

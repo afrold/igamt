@@ -1,11 +1,5 @@
 <div class="container" ng-controller="DatatypeLibraryCtl"
-	ng-init="initDatatypeLibrary()">
-
-	<div ng-show="!loading">
-		<div class="page-header">
-			<h3>Data Type Libraries</h3>
-		</div>
-	</div>
+	ng-init="initDatatypeLibrary()" style="margin-top : 20px">
 	<accordion close-others="false"> 
 	<accordion-group is-open="accordi.dtList" panel-class="panel-primary">
 	<accordion-heading> 
@@ -65,8 +59,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-class="{'new' : dtLib.new}"
-								ng-repeat="dtLib in datatypeLibsDisplay">
+							<tr ng-repeat="dtLib in datatypeLibsDisplay">
 								<td st-ratio="2" style="text-align: right;">{{$index + 1}}</td>
 								<td st-ratio="10">{{dtLib.metaData.name}}</td>
 								<td st-ratio="10">{{dtLib.metaData.ext}}</td>
@@ -263,7 +256,7 @@
         <span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
       </button>
     </td>
-    <td st-ratio="2" style="text-align : center; vertical-align : bottom;"><label for="publish + $index"><input name="publish + $index" ng-model="dt.publish" type="checkbox" ng-hide="true"/><i ng-class="{'fa fa-check fa-2x' : !dt.publish}" style="color : #88A888"></i></label></td>
+    <td st-ratio="2" style="text-align : center; vertical-align : bottom;"><label for="publish + $index"><input name="publish + $index" ng-model="dt.publish" type="checkbox" ng-hide="!dt.publish"/><i ng-class="{'fa fa-check fa-2x' : !dt.publish}" style="color : #88A888"></i></label></td>
   </tr>
 </tbody>
 
@@ -396,12 +389,12 @@
   		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng.model="datatypeCopy.publish" style="margin-right : 8px"/>Publish</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"
-                 ng-hide="viewSettings.tableReadonly || datatypeCopy.scope !== 'USER'"
+                 ng-hide="datatypeCopy.scope !== 'USER'"
                  ng-click="saveDatatype(datatypeCopy)">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
                          <button title="Cancel Changes" type="button" class="btn btn-xs btn-warning"
-                                 ng-hide="viewSettings.tableReadonly || datatypeCopy.scope !== 'USER'"
+                                 ng-hide="datatypeCopy.scope !== 'USER'"
                                  ng-click="cancel()">
                              <span><i class="fa fa-times fa-fw"></i> Cancel</span>
                          </button>
@@ -827,7 +820,6 @@
     <div class="modal-body">
         <p>Are you sure you want to delete the Data Type Library? This operation is irreversible</p>
     </div>
-    </div>
     <div class="modal-footer">
         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
@@ -839,10 +831,7 @@
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>
     </div>
-    </div>
 </script>
-
-
 <script type="text/ng-template" id="ConfirmDatatypeLibraryCloseCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Close Confirmation
