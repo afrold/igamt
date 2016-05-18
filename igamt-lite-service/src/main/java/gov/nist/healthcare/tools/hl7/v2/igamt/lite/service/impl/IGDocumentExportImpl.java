@@ -368,9 +368,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	private void addSegmentMsgInfra(List<List<String>> rows, SegmentRef s,
 			Integer depth, SegmentLibrary segments) {
 		String indent = StringUtils.repeat(".", 4 * depth);
-		Segment segment = segmentService.findById(s.getRef());
+		Segment segment = segmentService.findById(s.getRef().getId());
 		List<String> row = Arrays.asList(indent + segment.getName(), 
-				segments.findOneSegmentById(s.getRef()).getLabel().equals(segment.getName()) ? "" : segments.findOneSegmentById(s.getRef()).getLabel(),
+				segments.findOneSegmentById(s.getRef().getId()).getLabel().equals(segment.getName()) ? "" : segments.findOneSegmentById(s.getRef().getId()).getLabel(),
 						segment.getDescription(),
 						s.getUsage().value(), 
 						"[" + String.valueOf(s.getMin())
@@ -886,7 +886,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	private void addSegmentInfoXlsx(List<List<String>> rows, SegmentRef s,
 			Integer depth, SegmentLibrary segments) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
-		Segment segment = segmentService.findById(s.getRef());
+		Segment segment = segmentService.findById(s.getRef().getId());
 		List<String> row = Arrays.asList(indent + segment.getName(), s
 				.getUsage().value(), "", "[" + String.valueOf(s.getMin())
 				+ ".." + String.valueOf(s.getMax()) + "]", "", segment
