@@ -10,6 +10,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
@@ -156,17 +157,6 @@ public class DatatypeLibraryController extends CommonController {
 				scope, dtlcw.getHl7Version(), dtlcw.getAccountId());
 	}
 
-	// @RequestMapping(value = "/saveMetaData", method = RequestMethod.POST)
-	// public LibrarySaveResponse saveMetaData(
-	// @RequestBody DatatypeLibraryMetaData datatypeLibraryMetaData)
-	// throws LibrarySaveException {
-	// log.info("Saving the " + datatypeLibraryMetaData.getName()
-	// + " datatype library.");
-	// DatatypeLibrary saved = datatypeLibraryService
-	// .saveMetaData(datatypeLibraryMetaData);
-	// return new LibrarySaveResponse(saved.getMetaData().getDate(), saved
-	// .getScope().name());
-	// }
 	@RequestMapping(value = "/{libId}/saveMetaData", method = RequestMethod.POST)
 	public LibrarySaveResponse saveMetaData(
 			@PathVariable("libId") String libId,
@@ -190,9 +180,11 @@ public class DatatypeLibraryController extends CommonController {
 				.getScope().name());
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public void delete(@PathVariable String id) {
+	@RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
+	public ResponseMessage delete(@PathVariable String id) {
 		datatypeLibraryService.delete(id);
+		return new ResponseMessage(ResponseMessage.Type.success,
+				"datatypeLibraryDeletedSuccess", null);
 	}
 
 	@RequestMapping(value = "/bindDatatypes", method = RequestMethod.POST)
@@ -288,7 +280,6 @@ public class DatatypeLibraryController extends CommonController {
 				lib.setChildren(results);
 			}
 		}
-
 		return libraries;
 	}
 }

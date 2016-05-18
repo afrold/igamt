@@ -81,7 +81,7 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
     svc.saveMetaData = function (datatypeLibraryId, datatypeLibraryMetaData) {
     	console.log("datatypeLibraryMetaData=" + JSON.stringify(datatypeLibraryMetaData));
         return $http.post(
-            'api/datatype-library/saveMetaData/' + datatypeLibraryId, datatypeLibraryMetaData).then(function (response) {
+            'api/datatype-library/' + datatypeLibraryId + '/saveMetaData', datatypeLibraryMetaData).then(function (response) {
                 return angular.fromJson(response.data)
             });
     };
@@ -97,7 +97,7 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
    svc.delete = function (datatypeLibraryId) {
     	
         return $http.get(
-            'api/datatype-library/delete/' + datatypeLibraryId).then(function (response) {
+            'api/datatype-library/' + datatypeLibraryId + '/delete').then(function (response) {
                 return angular.fromJson(response.data)
             });
     };

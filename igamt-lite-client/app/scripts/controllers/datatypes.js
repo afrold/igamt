@@ -330,15 +330,14 @@ angular.module('igl')
         };
 
         var indexIn = function (id, collection) {
-            var children = collection;
-            for (var i = 0; i < children; i++) {
-                if (children[i].id === id) {
+            for (var i = 0; i < collection.length; i++) {
+                if (collection[i].id === id) {
                     return i;
                 }
             }
             return -1;
-
         };
+
 
         $scope.showSelectDatatypeFlavorDlg = function (component) {
             var modalInstance = $modal.open({
@@ -526,7 +525,7 @@ angular.module('igl')
         $scope.showSelectedDetails = function (datatype) {
             if (datatype && datatype != null) {
                 $scope.loadingSelection = true;
-                $scope.selection.id = datatype.id;
+//                $scope.selection.selectedLink = datatype;
                 $scope.selection.datatype = null;
                 $scope.resetMap();
                 $scope.bindingError = null;
@@ -569,14 +568,12 @@ angular.module('igl')
         };
 
         var indexIn = function (id, collection) {
-            var children = collection;
-            for (var i = 0; i < children; i++) {
-                if (children[i].id === id) {
+             for (var i = 0; i < collection.length; i++) {
+                if (collection[i].id === id) {
                     return i;
                 }
             }
             return -1;
-
         };
 
         $scope.submit = function () {
@@ -627,48 +624,19 @@ angular.module('igl')
 ;
 
 
-angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope, DatatypeLibrarySvc, DatatypeService, MastermapSvc) {
+angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope, DatatypeLibrarySvc, DatatypeService, MastermapSvc, CloneDeleteSvc) {
     $scope.dtToDelete = dtToDelete;
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-        DatatypeService.delete($scope.dtToDelete).then(function (result) {
-                DatatypeLibrarySvc.deleteChild($rootScope.igdocument.profile.datatypeLibrary.id, $scope.dtToDelete.id).then(function (res) {
-                    // We must delete from two collections.
-                    var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
-                    $rootScope.datatypes.splice(index, 1);
-                    var tmp = DatatypeLibrarySvc.findOneChild($scope.dtToDelete.id, $rootScope.igdocument.profile.datatypeLibrary);
-                    index = $rootScope.igdocument.profile.datatypeLibrary.children.indexOf(tmp);
-                    $rootScope.igdocument.profile.datatypeLibrary.children.splice(index, 1);
-                    $rootScope.datatypesMap[$scope.dtToDelete.id] = null;
-                    $rootScope.references = [];
-                    if ($rootScope.datatype === $scope.dtToDelete) {
-                        $rootScope.datatype = null;
-                    }
-                    $rootScope.recordDelete("datatype", "edit", $scope.dtToDelete.id);
-                    $rootScope.msg().text = "dtDeleteSuccess";
-                    $rootScope.msg().type = "success";
-                    $rootScope.msg().show = true;
-                    $rootScope.manualHandle = true;
-                    $scope.loading = false;
-                    MastermapSvc.deleteDatatype($scope.segToDelete.id);
-                    $rootScope.$broadcast('event:SetToC');
-                    $modalInstance.close($scope.dtToDelete);
-                }, function (error) {
-                    $rootScope.msg().text = error.data.text;
-                    $rootScope.msg().type = "danger";
-                    $rootScope.msg().show = true;
-                    $rootScope.manualHandle = true;
-                    $scope.loading = false;
-                });
-            }, function (error) {
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = "danger";
-                $rootScope.msg().show = true;
-                $rootScope.manualHandle = true;
-                $scope.loading = false;
-            }
-        );
+        if($scope.dtToDelete.scope === 'USER'){
+        	CloneDeleteSvc.deleteDatatypeAndDatatypeLink($scope.dtToDelete);
+        }else {
+        	CloneDeleteSvc.deleteDatatypeLink($scope.dtToDelete);
+        }
+        
+        $modalInstance.close($scope.dtToDelete);
+        $scope.loading = false;
     };
 
     $scope.cancel = function () {

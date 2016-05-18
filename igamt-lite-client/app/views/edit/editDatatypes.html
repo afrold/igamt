@@ -870,21 +870,14 @@
                 <tbody>
                 <tr ng-repeat="ref in references">
                     <td>
-                                        <span>
+                    	<span>
+							<span ng-show="ref.type === 'field'" class="label label-field label-icon">F</span>
+                            <span ng-show="ref.type === 'component'" class="label label-component label-icon">C</span>
+                            <span ng-show="ref.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
 
-                                            <span ng-show="ref.type === 'field'"
-                                                  class="label label-field label-icon">F</span>
-                                            <span ng-show="ref.type === 'component'"
-                                                  class="label label-component label-icon">C</span>
-                                            <span ng-show="ref.type === 'subcomponent'"
-                                                  class="label label-sub-component label-icon">S</span>
-
-                                             <span style="width:60%"
-                                                   name="name"
-                                                   ng-bind="ref.name"></span>
-                                             <span ng-bind="ref.description"></span>
-                                         </span>
-
+							<span style="width:60%" name="name" ng-bind="ref.name"></span>
+                            <span ng-bind="ref.description"></span>
+                         </span>
                     </td>
                     <td>
                         <div>{{ref.path}}</div>
@@ -894,10 +887,6 @@
             </table>
         </div>
     </div>
-    <!--<div class="modal-footer">-->
-    <!--<button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>-->
-    <!--</button>-->
-    <!--</div>-->
 </script>
 
 <script type="text/ng-template" id="PredicateDatatypeCtrl.html">
@@ -1707,9 +1696,9 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="row in tmpResults | orderBy:'row.ext'"
-                                        ng-class="{'selected': selection.id != null && row.id === selection.id}">
+                                        ng-class="{'selected': selection.selectedLink != null && row.id === selection.selectedLink.id}">
                                         <td st-ratio="40">{{$index + 1}}
-                                            <input type="radio" ng-checked="isSelectedDatatype(row)"
+                                            <input type="radio" ng-model="selection.selectedLink"
                                                    ng-click="showSelectedDetails(row)"> {{getLocalDatatypeLabel(row)}}
                                         </td>
                                         <td st-ratio="20">{{row.hl7Version}}</td>

@@ -5,6 +5,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 		function($scope, $rootScope, $modal, $timeout, ngTreetableParams, DatatypeService, DatatypeLibrarySvc, FormsSelectSvc, IGDocumentSvc, TableService, ViewSettings, userInfoService) {
 
       $scope.datatypeLibsStruct = [];
+      $scope.toShow==="";
       $scope.datatypeLibStruct = null;
       $scope.datatypeLibMetaDataCopy = null;
       $scope.datatypesJoinStruct = []; 
@@ -21,12 +22,15 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $scope.tableWidth = null;
   //    $scope.datatypeLibrary = "";
       $scope.hl7Version = null;
-      $scope.datatypeView = null;
+      $scope.metaDataView= null;
       $scope.scopes = [];
       $scope.datatypeLibrariesConfig = {};
       $scope.datatypeLibrariesConfig.selectedType
 	  $scope.admin = true; //userInfoService.isAdmin();
-
+      $scope.toggle = function(param){
+    	  $scope.toShow = param;
+    	
+      }
       $scope.datatypesParams = new ngTreetableParams({
           getNodes: function (parent) {
               return $scope.getNodes(parent, $scope.datatypeCopy);
@@ -115,8 +119,22 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			$scope.cancel = function() {
 				console.log("canceled");
 			};
-
+			
+			$scope.editMetadata= function(){
+			
+	            $scope.metaDataView = "LibraryMetaData.html";
+	                  
+				
+			}
+	
+			
 			$scope.editLibrary = function(datatypeLibrary) {
+				   console.log("edit().datatypeLibrary=" + JSON.stringify(datatypeLibrary.children.length));
+	                  $scope.datatypeListView = "DatatypeList.html";
+	                  
+	                  
+	             
+				
 				$rootScope.isEditing = true;
 				$scope.loadingSelection = true;
 				$timeout(
@@ -124,6 +142,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.hl7Version = datatypeLibrary.metaData.hl7Version;
             
             $scope.datatypeLibStruct = datatypeLibrary;
+          
             $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibrary.metaData);
                    var datatypes = null;
                   DatatypeLibrarySvc.getDatatypesByLibrary(datatypeLibrary.id).then(function(response) {
@@ -131,6 +150,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 	  var sortedLinks = _.sortBy(datatypeLibrary.children, 'id');
                 	  var sortedDts = _.sortBy(datatypes, 'id');
                 	  console.log("Verify synch=" + sortedLinks.length === sortedDts.length + " sortedLinks.length" + sortedLinks.length + " sortedDts.length" + sortedDts.length);
+                	  $scope.datatypesJoinStruct = [];
                 	  for (i = 0; i < sortedLinks.length; i++) {
                 		  var datatypeJoinStruct = {
                 				  label : $rootScope.getLabel(sortedLinks[i].name, datatypeLibrary.metaData.ext),
@@ -141,11 +161,13 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 		  };
  
                 		  $scope.datatypesJoinStruct.push(datatypeJoinStruct);
+                		  $rootScope.DataTypeTree=[];
+                		  $rootScope.DataTypeTree=$scope.datatypesJoinStruct;
+                          //$rootScope.DataTypeTree.push($scope.datatypeLibStruct);
                 	  }
                   });
-                  console.log("edit().datatypeLibrary=" + JSON.stringify(datatypeLibrary.children.length));
-                  $scope.metaDataView = "LibraryMetaData.html";
-                  $scope.datatypeListView = "DatatypeList.html";
+               
+                  
                  $timeout(
           function () {
             $scope.loadingSelection = false;
@@ -230,7 +252,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 	};
 	
     $scope.editDatatype = function(datatypeJoinStruct) {
-      $scope.datatypeView = "EditDatatypeLibraryDatatype.html";
+      $scope.metaDataView = "EditDatatypeLibraryDatatype.html";
       if (datatypeJoinStruct && datatypeJoinStruct != null) {
         $scope.loadingSelection = true;
         
