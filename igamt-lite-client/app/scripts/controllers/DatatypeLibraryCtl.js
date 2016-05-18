@@ -126,12 +126,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 	                  
 				
 			}
-			$scope.editDataType= function(){
-				
-				 $scope.metaDataView= 'EditDatatypeLibraryDatatype.html';
-	                  
-		
-			}
 	
 			
 			$scope.editLibrary = function(datatypeLibrary) {
