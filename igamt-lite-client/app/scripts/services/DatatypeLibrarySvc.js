@@ -191,5 +191,17 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
         return delay.promise;
     };
 
+    svc.findDatatypeFlavorsByName = function (flavorName, flavorScope, flavorHl7Version) {
+        var delay = $q.defer();
+        $http.get('api/datatype-library/findDatatypeFlavorsByName', {params: {"name": flavorName, "scope": flavorScope, "hl7Version": flavorHl7Version}}).then(function (response) {
+            var libraries = angular.fromJson(response.data);
+            delay.resolve(libraries);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
+
     return svc;
 });

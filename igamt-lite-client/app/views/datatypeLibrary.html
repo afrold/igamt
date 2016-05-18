@@ -1,5 +1,11 @@
 <div class="container" ng-controller="DatatypeLibraryCtl"
-	ng-init="initDatatypeLibrary()" style="margin-top : 20px">
+	ng-init="initDatatypeLibrary()">
+
+	<div ng-show="!loading">
+		<div class="page-header">
+			<h3>Data Type Libraries</h3>
+		</div>
+	</div>
 	<accordion close-others="false"> 
 	<accordion-group is-open="accordi.dtList" panel-class="panel-primary">
 	<accordion-heading> 
@@ -59,7 +65,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="dtLib in datatypeLibsDisplay">
+							<tr ng-class="{'new' : dtLib.new}"
+								ng-repeat="dtLib in datatypeLibsDisplay">
 								<td st-ratio="2" style="text-align: right;">{{$index + 1}}</td>
 								<td st-ratio="10">{{dtLib.metaData.name}}</td>
 								<td st-ratio="10">{{dtLib.metaData.ext}}</td>
@@ -102,41 +109,56 @@
     </div>
 </div>
 	<div ng-show="isEditing">
-	<div class="row">
-		<tabset> <tab index="0" heading="Metadata">
-		<div class="panel panel-primary" ng-show="datatypeLibMetaDataCopy">
-			<div class="panel-body" style="padding-bottom: 100px">
-				<div id="meta" style="width: 100%">
-					<ng-include src="metaDataView"></ng-include>
+<div class="row">
+
+       <div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">
+        <button title="Show Table of Contents" class="btn btn-xs btn-primary"
+                ng-click="hideToc = !hideToc">
+            <i class="fa fa-caret-right"></i>
+        </button>
+    </div>
+
+    <div ng-show="!hideToc" class="col-md-3">
+        <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading panel-heading-collapsable">
+                <i class="glyphicon glyphicon-list"></i> Table of Contents
+
+                <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
+                        style="margin:0px"
+                        ng-click="hideToc = !hideToc">
+                    <i class="fa fa-caret-left"></i>
+                </button>
+
+            </div>
+
+            <div class="panel-body toc-container">
+             
+                  <ng-include src="datatypeListView">
+				</ng-include> 
+              
+            </div>
+        </div>
+    </div>
+		<div ng-class="{'col-md-9': !hideToc, 'col-md-11 col-98-5-percent':hideToc}" >
+			<div class="panel panel-primary">
+				<div class="panel-heading">Edit Area</div>
+				<div class="panel-body" style="padding-bottom: 100px">
+					
+					
+						<ng-include src="metaDataView"></ng-include>
+					
 				</div>
 			</div>
 		</div>
-		</tab> <tab index="1" heading="Data Types">
-		<div class="panel panel-primary" ng-show="datatypesJoinStruct">
-			<div class="panel-body" style="padding-bottom: 100px">
-				<div id="meta" style="width: 100%">
-					<ng-include src="datatypeListView"></ng-include>
-				</div>
-			</div>
-		</div>
-		</tab> </tabset>
-	</div>
-	</div>
-	<div class="row" ng-show="datatypeView">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Edit Area</div>
-			<div class="panel-body" style="padding-bottom: 100px">
-				<div id="editDatatype" ng-show="datatypeView !== undefined"
-					style="width: 100%">
-					<ng-include src="datatypeView"></ng-include>
-				</div>
-			</div>
-		</div>
+	
 	</div>
 </div>
+
 </accordion-group>
 </accordion>
 </div>
+
 <script type="text/ng-template" id="LibraryMetaData.html">
 <div class="container>
 <div class="row">
@@ -216,7 +238,46 @@
 </div>
 </div>
 </script>
+<!--   <ol ui-tree-nodes="" ng-model="datatypesJoinStruct"> -->
+<!--     <li ng-repeat="dataLibrary in datatypesJoinStruct" ui-tree-node> -->
+
+<!--       <div ui-tree-handle data-nodrag ng-click="showMetadata()" > -->
+<!-- 	<i data-nodrag ng-click="toggle(this)" -->
+<!-- 							class="fa fa-caret-down" -->
+<!-- 							ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !collapsed}"></i> -->
+<!--      {{datatypeLibStruct.metaData.name}} -->
+<!--       </div> -->
 <script type="text/ng-template" id="DatatypeList.html">
+
+
+<div ui-tree data-nodrag ng-controller="TreeCtrl" style = "margin-left:15px;">
+<div ng-click="editMetadata()"> 
+<i  ng-click="switcherDatatypeLibrary()" class="fa fa-caret-down" 
+ 							ng-class="{'fa-caret-down': dataTypeLibraryCollapsed, 'fa-caret-right': !dataTypeLibraryCollapsed}"></i> 
+    
+{{datatypeLibStruct.metaData.name}}
+</div>
+      <ol ui-tree-nodes="" ng-model="datatypesJoinStruct">
+
+        <li ng-repeat="data in datatypesJoinStruct" ui-tree-node ng-show="!dataTypeLibraryCollapsed" >
+          		
+							<div ui-tree-handle class="messageSubContent" data-nodrag style="font-weight:normal;cursor:pointer;"
+								 context-menu="DataTypeOptionsInLib">
+								<span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data.dtRef)==='HL7',
+                                'label-USE':  getScopeLabel(data.dtRef)==='USE','label-MASTER':getScopeLabel(data.dtRef)==='MAS'}" >{{getScopeLabel(data.dtRef)}}</span>
+								<span data-nodrag
+									ng-class="{selected : data.dtRef.id===activeModel}"
+									ng-click= "editDatatype(data);Activate(data.dtRef.id)">{{getLabelOfData(data.dtRef.name, getExtensionInLibrary(data.dtRef.id, datatypeLibStruct,"ext"))}}</span>
+							</div>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</div>
+</script>
+
+
+<script type="text/ng-template" id="DatatypeListold.html">
 <div class="pull-right" style="margin-right:20px">
   <button type="button" class="btn btn-primary btn-sm"
           ng-click="openDataypeList(hl7Version)"><i class="fa fa-plus"></i>
@@ -385,7 +446,7 @@
 <div class="row">
     <div class="col-md-12 igl-page-header">
         <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeLibStruct.ext)}}</span>
-                     <span class="pull-right">
+                     <span class="pull-right"><pre>datatypeCopy.scope={{datatypeCopy.scope}}</pre>
   		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng.model="datatypeCopy.publish" style="margin-right : 8px"/>Publish</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"
@@ -820,6 +881,7 @@
     <div class="modal-body">
         <p>Are you sure you want to delete the Data Type Library? This operation is irreversible</p>
     </div>
+    </div>
     <div class="modal-footer">
         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
@@ -831,7 +893,10 @@
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>
     </div>
+    </div>
 </script>
+
+
 <script type="text/ng-template" id="ConfirmDatatypeLibraryCloseCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Close Confirmation

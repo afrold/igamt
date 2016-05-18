@@ -1767,11 +1767,17 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getLabel = function (name, ext) {
+        	//console.log("*********"+name+ext);
+        	var label="";
             if (ext && ext !== null && ext !== "") {
-                return name + "_" + ext;
+            	console.log("*********"+name + "_" + ext);
+            	label= name + "_" + ext;
+           
             } else {
-                return name;
+                label =name;
             }
+            console.log(label);
+            return label; 
         };
 
         $rootScope.getDynamicWidth = function (a, b, otherColumsWidth) {

@@ -11,7 +11,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +39,13 @@ public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations 
 
 	@Override
 	public List<DatatypeLibrary> findByScope(SCOPE scope, Long accountId) {
-		
+
 		Criteria where = Criteria.where("scope").is(scope);
-		
+
 		if (scope == SCOPE.USER) {
 			where.andOperator(Criteria.where("accountId").is(accountId));
 		}
-		
+
 		Query qry = Query.query(where);
 		List<DatatypeLibrary> list = mongo.find(qry, DatatypeLibrary.class);
 		log.debug("DatatypeLibraryRespositoryImpl.findByScopes list.size()="
@@ -124,49 +126,66 @@ public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations 
 	}
 
 	@Override
-	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version,
-			String name, Long accountId) {
+	public List<DatatypeLibrary> findByIds(Set<String> ids) {
+		Criteria where = Criteria.where("id").in(ids);
+		Query qry = Query.query(where);
+		List<DatatypeLibrary> libraries = mongo
+				.find(qry, DatatypeLibrary.class);
+		return libraries;
+	}
+
+	@Override
+	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope,
+			String hl7Version, String name, Long accountId) {
 		List<DatatypeLibrary> libraries = null;
 		Criteria libCriteria = null;
-		
-		if(scope.equals(SCOPE.HL7STANDARD) || scope.equals(SCOPE.MASTER)){
+		if (scope.equals(SCOPE.HL7STANDARD) || scope.equals(SCOPE.MASTER)) {
 			libCriteria = Criteria
 					.where("scope")
 					.is(scope)
 					.andOperator(
-							Criteria.where("metaData.hl7Version").is(hl7Version));
-
+							Criteria.where("metaData.hl7Version")
+									.is(hl7Version));
 			Criteria linksCriteria = Criteria.where("children").elemMatch(
 					Criteria.where("name").is(name));
 			BasicQuery query = new BasicQuery(libCriteria.getCriteriaObject(),
 					linksCriteria.getCriteriaObject());
 			libraries = mongo.find(query, DatatypeLibrary.class);
+			if (libraries != null) {
+				Set<String> ids = new HashSet<String>();
+				for (DatatypeLibrary lib : libraries) {
+					ids.add(lib.getId());
+				}
+				libraries = findByIds(ids);
+			}
 		}
-
 		return libraries;
 	}
-	
+
 	@Override
 	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version,
 			String name, Long accountId) {
-		Criteria libCriteria = Criteria
-				.where("scope")
-				.is(scope)
-				.andOperator(
-						Criteria.where("metaData.hl7Version").is(hl7Version))
-				.andOperator(
-						Criteria.where("accountId")
-								.is(accountId)
-								.orOperator(
-										Criteria.where("accountId").is(null)));
-		Criteria linksCriteria = Criteria.where("children").elemMatch(
-				Criteria.where("name").is(name).andOperator(Criteria.where("status").is(STATUS.PUBLISHED)));
-		BasicQuery query = new BasicQuery(libCriteria.getCriteriaObject(),
-				linksCriteria.getCriteriaObject());
-		List<DatatypeLink> links = mongo.find(query, DatatypeLink.class);
-
-	 return links;
-	}	 
-	
+		List<DatatypeLink> links = null;
+		if (scope.equals(SCOPE.HL7STANDARD) || scope.equals(SCOPE.MASTER)) {
+			Criteria libCriteria = Criteria
+					.where("scope")
+					.is(scope)
+					.andOperator(
+							Criteria.where("metaData.hl7Version")
+									.is(hl7Version))
+					.andOperator(
+							Criteria.where("accountId")
+									.is(accountId).andOperator(Criteria.where("children").elemMatch(
+					Criteria.where("name")
+							.is(name)
+							.andOperator(
+									Criteria.where("status").is(
+											STATUS.PUBLISHED))))
+									);
+			Query query =  Query.query(libCriteria);
+			links = mongo.find(query, DatatypeLink.class);
+		}
+		return links;
+	}
 
 }
