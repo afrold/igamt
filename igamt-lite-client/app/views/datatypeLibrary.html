@@ -321,7 +321,7 @@
 </div>
 </script>
 <script type="text/ng-template" id="datatypeListDlg.html">
-<div id="datatypelibrary-dialog">
+<div id="datatypelibrary-dialog" style="width : 100%">
 <div class="modal-content">
   <div class="modal-header">
     <h3 class="modal-title">Data Types</h3>
@@ -551,7 +551,7 @@
                         ng-show="viewSettings.isVisibleColumn('usage')">Usage
                     </th>
                     <th class="col-xs-1 col-fixed-100"
-                        ng-show="viewSettings.isVisibleColumn('datatypeCopy')">DT
+                        ng-show="viewSettings.isVisibleColumn('datatype')">DT
                     </th>
                     <th class="col-xs-1 col-fixed-130"
                         ng-show="viewSettings.isVisibleColumn('valueSet')">Concept Domain/ Minimum Code System
@@ -650,6 +650,16 @@
                     ({{p.trueUsage}}/{{p.falseUsage}})
                 </p>
             </div>
+        </td>
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+            <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
+                <div ng-show="node.datatype != null && datatypesJoinStruct != null && datatypesJoinStruct != undefined">
+                    <a ng-click="showSelectDatatypeFlavorDlg(node)">
+                        {{getLabel(datatypeCopy.name, datatypeLibStruct.metaData.ext)}}
+                    </a>
+                </div>
+
+            </ng-form>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.table != undefined && node.table !== null">

@@ -141,11 +141,11 @@ public class DatatypeLibraryController extends CommonController {
 				dtlcw.getAccountId());
 	}
 
-	@RequestMapping(value = "/saveMetaData", method = RequestMethod.POST)
-	public LibrarySaveResponse saveMetaData(@RequestBody DatatypeLibraryMetaData datatypeLibraryMetaData)
-			throws LibrarySaveException {
+	@RequestMapping(value = "/saveMetaData/{libId}", method = RequestMethod.POST)
+	public LibrarySaveResponse saveMetaData(@PathVariable("libId") String libId,
+			@RequestBody DatatypeLibraryMetaData datatypeLibraryMetaData) throws LibrarySaveException {
 		log.info("Saving the " + datatypeLibraryMetaData.getName() + " datatype library.");
-		DatatypeLibrary saved = datatypeLibraryService.saveMetaData(datatypeLibraryMetaData);
+		DatatypeLibrary saved = datatypeLibraryService.saveMetaData(libId, datatypeLibraryMetaData);
 		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
 	}
 

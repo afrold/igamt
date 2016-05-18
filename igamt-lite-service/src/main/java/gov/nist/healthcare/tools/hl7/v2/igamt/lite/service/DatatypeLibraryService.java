@@ -51,5 +51,5 @@ public interface DatatypeLibraryService {
 
 	DatatypeLibrary save(DatatypeLibrary library);
 	
- 	DatatypeLibrary saveMetaData(DatatypeLibraryMetaData datatypeLibraryMetaData);
+	DatatypeLibrary saveMetaData(String libId, DatatypeLibraryMetaData datatypeLibraryMetaData);
 }
