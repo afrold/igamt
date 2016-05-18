@@ -1,10 +1,18 @@
 <div class="container" ng-controller="DatatypeLibraryCtl"
-	ng-init="initDatatypeLibrary()" style="margin-top: 20px">
-	<accordion close-others="false"> <accordion-group
-		is-open="accordi.dtList" panel-class="panel-primary">
-	<accordion-heading> <i class="fa"
+	ng-init="initDatatypeLibrary()">
+
+	<div ng-show="!loading">
+		<div class="page-header">
+			<h3>Data Type Libraries</h3>
+		</div>
+	</div>
+	<accordion close-others="false"> 
+	<accordion-group is-open="accordi.dtList" panel-class="panel-primary">
+	<accordion-heading> 
+	<i class="fa"
 		ng-class="{'fa-caret-down': accordi.dtList, 'fa-caret-right': !accordi.dtList}"></i>
-	<i class="fa fa-file-text-o fa-fw"></i> Data Type Libraries List </accordion-heading>
+	<i class="fa fa-file-text-o fa-fw"></i> Data Type Libraries List 
+	</accordion-heading>
 	<div class="row">
 		<div class="col-md-12">
 			<form id="selectDtTypeForm" class="form-horizontal">
@@ -38,101 +46,119 @@
 
 	<div ng-show="datatypeLibsStruct">
 		<div class="row">
-			<div class="col-md-12">
-				<form>
-					<div class="form-group">
-						<table st-table="datatypeLibsDisplay"
-							st-safe-src="datatypeLibsStruct"
-							class="table table-bordered table-fix-header">
-							<thead>
-								<tr class="tbl-header">
-									<th st-ratio="2" style="text-align: center;">#</th>
-									<th st-ratio="10" st-sort="datatypeLibsDisplay(dtLib)"
-										st-sort-default="true">Name</th>
-									<th st-ratio="10">Extension</th>
-									<th st-ratio="30">Date</th>
-									<th st-ratio="10">Scope</th>
-									<th st-ratio="10">HL7 Version</th>
-									<th st-ratio="38">Actions</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="dtLib in datatypeLibsDisplay">
-									<td st-ratio="2" style="text-align: right;">{{$index + 1}}</td>
-									<td st-ratio="10">{{dtLib.metaData.name}}</td>
-									<td st-ratio="10">{{dtLib.metaData.ext}}</td>
-									<td st-ratio="30">{{dtLib.metaData.date}}
-									<td st-ratio="10">{{dtLib.scope}}</td>
-									<td st-ratio="10">{{dtLib.metaData.hl7Version}}</td>
-									<td st-ratio="38">
-										<button title="Edit" type="button"
-											class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib)">
-											<span><i class="fa fa-pencil fa-fw"></i> Edit</span>
-										</button>
-										<button title="Create Copy" type="button"
-											class="btn btn-xs btn-info" ng-click="copyLibrary(dtLib)">
-											<span><i class="fa fa-plus fa-fw"></i> Copy</span>
-										</button>
-										<button title="Delete" type="button"
-											class="btn btn-xs btn-danger" ng-click="deleteLibrary(dtLib)">
-											<span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
-										</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-			</div>
+		<div class="col-md-12">
+			<form>
+				<div class="form-group">
+					<table st-table="datatypeLibsDisplay"
+						st-safe-src="datatypeLibsStruct"
+						class="table table-bordered table-fix-header">
+						<thead>
+							<tr class="tbl-header">
+								<th st-ratio="2" style="text-align: center;">#</th>
+								<th st-ratio="10" st-sort="datatypeLibsDisplay(dtLib)"
+									st-sort-default="true">Name</th>
+								<th st-ratio="30">Extension</th>
+								<th st-ratio="30">Date</th>
+								<th st-ratio="10">Scope</th>
+								<th st-ratio="10">HL7 Version</th>
+								<th st-ratio="38">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-class="{'new' : dtLib.new}"
+								ng-repeat="dtLib in datatypeLibsDisplay">
+								<td st-ratio="2" style="text-align: right;">{{$index + 1}}</td>
+								<td st-ratio="10">{{dtLib.metaData.name}}</td>
+								<td st-ratio="10">{{dtLib.metaData.ext}}</td>
+								<td st-ratio="30">{{dtLib.metaData.date}}
+								<td st-ratio="10">{{dtLib.scope}}</td>
+								<td st-ratio="10">{{dtLib.metaData.hl7Version}}</td>
+								<td st-ratio="38">
+									<button title="Edit" type="button"
+										class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib)">
+										<span><i class="fa fa-pencil fa-fw"></i> Edit</span>
+									</button>
+									<button title="Create Copy" type="button"
+										class="btn btn-xs btn-info" ng-click="copyLibrary(dtLib)">
+										<span><i class="fa fa-plus fa-fw"></i> Copy</span>
+									</button>
+									<button title="Delete" type="button"
+										class="btn btn-xs btn-danger" ng-click="deleteLibrary(dtLib)">
+										<span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</div>
 			</form>
 		</div>
-	</div>
-	</accordion-group> <accordion-group is-open="accordi.dtDetails"
-		panel-class="panel-primary"> <accordion-heading>
-	<i class="fa"
-		ng-class="{'fa-caret-down': accordi.dtDetails, 'fa-caret-right': !accordi.dtDetails}"></i>
-	<i class="fa fa-pencil fa-fw"></i>Edit Data Type Library:
-	{{datatypeLibStruct.metaData.title}} </accordion-heading>
-	<div class="row" ng-show="!isEditing">
-		<div class="col-md-12">
-			<p>No Data Type Library Selected.</p>
 		</div>
-	</div>
+	</accordion-group> 
+	<accordion-group is-open="accordi.dtDetails" panel-class="panel-primary"> 
+		<accordion-heading>
+			<i class="fa"
+				ng-class="{'fa-caret-down': accordi.dtDetails, 'fa-caret-right': !accordi.dtDetails}"></i>
+			<i class="fa fa-pencil fa-fw"></i>Edit Data Type Library:
+			{{datatypeLibStruct.metaData.title}} 
+		</accordion-heading>
+<div class="row" ng-show="!isEditing">
+    <div class="col-md-12">
+        <p>No Data Type Library Selected.</p>
+    </div>
+</div>
 	<div ng-show="isEditing">
-		<div class="row">
-			<tabset> <tab index="0" heading="Metadata">
-			<div class="panel panel-primary" ng-show="datatypeLibMetaDataCopy">
+<div class="row">
+
+       <div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">
+        <button title="Show Table of Contents" class="btn btn-xs btn-primary"
+                ng-click="hideToc = !hideToc">
+            <i class="fa fa-caret-right"></i>
+        </button>
+    </div>
+
+    <div ng-show="!hideToc" class="col-md-3">
+        <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading panel-heading-collapsable">
+                <i class="glyphicon glyphicon-list"></i> Table of Contents
+
+                <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
+                        style="margin:0px"
+                        ng-click="hideToc = !hideToc">
+                    <i class="fa fa-caret-left"></i>
+                </button>
+
+            </div>
+
+            <div class="panel-body toc-container">
+             
+                  <ng-include src="datatypeListView">
+				</ng-include> 
+              
+            </div>
+        </div>
+    </div>
+		<div ng-class="{'col-md-9': !hideToc, 'col-md-11 col-98-5-percent':hideToc}" >
+			<div class="panel panel-primary">
+				<div class="panel-heading">Edit Area</div>
 				<div class="panel-body" style="padding-bottom: 100px">
-					<div id="meta" style="width: 100%">
+					
+					
 						<ng-include src="metaDataView"></ng-include>
-					</div>
-				</div>
-			</div>
-			</tab> <tab index="1" heading="Data Types">
-			<div class="panel panel-primary" ng-show="datatypesJoinStruct">
-				<div class="panel-body" style="padding-bottom: 100px">
-					<div id="meta" style="width: 100%">
-						<ng-include src="datatypeListView"></ng-include>
-					</div>
-				</div>
-			</div>
-			</tab> </tabset>
-		</div>
-	</div>
-	<div class="row" ng-show="datatypeView">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Edit Area</div>
-			<div class="panel-body" style="padding-bottom: 100px">
-				<div id="editDatatype" ng-show="datatypeView !== undefined"
-					style="width: 100%">
-					<ng-include src="datatypeView"></ng-include>
+					
 				</div>
 			</div>
 		</div>
+	
 	</div>
 </div>
+
 </accordion-group>
 </accordion>
 </div>
+
 <script type="text/ng-template" id="LibraryMetaData.html">
 <div class="container>
 <div class="row">
@@ -212,7 +238,46 @@
 </div>
 </div>
 </script>
+<!--   <ol ui-tree-nodes="" ng-model="datatypesJoinStruct"> -->
+<!--     <li ng-repeat="dataLibrary in datatypesJoinStruct" ui-tree-node> -->
+
+<!--       <div ui-tree-handle data-nodrag ng-click="showMetadata()" > -->
+<!-- 	<i data-nodrag ng-click="toggle(this)" -->
+<!-- 							class="fa fa-caret-down" -->
+<!-- 							ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !collapsed}"></i> -->
+<!--      {{datatypeLibStruct.metaData.name}} -->
+<!--       </div> -->
 <script type="text/ng-template" id="DatatypeList.html">
+
+
+<div ui-tree data-nodrag ng-controller="TreeCtrl" style = "margin-left:15px;">
+<div ng-click="editMetadata()"> 
+<i  ng-click="switcherDatatypeLibrary()" class="fa fa-caret-down" 
+ 							ng-class="{'fa-caret-down': dataTypeLibraryCollapsed, 'fa-caret-right': !dataTypeLibraryCollapsed}"></i> 
+    
+{{datatypeLibStruct.metaData.name}}
+</div>
+      <ol ui-tree-nodes="" ng-model="datatypesJoinStruct">
+
+        <li ng-repeat="data in datatypesJoinStruct" ui-tree-node ng-show="!dataTypeLibraryCollapsed" >
+          		
+							<div ui-tree-handle class="messageSubContent" data-nodrag style="font-weight:normal;cursor:pointer;"
+								 context-menu="DataTypeOptionsInLib">
+								<span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data.dtRef)==='HL7',
+                                'label-USE':  getScopeLabel(data.dtRef)==='USE','label-MASTER':getScopeLabel(data.dtRef)==='MAS'}" >{{getScopeLabel(data.dtRef)}}</span>
+								<span data-nodrag
+									ng-class="{selected : data.dtRef.id===activeModel}"
+									ng-click= "editDatatype(data);Activate(data.dtRef.id)">{{getLabelOfData(data.dtRef.name, getExtensionInLibrary(data.dtRef.id, datatypeLibStruct,"ext"))}}</span>
+							</div>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</div>
+</script>
+
+
+<script type="text/ng-template" id="DatatypeListold.html">
 <div class="pull-right" style="margin-right:20px">
   <button type="button" class="btn btn-primary btn-sm"
           ng-click="openDataypeList(hl7Version)"><i class="fa fa-plus"></i>
@@ -333,8 +398,7 @@
 <tbody>
   <tr class="row" ng-repeat="dtLib in datatypeLibDisplay">
     <td st-ratio="2"><input id="dtLib.id" name="dtLibs" type="radio" ng-bind="selectedLib" ng-click="libSelected(dtLib)"/></td>
-    <td st-ratio="48" ng-show="!isHL7(dtLib.scope)">{{getLabel(dtLib.metaData.name, dtLib.metaData.ext)}}</td>
-    <td st-ratio="48" ng-show="isHL7(dtLib.scope)">version: {{hl7Version}}</td>
+    <td st-ratio="48">{{getLabel(dtLib.metaData.name, dtLib.metaData.ext)}}</td>
     <td st-ratio="48">{{dtLib.scope}}</td>
   </tr>
 </tbody>
@@ -346,15 +410,15 @@
 <thead>
   <tr class="row tbl-header">
     <th st-ratio="2">&nbsp;</th>
-    <th st-ratio="labelSize(selectedLib.scope)">Label</th>
-    <th st-ratio="48" ng-show="!isHL7(selectedLib.scope)">Ext</th>
+    <th st-ratio="48">Label</th>
+    <th st-ratio="48">Ext</th>
   </tr>
 </thead>
 <tbody>
   <tr class="row" ng-repeat="dt in datatypesDisplay | orderBy: 'name'">
     <td st-ratio="2"><input value="1" name="datatypesDisplay.id" type="checkbox" ng-model="bool" ng-click="trackSelections(bool, dt)"/></td>
-    <td st-ratio="labelSize(selectedLib.scope)">{{dt.name}}</td>
-    <td st-ratio="48" ng-show="!isHL7(selectedLib.scope)">{{dt.ext}}</td>
+    <td st-ratio="48">{{dt.name}}</td>
+    <td st-ratio="48">{{dt.ext}}</td>
   </tr>
 </tbody>
 </table>
@@ -382,7 +446,7 @@
 <div class="row">
     <div class="col-md-12 igl-page-header">
         <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeLibStruct.ext)}}</span>
-                     <span class="pull-right">
+                     <span class="pull-right"><pre>datatypeCopy.scope={{datatypeCopy.scope}}</pre>
   		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng.model="datatypeCopy.publish" style="margin-right : 8px"/>Publish</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"
@@ -809,14 +873,14 @@
         </td>
     </tr>
 </script>
-<script type="text/ng-template"
-	id="ConfirmDatatypeLibraryDeleteCtrl.html">
+<script type="text/ng-template" id="ConfirmDatatypeLibraryDeleteCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Delete Confirmation
         </h3>
     </div>
     <div class="modal-body">
         <p>Are you sure you want to delete the Data Type Library? This operation is irreversible</p>
+    </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
@@ -829,9 +893,11 @@
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>
     </div>
+    </div>
 </script>
-<script type="text/ng-template"
-	id="ConfirmDatatypeLibraryCloseCtrl.html">
+
+
+<script type="text/ng-template" id="ConfirmDatatypeLibraryCloseCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Close Confirmation
         </h3>
