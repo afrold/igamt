@@ -183,10 +183,7 @@
                                       
                                        <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
                                    'label-USE':  getScopeLabel(segment)==='USE','label-MASTER':getScopeLabel(segment)==='MAS'}" >  {{getScopeLabel(segment)}}</span> 
-                                    
-                                      
-                                      
-                                       {{segment.label}}-{{segment.description}} {{isUnused(segment)}}</span>
+                                       {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                             </div>
                         </li>
                     </ol>
@@ -230,7 +227,7 @@
                         <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
-                                 ng-click="editDataType('Value Sets')" context-menu="DataTypeOptions">
+                                 ng-click="editDataType('Value Sets')" context-menu="ValueSetOptions">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : table.id===activeModel}"
                                       ng-click="editDataType(table); Activate(table.id)">
