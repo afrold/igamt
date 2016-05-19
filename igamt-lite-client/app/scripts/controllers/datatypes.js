@@ -384,7 +384,7 @@ angular.module('igl')
         $scope.tmpResults = [].concat($scope.results);
 
         $scope.currentNode = currentNode;
-        $scope.currentDatatype = angular.copy($rootScope.datatypesMap[currentNode.datatype.id]):null;
+        $scope.currentDatatype = angular.copy($rootScope.datatypesMap[currentNode.datatype.id]);
         $scope.selection = {library: null, scope: null, hl7Version: hl7Version, datatype: null, name: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name : null, selected:null};
 
         $scope.datatypeFlavorParams = new ngTreetableParams({
