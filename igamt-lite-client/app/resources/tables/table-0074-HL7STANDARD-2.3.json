@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "565f3ab7d4c6e52cfd447272",
   "hl7Version" : "2.3",
-  "libIds" : [ "573b5106da08bdc5ada9e760" ],
+  "libIds" : [ "573db3c512081f833db80274" ],
   "bindingIdentifier" : "0074",
   "name" : "0074",
   "description" : "Diagnostic Service Section ID",

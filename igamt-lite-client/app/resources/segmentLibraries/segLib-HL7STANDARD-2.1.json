@@ -4,7 +4,7 @@
   "sectionTitle" : "Segments and Field Descriptions",
   "sectionDescription" : null,
   "sectionContents" : null,
-  "id" : "573b5107da08bdc5ada9ee76",
+  "id" : "573db3c512081f833db8098a",
   "accountId" : null,
   "ext" : null,
   "metaData" : {
@@ -12,9 +12,9 @@
     "orgName" : "NIST",
     "version" : null,
     "hl7Version" : "2.1",
-    "date" : "May 17, 2016",
+    "date" : "May 19, 2016",
     "ext" : null,
-    "segmentLibId" : ""
+    "segmentLibId" : "0562b2b9-f6d3-4ca1-a999-7e97a0f4b2ba"
   },
   "scope" : "HL7STANDARD",
   "children" : [ ]

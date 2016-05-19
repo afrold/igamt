@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "565f3ab7d4c6e52cfd447168",
   "hl7Version" : "2.3",
-  "libIds" : [ "573b5106da08bdc5ada9e760" ],
+  "libIds" : [ "573db3c512081f833db80274" ],
   "bindingIdentifier" : "0052",
   "name" : "0052",
   "description" : "Diagnosis Type",

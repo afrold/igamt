@@ -4,33 +4,18 @@
   "sectionTitle" : "Default title",
   "sectionDescription" : "Default description",
   "sectionContents" : "Default contents",
-  "id" : "573b220dda08e75fd562922c",
+  "id" : "573db3ff12081f833dba0d59",
   "accountId" : 45,
-  "date" : "May 17, 2016",
   "ext" : null,
   "metaData" : {
     "name" : "First User",
     "orgName" : "NIST",
     "version" : null,
     "hl7Version" : "2.7",
-    "date" : "May 17, 2016",
+    "date" : "May 19, 2016",
     "ext" : "Tex",
-    "datatypLibId" : ""
+    "datatypeLibId" : "a5550142-cf6e-4c9e-99b9-0d7802af4bd9"
   },
   "scope" : "USER",
-  "children" : [{
-    "id" : "569eac0dd4c623dc65508666",
-    "name" : "AD",
-    "ext" : "",
-    "label" : "AD_"
-  }, {
-    "id" : "569eac0dd4c623dc65508661",
-    "name" : "AUI",
-    "ext" : "",
-    "label" : "AUI_"
-  }, {
-    "id" : "569eac0dd4c623dc655086a6",
-    "name" : "CCP",
-    "ext" : "",
-    "label" : "CCP_"}]
+  "children" : [ ]
 }

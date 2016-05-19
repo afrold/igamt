@@ -7,7 +7,7 @@
   "version" : null,
   "status" : null,
   "participants" : [ ],
-  "libIds" : [ "573b50fcda08bdc5ada94641" ],
+  "libIds" : [ "573db3ba12081f833db76155" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0ed4c623dc6550bdd7",
@@ -102,7 +102,7 @@
     "max" : "200"
   } ],
   "dynamicMapping" : {
-    "id" : "573b50fcda08bdc5ada9327e",
+    "id" : "573db3ba12081f833db74d92",
     "mappings" : [ ]
   },
   "name" : "CM2",

@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "569eac0fd4c623dc6550df3d",
   "hl7Version" : "2.5.1",
-  "libIds" : [ "573b50fada08bdc5ada915cd" ],
+  "libIds" : [ "573db3b612081f833db730e1" ],
   "bindingIdentifier" : "0264",
   "name" : "0264",
   "description" : "Location Department",

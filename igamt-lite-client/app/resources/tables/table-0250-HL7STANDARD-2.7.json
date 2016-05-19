@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "569eac0dd4c623dc65506fb7",
   "hl7Version" : "2.7",
-  "libIds" : [ "573b50ffda08bdc5ada97880" ],
+  "libIds" : [ "573db3bd12081f833db79394" ],
   "bindingIdentifier" : "0250",
   "name" : "0250",
   "description" : "Relatedness Assessment",

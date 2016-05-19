@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "565f3ab7d4c6e52cfd447d6e",
   "hl7Version" : "2.2",
-  "libIds" : [ "573b5107da08bdc5ada9ecd7" ],
+  "libIds" : [ "573db3c512081f833db807eb" ],
   "bindingIdentifier" : "0162",
   "name" : "0162",
   "description" : "ROUTE OF ADMINISTRATION",

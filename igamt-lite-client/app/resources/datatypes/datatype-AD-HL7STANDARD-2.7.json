@@ -7,7 +7,7 @@
   "version" : null,
   "status" : "PUBLISHED",
   "participants" : [ ],
-  "libIds" : [ "573b50ffda08bdc5ada9787f" ],
+  "libIds" : [ "573db3bd12081f833db79393" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0dd4c623dc65508666",
@@ -180,6 +180,5 @@
   "name" : "AD",
   "description" : "Address",
   "comment" : "",
-  "usageNote" : "",
-  "purposeAndUse" : "This data type is used for specifying an identifier with its associated administrative detail. Assigning Authority and Identifier Type Code required to ensure the ID is unique among all Assigning Authorities and Identifier Type Codes."
+  "usageNote" : ""
 }

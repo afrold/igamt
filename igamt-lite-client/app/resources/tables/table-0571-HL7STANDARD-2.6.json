@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "569eac0ed4c623dc6550b61f",
   "hl7Version" : "2.6",
-  "libIds" : [ "573b50fcda08bdc5ada94643" ],
+  "libIds" : [ "573db3ba12081f833db76157" ],
   "bindingIdentifier" : "0571",
   "name" : "0571",
   "description" : "Invoice Processing Results Status",

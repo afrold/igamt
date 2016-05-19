@@ -7,7 +7,7 @@
   "version" : null,
   "status" : null,
   "participants" : [ ],
-  "libIds" : [ "573b50ffda08bdc5ada9787e" ],
+  "libIds" : [ "573db3bd12081f833db79392" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0dd4c623dc65508dab",
@@ -222,7 +222,7 @@
     "max" : "*"
   } ],
   "dynamicMapping" : {
-    "id" : "573b50ffda08bdc5ada966df",
+    "id" : "573db3bd12081f833db781f3",
     "mappings" : [ ]
   },
   "name" : "EDU",

@@ -2,7 +2,7 @@
   "type" : "table",
   "id" : "565f3ab7d4c6e52cfd44826e",
   "hl7Version" : "2.1",
-  "libIds" : [ "573b5107da08bdc5ada9ee78" ],
+  "libIds" : [ "573db3c512081f833db8098c" ],
   "bindingIdentifier" : "0003",
   "name" : "0003",
   "description" : "EVENT TYPE CODE",

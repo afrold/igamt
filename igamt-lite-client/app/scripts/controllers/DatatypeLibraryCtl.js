@@ -310,45 +310,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 		newDatatype.label = newDatatype.label + "-" + (Math.floor(Math.random() * 10000000) + 1);
 		$scope.datatypesJoinStruct.push(newDatatype);
   	}
-  
- // $scope.copyDatatype = function(datatype) {
-// console.log("copy datatype=" + JSON.stringify(datatype.label));
-// DatatypeService.getOne(datatype.id).then(function (result) {
-// var newDatatype = angular.copy(result);
-// newDatatype.id = new ObjectId().toString();
-// newDatatype.label = getLabel(newDatatype.name, datatypeLibStruct.ext) + "-" +
-// (Math.floor(Math.random() * 10000000) + 1);
-// if (newDatatype.components != undefined && newDatatype.components != null &&
-// newDatatype.components.length != 0) {
-// for (var i = 0; i < newDatatype.components.length; i++) {
-// newDatatype.components[i].id = new ObjectId().toString();
-// }
-// }
-// var predicates = newDatatype['predicates'];
-// if (predicates != undefined && predicates != null && predicates.length != 0)
-// {
-// angular.forEach(predicates, function (predicate) {
-// predicate.id = new ObjectId().toString();
-// });
-// }
-// var conformanceStatements = newDatatype['conformanceStatements'];
-// if (conformanceStatements != undefined && conformanceStatements != null &&
-// conformanceStatements.length != 0) {
-// angular.forEach(conformanceStatements, function (conformanceStatement) {
-// conformanceStatement.id = new ObjectId().toString();
-// });
-// }
-// $scope.datatypeLibStruct.children.push(newDatatype);
-// $scope.loadingSelection = false;
-// if ($scope.datatypesParams)
-// $scope.datatypesParams.refresh();
-// }, function (error) {
-// $scope.loadingSelection = false;
-// $rootScope.msg().text = error.data.text;
-// $rootScope.msg().type = error.data.type;
-// $rootScope.msg().show = true;
-// });
-// };
 
     $scope.deleteDatatype = function(datatype) {
 		console.log("delete datatype=" + JSON.stringify(datatype.label));
