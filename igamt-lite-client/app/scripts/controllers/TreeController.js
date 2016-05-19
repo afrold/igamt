@@ -321,7 +321,7 @@ angular
             $scope.MessagesRootOption = [
 
                 [ 'export', function ($itemScope) {
-                    $scope.selectMessages($rootScope.igdocument);
+                    $scope.selectMessagesForExport($rootScope.igdocument);
                 } ]
 
             ];
