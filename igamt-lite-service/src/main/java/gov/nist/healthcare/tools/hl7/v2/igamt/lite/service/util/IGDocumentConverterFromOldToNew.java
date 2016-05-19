@@ -170,7 +170,6 @@ public class IGDocumentConverterFromOldToNew{
 		app.setMetaData(metaData);
 		log.info("hl7Version=" + appPreLib.getProfile().getMetaData().getHl7Version());
 		Set<Message> msgsPreLib = appPreLib.getProfile().getMessages().getChildren();
-		System.out.println("hl7Version=" + app.getProfile().getMetaData().getHl7Version());
 		List<Constant.SCOPE> scopes = new ArrayList<Constant.SCOPE>();
 		scopes.add(Constant.SCOPE.HL7STANDARD);	
 		
@@ -192,7 +191,6 @@ public class IGDocumentConverterFromOldToNew{
 
 		for (Message sm : msgsPreLib) {
 			sm.setId(null);
-			System.out.println("msgs=" + app.getProfile().getMessages().getChildren().size() + " msg name=" + sm.getName() + " children=" + sm.getChildren().size());
 			for(SegmentRefOrGroup sog :sm.getChildren()){
 				this.updateUsageAndVisitGroupChild(sog);
 			}
@@ -252,13 +250,17 @@ public class IGDocumentConverterFromOldToNew{
 						}
 					}
 				}else {
+					String ext = seg.getLabel().replace(seg.getName() + "_", "");
+					
 					seg.setScope(Constant.SCOPE.USER);
 					seg.setStatus(STATUS.UNPUBLISHED);
 					seg.setHl7Version(app.getProfile().getMetaData().getHl7Version());
+					seg.setExt(ext);
+					
 					
 					for(Field f :seg.getFields()){
 						if(f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)){
-							f.setUsage(Usage.X); System.out.println("Find");
+							f.setUsage(Usage.X);
 						}
 						if(f.getTable() != null){
 							Table t =  appPreLib.getProfile().getTables().findOneTableById(f.getTable().getId());
@@ -296,7 +298,7 @@ public class IGDocumentConverterFromOldToNew{
 					this.updateSegmentId(oldSegmentId, newSegmentId, app.getProfile());
 					
 					seg.getLibIds().add(app.getProfile().getSegmentLibrary().getId());
-					app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), seg.getLabel().replace(seg.getName() + "_", "")));
+					app.getProfile().getSegmentLibrary().addSegment(new SegmentLink(seg.getId(), seg.getName(), ext));
 					newsegs.add(seg);
 				}
 			} else {
@@ -360,13 +362,15 @@ public class IGDocumentConverterFromOldToNew{
 					}
 					
 				}else {
+					String ext = dt.getLabel().replace(dt.getName() + "_", "");
+					dt.setExt(ext);
 					dt.setScope(Constant.SCOPE.USER);
 					dt.setStatus(Constant.STATUS.UNPUBLISHED);
 					dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
 					
 					for(Component c : dt.getComponents()){
 						if(c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)){
-							c.setUsage(Usage.X); System.out.println("Find");
+							c.setUsage(Usage.X);
 						}
 						
 						if(c.getTable() != null){
@@ -398,10 +402,9 @@ public class IGDocumentConverterFromOldToNew{
 					String oldDatatypeId = dt.getId();
 					String newDatatypeId = ObjectId.get().toString();
 					dt.setId(newDatatypeId);
-					System.out.println("USER's NEW DATATYPE: " + newDatatypeId);
 					this.updateDatatypeId(oldDatatypeId, newDatatypeId, appPreLib.getProfile());
 					dt.getLibIds().add(app.getProfile().getDatatypeLibrary().getId());
-					app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(dt.getId(), dt.getName(), dt.getLabel().replace(dt.getName() + "_", "")));
+					app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(dt.getId(), dt.getName(), ext));
 					newdts.add(dt);
 				}
 			} else {
@@ -531,9 +534,7 @@ public class IGDocumentConverterFromOldToNew{
 		app.setMetaData(metaData);
 		log.info("hl7Version=" + appPreLib.getProfile().getMetaData().getHl7Version());
 		Set<Message> msgsPreLib = appPreLib.getProfile().getMessages().getChildren();
-		System.out.println("hl7Version=" + app.getProfile().getMetaData().getHl7Version());
 		for (Message sm : msgsPreLib) {
-			System.out.println("msgs=" + app.getProfile().getMessages().getChildren().size() + " msg name=" + sm.getName() + " children=" + sm.getChildren().size());
 			for(SegmentRefOrGroup sog :sm.getChildren()){
 				this.updateUsageAndVisitGroupChild(sog);
 			}
@@ -551,10 +552,11 @@ public class IGDocumentConverterFromOldToNew{
 		app.getProfile().getSegmentLibrary().setMetaData(segMetaData);
 		mongoOps.insert(app.getProfile().getSegmentLibrary(), "segment-library");
 		for (Segment seg : segs) {
+			seg.setExt(null);
 			seg.setScope(Constant.SCOPE.HL7STANDARD);
 			for(Field f :seg.getFields()){
 				if(f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)){
-					f.setUsage(Usage.X); System.out.println("Find");
+					f.setUsage(Usage.X);
 				}
 			}
 			
@@ -582,9 +584,10 @@ public class IGDocumentConverterFromOldToNew{
 			if (dt.getId() != null) {
 				for(Component c : dt.getComponents()){
 					if(c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)){
-						c.setUsage(Usage.X); System.out.println("Find");
+						c.setUsage(Usage.X);
 					}
 				}
+				dt.setExt(null);
 				dt.setScope(Constant.SCOPE.HL7STANDARD);
 				dt.setStatus(Constant.STATUS.PUBLISHED);
 				dt.setHl7Version(app.getProfile().getMetaData().getHl7Version());
@@ -681,13 +684,6 @@ public class IGDocumentConverterFromOldToNew{
 			DBObject source = igDocumentCur.next();
 			IGDocumentReadConverter igDocumentConv = new IGDocumentReadConverter();
 			IGDocument igd = igDocumentConv.convert(source);
-			System.out.println("DEBUG-WOO");
-			System.out.println(hl7Version);
-			System.out.println(igd.getScope());
-			System.out.println(igd.getMetaData().getHl7Version());
-			System.out.println("DEBUG-END");
-			
-			
 			if(igd.getScope().equals(IGDocumentScope.HL7STANDARD) && igd.getMetaData().getHl7Version().equals(hl7Version)){
 				return igd;
 			}

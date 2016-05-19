@@ -62,7 +62,7 @@
                    name="ext" id="ext" class="form-control" ng-model="datatype.ext"
                    required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(datatype,'ext', igdocument.profile.datatypeLibrary.children)">Extension already used</span>
+                                          ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', igdocument.profile.datatypeLibrary.children)">Extension already used</span>
         </div>
     </div>
 
@@ -1696,9 +1696,9 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="row in tmpResults | orderBy:'row.ext'"
-                                        ng-class="{'selected': selection.selectedLink != null && row.id === selection.selectedLink.id}">
+                                        ng-class="{'selected': selection.selected != null && row.id === selection.selected.id}">
                                         <td st-ratio="40">{{$index + 1}}
-                                            <input type="radio" ng-model="selection.selectedLink"
+                                            <input type="radio" ng-model="$parent.selection.selected" ng-value="row.id"
                                                    ng-click="showSelectedDetails(row)"> {{getLocalDatatypeLabel(row)}}
                                         </td>
                                         <td st-ratio="20">{{row.hl7Version}}</td>

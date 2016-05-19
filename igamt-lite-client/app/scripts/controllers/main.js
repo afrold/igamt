@@ -921,7 +921,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
             } else if (angular.equals(obj.type, 'segment')) {
                     angular.forEach(obj.fields, function (field) {
-                        $rootScope.findTableRefs(table, field, path + "-" + field.postion);
+                        $rootScope.findTableRefs(table, field, path + "-" + field.position);
                     });
             } else if (angular.equals(obj.type, 'datatype')) {
                 if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
