@@ -18,7 +18,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET('api/igdocuments/{id}').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile4.json', false);
+        request.open('GET', '../../resources/igDocuments/igd-USER-2.5.1.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         return [request.status, profile, {}];
@@ -76,7 +76,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     // clone and set id to 3
     $httpBackend.whenPOST('api/igdocuments/552014603004d0a9f09caf16/clone').respond(function (method, url, d, headers) {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile4.json', false);
+        request.open('GET', '../../resources/igDocuments/igd-USER-2.5.1.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         profile.id = "552014603004d0a9f09caf11";
@@ -106,7 +106,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET('api/igdocuments/cuser').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile4.json', false);
+        request.open('GET', '../../resources/igDocuments/igd-USER-2.5.1.json', false);
         request.send(null);
         var profiles = angular.fromJson(request.response);
         return [request.status, [profiles], {}];
@@ -115,7 +115,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     $httpBackend.whenGET('api/igdocuments/2').respond(function (method, url, data, headers) {
         var profile = null;
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile4.json', false);
+        request.open('GET', '../../resources/igDocuments/igd-USER-2.5.1.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         profile.id = 2;
@@ -197,7 +197,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     		var userDocs = [];
          console.log('api/igdocuments?type=USER' + ' data=' + data);
          var request = new XMLHttpRequest();
-         request.open('GET', '../../resources/igDocuments/igdocument-2.6.1-USER-Vital Records Death Reporting.json', false);
+         request.open('GET', '../../resources/igDocuments/igd-USER-2.5.1.json', false);
         request.send(null);
         var d = angular.fromJson(request.response);
         userDocs.push(d);
