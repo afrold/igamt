@@ -1,6 +1,6 @@
 {
   "type" : "document",
-  "id" : "573db3c512081f833db807ec",
+  "id" : "573dd23bd4c6ca828c2970f6",
   "accountId" : null,
   "comment" : "",
   "usageNote" : "",
@@ -25,7 +25,7 @@
     "sectionDescription" : null,
     "sectionContents" : null,
     "scope" : "HL7STANDARD",
-    "id" : "573db3c512081f833db807cf",
+    "id" : "573dd23bd4c6ca828c2970d9",
     "metaData" : {
       "name" : null,
       "orgName" : "NIST",
@@ -47,7 +47,7 @@
       "sectionTitle" : "Segments and Field Descriptions",
       "sectionDescription" : null,
       "sectionContents" : null,
-      "id" : "573db3c512081f833db807e9",
+      "id" : "573dd23bd4c6ca828c2970f3",
       "ext" : null,
       "metaData" : {
         "name" : null,
@@ -56,7 +56,7 @@
         "hl7Version" : "2.2",
         "date" : "May 19, 2016",
         "ext" : null,
-        "segmentLibId" : "4fec5a07-1809-4c03-810c-670bc4b5884a"
+        "segmentLibId" : "225c95ae-3b15-4883-a518-3ee70184a347"
       },
       "scope" : "HL7STANDARD",
       "children" : [ ]
@@ -67,7 +67,7 @@
       "sectionTitle" : "Datatypes",
       "sectionDescription" : null,
       "sectionContents" : null,
-      "id" : "573db3c512081f833db807ea",
+      "id" : "573dd23bd4c6ca828c2970f4",
       "ext" : null,
       "metaData" : {
         "name" : "HL7 Standard 2.2",
@@ -76,7 +76,7 @@
         "hl7Version" : "2.2",
         "date" : "May 19, 2016",
         "ext" : null,
-        "datatypeLibId" : "43621f01-29e5-4ffb-a3c6-57dae9db2e8d"
+        "datatypeLibId" : "39e8b87d-d715-4575-9f94-c04940aee971"
       },
       "scope" : "HL7STANDARD",
       "children" : [ {
@@ -512,7 +512,7 @@
       "sectionTitle" : "Conformance Profiles",
       "sectionDescription" : null,
       "sectionContents" : null,
-      "id" : "573db3c512081f833db807ce",
+      "id" : "573dd23bd4c6ca828c2970d8",
       "children" : [ {
         "type" : "message",
         "hl7Version" : null,
@@ -545,7 +545,7 @@
       "sectionTitle" : "Value Sets",
       "sectionDescription" : null,
       "sectionContents" : null,
-      "id" : "573db3c512081f833db807eb",
+      "id" : "573dd23bd4c6ca828c2970f5",
       "accountId" : null,
       "ext" : null,
       "valueSetLibraryIdentifier" : null,
@@ -562,7 +562,7 @@
         "hl7Version" : "2.2",
         "date" : "May 19, 2016",
         "ext" : null,
-        "tableLibId" : "7c2ba976-0dd7-42ac-a8b8-f41f55d94bc2"
+        "tableLibId" : "3c2b66ef-ce18-44db-8477-954c8897fe46"
       },
       "scope" : "HL7STANDARD",
       "children" : [ {
@@ -2473,14 +2473,14 @@
     "sectionTitle" : "Introduction",
     "sectionDescription" : null,
     "sectionContents" : null,
-    "id" : "573db3c512081f833db807d0",
+    "id" : "573dd23bd4c6ca828c2970da",
     "childSections" : [ {
       "type" : "section",
       "sectionPosition" : 1,
       "sectionTitle" : "Purpose",
       "sectionDescription" : null,
       "sectionContents" : null,
-      "id" : "573db3c512081f833db807d1",
+      "id" : "573dd23bd4c6ca828c2970db",
       "childSections" : [ ]
     }, {
       "type" : "section",
@@ -2488,7 +2488,23 @@
       "sectionTitle" : "Key technical decisions [conventions]",
       "sectionDescription" : null,
       "sectionContents" : null,
-      "id" : "573db3c512081f833db807d8",
+      "id" : "573dd23bd4c6ca828c2970e2",
+      "childSections" : [ ]
+    }, {
+      "type" : "section",
+      "sectionPosition" : 4,
+      "sectionTitle" : "Referenced profiles - antecedents",
+      "sectionDescription" : null,
+      "sectionContents" : null,
+      "id" : "573dd23bd4c6ca828c2970de",
+      "childSections" : [ ]
+    }, {
+      "type" : "section",
+      "sectionPosition" : 3,
+      "sectionTitle" : "Organization of this guide",
+      "sectionDescription" : null,
+      "sectionContents" : null,
+      "id" : "573dd23bd4c6ca828c2970dd",
       "childSections" : [ ]
     }, {
       "type" : "section",
@@ -2496,22 +2512,22 @@
       "sectionTitle" : "Scope",
       "sectionDescription" : null,
       "sectionContents" : null,
-      "id" : "573db3c512081f833db807d5",
+      "id" : "573dd23bd4c6ca828c2970df",
       "childSections" : [ {
-        "type" : "section",
-        "sectionPosition" : 2,
-        "sectionTitle" : "Out of Scope",
-        "sectionDescription" : null,
-        "sectionContents" : null,
-        "id" : "573db3c512081f833db807d7",
-        "childSections" : [ ]
-      }, {
         "type" : "section",
         "sectionPosition" : 1,
         "sectionTitle" : "In Scope",
         "sectionDescription" : null,
         "sectionContents" : null,
-        "id" : "573db3c512081f833db807d6",
+        "id" : "573dd23bd4c6ca828c2970e0",
+        "childSections" : [ ]
+      }, {
+        "type" : "section",
+        "sectionPosition" : 2,
+        "sectionTitle" : "Out of Scope",
+        "sectionDescription" : null,
+        "sectionContents" : null,
+        "id" : "573dd23bd4c6ca828c2970e1",
         "childSections" : [ ]
       } ]
     }, {
@@ -2520,23 +2536,7 @@
       "sectionTitle" : "Audience",
       "sectionDescription" : null,
       "sectionContents" : null,
-      "id" : "573db3c512081f833db807d2",
-      "childSections" : [ ]
-    }, {
-      "type" : "section",
-      "sectionPosition" : 3,
-      "sectionTitle" : "Organization of this guide",
-      "sectionDescription" : null,
-      "sectionContents" : null,
-      "id" : "573db3c512081f833db807d3",
-      "childSections" : [ ]
-    }, {
-      "type" : "section",
-      "sectionPosition" : 4,
-      "sectionTitle" : "Referenced profiles - antecedents",
-      "sectionDescription" : null,
-      "sectionContents" : null,
-      "id" : "573db3c512081f833db807d4",
+      "id" : "573dd23bd4c6ca828c2970dc",
       "childSections" : [ ]
     } ]
   }, {
@@ -2545,21 +2545,109 @@
     "sectionTitle" : "Use Cases",
     "sectionDescription" : null,
     "sectionContents" : null,
-    "id" : "573db3c512081f833db807d9",
+    "id" : "573dd23bd4c6ca828c2970e3",
     "childSections" : [ {
+      "type" : "section",
+      "sectionPosition" : 3,
+      "sectionTitle" : "Use Case",
+      "sectionDescription" : null,
+      "sectionContents" : null,
+      "id" : "573dd23bd4c6ca828c2970e9",
+      "childSections" : [ {
+        "type" : "section",
+        "sectionPosition" : 1,
+        "sectionTitle" : "User Story",
+        "sectionDescription" : null,
+        "sectionContents" : null,
+        "id" : "573dd23bd4c6ca828c2970ea",
+        "childSections" : [ ]
+      }, {
+        "type" : "section",
+        "sectionPosition" : 5,
+        "sectionTitle" : "Interaction Model",
+        "sectionDescription" : null,
+        "sectionContents" : null,
+        "id" : "573dd23bd4c6ca828c2970f1",
+        "childSections" : [ ]
+      }, {
+        "type" : "section",
+        "sectionPosition" : 3,
+        "sectionTitle" : "Scenario",
+        "sectionDescription" : null,
+        "sectionContents" : null,
+        "id" : "573dd23bd4c6ca828c2970ef",
+        "childSections" : [ ]
+      }, {
+        "type" : "section",
+        "sectionPosition" : 2,
+        "sectionTitle" : "Specific Assumptions",
+        "sectionDescription" : null,
+        "sectionContents" : null,
+        "id" : "573dd23bd4c6ca828c2970eb",
+        "childSections" : [ {
+          "type" : "section",
+          "sectionPosition" : 2,
+          "sectionTitle" : "Pre-conditions",
+          "sectionDescription" : null,
+          "sectionContents" : null,
+          "id" : "573dd23bd4c6ca828c2970ed",
+          "childSections" : [ ]
+        }, {
+          "type" : "section",
+          "sectionPosition" : 3,
+          "sectionTitle" : "Post-conditions",
+          "sectionDescription" : null,
+          "sectionContents" : null,
+          "id" : "573dd23bd4c6ca828c2970ee",
+          "childSections" : [ ]
+        }, {
+          "type" : "section",
+          "sectionPosition" : 1,
+          "sectionTitle" : "Assumptions",
+          "sectionDescription" : null,
+          "sectionContents" : null,
+          "id" : "573dd23bd4c6ca828c2970ec",
+          "childSections" : [ ]
+        } ]
+      }, {
+        "type" : "section",
+        "sectionPosition" : 6,
+        "sectionTitle" : "Functional Requirements",
+        "sectionDescription" : null,
+        "sectionContents" : null,
+        "id" : "573dd23bd4c6ca828c2970f2",
+        "childSections" : [ ]
+      }, {
+        "type" : "section",
+        "sectionPosition" : 4,
+        "sectionTitle" : "Context",
+        "sectionDescription" : null,
+        "sectionContents" : null,
+        "id" : "573dd23bd4c6ca828c2970f0",
+        "childSections" : [ ]
+      } ]
+    }, {
       "type" : "section",
       "sectionPosition" : 2,
       "sectionTitle" : "General Assumptions",
       "sectionDescription" : null,
       "sectionContents" : null,
-      "id" : "573db3c512081f833db807db",
+      "id" : "573dd23bd4c6ca828c2970e5",
       "childSections" : [ {
+        "type" : "section",
+        "sectionPosition" : 1,
+        "sectionTitle" : "Assumptions",
+        "sectionDescription" : null,
+        "sectionContents" : null,
+        "id" : "573dd23bd4c6ca828c2970e6",
+        "childSections" : [ ]
+      }, {
         "type" : "section",
         "sectionPosition" : 2,
         "sectionTitle" : "Pre-conditions",
         "sectionDescription" : null,
         "sectionContents" : null,
-        "id" : "573db3c512081f833db807dd",
+        "id" : "573dd23bd4c6ca828c2970e7",
         "childSections" : [ ]
       }, {
         "type" : "section",
@@ -2567,15 +2655,7 @@
         "sectionTitle" : "Post-conditions",
         "sectionDescription" : null,
         "sectionContents" : null,
-        "id" : "573db3c512081f833db807de",
-        "childSections" : [ ]
-      }, {
-        "type" : "section",
-        "sectionPosition" : 1,
-        "sectionTitle" : "Assumptions",
-        "sectionDescription" : null,
-        "sectionContents" : null,
-        "id" : "573db3c512081f833db807dc",
+        "id" : "573dd23bd4c6ca828c2970e8",
         "childSections" : [ ]
       } ]
     }, {
@@ -2584,88 +2664,8 @@
       "sectionTitle" : "Actors",
       "sectionDescription" : null,
       "sectionContents" : null,
-      "id" : "573db3c512081f833db807da",
+      "id" : "573dd23bd4c6ca828c2970e4",
       "childSections" : [ ]
-    }, {
-      "type" : "section",
-      "sectionPosition" : 3,
-      "sectionTitle" : "Use Case",
-      "sectionDescription" : null,
-      "sectionContents" : null,
-      "id" : "573db3c512081f833db807df",
-      "childSections" : [ {
-        "type" : "section",
-        "sectionPosition" : 3,
-        "sectionTitle" : "Scenario",
-        "sectionDescription" : null,
-        "sectionContents" : null,
-        "id" : "573db3c512081f833db807e5",
-        "childSections" : [ ]
-      }, {
-        "type" : "section",
-        "sectionPosition" : 4,
-        "sectionTitle" : "Context",
-        "sectionDescription" : null,
-        "sectionContents" : null,
-        "id" : "573db3c512081f833db807e6",
-        "childSections" : [ ]
-      }, {
-        "type" : "section",
-        "sectionPosition" : 1,
-        "sectionTitle" : "User Story",
-        "sectionDescription" : null,
-        "sectionContents" : null,
-        "id" : "573db3c512081f833db807e0",
-        "childSections" : [ ]
-      }, {
-        "type" : "section",
-        "sectionPosition" : 5,
-        "sectionTitle" : "Interaction Model",
-        "sectionDescription" : null,
-        "sectionContents" : null,
-        "id" : "573db3c512081f833db807e7",
-        "childSections" : [ ]
-      }, {
-        "type" : "section",
-        "sectionPosition" : 6,
-        "sectionTitle" : "Functional Requirements",
-        "sectionDescription" : null,
-        "sectionContents" : null,
-        "id" : "573db3c512081f833db807e8",
-        "childSections" : [ ]
-      }, {
-        "type" : "section",
-        "sectionPosition" : 2,
-        "sectionTitle" : "Specific Assumptions",
-        "sectionDescription" : null,
-        "sectionContents" : null,
-        "id" : "573db3c512081f833db807e1",
-        "childSections" : [ {
-          "type" : "section",
-          "sectionPosition" : 1,
-          "sectionTitle" : "Assumptions",
-          "sectionDescription" : null,
-          "sectionContents" : null,
-          "id" : "573db3c512081f833db807e2",
-          "childSections" : [ ]
-        }, {
-          "type" : "section",
-          "sectionPosition" : 3,
-          "sectionTitle" : "Post-conditions",
-          "sectionDescription" : null,
-          "sectionContents" : null,
-          "id" : "573db3c512081f833db807e4",
-          "childSections" : [ ]
-        }, {
-          "type" : "section",
-          "sectionPosition" : 2,
-          "sectionTitle" : "Pre-conditions",
-          "sectionDescription" : null,
-          "sectionContents" : null,
-          "id" : "573db3c512081f833db807e3",
-          "childSections" : [ ]
-        } ]
-      } ]
     } ]
   } ]
 }

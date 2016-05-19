@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e431",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0511",
+  "name" : "0511",
+  "description" : "BP Observation Status Codes Interpretation",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.511",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e432",
+    "value" : "C",
+    "label" : "Record coming over is a correction and thus replaces a final status",
+    "codeSystem" : "HL70511",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e433",
+    "value" : "D",
+    "label" : "Deletes the BPX record",
+    "codeSystem" : "HL70511",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e434",
+    "value" : "F",
+    "label" : "Final status; Can only be changed with a corrected status",
+    "codeSystem" : "HL70511",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e435",
+    "value" : "O",
+    "label" : "Order detail description only (no status)",
+    "codeSystem" : "HL70511",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e436",
+    "value" : "P",
+    "label" : "Preliminary status",
+    "codeSystem" : "HL70511",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e437",
+    "value" : "W",
+    "label" : "Post original as wrong, e.g., transmitted for wrong patient",
+    "codeSystem" : "HL70511",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

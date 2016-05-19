@@ -1,0 +1,111 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550af67",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0177",
+  "name" : "0177",
+  "description" : "Confidentiality code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.177",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af68",
+    "value" : "AID",
+    "label" : "AIDS patient",
+    "codeSystem" : "HL70177",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af69",
+    "value" : "EMP",
+    "label" : "Employee",
+    "codeSystem" : "HL70177",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af6a",
+    "value" : "ETH",
+    "label" : "Alcohol/drug treatment patient",
+    "codeSystem" : "HL70177",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af6b",
+    "value" : "HIV",
+    "label" : "HIV(+) patient",
+    "codeSystem" : "HL70177",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af6c",
+    "value" : "PSY",
+    "label" : "Psychiatric patient",
+    "codeSystem" : "HL70177",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af6d",
+    "value" : "R",
+    "label" : "Restricted",
+    "codeSystem" : "HL70177",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af6e",
+    "value" : "U",
+    "label" : "Usual control",
+    "codeSystem" : "HL70177",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af6f",
+    "value" : "UWM",
+    "label" : "Unwed mother",
+    "codeSystem" : "HL70177",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af70",
+    "value" : "V",
+    "label" : "Very restricted",
+    "codeSystem" : "HL70177",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af71",
+    "value" : "VIP",
+    "label" : "Very important person or celebrity",
+    "codeSystem" : "HL70177",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

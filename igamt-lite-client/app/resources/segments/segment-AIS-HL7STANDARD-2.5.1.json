@@ -7,7 +7,7 @@
   "version" : null,
   "status" : null,
   "participants" : [ ],
-  "libIds" : [ "573db3b612081f833db730df" ],
+  "libIds" : [ "573dd22cd4c6ca828c2899e9" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0fd4c623dc6550f015",
@@ -303,7 +303,7 @@
     "max" : "*"
   } ],
   "dynamicMapping" : {
-    "id" : "573db3b612081f833db71e99",
+    "id" : "573dd22cd4c6ca828c2887a3",
     "mappings" : [ ]
   },
   "name" : "AIS",

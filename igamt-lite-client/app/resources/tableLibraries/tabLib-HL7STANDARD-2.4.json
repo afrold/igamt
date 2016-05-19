@@ -4,7 +4,7 @@
   "sectionTitle" : "Value Sets",
   "sectionDescription" : null,
   "sectionContents" : null,
-  "id" : "573db3c112081f833db7e233",
+  "id" : "573dd237d4c6ca828c294b3d",
   "accountId" : null,
   "ext" : null,
   "valueSetLibraryIdentifier" : null,
@@ -21,7 +21,7 @@
     "hl7Version" : "2.4",
     "date" : "May 19, 2016",
     "ext" : null,
-    "tableLibId" : "25b2ddae-497a-4b4e-8d36-6c3f2cc26cf3"
+    "tableLibId" : "2c500f73-bb59-4ee1-9b3a-d1833e97dfce"
   },
   "scope" : "HL7STANDARD",
   "children" : [ {

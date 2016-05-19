@@ -1,0 +1,111 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc6550845d",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0483",
+  "name" : "0483",
+  "description" : "Authorization Mode",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550845e",
+    "value" : "EL",
+    "label" : "Electronic",
+    "codeSystem" : "HL70483",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550845f",
+    "value" : "EM",
+    "label" : "E-mail",
+    "codeSystem" : "HL70483",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508460",
+    "value" : "FX",
+    "label" : "Fax",
+    "codeSystem" : "HL70483",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508461",
+    "value" : "IP",
+    "label" : "In Person",
+    "codeSystem" : "HL70483",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508462",
+    "value" : "MA",
+    "label" : "Mail",
+    "codeSystem" : "HL70483",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508463",
+    "value" : "PA",
+    "label" : "Paper",
+    "codeSystem" : "HL70483",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508464",
+    "value" : "PH",
+    "label" : "Phone",
+    "codeSystem" : "HL70483",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508465",
+    "value" : "RE",
+    "label" : "Reflexive (Automated system)",
+    "codeSystem" : "HL70483",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508466",
+    "value" : "VC",
+    "label" : "Video-conference",
+    "codeSystem" : "HL70483",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508467",
+    "value" : "VO",
+    "label" : "Voice",
+    "codeSystem" : "HL70483",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd4409ab",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0281",
+  "name" : "0281",
+  "description" : "Referral type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.281",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409ac",
+    "value" : "Hom",
+    "label" : "Home Care",
+    "codeSystem" : "HL70281",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409ad",
+    "value" : "Lab",
+    "label" : "Laboratory",
+    "codeSystem" : "HL70281",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409ae",
+    "value" : "Med",
+    "label" : "Medical",
+    "codeSystem" : "HL70281",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409af",
+    "value" : "Psy",
+    "label" : "Psychiatric",
+    "codeSystem" : "HL70281",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409b0",
+    "value" : "Rad",
+    "label" : "Radiology",
+    "codeSystem" : "HL70281",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409b1",
+    "value" : "Skn",
+    "label" : "Skilled Nursing",
+    "codeSystem" : "HL70281",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

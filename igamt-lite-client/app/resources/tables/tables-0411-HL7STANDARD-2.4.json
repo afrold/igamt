@@ -1,0 +1,291 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443a2c",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0411",
+  "name" : "0411",
+  "description" : "Supplemental service information values",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a2d",
+    "value" : "1ST",
+    "label" : "First",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a2e",
+    "value" : "2ND",
+    "label" : "Second",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a2f",
+    "value" : "3RD",
+    "label" : "Third",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a30",
+    "value" : "4TH",
+    "label" : "Fourth",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a31",
+    "value" : "5TH",
+    "label" : "Fifth",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a32",
+    "value" : "A/P",
+    "label" : "Anterior/Posterior",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a33",
+    "value" : "ANT",
+    "label" : "Anterior",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a34",
+    "value" : "BLT",
+    "label" : "Bilateral",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a35",
+    "value" : "DEC",
+    "label" : "Decubitus",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a36",
+    "value" : "DST",
+    "label" : "Distal",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a37",
+    "value" : "LAT",
+    "label" : "Lateral",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a38",
+    "value" : "LFT",
+    "label" : "Left",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a39",
+    "value" : "LLQ",
+    "label" : "Left Lower Quadrant",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a3a",
+    "value" : "LOW",
+    "label" : "Lower",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a3b",
+    "value" : "LUQ",
+    "label" : "Left Upper Quadrant",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a3c",
+    "value" : "MED",
+    "label" : "Medial",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a3d",
+    "value" : "OR",
+    "label" : "Operating Room",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a3e",
+    "value" : "PED",
+    "label" : "Pediatric",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a3f",
+    "value" : "POS",
+    "label" : "Posterior",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a40",
+    "value" : "PRT",
+    "label" : "Portable",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a41",
+    "value" : "PRX",
+    "label" : "Proximal",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a42",
+    "value" : "REC",
+    "label" : "Recumbent",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a43",
+    "value" : "RGH",
+    "label" : "Right",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a44",
+    "value" : "RLQ",
+    "label" : "Right Lower Quadrant",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a45",
+    "value" : "RUQ",
+    "label" : "Right Upper Quadrant",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a46",
+    "value" : "UPP",
+    "label" : "Upper",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a47",
+    "value" : "UPR",
+    "label" : "Upright",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a48",
+    "value" : "WCT",
+    "label" : "With Contrast",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a49",
+    "value" : "WOC",
+    "label" : "Without Contrast",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a4a",
+    "value" : "WSD",
+    "label" : "With Sedation",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

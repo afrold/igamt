@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440b67",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0286",
+  "name" : "0286",
+  "description" : "Provider role",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.286",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b68",
+    "value" : "CP",
+    "label" : "Consulting Provider",
+    "codeSystem" : "HL70286",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b69",
+    "value" : "PP",
+    "label" : "Primary Care Provider",
+    "codeSystem" : "HL70286",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b6a",
+    "value" : "RP",
+    "label" : "Referring Provider",
+    "codeSystem" : "HL70286",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b6b",
+    "value" : "RT",
+    "label" : "Referred to Provider",
+    "codeSystem" : "HL70286",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

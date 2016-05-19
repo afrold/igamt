@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc6550751c",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0498",
+  "name" : "0498",
+  "description" : "Consent Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550751d",
+    "value" : "A",
+    "label" : "Active - Consent has been granted",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550751e",
+    "value" : "B",
+    "label" : "Bypassed (Consent not sought)",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550751f",
+    "value" : "L",
+    "label" : "Limited - Consent has been granted with limitations",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507520",
+    "value" : "P",
+    "label" : "Pending - Consent has not yet been sought",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507521",
+    "value" : "R",
+    "label" : "Refused - Consent has been refused",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507522",
+    "value" : "X",
+    "label" : "Rescinded - Consent was initially granted, but was subsequently revoked or ended.",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

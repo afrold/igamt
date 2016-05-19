@@ -4,7 +4,7 @@
   "sectionTitle" : "Segments and Field Descriptions",
   "sectionDescription" : null,
   "sectionContents" : null,
-  "id" : "573db3bd12081f833db79392",
+  "id" : "573dd232d4c6ca828c28fc9c",
   "accountId" : null,
   "ext" : null,
   "metaData" : {
@@ -14,7 +14,7 @@
     "hl7Version" : "2.7",
     "date" : "May 19, 2016",
     "ext" : null,
-    "segmentLibId" : "0dbf29c1-db0d-4ab8-899b-cb12567e75d4"
+    "segmentLibId" : "dd1bc7df-702b-4217-8512-73e7ff5d4ca3"
   },
   "scope" : "HL7STANDARD",
   "children" : [ {

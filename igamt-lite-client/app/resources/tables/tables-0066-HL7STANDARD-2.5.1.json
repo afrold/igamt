@@ -1,0 +1,120 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e397",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0066",
+  "name" : "0066",
+  "description" : "Employment Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.66",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e398",
+    "value" : "1",
+    "label" : "Full time employed",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e399",
+    "value" : "2",
+    "label" : "Part time employed",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e39a",
+    "value" : "3",
+    "label" : "Unemployed",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e39b",
+    "value" : "4",
+    "label" : "Self-employed,",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e39c",
+    "value" : "5",
+    "label" : "Retired",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e39d",
+    "value" : "6",
+    "label" : "On active military duty",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e39e",
+    "value" : "9",
+    "label" : "Unknown",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e39f",
+    "value" : "C",
+    "label" : "Contract, per diem",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e3a0",
+    "value" : "L",
+    "label" : "Leave of absence (e.g. Family leave, sabbatical, etc.)",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e3a1",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e3a2",
+    "value" : "T",
+    "label" : "Temporarily unemployed",
+    "codeSystem" : "HL70066",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

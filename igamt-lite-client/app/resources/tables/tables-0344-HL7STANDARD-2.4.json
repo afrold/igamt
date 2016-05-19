@@ -1,0 +1,192 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443da0",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0344",
+  "name" : "0344",
+  "description" : "Patient's relationship to insured",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443da1",
+    "value" : "01",
+    "label" : "Patient is insured",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443da2",
+    "value" : "02",
+    "label" : "Spouse",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443da3",
+    "value" : "03",
+    "label" : "Natural child/insured financial responsibility",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443da4",
+    "value" : "04",
+    "label" : "Natural child/Insured does not have financial responsibility",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443da5",
+    "value" : "05",
+    "label" : "Step child",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443da6",
+    "value" : "06",
+    "label" : "Foster child",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443da7",
+    "value" : "07",
+    "label" : "Ward of the court",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443da8",
+    "value" : "08",
+    "label" : "Employee",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443da9",
+    "value" : "09",
+    "label" : "Unknown",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443daa",
+    "value" : "10",
+    "label" : "Handicapped dependent",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dab",
+    "value" : "11",
+    "label" : "Organ donor",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dac",
+    "value" : "12",
+    "label" : "Cadaver donor",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dad",
+    "value" : "13",
+    "label" : "Grandchild",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dae",
+    "value" : "14",
+    "label" : "Niece/nephew",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443daf",
+    "value" : "15",
+    "label" : "Injured plaintiff",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443db0",
+    "value" : "16",
+    "label" : "Sponsored dependent",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443db1",
+    "value" : "17",
+    "label" : "Minor dependent of a minor dependent",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443db2",
+    "value" : "18",
+    "label" : "Parent",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443db3",
+    "value" : "19",
+    "label" : "Grandparent",
+    "codeSystem" : "HL70344",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

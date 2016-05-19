@@ -358,7 +358,7 @@ angular
 
                                            ['create a copy',
                                                function ($itemScope) {
-                                         	 	console.log("************");	
+                                         	 	console.log("create a copy");	
                                            	console.log($itemScope.data);
                                            	$scope.copyDatatype($itemScope.data); 
 
@@ -367,6 +367,8 @@ angular
                                            null,
                                            ['delete',
                                                function ($itemScope) {
+                                        	 	console.log("delete");	
+                                               	console.log($itemScope.data);
                                         	   $scope.deleteDatatype($itemScope.data);
                                                } ]
                                        ];

@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507e8d",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0548",
+  "name" : "0548",
+  "description" : "Signatory's Relationship to Subject",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e8e",
+    "value" : "1",
+    "label" : "Self",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e8f",
+    "value" : "2",
+    "label" : "Parent",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e90",
+    "value" : "3",
+    "label" : "Next of Kin",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e91",
+    "value" : "4",
+    "label" : "Durable Power of Attorney in Healthcare Affairs",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e92",
+    "value" : "5",
+    "label" : "Conservator",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e93",
+    "value" : "6",
+    "label" : "Emergent Practitioner (practitioner judging case as emergency requiring care without a consent)",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e94",
+    "value" : "7",
+    "label" : "Non-Emergent Practitioner (i.e. medical ethics committee)",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

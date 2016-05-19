@@ -231,6 +231,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
           	  $scope.datatypeLibrariesConfig.selectedType = 'USER';
             }        
         });
+        $scope.loadingSelection = false;
     };
     
     $scope.getNodes = function (parent, root) {
@@ -265,23 +266,22 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     		}
     }
 
-  $scope.copyDatatype = function(datatype) {
-		console.log("copy datatype=" + JSON.stringify(datatype.label));
-		var newDatatype = angular.copy(datatype);
-		newDatatype.oldId = newDatatype.id;
-		newDatatype.id = new ObjectId().toString();
-		newDatatype.label = newDatatype.label + "-" + (Math.floor(Math.random() * 10000000) + 1);
-		$scope.datatypesJoinStruct.push(newDatatype);
+  $scope.copyDatatype = function(datatypeLink) {
+		console.log("copy datatype=" + JSON.stringify(datatypeLink));
+		var newDatatypeLink = angular.copy(datatypeLink);
+		newDatatypeLink.id = new ObjectId().toString();
+		newDatatype.ext = newDatatype.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
+		$scope.datatypeLibStruct.children.push(newDatatype);
   	}
 
     $scope.deleteDatatype = function(datatype) {
 		console.log("delete datatype=" + JSON.stringify(datatype.label));
- 				var idx = _.findIndex($scope.datatypesJoinStruct, function (child) {
+ 				var idx = _.findIndex($scope.datatypeLibStruct.children, function (child) {
 					return datatype.id === child.id;
 				});
-
-				$scope.datatypesJoinStruct.splice(idx, 1);
-				DatatypeService.delete(datatype);
+ 				$scope.datatypeCopy = null;
+				$scope.datatypeLibStruct.children.splice(idx, 1);
+				DatatypeService.delete(datatype.id);
       };
 
         $scope.getTableWidth = function () {

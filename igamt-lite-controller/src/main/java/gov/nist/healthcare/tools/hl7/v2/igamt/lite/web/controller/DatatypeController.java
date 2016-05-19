@@ -10,15 +10,6 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeDeleteException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,6 +22,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeDeleteException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -66,8 +67,7 @@ public class DatatypeController extends CommonController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public Datatype save(@RequestBody Datatype datatype)
-			throws DatatypeSaveException {
+	public Datatype save(@RequestBody Datatype datatype) throws DatatypeSaveException {
 		log.debug("datatypeLibrary=" + datatype);
 		log.debug("datatypeLibrary.getId()=" + datatype.getId());
 		log.info("Saving the " + datatype.getScope() + " datatype library.");
@@ -83,11 +83,10 @@ public class DatatypeController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
-	public boolean delete(@PathVariable("id") String id)
-			throws DatatypeDeleteException {
+	public ResponseMessage delete(@PathVariable("id") String id) throws DatatypeDeleteException {
 		log.info("Deleting " + id);
 		datatypeService.delete(id);
-		return true;
+		return new ResponseMessage(ResponseMessage.Type.success, "datatypeDeletedSuccess", null);
 	}
 
 	@RequestMapping(value = "/{id}/datatypes", method = RequestMethod.GET, produces = "application/json")
