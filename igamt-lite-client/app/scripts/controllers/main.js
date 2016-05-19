@@ -909,24 +909,24 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         	}
         };
 
-        $rootScope.findTableRefs = function (table, obj) {
+        $rootScope.findTableRefs = function (table, obj, path) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
                 if (obj.table != undefined) {
-                    if (obj.table.id === table.id && $rootScope.references.indexOf(obj) === -1) {
-                        $rootScope.references.push(obj);
+                    if (obj.table.id === table.id) {
+                    	var found = angular.copy(obj);
+            			found.path = path;
+            			$rootScope.references.push(found);
                     }
                 }
-                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id]);
+                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
             } else if (angular.equals(obj.type, 'segment')) {
-                angular.forEach($rootScope.segments, function (segment) {
-                    angular.forEach(segment.fields, function (field) {
-                        $rootScope.findTableRefs(table, field);
+                    angular.forEach(obj.fields, function (field) {
+                        $rootScope.findTableRefs(table, field, path + "-" + field.postion);
                     });
-                });
             } else if (angular.equals(obj.type, 'datatype')) {
                 if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                     angular.forEach(obj.components, function (component) {
-                        $rootScope.findTableRefs(table, component);
+                        $rootScope.findTableRefs(table, component, path + "." + component.position);
                     });
                 }
             }

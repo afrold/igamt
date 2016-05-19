@@ -212,7 +212,7 @@ angular
             }
             $scope.sectionOption = [
 
-                ['clone',
+                ['copy',
                     function ($itemScope) {
                         var cloneModel = $scope.cloneSectionTree($itemScope.$nodeScope.$modelValue);
                         cloneModel.sectionPosition = $scope.getLastPosition($itemScope.$nodeScope.$parentNodesScope.$modelValue);
@@ -249,7 +249,7 @@ angular
 
             $scope.SegmentOptions = [
 
-                ['clone',
+                ['copy',
                     function ($itemScope) {
                         CloneDeleteSvc.copySegment($itemScope.segment);
 
@@ -267,7 +267,7 @@ angular
             
             $scope.DataTypeOptions = [
 
-                ['clone',
+                ['copy',
                     function ($itemScope) {
                 	
                 	// console.log("******"+$itemScope.$nodeScope.$modelValue.name+"******");
@@ -286,7 +286,7 @@ angular
 
             $scope.ValueSetOptions = [
 
-                ['clone',
+                ['copy',
                     function ($itemScope) {
                         CloneDeleteSvc.copyTable($itemScope.table);
 
@@ -302,7 +302,7 @@ angular
             $scope.MessagesOption = [
 
                 [
-                    'clone',
+                    'copy',
                     function ($itemScope) {
                         CloneDeleteSvc.copyMessage($itemScope.msg);
 
@@ -328,24 +328,7 @@ angular
             ];
 
 
-            $scope.ValueSetOptions = [
 
-                [
-                    'clone',
-                    function ($itemScope) {
-                        CloneDeleteSvc.copyTable($itemScope.table);
-
-
-                    } ],
-                null,
-                [
-                    'delete',
-                    function ($itemScope) {
-                        CloneDeleteSvc.deleteValueSet($itemScope.table);
-                    } ]
-
-
-            ];
 
 
             $scope.ValueSetRootOptions = [
