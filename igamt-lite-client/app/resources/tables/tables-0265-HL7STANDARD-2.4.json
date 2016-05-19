@@ -1,0 +1,255 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443434",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0265",
+  "name" : "0265",
+  "description" : "Specialty type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443435",
+    "value" : "ALC",
+    "label" : "Allergy",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443436",
+    "value" : "AMB",
+    "label" : "Ambulatory",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443437",
+    "value" : "CAN",
+    "label" : "Cancer",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443438",
+    "value" : "CAR",
+    "label" : "Coronary/cardiac care",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443439",
+    "value" : "CCR",
+    "label" : "Critical care",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44343a",
+    "value" : "CHI",
+    "label" : "Chiropractic",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44343b",
+    "value" : "EDI",
+    "label" : "Education",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44343c",
+    "value" : "EMR",
+    "label" : "Emergency",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44343d",
+    "value" : "FPC",
+    "label" : "Family planning",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44343e",
+    "value" : "INT",
+    "label" : "Intensive care",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44343f",
+    "value" : "ISO",
+    "label" : "Isolation",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443440",
+    "value" : "NAT",
+    "label" : "Naturopathic",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443441",
+    "value" : "NBI",
+    "label" : "Newborn, nursery, infants",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443442",
+    "value" : "OBG",
+    "label" : "Obstetrics, gynecology",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443443",
+    "value" : "OBS",
+    "label" : "Observation",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443444",
+    "value" : "OTH",
+    "label" : "Other specialty",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443445",
+    "value" : "PED",
+    "label" : "Pediatrics",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443446",
+    "value" : "PHY",
+    "label" : "General/family practice",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443447",
+    "value" : "PIN",
+    "label" : "Pediatric/neonatal intensive care",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443448",
+    "value" : "PPS",
+    "label" : "Pediatric psychiatric",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443449",
+    "value" : "PRE",
+    "label" : "Pediatric rehabilitation",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44344a",
+    "value" : "PSI",
+    "label" : "Psychiatric intensive care",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44344b",
+    "value" : "PSY",
+    "label" : "Psychiatric",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44344c",
+    "value" : "REH",
+    "label" : "Rehabilitation",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44344d",
+    "value" : "SUR",
+    "label" : "Surgery",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44344e",
+    "value" : "WIC",
+    "label" : "Walk-in clinic",
+    "codeSystem" : "HL70265",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

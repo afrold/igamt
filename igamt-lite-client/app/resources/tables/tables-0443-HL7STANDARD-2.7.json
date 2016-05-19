@@ -1,0 +1,228 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655081e3",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0443",
+  "name" : "0443",
+  "description" : "Provider Role",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081e4",
+    "value" : "AD",
+    "label" : "Admitting",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081e5",
+    "value" : "AI",
+    "label" : "Assistant/Alternate Interpreter",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081e6",
+    "value" : "AP",
+    "label" : "Administering Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081e7",
+    "value" : "AT",
+    "label" : "Attending",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081e8",
+    "value" : "CLP",
+    "label" : "Collecting Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081e9",
+    "value" : "CP",
+    "label" : "Consulting Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081ea",
+    "value" : "DP",
+    "label" : "Dispensing Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081eb",
+    "value" : "EP",
+    "label" : "Entering Provider (probably not the same as transcriptionist?)",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081ec",
+    "value" : "FHCP",
+    "label" : "Family Health Care Professional",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081ed",
+    "value" : "IP",
+    "label" : "Initiating Provider (as in action by)",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081ee",
+    "value" : "MDIR",
+    "label" : "Medical Director",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081ef",
+    "value" : "OP",
+    "label" : "Ordering Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081f0",
+    "value" : "PH",
+    "label" : "Pharmacist   (not sure how to dissect Pharmacist/Treatment Supplier's Verifier ID)",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081f1",
+    "value" : "PI",
+    "label" : "Primary Interpreter",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081f2",
+    "value" : "PP",
+    "label" : "Primary Care Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081f3",
+    "value" : "RO",
+    "label" : "Responsible Observer",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081f4",
+    "value" : "RP",
+    "label" : "Referring Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081f5",
+    "value" : "RT",
+    "label" : "Referred to Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081f6",
+    "value" : "TN",
+    "label" : "Technician",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081f7",
+    "value" : "TR",
+    "label" : "Transcriptionist",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081f8",
+    "value" : "VP",
+    "label" : "Verifying Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081f9",
+    "value" : "VPS",
+    "label" : "Verifying Pharmaceutical Supplier   (not sure how to dissect Pharmacist/Treatment Supplier's Verifier ID)",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081fa",
+    "value" : "VTS",
+    "label" : "Verifying Treatment Supplier   (not sure how to dissect Pharmacist/Treatment Supplier's Verifier ID)",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

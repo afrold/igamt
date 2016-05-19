@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e21f",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0180",
+  "name" : "0180",
+  "description" : "Record-level event code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.180",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e220",
+    "value" : "MAC",
+    "label" : "Reactivate deactivated record",
+    "codeSystem" : "HL70180",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e221",
+    "value" : "MAD",
+    "label" : "Add record to master file",
+    "codeSystem" : "HL70180",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e222",
+    "value" : "MDC",
+    "label" : "Deactivate: discontinue using record in master file, but do not delete from database",
+    "codeSystem" : "HL70180",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e223",
+    "value" : "MDL",
+    "label" : "Delete record from master file",
+    "codeSystem" : "HL70180",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e224",
+    "value" : "MUP",
+    "label" : "Update record for master file",
+    "codeSystem" : "HL70180",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

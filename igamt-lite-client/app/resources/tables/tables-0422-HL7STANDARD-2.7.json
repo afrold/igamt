@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507e13",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0422",
+  "name" : "0422",
+  "description" : "Triage Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e14",
+    "value" : "1",
+    "label" : "Non-acute",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e15",
+    "value" : "2",
+    "label" : "Acute",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e16",
+    "value" : "3",
+    "label" : "Urgent",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e17",
+    "value" : "4",
+    "label" : "Severe",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e18",
+    "value" : "5",
+    "label" : "Dead on Arrival (DOA)",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e19",
+    "value" : "99",
+    "label" : "Other",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

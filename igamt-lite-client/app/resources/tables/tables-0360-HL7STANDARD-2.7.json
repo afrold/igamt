@@ -1,0 +1,561 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc6550846c",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0360",
+  "name" : "0360",
+  "description" : "Degree/License/Certificate",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550846d",
+    "value" : "AA",
+    "label" : "Associate of Arts",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550846e",
+    "value" : "AAS",
+    "label" : "Associate of Applied Science",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550846f",
+    "value" : "ABA",
+    "label" : "Associate of Business Administration",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508470",
+    "value" : "AE",
+    "label" : "Associate of Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508471",
+    "value" : "AS",
+    "label" : "Associate of Science",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508472",
+    "value" : "BA",
+    "label" : "Bachelor of Arts",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508473",
+    "value" : "BBA",
+    "label" : "Bachelor of Business Administration",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508474",
+    "value" : "BE",
+    "label" : "Bachelor or Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508475",
+    "value" : "BFA",
+    "label" : "Bachelor of Fine Arts",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508476",
+    "value" : "BN",
+    "label" : "Bachelor of Nursing",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508477",
+    "value" : "BS",
+    "label" : "Bachelor of Science",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508478",
+    "value" : "BSL",
+    "label" : "Bachelor of Science - Law",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508479",
+    "value" : "BSN",
+    "label" : "Bachelor on Science - Nursing",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550847a",
+    "value" : "BT",
+    "label" : "Bachelor of Theology",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550847b",
+    "value" : "CANP",
+    "label" : "Certified Adult Nurse Practitioner",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550847c",
+    "value" : "CER",
+    "label" : "Certificate",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550847d",
+    "value" : "CMA",
+    "label" : "Certified Medical Assistant",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550847e",
+    "value" : "CNM",
+    "label" : "Certified Nurse Midwife",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550847f",
+    "value" : "CNP",
+    "label" : "Certified Nurse Practitioner",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508480",
+    "value" : "CNS",
+    "label" : "Certified Nurse Specialist",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508481",
+    "value" : "CPNP",
+    "label" : "Certified Pediatric Nurse Practitioner",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508482",
+    "value" : "CRN",
+    "label" : "Certified Registered Nurse",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508483",
+    "value" : "DBA",
+    "label" : "Doctor of Business Administration",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508484",
+    "value" : "DED",
+    "label" : "Doctor of Education",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508485",
+    "value" : "DIP",
+    "label" : "Diploma",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508486",
+    "value" : "DO",
+    "label" : "Doctor of Osteopathy",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508487",
+    "value" : "EMT",
+    "label" : "Emergency Medical Technician",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508488",
+    "value" : "EMTP",
+    "label" : "Emergency Medical Technician - Paramedic",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508489",
+    "value" : "FPNP",
+    "label" : "Family Practice Nurse Practitioner",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550848a",
+    "value" : "HS",
+    "label" : "High School Graduate",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550848b",
+    "value" : "JD",
+    "label" : "Juris Doctor",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550848c",
+    "value" : "MA",
+    "label" : "Master of Arts",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550848d",
+    "value" : "MBA",
+    "label" : "Master of Business Administration",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550848e",
+    "value" : "MCE",
+    "label" : "Master of Civil Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550848f",
+    "value" : "MD",
+    "label" : "Doctor of Medicine",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508490",
+    "value" : "MDA",
+    "label" : "Medical Assistant",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508491",
+    "value" : "MDI",
+    "label" : "Master of Divinity",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508492",
+    "value" : "ME",
+    "label" : "Master of Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508493",
+    "value" : "MED",
+    "label" : "Master of Education",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508494",
+    "value" : "MEE",
+    "label" : "Master of Electrical Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508495",
+    "value" : "MFA",
+    "label" : "Master of Fine Arts",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508496",
+    "value" : "MME",
+    "label" : "Master of Mechanical Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508497",
+    "value" : "MS",
+    "label" : "Master of Science",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508498",
+    "value" : "MSL",
+    "label" : "Master of Science - Law",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508499",
+    "value" : "MSN",
+    "label" : "Master of Science - Nursing",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550849a",
+    "value" : "MT",
+    "label" : "Medical Technician",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550849b",
+    "value" : "MTH",
+    "label" : "Master of Theology",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550849c",
+    "value" : "NG",
+    "label" : "Non-Graduate",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550849d",
+    "value" : "NP",
+    "label" : "Nurse Practitioner",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550849e",
+    "value" : "PA",
+    "label" : "Physician Assistant",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550849f",
+    "value" : "PharmD",
+    "label" : "Doctor of Pharmacy",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084a0",
+    "value" : "PHD",
+    "label" : "Doctor of Philosophy",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084a1",
+    "value" : "PHE",
+    "label" : "Doctor of Engineering",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084a2",
+    "value" : "PHS",
+    "label" : "Doctor of Science",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084a3",
+    "value" : "PN",
+    "label" : "Advanced Practice Nurse",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084a4",
+    "value" : "RMA",
+    "label" : "Registered Medical Assistant",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084a5",
+    "value" : "RN",
+    "label" : "Registered Nurse",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084a6",
+    "value" : "RPH",
+    "label" : "Registered Pharmacist",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084a7",
+    "value" : "SEC",
+    "label" : "Secretarial Certificate",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084a8",
+    "value" : "TS",
+    "label" : "Trade School Graduate",
+    "codeSystem" : "HL70360",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

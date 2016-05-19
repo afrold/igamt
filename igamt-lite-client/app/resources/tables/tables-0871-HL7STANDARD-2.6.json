@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b215",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0871",
+  "name" : "0871",
+  "description" : "Supply Risk Codes",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.871",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b216",
+    "value" : "COR",
+    "label" : "Corrosive",
+    "codeSystem" : "HL70871",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b217",
+    "value" : "EXP",
+    "label" : "Explosive",
+    "codeSystem" : "HL70871",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b218",
+    "value" : "FLA",
+    "label" : "Flammable",
+    "codeSystem" : "HL70871",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b219",
+    "value" : "INJ",
+    "label" : "Injury Hazard",
+    "codeSystem" : "HL70871",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b21a",
+    "value" : "RAD",
+    "label" : "Radioactive",
+    "codeSystem" : "HL70871",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b21b",
+    "value" : "TOX",
+    "label" : "Toxic",
+    "codeSystem" : "HL70871",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b21c",
+    "value" : "UNK",
+    "label" : "Unknown",
+    "codeSystem" : "HL70871",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

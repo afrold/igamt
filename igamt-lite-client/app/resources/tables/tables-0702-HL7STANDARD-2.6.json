@@ -1,0 +1,309 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b132",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0702",
+  "name" : "0702",
+  "description" : "Cycle Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.702",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b133",
+    "value" : "2RS",
+    "label" : "Second Rinse",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b134",
+    "value" : "ANR",
+    "label" : "Anesthesia/Respiratory",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b135",
+    "value" : "BDP",
+    "label" : "Bedpans",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b136",
+    "value" : "BWD",
+    "label" : "Bowie-Dick Test",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b137",
+    "value" : "CMW",
+    "label" : "Chemical Wash",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b138",
+    "value" : "COD",
+    "label" : "Code",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b139",
+    "value" : "CRT",
+    "label" : "Cart Wash",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b13a",
+    "value" : "DEC",
+    "label" : "Decontamination",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b13b",
+    "value" : "DRT",
+    "label" : "Dart",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b13c",
+    "value" : "DRW",
+    "label" : "Dart Warm-up Cycle",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b13d",
+    "value" : "EOH",
+    "label" : "EO High Temperature",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b13e",
+    "value" : "EOL",
+    "label" : "EO Low Temperature",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b13f",
+    "value" : "EXP",
+    "label" : "Express",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b140",
+    "value" : "FLS",
+    "label" : "Flash",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b141",
+    "value" : "GLS",
+    "label" : "Glassware",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b142",
+    "value" : "GNP",
+    "label" : "Gen. Purpose",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b143",
+    "value" : "GRV",
+    "label" : "Gravity",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b144",
+    "value" : "GTL",
+    "label" : "Gentle",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b145",
+    "value" : "ISO",
+    "label" : "Isothermal",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b146",
+    "value" : "IST",
+    "label" : "Instrument Wash",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b147",
+    "value" : "LKT",
+    "label" : "Leak Test",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b148",
+    "value" : "LQD",
+    "label" : "Liquid",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b149",
+    "value" : "OPW",
+    "label" : "Optional Wash",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b14a",
+    "value" : "PEA",
+    "label" : "Peracetic Acid",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b14b",
+    "value" : "PLA",
+    "label" : "Plastic Goods Wash",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b14c",
+    "value" : "PRV",
+    "label" : "Prevac",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b14d",
+    "value" : "RNS",
+    "label" : "Rinse",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b14e",
+    "value" : "SFP",
+    "label" : "Steam Flush Pressure Pulse",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b14f",
+    "value" : "THR",
+    "label" : "Thermal",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b150",
+    "value" : "TRB",
+    "label" : "Tray/Basin",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b151",
+    "value" : "UTL",
+    "label" : "Utensil Wash",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b152",
+    "value" : "WFP",
+    "label" : "Wrap/Steam Flush Pressure Pulse (Wrap/SFPP)",
+    "codeSystem" : "HL70702",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

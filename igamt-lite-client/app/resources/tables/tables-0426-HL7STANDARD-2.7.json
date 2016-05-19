@@ -1,0 +1,156 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507e68",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0426",
+  "name" : "0426",
+  "description" : "Blood Product Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e69",
+    "value" : "CRYO",
+    "label" : "Cryoprecipitated AHF",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e6a",
+    "value" : "CRYOP",
+    "label" : "Pooled Cryoprecipitate",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e6b",
+    "value" : "FFP",
+    "label" : "Fresh Frozen Plasma",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e6c",
+    "value" : "FFPTH",
+    "label" : "Fresh Frozen Plasma - Thawed",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e6d",
+    "value" : "PC",
+    "label" : "Packed Cells",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e6e",
+    "value" : "PCA",
+    "label" : "Autologous Packed Cells",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e6f",
+    "value" : "PCNEO",
+    "label" : "Packed Cells - Neonatal",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e70",
+    "value" : "PCW",
+    "label" : "Washed Packed Cells",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e71",
+    "value" : "PLT",
+    "label" : "Platelet Concentrate",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e72",
+    "value" : "PLTNEO",
+    "label" : "Reduced Volume Platelets",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e73",
+    "value" : "PLTP",
+    "label" : "Pooled Platelets",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e74",
+    "value" : "PLTPH",
+    "label" : "Platelet Pheresis",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e75",
+    "value" : "PLTPHLR",
+    "label" : "Leukoreduced Platelet Pheresis",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e76",
+    "value" : "RWB",
+    "label" : "Reconstituted Whole Blood",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e77",
+    "value" : "WBA",
+    "label" : "Autologous Whole Blood",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

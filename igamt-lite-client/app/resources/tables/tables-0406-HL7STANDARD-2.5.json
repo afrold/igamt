@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440ee5",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0406",
+  "name" : "0406",
+  "description" : "Organization unit type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.406",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ee6",
+    "value" : "1",
+    "label" : "Hospital",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ee7",
+    "value" : "2",
+    "label" : "Physician Clinic",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ee8",
+    "value" : "3",
+    "label" : "Long Term Care",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ee9",
+    "value" : "4",
+    "label" : "Acute Care",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440eea",
+    "value" : "5",
+    "label" : "Other",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440eeb",
+    "value" : "H",
+    "label" : "Home",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440eec",
+    "value" : "O",
+    "label" : "Office",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

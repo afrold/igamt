@@ -4,33 +4,43 @@
   "sectionTitle" : "Default title",
   "sectionDescription" : "Default description",
   "sectionContents" : "Default contents",
-  "id" : "573b220dda08e75fd562922c",
+  "id" : "573dd865da08cdb6febaf372",
   "accountId" : 45,
-  "date" : "May 17, 2016",
-  "ext" : null,
+  "ext" : "Tex-18-75",
   "metaData" : {
     "name" : "First User",
     "orgName" : "NIST",
     "version" : null,
     "hl7Version" : "2.7",
-    "date" : "May 17, 2016",
-    "ext" : "Tex",
-    "datatypLibId" : ""
+    "date" : "May 19, 2016",
+    "ext" : "Tex-18-75",
+    "datatypeLibId" : "bdd24c78-d14e-4fa2-986b-48b890038df8"
   },
   "scope" : "USER",
-  "children" : [{
-    "id" : "569eac0dd4c623dc65508666",
+  "children" : [ {
+    "id" : "573ddc70da08cdb6febaf381",
     "name" : "AD",
-    "ext" : "",
-    "label" : "AD_"
+    "ext" : "Tex-18-12",
+    "label" : "AD_Tex-18-12"
   }, {
-    "id" : "569eac0dd4c623dc65508661",
+    "id" : "573ddc70da08cdb6febaf382",
+    "name" : "CCD",
+    "ext" : "Tex-18-96",
+    "label" : "CCD_Tex-18-96"
+  }, {
+    "id" : "573ddc70da08cdb6febaf380",
     "name" : "AUI",
-    "ext" : "",
-    "label" : "AUI_"
+    "ext" : "Tex-18-36",
+    "label" : "AUI_Tex-18-36"
   }, {
-    "id" : "569eac0dd4c623dc655086a6",
-    "name" : "CCP",
-    "ext" : "",
-    "label" : "CCP_"}]
+    "id" : "573de333da08cdb6febaf39d",
+    "name" : "DDI",
+    "ext" : "Tex-18-75-15",
+    "label" : "DDI_Tex-18-75-15"
+  }, {
+    "id" : "573de333da08cdb6febaf39e",
+    "name" : "DIN",
+    "ext" : "Tex-18-75-15",
+    "label" : "DIN_Tex-18-75-15"
+  } ]
 }

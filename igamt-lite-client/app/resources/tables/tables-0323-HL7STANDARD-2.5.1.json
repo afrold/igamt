@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e7c4",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0323",
+  "name" : "0323",
+  "description" : "Action Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.323",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7c5",
+    "value" : "A",
+    "label" : "Add/Insert",
+    "codeSystem" : "HL70323",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7c6",
+    "value" : "D",
+    "label" : "Delete",
+    "codeSystem" : "HL70323",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7c7",
+    "value" : "U",
+    "label" : "Update",
+    "codeSystem" : "HL70323",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7c8",
+    "value" : "X",
+    "label" : "No change",
+    "codeSystem" : "HL70323",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

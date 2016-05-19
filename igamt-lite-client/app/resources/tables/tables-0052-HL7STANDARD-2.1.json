@@ -1,0 +1,129 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd448323",
+  "hl7Version" : "2.1",
+  "libIds" : [ "573dd23bd4c6ca828c297296" ],
+  "bindingIdentifier" : "0052",
+  "name" : "0052",
+  "description" : "DIAGNOSIS TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448324",
+    "value" : "H1",
+    "label" : "Einweisungsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448325",
+    "value" : "H2",
+    "label" : "Aufnahmediagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448326",
+    "value" : "H3",
+    "label" : "Verlegungsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448327",
+    "value" : "H4",
+    "label" : "Entlassungsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448328",
+    "value" : "H5",
+    "label" : "Arbeitsunfähigkeitsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448329",
+    "value" : "H6",
+    "label" : "Leiden",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44832a",
+    "value" : "N1",
+    "label" : "Nebeneinweisungsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44832b",
+    "value" : "N2",
+    "label" : "Nebenaufnahmediagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44832c",
+    "value" : "N3",
+    "label" : "Nebenverlegungsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44832d",
+    "value" : "N4",
+    "label" : "Nebenentlassungsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44832e",
+    "value" : "N5",
+    "label" : "Nebenarbeitsunfähigkeitsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44832f",
+    "value" : "N6",
+    "label" : "Nebenleiden",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,120 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445fd2",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0351",
+  "name" : "0351",
+  "description" : "Occurrence span",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fd3",
+    "value" : "70",
+    "label" : "Qualifying stay dates for SNF",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fd4",
+    "value" : "71",
+    "label" : "Prior stay dates",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fd5",
+    "value" : "72",
+    "label" : "First/last visit",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fd6",
+    "value" : "73",
+    "label" : "Benefit eligibility period",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fd7",
+    "value" : "74",
+    "label" : "Non-covered level of care",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fd8",
+    "value" : "75",
+    "label" : "SNF level of care",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fd9",
+    "value" : "76",
+    "label" : "Patient liability",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fda",
+    "value" : "77",
+    "label" : "Provider liability period",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fdb",
+    "value" : "78",
+    "label" : "SNF prior stay dates",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fdc",
+    "value" : "79",
+    "label" : "Payer code",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445fdd",
+    "value" : "M0",
+    "label" : "PRO/UR approved stay dates",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}
