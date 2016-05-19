@@ -20,13 +20,13 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $scope.accordi = {metaData: false, definition: true, dtList: true, dtDetails: false};
 
       $scope.tableWidth = null;
-  //    $scope.datatypeLibrary = "";
+  // $scope.datatypeLibrary = "";
       $scope.hl7Version = null;
       $scope.metaDataView= null;
       $scope.scopes = [];
       $scope.datatypeLibrariesConfig = {};
       $scope.datatypeLibrariesConfig.selectedType
-	  $scope.admin = true; //userInfoService.isAdmin();
+	  $scope.admin = true; // userInfoService.isAdmin();
       $scope.toggle = function(param){
     	  $scope.toShow = param;
     	
@@ -163,7 +163,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 		  $scope.datatypesJoinStruct.push(datatypeJoinStruct);
                 		  $rootScope.DataTypeTree=[];
                 		  $rootScope.DataTypeTree=$scope.datatypesJoinStruct;
-                          //$rootScope.DataTypeTree.push($scope.datatypeLibStruct);
+                          // $rootScope.DataTypeTree.push($scope.datatypeLibStruct);
                 	  }
                   });
                
