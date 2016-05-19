@@ -5,11 +5,11 @@
 angular.module('igl').factory('DatatypeService',
     ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', 'userInfoService', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService) {
         var DatatypeService = {
-            getNodes: function (parent, root) {
+            getNodes: function (parent, root, datatypesMap) {
                 var children = [];
                 if (parent && parent != null) {
                     if (parent.datatype) {
-                        var dt = $rootScope.datatypesMap[parent.datatype.id];
+                        var dt = datatypesMap[parent.datatype.id];
                         children = dt.components;
                     } else {
                         children = parent.components;

@@ -185,4 +185,10 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	private String genRand() {
 		return Integer.toString( new Random().nextInt(100));
 	}
+	
+
+	public void addSegments(Set<SegmentLink> segs) {
+		children.addAll(segs);
+	}
 }
+

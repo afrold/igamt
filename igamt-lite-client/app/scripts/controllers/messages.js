@@ -197,20 +197,15 @@ angular.module('igl')
 
 angular.module('igl')
     .controller('SelectSegmentFlavorCtrl', function ($scope, $filter, $modalInstance, $rootScope, $http, currentNode, segmentLibrary, SegmentService, $rootScope, hl7Version, ngTreetableParams, ViewSettings, SegmentLibrarySvc) {
+        $scope.segmentLibrary = segmentLibrary;
         $scope.resultsError = null;
         $scope.viewSettings = ViewSettings;
-        $scope.segmentLibrary = segmentLibrary;
         $scope.resultsLoading = null;
         $scope.results = [];
-        $scope.bindingError = null;
         $scope.tmpResults = [].concat($scope.results);
-        $scope.librariesLoading = false;
-        $scope.librariesError = null;
-        $scope.libraries = [];
-        $scope.tmpLibraries = [].concat($scope.libraries);
         $scope.currentNode = currentNode;
-        $scope.currentSegment = $rootScope.segmentsMap[currentNode.ref];
-        $scope.selection = {libary: null, scope: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.scope : null, hl7Version: hl7Version, segment: null, name: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.name : null};
+        $scope.currentSegment = angular.copy($rootScope.segmentsMap[currentNode.ref.id]);
+        $scope.selection = {library: null, scope: null, hl7Version: hl7Version, segment: null, name: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.name : null, selected:null};
 
 
         $scope.segmentFlavorParams = new ngTreetableParams({
@@ -222,100 +217,135 @@ angular.module('igl')
             }
         });
 
-//        $scope.loadFlavors = function () {
-//            if ($scope.selection.library != null) {
-//                $scope.libariesError = null;
-//                $scope.librariesLoading = true;
-//                $scope.results = [];
-//                $scope.tmpResults = [];
-//                var lib = $scope.selection.library;
-//                for (var i = 0; i < $scope.selection.library.length; i++) {
-//                    var link = $scope.selection.library.children[i];
-//                    if (link.name === $scope.selection.name) {
-//                        $scope.results.push(link);
-//                    }
-//                }
-//                $scope.tmpResults = [].concat($scope.results);
-//            }
-//        };
-
         $scope.loadLibrariesByFlavorName = function (scope) {
+            var delay = $q.defer();
             $scope.selection.scope = scope;
+            $scope.selection.datatype = null;
+            $scope.selection.selected = null;
             $scope.resetMap();
-            $scope.librariesError = null;
-            $scope.librariesLoading = true;
-            $scope.libraries = [];
-            $scope.tmpLibraries = [].concat($scope.libraries);
+            $scope.ext = null;
             $scope.results = [];
             $scope.tmpResults = [];
-            $scope.added = [];
-            SegmentLibrarySvc.findLibrariesByFlavorName($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (libraries) {
-                if(libraries != null) {
-                    $scope.libraries = libraries;
-                    $scope.tmpLibraries = [].concat($scope.libraries);
-                }
-                $scope.librariesLoading = false;
-            }, function (error) {
-                $scope.librariesError = null;
-                $scope.librariesLoading = false;
-            });
-        };
+            if ($scope.selection.scope !== 'USER') {
+                SegmentLibrarySvc.findLibrariesByFlavorName($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (libraries) {
+                    if (libraries != null) {
+                        $scope.results = [];
+                        _.each(libraries, function (library) {
+                            $scope.results = $scope.results.concat(filterFlavors(library, $scope.selection.name));
+                        });
+                        $scope.tmpResults = [].concat($scope.results);
 
-
-        $scope.loadFlavors = function (library) {
-            if (library != null) {
-                $scope.resetMap();
-                $scope.selection.library = library;
-                $scope.resultsError = null;
-                $scope.resultsLoading = true;
-                $scope.results = [];
-                $scope.tmpResults = [];
-                var ids = [];
-                _.each(library.children, function (link) {
-                    ids.push(link.id);
-                });
-                SegmentService.findByIds(ids).then(function (segments) {
-                    $scope.resultsLoading = false;
-                    $scope.results = segments;
-                    $scope.tmpResults = [].concat($scope.results);
+                    }
+                    delay.resolve(true);
                 }, function (error) {
-                    $scope.resultsLoading = false;
-                    $scope.resultsError = error;
+                    $rootScope.msg().text = "Sorry could not load the data types";
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                    delay.reject(error);
                 });
+            } else {
+                $scope.results = $scope.results.concat(filterFlavors(segmentLibrary, $scope.selection.name));
+                delay.resolve(true);
             }
+            return delay.promise;
         };
 
-        $scope.showSegment = function (segment) {
+        var filterFlavors = function (library, name) {
+            var results = [];
+            _.each(library.children, function (link) {
+                if (link.name === name) {
+                    link.libraryName = library.metaData.name;
+                    link.hl7Version = library.metaData.hl7Version;
+                    results.push(link);
+                }
+            });
+            return results;
+        };
+
+
+        $scope.showSelectedDetails = function (segment) {
             if (segment && segment != null) {
                 $scope.loadingSelection = true;
+                $scope.selection.segment = null;
                 $scope.resetMap();
                 $scope.bindingError = null;
                 $scope.added = [];
-                SegmentService.collectDatatypes(segment.id).then(function (datatypes) {
-                    $scope.segmentError = null;
-                    $scope.selection.segment = segment;
-                    angular.forEach(datatypes, function (child) {
-                        if( $rootScope.datatypesMap[child.id] === null ||  $rootScope.datatypesMap[child.id] === undefined) {
-                            $rootScope.datatypesMap[child.id] = child;
-                            $scope.added.push(child.id);
-                        }
+                $scope.ext = null;
+                SegmentService.getOne(segment.id).then(function (full) {
+                    SegmentService.collectDatatypes(full.id).then(function (datatypes) {
+                        angular.forEach(datatypes, function (child) {
+                            if ($rootScope.datatypesMap[child.id] === null || $rootScope.datatypesMap[child.id] === undefined) {
+                                $rootScope.datatypesMap[child.id] = child;
+                                $scope.added.push(child.id);
+                            }
+                        });
+                        $scope.ext = segment.ext;
+                        $scope.selection.segment = full;
+                        $scope.selection.segment["type"] = "segment";
+                        $rootScope.tableWidth = null;
+                        $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                        $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                        $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                        $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                        $scope.loadingSelection = false;
+                        if ($scope.segmentFlavorParams)
+                            $scope.segmentFlavorParams.refresh();
+                    }, function (error) {
+                        $scope.loadingSelection = false;
+                        $rootScope.msg().text = "Sorry could not load the data type";
+                        $rootScope.msg().type = "danger";
+                        $rootScope.msg().show = true;
+                        $scope.selection.segment = null;
                     });
-                    $scope.selection.segment["type"] = "segment";
-                    $rootScope.tableWidth = null;
-                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 890);
-                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 890);
-                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 890);
-                    $scope.loadingSelection = false;
-                    if ($scope.segmentFlavorParams)
-                        $scope.segmentFlavorParams.refresh();
                 }, function (error) {
-                    $scope.loadingSelection = false;
-                    $scope.bindingError = error;
+                    $scope.resultsLoading = false;
+                    $rootScope.msg().text = "Sorry could not load the data type";
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                    $scope.selection.segment = null;
                 });
-
             }
         };
+
+        var indexIn = function (id, collection) {
+            for (var i = 0; i < collection.length; i++) {
+                if (collection[i].id === id) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+
+        $scope.submit = function () {
+            var library = segmentLibrary;
+            var index = indexIn($scope.selection.segment.id, segmentLibrary.children);
+            if (index < 0) {
+                var link = SegmentLibrarySvc.createEmptyLink();
+                link.id = $scope.selection.segment.id;
+                link.name = $scope.selection.segment.name;
+                link.ext = $scope.ext;
+                SegmentLibrarySvc.addChild(library.id, link).then(function () {
+                    library.children.push(link);
+                    $rootScope.segmentsMap[link.id] = $scope.selection.segment;
+                    if (indexIn($scope.selection.segment.id, $rootScope.segments) < 0) {
+                        $rootScope.segments.push($scope.selection.segment);
+                    }
+                    $modalInstance.close($scope.selection.segment);
+                }, function (error) {
+                    $rootScope.msg().text = "Sorry an error occured. Please try again";
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                });
+            } else {
+                $modalInstance.close($scope.selection.segment);
+            }
+        };
+        $scope.cancel = function () {
+            $scope.resetMap();
+            $modalInstance.dismiss('cancel');
+        };
+
+
 
         $scope.validateLabel = function (label, name) {
             if (label && !label.startsWith(name)) {
@@ -337,7 +367,7 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function (node) {
-            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype.id) && $rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0));
+            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.segment && $rootScope.getDatatype(node.datatype.id) && $rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0));
         };
 
         $scope.isRelevant = function (node) {
@@ -385,25 +415,6 @@ angular.module('igl')
             }
         };
 
-
-        $scope.submit = function () {
-            if (!containsId($scope.selection.segment.id, segmentLibrary)) {
-                SegmentLibrarySvc.addSegment($scope.selection.segment.id, segmentLibrary).then(function (segmentLink) {
-                    segmentLibrary.children.push(segmentLink);
-                }, function (error) {
-                    $scope.bindingError = error.text;
-                });
-            } else {
-                $modalInstance.close($scope.selection.segment);
-            }
-        };
-
-
-        $scope.cancel = function () {
-            $scope.resetMap();
-            $modalInstance.dismiss('cancel');
-        };
-
         $scope.resetMap = function () {
             if( $scope.added = null) {
                 angular.forEach( $scope.added, function (child) {
@@ -412,15 +423,13 @@ angular.module('igl')
             }
          };
 
-
-        $scope.getLocalDatatypeLabel = function (datatype) {
-            return $scope.selection.library != null ? $rootScope.getExtensionInLibrary(datatype.id, $scope.selection.library, "ext") : datatype.name;
+        $scope.getLocalDatatypeLabel = function (link) {
+            return link != null ? $rootScope.getLabel(link.name, link.ext) : null;
         };
 
-        $scope.getLocalSegmentLabel = function (segment) {
-            return $scope.selection.library != null ? $rootScope.getExtensionInLibrary(segment.id, $scope.selection.library, "ext") : segment.name;
-        }
-
+        $scope.getLocalSegmentLabel = function (link) {
+            return link != null ? $rootScope.getLabel(link.name, link.ext) : null;
+        };
 
     });
 

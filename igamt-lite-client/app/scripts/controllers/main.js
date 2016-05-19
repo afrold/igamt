@@ -1858,8 +1858,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getSegmentLabel = function (seg) {
-            var ext = $rootScope.getSegmentExtension(seg);
-            return $rootScope.getLabel(seg.name,ext);
+//            var ext = $rootScope.getSegmentExtension(seg);
+            return $rootScope.getLabel(seg.name,seg.ext);
         };
 
         $rootScope.getSegmentExtension = function (seg) {
@@ -1878,8 +1878,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.getDatatypeLabel = function (datatype) {
             if(datatype && datatype != null) {
-                var ext = $rootScope.getDatatypeExtension(datatype);
-                return $rootScope.getLabel(datatype.name, ext);
+//                var ext = $rootScope.getDatatypeExtension(datatype);
+                return $rootScope.getLabel(datatype.name, datatype.ext);
             }
             return "";
         };

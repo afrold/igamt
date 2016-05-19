@@ -358,6 +358,9 @@ angular.module('igl')
                     },
                     hl7Version: function () {
                         return $rootScope.igdocument.metaData.hl7Version;
+                    },
+                    datatypeLibrary:function(){
+                        return $rootScope.igdocument.profile.datatypeLibrary;
                     }
                 }
             });

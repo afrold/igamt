@@ -75,6 +75,10 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		children.add(dtl);
 	}
 
+	public void addDatatypes(Set<DatatypeLink> dtls) {
+		children.addAll(dtls);
+	}
+	
 	public DatatypeLink save(DatatypeLink dtl) {
 		children.add(dtl);
 		return dtl;

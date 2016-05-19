@@ -155,6 +155,16 @@ angular.module('igl').factory('SegmentLibrarySvc', function($http, userInfoServi
         return delay.promise;
     };
 
+    svc.addChildren = function (libId, segmentLinks) {
+        var delay = $q.defer();
+        $http.post('api/segment-library/'+ libId+ '/addChildren', segmentLinks).then(function (response) {
+            var res = angular.fromJson(response.data);
+            delay.resolve(res);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
 
 
     return svc;

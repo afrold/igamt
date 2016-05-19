@@ -1633,9 +1633,6 @@
 </div>
 <div class="modal-body">
 <div class="row">
-<!--<div class="col-md-12">-->
-    <!--<h4>Current Datatype: </h4>-->
-<!--</div>-->
     <div class="col-md-12">
         <span class="btn-group btn-group-sm pull-left" data-toggle="buttons">
                     <label class="btn  btn-primary btn-xs"
@@ -1735,7 +1732,7 @@
     <div class="panel panel-primary" ng-show="selection.datatype != null">
         <div class="panel-heading">
                             <span>
-                               Datatype Definition <span>: {{getLabel(selection.datatype.name, ext)}}</span>
+                               Datatype Definition <span>: {{getLabel(selection.datatype.name, selection.datatype.ext)}}</span>
                             </span>
 
         </div>
