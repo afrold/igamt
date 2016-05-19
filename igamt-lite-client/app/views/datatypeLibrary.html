@@ -238,36 +238,25 @@
 </div>
 </div>
 </script>
-<!--   <ol ui-tree-nodes="" ng-model="datatypesJoinStruct"> -->
-<!--     <li ng-repeat="dataLibrary in datatypesJoinStruct" ui-tree-node> -->
-
-<!--       <div ui-tree-handle data-nodrag ng-click="showMetadata()" > -->
-<!-- 	<i data-nodrag ng-click="toggle(this)" -->
-<!-- 							class="fa fa-caret-down" -->
-<!-- 							ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !collapsed}"></i> -->
-<!--      {{datatypeLibStruct.metaData.name}} -->
-<!--       </div> -->
 <script type="text/ng-template" id="DatatypeList.html">
-
-
 <div ui-tree data-nodrag ng-controller="TreeCtrl" style = "margin-left:15px;">
-<div ng-click="editMetadata()"> 
+<div ng-click="editMetadata()" context-menu="DataTypeLibraryOptions"> 
 <i  ng-click="switcherDatatypeLibrary()" class="fa fa-caret-down" 
  							ng-class="{'fa-caret-down': dataTypeLibraryCollapsed, 'fa-caret-right': !dataTypeLibraryCollapsed}"></i> 
     
 {{datatypeLibStruct.metaData.name}}
 </div>
-      <ol ui-tree-nodes="" ng-model="datatypesJoinStruct">
+      <ol ui-tree-nodes="" ng-model="datatypeLibStruct">
 
-        <li ng-repeat="data in datatypesJoinStruct" ui-tree-node ng-show="!dataTypeLibraryCollapsed" >
+        <li ng-repeat="data in datatypeLibStruct.children" ui-tree-node ng-show="!dataTypeLibraryCollapsed" >
           		
 							<div ui-tree-handle class="messageSubContent" data-nodrag style="font-weight:normal;cursor:pointer;"
 								 context-menu="DataTypeOptionsInLib">
-								<span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data.dtRef)==='HL7',
-                                'label-USE':  getScopeLabel(data.dtRef)==='USE','label-MASTER':getScopeLabel(data.dtRef)==='MAS'}" >{{getScopeLabel(data.dtRef)}}</span>
+								<span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                'label-USE':  getScopeLabel(data)==='USE','label-MASTER':getScopeLabel(data)==='MAS'}" >{{getScopeLabel(datatypeLibStruct.scope)}}</span>
 								<span data-nodrag
-									ng-class="{selected : data.dtRef.id===activeModel}"
-									ng-click= "editDatatype(data);Activate(data.dtRef.id)">{{getLabelOfData(data.dtRef.name, getExtensionInLibrary(data.dtRef.id, datatypeLibStruct,"ext"))}}</span>
+									ng-class="{selected : data.id===activeModel}"
+									ng-click= "editDatatype(data);Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}</span>
 							</div>
         </li>
       </ol>
@@ -275,8 +264,6 @@
   </ol>
 </div>
 </script>
-
-
 <script type="text/ng-template" id="DatatypeListold.html">
 <div class="pull-right" style="margin-right:20px">
   <button type="button" class="btn btn-primary btn-sm"
@@ -446,7 +433,7 @@
 <div class="row">
     <div class="col-md-12 igl-page-header">
         <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeLibStruct.ext)}}</span>
-                     <span class="pull-right"><pre>datatypeCopy.scope={{datatypeCopy.scope}}</pre>
+                     <span class="pull-right">
   		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng.model="datatypeCopy.publish" style="margin-right : 8px"/>Publish</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"

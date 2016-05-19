@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550aa27",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0498",
+  "name" : "0498",
+  "description" : "Consent Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.498",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa28",
+    "value" : "A",
+    "label" : "Active - Consent has been granted",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa29",
+    "value" : "B",
+    "label" : "Bypassed (Consent not sought)",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa2a",
+    "value" : "L",
+    "label" : "Limited - Consent has been granted with limitations",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa2b",
+    "value" : "P",
+    "label" : "Pending - Consent has not yet been sought",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa2c",
+    "value" : "R",
+    "label" : "Refused - Consent has been refused",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa2d",
+    "value" : "X",
+    "label" : "Rescinded - Consent was initially granted, but was subsequently revoked or ended.",
+    "codeSystem" : "HL70498",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

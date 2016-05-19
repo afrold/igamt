@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443534",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0156",
+  "name" : "0156",
+  "description" : "Which date/time qualifier",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443535",
+    "value" : "ANY",
+    "label" : "Any date/time within a range",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443536",
+    "value" : "COL",
+    "label" : "Collection date/time, equivalent to film or sample collection date/time",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443537",
+    "value" : "ORD",
+    "label" : "Order date/time",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443538",
+    "value" : "RCT",
+    "label" : "Specimen receipt date/time, receipt of specimen in filling ancillary (Lab)",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443539",
+    "value" : "REP",
+    "label" : "Report date/time, report date/time at filing ancillary (i.e., Lab)",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44353a",
+    "value" : "SCHED",
+    "label" : "Schedule date/time",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

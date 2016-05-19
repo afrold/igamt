@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655080e1",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0438",
+  "name" : "0438",
+  "description" : "Allergy Clinical Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080e2",
+    "value" : "C",
+    "label" : "Confirmed or verified",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080e3",
+    "value" : "D",
+    "label" : "Doubt raised",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080e4",
+    "value" : "E",
+    "label" : "Erroneous",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080e5",
+    "value" : "I",
+    "label" : "Confirmed but inactive",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080e6",
+    "value" : "P",
+    "label" : "Pending",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080e7",
+    "value" : "S",
+    "label" : "Suspect",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080e8",
+    "value" : "U",
+    "label" : "Unconfirmed",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

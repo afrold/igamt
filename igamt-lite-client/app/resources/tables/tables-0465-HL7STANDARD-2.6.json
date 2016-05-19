@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b92c",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0465",
+  "name" : "0465",
+  "description" : "Name/address representation",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.465",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b92d",
+    "value" : "A",
+    "label" : "Alphabetic (i.e., Default or some single-byte)",
+    "codeSystem" : "HL70465",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b92e",
+    "value" : "I",
+    "label" : "Ideographic (i.e., Kanji)",
+    "codeSystem" : "HL70465",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b92f",
+    "value" : "P",
+    "label" : "Phonetic (i.e., ASCII, Katakana, Hiragana, etc.)",
+    "codeSystem" : "HL70465",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

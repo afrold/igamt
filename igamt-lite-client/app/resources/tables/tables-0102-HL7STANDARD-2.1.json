@@ -1,0 +1,30 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4483b3",
+  "hl7Version" : "2.1",
+  "libIds" : [ "573dd23bd4c6ca828c297296" ],
+  "bindingIdentifier" : "0102",
+  "name" : "0102",
+  "description" : "DELAYED ACKNOWLEDGMENT TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483b4",
+    "value" : "D",
+    "label" : "Message Received, stored for later processing",
+    "codeSystem" : "HL70102",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

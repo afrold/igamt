@@ -1,0 +1,399 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4460f6",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0112",
+  "name" : "0112",
+  "description" : "Discharge disposition",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460f7",
+    "value" : "01",
+    "label" : "Discharged to home or self care (routine discharge)",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460f8",
+    "value" : "02",
+    "label" : "Discharged/transferred to another short term general hospital for inpatient care",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460f9",
+    "value" : "03",
+    "label" : "Discharged/transferred to skilled nursing facility (SNF)",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460fa",
+    "value" : "04",
+    "label" : "Discharged/transferred to an intermediate care facility (ICF)",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460fb",
+    "value" : "05",
+    "label" : "Discharged/transferred to another type of institution for inpatient care or referred for outpatient services to another institution",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460fc",
+    "value" : "06",
+    "label" : "Discharged/transferred to home under care of organized home health service organization",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460fd",
+    "value" : "07",
+    "label" : "Left against medical advice or discontinued care",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460fe",
+    "value" : "08",
+    "label" : "Discharged/transferred to home under care of Home IV provider",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460ff",
+    "value" : "09",
+    "label" : "Admitted as an inpatient to this hospital",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446100",
+    "value" : "10",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446101",
+    "value" : "11",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446102",
+    "value" : "12",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446103",
+    "value" : "13",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446104",
+    "value" : "14",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446105",
+    "value" : "15",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446106",
+    "value" : "16",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446107",
+    "value" : "17",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446108",
+    "value" : "18",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446109",
+    "value" : "19",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44610a",
+    "value" : "20",
+    "label" : "Expired",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44610b",
+    "value" : "21",
+    "label" : "Expired to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44610c",
+    "value" : "22",
+    "label" : "Expired to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44610d",
+    "value" : "23",
+    "label" : "Expired to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44610e",
+    "value" : "24",
+    "label" : "Expired to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44610f",
+    "value" : "25",
+    "label" : "Expired to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446110",
+    "value" : "26",
+    "label" : "Expired to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446111",
+    "value" : "27",
+    "label" : "Expired to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446112",
+    "value" : "28",
+    "label" : "Expired to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446113",
+    "value" : "29",
+    "label" : "Expired to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446114",
+    "value" : "30",
+    "label" : "Still patient or expected to return for outpatient services",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446115",
+    "value" : "31",
+    "label" : "Still patient to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446116",
+    "value" : "32",
+    "label" : "Still patient to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446117",
+    "value" : "33",
+    "label" : "Still patient to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446118",
+    "value" : "34",
+    "label" : "Still patient to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446119",
+    "value" : "35",
+    "label" : "Still patient to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44611a",
+    "value" : "36",
+    "label" : "Still patient to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44611b",
+    "value" : "37",
+    "label" : "Still patient to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44611c",
+    "value" : "38",
+    "label" : "Still patient to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44611d",
+    "value" : "39",
+    "label" : "Still patient to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44611e",
+    "value" : "40",
+    "label" : "Expired at home",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44611f",
+    "value" : "41",
+    "label" : "Expired in a medical facility; e.g., hospital, SNF, ICF, or free standing hospice",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446120",
+    "value" : "42",
+    "label" : "Expired - place unknown",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

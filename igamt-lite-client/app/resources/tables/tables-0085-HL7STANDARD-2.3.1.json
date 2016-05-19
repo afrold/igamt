@@ -1,0 +1,129 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445e54",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0085",
+  "name" : "0085",
+  "description" : "Observation result status codes interpretation",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e55",
+    "value" : "C",
+    "label" : "Record coming over is a correction and thus replaces a final result",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e56",
+    "value" : "D",
+    "label" : "Deletes the OBX record",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e57",
+    "value" : "F",
+    "label" : "Final results; Can only be changed with a corrected result.",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e58",
+    "value" : "I",
+    "label" : "Specimen in lab; results pending",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e59",
+    "value" : "N",
+    "label" : "Not asked; used to affirmatively document that the observation identified in the OBX was not sought when the universal service ID in OBR-4 implies that it would be sought.",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e5a",
+    "value" : "O",
+    "label" : "Order detail description only (no result)",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e5b",
+    "value" : "P",
+    "label" : "Preliminary results",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e5c",
+    "value" : "R",
+    "label" : "Results entered -- not verified",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e5d",
+    "value" : "S",
+    "label" : "Partial results",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e5e",
+    "value" : "U",
+    "label" : "Results status change to final without retransmitting results already sent as ‘preliminary.’  E.g., radiology changes status from preliminary to final",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e5f",
+    "value" : "W",
+    "label" : "Post original as wrong, e.g., transmitted for wrong patient",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e60",
+    "value" : "X",
+    "label" : "Results cannot be obtained for this observation",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

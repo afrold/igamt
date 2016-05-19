@@ -1,0 +1,273 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b805",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0335",
+  "name" : "0335",
+  "description" : "Repeat pattern",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.335",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b806",
+    "value" : "A",
+    "label" : "Ante (before)",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b807",
+    "value" : "BID",
+    "label" : "twice a day at institution-specified times",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b808",
+    "value" : "C",
+    "label" : "service is provided continuously between start time and stop time",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b809",
+    "value" : "D",
+    "label" : "Cibus Diurnus (lunch)",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b80a",
+    "value" : "I",
+    "label" : "Inter",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b80b",
+    "value" : "M",
+    "label" : "Cibus Matutinus (breakfast)",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b80c",
+    "value" : "Meal Related Timings",
+    "label" : "<timing>C (\"cum\")<meal>",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b80d",
+    "value" : "Once",
+    "label" : "one time only.",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b80e",
+    "value" : "P",
+    "label" : "Post (after)",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b80f",
+    "value" : "PRN",
+    "label" : "given as needed",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b810",
+    "value" : "PRNxxx",
+    "label" : "where xxx is some frequency code",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b811",
+    "value" : "Q<integer>D",
+    "label" : "every <integer> days",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b812",
+    "value" : "Q<integer>H",
+    "label" : "every <integer> hours",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b813",
+    "value" : "Q<integer>J<day#>",
+    "label" : "repeats on a particular day of the week,",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b814",
+    "value" : "Q<integer>L",
+    "label" : "every <integer> months (Lunar cycle)",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b815",
+    "value" : "Q<integer>M",
+    "label" : "every <integer> minutes",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b816",
+    "value" : "Q<integer>S",
+    "label" : "every <integer> seconds",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b817",
+    "value" : "Q<integer>W",
+    "label" : "every <integer> weeks",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b818",
+    "value" : "QAM",
+    "label" : "in the morning at institution-specified time",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b819",
+    "value" : "QHS",
+    "label" : "every day before the hour of sleep",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b81a",
+    "value" : "QID",
+    "label" : "four times a day at institution-specified times",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b81b",
+    "value" : "QOD",
+    "label" : "every other day",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b81c",
+    "value" : "QPM",
+    "label" : "in the evening at institution-specified time",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b81d",
+    "value" : "QSHIFT",
+    "label" : "during each of three eight-hour shifts at institution-specified times",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b81e",
+    "value" : "TID",
+    "label" : "three times a day at institution-specified times",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b81f",
+    "value" : "U <spec>",
+    "label" : "for future use, where <spec> is an interval specification as defined by the UNIX cron specification.",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b820",
+    "value" : "V",
+    "label" : "Cibus Vespertinus (dinner)",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b821",
+    "value" : "xID",
+    "label" : "\"X\" times per day at institution-specified times, where X is a numeral 5 or greater.",
+    "codeSystem" : "HL70335",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

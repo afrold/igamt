@@ -1,0 +1,111 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550bb02",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0234",
+  "name" : "0234",
+  "description" : "Report timing",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.234",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb03",
+    "value" : "10D",
+    "label" : "10 day report",
+    "codeSystem" : "HL70234",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb04",
+    "value" : "15D",
+    "label" : "15 day report",
+    "codeSystem" : "HL70234",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb05",
+    "value" : "30D",
+    "label" : "30 day report",
+    "codeSystem" : "HL70234",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb06",
+    "value" : "3D",
+    "label" : "3 day report",
+    "codeSystem" : "HL70234",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb07",
+    "value" : "7D",
+    "label" : "7 day report",
+    "codeSystem" : "HL70234",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb08",
+    "value" : "AD",
+    "label" : "Additional information",
+    "codeSystem" : "HL70234",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb09",
+    "value" : "CO",
+    "label" : "Correction",
+    "codeSystem" : "HL70234",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb0a",
+    "value" : "DE",
+    "label" : "Device evaluation",
+    "codeSystem" : "HL70234",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb0b",
+    "value" : "PD",
+    "label" : "Periodic",
+    "codeSystem" : "HL70234",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb0c",
+    "value" : "RQ",
+    "label" : "Requested information",
+    "codeSystem" : "HL70234",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}
