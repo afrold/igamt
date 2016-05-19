@@ -1696,9 +1696,9 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="row in tmpResults | orderBy:'row.ext'"
-                                        ng-class="{'selected': selection.selectedLink != null && row.id === selection.selectedLink.id}">
+                                        ng-class="{'selected': selection.selected != null && row.id === selection.selected.id}">
                                         <td st-ratio="40">{{$index + 1}}
-                                            <input type="radio" ng-model="selection.selectedLink"
+                                            <input type="radio" ng-model="$parent.selection.selected" ng-value="row.id"
                                                    ng-click="showSelectedDetails(row)"> {{getLocalDatatypeLabel(row)}}
                                         </td>
                                         <td st-ratio="20">{{row.hl7Version}}</td>
