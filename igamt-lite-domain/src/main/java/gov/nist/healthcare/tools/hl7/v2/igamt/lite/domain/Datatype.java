@@ -212,6 +212,6 @@ Cloneable, Comparable<Datatype> {
     }
     
     public String getLabel() {
-		return name + (ext != null ? "_" + ext : "");
+		return label;
 	}
 }

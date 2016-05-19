@@ -226,6 +226,6 @@ Cloneable, Comparable<Segment> {
 	}
 
 	public String getLabel() {
-		return name + (ext != null ? "_" + ext : "");
+		return label;
 	}
 }
