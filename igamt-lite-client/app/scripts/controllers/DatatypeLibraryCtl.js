@@ -269,9 +269,17 @@ angular.module('igl').controller('DatatypeLibraryCtl',
   $scope.copyDatatype = function(datatypeLink) {
 		console.log("copy datatype=" + JSON.stringify(datatypeLink));
 		var newDatatypeLink = angular.copy(datatypeLink);
-		newDatatypeLink.id = new ObjectId().toString();
-		newDatatype.ext = newDatatype.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
-		$scope.datatypeLibStruct.children.push(newDatatype);
+		newDatatypeLink.ext = newDatatypeLink.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
+       DatatypeService.getOne(datatypeLink.id).then(function(datatype) {
+        	$scope.datatypeStruct = datatype;
+        	$scope.datatypeStruct.id = null;
+           	DatatypeService.save($scope.datatypeStruct).then(function(savedDatatype){
+            	$scope.datatypeStruct = savedDatatype;
+            	newDatatypeLink.id = savedDatatype.id;
+          	});
+        });
+		console.log("copy datatype=" + JSON.stringify(newDatatypeLink));
+		$scope.datatypeLibStruct.children.push(newDatatypeLink);
   	}
 
     $scope.deleteDatatype = function(datatype) {

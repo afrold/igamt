@@ -549,16 +549,13 @@ angular
             
 
             $rootScope.getLabelOfData = function (name, ext) {
-            	// console.log("*********"+name+ext);
-            	var label="";
+             	var label="";
                 if (ext && ext !== null && ext !== "") {
-                	console.log("*********"+name + "_" + ext);
                 	label= name + "_" + ext;
                
                 } else {
                     label =name;
                 }
-                console.log(label);
                 return label; 
             };
             
