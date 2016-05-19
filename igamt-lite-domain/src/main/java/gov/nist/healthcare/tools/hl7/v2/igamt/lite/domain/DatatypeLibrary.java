@@ -71,10 +71,17 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.ext = ext;
 	}
 
-	public void addDatatype(DatatypeLink dtl) {
+	public DatatypeLink addDatatype(DatatypeLink dtl) {
 		children.add(dtl);
+		return dtl;
 	}
 
+	public DatatypeLink addDatatype(Datatype dt) {
+		DatatypeLink dtl = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());
+		children.add(dtl);
+		return dtl;
+	}
+	
 	public DatatypeLink save(DatatypeLink dtl) {
 		children.add(dtl);
 		return dtl;
@@ -84,10 +91,6 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.children.remove(dtl);
 	}
 
-	public boolean addDatatype(Datatype dt) {
-		return children.add(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
-	}
-	
 	public DatatypeLink findOne(String dtId) {
 		if (this.children != null) {
 			for (DatatypeLink dtl : this.children) {

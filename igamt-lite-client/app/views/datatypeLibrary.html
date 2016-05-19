@@ -238,6 +238,15 @@
 </div>
 </div>
 </script>
+<!--   <ol ui-tree-nodes="" ng-model="datatypesJoinStruct"> -->
+<!--     <li ng-repeat="dataLibrary in datatypesJoinStruct" ui-tree-node> -->
+
+<!--       <div ui-tree-handle data-nodrag ng-click="showMetadata()" > -->
+<!-- 	<i data-nodrag ng-click="toggle(this)" -->
+<!-- 							class="fa fa-caret-down" -->
+<!-- 							ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !collapsed}"></i> -->
+<!--      {{datatypeLibStruct.metaData.name}} -->
+<!--       </div> -->
 <script type="text/ng-template" id="DatatypeList.html">
 <div ui-tree data-nodrag ng-controller="TreeCtrl" style = "margin-left:15px;">
 <div ng-click="editMetadata()" context-menu="DataTypeLibraryOptions"> 
@@ -263,60 +272,6 @@
     </li>
   </ol>
 </div>
-</script>
-<script type="text/ng-template" id="DatatypeListold.html">
-<div class="pull-right" style="margin-right:20px">
-  <button type="button" class="btn btn-primary btn-sm"
-          ng-click="openDataypeList(hl7Version)"><i class="fa fa-plus"></i>
-    Add data types.
-  </button>
-</div>
-<table st-table="datatypeDisplay" st-safe-src="datatypesJoinStruct" st-sticky-header class="table table-bordered">
-<thead>
-  <tr class="row tbl-header">
-    <th st-ratio="10" st-sort="sort.label" st-sort-default="true">Label</th>
-    <th st-ratio="30">Description</th>
-    <th st-ratio="58">Actions</th>
-    <th st-ratio="2">Publish</th>
-  </tr>
-  <tr>
-    <th colspan="3"><input st-search="label" class="form-control" placeholder="Search Label..." type="search"/></th>
-  </tr>
-</thead>
-<tbody>
-	<tr class="row" ng-repeat="dt in datatypeDisplay">
-    <td st-ratio="10">{{dt.label}}</td>
-    <td st-ratio="30" ng-bind="dt.description"></td>
-    <td st-ratio="58">
-     <button
-              title="Edit"
-              type="button" class="btn btn-xs btn-primary"
-              ng-click="editDatatype(dt)">
-        <span><i class="fa fa-pencil fa-fw"></i> Edit</span>
-      </button>
-      <button
-              title="Create Copy" type="button" class="btn btn-xs btn-info"
-              ng-click="copyDatatype(dt)">
-        <span><i class="fa fa-plus fa-fw"></i> Copy</span>
-      </button>
-      <button title="Delete" type="button" class="btn btn-xs btn-danger"
-              ng-click="deleteDatatype(dt)">
-        <span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
-      </button>
-    </td>
-    <td st-ratio="2" style="text-align : center; vertical-align : bottom;"><label for="publish + $index"><input name="publish + $index" ng-model="dt.publish" type="checkbox" ng-hide="!dt.publish"/><i ng-class="{'fa fa-check fa-2x' : !dt.publish}" style="color : #88A888"></i></label></td>
-  </tr>
-</tbody>
-
-<tfoot ng-show="datatypeLibCopy.children.length >= 10">
-<tr style="margin-right: {{scrollbarWidth}}px;">
-<td colspan="7" class="text-center">
-<span st-pagination="" st-items-by-page="10" st-displayed-pages="7"></span>
-</td>
-</tr>
-</tfoot>
-
-</table>
 </script>
 <script type="text/ng-template" id="standardDatatypeDlg.html">
 <div id="standard-datatypelibrary-dialog">
@@ -694,10 +649,10 @@
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
-                <div ng-show="node.datatype != null && datatypesJoinStruct != null && datatypesJoinStruct != undefined">
+                <div ng-show="node.datatype != null && datatypesMap != null && datatypesMap != undefined">
                     <a ng-click="showSelectDatatypeFlavorDlg(node)">
-                        {{getLabel(datatypeCopy.name, datatypeLibStruct.metaData.ext)}}
-                    </a>
+                        {{getLabel(node.datatype.name, node.datatype.ext)}}
+                   </a>
                 </div>
 
             </ng-form>

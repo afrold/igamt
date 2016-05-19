@@ -39,7 +39,7 @@ public interface DatatypeLibraryService {
 
 	List<String> findHl7Versions();
 
-	List<Datatype> bindDatatypes(Set<String> datatypeIds, String datatyeLibraryId, String datatypeLibraryExt,
+	List<DatatypeLink> bindDatatypes(Set<String> datatypeIds, String datatyeLibraryId, String datatypeLibraryExt,
 			Long accountId);
 
 	void delete(String id);
