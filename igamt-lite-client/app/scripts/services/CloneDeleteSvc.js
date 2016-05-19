@@ -459,7 +459,8 @@ angular.module('igl').factory(
         }
 
         svc.deleteSegment = function (segment) {
-        	angular.forEach($rootScope.messages, function (message) {
+        	$rootScope.references = [];
+        	angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
         		$rootScope.findSegmentRefs(segment, message, message.name);
         	});
             
