@@ -247,4 +247,16 @@ public class DatatypeLibraryController extends CommonController {
 		}
 		return libraries;
 	}
+
+	@RequestMapping(value = "/{libId}/addChildren", method = RequestMethod.POST)
+	public boolean addChild(@PathVariable String libId,
+			@RequestBody Set<DatatypeLink> datatypeLinks)
+			throws DatatypeSaveException {
+		log.debug("Adding a link to the library");
+		DatatypeLibrary lib = datatypeLibraryService.findById(libId);
+		lib.addDatatypes(datatypeLinks);
+		datatypeLibraryService.save(lib);
+		return true;
+	}
+
 }

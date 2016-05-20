@@ -719,7 +719,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         	}else {
         		return "";
         	}
-        }
+        };
         $rootScope.processElement = function (element, parent) {
             try {
                 if(element != undefined && element != null) {
@@ -1767,14 +1767,14 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getLabel = function (name, ext) {
-        	var label="";
+        	//console.log("*********"+name+ext);
+        	var label=name;
             if (ext && ext !== null && ext !== "") {
-             	label= name + "_" + ext;
-           
-            } else {
-                label =name;
+            	console.log("*********"+name + "_" + ext);
+            	label= label + "_" + ext;
             }
-            return label; 
+            console.log(label);
+            return label;
         };
 
         $rootScope.getDynamicWidth = function (a, b, otherColumsWidth) {
@@ -1855,8 +1855,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getSegmentLabel = function (seg) {
-            var ext = $rootScope.getSegmentExtension(seg);
-            return $rootScope.getLabel(seg.name,ext);
+//            var ext = $rootScope.getSegmentExtension(seg);
+            return $rootScope.getLabel(seg.name,seg.ext);
         };
 
         $rootScope.getSegmentExtension = function (seg) {
@@ -1875,8 +1875,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.getDatatypeLabel = function (datatype) {
             if(datatype && datatype != null) {
-                var ext = $rootScope.getDatatypeExtension(datatype);
-                return $rootScope.getLabel(datatype.name, ext);
+//                var ext = $rootScope.getDatatypeExtension(datatype);
+                return $rootScope.getLabel(datatype.name, datatype.ext);
             }
             return "";
         };

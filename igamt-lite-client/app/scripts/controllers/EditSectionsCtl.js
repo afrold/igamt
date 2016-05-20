@@ -20,7 +20,7 @@ angular.module('igl')
         
         $scope.delete = function(section) {
     		var tocSection = ToCSvc.findEntryFromRefId(section.id, $rootScope.tocData);
-            SectionSvc.delete($rootScope.igDocument.id,tocSection.id).then(function (result) {
+            SectionSvc.delete($rootScope.igdocument.id,tocSection.id).then(function (result) {
                 $scope.saving = false;
                 $scope.saved = true;
                 CloneDeleteSvc.deleteSection(tocSection);
@@ -39,10 +39,8 @@ angular.module('igl')
         };
 
         $scope.save = function () {
-            $scope.saving = true;
-            $scope.saved = false;
-            if($rootScope.igDocument != null && $rootScope.section != null) {
-                SectionSvc.save($rootScope.igDocument.id, $rootScope.section).then(function (result) {
+            if($rootScope.igdocument != null && $rootScope.section != null) {
+                SectionSvc.save($rootScope.igdocument.id, $rootScope.section).then(function (result) {
                     $scope.saving = false;
                     $scope.saved = true;
                     $rootScope.entry.reference = angular.copy($rootScope.section);

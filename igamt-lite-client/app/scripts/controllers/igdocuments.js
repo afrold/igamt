@@ -1021,8 +1021,8 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
     $scope.save = function () {
         $scope.saving = true;
          $scope.saved = false;
-        if($rootScope.igDocument != null && $rootScope.metaData != null) {
-            IgDocumentService.saveMetadata($rootScope.igDocument.id, $rootScope.metaData).then(function (result) {
+        if($rootScope.igdocument != null && $rootScope.metaData != null) {
+            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
                 $scope.saving = false;
                 $scope.saved = true;
                  $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
@@ -1047,8 +1047,8 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
     $scope.save = function () {
          $scope.saving = true;
         $scope.saved = false;
-        if($rootScope.igDocument != null && $rootScope.metaData != null) {
-            ProfileSvc.save($rootScope.igDocument.id, $rootScope.metaData).then(function (result) {
+        if($rootScope.igdocument != null && $rootScope.metaData != null) {
+            ProfileSvc.save($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
                 $scope.saving = false;
                 $scope.saved = true;
                  $rootScope.igdocument.profile.metaData = angular.copy($rootScope.metaData);

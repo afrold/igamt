@@ -3,9 +3,9 @@
  */
 'use strict';
 angular.module('igl').factory('SegmentService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http', 'FilteringSvc','userInfoService', function ($rootScope, ViewSettings,ElementUtils,$q,$http, FilteringSvc,userInfoService) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$q', '$http', 'FilteringSvc', 'userInfoService', function ($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, userInfoService) {
         var SegmentService = {
-            getNodes: function (parent,root) {
+            getNodes: function (parent, root) {
                 var children = parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components : parent.children : root != null ? root.fields : [];
                 return children;
             },
@@ -13,15 +13,26 @@ angular.module('igl').factory('SegmentService',
                 var parent = $rootScope.parentsMap && $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
                 return parent;
             },
-            getTemplate: function (node,root) {
+            getTemplate: function (node, root) {
                 var template = null;
                 if (ViewSettings.tableReadonly || (root != null && root.scope === 'HL7STANDARD') || root.scope === null) {
-                    template = node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
+                    return SegmentService.getReadTemplate(node, root);
                 } else {
-                    template = node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
+                    return SegmentService.getEditTemplate(node, root);
                 }
                 return template;
             },
+
+            getReadTemplate: function (node, root) {
+                var template = node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
+                return template;
+            },
+
+            getEditTemplate: function (node, root) {
+                var template = node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
+                return template;
+            },
+
             getSegmentLevelConfStatements: function (element) {
                 var parent = SegmentService.getParent(element.id);
                 var conformanceStatements = [];
@@ -45,7 +56,7 @@ angular.module('igl').factory('SegmentService',
                 return children != null && children.length > 0;
             },
             isVisible: function (node) {
-              return FilteringSvc.show(node);
+                return FilteringSvc.show(node);
 //                 return  node ? SegmentService.isRelevant(node) ? SegmentService.isVisible(SegmentService.getParent(node)) : false : true;
             },
             isRelevant: function (node) {
@@ -53,7 +64,7 @@ angular.module('igl').factory('SegmentService',
                     return true;
                 if (node.hide == undefined || !node.hide || node.hide === false) {
                     var predicates = SegmentService.getSegmentLevelPredicates(node);
-                    return ElementUtils.isRelevant(node,predicates);
+                    return ElementUtils.isRelevant(node, predicates);
                 } else {
                     return false;
                 }
@@ -73,14 +84,14 @@ angular.module('igl').factory('SegmentService',
             },
             get: function (id) {
                 var delay = $q.defer();
-                if($rootScope.segmentsMap[id] === undefined || $rootScope.segmentsMap[id] === undefined) {
+                if ($rootScope.segmentsMap[id] === undefined || $rootScope.segmentsMap[id] === undefined) {
                     $http.get('api/segments/' + id).then(function (response) {
                         var segment = angular.fromJson(response.data);
                         delay.resolve(segment);
                     }, function (error) {
                         delay.reject(error);
                     });
-                }else{
+                } else {
                     delay.resolve($rootScope.segmentsMap[id]);
                 }
                 return delay.promise;
@@ -96,7 +107,7 @@ angular.module('igl').factory('SegmentService',
                 to.scope = from.scope;
                 to.hl7Version = from.hl7Version;
                 to.accountId = from.accountId;
-                to.participants =  from.participants;
+                to.participants = from.participants;
                 to.libIds = from.libIds;
                 to.predicates = from.predicates;
                 to.conformanceStatements = from.conformanceStatements;
@@ -109,7 +120,7 @@ angular.module('igl').factory('SegmentService',
             },
             delete: function (segmentId) {
                 var delay = $q.defer();
-                $http.post('api/segments/'+ segmentId+ '/delete').then(function (response) {
+                $http.post('api/segments/' + segmentId + '/delete').then(function (response) {
                     var saveResponse = angular.fromJson(response.data);
                     delay.resolve(saveResponse);
                 }, function (error) {
@@ -117,8 +128,8 @@ angular.module('igl').factory('SegmentService',
                 });
                 return delay.promise;
             },
-            getSegmentLink : function(segment){
-                return {id:segment.id, ext: null, name: segment.name};
+            getSegmentLink: function (segment) {
+                return {id: segment.id, ext: null, name: segment.name};
             },
             findByIds: function (ids) {
                 var delay = $q.defer();
@@ -132,7 +143,7 @@ angular.module('igl').factory('SegmentService',
             },
             collectDatatypes: function (id) {
                 var delay = $q.defer();
-                $http.get('api/segments/'+ id+'/datatypes').then(function (response) {
+                $http.get('api/segments/' + id + '/datatypes').then(function (response) {
                     var datatypes = angular.fromJson(response.data);
                     delay.resolve(datatypes);
                 }, function (error) {
