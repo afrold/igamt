@@ -719,7 +719,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         	}else {
         		return "";
         	}
-        }
+        };
         $rootScope.processElement = function (element, parent) {
             try {
                 if(element != undefined && element != null) {
@@ -909,24 +909,24 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         	}
         };
 
-        $rootScope.findTableRefs = function (table, obj) {
+        $rootScope.findTableRefs = function (table, obj, path) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
                 if (obj.table != undefined) {
-                    if (obj.table.id === table.id && $rootScope.references.indexOf(obj) === -1) {
-                        $rootScope.references.push(obj);
+                    if (obj.table.id === table.id) {
+                    	var found = angular.copy(obj);
+            			found.path = path;
+            			$rootScope.references.push(found);
                     }
                 }
-                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id]);
+                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
             } else if (angular.equals(obj.type, 'segment')) {
-                angular.forEach($rootScope.segments, function (segment) {
-                    angular.forEach(segment.fields, function (field) {
-                        $rootScope.findTableRefs(table, field);
+                    angular.forEach(obj.fields, function (field) {
+                        $rootScope.findTableRefs(table, field, path + "-" + field.position);
                     });
-                });
             } else if (angular.equals(obj.type, 'datatype')) {
                 if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                     angular.forEach(obj.components, function (component) {
-                        $rootScope.findTableRefs(table, component);
+                        $rootScope.findTableRefs(table, component, path + "." + component.position);
                     });
                 }
             }
@@ -1768,16 +1768,13 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.getLabel = function (name, ext) {
         	//console.log("*********"+name+ext);
-        	var label="";
+        	var label=name;
             if (ext && ext !== null && ext !== "") {
             	console.log("*********"+name + "_" + ext);
-            	label= name + "_" + ext;
-           
-            } else {
-                label =name;
+            	label= label + "_" + ext;
             }
             console.log(label);
-            return label; 
+            return label;
         };
 
         $rootScope.getDynamicWidth = function (a, b, otherColumsWidth) {
@@ -1858,8 +1855,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getSegmentLabel = function (seg) {
-            var ext = $rootScope.getSegmentExtension(seg);
-            return $rootScope.getLabel(seg.name,ext);
+//            var ext = $rootScope.getSegmentExtension(seg);
+            return $rootScope.getLabel(seg.name,seg.ext);
         };
 
         $rootScope.getSegmentExtension = function (seg) {
@@ -1878,8 +1875,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.getDatatypeLabel = function (datatype) {
             if(datatype && datatype != null) {
-                var ext = $rootScope.getDatatypeExtension(datatype);
-                return $rootScope.getLabel(datatype.name, ext);
+//                var ext = $rootScope.getDatatypeExtension(datatype);
+                return $rootScope.getLabel(datatype.name, datatype.ext);
             }
             return "";
         };

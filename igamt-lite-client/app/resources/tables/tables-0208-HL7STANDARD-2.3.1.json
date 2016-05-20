@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445f33",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0208",
+  "name" : "0208",
+  "description" : "Query response status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f34",
+    "value" : "AE",
+    "label" : "Application error",
+    "codeSystem" : "HL70208",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f35",
+    "value" : "AR",
+    "label" : "Application reject",
+    "codeSystem" : "HL70208",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f36",
+    "value" : "NF",
+    "label" : "No data found, no errors",
+    "codeSystem" : "HL70208",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f37",
+    "value" : "OK",
+    "label" : "Data found, no errors (this is the default)",
+    "codeSystem" : "HL70208",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

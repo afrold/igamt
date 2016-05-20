@@ -1,0 +1,3999 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507f03",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0550",
+  "name" : "0550",
+  "description" : "Body Parts",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f04",
+    "value" : " ",
+    "label" : "External Jugular",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f05",
+    "value" : "ACET",
+    "label" : "Acetabulum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f06",
+    "value" : "ACHIL",
+    "label" : "Achilles",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f07",
+    "value" : "ADB",
+    "label" : "Abdomen",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f08",
+    "value" : "ADE",
+    "label" : "Adenoids",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f09",
+    "value" : "ADR",
+    "label" : "Adrenal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f0a",
+    "value" : "AMN",
+    "label" : "Amniotic fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f0b",
+    "value" : "AMS",
+    "label" : "Amniotic Sac",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f0c",
+    "value" : "ANAL",
+    "label" : "Anal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f0d",
+    "value" : "ANKL",
+    "label" : "Ankle",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f0e",
+    "value" : "ANTEC",
+    "label" : "Antecubital",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f0f",
+    "value" : "ANTECF",
+    "label" : "Antecubital Fossa",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f10",
+    "value" : "ANTR",
+    "label" : "Antrum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f11",
+    "value" : "ANUS",
+    "label" : "Anus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f12",
+    "value" : "AORTA",
+    "label" : "Aorta",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f13",
+    "value" : "APDX",
+    "label" : "Appendix",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f14",
+    "value" : "AR",
+    "label" : "Aortic Rim",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f15",
+    "value" : "AREO",
+    "label" : "Areola",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f16",
+    "value" : "ARM",
+    "label" : "Arm",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f17",
+    "value" : "ARTE",
+    "label" : "Artery",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f18",
+    "value" : "ASCIT",
+    "label" : "Ascites",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f19",
+    "value" : "ASCT",
+    "label" : "Ascitic Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f1a",
+    "value" : "ATR",
+    "label" : "Atrium",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f1b",
+    "value" : "AURI",
+    "label" : "Auricular",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f1c",
+    "value" : "AV",
+    "label" : "Aortic Valve",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f1d",
+    "value" : "AXI",
+    "label" : "Axilla",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f1e",
+    "value" : "BACK",
+    "label" : "Back",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f1f",
+    "value" : "BARTD",
+    "label" : "Bartholin Duct",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f20",
+    "value" : "BARTG",
+    "label" : "Bartholin Gland",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f21",
+    "value" : "BCYS",
+    "label" : "Brain Cyst Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f22",
+    "value" : "BDY",
+    "label" : "Body, Whole",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f23",
+    "value" : "BID",
+    "label" : "Bile Duct",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f24",
+    "value" : "BIFL",
+    "label" : "Bile fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f25",
+    "value" : "BLAD",
+    "label" : "Bladder",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f26",
+    "value" : "BLD",
+    "label" : "Blood, Whole",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f27",
+    "value" : "BLDA",
+    "label" : "Blood,  Arterial",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f28",
+    "value" : "BLDC",
+    "label" : "Blood,  Capillary",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f29",
+    "value" : "BLDV",
+    "label" : "Blood,  Venous",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f2a",
+    "value" : "BLOOD",
+    "label" : "Blood",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f2b",
+    "value" : "BMAR",
+    "label" : "Bone marrow",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f2c",
+    "value" : "BON",
+    "label" : "Bone",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f2d",
+    "value" : "BOWEL",
+    "label" : "Bowel",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f2e",
+    "value" : "BOWLA",
+    "label" : "Bowel, Large",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f2f",
+    "value" : "BOWSM",
+    "label" : "Bowel, Small",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f30",
+    "value" : "BPH",
+    "label" : "Basophils",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f31",
+    "value" : "BRA",
+    "label" : "Brachial",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f32",
+    "value" : "BRAIN",
+    "label" : "Brain",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f33",
+    "value" : "BRO",
+    "label" : "Bronchial",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f34",
+    "value" : "BROCH",
+    "label" : "Bronchiole/Bronchiolar",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f35",
+    "value" : "BRONC",
+    "label" : "Bronchus/Bronchial",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f36",
+    "value" : "BROW",
+    "label" : "Eyebrow",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f37",
+    "value" : "BRST",
+    "label" : "Breast",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f38",
+    "value" : "BRSTFL",
+    "label" : "Breast fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f39",
+    "value" : "BRTGF",
+    "label" : "Bartholin Gland Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f3a",
+    "value" : "BRV",
+    "label" : "Broviac",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f3b",
+    "value" : "BUCCA",
+    "label" : "Buccal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f3c",
+    "value" : "BURSA",
+    "label" : "Bursa",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f3d",
+    "value" : "BURSF",
+    "label" : "Bursa Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f3e",
+    "value" : "BUTT",
+    "label" : "Buttocks",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f3f",
+    "value" : "CALF",
+    "label" : "Calf",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f40",
+    "value" : "CANAL",
+    "label" : "Canal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f41",
+    "value" : "CANLI",
+    "label" : "Canaliculis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f42",
+    "value" : "CANTH",
+    "label" : "Canthus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f43",
+    "value" : "CARO",
+    "label" : "Carotid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f44",
+    "value" : "CARP",
+    "label" : "Carpal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f45",
+    "value" : "CAVIT",
+    "label" : "Cavity",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f46",
+    "value" : "CBLD",
+    "label" : "Blood, Cord",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f47",
+    "value" : "CDM",
+    "label" : "Cardiac Muscle",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f48",
+    "value" : "CDUCT",
+    "label" : "Common Duct",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f49",
+    "value" : "CECUM",
+    "label" : "Cecum/Cecal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f4a",
+    "value" : "CERVUT",
+    "label" : "Cervix/Uterus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f4b",
+    "value" : "CHE",
+    "label" : "Cavity, Chest",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f4c",
+    "value" : "CHEEK",
+    "label" : "Cheek",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f4d",
+    "value" : "CHES",
+    "label" : "Chest",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f4e",
+    "value" : "CHEST ",
+    "label" : "Chest Tube",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f4f",
+    "value" : "CHIN",
+    "label" : "Chin",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f50",
+    "value" : "CIRCU",
+    "label" : "Circumcision Site",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f51",
+    "value" : "CLAVI",
+    "label" : "Clavicle/Clavicular",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f52",
+    "value" : "CLIT",
+    "label" : "Clitoris",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f53",
+    "value" : "CLITO",
+    "label" : "Clitoral",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f54",
+    "value" : "CNL",
+    "label" : "Cannula",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f55",
+    "value" : "COCCG",
+    "label" : "Coccygeal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f56",
+    "value" : "COCCY",
+    "label" : "Coccyx",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f57",
+    "value" : "COLON",
+    "label" : "Colon",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f58",
+    "value" : "COLOS",
+    "label" : "Colostomy",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f59",
+    "value" : "CONJ",
+    "label" : "Conjunctiva",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f5a",
+    "value" : "COR",
+    "label" : "Cord",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f5b",
+    "value" : "CORAL",
+    "label" : "Coral",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f5c",
+    "value" : "CORD",
+    "label" : "Cord Blood",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f5d",
+    "value" : "CORN",
+    "label" : "Cornea",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f5e",
+    "value" : "COS",
+    "label" : "Colostomy Stoma",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f5f",
+    "value" : "CRANE",
+    "label" : "Cranium, ethmoid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f60",
+    "value" : "CRANF",
+    "label" : "Cranium, frontal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f61",
+    "value" : "CRANO",
+    "label" : "Cranium, occipital",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f62",
+    "value" : "CRANP",
+    "label" : "Cranium, parietal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f63",
+    "value" : "CRANS",
+    "label" : "Cranium, sphenoid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f64",
+    "value" : "CRANT",
+    "label" : "Cranium, temporal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f65",
+    "value" : "CSF",
+    "label" : "Cerebral Spinal Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f66",
+    "value" : "CUBIT",
+    "label" : "Cubitus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f67",
+    "value" : "CUFF",
+    "label" : "Cuff",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f68",
+    "value" : "CULD",
+    "label" : "Cul De Sac",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f69",
+    "value" : "CULDO",
+    "label" : "Culdocentesis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f6a",
+    "value" : "CVX",
+    "label" : "Cervix",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f6b",
+    "value" : "DELT",
+    "label" : "Deltoid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f6c",
+    "value" : "DEN",
+    "label" : "Dental Gingiva",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f6d",
+    "value" : "DENTA",
+    "label" : "Dental",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f6e",
+    "value" : "DIAF",
+    "label" : "Dialysis Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f6f",
+    "value" : "DIGIT",
+    "label" : "Digit",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f70",
+    "value" : "DISC",
+    "label" : "Disc",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f71",
+    "value" : "DORS",
+    "label" : "Dorsum/Dorsal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f72",
+    "value" : "DPH",
+    "label" : "Diaphragm",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f73",
+    "value" : "DUFL",
+    "label" : "Duodenal Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f74",
+    "value" : "DUODE",
+    "label" : "Duodenum/Duodenal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f75",
+    "value" : "DUR",
+    "label" : "Dura",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f76",
+    "value" : "EAR",
+    "label" : "Ear",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f77",
+    "value" : "EARBI",
+    "label" : "Ear bone, incus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f78",
+    "value" : "EARBM",
+    "label" : "Ear bone, malleus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f79",
+    "value" : "EARBS",
+    "label" : "Ear bone,stapes",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f7a",
+    "value" : "EARLO",
+    "label" : "Ear Lobe",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f7b",
+    "value" : "EC",
+    "label" : "Endocervical",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f7c",
+    "value" : "ELBOW",
+    "label" : "Elbow",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f7d",
+    "value" : "ELBOWJ",
+    "label" : "Elbow Joint",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f7e",
+    "value" : "ENDC",
+    "label" : "Endocardium",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f7f",
+    "value" : "ENDM",
+    "label" : "Endometrium",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f80",
+    "value" : "EOLPH",
+    "label" : "endolpthamitis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f81",
+    "value" : "EOS",
+    "label" : "Eosinophils",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f82",
+    "value" : "EPD",
+    "label" : "Epididymis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f83",
+    "value" : "EPICA",
+    "label" : "Epicardial",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f84",
+    "value" : "EPICM",
+    "label" : "Epicardium",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f85",
+    "value" : "EPIDU",
+    "label" : "Epidural",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f86",
+    "value" : "EPIGL",
+    "label" : "Epiglottis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f87",
+    "value" : "ESO",
+    "label" : "Esophagus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f88",
+    "value" : "ESOPG",
+    "label" : "Esophageal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f89",
+    "value" : "ET",
+    "label" : "Endotracheal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f8a",
+    "value" : "ETHMO",
+    "label" : "Ethmoid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f8b",
+    "value" : "EUR",
+    "label" : "Endourethral",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f8c",
+    "value" : "EYE",
+    "label" : "Eye",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f8d",
+    "value" : "EYELI",
+    "label" : "Eyelid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f8e",
+    "value" : "FACE",
+    "label" : "Face",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f8f",
+    "value" : "FALLT",
+    "label" : "Fallopian Tube",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f90",
+    "value" : "FBINC",
+    "label" : "Facial bone, inferior nasal concha",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f91",
+    "value" : "FBLAC",
+    "label" : "Facial bone, lacrimal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f92",
+    "value" : "FBMAX",
+    "label" : "Facial bone, maxilla",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f93",
+    "value" : "FBNAS",
+    "label" : "Facial bone, nasal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f94",
+    "value" : "FBPAL",
+    "label" : "Facial bone, palatine",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f95",
+    "value" : "FBVOM",
+    "label" : "Facial bone, vomer",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f96",
+    "value" : "FBZYG",
+    "label" : "Facial bone, zygomatic",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f97",
+    "value" : "FEMOR",
+    "label" : "Femoral",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f98",
+    "value" : "FEMUR",
+    "label" : "Femur",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f99",
+    "value" : "FET",
+    "label" : "Fetus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f9a",
+    "value" : "FIBU",
+    "label" : "Fibula",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f9b",
+    "value" : "FING",
+    "label" : "Finger",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f9c",
+    "value" : "FINGN",
+    "label" : "Finger Nail",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f9d",
+    "value" : "FMH",
+    "label" : "Femoral Head",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f9e",
+    "value" : "FOL",
+    "label" : "Follicle",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507f9f",
+    "value" : "FOOT",
+    "label" : "Foot",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fa0",
+    "value" : "FOREA",
+    "label" : "Forearm",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fa1",
+    "value" : "FOREH",
+    "label" : "Forehead",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fa2",
+    "value" : "FORES",
+    "label" : "Foreskin",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fa3",
+    "value" : "FOURC",
+    "label" : "Fourchette",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fa4",
+    "value" : "GB",
+    "label" : "Gall Bladder",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fa5",
+    "value" : "GEN",
+    "label" : "Genital",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fa6",
+    "value" : "GENC",
+    "label" : "Genital Cervix",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fa7",
+    "value" : "GENL",
+    "label" : "Genital Lochia",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fa8",
+    "value" : "GL",
+    "label" : "Genital Lesion",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fa9",
+    "value" : "GLAND",
+    "label" : "Gland",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507faa",
+    "value" : "GLANS",
+    "label" : "Glans",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fab",
+    "value" : "GLUT",
+    "label" : "Gluteus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fac",
+    "value" : "GLUTE",
+    "label" : "Gluteal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fad",
+    "value" : "GLUTM",
+    "label" : "Gluteus Medius",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fae",
+    "value" : "GROIN",
+    "label" : "Groin",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507faf",
+    "value" : "GUM",
+    "label" : "Gum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fb0",
+    "value" : "GVU",
+    "label" : "Genital - Vulva",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fb1",
+    "value" : "HAL",
+    "label" : "Hallux",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fb2",
+    "value" : "HAND",
+    "label" : "Hand",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fb3",
+    "value" : "HAR",
+    "label" : "Hair",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fb4",
+    "value" : "HART",
+    "label" : "Heart",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fb5",
+    "value" : "HEAD",
+    "label" : "Head",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fb6",
+    "value" : "HEEL",
+    "label" : "Heel",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fb7",
+    "value" : "HEM",
+    "label" : "Hemorrhoid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fb8",
+    "value" : "HIP",
+    "label" : "Hip",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fb9",
+    "value" : "HIPJ",
+    "label" : "Hip Joint",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fba",
+    "value" : "HUMER",
+    "label" : "Humerus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fbb",
+    "value" : "HV",
+    "label" : "Heart Valve",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fbc",
+    "value" : "HVB",
+    "label" : "Heart Valve, Bicuspid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fbd",
+    "value" : "HVT",
+    "label" : "Heart Valve, Tricuspid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fbe",
+    "value" : "HYMEN",
+    "label" : "Hymen",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fbf",
+    "value" : "ICX",
+    "label" : "Intracervical",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fc0",
+    "value" : "ILC",
+    "label" : "Ileal Conduit",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fc1",
+    "value" : "ILCON",
+    "label" : "Ilical Conduit",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fc2",
+    "value" : "ILCR",
+    "label" : "Iliac Crest",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fc3",
+    "value" : "ILE",
+    "label" : "Ileal Loop",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fc4",
+    "value" : "ILEOS",
+    "label" : "Ileostomy",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fc5",
+    "value" : "ILEUM",
+    "label" : "Ileum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fc6",
+    "value" : "ILIAC",
+    "label" : "Iliac",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fc7",
+    "value" : "INASA",
+    "label" : "Intranasal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fc8",
+    "value" : "INGUI",
+    "label" : "Inguinal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fc9",
+    "value" : "INSTL",
+    "label" : "Intestine, Large",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fca",
+    "value" : "INSTS",
+    "label" : "Intestine, Small",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fcb",
+    "value" : "INT",
+    "label" : "Intestine",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fcc",
+    "value" : "INTRO",
+    "label" : "Introitus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fcd",
+    "value" : "INTRU",
+    "label" : "Intrauterine",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fce",
+    "value" : "ISCHI",
+    "label" : "Ischium",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fcf",
+    "value" : "ISH",
+    "label" : "Loop, Ishial",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fd0",
+    "value" : "JAW",
+    "label" : "Jaw",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fd1",
+    "value" : "JUGI",
+    "label" : "Jugular, Internal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fd2",
+    "value" : "KIDN ",
+    "label" : "Kidney",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fd3",
+    "value" : "KNEE",
+    "label" : "Knee",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fd4",
+    "value" : "KNEEF",
+    "label" : "Knee Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fd5",
+    "value" : "KNEEJ",
+    "label" : "Knee Joint",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fd6",
+    "value" : "LABIA",
+    "label" : "Labia",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fd7",
+    "value" : "LABMA",
+    "label" : "Labia Majora",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fd8",
+    "value" : "LABMI",
+    "label" : "Labia Minora",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fd9",
+    "value" : "LACRI",
+    "label" : "Lacrimal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fda",
+    "value" : "LAM",
+    "label" : "Lamella",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fdb",
+    "value" : "LARYN",
+    "label" : "Larynx",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fdc",
+    "value" : "LEG",
+    "label" : "Leg",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fdd",
+    "value" : "LENS",
+    "label" : "Lens",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fde",
+    "value" : "LING",
+    "label" : "Lingual",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fdf",
+    "value" : "LINGU",
+    "label" : "Lingula",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fe0",
+    "value" : "LIP",
+    "label" : "Lip",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fe1",
+    "value" : "LIVER",
+    "label" : "Liver",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fe2",
+    "value" : "LMN",
+    "label" : "Lumen",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fe3",
+    "value" : "LN",
+    "label" : "Lymph Node",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fe4",
+    "value" : "LNG",
+    "label" : "Lymph Node, Groin",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fe5",
+    "value" : "LOBE",
+    "label" : "Lobe",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fe6",
+    "value" : "LOCH",
+    "label" : "Lochia",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fe7",
+    "value" : "LUMBA",
+    "label" : "Lumbar",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fe8",
+    "value" : "LUNG",
+    "label" : "Lung",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fe9",
+    "value" : "LYM",
+    "label" : "Lymphocytes",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fea",
+    "value" : "MAC",
+    "label" : "Macrophages",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507feb",
+    "value" : "MALLE",
+    "label" : "Malleolus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fec",
+    "value" : "MANDI",
+    "label" : "Mandible/Mandibular",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fed",
+    "value" : "MAR",
+    "label" : "Marrow",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fee",
+    "value" : "MAST",
+    "label" : "Mastoid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fef",
+    "value" : "MAXIL",
+    "label" : "Maxilla/Maxillary",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ff0",
+    "value" : "MAXS",
+    "label" : "Maxillary Sinus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ff1",
+    "value" : "MEATU",
+    "label" : "Meatus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ff2",
+    "value" : "MEC",
+    "label" : "Meconium",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ff3",
+    "value" : "MEDST",
+    "label" : "Mediastinum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ff4",
+    "value" : "MEDU",
+    "label" : "Medullary",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ff5",
+    "value" : "METAC",
+    "label" : "Metacarpal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ff6",
+    "value" : "METAT",
+    "label" : "Metatarsal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ff7",
+    "value" : "MILK",
+    "label" : "Milk, Breast",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ff8",
+    "value" : "MITRL",
+    "label" : "Mitral Valve",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ff9",
+    "value" : "MOLAR",
+    "label" : "Molar",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ffa",
+    "value" : "MONSU",
+    "label" : "Mons Ureteris",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ffb",
+    "value" : "MONSV",
+    "label" : "Mons Veneris(Mons Pubis)",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ffc",
+    "value" : "MOU",
+    "label" : "Membrane",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ffd",
+    "value" : "MOUTH",
+    "label" : "Mouth",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ffe",
+    "value" : "MP",
+    "label" : "Mons Pubis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507fff",
+    "value" : "MPB",
+    "label" : "Meninges",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508000",
+    "value" : "MRSA2",
+    "label" : "Mrsa:",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508001",
+    "value" : "MYO",
+    "label" : "Myocardium",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508002",
+    "value" : "NAIL",
+    "label" : "Nail",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508003",
+    "value" : "NAILB",
+    "label" : "Nail Bed",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508004",
+    "value" : "NAILF",
+    "label" : "Nail, Finger",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508005",
+    "value" : "NAILT",
+    "label" : "Nail, Toe",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508006",
+    "value" : "NARES",
+    "label" : "Nares",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508007",
+    "value" : "NASL",
+    "label" : "Nasal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508008",
+    "value" : "NAVEL",
+    "label" : "Navel",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508009",
+    "value" : "NECK",
+    "label" : "Neck",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550800a",
+    "value" : "NERVE",
+    "label" : "Nerve",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550800b",
+    "value" : "NIPPL",
+    "label" : "Nipple",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550800c",
+    "value" : "NLACR",
+    "label" : "Nasolacrimal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550800d",
+    "value" : "NOS",
+    "label" : "Nose (Nasal Passage)",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550800e",
+    "value" : "NOSE",
+    "label" : "Nose/Nose(outside)",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550800f",
+    "value" : "NOSTR",
+    "label" : "Nostril",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508010",
+    "value" : "NP",
+    "label" : "Nasopharyngeal/Nasopharynx",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508011",
+    "value" : "NSS",
+    "label" : "Nasal Septum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508012",
+    "value" : "NTRAC",
+    "label" : "Nasotracheal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508013",
+    "value" : "OCCIP",
+    "label" : "Occipital",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508014",
+    "value" : "OLECR",
+    "label" : "Olecranon",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508015",
+    "value" : "OMEN",
+    "label" : "Omentum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508016",
+    "value" : "ORBIT",
+    "label" : "Orbit/Orbital",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508017",
+    "value" : "ORO",
+    "label" : "Oropharynx",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508018",
+    "value" : "OSCOX",
+    "label" : "Os coxa (pelvic girdle)",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508019",
+    "value" : "OVARY",
+    "label" : "Ovary",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550801a",
+    "value" : "PAFL",
+    "label" : "Pancreatic Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550801b",
+    "value" : "PALAT",
+    "label" : "Palate",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550801c",
+    "value" : "PALM",
+    "label" : "Palm",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550801d",
+    "value" : "PANAL",
+    "label" : "Perianal/Perirectal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550801e",
+    "value" : "PANCR",
+    "label" : "Pancreas",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550801f",
+    "value" : "PARAT",
+    "label" : "Paratracheal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508020",
+    "value" : "PARIE",
+    "label" : "Parietal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508021",
+    "value" : "PARON",
+    "label" : "Paronychia",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508022",
+    "value" : "PAROT",
+    "label" : "Parotid/Parotid Gland",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508023",
+    "value" : "PAS",
+    "label" : "Parasternal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508024",
+    "value" : "PATEL",
+    "label" : "Patella",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508025",
+    "value" : "PCARD",
+    "label" : "Pericardium",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508026",
+    "value" : "PCLIT",
+    "label" : "Periclitoral",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508027",
+    "value" : "PELV",
+    "label" : "Pelvis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508028",
+    "value" : "PENIS",
+    "label" : "Penis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508029",
+    "value" : "PENSH",
+    "label" : "Penile Shaft",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550802a",
+    "value" : "PER",
+    "label" : "Peritoneal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550802b",
+    "value" : "PERI",
+    "label" : "Pericardial Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550802c",
+    "value" : "PERIH",
+    "label" : "Perihepatic",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550802d",
+    "value" : "PERIN",
+    "label" : "Perineal Abscess",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550802e",
+    "value" : "PERIS",
+    "label" : "Perisplenic",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550802f",
+    "value" : "PERIT",
+    "label" : "Peritoneum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508030",
+    "value" : "PERIU",
+    "label" : "Periurethal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508031",
+    "value" : "PERIV",
+    "label" : "Perivesicular",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508032",
+    "value" : "PERRA",
+    "label" : "Perirectal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508033",
+    "value" : "PERT",
+    "label" : "Peritoneal Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508034",
+    "value" : "PHALA",
+    "label" : "Phalanyx",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508035",
+    "value" : "PILO",
+    "label" : "Pilonidal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508036",
+    "value" : "PINNA",
+    "label" : "Pinna",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508037",
+    "value" : "PLACF",
+    "label" : "Placenta (Fetal Side)",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508038",
+    "value" : "PLACM",
+    "label" : "Placenta (Maternal Side)",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508039",
+    "value" : "PLANT",
+    "label" : "Plantar",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550803a",
+    "value" : "PLATH",
+    "label" : "Palate, Hard",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550803b",
+    "value" : "PLATS",
+    "label" : "Palate, Soft",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550803c",
+    "value" : "PLC",
+    "label" : "Placenta",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550803d",
+    "value" : "PLEU",
+    "label" : "Pleural Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550803e",
+    "value" : "PLEUR",
+    "label" : "Pleura",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550803f",
+    "value" : "PLR",
+    "label" : "Pleural Fluid (Thoracentesis Fld)",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508040",
+    "value" : "PNEAL",
+    "label" : "Perineal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508041",
+    "value" : "PNEPH",
+    "label" : "Perinephric",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508042",
+    "value" : "PNM",
+    "label" : "Perineum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508043",
+    "value" : "POPLI",
+    "label" : "Popliteal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508044",
+    "value" : "PORBI",
+    "label" : "Periorbital",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508045",
+    "value" : "PREAU",
+    "label" : "Preauricular",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508046",
+    "value" : "PRERE",
+    "label" : "Prerenal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508047",
+    "value" : "PROS",
+    "label" : "Prostatic Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508048",
+    "value" : "PRST",
+    "label" : "Prostate Gland",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508049",
+    "value" : "PTONS",
+    "label" : "Peritonsillar",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550804a",
+    "value" : "PUBIC",
+    "label" : "Pubic",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550804b",
+    "value" : "PUL",
+    "label" : "Pulmonary Artery",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550804c",
+    "value" : "RADI",
+    "label" : "Radial",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550804d",
+    "value" : "RADIUS",
+    "label" : "Radius",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550804e",
+    "value" : "RBC",
+    "label" : "Red Blood Cells",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550804f",
+    "value" : "RECTL",
+    "label" : "Rectal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508050",
+    "value" : "RECTU",
+    "label" : "Rectum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508051",
+    "value" : "RENL",
+    "label" : "Renal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508052",
+    "value" : "RIB",
+    "label" : "Rib",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508053",
+    "value" : "RNP",
+    "label" : "Renal Pelvis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508054",
+    "value" : "RPERI",
+    "label" : "Retroperitoneal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508055",
+    "value" : "SAC",
+    "label" : "Uterine Cul/De/Sac",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508056",
+    "value" : "SACIL",
+    "label" : "Sacroiliac",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508057",
+    "value" : "SACRA",
+    "label" : "Sacral",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508058",
+    "value" : "SACRO",
+    "label" : "Sacrococcygeal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508059",
+    "value" : "SACRU",
+    "label" : "Sacrum",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550805a",
+    "value" : "SALGL",
+    "label" : "Salivary Gland",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550805b",
+    "value" : "SCALP",
+    "label" : "Scalp",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550805c",
+    "value" : "SCAPU",
+    "label" : "Scapula/Scapular",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550805d",
+    "value" : "SCLAV",
+    "label" : "Supraclavicle/Supraclavicular",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550805e",
+    "value" : "SCLER",
+    "label" : "Sclera",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550805f",
+    "value" : "SCLV",
+    "label" : "Sub Clavian",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508060",
+    "value" : "SCROT",
+    "label" : "Scrotum/Scrotal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508061",
+    "value" : "SDP",
+    "label" : "Subdiaphramatic",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508062",
+    "value" : "SEM",
+    "label" : "Seminal Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508063",
+    "value" : "SEMN",
+    "label" : "Semen",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508064",
+    "value" : "SEPTU",
+    "label" : "Septum/Septal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508065",
+    "value" : "SEROM",
+    "label" : "Seroma",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508066",
+    "value" : "SGF",
+    "label" : "Subgaleal Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508067",
+    "value" : "SHIN",
+    "label" : "Shin",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508068",
+    "value" : "SHOL",
+    "label" : "Shoulder",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508069",
+    "value" : "SHOLJ",
+    "label" : "Sholder Joint",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550806a",
+    "value" : "SIGMO",
+    "label" : "Sigmoid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550806b",
+    "value" : "SINUS",
+    "label" : "Sinus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550806c",
+    "value" : "SKENE",
+    "label" : "Skene's Gland",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550806d",
+    "value" : "SKM",
+    "label" : "Skeletal Muscle",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550806e",
+    "value" : "SKULL",
+    "label" : "Skull",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550806f",
+    "value" : "SOLE",
+    "label" : "Sole",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508070",
+    "value" : "SPCOR",
+    "label" : "Spinal Cord",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508071",
+    "value" : "SPHEN",
+    "label" : "Sphenoid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508072",
+    "value" : "SPLN",
+    "label" : "Spleen",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508073",
+    "value" : "SPRM",
+    "label" : "Spermatozoa",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508074",
+    "value" : "SPX",
+    "label" : "Supra Cervical",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508075",
+    "value" : "STER",
+    "label" : "Sternum/Sternal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508076",
+    "value" : "STOM",
+    "label" : "Stoma",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508077",
+    "value" : "STOMA",
+    "label" : "Stomach",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508078",
+    "value" : "STOOLL",
+    "label" : "Liquid Stool",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508079",
+    "value" : "STUMP",
+    "label" : "Stump",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550807a",
+    "value" : "SUB",
+    "label" : "Subdural",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550807b",
+    "value" : "SUBD",
+    "label" : "Subdural Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550807c",
+    "value" : "SUBM",
+    "label" : "Submandibular",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550807d",
+    "value" : "SUBME",
+    "label" : "Submental",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550807e",
+    "value" : "SUBPH",
+    "label" : "Subphrenic",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550807f",
+    "value" : "SUBX",
+    "label" : "Submaxillary",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508080",
+    "value" : "SUPB",
+    "label" : "Suprapubic Specimen",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508081",
+    "value" : "SUPRA",
+    "label" : "Suprapubic",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508082",
+    "value" : "SWT",
+    "label" : "Sweat",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508083",
+    "value" : "SWTG",
+    "label" : "Sweat Gland",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508084",
+    "value" : "SYN",
+    "label" : "Synovial Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508085",
+    "value" : "SYNOL",
+    "label" : "Synovial",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508086",
+    "value" : "SYNOV",
+    "label" : "Synovium",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508087",
+    "value" : "TARS",
+    "label" : "Tarsal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508088",
+    "value" : "TBRON",
+    "label" : "Transbronchial",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508089",
+    "value" : "TCN",
+    "label" : "Transcarina Asp",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550808a",
+    "value" : "TDUCT",
+    "label" : "Tear Duct",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550808b",
+    "value" : "TEAR",
+    "label" : "Tears",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550808c",
+    "value" : "TEMPL",
+    "label" : "Temple",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550808d",
+    "value" : "TEMPO",
+    "label" : "Temporal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550808e",
+    "value" : "TESTI",
+    "label" : "Testicle(Testis)",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550808f",
+    "value" : "THIGH",
+    "label" : "Thigh",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508090",
+    "value" : "THM",
+    "label" : "Thymus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508091",
+    "value" : "THORA",
+    "label" : "Thorax/Thoracic/Thoracentesis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508092",
+    "value" : "THRB",
+    "label" : "Throat",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508093",
+    "value" : "THUMB",
+    "label" : "Thumb",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508094",
+    "value" : "THYRD",
+    "label" : "Thyroid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508095",
+    "value" : "TIBIA",
+    "label" : "Tibia",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508096",
+    "value" : "TML",
+    "label" : "Temporal Lobe",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508097",
+    "value" : "TNL",
+    "label" : "Thumbnail",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508098",
+    "value" : "TOE",
+    "label" : "Toe",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508099",
+    "value" : "TOEN",
+    "label" : "Toe Nail",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550809a",
+    "value" : "TONG",
+    "label" : "Tongue",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550809b",
+    "value" : "TONS",
+    "label" : "Tonsil",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550809c",
+    "value" : "TOOTH",
+    "label" : "Tooth",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550809d",
+    "value" : "TRCHE",
+    "label" : "Trachea/Tracheal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550809e",
+    "value" : "TSK",
+    "label" : "Tooth Socket",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550809f",
+    "value" : "ULNA",
+    "label" : "Ulna/Ulnar",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080a0",
+    "value" : "UMB",
+    "label" : "Umbilical Blood",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080a1",
+    "value" : "UMBL",
+    "label" : "Umbilicus/Umbilical",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080a2",
+    "value" : "URET",
+    "label" : "Ureter",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080a3",
+    "value" : "URTH",
+    "label" : "Urethra",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080a4",
+    "value" : "USTOM",
+    "label" : "Stoma, Urinary",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080a5",
+    "value" : "UTER",
+    "label" : "Uterus",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080a6",
+    "value" : "UTERI",
+    "label" : "Uterine",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080a7",
+    "value" : "VAGIN",
+    "label" : "Vagina/Vaginal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080a8",
+    "value" : "VAL",
+    "label" : "Valve",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080a9",
+    "value" : "VAS",
+    "label" : "Vas Deferens",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080aa",
+    "value" : "VASTL",
+    "label" : "Vastus Lateralis",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080ab",
+    "value" : "VAULT",
+    "label" : "Vault",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080ac",
+    "value" : "VCSF",
+    "label" : "Ventricular CSF",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080ad",
+    "value" : "VCUFF",
+    "label" : "Vaginal Cuff",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080ae",
+    "value" : "VEIN",
+    "label" : "Vein",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080af",
+    "value" : "VENTG",
+    "label" : "Ventragluteal",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080b0",
+    "value" : "VERMI",
+    "label" : "Vermis Cerebelli",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080b1",
+    "value" : "VERTC",
+    "label" : "Vertebra, cervical",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080b2",
+    "value" : "VERTL",
+    "label" : "Vertebra, lumbar",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080b3",
+    "value" : "VERTT",
+    "label" : "Vertebra, thoracic",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080b4",
+    "value" : "VESCL",
+    "label" : "Vesicular",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080b5",
+    "value" : "VESFLD",
+    "label" : "Vesicular Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080b6",
+    "value" : "VESI",
+    "label" : "Vesicle",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080b7",
+    "value" : "VESTI",
+    "label" : "Vestibule(Genital)",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080b8",
+    "value" : "VGV",
+    "label" : "Vaginal Vault",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080b9",
+    "value" : "VITR",
+    "label" : "Vitreous Fluid",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080ba",
+    "value" : "VOC",
+    "label" : "Vocal Cord",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080bb",
+    "value" : "VULVA",
+    "label" : "Vulva",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080bc",
+    "value" : "WBC",
+    "label" : "Leukocytes",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080bd",
+    "value" : "WRIST",
+    "label" : "Wrist",
+    "codeSystem" : "HL70550",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

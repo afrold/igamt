@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507ca9",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0506",
+  "name" : "0506",
+  "description" : "Service Request Relationship",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507caa",
+    "value" : "C",
+    "label" : "Compound",
+    "codeSystem" : "HL70506",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cab",
+    "value" : "E",
+    "label" : "Exclusive",
+    "codeSystem" : "HL70506",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cac",
+    "value" : "N",
+    "label" : "Nurse prerogative",
+    "codeSystem" : "HL70506",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cad",
+    "value" : "S",
+    "label" : "Simultaneous",
+    "codeSystem" : "HL70506",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cae",
+    "value" : "T",
+    "label" : "Tapering",
+    "codeSystem" : "HL70506",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

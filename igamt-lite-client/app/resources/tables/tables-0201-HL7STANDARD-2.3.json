@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4473e9",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0201",
+  "name" : "0201",
+  "description" : "Telecommunication Use Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473ea",
+    "value" : "ASN",
+    "label" : "Answering Service Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473eb",
+    "value" : "EMR",
+    "label" : "Emergency Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473ec",
+    "value" : "NET",
+    "label" : "Network (email) Address",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473ed",
+    "value" : "ORN",
+    "label" : "Other Residence Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473ee",
+    "value" : "PRN",
+    "label" : "Primary Residence Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473ef",
+    "value" : "VHN",
+    "label" : "Vacation Home Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473f0",
+    "value" : "WPN",
+    "label" : "Work Number",
+    "codeSystem" : "HL70201",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

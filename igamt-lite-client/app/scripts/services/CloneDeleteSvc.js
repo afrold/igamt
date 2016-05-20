@@ -66,7 +66,7 @@ angular.module('igl').factory(
                 	$rootScope.segments.splice(0, 0, newSegment);
                 	$rootScope.segment = newSegment;
                 	$rootScope.segmentsMap[newSegment.id] = newSegment;
-                	//TODO pending MASTERMAP
+                	//TODO MasterMap need to add Segment
 //                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 	$rootScope.processElement(newSegment);
                 	$rootScope.$broadcast('event:SetToC');
@@ -124,9 +124,8 @@ angular.module('igl').factory(
                     $rootScope.datatype = newDatatype;
                     $rootScope.datatypesMap[newDatatype.id] = newDatatype;
                     
-                    //TODO need to add MasterMap
+                    //TODO MasterMap need to add Datatype
 //                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
-                    //TODO END
                     
                     $rootScope.processElement(newDatatype);
                     $rootScope.$broadcast('event:SetToC');
@@ -147,7 +146,7 @@ angular.module('igl').factory(
         };
 
         svc.copyTable = function (table) {
-             var newTable = angular.copy(table);
+            var newTable = angular.copy(table);
             var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary));
             
             newTable.participants = [];
@@ -163,10 +162,10 @@ angular.module('igl').factory(
             newTable.id = null;
             newTable.libIds = [];
             newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+            newLink.bindingIdentifier = newTable.bindingIdentifier;
             
             TableService.save(newTable).then(function (result){
             	newTable = result;
-            	newLink.bindingIdentifier = newTable.bindingIdentifier;
                 newLink.id = newTable.id;
                 
                 TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
@@ -184,19 +183,20 @@ angular.module('igl').factory(
                             }
                         }
                     }
-                    MastermapSvc.addValueSetObject(newTable, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                    //TODO MasterMap need to add table
+//                    MastermapSvc.addValueSetObject(newTable, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openTable', newTable);
 
                 }, function (error) {
-                     $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
                  });
                 
                 
             }, function (error) {
-                 $rootScope.msg().text = error.data.text;
+                $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
              });
@@ -219,7 +219,8 @@ angular.module('igl').factory(
                     $rootScope.message = newMessage;
                     
                     $rootScope.processElement(newMessage);
-                    MastermapSvc.addMessage(newMessage, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                    //TODO Mastermap need to add Message
+//                    MastermapSvc.addMessage(newMessage, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                     FilteringSvc.addMsgInFilter(newMessage.name, newMessage.id);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openMessage', newMessage);
@@ -238,15 +239,18 @@ angular.module('igl').factory(
         };
 
         svc.deleteValueSet = function (table) {
-            $rootScope.references = [];
+        	$rootScope.references = [];
             angular.forEach($rootScope.segments, function (segment) {
-                $rootScope.findTableRefs(table, segment);
+                $rootScope.findTableRefs(table, segment, $rootScope.getSegmentLabel(segment));
             });
+            angular.forEach($rootScope.datatypes, function (dt) {
+            	$rootScope.findTableRefs(table, dt, $rootScope.getDatatypeLabel(dt));
+            });
+
             if ($rootScope.references != null && $rootScope.references.length > 0) {
                 abortValueSetDelete(table);
             } else {
                 confirmValueSetDelete(table);
-                MastermapSvc.deleteValueSet(table);
             }
         }
 
@@ -312,7 +316,6 @@ angular.module('igl').factory(
         };
 
         function deleteValueSets(vssIdsSincerelyDead) {
-//				console.log("deleteValueSets: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
             return ProfileAccessSvc.ValueSets().removeDead(vssIdsSincerelyDead);
         }
 
@@ -330,6 +333,42 @@ angular.module('igl').factory(
                 confirmDatatypeDelete(datatype);
             }
         }
+        
+        svc.deleteTableAndSegmentLink = function (table) {
+        	TableService.delete(table).then(function (result) {
+        		svc.deleteTableLink(table);
+        	}, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+            });
+        };
+        
+        svc.deleteTableLink = function (table) {
+        	TableLibrarySvc.deleteChild($rootScope.igdocument.profile.tableLibrary.id, table.id).then(function (res) {
+                var index = $rootScope.tables.indexOf(table);
+                $rootScope.tables.splice(index, 1);
+                var tmp = TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary);
+                index = $rootScope.igdocument.profile.tableLibrary.children.indexOf(tmp);
+                $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
+                $rootScope.tablesMap[table.id] = null;
+                $rootScope.references = [];
+                if ($rootScope.table === table) {
+                    $rootScope.table = null;
+                }
+                $rootScope.recordDelete("table", "edit", table.id);
+                $rootScope.msg().text = "tableDeleteSuccess";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+                //TODO MasterMap Need to delete Table
+//                MastermapSvc.deleteTable(table.id);
+                $rootScope.$broadcast('event:SetToC');
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+            });
+        };
         
         svc.deleteSegmentAndSegmentLink = function (segment) {
         	SegmentService.delete(segment).then(function (result) {
@@ -358,8 +397,8 @@ angular.module('igl').factory(
                 $rootScope.msg().text = "segDeleteSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
-                //TODO pending MASTERMAP
-//                MastermapSvc.deleteSegment($scope.dtToDelete.id);
+                //TODO MasterMap need to delete segment
+//                MastermapSvc.deleteSegment($scope.segment.id);
                 $rootScope.$broadcast('event:SetToC');
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
@@ -395,7 +434,7 @@ angular.module('igl').factory(
                 $rootScope.msg().text = "DatatypeDeleteSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
-                //TODO MasterMap pending
+                //TODO MasterMap need to delete datatype
 //                MastermapSvc.deleteDatatype($scope.segToDelete.id);
                 $rootScope.$broadcast('event:SetToC');
             }, function (error) {
@@ -559,7 +598,8 @@ angular.module('igl').factory(
             }
 
             var rval = deleteSegments(segmentRefsLive, segmentRefsSincerelyDead);
-            MastermapSvc.deleteMessage(message.id);
+            //TODO mastermap need to delete message
+//            MastermapSvc.deleteMessage(message.id);
             return rval;
         }
 

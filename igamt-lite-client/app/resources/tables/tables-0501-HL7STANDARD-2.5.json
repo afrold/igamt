@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440e58",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0501",
+  "name" : "0501",
+  "description" : "Consent Non-Disclosure Reason",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.501",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e59",
+    "value" : "E",
+    "label" : "Emergency",
+    "codeSystem" : "HL70501",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e5a",
+    "value" : "PR",
+    "label" : "Patient Request",
+    "codeSystem" : "HL70501",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e5b",
+    "value" : "RX",
+    "label" : "Rx Private",
+    "codeSystem" : "HL70501",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

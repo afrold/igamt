@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440b79",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0185",
+  "name" : "0185",
+  "description" : "Preferred method of contact",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.185",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b7a",
+    "value" : "B",
+    "label" : "Beeper Number",
+    "codeSystem" : "HL70185",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b7b",
+    "value" : "C",
+    "label" : "Cellular Phone Number",
+    "codeSystem" : "HL70185",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b7c",
+    "value" : "E",
+    "label" : "E-Mail Address (for backward compatibility)",
+    "codeSystem" : "HL70185",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b7d",
+    "value" : "F",
+    "label" : "FAX Number",
+    "codeSystem" : "HL70185",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b7e",
+    "value" : "H",
+    "label" : "Home Phone Number",
+    "codeSystem" : "HL70185",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b7f",
+    "value" : "O",
+    "label" : "Office Phone Number",
+    "codeSystem" : "HL70185",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

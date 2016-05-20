@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4459ab",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0133",
+  "name" : "0133",
+  "description" : "Procedure practitioner identifier code type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4459ac",
+    "value" : "AN",
+    "label" : "Anesthesiologist",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4459ad",
+    "value" : "AS",
+    "label" : "Assistant Surgeon",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4459ae",
+    "value" : "CM",
+    "label" : "Certified Nurse Midwife",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4459af",
+    "value" : "NP",
+    "label" : "Nurse Practitioner",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4459b0",
+    "value" : "PR",
+    "label" : "Procedure MD (surgeon)",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4459b1",
+    "value" : "PS",
+    "label" : "Primary Surgeon",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4459b2",
+    "value" : "RD",
+    "label" : "Radiologist",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4459b3",
+    "value" : "RS",
+    "label" : "Resident",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4459b4",
+    "value" : "SN",
+    "label" : "Scrub Nurse",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

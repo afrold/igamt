@@ -1,0 +1,30 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b884",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0351",
+  "name" : "0351",
+  "description" : "Occurrence span",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.351",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b885",
+    "value" : "...",
+    "label" : "use NUBC codes",
+    "codeSystem" : "HL70351",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

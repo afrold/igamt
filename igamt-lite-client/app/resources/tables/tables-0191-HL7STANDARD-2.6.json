@@ -1,0 +1,111 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b0b7",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0191",
+  "name" : "0191",
+  "description" : "Type of referenced data",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.191",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0b8",
+    "value" : "AP",
+    "label" : "Other application data, typically uninterpreted binary data (HL7 V2.3 and later)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0b9",
+    "value" : "AU",
+    "label" : "Audio data (HL7 V2.3 and later)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0ba",
+    "value" : "FT",
+    "label" : "Formatted text (HL7 V2.2 only)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0bb",
+    "value" : "IM",
+    "label" : "Image data (HL7 V2.3 and later)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0bc",
+    "value" : "multipart",
+    "label" : "MIME multipart package",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0bd",
+    "value" : "NS",
+    "label" : "Non-scanned image (HL7 V2.2 only)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0be",
+    "value" : "SD",
+    "label" : "Scanned document (HL7 V2.2 only)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0bf",
+    "value" : "SI",
+    "label" : "Scanned image (HL7 V2.2 only)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0c0",
+    "value" : "TEXT",
+    "label" : "Machine readable text document (HL7 V2.3.1 and later)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0c1",
+    "value" : "TX",
+    "label" : "Machine readable text document (HL7 V2.2 only)",
+    "codeSystem" : "HL70191",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

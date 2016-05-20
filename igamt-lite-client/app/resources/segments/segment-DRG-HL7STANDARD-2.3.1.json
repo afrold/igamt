@@ -7,7 +7,7 @@
   "version" : null,
   "status" : null,
   "participants" : [ ],
-  "libIds" : [ "573b5105da08bdc5ada9db71" ],
+  "libIds" : [ "573dd239d4c6ca828c295f8f" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd4469e2",
@@ -264,7 +264,7 @@
     "max" : "1"
   } ],
   "dynamicMapping" : {
-    "id" : "573b5105da08bdc5ada9d46f",
+    "id" : "573dd239d4c6ca828c29588d",
     "mappings" : [ ]
   },
   "name" : "DRG",

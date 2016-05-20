@@ -220,6 +220,20 @@ angular.module('igl').controller('TableModalCtrl', function ($scope) {
 angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, $modalInstance, tableToDelete, $rootScope, TableService, TableLibrarySvc) {
     $scope.tableToDelete = tableToDelete;
     $scope.loading = false;
+    
+    
+    $scope.delete = function () {
+    	$scope.loading = true;
+        if($scope.tableToDelete.scope === 'USER'){
+        	CloneDeleteSvc.deleteTableAndSegmentLink($scope.tableToDelete);
+        }else {
+        	CloneDeleteSvc.deleteTableLink($scope.tableToDelete);
+        }
+        $modalInstance.close($scope.tableToDelete);
+        $scope.loading = false;
+    };
+    
+    
 //    $scope.delete = function () {
 //        $scope.loading = true;
 //

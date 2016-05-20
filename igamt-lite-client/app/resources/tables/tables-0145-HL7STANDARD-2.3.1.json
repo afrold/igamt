@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445a97",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0145",
+  "name" : "0145",
+  "description" : "Room type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a98",
+    "value" : "2ICU",
+    "label" : "Second intensive care unit",
+    "codeSystem" : "HL70145",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a99",
+    "value" : "2PRI",
+    "label" : "Second private room",
+    "codeSystem" : "HL70145",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a9a",
+    "value" : "2SPR",
+    "label" : "Second semi-private room",
+    "codeSystem" : "HL70145",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a9b",
+    "value" : "ICU",
+    "label" : "Intensive care unit",
+    "codeSystem" : "HL70145",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a9c",
+    "value" : "PRI",
+    "label" : "Private room",
+    "codeSystem" : "HL70145",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a9d",
+    "value" : "SPR",
+    "label" : "Semi-private room",
+    "codeSystem" : "HL70145",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

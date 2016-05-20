@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445a60",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0271",
+  "name" : "0271",
+  "description" : "Document completion status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a61",
+    "value" : "AU",
+    "label" : "Authenticated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a62",
+    "value" : "DI",
+    "label" : "Dictated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a63",
+    "value" : "DO",
+    "label" : "Documented",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a64",
+    "value" : "IN",
+    "label" : "Incomplete",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a65",
+    "value" : "IP",
+    "label" : "In Progress",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a66",
+    "value" : "LA",
+    "label" : "Legally authenticated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a67",
+    "value" : "PA",
+    "label" : "Pre-authenticated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

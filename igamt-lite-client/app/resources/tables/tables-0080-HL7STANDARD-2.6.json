@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b0f7",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0080",
+  "name" : "0080",
+  "description" : "Nature of Abnormal Testing",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.80",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0f8",
+    "value" : "A",
+    "label" : "An age-based population",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0f9",
+    "value" : "B",
+    "label" : "Breed",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0fa",
+    "value" : "N",
+    "label" : "None - generic normal range",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0fb",
+    "value" : "R",
+    "label" : "A race-based population",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0fc",
+    "value" : "S",
+    "label" : "A sex-based population",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0fd",
+    "value" : "SP",
+    "label" : "Species",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0fe",
+    "value" : "ST",
+    "label" : "Strain",
+    "codeSystem" : "HL70080",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

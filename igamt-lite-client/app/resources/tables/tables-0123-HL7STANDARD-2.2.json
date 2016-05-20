@@ -1,0 +1,111 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447c20",
+  "hl7Version" : "2.2",
+  "libIds" : [ "573dd23bd4c6ca828c2970f5" ],
+  "bindingIdentifier" : "0123",
+  "name" : "0123",
+  "description" : "RESULT STATUS - OBR",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c21",
+    "value" : "C",
+    "label" : "Korrektur früherer Ergebnisse",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c22",
+    "value" : "F",
+    "label" : "Endergebnis - Auftrag erledigt, Ergebnisse validiert",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c23",
+    "value" : "I",
+    "label" : "Keine Ergebnisse - Probe liegt vor, Untersuchung unvollständig",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c24",
+    "value" : "O",
+    "label" : "Auftrag erhalten - Probe steht noch aus",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c25",
+    "value" : "P",
+    "label" : "Vorläufig - Validiertes Zwischenergebnis liegt vor, aber noch keine endgültigen Ergebnisse",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c26",
+    "value" : "R",
+    "label" : "Ergebnisse gespeichert, aber noch nicht validiert",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c27",
+    "value" : "S",
+    "label" : "Keine Ergebnisse - Untersuchung eingeplant, aber noch nicht durchgeführt",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c28",
+    "value" : "X",
+    "label" : "Keine Ergebnisse - Auftrag storniert",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c29",
+    "value" : "Y",
+    "label" : "Kein Auftrag zu dieser Untersuchung",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c2a",
+    "value" : "Z",
+    "label" : "Keine Daten über diesen Patienten",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

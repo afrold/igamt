@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447491",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0100",
+  "name" : "0100",
+  "description" : "When to Charge",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447492",
+    "value" : "D",
+    "label" : "On discharge",
+    "codeSystem" : "HL70100",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447493",
+    "value" : "O",
+    "label" : "On receipt of order",
+    "codeSystem" : "HL70100",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447494",
+    "value" : "R",
+    "label" : "At time service is completed",
+    "codeSystem" : "HL70100",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447495",
+    "value" : "S",
+    "label" : "At time service is started",
+    "codeSystem" : "HL70100",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447496",
+    "value" : "T",
+    "label" : "At a designated date/time",
+    "codeSystem" : "HL70100",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

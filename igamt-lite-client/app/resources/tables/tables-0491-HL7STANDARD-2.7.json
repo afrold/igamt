@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65506fb2",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0491",
+  "name" : "0491",
+  "description" : "Specimen Quality",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fb3",
+    "value" : "E",
+    "label" : "Excellent",
+    "codeSystem" : "HL70491",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fb4",
+    "value" : "F",
+    "label" : "Fair",
+    "codeSystem" : "HL70491",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fb5",
+    "value" : "G",
+    "label" : "Good",
+    "codeSystem" : "HL70491",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fb6",
+    "value" : "P",
+    "label" : "Poor",
+    "codeSystem" : "HL70491",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

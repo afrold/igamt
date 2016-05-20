@@ -1,0 +1,39 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65508268",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0682",
+  "name" : "0682",
+  "description" : "Device Status-",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508269",
+    "value" : "0",
+    "label" : "Ready",
+    "codeSystem" : "HL70682",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550826a",
+    "value" : "1",
+    "label" : "Not Ready",
+    "codeSystem" : "HL70682",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

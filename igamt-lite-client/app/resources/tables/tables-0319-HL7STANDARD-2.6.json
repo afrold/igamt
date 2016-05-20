@@ -1,0 +1,30 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b5ec",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0319",
+  "name" : "0319",
+  "description" : "Department Cost Center",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.319",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5ed",
+    "value" : "...",
+    "label" : "No suggested values",
+    "codeSystem" : "HL70319",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

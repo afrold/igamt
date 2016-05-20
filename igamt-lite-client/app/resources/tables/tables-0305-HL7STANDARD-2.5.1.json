@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e551",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0305",
+  "name" : "0305",
+  "description" : "Person location type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.305",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e552",
+    "value" : "C",
+    "label" : "Clinic",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e553",
+    "value" : "D",
+    "label" : "Department",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e554",
+    "value" : "H",
+    "label" : "Home",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e555",
+    "value" : "N",
+    "label" : "Nursing Unit",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e556",
+    "value" : "O",
+    "label" : "Provider's Office",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e557",
+    "value" : "P",
+    "label" : "Phone",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e558",
+    "value" : "S",
+    "label" : "SNF",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

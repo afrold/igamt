@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550df4b",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0144",
+  "name" : "0144",
+  "description" : "Eligibility Source",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.144",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df4c",
+    "value" : "1",
+    "label" : "Insurance company",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df4d",
+    "value" : "2",
+    "label" : "Employer",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df4e",
+    "value" : "3",
+    "label" : "Insured presented policy",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df4f",
+    "value" : "4",
+    "label" : "Insured presented card",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df50",
+    "value" : "5",
+    "label" : "Signed statement on file",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df51",
+    "value" : "6",
+    "label" : "Verbal information",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550df52",
+    "value" : "7",
+    "label" : "None",
+    "codeSystem" : "HL70144",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

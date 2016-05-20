@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd44145a",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0224",
+  "name" : "0224",
+  "description" : "Transport Arranged",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.224",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44145b",
+    "value" : "A",
+    "label" : "Arranged",
+    "codeSystem" : "HL70224",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44145c",
+    "value" : "N",
+    "label" : "Not Arranged",
+    "codeSystem" : "HL70224",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44145d",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70224",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447c1a",
+  "hl7Version" : "2.2",
+  "libIds" : [ "573dd23bd4c6ca828c2970f5" ],
+  "bindingIdentifier" : "0002",
+  "name" : "0002",
+  "description" : "MARITAL STATUS",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c1b",
+    "value" : "A",
+    "label" : "Separated",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c1c",
+    "value" : "D",
+    "label" : "Divorced",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c1d",
+    "value" : "M",
+    "label" : "Married",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c1e",
+    "value" : "S",
+    "label" : "Single",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c1f",
+    "value" : "W",
+    "label" : "Widowed",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,30 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550bb13",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0110",
+  "name" : "0110",
+  "description" : "Transfer to Bad Debt Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.110",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb14",
+    "value" : "...",
+    "label" : "no suggested values",
+    "codeSystem" : "HL70110",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

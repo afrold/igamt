@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447043",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0266",
+  "name" : "0266",
+  "description" : "Gender Indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447044",
+    "value" : "E",
+    "label" : "Either Male Or Female Patients",
+    "codeSystem" : "HL70266",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447045",
+    "value" : "F",
+    "label" : "Only Female Patients",
+    "codeSystem" : "HL70266",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447046",
+    "value" : "M",
+    "label" : "Only Male Patients",
+    "codeSystem" : "HL70266",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

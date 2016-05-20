@@ -6,7 +6,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
 
     function getDatatypes() {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/datatypeLibraries/datatypes-2.6.1-USER-Vital-Record.json', false);
+        request.open('GET', '../../resources/datatypes/datatypes-USER-2.5.1.json', false);
         request.send(null);
         var datatypes = [].concat(angular.fromJson(request.response));
         return fixProperties(datatypes);
@@ -14,7 +14,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
 
     function getSegments() {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/segmentLibraries/segments-2.6.1-USER-Vital-Record.json', false);
+        request.open('GET', '../../resources/segments/segments-USER-2.5.1.json', false);
         request.send(null);
         var segments = [].concat(angular.fromJson(request.response));
         return fixProperties(segments);
@@ -22,7 +22,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
 
     function getTables() {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/tableLibraries/tables-2.6.1-USER-Vital-Record.json', false);
+        request.open('GET', '../../resources/tables/tables-USER-2.5.1.json', false);
         request.send(null);
         var tables = [].concat(angular.fromJson(request.response));
         return tables;
@@ -151,13 +151,13 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         var request = new XMLHttpRequest();
          console.log('api\\/.*\\/ url=' + url);
          var datatypes = [];
-         request.open('GET', '../../resources/datatypes/datatype-AD-USER-2.7.json', false);
+         request.open('GET', '../../resources/datatypes/datatype-AD-HL7STANDARD-2.7.json', false);
          request.send(null);
          datatypes.push(angular.fromJson(request.response));
-         request.open('GET', '../../resources/datatypes/datatype-AUI-USER-2.7.json', false);
+         request.open('GET', '../../resources/datatypes/datatype-AUI-HL7STANDARD-2.7.json', false);
          request.send(null);
          datatypes.push(angular.fromJson(request.response));
-         request.open('GET', '../../resources/datatypes/datatype-CCP-USER-2.7.json', false);
+         request.open('GET', '../../resources/datatypes/datatype-CCP-HL7STANDARD-2.7.json', false);
          request.send(null);
          datatypes.push(angular.fromJson(request.response));
         return [request.status, datatypes, {}];

@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b62d",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0325",
+  "name" : "0325",
+  "description" : "Location Relationship ID",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.325",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b62e",
+    "value" : "ALI",
+    "label" : "Location Alias(es)",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b62f",
+    "value" : "DTY",
+    "label" : "Nearest  dietary location",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b630",
+    "value" : "LAB",
+    "label" : "Nearest  lab",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b631",
+    "value" : "LB2",
+    "label" : "Second nearest lab",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b632",
+    "value" : "PAR",
+    "label" : "Parent location",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b633",
+    "value" : "RX",
+    "label" : "Nearest  pharmacy",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b634",
+    "value" : "RX2",
+    "label" : "Second nearest pharmacy",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

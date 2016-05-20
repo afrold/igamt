@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507525",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0253",
+  "name" : "0253",
+  "description" : "Indirect Exposure Mechanism",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507526",
+    "value" : "B",
+    "label" : "Breast milk",
+    "codeSystem" : "HL70253",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507527",
+    "value" : "F",
+    "label" : "Father",
+    "codeSystem" : "HL70253",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507528",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70253",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507529",
+    "value" : "P",
+    "label" : "Transplacental",
+    "codeSystem" : "HL70253",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550752a",
+    "value" : "X",
+    "label" : "Blood product",
+    "codeSystem" : "HL70253",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

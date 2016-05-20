@@ -1,0 +1,246 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550d95a",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0125",
+  "name" : "0125",
+  "description" : "Value type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.125",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d95b",
+    "value" : "AD",
+    "label" : "Address",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d95c",
+    "value" : "CE",
+    "label" : "Coded Entry",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d95d",
+    "value" : "CF",
+    "label" : "Coded Element With Formatted Values",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d95e",
+    "value" : "CK",
+    "label" : "Composite ID With Check Digit",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d95f",
+    "value" : "CN",
+    "label" : "Composite ID And Name",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d960",
+    "value" : "CP",
+    "label" : "Composite Price",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d961",
+    "value" : "CX",
+    "label" : "Extended Composite ID With Check Digit",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d962",
+    "value" : "DT",
+    "label" : "Date",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d963",
+    "value" : "ED",
+    "label" : "Encapsulated Data",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d964",
+    "value" : "FT",
+    "label" : "Formatted Text (Display)",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d965",
+    "value" : "MO",
+    "label" : "Money",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d966",
+    "value" : "NM",
+    "label" : "Numeric",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d967",
+    "value" : "PN",
+    "label" : "Person Name",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d968",
+    "value" : "RP",
+    "label" : "Reference Pointer",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d969",
+    "value" : "SN",
+    "label" : "Structured Numeric",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d96a",
+    "value" : "ST",
+    "label" : "String Data.",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d96b",
+    "value" : "TM",
+    "label" : "Time",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d96c",
+    "value" : "TN",
+    "label" : "Telephone Number",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d96d",
+    "value" : "TS",
+    "label" : "Time Stamp (Date & Time)",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d96e",
+    "value" : "TX",
+    "label" : "Text Data (Display)",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d96f",
+    "value" : "XAD",
+    "label" : "Extended Address",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d970",
+    "value" : "XCN",
+    "label" : "Extended Composite Name And Number For Persons",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d971",
+    "value" : "XON",
+    "label" : "Extended Composite Name And Number For Organizations",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d972",
+    "value" : "XPN",
+    "label" : "Extended Person Name",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d973",
+    "value" : "XTN",
+    "label" : "Extended Telecommunications Number",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}
