@@ -48,7 +48,23 @@ angular.module('igl').factory('TableService',
             	
             },
             merge: function (to, from) {
-
+            	to.libIds = from.libIds;
+            	to.name = from.name;
+            	to.description = from.description;
+            	to.version = from.version;
+            	to.oid = from.oid;
+            	to.bindingIdentifier = from.bindingIdentifier;
+            	to.stability = from.stability;
+            	to.extensibility = from.extensibility;
+            	to.contentDefinition = from.contentDefinition;
+            	to.group = from.group;
+            	to.order = from.order;
+            	to.codes = from.codes;
+            	to.status = from.status;
+            	to.accountId = from.accountId;
+            	to.date = from.date;
+            	to.scope = from.scope;
+            	
                 return to;
             },
             delete: function(table) {
@@ -56,7 +72,7 @@ angular.module('igl').factory('TableService',
             },
 
             getTableLink : function(table){
-                return {id:table.id, ext: null, name: table.name};
+                return {id:table.id, bindingIdentifier: table.bindingIdentifier};
             }
 
         };

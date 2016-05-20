@@ -506,16 +506,16 @@ angular
                 return promise;
             }
            
-            $scope.isUnused = function (node) {
-                return FilteringSvc.isUnused(node);
-            };
+//            $scope.isUnused = function (node) {
+//                return FilteringSvc.isUnused(node);
+//            };
 
 
             $scope.showToC = function (leaf) {
 //                return FilteringSvc.showToC(leaf);
                 return true;
             };
-            
+
             $scope.getScopeLabel = function (leaf) {
             if (leaf.scope==='HL7STANDARD'){
             	return 'HL7';

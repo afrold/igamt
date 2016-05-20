@@ -16,6 +16,12 @@ angular.module('igl')
         $scope.copy = function (datatype) {
             CloneDeleteSvc.copyDatatype(datatype);
         };
+        
+        $scope.reset = function () {
+        	$scope.editForm.$dirty = false;
+        	$rootScope.clearChanges();
+        	DatatypeService.merge($rootScope.datatype, $rootScope.datatypesMap[$rootScope.datatype.id]);
+        };
 
         $scope.recordDatatypeChange = function (type, command, id, valueType, value) {
             var datatypeFromChanges = $rootScope.findObjectInChanges("datatype", "add", $rootScope.datatype.id);
@@ -355,7 +361,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (datatype, ext) {
                 component.datatype.id = datatype.id;
-                MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
+//                MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
             });

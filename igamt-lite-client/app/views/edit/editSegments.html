@@ -29,10 +29,10 @@
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
 
-                         <button title="Cancel Changes" type="button" class="btn btn-sm btn-warning"
+                         <button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
                                  ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') "
-                                 ng-click="cancel()">
-                             <span><i class="fa fa-times fa-fw"></i> Cancel</span>
+                                 ng-click="reset()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
                          </button>
     </span>
 </div>

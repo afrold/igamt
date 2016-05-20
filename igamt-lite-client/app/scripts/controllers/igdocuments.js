@@ -316,7 +316,7 @@ angular.module('igl')
                             $scope.loadTables().then(function () {
                                 $scope.collectMessages();
                                 $scope.sortByLabels();
-                                $scope.loadMastermap();
+//                                $scope.loadMastermap();
                                 $scope.loadFilter();
                                 $scope.loadToc();
                                 $scope.messagesParams = $scope.getMessageParams();
@@ -425,9 +425,9 @@ angular.module('igl')
             $rootScope.$emit('event:loadFilter', $rootScope.igdocument);
         };
 
-        $scope.loadMastermap = function () {
-            $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
-        };
+//        $scope.loadMastermap = function () {
+//            $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
+//        };
 
 
 
@@ -1210,7 +1210,7 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
                 	$rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newLink);
                 	$rootScope.tables.splice(0, 0, newTable);
                     $rootScope.tablesMap[newTable.id] = newTable;
-                    MastermapSvc.addValueSetObject(newTable, []);
+//                    MastermapSvc.addValueSetObject(newTable, []);
                     $rootScope.$broadcast('event:SetToC');
                     
                 }, function (error) {
