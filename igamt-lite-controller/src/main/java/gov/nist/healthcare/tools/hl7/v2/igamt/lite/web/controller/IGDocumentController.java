@@ -20,6 +20,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguratio
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageMap;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
@@ -816,6 +817,23 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/section/save", method = RequestMethod.POST)
+	public boolean saveSection(@PathVariable("id") String id,
+			@RequestBody Section section, HttpServletRequest request,
+			HttpServletResponse response) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
+		IGDocument d = igDocumentService.findOne(id);
+		if (d == null) {
+			throw new IGDocumentNotFoundException(id);
+		}
+		
+		Set<Section> newChildSection = d.getChildSections();
+		newChildSection.add(section);
+		d.setChildSections(newChildSection);
+		igDocumentService.save(d);
+		return true;
+	}
+	
+	@RequestMapping(value = "/{id}/section/update", method = RequestMethod.POST)
 	public boolean updateSection(@PathVariable("id") String id,
 			@RequestBody Section section, HttpServletRequest request,
 			HttpServletResponse response) throws IOException,
@@ -824,17 +842,21 @@ public class IGDocumentController extends CommonController {
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
 		}
-		Section s = findSection(d, section.getId());
+		String idSect= section.getId();
+        Section s = findSection(d, idSect);
 		if (s == null)
-			throw new IGDocumentException("Unknown Section");
+		throw new IGDocumentException("Unknown Section");
+		
 		s.merge(section);
 		igDocumentService.save(d);
 		return true;
 	}
+	
+	
 
-	@RequestMapping(value = "/{id}/section/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}/section/{sectionId}/delete", method = RequestMethod.POST)
 	public boolean updateSection(@PathVariable("id") String id,
-			@RequestParam("sectionId") String sectionId,
+			@PathVariable("sectionId") String sectionId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException,
 			IGDocumentException {
@@ -881,15 +903,15 @@ public class IGDocumentController extends CommonController {
 		if (parent.getId().equals(sectionId))
 			return parent;
 		if (parent.getChildSections() != null)
-			for (Object child : parent.getChildSections()) {
-				if (child instanceof Section) {
+			for (Section child : parent.getChildSections()) {
+			
 					Section section = (Section) child;
 					Section f = findSection(section, sectionId);
 					if (f != null) {
 						return f;
 					}
 				}
-			}
+			
 		return null;
 	}
 
@@ -957,5 +979,33 @@ public class IGDocumentController extends CommonController {
 
 		return null;
 	}
+	
+	@RequestMapping(value = "/{id}/reorderMessages", method = RequestMethod.POST)
+	public String reorderMessages(@PathVariable("id") String id,
+			@RequestBody Set<MessageMap> messagesMap) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
+		System.out.println(id);
+
+		IGDocument d = igDocumentService.findOne(id);
+		if (d == null) {
+			throw new IGDocumentNotFoundException(id);
+		}
+		for (Message message: d.getProfile().getMessages().getChildren() ){
+			for(MessageMap map : messagesMap){
+				if(message.getId().equals(map.getId())){
+					message.setPosition(map.getPosition());
+				}
+			}
+			
+		}
+		messageService.save(d.getProfile().getMessages().getChildren());
+
+		return null;
+	}
 
 }
+	
+	
+	
+	
+

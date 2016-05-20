@@ -45,12 +45,12 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $scope.login = function () {
-//        console.log("in login");
+//        //console.log("in login");
             $scope.$emit('event:loginRequest', $scope.username, $scope.password);
         };
 
         $scope.loginReq = function () {
-//        console.log("in loginReq");
+//        //console.log("in loginReq");
             if ($rootScope.loginMessage()) {
                 $rootScope.loginMessage().text = "";
                 $rootScope.loginMessage().show = false;
@@ -537,7 +537,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 //            $rootScope.changes[type][object.id][changeType] = object[changeType];
 //        }
 //
-//        console.log("Change is " + $rootScope.changes[type][object.id][changeType]);
+//        //console.log("Change is " + $rootScope.changes[type][object.id][changeType]);
             $rootScope.recordChanged();
         };
 
@@ -1767,16 +1767,16 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getLabel = function (name, ext) {
-        	//console.log("*********"+name+ext);
+        	////console.log("*********"+name+ext);
         	var label="";
             if (ext && ext !== null && ext !== "") {
-            	console.log("*********"+name + "_" + ext);
+            	////console.log("*********"+name + "_" + ext);
             	label= name + "_" + ext;
            
             } else {
                 label =name;
             }
-            console.log(label);
+            ////console.log(label);
             return label; 
         };
 
@@ -1892,7 +1892,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getExtensionInLibrary = function (id, library,propertyType) {
-//            console.log("main Here id=" + id);
+//            //console.log("main Here id=" + id);
             if(propertyType && library.children){
                 for(var i=0;  i< library.children.length;i ++){
                     if(library.children[i].id === id){
@@ -1969,7 +1969,7 @@ angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user
     };
 
     $scope.login = function () {
-//        console.log("logging in...");
+//        //console.log("logging in...");
         $modalInstance.close($scope.user);
     };
 }]);

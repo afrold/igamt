@@ -13,10 +13,9 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService) 
         });
         return delay.promise;
     };
-
-    svc.delete = function (id, sectionId) {
+    svc.update = function (id, section) {
         var delay = $q.defer();
-        $http.post('api/igdocuments/'+ id+ '/section/delete', {params:{sectionId: sectionId}}).then(function (response) {
+        $http.post('api/igdocuments/'+ id+ '/section/update', section).then(function (response) {
             var saveResponse = angular.fromJson(response.data);
             delay.resolve(saveResponse);
         }, function (error) {
@@ -25,5 +24,15 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService) 
         return delay.promise;
     };
 
+    svc.delete = function (id, sectionId) {
+        var delay = $q.defer();
+        $http.post('api/igdocuments/'+ id+ '/section/'+sectionId+'/delete').then(function (response) {
+            var saveResponse = angular.fromJson(response.data);
+            delay.resolve(saveResponse);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
     return svc;
 });
