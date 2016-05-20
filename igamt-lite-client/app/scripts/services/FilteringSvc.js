@@ -194,24 +194,12 @@ angular
     };
 
     svc.filterByMsg = function(leaf, filterElt){
-      if (leaf.id === filterElt.id){
-        return true;
-      }
-      if (leaf.id !== undefined && leaf.type !== undefined){
-          if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined) {
+        if (leaf.id !== undefined && leaf.type !== undefined){
+            if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined) {
                return (MastermapSvc.getElementByKey(leaf.id, leaf.type, "message").indexOf(filterElt.id) !== -1);
-          } 
-       } else {
-//           console.log("UNDEFINED ELEMENT!!");
-//           console.log("--> mastermap");
-//           console.log(MastermapSvc.getMastermap());
-//           console.log("--> undefined leaf");
-//           console.log(leaf.id);
-//           console.log(leaf.type);
-//           console.log("filter");
-//           console.log(filterElt);
-           return false;
-      }
+            }
+        }
+//        return false;
     }
 
     svc.filterByUsage = function(leaf, filter){
