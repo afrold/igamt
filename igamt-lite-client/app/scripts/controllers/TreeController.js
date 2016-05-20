@@ -419,7 +419,7 @@ angular
                                                	console.log($itemScope.data);
                                         	   $scope.deleteDatatype($itemScope.data);
                                                } ]
-
+                                           ];
 
             $scope.DataTypeLibraryOptions = [
                  ['add datatypes',
