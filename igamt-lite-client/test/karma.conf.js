@@ -71,6 +71,10 @@ module.exports = function(config) {
       'bower_components/froala-wysiwyg-editor/js/plugins/video.min.js',
       'bower_components/angular-froala/src/angular-froala.js',
       'bower_components/ng-notifications-bar/dist/ngNotificationsBar.min.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.min.js',
+      'bower_components/angular-bootstrap-contextmenu/contextMenu.js',
+      'bower_components/angular-ui-tree/dist/angular-ui-tree.min.js',
+      'bower_components/angular-block-ui/dist/angular-block-ui.min.js',
 
       'app/dev/**/*.js',
       'app/lib/utils.js',
@@ -101,13 +105,14 @@ module.exports = function(config) {
       'app/lib/froala-plugins/js/plugins/table.min.js',
       'app/lib/froala-plugins/js/plugins/url.min.js',
 
-      'app/scripts/**/*.js',
+//      'app/scripts/**/*.js',
 //      'test/spec/controllers/**/hl7VersionsMessagesTest.js',
 //      'test/spec/services/**/ProfileAccessSvcTest.js',
 //      'test/spec/services/**/ToCSvcTest.js',
 //      'test/spec/services/**/CloneDeleteSvcTest.js',
-      'test/spec/services/**/DatatypeLibrarySvcTest.js',
-     { pattern:  'test/fixtures/igDocuments/*.json',
+//      'test/spec/services/**/DatatypeLibrarySvcTest.js',
+        'test/spec/services/**/ProfileAccessSvcTest.js',
+     { pattern:  'test/fixtures/*.json',
           watched:  true,
           served:   true,
           included: false }
