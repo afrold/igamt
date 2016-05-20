@@ -187,7 +187,7 @@
    <div class="col-sm-6">
    <label class="control-label" for="hl7Version">HL7 Version</label>
     <input class="form-control"  type="text"
-           name="hl7Version"
+           name="hl7Version" disabled
            ng-model="datatypeLibMetaDataCopy.hl7Version"
            required/>
 	</div>
@@ -238,16 +238,38 @@
 </div>
 </div>
 </script>
-<!--   <ol ui-tree-nodes="" ng-model="datatypesJoinStruct"> -->
-<!--     <li ng-repeat="dataLibrary in datatypesJoinStruct" ui-tree-node> -->
-
-<!--       <div ui-tree-handle data-nodrag ng-click="showMetadata()" > -->
-<!-- 	<i data-nodrag ng-click="toggle(this)" -->
-<!-- 							class="fa fa-caret-down" -->
-<!-- 							ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !collapsed}"></i> -->
-<!--      {{datatypeLibStruct.metaData.name}} -->
-<!--       </div> -->
 <script type="text/ng-template" id="DatatypeList.html">
+
+<div ui-tree ng-controller="TreeCtrl">
+  <ol ui-tree-nodes="" ng-model="DataTypeTree">
+    <li ng-repeat="dataLibrary in DataTypeTree" ui-tree-node>
+
+      <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="DataTypeLibraryOptions">
+    <i data-nodrag ng-click="toggle(this)"
+                            class="fa fa-caret-down"
+                            ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !collapsed}"></i>
+     {{dataLibrary.metaData.name}}
+      </div>
+      <ol ui-tree-nodes="" ng-model="dataLibrary.children">
+        <li ng-repeat="data in dataLibrary.children| orderBy :'label'"" ui-tree-node >
+
+                  
+                            <div ui-tree-handle class="messageSubContent" data-nodrag style="font-weight:normal;cursor:pointer;"
+                                 context-menu="DataTypeOptionsInLib">
+                                <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+
+                                'label-USE':  getScopeLabel(data)==='USE','label-MASTER':getScopeLabel(data)==='MAS'}" >{{getScopeLabel(datatypeLibStruct.scope)}}</span>
+                                <span data-nodrag
+                                    ng-class="{selected : data.id===activeModel}"
+                                    ng-click= "editDatatype(data);Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}</span>
+                            </div>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</div>
+</script>
+<script type="text/ng-template" id="DatatypeListold.html">
 <div ui-tree data-nodrag ng-controller="TreeCtrl" style = "margin-left:15px;">
 <div ng-click="editMetadata()" context-menu="DataTypeLibraryOptions"> 
 <i  ng-click="switcherDatatypeLibrary()" class="fa fa-caret-down" 
@@ -387,9 +409,9 @@
 <form name="datatypeForm" novalidate class="form-horizontal">
 <div class="row">
     <div class="col-md-12 igl-page-header">
-        <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeLibStruct.ext)}}</span>
+        <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeCopy.ext)}}</span>
                      <span class="pull-right">
-  		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng.model="datatypeCopy.publish" style="margin-right : 8px"/>Publish</label>
+  		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-model="datatypeCopy.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatypeCopy.status === 'PUBLISHED'" style="margin-right : 8px"/>Published</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"
                  ng-hide="datatypeCopy.scope !== 'USER'"
@@ -398,7 +420,7 @@
          </button>
                          <button title="Cancel Changes" type="button" class="btn btn-xs btn-warning"
                                  ng-hide="datatypeCopy.scope !== 'USER'"
-                                 ng-click="cancel()">
+                                 ng-click="cancelDatatype()">
                              <span><i class="fa fa-times fa-fw"></i> Cancel</span>
                          </button>
     </span>
@@ -414,10 +436,9 @@
         <div class="col-md-1 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
-                <label class="control-label">Flavor</label>
-                <input type="text" ng-disabled="viewSettings.tableReadonly"
-                       ng-change="recordChanged()"
-                       name="label" id="label" class="form-control" ng-model="datatypeCopy.label"
+                <label class="control-label">Name</label>
+                <input type="text" disabled
+                       name="name" id="label" class="form-control" ng-model="datatypeCopy.name"
                        required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
                                           ng-show="isDuplicated(datatypeCopy,'label', datatypes)">Label already used</span>
@@ -426,9 +447,9 @@
         <div class="col-md-1 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
-                <label class="control-label">Root</label>
-                <input type="text" disabled
-                       name="name" class="form-control" ng-model="datatypeCopy.name"
+                <label class="control-label">Extension</label>
+                <input type="text"
+                       name="ext" class="form-control" ng-model="datatypeCopy.ext"
                        required>
             </div>
         </div>
@@ -444,27 +465,14 @@
                        required>
             </div>
         </div>
-        <div class="col-md-1 col-margin">
-            <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
-                <label class="control-label">Extension</label>
-                <input type="text"
-                       ng-change="recordChanged()"
-                       ng-disabled="viewSettings.tableReadonly || datatypeCopy.scope !== 'USER'"
-                       name="label" id="ext" class="form-control" ng-model="datatypeCopy.ext"
-                       required aria-describedby="helpBlock2">
-                                    <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(datatypeCopy,'label', datatypes)">Extension already used</span>
-            </div>
-        </div>
-         <div class="col-md-1 col-margin">
+         <div class="col-md-2 col-margin">
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
-                <label class="control-label">HL7 Version</label>
+                <label class="control-label" style="text-align : center">HL7 Version</label>
                 <input type="text" disabled
                        ng-change="recordChanged()"
                        name="description" class="form-control" ng-model="datatypeCopy.hl7Version"
-                       required>
+                       required style="text-align : center">
             </div>
         </div>
          <div class="col-md-6 col-margin">
