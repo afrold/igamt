@@ -40,7 +40,8 @@ angular.module('igl')
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
                     FilteringSvc.addMsgInFilter(message.name, message.id);
                 }
-                MastermapSvc.addMessage(message, []);
+//                MastermapSvc.addMessage(message, []);
+                MastermapSvc.addMessage(newMessage, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 $rootScope.$broadcast('event:SetToC');
                 $rootScope.message = angular.copy(message);
             }, function (error) {

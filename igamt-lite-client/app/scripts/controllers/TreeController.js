@@ -507,8 +507,7 @@ angular
 
 
             $scope.showToC = function (leaf) {
-//                return FilteringSvc.showToC(leaf);
-                return true;
+                return FilteringSvc.showToC(leaf);
             };
             
             $scope.getScopeLabel = function (leaf) {

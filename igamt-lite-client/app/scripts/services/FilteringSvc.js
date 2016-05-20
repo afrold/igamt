@@ -138,7 +138,12 @@ angular
 
     svc.addMsgInFilter = function(name, msgId){
         if (name != undefined && msgId !== undefined) {
-            svc.getMsgmodel().push({"label": name, "id": msgId});
+        //if (svc.searchById(svc.getMsgmodel(), msgId !== undefined) {
+            if (_.find(svc.getMsgmodel(), function(usg) {
+                    return usg.id === msgId;
+                }).length !== 0) {
+                    svc.getMsgmodel().push({"label": name, "id": msgId});
+                }
             }
     };
 

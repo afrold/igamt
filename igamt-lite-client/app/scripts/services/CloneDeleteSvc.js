@@ -67,7 +67,7 @@ angular.module('igl').factory(
                 	$rootScope.segment = newSegment;
                 	$rootScope.segmentsMap[newSegment.id] = newSegment;
                 	//TODO MasterMap need to add Segment
-//                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 	$rootScope.processElement(newSegment);
                 	$rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openSegment', newSegment);
@@ -184,7 +184,7 @@ angular.module('igl').factory(
                         }
                     }
                     //TODO MasterMap need to add table
-//                    MastermapSvc.addValueSetObject(newTable, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                    MastermapSvc.addValueSetObject(newTable, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openTable', newTable);
 
@@ -220,7 +220,7 @@ angular.module('igl').factory(
                     
                     $rootScope.processElement(newMessage);
                     //TODO Mastermap need to add Message
-//                    MastermapSvc.addMessage(newMessage, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                    MastermapSvc.addMessage(newMessage, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                     FilteringSvc.addMsgInFilter(newMessage.name, newMessage.id);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openMessage', newMessage);
@@ -600,6 +600,7 @@ angular.module('igl').factory(
             var rval = deleteSegments(segmentRefsLive, segmentRefsSincerelyDead);
             //TODO mastermap need to delete message
 //            MastermapSvc.deleteMessage(message.id);
+//            FilteringSvc.removeMsgFromFilter(message.id);
             return rval;
         }
 
