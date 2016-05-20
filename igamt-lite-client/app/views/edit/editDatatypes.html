@@ -19,18 +19,18 @@
 </div>
 <div ng-show="!loadingSelection">
 <div ng-show="datatype !== null" id="executionPanel">
-<form name="datatypeForm" id="datatypeForm" novalidate class="form-horizontal">
+<form name="editForm" id="editForm" novalidate class="form-horizontal" confirm-on-leave>
 <div class="row" style="margin-left:0px; margin-right: 20px">
 <div class="page-header" style="margin-bottom: 20px">
     <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
             <span class="pull-right">
-         <button title="Save Changes" type="button" class="btn btn-md btn-primary"
-                 ng-disabled="datatypeForm.$invalid"
+         <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
+                 ng-disabled="editForm.$invalid"
                  ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
-                         <button title="Cancel Changes" type="button" class="btn btn-md btn-warning"
+                         <button title="Cancel Changes" type="button" class="btn btn-sm btn-warning"
                                  ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                                  ng-click="cancel()">
                              <span><i class="fa fa-times fa-fw"></i> Cancel</span>
@@ -41,7 +41,7 @@
 <tabset>
 <tab heading="MetaData">
     <div class="form-group control-group"
-         ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
+         ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
         <label class="col-md-2 control-label">Name</label>
 
         <div class="col-md-10">
@@ -52,7 +52,7 @@
     </div>
 
     <div class="form-group control-group"
-         ng-class="{'igl-has-error has-feedback' : datatypeForm.ext.$invalid}">
+         ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}">
         <label class="col-md-2 control-label">Extension</label>
 
         <div class="col-md-10">
@@ -62,12 +62,12 @@
                    name="ext" id="ext" class="form-control" ng-model="datatype.ext"
                    required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(datatype,'ext', igdocument.profile.datatypeLibrary.children)">Extension already used</span>
+                                          ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', igdocument.profile.datatypeLibrary.children)">Extension already used</span>
         </div>
     </div>
 
     <div class="form-group control-group"
-         ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
+         ng-class="{'igl-has-error has-feedback' : editForm.description.$invalid}">
         <label class="col-md-2 control-label">Description</label>
 
         <div class="col-md-10">
@@ -79,7 +79,7 @@
     </div>
 
     <div class="form-group control-group"
-         ng-class="{'igl-has-error has-feedback' : datatypeForm.hl7Version.$invalid}">
+         ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
         <label class="col-md-2 control-label">HL7 Version</label>
 
         <div class="col-md-10">
@@ -91,7 +91,7 @@
     </div>
 
     <div class="form-group control-group"
-         ng-class="{'igl-has-error has-feedback' : datatypeForm.purposeUse.$invalid}">
+         ng-class="{'igl-has-error has-feedback' : editForm.purposeUse.$invalid}">
         <label class="col-md-2 control-label">Purpose and Use</label>
 
         <div class="col-md-10">
@@ -105,7 +105,7 @@
     </div>
 
     <div class="form-group control-group"
-         ng-class="{'igl-has-error has-feedback' : datatypeForm.comment.$invalid}">
+         ng-class="{'igl-has-error has-feedback' : editForm.comment.$invalid}">
         <label class="col-md-2 control-label">Comment</label>
 
         <div class="col-md-10">
@@ -120,7 +120,7 @@
     </div>
 
     <div class="form-group control-group"
-         ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
+         ng-class="{'igl-has-error has-feedback' : editForm.text.$invalid}">
         <label class="col-md-2 control-label">Definition Text</label>
 
         <div class="col-md-10">
@@ -173,7 +173,7 @@
 
         <!--&lt;!&ndash;</accordion-heading>&ndash;&gt;-->
 
-        <!--<form class="form-horizontal" name="datatypeForm">-->
+        <!--<form class="form-horizontal" name="editForm">-->
 
 
         <div class="table-responsive">
@@ -223,7 +223,7 @@
                         	</span>
                             <span class="pull-right">
 								<button class="btn btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
-                                        ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-plus fa-fw">
+                                        ng-hide="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')"><span><i class="fa fa-plus fa-fw">
                                     &nbsp; </i>Add Conf.Statement</span></button>
                             </span>
                 </div>
@@ -272,7 +272,7 @@
                         	</span>
                             <span class="pull-right">
 								<button class="btn btn-primary btn-xs" ng-click="managePredicate(null);"
-                                        ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-plus fa-fw">
+                                        ng-hide="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')"><span><i class="fa fa-plus fa-fw">
                                     &nbsp; </i>Add Predicate</span></button>
                             </span>
                         </div>
@@ -503,7 +503,7 @@
                     <!--ng-class="{ 'igl-has-error has-feedback' : innerForm.datatype.$invalid}"-->
                     <!--ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name">-->
                     <!--</select>-->
-                    <a ng-click="showSelectDatatypeFlavorDlg(node)">
+                    <a ng-click="showSelectDatatypeFlavorDlg(node)" class="point">
                         {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                     </a>
                 </div>
@@ -1692,11 +1692,10 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="row in tmpResults | orderBy:'row.ext'"
-                                        ng-class="{'selected': selection.selected != null && row.id === selection.selected.id}">
+                                    <tr ng-repeat="row in tmpResults | orderBy:'row.ext'">
                                         <td st-ratio="40">{{$index + 1}}
-                                            <input type="radio" ng-model="$parent.selection.selected" ng-value="row.id"
-                                                   ng-click="showSelectedDetails(row)"> {{getLocalDatatypeLabel(row)}}
+                                            <input type="radio" ng-model="selection.selected" ng-value="row.id"
+                                                   ng-click="showSelectedDetails(row)"> {{getDatatypeLabel(row)}}
                                         </td>
                                         <td st-ratio="20">{{row.hl7Version}}</td>
                                         <td st-ratio="40">{{row.libraryName}}</td>

@@ -27,6 +27,8 @@ Cloneable, Comparable<Segment> {
 	private String id;
 
 	private String label;
+	
+	private String ext;
 
 	private List<Field> fields = new ArrayList<Field>();
 
@@ -50,11 +52,6 @@ Cloneable, Comparable<Segment> {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public String getLabel() {
-		return label;
-	}
-
 	 
 	public void setLabel(String label) {
 		this.label = label;
@@ -219,4 +216,16 @@ Cloneable, Comparable<Segment> {
             append(id, rhs.id).
             isEquals();
     }
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
+
+	public String getLabel() {
+		return label;
+	}
 }

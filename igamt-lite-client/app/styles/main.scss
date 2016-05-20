@@ -1614,8 +1614,8 @@ input.account-input {
   cursor: pointer;
 }
 
-.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
-    background-color: #428bca;
+.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a {
+    background-color: #1b51ca;
 //    border-color: #bce8f1;
     color: white;
 }
@@ -2034,16 +2034,12 @@ ul.dropdown-menu, ul.dropdown-menu > li {
   color:black;
 }
 
-//.nav-tabs > .active > a:hover {
-//  background-color: #ffcc00;
-//}
-
 .nav-tabs > a:hover {
   color: black;
 }
 
 //.nav > li > a:hover {
-// background-color: #ffec9d;
+//background-color: #ffec9d;
 //}
 
 .navbar-default .navbar-nav > li > a {

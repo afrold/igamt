@@ -719,7 +719,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         	}else {
         		return "";
         	}
-        }
+        };
         $rootScope.processElement = function (element, parent) {
             try {
                 if(element != undefined && element != null) {
@@ -921,7 +921,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
             } else if (angular.equals(obj.type, 'segment')) {
                     angular.forEach(obj.fields, function (field) {
-                        $rootScope.findTableRefs(table, field, path + "-" + field.postion);
+                        $rootScope.findTableRefs(table, field, path + "-" + field.position);
                     });
             } else if (angular.equals(obj.type, 'datatype')) {
                 if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
@@ -1768,16 +1768,13 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.getLabel = function (name, ext) {
         	//console.log("*********"+name+ext);
-        	var label="";
+        	var label=name;
             if (ext && ext !== null && ext !== "") {
             	console.log("*********"+name + "_" + ext);
-            	label= name + "_" + ext;
-           
-            } else {
-                label =name;
+            	label= label + "_" + ext;
             }
             console.log(label);
-            return label; 
+            return label;
         };
 
         $rootScope.getDynamicWidth = function (a, b, otherColumsWidth) {
