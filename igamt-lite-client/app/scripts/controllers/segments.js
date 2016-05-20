@@ -12,11 +12,13 @@ angular.module('igl')
         $scope.selectedChildren = [];
         $scope.saving = false;
 
-        
         $scope.reset = function () {
         	$scope.editForm.$dirty = false;
-        	$rootScope.clearChanges();
-        	SegmentService.merge($rootScope.segment, $rootScope.segmentsMap[$rootScope.segment.id]);
+            $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
+            $rootScope.clearChanges();
+            if ($scope.segmentsParams) {
+                $scope.segmentsParams.refresh();
+            }
         };
 
         $scope.close = function () {

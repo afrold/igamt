@@ -817,6 +817,7 @@ angular.module('igl')
         $scope.selectMessage = function (message) {
             $scope.subview = "EditMessages.html";
             $scope.loadingSelection = true;
+            $rootScope.originalMessage = message;
             $rootScope.message = angular.copy(message);
             $timeout(
                 function () {
@@ -857,7 +858,7 @@ angular.module('igl')
             $timeout(
                 function () {
                     $rootScope.section = angular.copy(section);
-                    $rootScope.entry = entry;
+                    $rootScope.originalSection = section;
                     $scope.loadingSelection = false;
                 }, 100);
         };
@@ -1047,9 +1048,10 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
             });
         }
     };
-    $scope.cancel = function () {
-        $rootScope.metaData = null;
+    $scope.reset = function () {
+        $scope.editForm.$dirty = false;
         $rootScope.clearChanges();
+        $rootScope.metaData = angular.copy( $rootScope.igdocument.metaData);
     };
 
     $scope.$watch(function(){
@@ -1080,9 +1082,11 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
             });
         }
     };
-    $scope.cancel = function () {
-        $rootScope.metaData = null;
+    $scope.reset = function () {
+        $scope.editForm.$dirty = false;
         $rootScope.clearChanges();
+        $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
+
     };
 
     $scope.$watch(function(){
