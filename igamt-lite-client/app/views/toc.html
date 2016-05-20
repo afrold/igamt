@@ -100,7 +100,9 @@
             <ol ui-tree-nodes="" ng-model="TreeIgs">
                 <li ng-repeat="ig in TreeIgs" ui-tree-node ng-init="updatePositions(ig.childSections)">
                     <div ui-tree-handle class="treeRoot">
+
                         <span data-nodrag ng-click="editIg(ig)" context-menu="igOptions">{{igdocument.metaData.title}}</span>
+
                     </div>
 
 
@@ -113,6 +115,7 @@
                                 ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i>
  								<span data-nodrag data-nodrag
                                       ng-class="{selected : section.id===activeModel}"
+                                      confirm-click
                                       ng-click="editSection(section);Activate(section.id)">
  								{{getLabel(this)}}.{{section.sectionTitle}} </span>
                         </div>
@@ -177,6 +180,7 @@
                         <li ng-repeat="segment in segments  | orderBy :'label' | filter:showToC"
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
+                                 confirm-click
                                  ng-click="editSeg(segment)" context-menu="SegmentOptions">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : segment.id===activeModel}"
@@ -202,6 +206,7 @@
                         <li ng-repeat="data in datatypes  | orderBy :'label' | filter:showToC" ui-tree-node
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
+                                 confirm-click
                                  ng-click="editDataType(data);debug(data)" context-menu="DataTypeOptions">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : data.id===activeModel}"

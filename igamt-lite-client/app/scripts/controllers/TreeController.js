@@ -11,7 +11,6 @@ angular
 
         function ($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc,FilteringSvc,SectionSvc) {
 
-
             $scope.collapsedata = false;
             $scope.collapsemessage = false;
             $scope.collapsesegment = false;
@@ -660,7 +659,9 @@ angular
                 return label; 
             };
 
-            var preventChangesLost = function(){
+
+            var preventChangesLost = function(event){
+
                 if ($rootScope.hasChanges()) {
                     if(!confirm("You have unsaved changes, Do you want to stay on the page?")) {
                         event.preventDefault();

@@ -34,5 +34,15 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService) 
         });
         return delay.promise;
     };
+
+    svc.merge = function(oldValue, newValue){
+        oldValue.id =  newValue.id;
+        oldValue.sectionTitle =  newValue.sectionTitle;
+        oldValue.sectionDescription =  newValue.sectionDescription;
+        oldValue.sectionPosition =  newValue.sectionPosition;
+        oldValue.sectionContents =  newValue.sectionContents;
+        oldValue.type =  newValue.type;
+    };
+
     return svc;
 });

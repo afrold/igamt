@@ -19,8 +19,11 @@ angular.module('igl')
         
         $scope.reset = function () {
         	$scope.editForm.$dirty = false;
-        	$rootScope.clearChanges();
-        	DatatypeService.merge($rootScope.datatype, $rootScope.datatypesMap[$rootScope.datatype.id]);
+            $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
+            $rootScope.clearChanges();
+            if ($scope.datatypesParams) {
+                $scope.datatypesParams.refresh();
+            }
         };
 
         $scope.recordDatatypeChange = function (type, command, id, valueType, value) {

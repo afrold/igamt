@@ -13,12 +13,13 @@ angular.module('igl')
             $rootScope.$broadcast('event:SetToC');
         };
 
-        $scope.close = function () {
-            $rootScope.message = null;
+        $scope.reset = function () {
+            $scope.editForm.$dirty = false;
+            $rootScope.message = angular.copy($rootScope.originalMessage);
+            $rootScope.clearChanges();
             if ($scope.messagesParams) {
                 $scope.messagesParams.refresh();
             }
-            $rootScope.clearChanges();
         };
 
 
