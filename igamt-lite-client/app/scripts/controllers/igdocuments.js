@@ -92,15 +92,15 @@ angular.module('igl')
          */
         $scope.initIGDocuments = function () {
             $scope.loadIGDocuments().then(function () {
-                $timeout(function () {
-                    var igdocument = StorageService.getIgDocument();
-                    if (igdocument != null) {
-                        var found = $scope.findOne(igdocument.id);
-                        if (found != null) {
-                            $scope.selectIGDocument(igdocument);
-                        }
-                    }
-                }, 1000);
+//                $timeout(function () {
+//                    var igdocument = StorageService.getIgDocument();
+//                    if (igdocument != null) {
+//                        var found = $scope.findOne(igdocument.id);
+//                        if (found != null) {
+//                            $scope.selectIGDocument(igdocument);
+//                        }
+//                    }
+//                }, 1000);
             });
 
             $scope.getScrollbarWidth();
@@ -257,13 +257,24 @@ angular.module('igl')
             return null;
         };
 
+        var preventChangesLost = function(){
+            if ($rootScope.hasChanges()) {
+                if(!confirm("You have unsaved changes, Do you want to stay on the page?")) {
+                    event.preventDefault();
+                }
+            }
+        }
+
         $scope.show = function (igdocument) {
             $scope.toEditIGDocumentId = igdocument.id;
             try {
+
                 if ($rootScope.igdocument != null && $rootScope.igdocument === igdocument) {
                     $scope.openIGDocument(igdocument);
                 } else if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
-                    $scope.confirmOpen(igdocument);
+                    preventChangesLost();
+                    $scope.openIGDocument(igdocument);
+//                    $scope.confirmOpen(igdocument);
                     $scope.toEditIGDocumentId = null;
                 } else {
                     $scope.openIGDocument(igdocument);
@@ -1038,7 +1049,15 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
     };
     $scope.cancel = function () {
         $rootScope.metaData = null;
+        $rootScope.clearChanges();
     };
+
+    $scope.$watch(function(){
+        return $rootScope.metaData;
+    }, function() {
+        $rootScope.recordChanged();
+    }, true);
+
 });
 
 angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootScope, $http,ProfileSvc) {
@@ -1063,7 +1082,14 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
     };
     $scope.cancel = function () {
         $rootScope.metaData = null;
+        $rootScope.clearChanges();
     };
+
+    $scope.$watch(function(){
+        return $rootScope.metaData;
+    }, function() {
+        $rootScope.recordChanged();
+    }, true);
 });
 
 

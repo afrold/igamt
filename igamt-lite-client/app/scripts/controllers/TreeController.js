@@ -365,25 +365,27 @@ angular
             
             $scope.editSeg = function (seg) {
                 // console.log("EditSeg")
-
+                preventChangesLost();
                 $scope.$emit('event:openSegment', seg);
 
             }
 
             $scope.editIg = function (ig) {
+                preventChangesLost();
                 $rootScope.igdocument = ig;
                 $scope.$emit('event:openDocumentMetadata',
                     $rootScope.igdocument);
             }
 
             $scope.editSection = function (section) {
+                preventChangesLost();
                 $rootScope.section = section;
                 $scope.$emit('event:openSection', $rootScope.section);
             }
 
 
             $scope.editRoutSection = function (param) {
-
+                preventChangesLost();
                 $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
             }
 
@@ -422,20 +424,24 @@ angular
                 return section;
             }
             $scope.editDataType = function (data) {
+                preventChangesLost();
                 $rootScope.datatype = data;
                 $scope.$emit('event:openDatatype', $rootScope.datatype);
             }
 
             $scope.editTable = function (table) {
+                preventChangesLost();
                 $rootScope.table = table;
                 $scope.$emit('event:openTable', $rootScope.table);
             }
 
             $scope.editMessage = function (message) {
+                preventChangesLost();
                 $rootScope.message = message;
                 $scope.$emit('event:openMessage', message);
             }
             $scope.editProfile = function () {
+                preventChangesLost();
             	 $scope.Activate("Message Infrastructure");
                 $scope.$emit('event:openProfileMetadata',
                     $rootScope.igdocument);
@@ -506,10 +512,11 @@ angular
 //            };
 
 
-//            $scope.showToC = function (leaf) {
+            $scope.showToC = function (leaf) {
 //                return FilteringSvc.showToC(leaf);
-//            };
-            
+                return true;
+            };
+
             $scope.getScopeLabel = function (leaf) {
             if (leaf.scope==='HL7STANDARD'){
             	return 'HL7';
@@ -541,7 +548,15 @@ angular
                 }
                 return label; 
             };
-            
+
+
+            var preventChangesLost = function(){
+                if ($rootScope.hasChanges()) {
+                    if(!confirm("You have unsaved changes, Do you want to stay on the page?")) {
+                        event.preventDefault();
+                    }
+                }
+            }
 
 
 

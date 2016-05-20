@@ -313,9 +313,8 @@ angular.module('igl')
             });
             $rootScope.datatype = null;
             $scope.selectedChildren = [];
-            $scope.editForm.$setPristine();
-            // revert
-        };
+            $rootScope.clearChanges();
+         };
 
         var searchById = function (id) {
             var children = $rootScope.igdocument.profile.datatypeLibrary.children;
@@ -362,6 +361,12 @@ angular.module('igl')
             });
 
         };
+
+        $scope.$watch(function(){
+            return $rootScope.datatype;
+        }, function() {
+            $rootScope.recordChanged();
+        }, true);
 
 
     });
