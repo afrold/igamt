@@ -318,6 +318,7 @@ angular.module('igl')
             });
             $rootScope.segment = null;
             $scope.selectedChildren = [];
+            $rootScope.clearChanges();
             // revert
         };
 
@@ -372,6 +373,12 @@ angular.module('igl')
             });
 
         };
+
+        $scope.$watch(function(){
+            return $rootScope.segment;
+        }, function() {
+            $rootScope.recordChanged();
+        }, true);
 
     });
 

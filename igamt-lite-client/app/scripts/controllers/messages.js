@@ -18,6 +18,7 @@ angular.module('igl')
             if ($scope.messagesParams) {
                 $scope.messagesParams.refresh();
             }
+            $rootScope.clearChanges();
         };
 
 
@@ -185,6 +186,13 @@ angular.module('igl')
                 return true;
             }
         };
+
+        $scope.$watch(function(){
+            return $rootScope.message;
+        }, function() {
+            $rootScope.recordChanged();
+        }, true);
+
     });
 
 
