@@ -1770,13 +1770,13 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         	//console.log("*********"+name+ext);
         	var label="";
             if (ext && ext !== null && ext !== "") {
-            	console.log("*********"+name + "_" + ext);
+            //	console.log("*********"+name + "_" + ext);
             	label= name + "_" + ext;
            
             } else {
                 label =name;
             }
-            console.log(label);
+           // console.log(label);
             return label; 
         };
 

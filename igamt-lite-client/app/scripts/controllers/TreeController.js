@@ -211,6 +211,16 @@ angular
             	console.log(leaf.$nodeScope.$modelValue.description);
             }
             $scope.sectionOption = [
+                                    
+                                    
+                                    ['add section',
+                                     function ($itemScope) {
+                                    	
+                                    	var newSection={childSections:[],sectionTitle:"new Section",sectionPosition:$itemScope.section.length};
+                                    	$itemScope.section.childSections.push(newSection);
+                                         
+                                     } ],
+                                 null,
 
                 ['copy',
                     function ($itemScope) {
@@ -257,12 +267,26 @@ angular
                 null,
                 ['delete',
                     function ($itemScope) {
+                	CloneDeleteSvc.confirmSegmentDelete($itemScope.segment);
                         CloneDeleteSvc.deleteSegment($itemScope.segment);
                     } ]
 
             ];
 
-            
+            $scope.igOptions = [
+
+                                     ['copy',
+                                         function ($itemScope) {
+                                             CloneDeleteSvc.copySegment($itemScope.segment);
+
+                                         } ],
+                                     null,
+                                     ['delete',
+                                         function ($itemScope) {
+                                             CloneDeleteSvc.deleteSegment($itemScope.segment);
+                                         } ]
+
+                                 ];
             
             
             $scope.DataTypeOptions = [
@@ -321,10 +345,13 @@ angular
 
             $scope.MessagesRootOption = [
 
+                [ 'add', function ($itemScope) {
+                    $scope.hl7Versions('ctx');
+                } ],
+                null,
                 [ 'export', function ($itemScope) {
                     $scope.selectMessages($rootScope.igdocument);
                 } ]
-
             ];
 
 
