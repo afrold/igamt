@@ -93,7 +93,7 @@ angular
     };
 
     svc.getUsages = function(){
-      return [{"label":"R" , "id":0},{"label":"RE" , "id":1},{"label":"O" , "id":2},{"label":"C" , "id":3},{"label":"X" , "id":4},{"label":"B" , "id":5}]
+      return [{"label":"R" , "id":0},{"label":"RE" , "id":1},{"label":"O" , "id":2},{"label":"C" , "id":3},{"label":"X" , "id":4},{"label":"B" , "id":5}];
     };
 
     svc.getUsageById = ["R", "RE", "O", "C", "X", "B"];
@@ -105,19 +105,19 @@ angular
         enableSearch: true,
         buttonClasses: 'btn btn-xs btn-primary',
         displayProp: 'label'
-      }
+      };
     };
 
     svc.getTexts = function(text){
-      return {
-        checkAll: 'Check All',
-        uncheckAll: 'Uncheck All',
-        selectionCount: 'checked',
-        selectionOf: '/',
-        searchPlaceholder: 'Search...',
-        buttonDefaultText: text,
-        dynamicButtonTextSuffix: 'checked'
-      }
+        return {
+            checkAll: 'Check All',
+            uncheckAll: 'Uncheck All',
+            selectionCount: 'checked',
+            selectionOf: '/',
+            searchPlaceholder: 'Search...',
+            buttonDefaultText: text,
+            dynamicButtonTextSuffix: 'checked'
+        };
     };
 
     svc.searchById = function(idKey, myArray){
@@ -162,17 +162,34 @@ angular
          svc.setUsagestexts(svc.getTexts("Usages"));
      };
 
-    svc.showToC = function(leaf){
-      var rst1 = false;
-      _.each(svc.getMsgmodel(), function(filterElt){
-        rst1 = rst1 || svc.filterByMsg(leaf, filterElt);
-      });
-      return rst1;
+    svc.showToC = function(node){
+        var rst1 = false;
+        _.each(svc.getMsgmodel(), function(filterElt){
+            rst1 = rst1 || svc.filterByMsg(node, filterElt);
+        });
+
+        return rst1;
+
+//        var rst2 = false;
+//        console.log(svc.getUsagesmodel());
+//        _.each(svc.getUsagesmodel(), function(filterElt){
+//            rst2 = rst2 || svc.filterByUsage(node, filterElt);
+//        });
+//
+//        var rst = rst1 && rst2;
+//        if (rst === undefined){
+//            console.log("R1");
+//            console.log(rst1);
+//            console.log("R2");
+//            console.log(rst2);
+//            rst = true;
+//        }
+//
+//        return rst;
     };
 
     svc.show = function(leaf){
       if (leaf === undefined) {
-//        console.log("Undefined leaf");
         return true;
       }
       var rst1 = false;
@@ -180,11 +197,10 @@ angular
         rst1 = rst1 || svc.filterByMsg(leaf, filterElt);
       });
 
-      var validUsages = [];
+      var rst2 = false;
       _.each(svc.getUsagesmodel(), function(filterElt){
-        validUsages.push(svc.getUsageById[filterElt.id]);
+        rst2 = rst || svc.filterByUsage(leaf, filterElt);
         });
-       var rst2 = svc.filterByUsage(leaf, validUsages);
 
        var rst = rst1 && rst2;
        if (rst === undefined){
@@ -199,24 +215,38 @@ angular
                return (MastermapSvc.getElementByKey(leaf.id, leaf.type, "message").indexOf(filterElt.id) !== -1);
             }
         }
-//        return false;
     }
 
-    svc.filterByUsage = function(leaf, filter){
-      if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
-        if (MastermapSvc.getUsage(leaf.id, leaf.type) !== undefined){
-          if (leaf.type === "message" || leaf.type === "table"){
-            return true;
-          } else {
-            var leafUsages = MastermapSvc.getUsage(leaf.id, leaf.type);
-            var rst = false;
-            _.each(leafUsages, function(usg){
-              rst = rst || (filter.indexOf(usg) !== -1);
-            });
-            return rst;
-          }
+    svc.filterByUsage = function(leaf, filterElt){
+        if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
+            if (MastermapSvc.getUsage(leaf.id, leaf.type) !== undefined){
+                if (MastermapSvc.getElementByKey(leaf.id, leaf.type, "usage").length === 0) {
+                    return true;
+                }
+                if (leaf.type === "message"){
+                    return (MastermapSvc.getUsage(leaf.id, leaf.type).indexOf(svc.getUsageById[filterElt.id]) !== -1);
+                }
+
+
+//                    console.log("usage");
+//                    console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
+//                    console.log("filterelt");
+//                    console.log(svc.getUsageById[filterElt.id]);
+//                    console.log("rst");
+//                    console.log(MastermapSvc.getUsage(leaf.id, leaf.type).indexOf(svc.getUsageById[filterElt.id]) !== -1);
+
+
+
+                if (leaf.type === "table"){
+                    return true;
+                }
+                if (leaf.type === "subcomponent"){
+                    return (MastermapSvc.getUsage(leaf.id, "component").indexOf(filterElt) !== -1);
+                } else {
+                    return (MastermapSvc.getUsage(leaf.id, leaf.type).indexOf(filterElt) !== -1);
+                }
+            }
         }
-      }
     }
 
   svc.showInnerHtml = function(node, parentNode){
