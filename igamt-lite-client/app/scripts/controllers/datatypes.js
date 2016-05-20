@@ -242,6 +242,7 @@ angular.module('igl')
                 var child = ComponentService.create($rootScope.datatype.components.length + 1);
                 $rootScope.datatype.components.push(child);
                 //TODO update master map
+                MastermapSvc.addDatatypeObject($rootScope.datatype, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 //TODO:remove as legacy code
                 $rootScope.parentsMap[child.id] = $rootScope.datatype;
                 if ($scope.datatypesParams)

@@ -125,7 +125,7 @@ angular.module('igl').factory(
                     $rootScope.datatypesMap[newDatatype.id] = newDatatype;
                     
                     //TODO MasterMap need to add Datatype
-//                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
+                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
                     
                     $rootScope.processElement(newDatatype);
                     $rootScope.$broadcast('event:SetToC');
@@ -361,7 +361,7 @@ angular.module('igl').factory(
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 //TODO MasterMap Need to delete Table
-//                MastermapSvc.deleteTable(table.id);
+                MastermapSvc.deleteTable(table.id);
                 $rootScope.$broadcast('event:SetToC');
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
@@ -398,7 +398,7 @@ angular.module('igl').factory(
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 //TODO MasterMap need to delete segment
-//                MastermapSvc.deleteSegment($scope.segment.id);
+                MastermapSvc.deleteSegment($scope.segment.id);
                 $rootScope.$broadcast('event:SetToC');
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
@@ -435,7 +435,7 @@ angular.module('igl').factory(
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 //TODO MasterMap need to delete datatype
-//                MastermapSvc.deleteDatatype($scope.segToDelete.id);
+                MastermapSvc.deleteDatatype($scope.segToDelete.id);
                 $rootScope.$broadcast('event:SetToC');
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
@@ -599,8 +599,8 @@ angular.module('igl').factory(
 
             var rval = deleteSegments(segmentRefsLive, segmentRefsSincerelyDead);
             //TODO mastermap need to delete message
-//            MastermapSvc.deleteMessage(message.id);
-//            FilteringSvc.removeMsgFromFilter(message.id);
+            MastermapSvc.deleteMessage(message.id);
+            FilteringSvc.removeMsgFromFilter(message.id);
             return rval;
         }
 
