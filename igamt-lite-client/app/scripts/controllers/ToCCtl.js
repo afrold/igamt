@@ -53,7 +53,7 @@ angular
 
             $scope.trackBy = function () {
                 return new ObjectId().toString();
-            }
+            };
 
             $scope.tocSelection = function (entry) {
                 // TODO gcr: See about refactoring this to
@@ -62,6 +62,7 @@ angular
                 // the $emit string.
                 // Doing so would require maintaining a sync
                 // with the ProfileListController.
+
                 entry.highlight = true;
                 ToCSvc.currentLeaf.highlight = false;
                 ToCSvc.currentLeaf = entry;

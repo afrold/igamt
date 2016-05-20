@@ -12,11 +12,11 @@ angular.module('igl')
         $scope.selectedChildren = [];
         $scope.saving = false;
 
+        
         $scope.reset = function () {
-//            $scope.loadingSelection = true;
-//            $scope.message = "Segment " + $scope.segmentCopy.label + " reset successfully";
-//            angular.extend($rootScope.segment, $scope.segmentCopy);
-//             $scope.loadingSelection = false;
+        	$scope.editForm.$dirty = false;
+        	$rootScope.clearChanges();
+        	SegmentService.merge($rootScope.segment, $rootScope.segmentsMap[$rootScope.segment.id]);
         };
 
         $scope.close = function () {
@@ -275,14 +275,12 @@ angular.module('igl')
             $scope.saving = true;
             var segment = $rootScope.segment;
             var ext = segment.ext;
-            segment.ext = null;
-            if(segment.libIds == undefined) segment.libIds = [];
+             if(segment.libIds === undefined) segment.libIds = [];
             if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1) {
                 segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
             }
             SegmentService.save($rootScope.segment).then(function (result) {
-                segment.ext = ext;
-                var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
+                 var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
                 if (oldLink != null) {
                     SegmentService.merge($rootScope.segmentsMap[result.id], result);
                     var newLink = SegmentService.getSegmentLink(result);
@@ -308,8 +306,6 @@ angular.module('igl')
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
-                segment.ext = ext;
-
             });
         };
 
@@ -322,6 +318,7 @@ angular.module('igl')
             });
             $rootScope.segment = null;
             $scope.selectedChildren = [];
+            $rootScope.clearChanges();
             // revert
         };
 
@@ -353,11 +350,14 @@ angular.module('igl')
                 controller: 'SelectDatatypeFlavorCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
-                    currentNode: function () {
-                        return field;
+                    currentDatatype: function () {
+                        return $rootScope.datatypesMap[field.datatype.id];
                     },
                     hl7Version: function () {
                         return $rootScope.igdocument.metaData.hl7Version;
+                    },
+                    datatypeLibrary:function(){
+                        return $rootScope.igdocument.profile.datatypeLibrary;
                     }
                 }
             });
@@ -367,12 +367,18 @@ angular.module('igl')
                 if (!$rootScope.datatypesMap[field.datatype.id] || $rootScope.datatypesMap[field.datatype.id] == null) {
                     $rootScope.datatypesMap[field.datatype.id] = datatype;
                 }
-                MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
+//                MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
             });
 
         };
+
+        $scope.$watch(function(){
+            return $rootScope.segment;
+        }, function() {
+            $rootScope.recordChanged();
+        }, true);
 
     });
 

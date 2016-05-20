@@ -1,0 +1,111 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445bf5",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0175",
+  "name" : "0175",
+  "description" : "Master file identifier code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bf6",
+    "value" : "CDM",
+    "label" : "Charge description master file",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bf7",
+    "value" : "CMA",
+    "label" : "Clinical study with phases and scheduled master file",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bf8",
+    "value" : "CMB",
+    "label" : "Clinical study without phases but with scheduled master file",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bf9",
+    "value" : "LOC",
+    "label" : "Location master file",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bfa",
+    "value" : "OMA",
+    "label" : "Numerical observation master file",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bfb",
+    "value" : "OMB",
+    "label" : "Categorical observation master file",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bfc",
+    "value" : "OMC",
+    "label" : "Observation batteries master file",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bfd",
+    "value" : "OMD",
+    "label" : "Calculated observations master file",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bfe",
+    "value" : "PRA",
+    "label" : "Practitioner master file",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bff",
+    "value" : "STF",
+    "label" : "Staff master file",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

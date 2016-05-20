@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507427",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0262",
+  "name" : "0262",
+  "description" : "Privacy Level",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507428",
+    "value" : "F",
+    "label" : "Isolation",
+    "codeSystem" : "HL70262",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507429",
+    "value" : "J",
+    "label" : "Private room - medically justified",
+    "codeSystem" : "HL70262",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550742a",
+    "value" : "P",
+    "label" : "Private room",
+    "codeSystem" : "HL70262",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550742b",
+    "value" : "Q",
+    "label" : "Private room - due to overflow",
+    "codeSystem" : "HL70262",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550742c",
+    "value" : "S",
+    "label" : "Semi-private room",
+    "codeSystem" : "HL70262",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550742d",
+    "value" : "W",
+    "label" : "Ward",
+    "codeSystem" : "HL70262",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

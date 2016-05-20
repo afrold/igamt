@@ -1,0 +1,165 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443e54",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0357",
+  "name" : "0357",
+  "description" : "Message error condition codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e55",
+    "value" : "0",
+    "label" : "Message accepted",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e56",
+    "value" : "100",
+    "label" : "Segment sequence error",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e57",
+    "value" : "101",
+    "label" : "Required field missing",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e58",
+    "value" : "102",
+    "label" : "Data type error",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e59",
+    "value" : "103",
+    "label" : "Table value not found",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e5a",
+    "value" : "200",
+    "label" : "Unsupported message type",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e5b",
+    "value" : "201",
+    "label" : "Unsupported event code",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e5c",
+    "value" : "202",
+    "label" : "Unsupported processing id",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e5d",
+    "value" : "203",
+    "label" : "Unsupported version id",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e5e",
+    "value" : "204",
+    "label" : "Unknown key identifier",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e5f",
+    "value" : "205",
+    "label" : "Duplicate key identifier",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e60",
+    "value" : "206",
+    "label" : "Application record locked",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e61",
+    "value" : "207",
+    "label" : "Application internal error",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e62",
+    "value" : "Errors",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e63",
+    "value" : "Rejection",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e64",
+    "value" : "Success",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

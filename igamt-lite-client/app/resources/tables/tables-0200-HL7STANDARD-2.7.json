@@ -1,0 +1,210 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655081b4",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0200",
+  "name" : "0200",
+  "description" : "Name Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081b5",
+    "value" : "A",
+    "label" : "Assigned",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081b6",
+    "value" : "B",
+    "label" : "Birth name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081b7",
+    "value" : "BAD",
+    "label" : "Bad Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081b8",
+    "value" : "C",
+    "label" : "Adopted Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081b9",
+    "value" : "D",
+    "label" : "Customary Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081ba",
+    "value" : "I",
+    "label" : "Licensing Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081bb",
+    "value" : "K",
+    "label" : "Business name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081bc",
+    "value" : "L",
+    "label" : "Official Registry Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081bd",
+    "value" : "M",
+    "label" : "Maiden Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081be",
+    "value" : "MSK",
+    "label" : "Masked",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081bf",
+    "value" : "N",
+    "label" : "Nickname",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081c0",
+    "value" : "NAV",
+    "label" : "Temporarily Unavailable",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081c1",
+    "value" : "NB",
+    "label" : "Newborn Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081c2",
+    "value" : "NOUSE",
+    "label" : "No Longer To Be Used",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081c3",
+    "value" : "P",
+    "label" : "Name of Partner/Spouse",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081c4",
+    "value" : "R",
+    "label" : "Registered Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081c5",
+    "value" : "REL",
+    "label" : "Religious",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081c6",
+    "value" : "S",
+    "label" : "Pseudonym",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081c7",
+    "value" : "T",
+    "label" : "Indigenous/Tribal",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081c8",
+    "value" : "TEMP",
+    "label" : "Temporary Name",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081c9",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70200",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

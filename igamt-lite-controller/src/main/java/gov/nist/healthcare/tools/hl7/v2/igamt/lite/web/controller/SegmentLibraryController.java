@@ -38,6 +38,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotF
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -259,9 +260,10 @@ public class SegmentLibraryController extends CommonController {
 						account.getId());
 		return libraries;
 	}
-	
+
 	@RequestMapping(value = "/{libId}/deleteChild/{id}", method = RequestMethod.POST)
-	public boolean deleteChild(@PathVariable String libId, @PathVariable String id) throws SegmentSaveException {
+	public boolean deleteChild(@PathVariable String libId,
+			@PathVariable String id) throws SegmentSaveException {
 		log.debug("Deleting a link to the library");
 		SegmentLibrary lib = segmentLibraryService.findById(libId);
 		SegmentLink found = lib.findOne(id);
@@ -269,6 +271,17 @@ public class SegmentLibraryController extends CommonController {
 			lib.getChildren().remove(found);
 			segmentLibraryService.save(lib);
 		}
+		return true;
+	}
+
+	@RequestMapping(value = "/{libId}/addChildren", method = RequestMethod.POST)
+	public boolean addChild(@PathVariable String libId,
+			@RequestBody Set<SegmentLink> segmentLinks)
+			throws SegmentSaveException {
+		log.debug("Adding a link to the library");
+		SegmentLibrary lib = segmentLibraryService.findById(libId);
+		lib.addSegments(segmentLinks);
+		segmentLibraryService.save(lib);
 		return true;
 	}
 

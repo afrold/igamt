@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440fe3",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0433",
+  "name" : "0433",
+  "description" : "Precaution Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.433",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440fe4",
+    "value" : "A",
+    "label" : "Aggressive",
+    "codeSystem" : "HL70433",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440fe5",
+    "value" : "B",
+    "label" : "Blind",
+    "codeSystem" : "HL70433",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440fe6",
+    "value" : "C",
+    "label" : "Confused",
+    "codeSystem" : "HL70433",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440fe7",
+    "value" : "D",
+    "label" : "Deaf",
+    "codeSystem" : "HL70433",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440fe8",
+    "value" : "I",
+    "label" : "On IV",
+    "codeSystem" : "HL70433",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440fe9",
+    "value" : "N",
+    "label" : "\"No-code\" (i.e. Do not resuscitate)",
+    "codeSystem" : "HL70433",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440fea",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70433",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440feb",
+    "value" : "P",
+    "label" : "Paraplegic",
+    "codeSystem" : "HL70433",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440fec",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70433",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

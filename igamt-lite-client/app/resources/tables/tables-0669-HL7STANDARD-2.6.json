@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b3ba",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0669",
+  "name" : "0669",
+  "description" : "Load Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.669",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3bb",
+    "value" : "LCC",
+    "label" : "Load is Complete",
+    "codeSystem" : "HL70669",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3bc",
+    "value" : "LCN",
+    "label" : "Load Canceled",
+    "codeSystem" : "HL70669",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3bd",
+    "value" : "LCP",
+    "label" : "Load In Process",
+    "codeSystem" : "HL70669",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3be",
+    "value" : "LLD",
+    "label" : "Building a Load",
+    "codeSystem" : "HL70669",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

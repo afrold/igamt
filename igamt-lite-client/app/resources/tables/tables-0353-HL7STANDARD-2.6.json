@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550bb24",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0353",
+  "name" : "0353",
+  "description" : "CWE statuses",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.353",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb25",
+    "value" : "NA",
+    "label" : "Not applicable",
+    "codeSystem" : "HL70353",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb26",
+    "value" : "NASK",
+    "label" : "Not asked",
+    "codeSystem" : "HL70353",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb27",
+    "value" : "NAV",
+    "label" : "Not available",
+    "codeSystem" : "HL70353",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb28",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70353",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb29",
+    "value" : "UASK",
+    "label" : "Asked but Unknown",
+    "codeSystem" : "HL70353",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

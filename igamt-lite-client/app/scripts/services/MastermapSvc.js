@@ -46,22 +46,24 @@ angular
 
 
     svc.addComponent = function(c, parent){
-      svc.createMMElement(c.id, "component");
-      svc.addParentsId(c.id, "component", parent);
-      if (svc.getElementByKey(c.id, "component", "usage") !== undefined){
-        svc.setElement(c.id, "component", "usage", c["usage"]);
-      }
-      if (c.datatype !== undefined){
-        svc.addDatatypeId(c.datatype, parent.concat([[c.id, "component"]]));
-      }
-      if (c.table !== undefined){
-        svc.addValueSetId(c.table, parent.concat([[c.id, "component"]]));
+        if (c !== undefined && c !==  null) {
+              svc.createMMElement(c.id, "component");
+              svc.addParentsId(c.id, "component", parent);
+              if (svc.getElementByKey(c.id, "component", "usage") !== undefined){
+                svc.setElement(c.id, "component", "usage", c["usage"]);
+              }
+              if (c.datatype !== undefined){
+                svc.addDatatypeId(c.datatype, parent.concat([[c.id, "component"]]));
+              }
+              if (c.table !== undefined){
+                svc.addValueSetId(c.table, parent.concat([[c.id, "component"]]));
+              }
       }
     }
 
 
     svc.addValueSetId = function(tableId, parent) {
-        if (tableId !== undefined && tableId !== "") {
+        if (tableId !== undefined && tableId !==  null && tableId !== "") {
             svc.createMMElement(tableId, "table");
             svc.addParentsId(tableId, "table", parent);
 
@@ -79,7 +81,7 @@ angular
 
 
     svc.addValueSetObject = function(table, parent) {
-        if (table !== undefined){
+        if (table !== undefined && table !== null){
             svc.createMMElement(table.id, "table");
             svc.addParentsId(table.id, "table", parent);
 
@@ -103,29 +105,28 @@ angular
 
     svc.addDatatypeId = function(datatypeId, parent) {
         // Add id then check if in library
-        if (datatypeId !== undefined && datatypeId !== "") {
+        if (datatypeId !== undefined && datatypeId !== null && datatypeId !== "") {
             svc.createMMElement(datatypeId, "datatype");
             svc.addParentsId(datatypeId, "datatype", parent);
 
             var dt = svc.getDatatypeLibrary()[datatypeId];
-            if (dt !== undefined){
-                // console.log(svc.mastermap[dt.id, "datatype"])
-                dt.components.forEach( function(c) {
+            if (dt !== undefined && dt !== null && dt !== ""){
+                _.each(dt.components, function(c) {
                     svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
                 });
-            } else {
+            } //else {
                 // datatype not found
                 // console.log("!!! => datatype " + datatype + " not found in library");
-            }
+            //}
         }
     }
 
 
     svc.addDatatypeObject = function(dt, parent) {
-        if (dt !== undefined){
+        if (dt !== undefined && dt !== null){
           svc.createMMElement(dt.id, "datatype");
           svc.addParentsId(dt.id, "datatype", parent);
-          dt.components.forEach( function(c) {
+          _.each(dt.components, function(c) {
             svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
           });
       }
@@ -137,30 +138,31 @@ angular
     }
 
 
-    svc.addField = function (field, parent) {
-      svc.createMMElement(field.id, "field");
-      svc.addParentsId(field.id, "field", parent);
-      svc.setElement(field.id, "field", "usage", field["usage"]);
+    svc.addFieldObject = function (field, parent) {
+        if (field !== undefined && field !== null){
+              svc.createMMElement(field.id, "field");
+              svc.addParentsId(field.id, "field", parent);
+              svc.setElement(field.id, "field", "usage", field["usage"]);
 
-      svc.addValueSetId(field.table, parent.concat([[field.id, "field"]]));
-      svc.addDatatypeId(field.datatype, parent.concat([[field.id, "field"]]));
+              svc.addValueSetObject(field.table, parent.concat([[field.id, "field"]]));
+              svc.addDatatypeObject(field.datatype, parent.concat([[field.id, "field"]]));
+         }
     }
 
 
     svc.addSegmentId = function (segmentId, parent) {
-      // Add the id in mastermap when given. Then check if object can be found in segment library.
-      svc.createMMElement(segmentId, "segment");
-      svc.addParentsId(segmentId, "segment", parent);
+        // Add the id in mastermap when given. Then check if object can be found in segment library.
+        if (segmentId !== undefined && segmentId !== null && segmentId !== ""){
+            svc.createMMElement(segmentId, "segment");
+            svc.addParentsId(segmentId, "segment", parent);
 
-      var segment = svc.getSegmentLibrary()[segmentId];
-      if (segment !== undefined){
-        _.each(segment.fields, function(f) {
-          svc.addField(f, parent.concat([[segment.id, "segment"]]));
-        });
-      } else {
-        // Pass : object not found
-        // console.log("!!! => segment id " + segmentId + " not found");
-      }
+            var segment = svc.getSegmentLibrary()[segmentId];
+            if (segment !== undefined && segment !==  null){
+            _.each(segment.fields, function(field) {
+                svc.addFieldObject(field, parent.concat([[segment.id, "segment"]]));
+            });
+          }
+        }
     }
 
 
@@ -170,7 +172,7 @@ angular
     		svc.addParentsId(segment.id, "segment", parent);
 
     		_.each(segment.fields, function(f) {
-            svc.addField(f, parent.concat([[segment.id, "segment"]]));
+            svc.addFieldObject(f, parent.concat([[segment.id, "segment"]]));
           });
         }
     }
@@ -215,14 +217,17 @@ angular
 
 
     svc.addSegmentRef = function (segmentRef, parent){
-        var segRefId = segmentRef.id;
-        var segRef = segmentRef.ref.id;
+        if (segmentRef !== undefined && segmentRef !== null) {
+            if (segmentRef.id !== undefined && segmentRef.id !== null) {
+                svc.createMMElement(segmentRef.id, "segmentRef");
+                svc.addParentsId(segmentRef.id, "segmentRef", parent);
+                svc.setElement(segmentRef.id, "segmentRef", "usage", segmentRef["usage"]);
 
-        svc.createMMElement(segRefId, "segmentRef");
-        svc.setElement(segRefId, "segmentRef", "usage", segmentRef["usage"]);
-        svc.addParentsId(segRefId, "segmentRef", parent);
-
-        svc.addSegmentId(segRef, parent.concat([[segRefId, "segmentRef"]]));
+                if (segmentRef.ref.id !== undefined && segmentRef.ref.id !== null) {
+                    svc.addSegmentId(segmentRef.ref.id, parent.concat([[segmentRef.id, "segmentRef"]]));
+                 }
+             }
+        }
     }
 
 
@@ -251,9 +256,9 @@ angular
 
         var profile = igdocument.profile;
 
-        svc.createSegmentLibrary(igdocument);
-        svc.createDatatypeLibrary(igdocument);
-        svc.createTableLibrary(igdocument);
+        svc.createSegmentLibrary($rootScope.segmentsMap);
+        svc.createDatatypeLibrary($rootScope.datatypesMap);
+        svc.createTableLibrary($rootScope.tablesMap);
 
         svc.createMMElement(igdocument.id, "ig");
 
@@ -261,10 +266,41 @@ angular
         svc.createMMElement(profile.id, "profile");
         svc.addParentsId(profile.id, "profile", parent);
 
+        console.log("PROFILE");
+        console.log(profile);
+
+        try {
+            console.log("SGT map");
+            console.log($rootScope.segmentsMap);
+        } catch (err) {
+                console.log(err);
+                }
+        try {
+            console.log("TBL map");
+            console.log($rootScope.tablesMap);
+        } catch (err) {
+                console.log(err);
+                }
+
+        try {
+            console.log("DT map");
+            console.log($rootScope.datatypesMap);
+        } catch (err) {
+                console.log(err);
+                }
+
         parents = parents.concat([[profile.id, "profile"]]);
-        _.each(profile.messages.children, function(m) {
-          svc.addMessageObject(m, parents);
+        console.log("nb of messages: ");
+        console.log(profile.messages.children.length);
+        var i = 0;
+        _.each(profile.messages.children, function(msg) {
+            i += 1;
+            console.log(i);
+          svc.addMessageObject(msg, parents);
         });
+        console.log("==> MASTERMAP");
+        console.log(svc.getMastermap());
+
     }
 
 
@@ -280,7 +316,7 @@ angular
 
     svc.addParentsId = function (elementId, elementType, parentsList) {
         // Element refers to self
-        // svc.mastermap[elementId][elementType] = svc.mastermap[elementId][elementType].concat(elementId);
+        svc.setElement(elementId, elementType, elementType, svc.getElementByKey(elementId, elementType, elementType).concat(elementId));
 
         _.each(parentsList, function(parent) {
             var parentId = parent[0];
@@ -289,10 +325,10 @@ angular
             if (svc.getElementByKey(elementId, elementType, parentType).indexOf(parentId) === -1){
                 svc.setElement(elementId, elementType, parentType, svc.getElementByKey(elementId, elementType, parentType).concat(parentId));
             }
-//        // Add element reference in parents if not already present
-//        if (svc.getElementByKey(parentId, parentType, elementType).indexOf(elementId) === -1){
-//          svc.setElement(parentId, parentType, elementType, svc.getElementByKey(parentId, parentType, elementType).concat(elementId));
-//        }
+            // Add element reference in parents if not already present
+            if (svc.getElementByKey(parentId, parentType, elementType).indexOf(elementId) === -1){
+                svc.setElement(parentId, parentType, elementType, svc.getElementByKey(parentId, parentType, elementType).concat(elementId));
+            }
       });
     }
 
@@ -332,25 +368,18 @@ angular
         svc.removeId(toBeRemovedId.concat(toBeRemovedType), svc.getMastermap());
     }
 
-    svc.createSegmentLibrary = function (igdocument){
-                   console.log("Creating segment library");
-        igdocument.profile.segmentLibrary.children.forEach(function(n){
-        svc.segmentLibrary[n.id] = n;
-      });
+    svc.createSegmentLibrary = function (segmentsLibrary){
+        svc.segmentLibrary = segmentsLibrary;
     }
 
 
-    svc.createTableLibrary = function (igdocument){
-        igdocument.profile.tableLibrary.children.forEach(function(n){
-        svc.tableLibrary[n.id] = n;
-      });
+    svc.createTableLibrary = function (tablesLibrary){
+        svc.tableLibrary = tablesLibrary;
     }
 
 
-    svc.createDatatypeLibrary = function (igdocument){
-        igdocument.profile.datatypeLibrary.children.forEach(function(n){
-        svc.datatypeLibrary[n.id] = n;
-      });
+    svc.createDatatypeLibrary = function (datatypesLibrary){
+        svc.datatypeLibrary = datatypesLibrary;
     }
 
     svc.getElement = function(id, type){
@@ -374,7 +403,14 @@ angular
         }
     };
 
-
+    svc.searchById = function(idKey, myArray){
+        for (var i=0; i < myArray.length; i++) {
+            if (myArray[i].id === idKey) {
+                return i;
+            }
+        }
+        return undefined;
+    };
 
 
     svc.getUsage = function (id, type){
@@ -390,7 +426,7 @@ angular
           var sgt = svc.getElement(id, type);
           var rst = [];
           var usg = "";
-          sgt["segmentRef"].forEach(function(elt){
+          _.each(sgt["segmentRef"], function(elt){
             usg = svc.getElementByKey(elt, "segmentRef", "usage");
             if (rst.indexOf(usg) === -1)
               rst.push(usg);
@@ -400,17 +436,17 @@ angular
         if (type === "table"){
           var tbl = svc.getElement(id, type);
           var rst = [];
-          tbl["segment"].forEach(function(elt){
+          _.each(tbl["segment"], function(elt){
             var usgs = svc.getUsage(elt, "segment");
-            usgs.forEach(function(usg){
+            _.each(usgs, function(usg){
               if (rst.indexOf(usg) === -1){
                 rst.push(usg);
               }
             });
           });
-          tbl["datatype"].forEach(function(elt){
+          _.each(tbl["datatype"], function(elt){
             var usgs = svc.getUsage(elt, "datatype");
-            usgs.forEach(function(usg){
+            _.each(usgs, function(usg){
               if (rst.indexOf(usg) === -1){
                 rst.push(usg);
               }
@@ -422,17 +458,17 @@ angular
           var dt = svc.getElement(id, type);
           var rst = [];
           var usg = "";
-          dt["segment"].forEach(function(elt){
+          _.each(dt["segment"], function(elt){
               var usgs = svc.getUsage(elt, "segment");
-              usgs.forEach(function(usg){
+              _.each(usgs, function(usg){
               if (rst.indexOf(usg) === -1){
                 rst.push(usg);
               }
               });
             });
-          dt["datatype"].forEach(function(elt){
+          _.each(dt["datatype"], function(elt){
               var usgs = svc.getUsage(elt, "datatype");
-              usgs.forEach(function(usg){
+              _.each(usgs, function(usg){
               if (rst.indexOf(usg) === -1){
                 rst.push(usg);
               }
@@ -444,9 +480,9 @@ angular
           var cd = svc.getElement(id, type);
           var rst = [];
           var usg = "";
-          cd["table"].forEach(function(elt){
+          _.each(cd["table"], function(elt){
               var usgs = svc.getUsage(elt, "table");
-              usgs.forEach(function(usg){
+              _.each(usgs, function(usg){
               if (rst.indexOf(usg) === -1){
                 rst.push(usg);
               }

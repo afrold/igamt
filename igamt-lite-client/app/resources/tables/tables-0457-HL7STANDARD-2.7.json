@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655082b4",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0457",
+  "name" : "0457",
+  "description" : "Overall Claim Disposition Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655082b5",
+    "value" : "0",
+    "label" : "No edits present on claim",
+    "codeSystem" : "HL70457",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655082b6",
+    "value" : "1",
+    "label" : "Only edits present are for line item denial or rejection",
+    "codeSystem" : "HL70457",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655082b7",
+    "value" : "2",
+    "label" : "Multiple-day claim with one or more days denied or rejected",
+    "codeSystem" : "HL70457",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655082b8",
+    "value" : "3",
+    "label" : "Claim denied, rejected, suspended or returned to provider with only post payment edits",
+    "codeSystem" : "HL70457",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655082b9",
+    "value" : "4",
+    "label" : "Claim denied, rejected, suspended or returned to provider with only pre payment edits",
+    "codeSystem" : "HL70457",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

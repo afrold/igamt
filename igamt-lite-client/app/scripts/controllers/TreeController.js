@@ -85,7 +85,6 @@ angular
                     else if (dataTypeSource === "sections" && dataTypeDest === "sections") {
                         return true;
                     }
-
                     else if (dataTypeDest === dataTypeSource + "s") {
                         return true;
 
@@ -112,6 +111,7 @@ angular
                     	
                     }else{
                     $scope.updateChildeSections($rootScope.igdocument.childSections);
+
                     }
 
 
@@ -251,7 +251,7 @@ angular
                                     
 
 
-                ['clone',
+                ['copy',
                     function ($itemScope) {
                         var cloneModel = $scope.cloneSectionTree($itemScope.$nodeScope.$modelValue);
                         cloneModel.sectionPosition = $scope.getLastPosition($itemScope.$nodeScope.$parentNodesScope.$modelValue);
@@ -261,8 +261,10 @@ angular
                         if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "document") {
                             $scope.updateChildeSections($rootScope.igdocument.childSections);
                         }
+
                         else if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "section") {                   
                             SectionSvc.update($rootScope.igdocument.id, $itemScope.section);
+
                         }
                     } ],
                 null,
@@ -306,7 +308,7 @@ angular
 
             $scope.SegmentOptions = [
 
-                ['clone',
+                ['copy',
                     function ($itemScope) {
                         CloneDeleteSvc.copySegment($itemScope.segment);
 
@@ -321,9 +323,9 @@ angular
    
             $scope.DataTypeOptions = [
 
-                ['clone',
+                ['copy',
                     function ($itemScope) {
-       
+
                         CloneDeleteSvc.copyDatatype($itemScope.data); 
 
                       
@@ -339,7 +341,7 @@ angular
 
             $scope.ValueSetOptions = [
 
-                ['clone',
+                ['copy',
                     function ($itemScope) {
                         CloneDeleteSvc.copyTable($itemScope.table);
 
@@ -355,7 +357,7 @@ angular
             $scope.MessagesOption = [
 
                 [
-                    'clone',
+                    'copy',
                     function ($itemScope) {
                         CloneDeleteSvc.copyMessage($itemScope.msg);
 
@@ -375,10 +377,11 @@ angular
             $scope.MessagesRootOption = [
 
                 [ 'export', function ($itemScope) {
-                    $scope.selectMessages($rootScope.igdocument);
+                    $scope.selectMessagesForExport($rootScope.igdocument);
                 } ]
 
             ];
+
 
 
             $scope.MessagesRootOption = [
@@ -393,25 +396,6 @@ angular
             ];
 
 
-            $scope.ValueSetOptions = [
-
-                [
-                    'clone',
-                    function ($itemScope) {
-                        CloneDeleteSvc.copyTable($itemScope.table);
-
-
-                    } ],
-                null,
-                [
-                    'delete',
-                    function ($itemScope) {
-                        CloneDeleteSvc.deleteValueSet($itemScope.table);
-                    } ]
-
-
-            ];
-
 
             $scope.ValueSetRootOptions = [
                 [ 'add Table', function ($itemScope) {
@@ -423,7 +407,7 @@ angular
 
                                            ['create a copy',
                                                function ($itemScope) {
-                                         	 	console.log("************");	
+                                         	 	console.log("create a copy");	
                                            	console.log($itemScope.data);
                                            	$scope.copyDatatype($itemScope.data); 
 
@@ -432,34 +416,46 @@ angular
                                            null,
                                            ['delete',
                                                function ($itemScope) {
+                                        	 	console.log("delete");	
+                                               	console.log($itemScope.data);
                                         	   $scope.deleteDatatype($itemScope.data);
                                                } ]
-                           
-                                       ];
-            
-            
-            
 
+
+            $scope.DataTypeLibraryOptions = [
+                 ['add datatypes',
+                  function ($itemScope) {
+                	 $scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
+                  } ]          		
+            ];
+            
             $scope.editSeg = function (seg) {
+
        
+
+                // console.log("EditSeg")
+                preventChangesLost();
+
                 $scope.$emit('event:openSegment', seg);
 
             }
 
             $scope.editIg = function (ig) {
+                preventChangesLost();
                 $rootScope.igdocument = ig;
                 $scope.$emit('event:openDocumentMetadata',
                     $rootScope.igdocument);
             }
 
             $scope.editSection = function (section) {
+                preventChangesLost();
                 $rootScope.section = section;
                 $scope.$emit('event:openSection', $rootScope.section);
             }
 
 
             $scope.editRoutSection = function (param) {
-
+                preventChangesLost();
                 $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
             }
 
@@ -498,20 +494,24 @@ angular
                 return section;
             }
             $scope.editDataType = function (data) {
+                preventChangesLost();
                 $rootScope.datatype = data;
                 $scope.$emit('event:openDatatype', $rootScope.datatype);
             }
 
             $scope.editTable = function (table) {
+                preventChangesLost();
                 $rootScope.table = table;
                 $scope.$emit('event:openTable', $rootScope.table);
             }
 
             $scope.editMessage = function (message) {
+                preventChangesLost();
                 $rootScope.message = message;
                 $scope.$emit('event:openMessage', message);
             }
             $scope.editProfile = function () {
+                preventChangesLost();
             	 $scope.Activate("Message Infrastructure");
                 $scope.$emit('event:openProfileMetadata',
                     $rootScope.igdocument);
@@ -521,6 +521,7 @@ angular
             $scope.updateAfterDrop = function (source, dest) {
 
                 var id = $rootScope.igdocument.id;
+
                 var req = {
                     method: 'POST',
                     url: "api/igdocuments/" + id + "/dropped",
@@ -533,7 +534,7 @@ angular
 
                 var promise = $http(req)
                     .success(function (data, status, headers, config) {
-                        ////console.log(data);
+                        // //console.log(data);
                         return data;
                     })
                     .error(function (data, status, headers, config) {
@@ -563,7 +564,7 @@ angular
 
                 var promise = $http(req)
                     .success(function (data, status, headers, config) {
-                        ////console.log(data);
+                        // //console.log(data);
                         return data;
                     })
                     .error(function (data, status, headers, config) {
@@ -576,6 +577,7 @@ angular
                 return promise;
             }
            
+
             
             $scope.reOrderMessages = function () {
             	var messagesMap=[];
@@ -618,10 +620,12 @@ angular
             };
 
 
+
             $scope.showToC = function (leaf) {
-                return FilteringSvc.showToC(leaf);
+//                return FilteringSvc.showToC(leaf);
+                return true;
             };
-            
+
             $scope.getScopeLabel = function (leaf) {
             if (leaf.scope==='HL7STANDARD'){
             	return 'HL7';
@@ -643,18 +647,27 @@ angular
             
 
             $rootScope.getLabelOfData = function (name, ext) {
+
             	var label="";
+
+
                 if (ext && ext !== null && ext !== "") {
-                	console.log("*********"+name + "_" + ext);
                 	label= name + "_" + ext;
                
                 } else {
                     label =name;
                 }
-                console.log(label);
                 return label; 
             };
-       
+
+            var preventChangesLost = function(){
+                if ($rootScope.hasChanges()) {
+                    if(!confirm("You have unsaved changes, Do you want to stay on the page?")) {
+                        event.preventDefault();
+                    }
+                }
+            }
+
         }]);
 
 

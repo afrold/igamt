@@ -1,0 +1,165 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd44307e",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0002",
+  "name" : "0002",
+  "description" : "Marital status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44307f",
+    "value" : "A",
+    "label" : "Separated",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443080",
+    "value" : "B",
+    "label" : "Unmarried",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443081",
+    "value" : "C",
+    "label" : "Common law",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443082",
+    "value" : "D",
+    "label" : "Divorced",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443083",
+    "value" : "E",
+    "label" : "Legally Separated",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443084",
+    "value" : "G",
+    "label" : "Living together",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443085",
+    "value" : "I",
+    "label" : "Interlocutory",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443086",
+    "value" : "M",
+    "label" : "Married",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443087",
+    "value" : "N",
+    "label" : "Annulled",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443088",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443089",
+    "value" : "P",
+    "label" : "Domestic partner",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44308a",
+    "value" : "R",
+    "label" : "Registered domestic partner",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44308b",
+    "value" : "S",
+    "label" : "Single",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44308c",
+    "value" : "T",
+    "label" : "Unreported",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44308d",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44308e",
+    "value" : "W",
+    "label" : "Widowed",
+    "codeSystem" : "HL70002",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

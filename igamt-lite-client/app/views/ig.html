@@ -14,11 +14,10 @@
 <div class="row" ng-show="isAuthenticated()">
     <!--<div class="row">-->
     <div ng-show="!isPending()">
-        <div class="page-header">
-            <h5> Hello, <span ng-bind="getFullName()"></span></h5>
-        </div>
-
-
+        <!--<div class="page-header">-->
+            <!--<h5> Hello, <span ng-bind="getFullName()"></span></h5>-->
+        <!--</div>-->
+        <br />
         <accordion close-others="false">
             <accordion-group is-open="accordi.igList" panel-class="panel-primary">
                 <accordion-heading>
@@ -277,7 +276,7 @@
 </script>
 
 
-<script type="text/ng-template" id="SelectMessagesOpenCtrl.html">
+<script type="text/ng-template" id="SelectMessagesForExportCtrl.html">
     <div class="page-header">
         <h2 class="modal-title">Export XML</h2>
     </div>

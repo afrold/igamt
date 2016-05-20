@@ -52,11 +52,6 @@ Cloneable, Comparable<Datatype> {
 		this.id = id;
 	}
 
-	public String getLabel() {
-		return label;
-	}
-
-
 	public void setLabel(String label) {
 		this.label = label;
 	}
@@ -215,4 +210,8 @@ Cloneable, Comparable<Datatype> {
             append(id, rhs.id).
             isEquals();
     }
+    
+    public String getLabel() {
+		return label;
+	}
 }

@@ -4,17 +4,17 @@
   "sectionTitle" : "Datatypes",
   "sectionDescription" : null,
   "sectionContents" : null,
-  "id" : "573b5105da08bdc5ada9db72",
+  "id" : "573dd239d4c6ca828c295f90",
   "accountId" : null,
   "ext" : null,
   "metaData" : {
-    "name" : null,
+    "name" : "HL7 Standard 2.3.1",
     "orgName" : "NIST",
     "version" : null,
     "hl7Version" : "2.3.1",
-    "date" : "May 17, 2016",
+    "date" : "May 19, 2016",
     "ext" : null,
-    "datatypeLibId" : ""
+    "datatypeLibId" : "7bcdfcfa-de4e-4f9b-967a-cfe6268a433a"
   },
   "scope" : "HL7STANDARD",
   "children" : [ {

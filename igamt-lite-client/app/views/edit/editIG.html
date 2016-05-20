@@ -74,6 +74,7 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu igl-menu" role="menu">
+                        	<li><a class="point" ng-click="selectMessagesForExport(igdocument)">As XML for Conformance Profile</a></li>
                             <li><a class="point" ng-click="exportAs('pdf')">As PDF</a></li>
                             <li><a class="point" ng-click="exportAs('docx')">As WORD</a></li>
                             <li><a class="point" ng-click="exportAs('html')">As HTML</a></li>
@@ -92,10 +93,10 @@
                        </button>
       </span>
 
-  <div class="col-md-12">
-                <span>version: {{igdocument.metaData.version}}
-                </span>
-    </div>
+  <!--<div class="col-md-12">-->
+                <!--<span>version: {{igdocument.metaData.version}}-->
+                <!--</span>-->
+    <!--</div>-->
 </div>
 
 <div class="row">

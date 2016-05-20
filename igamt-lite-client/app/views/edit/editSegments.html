@@ -17,29 +17,29 @@
 </div>
 <div ng-show="!loadingSelection">
 <div ng-show="segment !== null" id="executionPanel">
-<form name="segmentForm" id="segmentForm" novalidate class="form-horizontal">
+<form name="editForm" id="editForm" novalidate class="form-horizontal">
 <div class="row" style="margin-left:0px; margin-right: 20px">
 <div class="page-header" style="margin-bottom: 20px">
     <span class="header4">Segment: {{getSegmentLabel(segment)}}</span>
             <span class="pull-right">
-         <button title="Save Changes" type="button" class="btn btn-md btn-primary"
-                 ng-disabled="segmentForm.$invalid"
+         <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
+                 ng-disabled="editForm.$invalid"
                  ng-hide="viewSettings.tableReadonly ||(segment.scope !== 'USER' && segment.scope !== 'MASTER')"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
 
-                         <button title="Cancel Changes" type="button" class="btn btn-md btn-warning"
+                         <button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
                                  ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') "
-                                 ng-click="cancel()">
-                             <span><i class="fa fa-times fa-fw"></i> Cancel</span>
+                                 ng-click="reset()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
                          </button>
     </span>
 </div>
     <tabset>
         <tab heading="Segment MetaData">
-            <div class="form-group"
-                 ng-class="{'igl-has-error has-feedback' : segmentForm.name.$invalid}">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
                 <label class="col-md-2 control-label">Name</label>
 
                 <div class="col-md-10">
@@ -52,8 +52,8 @@
                 </div>
             </div>
 
-            <div class="form-group"
-                 ng-class="{'igl-has-error has-feedback' : segmentForm.ext.$invalid}">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}">
                 <label class="col-md-2 control-label">Extension</label>
 
                 <div class="col-md-10">
@@ -64,13 +64,13 @@
                            ng-model="segment.ext"
                            required required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(segment,'ext', segments)">Extension already used</span>
+                                          ng-show="isDuplicatedTwoContexts(segment,'name', 'ext', segments)">Extension already used</span>
                 </div>
             </div>
 
 
-            <div class="form-group"
-                 ng-class="{'igl-has-error has-feedback' : segmentForm.description.$invalid}">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : editForm.description.$invalid}">
                 <label class="col-md-2 control-label">Description</label>
 
                 <div class="col-md-10">
@@ -83,8 +83,8 @@
             </div>
 
 
-            <div class="form-group"
-                 ng-class="{'igl-has-error has-feedback' : segmentForm.comment.$invalid}">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : editForm.comment.$invalid}">
                 <label class="col-md-2 control-label">Comment</label>
                 <div class="col-md-10">
                     <textarea rows="3" cols="20"
@@ -97,8 +97,8 @@
 
             </div>
 
-            <div class="form-group"
-                 ng-class="{'igl-has-error has-feedback' : segmentForm.text1.$invalid}">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : editForm.text1.$invalid}">
                 <label class="col-md-2 control-label">Definition Pre-Text</label>
                 <div class="col-md-10">
                 <div ng-if="!viewSettings.tableReadonly">
@@ -112,8 +112,8 @@
 </div>
             </div>
 
-            <div class="form-group"
-                 ng-class="{'igl-has-error has-feedback' : segmentForm.text2.$invalid}">
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : editForm.text2.$invalid}">
                 <label class="col-md-2 control-label">Definition Post-Text</label>
                 <div class="col-md-10">
                 <div ng-if="!viewSettings.tableReadonly && segment.scope === 'USER'">
@@ -185,7 +185,7 @@
     							<span class="header5">Conformance Statements</span>
                         	</span>
                             <span class="pull-right">
-								<button class="btn btn-primary btn-xs" ng-click="manageConformanceStatement(null);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Conf.Statement</span></button>
+								<button class="btn btn-primary btn-xs" ng-click="manageConformanceStatement(null);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Conf.Statement</span></button>
                             </span>
 						</div>
 
@@ -227,7 +227,7 @@
     							<span class="header5">Conditional Predicates</span>
                         	</span>
                             <span class="pull-right">
-								<button class="btn btn-primary btn-xs" ng-click="managePredicate(null);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Predicate</span></button>
+								<button class="btn btn-primary btn-xs" ng-click="managePredicate(null);" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Predicate</span></button>
                             </span>
 						</div>
 
@@ -465,7 +465,7 @@
             <!--ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name">-->
             <!--</select>-->
 
-            <a ng-click="showSelectDatatypeFlavorDlg(node)">
+            <a ng-click="showSelectDatatypeFlavorDlg(node)" class="point">
                 {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </a>
 

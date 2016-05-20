@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507c37",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0834",
+  "name" : "0834",
+  "description" : "MIME Types",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c38",
+    "value" : "application",
+    "label" : "Application data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c39",
+    "value" : "audio",
+    "label" : "Audio data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c3a",
+    "value" : "image",
+    "label" : "Image data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c3b",
+    "value" : "model",
+    "label" : "Model data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c3c",
+    "value" : "multipart",
+    "label" : "MIME multipart package",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c3d",
+    "value" : "text",
+    "label" : "Text data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c3e",
+    "value" : "video",
+    "label" : "Video data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

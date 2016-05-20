@@ -1,0 +1,939 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550aa49",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0254",
+  "name" : "0254",
+  "description" : "Kind of quantity",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.254",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa4a",
+    "value" : "ABS",
+    "label" : "Absorbance",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa4b",
+    "value" : "ACNC",
+    "label" : "Concentration, Arbitrary Substance",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa4c",
+    "value" : "ACT",
+    "label" : "*Activity",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa4d",
+    "value" : "APER",
+    "label" : "Appearance",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa4e",
+    "value" : "ARB",
+    "label" : "*Arbitrary",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa4f",
+    "value" : "AREA",
+    "label" : "Area",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa50",
+    "value" : "ASPECT",
+    "label" : "Aspect",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa51",
+    "value" : "CACT",
+    "label" : "*Catalytic Activity",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa52",
+    "value" : "CCNT",
+    "label" : "*Catalytic Content",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa53",
+    "value" : "CCRTO",
+    "label" : "Catalytic Concentration Ratio",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa54",
+    "value" : "CFR",
+    "label" : "*Catalytic Fraction",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa55",
+    "value" : "CLAS",
+    "label" : "Class",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa56",
+    "value" : "CNC",
+    "label" : "*Catalytic Concentration",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa57",
+    "value" : "CNST",
+    "label" : "*Constant",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa58",
+    "value" : "COEF",
+    "label" : "*Coefficient",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa59",
+    "value" : "COLOR",
+    "label" : "Color",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa5a",
+    "value" : "CONS",
+    "label" : "Consistency",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa5b",
+    "value" : "CRAT",
+    "label" : "*Catalytic Rate",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa5c",
+    "value" : "CRTO",
+    "label" : "Catalytic Ratio",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa5d",
+    "value" : "DEN",
+    "label" : "Density",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa5e",
+    "value" : "DEV",
+    "label" : "Device",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa5f",
+    "value" : "DIFF",
+    "label" : "*Difference",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa60",
+    "value" : "ELAS",
+    "label" : "Elasticity",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa61",
+    "value" : "ELPOT",
+    "label" : "Electrical Potential (Voltage)",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa62",
+    "value" : "ELRAT",
+    "label" : "Electrical current (amperage)",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa63",
+    "value" : "ELRES",
+    "label" : "Electrical Resistance",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa64",
+    "value" : "ENGR",
+    "label" : "Energy",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa65",
+    "value" : "ENT",
+    "label" : "*Entitic",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa66",
+    "value" : "ENTCAT",
+    "label" : "*Entitic Catalytic Activity",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa67",
+    "value" : "ENTNUM",
+    "label" : "*Entitic Number",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa68",
+    "value" : "ENTSUB",
+    "label" : "*Entitic Substance of Amount",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa69",
+    "value" : "ENTVOL",
+    "label" : "*Entitic Volume",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa6a",
+    "value" : "EQL",
+    "label" : "Equilibrium",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa6b",
+    "value" : "FORCE",
+    "label" : "Mechanical force",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa6c",
+    "value" : "FREQ",
+    "label" : "Frequency",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa6d",
+    "value" : "IMP",
+    "label" : "Impression/ interpretation of study",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa6e",
+    "value" : "KINV",
+    "label" : "*Kinematic Viscosity",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa6f",
+    "value" : "LEN",
+    "label" : "Length",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa70",
+    "value" : "LINC",
+    "label" : "*Length Increment",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa71",
+    "value" : "LIQ",
+    "label" : "*Liquefaction",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa72",
+    "value" : "MASS",
+    "label" : "*Mass",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa73",
+    "value" : "MCNC",
+    "label" : "*Mass Concentration",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa74",
+    "value" : "MCNT",
+    "label" : "Mass Content",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa75",
+    "value" : "MCRTO",
+    "label" : "*Mass Concentration Ratio",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa76",
+    "value" : "MFR",
+    "label" : "*Mass Fraction",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa77",
+    "value" : "MGFLUX",
+    "label" : "Magnetic flux",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa78",
+    "value" : "MINC",
+    "label" : "*Mass Increment",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa79",
+    "value" : "MORPH",
+    "label" : "Morphology",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa7a",
+    "value" : "MOTIL",
+    "label" : "Motility",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa7b",
+    "value" : "MRAT",
+    "label" : "*Mass Rate",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa7c",
+    "value" : "MRTO",
+    "label" : "*Mass Ratio",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa7d",
+    "value" : "NCNC",
+    "label" : "*Number Concentration",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa7e",
+    "value" : "NCNT",
+    "label" : "*Number Content",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa7f",
+    "value" : "NFR",
+    "label" : "*Number Fraction",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa80",
+    "value" : "NRTO",
+    "label" : "*Number Ratio",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa81",
+    "value" : "NUM",
+    "label" : "*Number",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa82",
+    "value" : "OD",
+    "label" : "Optical density",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa83",
+    "value" : "OSMOL",
+    "label" : "*Osmolality",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa84",
+    "value" : "PRES",
+    "label" : "*Pressure (Partial)",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa85",
+    "value" : "PRID",
+    "label" : "Presence/Identity/Existence",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa86",
+    "value" : "PWR",
+    "label" : "Power (wattage)",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa87",
+    "value" : "RANGE",
+    "label" : "*Ranges",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa88",
+    "value" : "RATIO",
+    "label" : "*Ratios",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa89",
+    "value" : "RCRLTM",
+    "label" : "*Reciprocal Relative Time",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa8a",
+    "value" : "RDEN",
+    "label" : "*Relative Density",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa8b",
+    "value" : "REL",
+    "label" : "*Relative",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa8c",
+    "value" : "RLMCNC",
+    "label" : "*Relative Mass Concentration",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa8d",
+    "value" : "RLSCNC",
+    "label" : "*Relative Substance Concentration",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa8e",
+    "value" : "RLTM",
+    "label" : "*Relative Time",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa8f",
+    "value" : "SATFR",
+    "label" : "*Saturation Fraction",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa90",
+    "value" : "SCNC",
+    "label" : "*Substance Concentration",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa91",
+    "value" : "SCNCIN",
+    "label" : "*Substance Concentration Increment",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa92",
+    "value" : "SCNT",
+    "label" : "*Substance Content",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa93",
+    "value" : "SCNTR",
+    "label" : "*Substance Content Rate",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa94",
+    "value" : "SCRTO",
+    "label" : "*Substance Concentration Ratio",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa95",
+    "value" : "SFR",
+    "label" : "*Substance Fraction",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa96",
+    "value" : "SHAPE",
+    "label" : "Shape",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa97",
+    "value" : "SMELL",
+    "label" : "Smell",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa98",
+    "value" : "SRAT",
+    "label" : "*Substance Rate",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa99",
+    "value" : "SRTO",
+    "label" : "*Substance Ratio",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa9a",
+    "value" : "SUB",
+    "label" : "*Substance Amount",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa9b",
+    "value" : "SUSC",
+    "label" : "*Susceptibility",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa9c",
+    "value" : "TASTE",
+    "label" : "Taste",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa9d",
+    "value" : "TEMP",
+    "label" : "*Temperature",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa9e",
+    "value" : "TEMPDF",
+    "label" : "*Temperature Difference",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aa9f",
+    "value" : "TEMPIN",
+    "label" : "*Temperature Increment",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaa0",
+    "value" : "THRMCNC",
+    "label" : "*Threshold Mass Concentration",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaa1",
+    "value" : "THRSCNC",
+    "label" : "*Threshold Substance Concentration",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaa2",
+    "value" : "TIME",
+    "label" : "*Time (e.g. seconds)",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaa3",
+    "value" : "TITR",
+    "label" : "*Dilution Factor (Titer)",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaa4",
+    "value" : "TMDF",
+    "label" : "*Time Difference",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaa5",
+    "value" : "TMSTP",
+    "label" : "*Time Stamp-Date and Time",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaa6",
+    "value" : "TRTO",
+    "label" : "*Time Ratio",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaa7",
+    "value" : "TYPE",
+    "label" : "*Type",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaa8",
+    "value" : "VCNT",
+    "label" : "*Volume Content",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaa9",
+    "value" : "VEL",
+    "label" : "*Velocity",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaaa",
+    "value" : "VELRT",
+    "label" : "*Velocity Ratio",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaab",
+    "value" : "VFR",
+    "label" : "*Volume Fraction",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaac",
+    "value" : "VISC",
+    "label" : "*Viscosity",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaad",
+    "value" : "VOL",
+    "label" : "*Volume",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaae",
+    "value" : "VRAT",
+    "label" : "*Volume Rate",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaaf",
+    "value" : "VRTO",
+    "label" : "*Volume Ratio",
+    "codeSystem" : "HL70254",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

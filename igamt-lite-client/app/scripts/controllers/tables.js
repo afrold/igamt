@@ -14,23 +14,33 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         	$scope.copyTable(table);
       });
     };
+    
+    $scope.reset = function () {
+    	$scope.editForm.$dirty = false;
+    	$rootScope.clearChanges();
+    	TableService.merge($rootScope.table, $rootScope.tablesMap[$rootScope.table.id]);
+    };
+    
 
     $scope.save = function () {
-        $scope.saving = true;
-        var table = $rootScope.table;
-        var bindingIdentifier = table.bindingIdentifier;
-        table.bindingIdentifier = null;
+    	$scope.saving = true;
+    	var table = $rootScope.table;
+    	var bindingIdentifier = table.bindingIdentifier;
+    	
+    	
+        if (table.libIds == undefined) table.libIds = [];
         if (table.libIds.indexOf($rootScope.igdocument.profile.tableLibrary.id) == -1) {
-            table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+        	table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
         }
+
         TableService.save(table).then(function (result) {
                 var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary);
                 if (oldLink != null) {
                     TableService.merge($rootScope.tablesMap[result.id], result);
                     var newLink = TableService.getTableLink(result);
-                    newLink.ext = ext;
+                    newLink.bindingIdentifier = bindingIdentifier;
                     TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                        oldLink.ext = newLink;
+                        oldLink.bindingIdentifier = link.bindingIdentifier;
                         $scope.saving = false;
                         $scope.selectedChildren = [];
                         $rootScope.$broadcast('event:SetToC');
@@ -220,6 +230,20 @@ angular.module('igl').controller('TableModalCtrl', function ($scope) {
 angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, $modalInstance, tableToDelete, $rootScope, TableService, TableLibrarySvc) {
     $scope.tableToDelete = tableToDelete;
     $scope.loading = false;
+    
+    
+    $scope.delete = function () {
+    	$scope.loading = true;
+        if($scope.tableToDelete.scope === 'USER'){
+        	CloneDeleteSvc.deleteTableAndSegmentLink($scope.tableToDelete);
+        }else {
+        	CloneDeleteSvc.deleteTableLink($scope.tableToDelete);
+        }
+        $modalInstance.close($scope.tableToDelete);
+        $scope.loading = false;
+    };
+    
+    
 //    $scope.delete = function () {
 //        $scope.loading = true;
 //
