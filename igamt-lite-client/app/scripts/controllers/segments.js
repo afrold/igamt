@@ -366,7 +366,7 @@ angular.module('igl')
                 if (!$rootScope.datatypesMap[field.datatype.id] || $rootScope.datatypesMap[field.datatype.id] == null) {
                     $rootScope.datatypesMap[field.datatype.id] = datatype;
                 }
-                MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
+//                MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
             });

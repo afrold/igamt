@@ -16,21 +16,27 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     };
 
     $scope.save = function () {
-        $scope.saving = true;
-        var table = $rootScope.table;
-        var bindingIdentifier = table.bindingIdentifier;
-        table.bindingIdentifier = null;
+    	$scope.saving = true;
+    	var table = $rootScope.table;
+    	var bindingIdentifier = table.bindingIdentifier;
+    	
+    	console.log(bindingIdentifier);
+    	
+        if (table.libIds == undefined) table.libIds = [];
         if (table.libIds.indexOf($rootScope.igdocument.profile.tableLibrary.id) == -1) {
-            table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+        	table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
         }
+
         TableService.save(table).then(function (result) {
                 var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary);
                 if (oldLink != null) {
                     TableService.merge($rootScope.tablesMap[result.id], result);
                     var newLink = TableService.getTableLink(result);
-                    newLink.ext = ext;
+                    console.log("OLD: " + newLink.bindingIdentifier);
+                    newLink.bindingIdentifier = bindingIdentifier;
                     TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                        oldLink.ext = newLink;
+                    	console.log("new: " + link.bindingIdentifier);
+                        oldLink.bindingIdentifier = link.bindingIdentifier;
                         $scope.saving = false;
                         $scope.selectedChildren = [];
                         $rootScope.$broadcast('event:SetToC');

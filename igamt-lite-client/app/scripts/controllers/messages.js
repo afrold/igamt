@@ -38,9 +38,9 @@ angular.module('igl')
                 var index = findIndex(message.id);
                 if (index < 0) {
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
-                    FilteringSvc.addMsgInFilter(message.name, message.id);
+//                    FilteringSvc.addMsgInFilter(message.name, message.id);
                 }
-                MastermapSvc.addMessage(message, []);
+//                MastermapSvc.addMessage(message, []);
                 $rootScope.$broadcast('event:SetToC');
                 $rootScope.message = angular.copy(message);
             }, function (error) {
@@ -82,7 +82,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (segment) {
                 segmentRef.ref.id = segment.id;
-                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
+//                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
                 if ($scope.messagesParams)
                     $scope.messagesParams.refresh();
             });
@@ -172,7 +172,8 @@ angular.module('igl')
 
         $scope.isVisible = function (node) {
             if (node && node != null) {
-                return FilteringSvc.show(node);
+//                return FilteringSvc.show(node);
+            	return true;
             } else {
                 return true;
             }
@@ -180,7 +181,8 @@ angular.module('igl')
 
         $scope.isVisibleInner = function (node, nodeParent) {
             if (node && node != null && nodeParent && nodeParent != null) {
-                return FilteringSvc.showInnerHtml(node, nodeParent);
+//                return FilteringSvc.showInnerHtml(node, nodeParent);
+            	return true;
             } else {
                 return true;
             }

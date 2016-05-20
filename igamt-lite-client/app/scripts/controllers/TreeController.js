@@ -501,14 +501,14 @@ angular
                 return promise;
             }
            
-            $scope.isUnused = function (node) {
-                return FilteringSvc.isUnused(node);
-            };
+//            $scope.isUnused = function (node) {
+//                return FilteringSvc.isUnused(node);
+//            };
 
 
-            $scope.showToC = function (leaf) {
-                return FilteringSvc.showToC(leaf);
-            };
+//            $scope.showToC = function (leaf) {
+//                return FilteringSvc.showToC(leaf);
+//            };
             
             $scope.getScopeLabel = function (leaf) {
             if (leaf.scope==='HL7STANDARD'){

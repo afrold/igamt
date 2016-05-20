@@ -42,8 +42,8 @@ angular
                 FilteringSvc.loadUsages();
             });
 
-            $rootScope.$on('event:loadMastermap', function (event, igdocument) {
-              MastermapSvc.parseIg(igdocument);
-            });
+//            $rootScope.$on('event:loadMastermap', function (event, igdocument) {
+//              MastermapSvc.parseIg(igdocument);
+//            });
   }
 );
