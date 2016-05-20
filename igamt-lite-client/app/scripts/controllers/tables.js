@@ -14,6 +14,13 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         	$scope.copyTable(table);
       });
     };
+    
+    $scope.reset = function () {
+    	$scope.editForm.$dirty = false;
+    	$rootScope.clearChanges();
+    	TableService.merge($rootScope.table, $rootScope.tablesMap[$rootScope.table.id]);
+    };
+    
 
     $scope.save = function () {
     	$scope.saving = true;

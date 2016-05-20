@@ -12,11 +12,11 @@ angular.module('igl')
         $scope.selectedChildren = [];
         $scope.saving = false;
 
+        
         $scope.reset = function () {
-//            $scope.loadingSelection = true;
-//            $scope.message = "Segment " + $scope.segmentCopy.label + " reset successfully";
-//            angular.extend($rootScope.segment, $scope.segmentCopy);
-//             $scope.loadingSelection = false;
+        	$scope.editForm.$dirty = false;
+        	$rootScope.clearChanges();
+        	SegmentService.merge($rootScope.segment, $rootScope.segmentsMap[$rootScope.segment.id]);
         };
 
         $scope.close = function () {
