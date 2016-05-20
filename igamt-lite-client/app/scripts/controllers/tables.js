@@ -20,7 +20,6 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     	var table = $rootScope.table;
     	var bindingIdentifier = table.bindingIdentifier;
     	
-    	console.log(bindingIdentifier);
     	
         if (table.libIds == undefined) table.libIds = [];
         if (table.libIds.indexOf($rootScope.igdocument.profile.tableLibrary.id) == -1) {
@@ -32,10 +31,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                 if (oldLink != null) {
                     TableService.merge($rootScope.tablesMap[result.id], result);
                     var newLink = TableService.getTableLink(result);
-                    console.log("OLD: " + newLink.bindingIdentifier);
                     newLink.bindingIdentifier = bindingIdentifier;
                     TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                    	console.log("new: " + link.bindingIdentifier);
                         oldLink.bindingIdentifier = link.bindingIdentifier;
                         $scope.saving = false;
                         $scope.selectedChildren = [];
