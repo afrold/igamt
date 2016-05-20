@@ -7,8 +7,7 @@ angular
         'SectionSvc',
         'CloneDeleteSvc',
         'FilteringSvc',
-
-        function ($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc,FilteringSvc) {
+         function ($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc,FilteringSvc) {
 
 
             $scope.collapsedata = false;
@@ -550,7 +549,7 @@ angular
             };
 
 
-            var preventChangesLost = function(){
+            var preventChangesLost = function(event){
                 if ($rootScope.hasChanges()) {
                     if(!confirm("You have unsaved changes, Do you want to stay on the page?")) {
                         event.preventDefault();

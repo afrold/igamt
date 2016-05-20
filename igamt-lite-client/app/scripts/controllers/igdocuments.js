@@ -258,11 +258,11 @@ angular.module('igl')
         };
 
         var preventChangesLost = function(){
-            if ($rootScope.hasChanges()) {
-                if(!confirm("You have unsaved changes, Do you want to stay on the page?")) {
-                    event.preventDefault();
-                }
-            }
+//            if ($rootScope.hasChanges()) {
+//                if(!confirm("You have unsaved changes, Do you want to stay on the page?")) {
+//                    event.preventDefault();
+//                }
+//            }
         }
 
         $scope.show = function (igdocument) {
