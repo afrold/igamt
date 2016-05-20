@@ -64,7 +64,7 @@
                            ng-model="segment.ext"
                            required required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
-                                          ng-show="isDuplicated(segment,'ext', segments)">Extension already used</span>
+                                          ng-show="isDuplicatedTwoContexts(segment,'name', 'ext', segments)">Extension already used</span>
                 </div>
             </div>
 

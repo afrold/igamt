@@ -350,7 +350,7 @@ angular
                 } ],
                 null,
                 [ 'export', function ($itemScope) {
-                    $scope.selectMessages($rootScope.igdocument);
+                    $scope.selectMessagesForExport($rootScope.igdocument);
                 } ]
             ];
 

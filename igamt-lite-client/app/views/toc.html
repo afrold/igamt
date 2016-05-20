@@ -228,10 +228,10 @@
                         <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
-                                 ng-click="editDataType('Value Sets')" context-menu="ValueSetOptions">
+                                 ng-click="editTable(table);" context-menu="ValueSetOptions">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : table.id===activeModel}"
-                                      ng-click="editDataType(table); Activate(table.id)">
+                                      ng-click="editTable(table); Activate(table.id)">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE':  getScopeLabel(table)==='USE','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> 
                                       
@@ -386,7 +386,7 @@
         <li><a class="pointer" role="menuitem" tabindex="1"
                ng-click="hl7Versions('ctx')"><i class="fa fa-plus fa-fw"></i>Add</a></li>
         <li><a class="pointer" role="menuitem" tabindex="2"
-               ng-click="selectMessages(igdocument)"><i
+               ng-click="selectMessagesForExport(igdocument)"><i
                 class="fa fa-download fa-fw"></i>Export</a></li>
     </ul>
 </div>
@@ -407,7 +407,7 @@
         <li><a class="pointer" role="menuitem" tabindex="2"
                ng-click="clicked('Delete')"><i class="fa fa-trash-o fa-fw"></i>Delete</a></li>
         <li><a class="pointer" role="menuitem" tabindex="3"
-               ng-click="selectMessages(igdocument)"><i
+               ng-click="selectMessagesForExport(igdocument)"><i
                 class="fa fa-download fa-fw"></i>Export</a></li>
     </ul>
 </div>
