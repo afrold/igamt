@@ -42,9 +42,9 @@ angular
 					};
 
 					svc.getToC = function(igdocument) {
-						console.log("Getting toc... version="
-								+ igdocument.profile.metaData.hl7Version + " "
-								+ igdocument.id);
+//						console.log("Getting toc... version="
+//								+ igdocument.profile.metaData.hl7Version + " "
+//								+ igdocument.id);
 						toc = [];
 
 //						console.log("childSections=" +
@@ -59,7 +59,7 @@ angular
 						});
 						var conformanceProfile = getMessageInfrastructure(igdocument);
 						toc.push(conformanceProfile);
-             console.log("toc=" + toc);
+//             console.log("toc=" + toc);
 						return toc;
 					};
 
@@ -109,8 +109,6 @@ angular
                         var tables = angular.copy(igdocument.profile.tableLibrary);
                         tables.children = $rootScope.tables;
 
-                        console.log("datatypes TOC = " + datatypes.children.length);
-                        console.log("datatypeLibrary TOC = " + igdocument.profile.datatypeLibrary.children.length);
                         var children = [];
 						children.push(getMetadata(igdocument.profile,
 								"profileMetadata"));
@@ -177,7 +175,7 @@ angular
 														parent);
 											} else if (parentType === "datatype") {
 												var label = $rootScope.getDatatypeLabel(child);
-												console.log("ToC datatype label=" + label);
+//												console.log("ToC datatype label=" + label);
 												entry = createEntry(child,
 														label, parent);
 											}  else {

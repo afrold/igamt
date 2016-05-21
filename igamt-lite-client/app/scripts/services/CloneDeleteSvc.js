@@ -4,7 +4,6 @@ angular.module('igl').factory(
     function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, SectionSvc, FilteringSvc) {
 
         var svc = this;
-
         svc.copySection = function (section) {
             var newSection = angular.copy(section.reference);
             newSection.id = new ObjectId();
@@ -24,16 +23,13 @@ angular.module('igl').factory(
 
         svc.copySegment = function (segment) {
             var newSegment = angular.copy(segment);
-            var newLink = angular.copy(SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary));
-
-            console.log("CHECK:::" + newSegment.name);
-            console.log("CHECK:::" + newLink.id);
-            console.log("CHECK:::" + newLink.ext);
-            
-            
             newSegment.participants = [];
-            newSegment.ext = $rootScope.createNewExtension(newLink.ext);
-            console.log("CHECK new EXT:::" + newSegment.ext);
+            newSegment.scope = 'USER';
+            newSegment.id = null;
+            newSegment.libIds = [];
+            newSegment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
+            newSegment.ext = $rootScope.createNewExtension(newSegment.ext);
+            
             if (newSegment.fields != undefined && newSegment.fields != null && newSegment.fields.length != 0) {
                 for (var i = 0; i < newSegment.fields.length; i++) {
                     newSegment.fields[i].id = new ObjectId().toString();
@@ -50,15 +46,10 @@ angular.module('igl').factory(
                 });
             }
             
-            newSegment.scope = 'USER';
-            newSegment.id = null;
-            newSegment.libIds = [];
-            newSegment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
-        	
-            newLink.ext = newSegment.ext;
-            
             SegmentService.save(newSegment).then(function (result){
             	newSegment = result;
+            	var newLink = angular.copy(SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary));
+                newLink.ext = newSegment.ext;
             	newLink.id = newSegment.id;
                 
                 SegmentLibrarySvc.addChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
@@ -87,11 +78,14 @@ angular.module('igl').factory(
 
         svc.copyDatatype = function (datatype) {
             var newDatatype = angular.copy(datatype, {});
-            var newLink = angular.copy(DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.igdocument.profile.datatypeLibrary));
+            newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
+            newDatatype.scope = 'USER';
             newDatatype.participants = [];
-
-            newDatatype.ext = $rootScope.createNewExtension(newLink.ext);
-
+            newDatatype.id = null;
+            newDatatype.libIds = [];
+            newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
+            
+            
             if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
                 for (var i = 0; i < newDatatype.components.length; i++) {
                     newDatatype.components[i].id = new ObjectId().toString();
@@ -104,20 +98,19 @@ angular.module('igl').factory(
                     predicate.id = new ObjectId().toString();
                 });
             }
+            
             var conformanceStatements = newDatatype['conformanceStatements'];
             if (conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0) {
                 angular.forEach(conformanceStatements, function (conformanceStatement) {
                     conformanceStatement.id = new ObjectId().toString();
                 });
             }
-            newDatatype.scope = 'USER';
-            newDatatype.id = null;
-            newDatatype.libIds = [];
-            newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
-            DatatypeService.save(newDatatype).then(function (dt){
-            	newDatatype = dt;
-            	newLink.ext = newDatatype.ext;
+            
+            DatatypeService.save(newDatatype).then(function (result){
+            	newDatatype = result;
+            	var newLink = angular.copy(DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.igdocument.profile.datatypeLibrary));
                 newLink.id = newDatatype.id;
+                newLink.ext = newDatatype.ext;
                 DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
                 	$rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
                     $rootScope.datatypes.splice(0, 0, newDatatype);
@@ -147,10 +140,12 @@ angular.module('igl').factory(
 
         svc.copyTable = function (table) {
             var newTable = angular.copy(table);
-            var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary));
-            
             newTable.participants = [];
-            newTable.bindingIdentifier = $rootScope.createNewExtension(newLink.bindingIdentifier);
+            newTable.scope = 'USER';
+            newTable.id = null;
+            newTable.libIds = [];
+            newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+            newTable.bindingIdentifier = $rootScope.createNewExtension(newTable.bindingIdentifier);
             
             if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
             	for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
@@ -158,14 +153,10 @@ angular.module('igl').factory(
             	}
             }
             
-            newTable.scope = 'USER';
-            newTable.id = null;
-            newTable.libIds = [];
-            newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
-            newLink.bindingIdentifier = newTable.bindingIdentifier;
-            
             TableService.save(newTable).then(function (result){
             	newTable = result;
+            	var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary));
+            	newLink.bindingIdentifier = newTable.bindingIdentifier;
                 newLink.id = newTable.id;
                 
                 TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
@@ -221,7 +212,7 @@ angular.module('igl').factory(
                     $rootScope.processElement(newMessage);
                     //TODO Mastermap need to add Message
 //                    MastermapSvc.addMessage(newMessage, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-                    FilteringSvc.addMsgInFilter(newMessage.name, newMessage.id);
+//                    FilteringSvc.addMsgInFilter(newMessage.name, newMessage.id);
                     $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openMessage', newMessage);
                      return newMessage;
