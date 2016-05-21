@@ -105,7 +105,6 @@ angular
                     $scope.updatePositions(event.source.nodesScope.$modelValue);
                     console.log(sourceNode);
                     if(source.type="message"){
-                    	console.log("****************************************************");
                     	$scope.reOrderMessages();
                     	
                     }else{
@@ -238,9 +237,7 @@ angular
                                 		  $itemScope.section.childSections.push(newSection);
                                 		  newSection.sectionPosition=$itemScope.section.childSections.length;
                                 	  }
-                                	  console.log("**********************************")
                                 	  console.log($itemScope.section);
-                                	  console.log("***********************************")
                                       SectionSvc.update($rootScope.igdocument.id,$itemScope.section);
                                       $scope.editSection(newSection);
                                       $scope.activeModel =newSection.id;
@@ -270,8 +267,6 @@ angular
                 [
                     'delete',
                     function ($itemScope) {
-                    	console.log("*************************************delete****************")
-                     console.log($itemScope.section.id);
                        SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id);
                     }
                 ]
@@ -297,7 +292,6 @@ angular
                                           $rootScope.igdocument.childSections.push(newSection);
                                       
                                           newSection.sectionPosition=$rootScope.igdocument.childSections.length;
-                                         // SectionSvc.save($rootScope.igdocument.id,newSection);
                                           $scope.updateChildeSections($rootScope.igdocument.childSections);
 
 
@@ -630,7 +624,7 @@ angular
             	return 'HL7';
             }
             else  if(leaf.scope==='USER') {
-            	return 'USR';
+            	return 'USE';
             	
             }
             

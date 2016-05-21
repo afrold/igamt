@@ -78,7 +78,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
           angular.forEach(data, function(lib){
 						$scope.datatypeLibsStruct.push(lib);
           });
-            console.log("$scope.datatypeLibsStruct size=" + $scope.datatypeLibsStruct.length);
+          	$scope.accordi.dtDetails = false;
+			$rootScope.isEditing = false;
+			$scope.DataTypeTree=[];
+			$scope.datatypeLibCopy = {};
+           console.log("$scope.datatypeLibsStruct size=" + $scope.datatypeLibsStruct.length);
 				}).catch( function (error) {
 					console.log(error);
 				});
@@ -149,11 +153,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			};
 
 			$scope.deleteLibrary = function(datatypeLibrary) {
-				DatatypeLibrarySvc.delete(datatypeLibrary.id);
-                var idxP = _.findIndex($scope.datatypeLibsStruct, function (child) {
-                    return child.id === datatypeLibrary.id;
-                });
-                $scope.datatypeLibsStruct.splice(idxP, 1);
+				$scope.confirmDelete(datatypeLibrary);
 			};
 			
 	        $scope.confirmDelete = function (datatypeLibrary) {
@@ -167,12 +167,18 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 	                }
 	            });
 	            modalInstance.result.then(function (datatypeLibrary) {
-					DatatypeLibrarySvc.delete(datatypeLibrary.id);
+					DatatypeLibrarySvc.delete(datatypeLibrary.id).then(function(result){
 	                var idxP = _.findIndex($scope.datatypeLibsStruct, function (child) {
 	                    return child.id === datatypeLibrary.id;
 	                });
 	                $scope.datatypeLibsStruct.splice(idxP, 1);
-	            });
+					$scope.DataTypeTree=[];
+					$scope.datatypeLibCopy = {};
+	                $scope.datatypeLibMetaDataCopy = {};
+	              	$scope.accordi.dtDetails = false;
+	    			$rootScope.isEditing = false;
+					});
+            });
 	        };
 
 	        $scope.confirmClose = function () {
@@ -231,7 +237,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $scope.metaDataView = "EditDatatypeLibraryDatatype.html";
          $scope.loadingSelection = true;
          $scope.added = [];
-	        $scope.datatypeCopy  = angular.copy(datatype);
+	        $scope.datatypeCopy = angular.copy(datatype);
             DatatypeService.collectDatatypes(datatype.id).then(function (datatypes) {
                 angular.forEach(datatypes, function (dt) {
                     var exists = _.indexOf(dt.libIds, function(libId){
@@ -239,21 +245,27 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     });
                     if (exists === -1) {
                     	dt.libIds.push($scope.datatypeLibStruct.id);
+                    } else {
+                    	console.log("Found libId4=" + dt.name);
                     }
                 	if ($scope.datatypesMap[dt.id] === null || $scope.datatypesMap[dt.id] === undefined) {
                         $scope.datatypesMap[dt.id] = dt;
                         $scope.added.push(dt.id);
-                        exists = _.indexOf($scope.datatypeLibStruct.children, function(child){
+                        var exists1 = _.indexOf($scope.datatypeLibStruct.children, function(child){
                         	return child.id === dt.id;
                         });
-                        if (exists === -1) {
+                        if (exists1 === -1) {
                         	$scope.datatypeLibStruct.children.push(createLink(dt));
+                        } else {
+                        	console.log("Found datatypeLibStructbId=" +  dt.name);
                         }
-                        exists = _.indexOf($scope.datatypeLibCopy.children, function(child){
+                        var exists2 = _.indexOf($scope.datatypeLibCopy.children, function(child){
                         	return child.id === dt.id;
                         });
-                        if (exists === -1) {
+                        if (exists2 === -1) {
                         	$scope.datatypeLibCopy.children.push(dt);
+                        } else {
+                        	console.log("Found datatypeLibCopy=" + dt.name);
                         }
                     }
                 });
@@ -558,40 +570,14 @@ angular.module('igl').controller('DatatypeListInstanceDlgCtl',
 			};
 });
 
-angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function ($scope, $rootScope, $http, $modalInstance, datatypeLibStructToDelete) {
+angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function ($scope, $rootScope, $http, $modalInstance, datatypeLibraryToDelete) {
 	
-    $scope.datatypeLibStructToDelete = datatypeLibStructToDelete;
+    $scope.datatypeLibStructToDelete = datatypeLibraryToDelete;
     $scope.loading = false;
     
     $scope.delete = function () {
-        $scope.loading = true;
-        $http.post($rootScope.api('api/datatype-library/' + $scope.datatypeLibStructToDelete.id + '/delete')).then(function (response) {
-            var index = $rootScope.datatypeLibsStruct.indexOf($scope.datatypeLibStructToDelete);
-            if (index > -1) $rootScope.datatypeLibsStruct.splice(index, 1);
-            $rootScope.backUp = null;
-            if ($scope.datatypeLibStructToDelete === $scope.datatypeLibStruct) {
-                $scope.closeDatatypeLibrary();
-            }
-            $rootScope.msg().text = "dtDeleteSuccess";
-            $rootScope.msg().type = "success";
-            $rootScope.msg().show = true;
-            $rootScope.manualHandle = true;
-            $scope.igdocumentToDelete = null;
-            $scope.loading = false;
-            $modalInstance.close($scope.datatypeLibStructToDelete);
-
-        }, function (error) {
-            $scope.error = error;
-            $scope.loading = false;
-            $modalInstance.dismiss('cancel');
-            $rootScope.msg().text = "dtDeleteFailed";
-            $rootScope.msg().type = "danger";
-            $rootScope.msg().show = true;
-
-
-// waitingDialog.hide();
-        });
-    };
+		$modalInstance.close($scope.datatypeLibStructToDelete);
+        };
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
