@@ -23,7 +23,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	private DatatypeLibraryMetaData metaData;
 
 	private Constant.SCOPE scope;
-	
+
 	public DatatypeLibrary() {
 		super();
 		type = Constant.DATATYPES;
@@ -78,7 +78,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	public void addDatatypes(Set<DatatypeLink> dtls) {
 		children.addAll(dtls);
 	}
-	
+
 	public DatatypeLink save(DatatypeLink dtl) {
 		children.add(dtl);
 		return dtl;
@@ -88,10 +88,12 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.children.remove(dtl);
 	}
 
-	public boolean addDatatype(Datatype dt) {
-		return children.add(new DatatypeLink(dt.getId(), dt.getName(), dt.getExt()));
+	public DatatypeLink addDatatype(Datatype dt) {
+		DatatypeLink dtLink = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());
+		children.add(dtLink);
+		return dtLink;
 	}
-	
+
 	public DatatypeLink findOne(String dtId) {
 		if (this.children != null) {
 			for (DatatypeLink dtl : this.children) {
@@ -115,7 +117,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 		return null;
 	}
-	
+
 	public DatatypeLink findOneByName(String name) {
 		if (this.children != null) {
 			for (DatatypeLink dtl1 : this.children) {
@@ -131,43 +133,43 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	public DatatypeLibrary clone(HashMap<String, Datatype> dtRecords, HashMap<String, Table> tableRecords)
 			throws CloneNotSupportedException {
 		DatatypeLibrary clonedDatatypes = new DatatypeLibrary();
-//		clonedDatatypes.setChildren(new HashSet<Datatype>());
-//		for (Datatype dt : this.children) {
-//			if (dtRecords.containsKey(dt.getId())) {
-//				clonedDatatypes.addDatatype(dtRecords.get(dt.getId()));
-//			} else {
-//				Datatype clone = dt.clone();
-//				clone.setId(dt.getId());
-//				dtRecords.put(dt.getId(), clone);
-//				clonedDatatypes.addDatatype(clone);
-//			}
-//		}
+		// clonedDatatypes.setChildren(new HashSet<Datatype>());
+		// for (Datatype dt : this.children) {
+		// if (dtRecords.containsKey(dt.getId())) {
+		// clonedDatatypes.addDatatype(dtRecords.get(dt.getId()));
+		// } else {
+		// Datatype clone = dt.clone();
+		// clone.setId(dt.getId());
+		// dtRecords.put(dt.getId(), clone);
+		// clonedDatatypes.addDatatype(clone);
+		// }
+		// }
 
 		return clonedDatatypes;
-	} 
-	
+	}
+
 	public DatatypeLibrary clone() throws CloneNotSupportedException {
 		DatatypeLibrary clone = new DatatypeLibrary();
-		
+
 		HashSet<DatatypeLink> clonedChildren = new HashSet<DatatypeLink>();
-		for(DatatypeLink dl:this.children){
+		for (DatatypeLink dl : this.children) {
 			clonedChildren.add(dl.clone());
 		}
-		
+
 		clone.setChildren(clonedChildren);
 		clone.setExt(this.getExt() + "-" + genRand());
 		clone.setMetaData(this.getMetaData().clone());
 		clone.setScope(this.getScope());
-		clone.setSectionContents(this.getSectionContents()); 
+		clone.setSectionContents(this.getSectionContents());
 		clone.setSectionDescription(this.getSectionDescription());
 		clone.setSectionPosition(this.getSectionPosition());
 		clone.setSectionTitle(this.getSectionTitle());
 		clone.setType(this.getType());
-		return clone;	
+		return clone;
 	}
-	
+
 	private String genRand() {
-		return Integer.toString( new Random().nextInt(100));
+		return Integer.toString(new Random().nextInt(100));
 	}
 
 	public void merge(DatatypeLibrary dts) {
@@ -182,4 +184,4 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.metaData = metaData;
 	}
 
- }
+}
