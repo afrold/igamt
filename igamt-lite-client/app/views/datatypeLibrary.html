@@ -216,14 +216,14 @@
    <div class="col-sm-6">
    <label class="control-label" for="version">Version</label>
     <input class="form-control"  type="text"
-           name="version"
+           name="version" disabled
            ng-model="datatypeLibMetaDataCopy.version"
            required/>
 	</div>
    <div class="col-sm-6">
    <label class="control-label" for="date">Date</label>
     <input class="form-control"  type="text"
-           name="date"
+           name="date" disabled
            ng-model="datatypeLibMetaDataCopy.date"
            required/>
 	</div>
@@ -248,15 +248,17 @@
      {{dataLibrary.metaData.name}}
       </div>
       <ol ui-tree-nodes="" ng-model="dataLibrary.children">
-        <li ng-repeat="dt in dataLibrary.children| orderBy :'label'"" ui-tree-node ng-if ="!collapsed">
+        <li ng-repeat="data in dataLibrary.children| orderBy :'label'"" ui-tree-node ng-if ="!collapsed">
+
                             <div ui-tree-handle class="messageSubContent" data-nodrag style="font-weight:normal;cursor:pointer;"
                                  context-menu="DataTypeOptionsInLib">
-                                <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(dt)==='HL7',
-                                'label-USE':  getScopeLabel(dt)==='USE','label-MASTER':getScopeLabel(dt)==='MAS'}" >{{getScopeLabel(dt.scope)}}</span>
+                                <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                'label-USE':  getScopeLabel(data)==='USE','label-MASTER':getScopeLabel(data)==='MAS'}" >{{getScopeLabel(data)}}</span>
                                 <span data-nodrag
-                                    ng-class="{selected : dt.id===activeModel}"
-                                    ng-click= "editDatatype(dt); Activate(dt.id)">{{getLabelOfData(dt.name, dt.ext)}}</span>
+                                    ng-class="{selected : data.id===activeModel}"
+                                    ng-click= "editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}</span>
                             </div>
+
         </li>
       </ol>
     </li>
@@ -374,7 +376,7 @@
 </div>
 <div ng-show="!loadingSelection">
 <div ng-show="datatypeCopy !== null" id="executionPanel">
-<form name="datatypeForm" id="datatypeForm" novalidate class="form-horizontal">
+<form name="forms.datatypeForm" novalidate class="form-horizontal">
 <div class="row">
     <div class="col-md-12 igl-page-header">
         <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeCopy.ext)}}</span>
@@ -382,17 +384,17 @@
   		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-model="datatypeCopy.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatypeCopy.status === 'PUBLISHED'" style="margin-right : 8px"/>Published</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
 				ng-hide="datatypeCopy.scope === 'HL7STANDARD'"
-                 ng-disabled="!datatypeForm.$dirty"
+                 ng-disabled="!forms.datatypeForm.$dirty"
                  ng-click="saveDatatype(datatypeCopy)">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
-<!--
+
                    <button title="Reset the Data Type" type="button" class="btn btn-xs btn-warning"
 				ng-hide="datatypeCopy.scope === 'HL7STANDARD'"
-                           ng-disabled="!datatypeForm.$dirty" ng-click="resetDatatype()">
+                           ng-disabled="!forms.datatypeForm.$dirty" ng-click="resetDatatype(datatypeCopy)">
                         <span><i class="fa fa-close fa-fw"></i>Reset</span>
                        </button>
--->
+
     </span>
     </div>
 </div>
@@ -405,7 +407,7 @@
     <div class="col-md-12">
         <div class="col-md-1 col-margin">
             <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
+                 ng-class="{'igl-has-error has-feedback' : form.datatypeForm.label.$invalid}">
                 <label for="name" class="control-label">Name</label>
                 <input type="text" disabled
                        name="name" id="label" class="form-control" ng-model="datatypeCopy.name"
@@ -416,7 +418,7 @@
         </div>
         <div class="col-md-2 col-margin">
             <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
+                 ng-class="{'igl-has-error has-feedback' : form.datatypeForm.name.$invalid}">
                 <label for="ext" class="control-label">Extension</label>
                 <input type="text"
                        ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
@@ -428,7 +430,7 @@
 
         <div class="col-md-3 col-margin">
             <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
+                 ng-class="{'igl-has-error has-feedback' : form.datatypeForm.description.$invalid}">
                 <label class="control-label">Description</label>
                 <input type="text"
                       ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
@@ -439,7 +441,7 @@
         </div>
          <div class="col-md-2 col-margin">
             <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
+                 ng-class="{'igl-has-error has-feedback' : form.datatypeForm.description.$invalid}">
                 <label class="control-label" style="text-align : center">HL7 Version</label>
                 <input type="text" disabled
                        name="description" class="form-control" ng-model="datatypeCopy.hl7Version"
@@ -448,7 +450,7 @@
         </div>
          <div class="col-md-6 col-margin">
             <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.purposeAndUse.$invalid}">
+                 ng-class="{'igl-has-error has-feedback' : form.datatypeForm.purposeAndUse.$invalid}">
                 <label for="pnu" class="control-label">Purpose and Use</label>
                 <textarea name="pnu" rows="3" cols="20"
                       ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
@@ -459,7 +461,7 @@
         </div>
       <div class="col-md-6 col-margin">
             <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.comment.$invalid}">
+                 ng-class="{'igl-has-error has-feedback' : form.datatypeForm.comment.$invalid}">
                 <label for="comment" class="control-label">Comment</label>
                 <input name="pnu" type="text"
                        ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
@@ -473,7 +475,7 @@
     <div class="col-md-12">
         <div class="col-md-12 col-margin">
             <div class="form-group control-group"
-                 ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
+                 ng-class="{'igl-has-error has-feedback' : form.datatypeForm.text.$invalid}">
                 <label class="control-label">Definition Text</label>
                     <textarea froala="froalaEditorOptions" ng-model="datatypeCopy.usageNote" name="text"
                               id="text"
@@ -819,7 +821,28 @@
     </div>
     </div>
 </script>
-
+<script type="text/ng-template" id="ConfirmDatatypeDeleteCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Delete Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete this Data Type? This operation is irreversible</p>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+        </div>
+    </div>
+    </div>
+</script>
 <script type="text/ng-template" id="ConfirmDatatypeLibraryCloseCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Close Confirmation

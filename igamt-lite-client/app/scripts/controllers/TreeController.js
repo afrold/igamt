@@ -400,7 +400,7 @@ angular
 
                                            ['create a copy',
                                                function ($itemScope) {
-                                         	 	console.log("create a copy");	
+                                         	 	console.log("create a copy=" + $itemScope);	
                                            	console.log($itemScope.data);
                                            	$scope.copyDatatype($itemScope.data); 
 
@@ -409,7 +409,7 @@ angular
                                            null,
                                            ['delete',
                                                function ($itemScope) {
-                                        	 	console.log("delete");	
+                                        	 	console.log("delete=" + $itemScope);	
                                                	console.log($itemScope.data);
                                         	   $scope.deleteDatatype($itemScope.data);
                                                } ]
