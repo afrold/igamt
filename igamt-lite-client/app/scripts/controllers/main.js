@@ -719,7 +719,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         	}else {
         		return "";
         	}
-        };
+        }
         $rootScope.processElement = function (element, parent) {
             try {
                 if(element != undefined && element != null) {
@@ -1745,9 +1745,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
             return _.find(_.without(list, obj), function (item) {
             	if(item[context1] == obj[context1]){
-            		return item[context2] == obj[context2]  && item.id != obj.id;
+            		return item[context2] == obj[context2];
             	}else {
-            		return false;
+            		return false
             	}
             });
         };
@@ -1767,11 +1767,17 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getLabel = function (name, ext) {
-        	var label=name;
+        	//console.log("*********"+name+ext);
+        	var label="";
             if (ext && ext !== null && ext !== "") {
-            	label= label + "_" + ext;
+            //	console.log("*********"+name + "_" + ext);
+            	label= name + "_" + ext;
+           
+            } else {
+                label =name;
             }
-            return label;
+           // console.log(label);
+            return label; 
         };
 
         $rootScope.getDynamicWidth = function (a, b, otherColumsWidth) {
@@ -1852,8 +1858,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getSegmentLabel = function (seg) {
-//            var ext = $rootScope.getSegmentExtension(seg);
-            return $rootScope.getLabel(seg.name,seg.ext);
+            var ext = $rootScope.getSegmentExtension(seg);
+            return $rootScope.getLabel(seg.name,ext);
         };
 
         $rootScope.getSegmentExtension = function (seg) {
@@ -1872,8 +1878,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.getDatatypeLabel = function (datatype) {
             if(datatype && datatype != null) {
-//                var ext = $rootScope.getDatatypeExtension(datatype);
-                return $rootScope.getLabel(datatype.name, datatype.ext);
+                var ext = $rootScope.getDatatypeExtension(datatype);
+                return $rootScope.getLabel(datatype.name, ext);
             }
             return "";
         };
@@ -2003,4 +2009,5 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
         $modalInstance.dismiss('cancel');
     };
 }]);
+
 
