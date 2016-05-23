@@ -56,7 +56,9 @@ angular.module('igl').factory('SegmentService',
                 return children != null && children.length > 0;
             },
             isVisible: function (node) {
-                return FilteringSvc.show(node);
+                //return FilteringSvc.show(node);
+                return true;
+
 //                 return  node ? SegmentService.isRelevant(node) ? SegmentService.isVisible(SegmentService.getParent(node)) : false : true;
             },
             isRelevant: function (node) {
