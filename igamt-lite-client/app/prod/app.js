@@ -30,7 +30,8 @@ var app = angular
         'ngNotificationsBar',
         'ngDragDrop',
         'ui.tree',
-        'blockUI'
+        'blockUI',
+        'unsavedChanges'
     ]);
 
 var

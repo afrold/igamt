@@ -859,6 +859,7 @@ angular.module('igl')
                 function () {
                     $rootScope.section = angular.copy(section);
                     $rootScope.originalSection = section;
+
                     $scope.loadingSelection = false;
                 }, 100);
         };
@@ -1049,7 +1050,7 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
         }
     };
     $scope.reset = function () {
-        $scope.editForm.$dirty = false;
+        $scope.editForm.$setPristine();
         $rootScope.clearChanges();
         $rootScope.metaData = angular.copy( $rootScope.igdocument.metaData);
     };
@@ -1083,7 +1084,7 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
         }
     };
     $scope.reset = function () {
-        $scope.editForm.$dirty = false;
+        $scope.editForm.$setPristine();
         $rootScope.clearChanges();
         $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
 

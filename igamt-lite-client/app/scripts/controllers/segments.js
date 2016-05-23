@@ -13,7 +13,7 @@ angular.module('igl')
         $scope.saving = false;
 
         $scope.reset = function () {
-        	$scope.editForm.$dirty = false;
+        	$scope.editForm.$setPristine();
             $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
             $rootScope.clearChanges();
             if ($scope.segmentsParams) {

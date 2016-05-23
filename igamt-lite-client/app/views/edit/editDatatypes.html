@@ -25,14 +25,14 @@
     <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
             <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                 ng-disabled="editForm.$invalid || editForm.$pristine"
                  ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
                          <button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
                                  ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                                 ng-disabled="!editForm.$dirty"
+                                 ng-disabled="editForm.$pristine"
                                  ng-click="reset()">
                              <span><i class="fa fa-times fa-fw"></i> Reset</span>
                          </button>

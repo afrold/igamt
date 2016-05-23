@@ -16,7 +16,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     };
     
     $scope.reset = function () {
-    	$scope.editForm.$dirty = false;
+    	$scope.editForm.$setPristine();
     	$rootScope.clearChanges();
     	TableService.merge($rootScope.table, $rootScope.tablesMap[$rootScope.table.id]);
     };

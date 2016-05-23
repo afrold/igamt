@@ -14,7 +14,7 @@ angular.module('igl')
         };
 
         $scope.reset = function () {
-            $scope.editForm.$dirty = false;
+            $scope.editForm.$setPristine();
             $rootScope.message = angular.copy($rootScope.originalMessage);
             $rootScope.clearChanges();
             if ($scope.messagesParams) {
@@ -42,7 +42,7 @@ angular.module('igl')
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
 //                    FilteringSvc.addMsgInFilter(message.name, message.id);
                 }
-//                MastermapSvc.addMessage(message, []);
+                MastermapSvc.addMessage(message, []);
                 $rootScope.$broadcast('event:SetToC');
                 $rootScope.message = angular.copy(message);
             }, function (error) {
@@ -84,7 +84,9 @@ angular.module('igl')
             });
             modalInstance.result.then(function (segment) {
                 segmentRef.ref.id = segment.id;
-//                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
+                segmentRef.ref.ext = segment.ext;
+                segmentRef.ref.name = segment.name;
+                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
                 if ($scope.messagesParams)
                     $scope.messagesParams.refresh();
             });

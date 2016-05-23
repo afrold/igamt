@@ -22,13 +22,13 @@
     					<span class="header4">Table: {{table.bindingIdentifier}}</span>
             				<span class="pull-right">
          					<button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 				ng-disabled="editForm.$invalid && !editForm.$dirty"
+                 				ng-disabled="editForm.$invalid && editForm.$pristine"
                  				ng-hide="viewSettings.tableReadonly || table.scope !== 'USER'"
                 	 			ng-click="save()">
              					<span><i class="fa fa-check fa-fw"></i> Save</span>
          					</button>
 							<button title="Cancel Changes" type="button" class="btn btn-sm btn-warning"
-								ng-disabled="editForm.$invalid && !editForm.$dirty"
+								ng-disabled="editForm.$invalid && editForm.$pristine"
                 	       		ng-hide="viewSettings.tableReadonly || table.scope !== 'USER'"
                 	        	ng-click="reset()">
                 	        	<span><i class="fa fa-times fa-fw"></i> Reset</span>

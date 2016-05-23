@@ -166,14 +166,14 @@
                 <span class="header4">Message Infrastructure</span>
             <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-md btn-primary"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                 ng-disabled="editForm.$invalid || editForm.$pristine"
                  ng-hide="viewSettings.tableReadonly"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
                          <button title="Cancel Changes" type="button" class="btn btn-md btn-warning"
                                  ng-hide="viewSettings.tableReadonly"
-                                 ng-disabled="!editForm.$dirty"
+                                 ng-disabled="editForm.$pristine"
                                  ng-click="reset()">
                              <span><i class="fa fa-times fa-fw"></i> Reset</span>
                          </button>

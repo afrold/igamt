@@ -17,20 +17,20 @@
 </div>
 <div ng-show="!loadingSelection">
 <div ng-show="segment !== null" id="executionPanel">
-<form name="editForm" id="editForm" novalidate class="form-horizontal">
+<form name="editForm" id="editForm" novalidate class="form-horizontal" confirm-on-leave>
 <div class="row" style="margin-left:0px; margin-right: 20px">
 <div class="page-header" style="margin-bottom: 20px">
     <span class="header4">Segment: {{getSegmentLabel(segment)}}</span>
             <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                 ng-disabled="editForm.$invalid || editForm.$pristine"
                  ng-hide="viewSettings.tableReadonly ||(segment.scope !== 'USER' && segment.scope !== 'MASTER')"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
 
                          <button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
-                                 ng-disabled="!editForm.$dirty"
+                                 ng-disabled="editForm.$pristine"
                                  ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') "
                                  ng-click="reset()">
                              <span><i class="fa fa-times fa-fw"></i> Reset</span>
