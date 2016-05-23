@@ -7,9 +7,9 @@ angular
         'SectionSvc',
         'CloneDeleteSvc',
         'FilteringSvc',
+        'SectionSvc',
 
-        function ($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc,FilteringSvc) {
-
+        function ($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc,FilteringSvc,SectionSvc) {
 
             $scope.collapsedata = false;
             $scope.collapsemessage = false;
@@ -18,6 +18,7 @@ angular
             $scope.collapsevalueSet=false;
             $scope.profilecollapsed = false;
             $scope.openMetadata=false;
+            $scope.ordredMessages=[];
             $scope.dataTypeLibraryCollapsed=false;
             $scope.activeModel = "";
             $scope.Activate = function (param) {
@@ -40,6 +41,12 @@ angular
 
             };
 
+            $rootScope.updateSectionContent = function (section) {
+                if(section.childSections){
+                	section.childSections=section.childSections;
+                }
+
+            };
             $rootScope.switchervalueSet = function () {
                 $scope.collapsevalueSet = !$scope.collapsevalueSet;
             };
@@ -61,8 +68,7 @@ angular
                 $scope.collapsedata = !$scope.collapsedata;
 
             };
-            
-            
+
             $scope.treeOptions = {
 
                 accept: function (sourceNodeScope, destNodesScope, destIndex) {
@@ -78,11 +84,6 @@ angular
                     else if (dataTypeSource === "sections" && dataTypeDest === "sections") {
                         return true;
                     }
-// else if (dataTypeDest ==
-// sourceNodeScope.$parentNodeScope.$modelValue.sectionTitle){
-//
-// return true;
-// }
                     else if (dataTypeDest === dataTypeSource + "s") {
                         return true;
 
@@ -100,40 +101,47 @@ angular
 
                     var dataType = destNodes.$element.attr('data-type');
                     event.source.nodeScope.$modelValue.sectionPosition = sortAfter + 1;
-                    $scope.updatePositions(event.dest.nodesScope.$modelValue);
-                    $scope.updatePositions(event.source.nodesScope.$modelValue);
+    
                     console.log(sourceNode);
-                    $scope.updateChildeSections($rootScope.igdocument.childSections);
-//
-// if (dest.type === "document" || source.type === "document") {
-// $scope.updateChildeSections($rootScope.igdocument.childSections);
-// }
-// else if (dest.type === "section" && source.type === "section") {
-// $scope.updateAfterDrop(source, dest);
-// }
+                    if(source.type="message"){
+
+                    	$scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
+
+                    	$scope.reOrderMessages();
+                    	
+                    }else{
+                      $scope.updatePositions(event.dest.nodesScope.$modelValue);
+                      $scope.updatePositions(event.source.nodesScope.$modelValue);
+                      $scope.updateChildeSections($rootScope.igdocument.childSections);
+
+                    }
+
 
                 }
             };
-
+            
 
             $scope.updatePositions = function (arr) {
                 if (arr !== undefined) {
-                    for (var i = arr.length - 1; i >= 0; i--) {
+                    for (var i = 0; i<=arr.length - 1; i++) {
                         arr[i].sectionPosition = i + 1;
                     }
                 }
                 return "";
             };
             
-
+            
             $scope.updateMessagePositions = function (arr) {
-                if (arr !== undefined) {
-                    for (var i = arr.length - 1; i >= 0; i--) {
-                        arr[i].position = i + 1;
-                    }
+            	
+
+            	if (arr !== undefined){
+                for (var i = 0; i<=arr.length - 1; i++) {
+                    arr[i].position = i + 1;
                 }
+            	   }
                 return "";
             };
+
 
             $scope.getLastPosition = function (arr) {
                 var position = arr.length;
@@ -206,21 +214,45 @@ angular
                 }
             };
 
-            $scope.debug= function(leaf){
+            $scope.debug= function(childSections){
             	console.log("DEBUG FNCT");
-            	console.log(leaf.$nodeScope.$modelValue.description);
+            	console.log(childSections);
             }
+            
+            $scope.recharge=false;
+            
             $scope.sectionOption = [
-                                    
-                                    
-                                    ['add section',
+
+                                    ['add Section',
                                      function ($itemScope) {
-                                    	
-                                    	var newSection={childSections:[],sectionTitle:"new Section",sectionPosition:$itemScope.section.length};
-                                    	$itemScope.section.childSections.push(newSection);
-                                         
-                                     } ],
-                                 null,
+                                	  var newSection={};
+                                	  newSection.type = "section";
+                                	  newSection.id= new ObjectId().toString();
+                                	  newSection.childSections=[];
+                                	  newSection.sectionContents ="";
+                                	  newSection.sectionDescription = "";
+                                	  newSection.sectionTitle = "new Section" + Math.floor((Math.random() * 50000) + 1);
+     
+                                	  
+                                	  if(!$itemScope.section.childSections.length){
+                                		  newSection.sectionPosition=1;
+                                		  $itemScope.section.childSections = [];
+                                		  $itemScope.section.childSections.push(newSection);
+
+                                	  }
+                                	  else {
+                                		  $itemScope.section.childSections.push(newSection);
+                                		  newSection.sectionPosition=$itemScope.section.childSections.length;
+                                	  }
+                                	  console.log($itemScope.section);
+                                      SectionSvc.update($rootScope.igdocument.id,$itemScope.section);
+                                      $scope.editSection(newSection);
+                                      $scope.activeModel =newSection.id;
+                                      
+
+                                     } ],null,               
+                                    
+
 
                 ['copy',
                     function ($itemScope) {
@@ -232,30 +264,58 @@ angular
                         if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "document") {
                             $scope.updateChildeSections($rootScope.igdocument.childSections);
                         }
-                        else if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "section") {
-                            console.log(SectionSvc);
-                            SectionSvc.save($itemScope.$nodeScope.$parentNodeScope.$modelValue.id, $itemScope.$nodeScope.$parentNodeScope.$modelValue)
-                            // updateSection($itemScope.$nodeScope.$parentNodeScope.$modelValue);
-                        }
 
+                        else if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "section") {                   
+                            SectionSvc.update($rootScope.igdocument.id, $itemScope.section);
+
+                        }
                     } ],
                 null,
                 [
                     'delete',
                     function ($itemScope) {
-                        $itemScope.$nodeScope.remove();
-                        SectionSvc.delete($itemScope.$nodeScope.$parentNodesScope.$modelValue.id, $itemScope.$nodeScope.$parentNodesScope.$modelValue);
-                        var index = $itemScope.$nodeScope.$parentNodesScope.$modelValue
-                            .indexOf($itemScope.$nodeScope.$modelValue);
+
+                    	var section=$itemScope.section;
+                        var index = $itemScope.$nodeScope.$parentNodesScope.$modelValue.indexOf($itemScope.$nodeScope.$modelValue);
                         if (index > -1) {
-                            $itemScope.$nodeScope.$parentNodesScope.$modelValue
-                                .splice(index, 1);
-                        }
+                        $itemScope.$nodeScope.$parentNodesScope.$modelValue
+                            .splice(index, 1);
+                    }
                         $scope.updatePositions($itemScope.$nodeScope.$parentNodesScope.$modelValue);
+                    	
+ 
+                       SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id);
+
                     }
                 ]
 
             ];
+            
+            $scope.igOptions= [
+
+                                     ['add Section',
+                                         function ($itemScope) {
+                                      
+                                    	  var newSection={};
+                                    	  newSection.id= new ObjectId().toString();
+                                          
+                                          var rand = Math.floor(Math.random() * 100);
+                                          if (!$rootScope.igdocument.profile.metaData.ext) {
+                                              $rootScope.igdocument.profile.metaData.ext = "";
+                                          }
+                                          newSection.sectionTitle = "New Section" + "-"
+                                              + $rootScope.igdocument.profile.metaData.ext + "-"
+                                              + rand;
+                                          newSection.label = newSection.sectionTitle;
+                                          $rootScope.igdocument.childSections.push(newSection);
+                                      
+                                          newSection.sectionPosition=$rootScope.igdocument.childSections.length;
+                                          $scope.updateChildeSections($rootScope.igdocument.childSections);
+
+
+                                         } ]
+
+                                 ];
 
             $scope.SegmentOptions = [
 
@@ -267,34 +327,16 @@ angular
                 null,
                 ['delete',
                     function ($itemScope) {
-                	CloneDeleteSvc.confirmSegmentDelete($itemScope.segment);
                         CloneDeleteSvc.deleteSegment($itemScope.segment);
                     } ]
 
             ];
-
-            $scope.igOptions = [
-
-                                     ['copy',
-                                         function ($itemScope) {
-                                             CloneDeleteSvc.copySegment($itemScope.segment);
-
-                                         } ],
-                                     null,
-                                     ['delete',
-                                         function ($itemScope) {
-                                             CloneDeleteSvc.deleteSegment($itemScope.segment);
-                                         } ]
-
-                                 ];
-            
-            
+   
             $scope.DataTypeOptions = [
 
                 ['copy',
                     function ($itemScope) {
-                	
-                	// console.log("******"+$itemScope.$nodeScope.$modelValue.name+"******");
+
                         CloneDeleteSvc.copyDatatype($itemScope.data); 
 
                       
@@ -345,16 +387,24 @@ angular
 
             $scope.MessagesRootOption = [
 
-                [ 'add', function ($itemScope) {
-                    $scope.hl7Versions('ctx');
-                } ],
-                null,
                 [ 'export', function ($itemScope) {
                     $scope.selectMessagesForExport($rootScope.igdocument);
                 } ]
+
             ];
 
 
+
+            $scope.MessagesRootOption = [
+
+             [ 'add', function ($itemScope) {
+                 	$scope.hl7Versions('ctx');
+             } ],
+            null,
+                [ 'export', function ($itemScope) {
+                    $scope.selectMessages($rootScope.igdocument);
+                } ]
+            ];
 
 
 
@@ -368,20 +418,19 @@ angular
 
                                            ['create a copy',
                                                function ($itemScope) {
-                                         	 	console.log("create a copy");	
+                                         	 	console.log("create a copy=" + $itemScope);	
                                            	console.log($itemScope.data);
                                            	$scope.copyDatatype($itemScope.data); 
-
-                                                 
+    
                                                } ],
                                            null,
                                            ['delete',
                                                function ($itemScope) {
-                                        	 	console.log("delete");	
+                                        	 	console.log("delete=" + $itemScope);	
                                                	console.log($itemScope.data);
                                         	   $scope.deleteDatatype($itemScope.data);
                                                } ]
-                                       ];
+                                           ];
 
             $scope.DataTypeLibraryOptions = [
                  ['add datatypes',
@@ -391,27 +440,23 @@ angular
             ];
             
             $scope.editSeg = function (seg) {
-                // console.log("EditSeg")
-
                 $scope.$emit('event:openSegment', seg);
-
             }
 
             $scope.editIg = function (ig) {
-                $rootScope.igdocument = ig;
+                 $rootScope.igdocument = ig;
                 $scope.$emit('event:openDocumentMetadata',
                     $rootScope.igdocument);
             }
 
             $scope.editSection = function (section) {
-                $rootScope.section = section;
+                 $rootScope.section = section;
                 $scope.$emit('event:openSection', $rootScope.section);
             }
 
 
             $scope.editRoutSection = function (param) {
-
-                $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
+                 $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
             }
 
 
@@ -445,25 +490,25 @@ angular
                     section.sectionType = $rootScope.igdocument.profile.datatypeLibrary.sectionType;
                     section.sectionDescription = $rootScope.igdocument.profile.datatypeLibrary.Description;
                 }
-                // console.log(section);
+
                 return section;
             }
             $scope.editDataType = function (data) {
-                $rootScope.datatype = data;
+                 $rootScope.datatype = data;
                 $scope.$emit('event:openDatatype', $rootScope.datatype);
             }
 
             $scope.editTable = function (table) {
-                $rootScope.table = table;
+                 $rootScope.table = table;
                 $scope.$emit('event:openTable', $rootScope.table);
             }
 
             $scope.editMessage = function (message) {
-                $rootScope.message = message;
+                 $rootScope.message = message;
                 $scope.$emit('event:openMessage', message);
             }
             $scope.editProfile = function () {
-            	 $scope.Activate("Message Infrastructure");
+             	 $scope.Activate("Message Infrastructure");
                 $scope.$emit('event:openProfileMetadata',
                     $rootScope.igdocument);
             }
@@ -472,7 +517,7 @@ angular
             $scope.updateAfterDrop = function (source, dest) {
 
                 var id = $rootScope.igdocument.id;
-                // console.log(JSON.stringify(source));
+
                 var req = {
                     method: 'POST',
                     url: "api/igdocuments/" + id + "/dropped",
@@ -528,15 +573,55 @@ angular
                 return promise;
             }
            
+
+            
+            $scope.reOrderMessages = function () {
+            	var messagesMap=[];
+            	
+            	var messages=$rootScope.igdocument.profile.messages.children;
+//            	for (var i=0; i<=messages.length-1; i++){
+//            		var messageMap={};
+//            		messageMap.id =messages[i].id;
+//            		messageMap.position=messages[i].position;
+//            		messagesMap.push(messageMap);
+//            	}
+            	console.log(messagesMap);
+                var id = $rootScope.igdocument.id;
+                var req = {
+                    method: 'POST',
+                    url: "api/igdocuments/" + id + "/reorderMessages",
+                    headers: {
+                        'Content-Type': "application/json"
+                    },
+                    data: $rootScope.igdocument.profile.messages.children
+                }
+
+
+                var promise = $http(req)
+                    .success(function (data, status, headers, config) {
+                       
+                        return data;
+                    })
+                    .error(function (data, status, headers, config) {
+                        if (status === 404) {
+                            console.log("Could not reach the server");
+                        } else if (status === 403) {
+                            console.log("limited access");
+                        }
+                    });
+                return promise;
+            }
+            
             $scope.isUnused = function (node) {
                 return FilteringSvc.isUnused(node);
             };
 
 
+
             $scope.showToC = function (leaf) {
                 return FilteringSvc.showToC(leaf);
             };
-            
+
             $scope.getScopeLabel = function (leaf) {
             if (leaf.scope==='HL7STANDARD'){
             	return 'HL7';
@@ -550,7 +635,6 @@ angular
             	return 'MAS';
             	
             }
-            
             else {
             	return "";
             	
@@ -559,7 +643,10 @@ angular
             
 
             $rootScope.getLabelOfData = function (name, ext) {
-             	var label="";
+
+            	var label="";
+
+
                 if (ext && ext !== null && ext !== "") {
                 	label= name + "_" + ext;
                
@@ -568,8 +655,6 @@ angular
                 }
                 return label; 
             };
-            
-
 
 
         }]);
