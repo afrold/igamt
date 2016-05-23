@@ -30,9 +30,8 @@ var app = angular
         'ngNotificationsBar',
         'ngDragDrop',
         'ui.tree',
-        'blockUI',
-        'unsavedChanges'
-    ]);
+        'blockUI'
+     ]);
 
 var
 //the HTTP headers to be used by all requests
