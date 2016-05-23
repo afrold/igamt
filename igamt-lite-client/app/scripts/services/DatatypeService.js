@@ -102,6 +102,20 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
+            saveAll: function (datatypes) {
+                var delay = $q.defer();
+                $http.post('api/datatypes/saveAll', datatypes).then(function (response) {
+//                    var saveResponse = angular.fromJson(response.data);
+//                    datatype.date = saveResponse.date;
+//                    datatype.version = saveResponse.version;
+//                    datatype.id = saveResponse.id;
+//                    delay.resolve(datatypes);
+                }, function (error) {
+                    console.log("DatatypeService.save error=" + error);
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },            
             getOne: function (id) {
                 var delay = $q.defer();
                 if ($rootScope.datatypesMap[id] === undefined || $rootScope.datatypesMap[id] === null) {

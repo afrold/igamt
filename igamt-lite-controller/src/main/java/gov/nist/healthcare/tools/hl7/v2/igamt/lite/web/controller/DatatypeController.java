@@ -70,16 +70,18 @@ public class DatatypeController extends CommonController {
 	public Datatype save(@RequestBody Datatype datatype) throws DatatypeSaveException {
 		log.debug("datatypeLibrary=" + datatype);
 		log.debug("datatypeLibrary.getId()=" + datatype.getId());
-		log.info("Saving the " + datatype.getScope() + " datatype library.");
-		// User u = userService.getCurrentUser();
-		// Account account =
-		// accountRepository.findByTheAccountsUsername(u.getUsername());
-		// datatype.setAccountId(account.getId());
+		log.info("Saving the " + datatype.getScope() + " datatype.");
 		datatype.setDate(DateUtils.getCurrentTime());
 		Datatype saved = datatypeService.save(datatype);
 		log.debug("saved.getId()=" + saved.getId());
 		log.debug("saved.getScope()=" + saved.getScope());
 		return saved;
+	}
+
+	@RequestMapping(value = "/saveAll", method = RequestMethod.POST)
+	public void saveAll(@RequestBody List<Datatype> datatypes) throws DatatypeSaveException {
+		log.info("Saving " + datatypes.size() + " datatypes.");
+		datatypeService.save(datatypes);
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)

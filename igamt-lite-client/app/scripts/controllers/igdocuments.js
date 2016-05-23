@@ -769,6 +769,7 @@ angular.module('igl')
                     if ($scope.segmentsParams)
                         $scope.segmentsParams.refresh();
                     $scope.loadingSelection = false;
+                    $rootScope.$emit("event:initEditArea");
                 }, function (error) {
                     $scope.loadingSelection = false;
                     $rootScope.msg().text = error.data.text;
@@ -787,6 +788,7 @@ angular.module('igl')
             $timeout(
                 function () {
                     $scope.loadingSelection = false;
+                    $rootScope.$emit("event:initEditArea");
                 }, 100);
         };
 
@@ -797,6 +799,7 @@ angular.module('igl')
             $timeout(
                 function () {
                     $scope.loadingSelection = false;
+                    $rootScope.$emit("event:initEditArea");
                 }, 100);
         };
 
@@ -817,6 +820,7 @@ angular.module('igl')
                     $scope.loadingSelection = false;
                     if ($scope.datatypesParams)
                         $scope.datatypesParams.refresh();
+                    $rootScope.$emit("event:initEditArea");
                 }, function (error) {
                     $scope.loadingSelection = false;
                     $rootScope.msg().text = error.data.text;
@@ -839,8 +843,9 @@ angular.module('igl')
                     $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
                     $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
                     $scope.loadingSelection = false;
-//                   if ($scope.messagesParams)
-//                        $scope.messagesParams.refresh();
+                   if ($scope.messagesParams)
+                        $scope.messagesParams.refresh();
+                    $rootScope.$emit("event:initEditArea");
                 }, 100);
         };
 
@@ -861,6 +866,7 @@ angular.module('igl')
                         }
                     }
                     $scope.loadingSelection = false;
+                    $rootScope.$emit("event:initEditArea");
                 }, 100);
         };
 
@@ -872,6 +878,7 @@ angular.module('igl')
                     $rootScope.section = angular.copy(section);
                     $rootScope.originalSection = section;
                     $scope.loadingSelection = false;
+                    $rootScope.$emit("event:initEditArea");
                 }, 100);
         };
 
@@ -1061,17 +1068,10 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
         }
     };
     $scope.reset = function () {
-        $scope.editForm.$dirty = false;
+        $scope.editForm.$setPristine();
         $rootScope.clearChanges();
         $rootScope.metaData = angular.copy( $rootScope.igdocument.metaData);
     };
-
-    $scope.$watch(function(){
-        return $rootScope.metaData;
-    }, function() {
-        $rootScope.recordChanged();
-    }, true);
-
 });
 
 angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootScope, $http,ProfileSvc) {
@@ -1095,7 +1095,7 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
         }
     };
     $scope.reset = function () {
-        $scope.editForm.$dirty = false;
+        $scope.editForm.$setPristine();
         $rootScope.clearChanges();
         $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
 

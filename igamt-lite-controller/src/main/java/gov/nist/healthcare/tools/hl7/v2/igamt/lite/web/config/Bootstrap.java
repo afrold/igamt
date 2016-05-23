@@ -52,7 +52,7 @@ public class Bootstrap implements InitializingBean {
 	public void afterPropertiesSet() throws Exception {
 
 
-//		 covertOldToNew();
+		 covertOldToNew();
 
 	}
 

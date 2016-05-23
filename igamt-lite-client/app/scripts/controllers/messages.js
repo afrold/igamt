@@ -14,8 +14,9 @@ angular.module('igl')
         };
 
         $scope.reset = function () {
+            $scope.editForm.$setPristine();
             $scope.editForm.$dirty = false;
-            $rootScope.message = angular.copy($rootScope.originalMessage);
+            $rootScope.message = angular.copy($rootScope.messagesMap[$rootScope.message.id]);
             $rootScope.clearChanges();
             if ($scope.messagesParams) {
                 $scope.messagesParams.refresh();
@@ -43,6 +44,7 @@ angular.module('igl')
                     FilteringSvc.addMsgInFilter(message.name, message.id);
                 }
 //                MastermapSvc.addMessage(message, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+
                 $rootScope.$broadcast('event:SetToC');
                 $rootScope.message = angular.copy(message);
             }, function (error) {
@@ -84,7 +86,9 @@ angular.module('igl')
             });
             modalInstance.result.then(function (segment) {
                 segmentRef.ref.id = segment.id;
-//                MastermapSvc.addSegmentObject(segment, [[segmentRef.id, segmentRef.type]]);
+                segmentRef.ref.ext = segment.ext;
+                segmentRef.ref.name = segment.name;
+//                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
                 if ($scope.messagesParams)
                     $scope.messagesParams.refresh();
             });
@@ -190,11 +194,11 @@ angular.module('igl')
             }
         };
 
-        $scope.$watch(function(){
-            return $rootScope.message;
-        }, function() {
-            $rootScope.recordChanged();
-        }, true);
+//        $scope.$watch(function(){
+//            return $rootScope.message;
+//        }, function(newValue, oldValue) {
+//            $scope.editForm.$dirty = newValue !=null &&  oldValue != null;
+//        });
 
     });
 
@@ -202,6 +206,17 @@ angular.module('igl')
 angular.module('igl')
     .controller('MessageRowCtrl', function ($scope, $filter) {
         $scope.formName = "form_" + new Date().getTime();
+
+
+//        $scope.init = function(){
+//            $scope.$watch(function(){
+//            return  $scope.formName.$dirty;
+//        }, function(newValue, oldValue) {
+//            $scope.editForm.$dirty = newValue !=null &&  oldValue != null;
+//        });
+//
+//        }
+
     });
 
 
