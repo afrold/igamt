@@ -4,7 +4,6 @@ angular.module('igl').factory(
     function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, SectionSvc, FilteringSvc) {
 
         var svc = this;
-
         svc.copySection = function (section) {
             var newSection = angular.copy(section.reference);
             newSection.id = new ObjectId();

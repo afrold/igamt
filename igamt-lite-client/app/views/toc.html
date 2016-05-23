@@ -94,12 +94,15 @@
 
 </style>
 <div ng-controller="IGDocumentListCtrl" class="uitree">
+<div ng-controller="HL7VersionsDlgCtrl">
     <div ng-controller="TreeCtrl">
         <div ui-tree="treeOptions">
             <ol ui-tree-nodes="" ng-model="TreeIgs">
                 <li ng-repeat="ig in TreeIgs" ui-tree-node ng-init="updatePositions(ig.childSections)">
                     <div ui-tree-handle class="treeRoot">
-                        <span data-nodrag ng-click="editIg(ig)" confirm-click>{{igdocument.metaData.title}}</span>
+
+                        <span data-nodrag ng-click="editIg(ig)" context-menu="igOptions">{{igdocument.metaData.title}}</span>
+
                     </div>
 
 
@@ -138,7 +141,7 @@
                     </div>
                     <ol ui-tree-nodes="" ng-model="ig.profile.messages.children"
                         ng-show="!profilecollapsed" data-type="messages">
-                        <div ui-tree-handle class="messageContent" style="margin-left:45px;">
+                        <div  ui-tree-handle class="messageContent" style="margin-left:45px;">
 
                             <i data-nodrag ng-click="switchermsg()" class="fa fa-caret-down"
                                ng-class="{'fa-caret-down': !collapsemessage, 'fa-caret-right': collapsemessage}"></i>
@@ -230,12 +233,14 @@
                         <li ng-repeat="table in tables |  orderBy :'name' | filter:showToC" ui-tree-node
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
+
                                  ng-click="editTable(table);" context-menu="ValueSetOptions">
+
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : table.id===activeModel}"
                                       ng-click="editTable(table); Activate(table.id)">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE':  getScopeLabel(table)==='USE','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> 
+                                   'label-USE':  getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> 
                                       
                                       {{table.bindingIdentifier}}-{{table.description}}</span>
 
@@ -244,129 +249,14 @@
                     </ol>
                 </li>
             </ol>
+           
         </div>
         
         
         
-<!--                <div ui-tree="treeOptions"  > -->
-<!--             <ol ui-tree-nodes="" ng-model="unusedTree"> -->
-<!--                 <li ng-repeat="unusedObject in getUnusedTree" ui-tree-node > -->
-<!--                     <div ui-tree-handle class="treeRoot"> -->
-<!--                         <span data-nodrag>Unused Data</span> -->
-<!--                     </div> -->
-
-
-<!--                     <ol ui-tree-nodes="" ng-if="unusedObject.unusedSegments.length>0"  ng-model="unusedObject.unusedSegments"  -->
-<!--                         ng-show="!profilecollapsed" data-type="segments"> -->
-<!--                         <div ui-tree-handle class="messageContent" style="margin-left:45px;"> -->
-<!--                             <i data-nodrag ng-click="switcherseg()" class="fa fa-caret-down" -->
-<!--                                ng-class="{'fa-caret-down': !collapsesegment, 'fa-caret-right': collapsesegment}"></i> -->
-
-<!-- 							<span data-nodrag  ng-class="{selected :activeModel ==='Segments and field descriptions'}" -->
-<!--                                   ng-click="editRoutSection('Segments and field descriptions')"> -->
-<!-- 								{{ig.childSections.length+1}}.2.unused Segments</span> -->
-<!--                         </div> -->
-<!--                         <li ng-repeat="segment in unusedObject.unusedSegments | orderBy :'label'" -->
-<!--                             ui-tree-node ng-if="!collapsesegment" data-type="segment"> -->
-<!--                             <div ui-tree-handle class="messageSubContent" data-nodrag -->
-<!--                                  ng-click="editSeg(segment)" context-menu="SegmentOptions"> -->
-<!-- 								<span data-nodrag style ="font-weight: normal;" -->
-<!--                                       ng-class="{selected : segment.id===activeModel}" -->
-<!--                                       ng-click=" editSeg(segment);Activate(segment.id)"> -->
-                                      
-<!--                                        <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7', -->
-<!--                                    'label-USE':  getScopeLabel(segment)==='USE','label-MASTER':getScopeLabel(segment)==='MAS'}" >  {{getScopeLabel(segment)}}</span>  -->
-                                    
-                                      
-                                      
-<!--                                        {{segment.label}}-{{segment.description}} {{isUnused(segment)}}</span> -->
-<!--                             </div> -->
-<!--                         </li> -->
-<!--                     </ol> -->
-
-<!--                     <ol ui-tree-nodes="" ng-model="unusedObject.unusedDataTypes" ng-if="unusedObject.unusedDataTypes.length>0" ng-show="!profilecollapsed" data-type="datatypes" > -->
-<!--                         <div ui-tree-handle class="messageContent" style="margin-left:45px;"> -->
-<!--                             <i data-nodrag ng-click="switcherdata()" -->
-<!--                                class="fa fa-caret-down"  -->
-<!--                                ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i> -->
-
-<!-- 							<span ng-class="{selected :activeModel ==='Datatypes'}" -->
-<!--                                     data-nodrag ng-click="editRoutSection('Datatypes')">{{ig.childSections.length+1}}.3.Unused Datatypes</span> -->
-<!--                         </div> -->
-
-<!--                         <li ng-repeat="data in unusedObject.unusedDataTypes  | orderBy :'label'" ui-tree-node -->
-<!--                             ng-if="!collapsedata" data-type="datatype"> -->
-<!--                             <div ui-tree-handle class="messageSubContent" data-nodrag -->
-<!--                                  ng-click="editDataType(data)" context-menu="DataTypeOptions"> -->
-<!-- 								<span data-nodrag style ="font-weight: normal;" -->
-<!--                                       ng-class="{selected : data.id===activeModel}" -->
-<!--                                       ng-click="editDataType(data); Activate(data.id)"> -->
-<!--                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7', -->
-<!--                                    'label-USE':  getScopeLabel(data)==='USE','label-MASTER':getScopeLabel(data)==='MAS'}" >  {{getScopeLabel(data)}}</span>  -->
-                                      
-<!--                                       {{data.label}}-{{data.description}}</span> -->
-
-<!--                             </div> -->
-<!--                         </li> -->
-<!--                     </ol> -->
-
-<!--                     <ol ui-tree-nodes="" ng-if="unusedObject.unusedTables" ng-model="unusedObject.unusedTables" ng-show="!profilecollapsed" data-type="tables"> -->
-<!--                         <div ui-tree-handle class="messageContent" style="margin-left:45px;"> -->
-<!--                             <i data-nodrag ng-click="switchervalueSet()" -->
-<!--                                class="fa fa-caret-down"  -->
-<!--                                ng-class="{'fa-caret-down': !collapsevalueSet, 'fa-caret-right': collapsevalueSet}"></i> -->
-
-<!-- 							<span ng-class="{selected :activeModel ==='Value Sets'}" -->
-<!--                                     data-nodrag ng-click="editRoutSection('Value Sets')">{{ig.childSections.length+1}}.4.Value Sets</span> -->
-<!--                         </div> -->
-
-<!--                         <li ng-repeat="table in unusedObject.unusedTables |  orderBy :'name'" ui-tree-node -->
-<!--                             ng-if="!collapsevalueSet" data-type="table"> -->
-<!--                             <div ui-tree-handle class="messageSubContent" data-nodrag -->
-<!--                                  ng-click="editDataType('Value Sets')" context-menu="DataTypeOptions"> -->
-<!-- 								<span data-nodrag style ="font-weight: normal;" -->
-<!--                                       ng-class="{selected : table.id===activeModel}" -->
-<!--                                       ng-click="editDataType(table); Activate(table.id)"> -->
-<!--                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7', -->
-<!--                                    'label-USE':  getScopeLabel(table)==='USE','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span>  -->
-                                      
-<!--                                       {{table.bindingIdentifier}}-{{table.description}}</span> -->
-
-<!--                             </div> -->
-<!--                         </li> -->
-<!--                     </ol> -->
-<!--                 </li> -->
-<!--             </ol> -->
-<!--         </div> -->
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        <!-- 	<trunk trunk="tocData"></trunk> -->
 
     </div>
-
+ </div>
 </div>
 
 <!--

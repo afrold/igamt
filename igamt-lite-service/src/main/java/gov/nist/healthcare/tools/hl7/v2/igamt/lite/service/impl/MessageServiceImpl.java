@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,27 +35,35 @@ public class MessageServiceImpl implements MessageService {
 	Logger log = LoggerFactory.getLogger(MessageServiceImpl.class);
 
 	@Autowired
-	private MessageRepository segmentRepository;
+	private MessageRepository messageRepository;
  	 
 	
 	@Override 
 	public Message findById(String id) {
 		log.info("MessageServiceImpl.findById=" + id);
-		return segmentRepository.findOne(id);
+		return messageRepository.findOne(id);
+	}
+	
+	
+	
+	@Override
+	public void save(Set<Message> messages) {
+		// TODO Auto-generated method stub
+		  messageRepository.save(messages);
 	}
 	
 	@Override
 	public Message save(Message segment) {
- 		return segmentRepository.save(segment);
+ 		return messageRepository.save(segment);
 	}
 
 	@Override
 	public void delete(Message segment) {
-		segmentRepository.delete(segment);
+		messageRepository.delete(segment);
 	}
 	
 	@Override
 	public void delete(String id) {
-		segmentRepository.delete(id);
+		messageRepository.delete(id);
 	}
 }

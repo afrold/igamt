@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -26,5 +27,9 @@ public interface MessageService {
 	void delete(Message message);
 
 	void delete(String id);
+
+	//Message save(Set<Message> messages);
+
+	void save(Set<Message> messages);
 
 }
