@@ -36,6 +36,8 @@
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
+
+CHECK ::::: {{editForm.$dirty}}
                          <button title="Cancel Changes" type="button" class="btn btn-sm btn-default"
                                  ng-hide="viewSettings.tableReadonly"
                                  ng-disabled="!editForm.$dirty"

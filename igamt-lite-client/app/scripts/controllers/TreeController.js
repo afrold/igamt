@@ -105,6 +105,7 @@ angular
                     $scope.updatePositions(event.source.nodesScope.$modelValue);
                     console.log(sourceNode);
                     if(source.type="message"){
+                    	$scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
                     	console.log("****************************************************");
                     	$scope.reOrderMessages();
                     	
@@ -112,8 +113,6 @@ angular
                     $scope.updateChildeSections($rootScope.igdocument.childSections);
 
                     }
-
-
                 }
             };
 
@@ -268,13 +267,19 @@ angular
                     } ],
                 null,
                 [
-                    'delete',
-                    function ($itemScope) {
-                    	console.log("*************************************delete****************")
-                     console.log($itemScope.section.id);
-                       SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id);
-                    }
-                ]
+                 'delete',
+                 function ($itemScope) {
+                     var section=$itemScope.section;
+                     var index = $itemScope.$nodeScope.$parentNodesScope.$modelValue.indexOf($itemScope.$nodeScope.$modelValue);
+                     if (index > -1) {
+                     $itemScope.$nodeScope.$parentNodesScope.$modelValue
+                         .splice(index, 1);
+                     }
+                     $scope.updatePositions($itemScope.$nodeScope.$parentNodesScope.$modelValue);
+                     
+                     SectionSvc.delete($rootScope.igdocument.id, section.id);
+                 	}
+                 ]
 
             ];
             
@@ -581,10 +586,15 @@ angular
             $scope.reOrderMessages = function () {
             	var messagesMap=[];
             	var messages=$rootScope.igdocument.profile.messages.children;
+            	
             	for (var i=0; i<=messages.length-1; i++){
             		var messageMap={};
             		messageMap.id =messages[i].id;
             		messageMap.position=messages[i].position;
+            		console.log(messages[i].name);
+            		console.log(messageMap.id);
+            		console.log(messageMap.position);
+            		
             		messagesMap.push(messageMap);
             	}
             	console.log(messagesMap);

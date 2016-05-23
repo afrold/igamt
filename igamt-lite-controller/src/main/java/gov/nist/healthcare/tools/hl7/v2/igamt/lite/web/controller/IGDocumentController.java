@@ -994,6 +994,11 @@ public class IGDocumentController extends CommonController {
 			for(MessageMap map : messagesMap){
 				if(message.getId().equals(map.getId())){
 					message.setPosition(map.getPosition());
+					System.out.println("-------");
+					System.out.println("MEG: " + message.getName());
+					System.out.println("MEG: " + message.getPosition());
+					
+					
 				}
 			}
 			
