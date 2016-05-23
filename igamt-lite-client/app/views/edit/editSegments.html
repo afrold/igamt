@@ -17,24 +17,23 @@
 </div>
 <div ng-show="!loadingSelection">
 <div ng-show="segment !== null" id="executionPanel">
-<form name="editForm" id="editForm" novalidate class="form-horizontal">
 <div class="row" style="margin-left:0px; margin-right: 20px">
 <div class="page-header" style="margin-bottom: 20px">
     <span class="header4">Segment: {{getSegmentLabel(segment)}}</span>
             <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                 ng-disabled="editForm.$invalid"
                  ng-hide="viewSettings.tableReadonly ||(segment.scope !== 'USER' && segment.scope !== 'MASTER')"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
 
-                         <button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
-                                 ng-disabled="!editForm.$dirty"
-                                 ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') "
-                                 ng-click="reset()">
-                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                         </button>
+                         <!--<button title="Reset Changes" type="button" class="btn btn-sm btn-warning"-->
+                                 <!--ng-disabled="editForm.$pristine"-->
+                                 <!--ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') "-->
+                                 <!--ng-click="reset()">-->
+                             <!--<span><i class="fa fa-times fa-fw"></i> Reset</span>-->
+                         <!--</button>-->
     </span>
 </div>
     <tabset>
@@ -89,7 +88,7 @@
                 <label class="col-md-2 control-label">Comment</label>
                 <div class="col-md-10">
                     <textarea rows="3" cols="20"
-                              ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
+                              ng-disabled="viewSettings.tableReadonly || segment.scope === 'HL7STANDARD' || segment.scope === 'MASTER'"
                               ng-change="recordChanged()"
                               name="comment" id="comment" class="form-control"
                               ng-model="segment.comment"
@@ -102,7 +101,7 @@
                  ng-class="{'igl-has-error has-feedback' : editForm.text1.$invalid}">
                 <label class="col-md-2 control-label">Definition Pre-Text</label>
                 <div class="col-md-10">
-                <div ng-if="!viewSettings.tableReadonly">
+                <div ng-if="!viewSettings.tableReadonly && segment.scope === 'USER'">
                     <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1"
                               name="text1"
                               ng-change="recordChanged()"></textarea>
@@ -273,7 +272,6 @@
             </tab>
     </tabset>
 </div>
-</form>
 </div>
 </div>
 </div>
