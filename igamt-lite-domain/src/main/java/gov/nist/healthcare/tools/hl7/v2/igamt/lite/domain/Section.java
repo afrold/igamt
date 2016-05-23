@@ -29,7 +29,7 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 	
 	private String id;
 	
-	protected Set<?> childSections = new HashSet<Section>();
+	protected Set<Section> childSections = new HashSet<Section>();
 
 	public String getId() {
 		return id;
@@ -39,11 +39,11 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 		this.id = id;
 	}
 	
-	public Set<?> getChildSections() {
+	public Set<Section> getChildSections() {
 		return childSections;
 	}
 
-	public void setChildSections(Set<?> childSections) {
+	public void setChildSections(Set<Section> childSections) {
 		this.childSections = childSections;
 	}
 	

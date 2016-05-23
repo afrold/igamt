@@ -81,7 +81,7 @@ angular
 //                // Table not found
 //                // console.log("!!! => table " + tableId + " not found in library");
 //            }
-          };
+          }
     };
 
 
@@ -124,13 +124,17 @@ angular
     }
 
 
-    svc.addDatatypeObject = function(dt, parent) {
-        if (dt !== undefined && dt !== null){
-          svc.createMMElement(dt.id, "datatype");
-          svc.addParentsId(dt.id, "datatype", parent);
-          _.each(dt.components, function(c) {
-            svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
-          });
+    svc.addDatatypeObject = function(dtLink, parent) {
+        if (dtLink !== undefined && dtLink !== null){
+            svc.createMMElement(dtLink.id, "datatype");
+            svc.addParentsId(dtLink.id, "datatype", parent);
+
+            var dt = svc.getDatatypeLibrary()[dtLink.id];
+            if (dt !== undefined && dt !== null && dt !== ""){
+                _.each(dt.components, function(c) {
+                    svc.addComponent(c, parent.concat([[dtLink.id, "datatype"]]));
+                });
+            }
       }
     }
 
@@ -183,21 +187,6 @@ angular
     svc.deleteSegment = function(segmentId) {
         svc.removeMastermapElt(segmentId, "segment");
     }
-
-
-//    svc.addMessage = function (message, parent) {
-//      svc.createMMElement(message.id, "message");
-//      svc.addParentsId(message.id, "message", parent);
-//
-//      _.each(message.children, function(n) {
-//        if (n.type === "segmentRef"){
-//          svc.addSegmentRef(n, parent.concat([[message.id, 'message']]));
-//        } else {
-//          svc.addGroup(n, parent.concat([[message.id, 'message']]));
-//        }
-//        svc.addInArray(n.usage, svc.getElementByKey(message.id, "message","usage"));
-//      });
-//    }
 
 
     svc.deleteMessage = function(messageId) {

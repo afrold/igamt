@@ -13,10 +13,12 @@ angular.module('igl')
         $scope.saving = false;
 
         $scope.reset = function () {
-//            $scope.loadingSelection = true;
-//            $scope.message = "Segment " + $scope.segmentCopy.label + " reset successfully";
-//            angular.extend($rootScope.segment, $scope.segmentCopy);
-//             $scope.loadingSelection = false;
+        	$scope.editForm.$dirty = false;
+            $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
+            $rootScope.clearChanges();
+            if ($scope.segmentsParams) {
+                $scope.segmentsParams.refresh();
+            }
         };
 
         $scope.close = function () {
@@ -318,6 +320,7 @@ angular.module('igl')
             });
             $rootScope.segment = null;
             $scope.selectedChildren = [];
+            $rootScope.clearChanges();
             // revert
         };
 
@@ -366,12 +369,18 @@ angular.module('igl')
                 if (!$rootScope.datatypesMap[field.datatype.id] || $rootScope.datatypesMap[field.datatype.id] == null) {
                     $rootScope.datatypesMap[field.datatype.id] = datatype;
                 }
-                MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
+//                MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
             });
 
         };
+
+        $scope.$watch(function(){
+            return $rootScope.segment;
+        }, function() {
+            $rootScope.recordChanged();
+        }, true);
 
     });
 

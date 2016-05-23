@@ -168,29 +168,12 @@ angular
      };
 
     svc.showToC = function(node){
-        var rst1 = false;
-        _.each(svc.getMsgmodel(), function(filterElt){
-            rst1 = rst1 || svc.filterByMsg(node, filterElt);
-        });
-
-        return rst1;
-
-//        var rst2 = false;
-//        console.log(svc.getUsagesmodel());
-//        _.each(svc.getUsagesmodel(), function(filterElt){
-//            rst2 = rst2 || svc.filterByUsage(node, filterElt);
+        return true;
+//        var rst1 = false;
+//        _.each(svc.getMsgmodel(), function(filterElt){
+//            rst1 = rst1 || svc.filterByMsg(node, filterElt);
 //        });
-//
-//        var rst = rst1 && rst2;
-//        if (rst === undefined){
-//            console.log("R1");
-//            console.log(rst1);
-//            console.log("R2");
-//            console.log(rst2);
-//            rst = true;
-//        }
-//
-//        return rst;
+//        return rst1;
     };
 
     svc.show = function(leaf){
@@ -217,7 +200,7 @@ angular
     svc.filterByMsg = function(leaf, filterElt){
         if (leaf.id !== undefined && leaf.type !== undefined){
             if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined) {
-               return (MastermapSvc.getElementByKey(leaf.id, leaf.type, "message").indexOf(filterElt.id) !== -1);
+                return (MastermapSvc.getElementByKey(leaf.id, leaf.type, "message").indexOf(filterElt.id) !== -1);
             }
         }
     }
@@ -231,16 +214,6 @@ angular
                 if (leaf.type === "message"){
                     return (MastermapSvc.getUsage(leaf.id, leaf.type).indexOf(svc.getUsageById[filterElt.id]) !== -1);
                 }
-
-
-//                    console.log("usage");
-//                    console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
-//                    console.log("filterelt");
-//                    console.log(svc.getUsageById[filterElt.id]);
-//                    console.log("rst");
-//                    console.log(MastermapSvc.getUsage(leaf.id, leaf.type).indexOf(svc.getUsageById[filterElt.id]) !== -1);
-
-
 
                 if (leaf.type === "table"){
                     return true;

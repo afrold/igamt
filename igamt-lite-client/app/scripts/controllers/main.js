@@ -1745,9 +1745,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
             return _.find(_.without(list, obj), function (item) {
             	if(item[context1] == obj[context1]){
-            		return item[context2] == obj[context2];
+            		return item[context2] == obj[context2]  && item.id != obj.id;
             	}else {
-            		return false
+            		return false;
             	}
             });
         };
@@ -1770,10 +1770,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         	//console.log("*********"+name+ext);
         	var label=name;
             if (ext && ext !== null && ext !== "") {
-            	console.log("*********"+name + "_" + ext);
+//            	console.log("*********"+name + "_" + ext);
             	label= label + "_" + ext;
             }
-            console.log(label);
+//            console.log(label);
             return label;
         };
 
@@ -2006,5 +2006,4 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
         $modalInstance.dismiss('cancel');
     };
 }]);
-
 

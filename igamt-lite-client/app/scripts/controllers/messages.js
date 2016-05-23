@@ -13,8 +13,10 @@ angular.module('igl')
             $rootScope.$broadcast('event:SetToC');
         };
 
-        $scope.close = function () {
-            $rootScope.message = null;
+        $scope.reset = function () {
+            $scope.editForm.$dirty = false;
+            $rootScope.message = angular.copy($rootScope.originalMessage);
+            $rootScope.clearChanges();
             if ($scope.messagesParams) {
                 $scope.messagesParams.refresh();
             }
@@ -40,8 +42,7 @@ angular.module('igl')
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
                     FilteringSvc.addMsgInFilter(message.name, message.id);
                 }
-//                MastermapSvc.addMessage(message, []);
-                MastermapSvc.addMessage(newMessage, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+//                MastermapSvc.addMessage(message, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 $rootScope.$broadcast('event:SetToC');
                 $rootScope.message = angular.copy(message);
             }, function (error) {
@@ -83,7 +84,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (segment) {
                 segmentRef.ref.id = segment.id;
-                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
+//                MastermapSvc.addSegmentObject(segment, [[segmentRef.id, segmentRef.type]]);
                 if ($scope.messagesParams)
                     $scope.messagesParams.refresh();
             });
@@ -173,7 +174,8 @@ angular.module('igl')
 
         $scope.isVisible = function (node) {
             if (node && node != null) {
-                return FilteringSvc.show(node);
+//                return FilteringSvc.show(node);
+            	return true;
             } else {
                 return true;
             }
@@ -181,11 +183,19 @@ angular.module('igl')
 
         $scope.isVisibleInner = function (node, nodeParent) {
             if (node && node != null && nodeParent && nodeParent != null) {
-                return FilteringSvc.showInnerHtml(node, nodeParent);
+//                return FilteringSvc.showInnerHtml(node, nodeParent);
+            	return true;
             } else {
                 return true;
             }
         };
+
+        $scope.$watch(function(){
+            return $rootScope.message;
+        }, function() {
+            $rootScope.recordChanged();
+        }, true);
+
     });
 
 

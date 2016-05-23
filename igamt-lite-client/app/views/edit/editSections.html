@@ -30,16 +30,17 @@
                     <!--</span>-->
 
                         <span class="pull-right">
-         <button title="Save Changes" type="button" ng-class="{'btn-danger':editForm.$dirty, 'btn-primary':!editForm.$dirty}" class="btn btn-sm"
-                 ng-disabled="editForm.$invalid"
+         <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
+                 ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="viewSettings.tableReadonly"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
                          <button title="Cancel Changes" type="button" class="btn btn-sm btn-default"
                                  ng-hide="viewSettings.tableReadonly"
-                                 ng-click="cancel()">
-                             <span><i class="fa fa-times fa-fw"></i> Cancel</span>
+                                 ng-disabled="!editForm.$dirty"
+                                 ng-click="reset()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
                          </button>
     </span>
                 </div>

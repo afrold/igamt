@@ -16,6 +16,15 @@ angular.module('igl')
         $scope.copy = function (datatype) {
             CloneDeleteSvc.copyDatatype(datatype);
         };
+        
+        $scope.reset = function () {
+        	$scope.editForm.$dirty = false;
+            $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
+            $rootScope.clearChanges();
+            if ($scope.datatypesParams) {
+                $scope.datatypesParams.refresh();
+            }
+        };
 
         $scope.recordDatatypeChange = function (type, command, id, valueType, value) {
             var datatypeFromChanges = $rootScope.findObjectInChanges("datatype", "add", $rootScope.datatype.id);
@@ -242,7 +251,7 @@ angular.module('igl')
                 var child = ComponentService.create($rootScope.datatype.components.length + 1);
                 $rootScope.datatype.components.push(child);
                 //TODO update master map
-                MastermapSvc.addDatatypeObject($rootScope.datatype, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                //MastermapSvc.addDatatypeObject($rootScope.datatype, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 //TODO:remove as legacy code
                 $rootScope.parentsMap[child.id] = $rootScope.datatype;
                 if ($scope.datatypesParams)
@@ -314,9 +323,8 @@ angular.module('igl')
             });
             $rootScope.datatype = null;
             $scope.selectedChildren = [];
-            $scope.editForm.$setPristine();
-            // revert
-        };
+            $rootScope.clearChanges();
+         };
 
         var searchById = function (id) {
             var children = $rootScope.igdocument.profile.datatypeLibrary.children;
@@ -357,12 +365,18 @@ angular.module('igl')
             });
             modalInstance.result.then(function (datatype, ext) {
                 component.datatype.id = datatype.id;
-                MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
+                //MastermapSvc.addDatatypeObject(datatype, [[component.id, component.type]]);
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
             });
 
         };
+
+        $scope.$watch(function(){
+            return $rootScope.datatype;
+        }, function() {
+            $rootScope.recordChanged();
+        }, true);
 
 
     });

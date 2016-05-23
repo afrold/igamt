@@ -50,7 +50,10 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		 covertOldToNew();
+
+
+//		 covertOldToNew();
+
 	}
 
 	private void covertOldToNew() {
