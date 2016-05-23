@@ -10,6 +10,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -143,7 +144,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public List<Datatype> bindDatatypes(Set<String> datatypeIds, String datatypeLibraryId, String datatypeLibraryExt,
+	public List<DatatypeLink> bindDatatypes(Set<String> datatypeIds, String datatypeLibraryId, String datatypeLibraryExt,
 			Long accountId) {
 
 		DatatypeLibrary dtLib = datatypeLibraryRepository.findById(datatypeLibraryId);
@@ -157,6 +158,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		dtLib.setAccountId(accountId);
 
 		List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
+		List<DatatypeLink> datatypeLinks = new ArrayList<DatatypeLink>();
 		for (Datatype dt : datatypes) {
 			dt.setId(null);
 			dt.getLibIds().add(datatypeLibraryId);
@@ -168,10 +170,11 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 			dt.setAccountId(accountId);
 			// We save at this point in order to have an id for the link.
 			datatypeRepository.save(dt);
-			dtLib.addDatatype(dt);
+			DatatypeLink dtLink = dtLib.addDatatype(dt);
+			datatypeLinks.add(dtLink);
 		}
 		datatypeLibraryRepository.save(dtLib);
-		return datatypes;
+		return datatypeLinks;
 	}
 
 	boolean checkDup(Datatype dt, DatatypeLibrary dtLib, String ext) {
