@@ -98,7 +98,8 @@
     <div ng-controller="TreeCtrl">
         <div ui-tree="treeOptions">
             <ol ui-tree-nodes="" ng-model="TreeIgs">
-                <li ng-repeat="ig in TreeIgs" ui-tree-node ng-init="updatePositions(ig.childSections)">
+           
+                <li ng-repeat="ig in TreeIgs" ui-tree-node >
                     <div ui-tree-handle class="treeRoot">
 
                         <span data-nodrag ng-click="editIg(ig)" context-menu="igOptions">{{igdocument.metaData.title}}</span>
@@ -126,6 +127,8 @@
                         </ol>
                         {{updatePositions(section.childSections)}}
                     </script>
+                     {{updatePositions(ig.childSections)}}
+                    
                     <ol  ui-tree-nodes="" ng-model="ig.childSections" data-type="sections" >
                         <li ng-repeat="section in ig.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:5px;"></li>
 
@@ -135,7 +138,6 @@
                         <i data-nodrag ng-click="switcherprofile()" class="fa fa-caret-down"
                            ng-class="{'fa-caret-down': !profilecollapsed, 'fa-caret-right': profilecollapsed}"></i>
          
-
 						<span  data-nodrag ng-click="editProfile();"  ng-class="{selected :activeModel ==='Message Infrastructure'}">
 						{{ig.childSections.length+1}}.Message Infrastructure</span>
                     </div>
@@ -150,7 +152,8 @@
                                    ng-click="editRoutSection('Conformance Profiles');" data-nodrag >
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
-                        <li ng-repeat="msg in ig.profile.messages.children | filter:showToC" ui-tree-node
+                        
+                        <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
                             ng-if="!collapsemessage" data-type="message">
                             <div ui-tree-handle class="messageSubContent"
                                  context-menu="MessagesOption">

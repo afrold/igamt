@@ -315,7 +315,7 @@ angular.module('igl')
                         $scope.loadDatatypes().then(function () {
                             $scope.loadTables().then(function () {
                                 $scope.collectMessages();
-                                $scope.sortByLabels();
+                                //$scope.sortByLabels();
 //                                $scope.loadMastermap();
                                 $scope.loadFilter();
                                 $scope.loadToc();
@@ -332,7 +332,7 @@ angular.module('igl')
         };
 
         $scope.sortByLabels = function () {
-            $rootScope.igdocument.profile.messages.children = $filter('orderBy')($rootScope.igdocument.profile.messages.children, 'name');
+          //  $rootScope.igdocument.profile.messages.children = $filter('orderBy')($rootScope.igdocument.profile.messages.children, 'name');
             $rootScope.igdocument.profile.segmentLibrary.children = $filter('orderBy')($rootScope.igdocument.profile.segmentLibrary.children, 'name');
             $rootScope.igdocument.profile.datatypeLibrary.children = $filter('orderBy')($rootScope.igdocument.profile.datatypeLibrary.children, 'name');
             $rootScope.igdocument.profile.tableLibrary.children = $filter('orderBy')($rootScope.igdocument.profile.tableLibrary.children, 'name');
