@@ -8,17 +8,19 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $scope.toShow==="";
       $scope.datatypeLibStruct = null;
       $scope.datatypeLibMetaDataCopy = null;
-// $scope.datatypesJoinStruct = [];
 			$scope.datatypeStruct = null;
 			$scope.datatypeCopy = null;
 			$scope.loadingSelection = true;
 			$scope.publishSelections = [];
 			$scope.datatypeDisplay	= [];
-	    $scope.viewSettings = ViewSettings;
+	        $scope.selectedChildren = [];
+   $scope.viewSettings = ViewSettings;
       $scope.metaDataView = null;
       $scope.datatypeListView = null;
+      $scope.added = [];
       $scope.accordi = {metaData: false, definition: true, dtList: true, dtDetails: false};
-
+      $scope.forms = {};
+//      $scope.forms.datatypeForm = {};
       $scope.tableWidth = null;
   // $scope.datatypeLibrary = "";
       $scope.hl7Version = null;
@@ -31,14 +33,15 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     	  $scope.toShow = param;
     	
       }
-// $scope.datatypesParams = new ngTreetableParams({
-// getNodes: function (parent) {
-// return $scope.getNodes(parent, $scope.datatypeCopy);
-// },
-// getTemplate: function (node) {
-// return $scope.getEditTemplate(node, $scope.datatypeCopy);
-// }
-// });
+      
+ $scope.datatypesParams = new ngTreetableParams({
+ getNodes: function (parent) {
+ return $scope.getNodes(parent, $scope.datatypeCopy);
+ },
+ getTemplate: function (node) {
+ return $scope.getEditTemplate(node, $scope.datatypeCopy);
+ }
+ });
 
       $scope.datatypeLibraryTypes = [
                                 { name: "Browse Master data type libraries", type: 'MASTER', visible :  $scope.admin,
@@ -54,16 +57,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 	
 	$scope.seq = function(idx) {
 		return idx + 1;
-	}
-
-// $scope.getMetaData = function(datatypeLibrary) {
-// $scope.metaDataView = "LibraryMetaData.html";
-// $scope.loadingSelection = true;
-// $timeout(
-// function () {
-// $scope.loadingSelection = false;
-// }, 100);
-// };
+	};
 
 	        $scope.selectDTLibraryType = function (selectedType) {
 		        $scope.datatypeLibrariesConfig.selectedType = selectedType;
@@ -85,7 +79,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
           angular.forEach(data, function(lib){
 						$scope.datatypeLibsStruct.push(lib);
           });
-            console.log("$scope.datatypeLibsStruct size=" + $scope.datatypeLibsStruct.length);
+          	$scope.accordi.dtDetails = false;
+			$rootScope.isEditing = false;
+			$scope.DataTypeTree=[];
+			$scope.datatypeLibCopy = {};
+           console.log("$scope.datatypeLibsStruct size=" + $scope.datatypeLibsStruct.length);
 				}).catch( function (error) {
 					console.log(error);
 				});
@@ -103,42 +101,47 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 				});
 			};
 
-			$scope.trackSelections = function(bool, selection) {
-				if (bool) {
-					selection.status = "PUBLISHED";
-				} else {
-					selection.status = "UNPUBLISHED";
-				}
-			};
+// $scope.trackSelections = function(bool, selection) {
+// if (bool) {
+// selection.status = "PUBLISHED";
+// } else {
+// selection.status = "UNPUBLISHED";
+// }
+// };
 
 			$scope.saveMetaData = function() {
 				$scope.datatypeLibStruct.metaData = angular.copy($scope.datatypeLibMetaDataCopy);
 				DatatypeLibrarySvc.saveMetaData($scope.datatypeLibStruct.id, $scope.datatypeLibMetaDataCopy);
-			};
-			
-			$scope.cancel = function() {
-				console.log("canceled");
-			};
-			
-			$scope.editMetadata= function(){
-			
-	            $scope.metaDataView = "LibraryMetaData.html";
-	                  
 				
-			}
-	
+			};
 			
+// $scope.cancelLibrary = function() {
+// console.log("canceled");
+// };
+			
+			$scope.editMetadata= function(){		
+	            $scope.metaDataView = "LibraryMetaData.html";			
+			}
+		
 			$scope.editLibrary = function(datatypeLibrary) {
 		        $scope.datatypeListView = "DatatypeList.html";
-				   console.log("edit().datatypeLibrary=" + JSON.stringify(datatypeLibrary));
+// console.log("datatypeLibrary=" + JSON.stringify(datatypeLibrary));
 					$scope.loadingSelection = true;
-				$rootScope.isEditing = true;
-		           $scope.hl7Version = datatypeLibrary.metaData.hl7Version;
-		           $scope.datatypeLibStruct = datatypeLibrary;    
-		            $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibrary.metaData);
-					$scope.loadingSelection = false;
-          		  $rootScope.DataTypeTree = [];
-        		  $rootScope.DataTypeTree = $scope.datatypeLibStruct.children;
+			        $scope.datatypeLibStruct = datatypeLibrary;    
+				   DatatypeLibrarySvc.getDatatypesByLibrary(datatypeLibrary.id).then(function(datatypes){
+						$rootScope.isEditing = true;
+						$scope.accordi.dtDetails = true;
+				           $scope.hl7Version = datatypeLibrary.metaData.hl7Version;
+				            $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibrary.metaData);
+							$scope.loadingSelection = false;
+							$scope.DataTypeTree=[];
+							$scope.datatypeLibCopy = angular.copy($scope.datatypeLibStruct);
+							$scope.datatypeLibCopy.children = [];
+							angular.forEach(datatypes, function(datatype){
+								$scope.datatypeLibCopy.children.push(datatype);
+							});
+							$scope.DataTypeTree.push($scope.datatypeLibCopy);
+				   });
 			};
 			
 			$scope.copyLibrary = function(datatypeLibrary) {
@@ -152,14 +155,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			};
 
 			$scope.deleteLibrary = function(datatypeLibrary) {
-				DatatypeLibrarySvc.delete(datatypeLibrary.id);
-                var idxP = _.findIndex($scope.datatypeLibsStruct, function (child) {
-                    return child.id === datatypeLibrary.id;
-                });
-                $scope.datatypeLibsStruct.splice(idxP, 1);
-			}
-
-	        $scope.confirmDelete = function (datatypeLibrary) {
+				$scope.confirmLibraryDelete(datatypeLibrary);
+			};
+			
+	        $scope.confirmLibraryDelete = function (datatypeLibrary) {
 	            var modalInstance = $modal.open({
 	                templateUrl: 'ConfirmDatatypeLibraryDeleteCtrl.html',
 	                controller: 'ConfirmDatatypeLibraryDeleteCtrl',
@@ -170,14 +169,20 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 	                }
 	            });
 	            modalInstance.result.then(function (datatypeLibrary) {
-					DatatypeLibrarySvc.delete(datatypeLibrary.id);
+					DatatypeLibrarySvc.delete(datatypeLibrary.id).then(function(result){
 	                var idxP = _.findIndex($scope.datatypeLibsStruct, function (child) {
 	                    return child.id === datatypeLibrary.id;
 	                });
 	                $scope.datatypeLibsStruct.splice(idxP, 1);
-	            });
+					$scope.DataTypeTree=[];
+					$scope.datatypeLibCopy = {};
+	                $scope.datatypeLibMetaDataCopy = {};
+	              	$scope.accordi.dtDetails = false;
+	    			$rootScope.isEditing = false;
+					});
+            });
 	        };
-
+	        
 	        $scope.confirmClose = function () {
 	            var modalInstance = $modal.open({
 	                templateUrl: 'ConfirmDatatypeLibraryCloseCtrl.html',
@@ -206,20 +211,70 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 	            });
 	        };
 
+	        $scope.toggleStatus = function(status) {
+	        	$scope.datatypeCopy.status = $scope.datatypeCopy.status === 'PUBLISHED' ? 'UNPUBLISHED' : 'PUBLISHED';
+	        };
 
-	$scope.saveDatatype = function(datatype) {
-		console.log("save datatype=" + JSON.stringify(datatype.label));
-		DatatypeService.save(datatype).then(function(result){
-			console.log("saved datatype=" + JSON.stringify(datatype));
+	$scope.saveDatatype = function(datatypeCopy) {
+		console.log("save datatypeForm=" + $scope.datatypeForm);
+		$scope.datatypeLibStruct = angular.copy(datatypeCopy);
+		DatatypeService.save($scope.datatypeLibStruct).then(function(result){
+            $rootScope.msg().text = "datatypeSaved";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+    		$scope.forms.datatypeForm.$setPristine();
 		});
 	};
-	
-    $scope.editDatatype = function(datatypeLink) {
+<!--	
+	$scope.resetDatatype = function(datatypeCopy) {
+		$scope.forms.datatypeForm.$setPristine();
+		$scope.datatypeCopy = angular.copy($scope.datatypeLibStruct);
+        $rootScope.clearChanges();
+        if ($scope.datatypesParams) {
+            $scope.datatypesParams.refresh();
+        }
+		$scope.datatypeLibMetaDataCopy = $scope.datatpeLibStruct.metaData;
+	};	
+-->	
+   $scope.editDatatype = function(datatype) {
       $scope.metaDataView = "EditDatatypeLibraryDatatype.html";
          $scope.loadingSelection = true;
-        DatatypeService.getOne(datatypeLink.id).then(function(datatype) {
-        	$scope.datatypeStruct = datatype;
-            $scope.datatypeCopy  = angular.copy(datatype);
+         $scope.added = [];
+         $scope.datatypeCopy = datatype;
+            DatatypeService.collectDatatypes(datatype.id).then(function (datatypes) {
+               angular.forEach(datatypes, function (dt) {
+                    var exists = _.indexOf(dt.libIds, function(libId){
+                       	return libId === $scope.datatypeLibStruct.id;
+                    });
+                    if (exists === -1) {
+                    	dt.libIds.push($scope.datatypeLibStruct.id);
+                    } else {
+                    	console.log("Found libId4=" + dt.name);
+                    }
+                	if ($scope.datatypesMap[dt.id] === null || $scope.datatypesMap[dt.id] === undefined) {
+                        $scope.datatypesMap[dt.id] = dt;
+                        $scope.added.push(dt.id);
+                        var exists1 = _.indexOf($scope.datatypeLibStruct.children, function(child){
+                        	return child.id === dt.id;
+                        });
+                        if (exists1 === -1) {
+                        	$scope.datatypeLibStruct.children.push(createLink(dt));
+                        } else {
+                        	console.log("Found datatypeLibStructbId=" +  dt.name);
+                        }
+                        var exists2 = _.indexOf($scope.DataTypeTree.children, function(child){
+                        	return child.id === dt.id;
+                        });
+                        if (exists2 === -1) {
+                        	$scope.DataTypeTree[0].children.push(dt);
+                        } else {
+                        	console.log("Found DataTypeTree=" +  dt.name);
+                        }
+                   }
+                });
+//		        console.log("$scope.DataTypeTree=" + JSON.stringify($scope.DataTypeTree, null, 2));
+               DatatypeService.saveAll(datatypes);
+
             $scope.tableWidth = null;
             $scope.scrollbarWidth = $scope.getScrollbarWidth();
             $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
@@ -231,27 +286,174 @@ angular.module('igl').controller('DatatypeLibraryCtl',
           	  $scope.datatypeLibrariesConfig.selectedType = 'USER';
             }        
         });
-        $scope.loadingSelection = false;
     };
     
-    $scope.getNodes = function (parent, root) {
-        var children = [];
-        if (parent && parent != null) {
-            if (parent.datatype) {
-                 children = DatatypeService.getOne(parent.datatype);
-            } else {
-                children = parent.components;
-            }
-        } else {
-            if (root != null) {
-                children = root.components;
-            } else {
-                children = [];
-            }
-        }
-        return children;
-    };
-    
+    $scope.copyDatatype = function(datatypeCopy) {
+  		var newDatatype = angular.copy(datatypeCopy);
+  		newDatatype.ext = newDatatype.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
+      	newDatatype.id = null;
+         	DatatypeService.save(newDatatype).then(function(savedDatatype){
+         		newDatatype = savedDatatype;
+      		$scope.datatypeLibStruct.children.push(createLink(newDatatype));
+      		$scope.DataTypeTree[0].children.push(newDatatype);
+        	});
+        DatatypeLibrarySvc.save($scope.datatypeLibStruct);
+		};
+    	
+    	function createLink(datatype) {
+    		return { "id" : datatype.id,
+    			"name" : datatype.name,
+    			"ext" : datatype.ext
+    			};
+    		};
+
+      $scope.deleteDatatype = function(datatypeCopy) {
+  		console.log("delete datatype=" + JSON.stringify(datatypeCopy.label));
+  				var idx = _.findIndex($scope.datatypeLibStruct.children, function (child) {
+  					return datatypeCopy.id === child.id;
+  				});
+  				if(idx > -1) {
+  					$scope.datatypeLibStruct.children.splice(idx, 1);
+  				}
+  				var idx1 = _.findIndex($scope.DataTypeTree[0].children, function (child) {
+  					return datatypeCopy.id === child.id;
+  				});
+  				if(idx1 > -1) {
+  					$scope.DataTypeTree[0].children.splice(idx1, 1);
+  				}
+  				DatatypeService.delete(datatypeCopy.id);
+                DatatypeLibrarySvc.save($scope.datatypeLibStruct);
+//  				$scope.confirmLDelete(datatypeCopy);
+        };
+		
+        $scope.confirmLDelete = function (datatypeCopy) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
+                controller: 'ConfirmDatatypeDeleteCtrl',
+                resolve: {
+                	datatypeToDelete: function () {
+                        return datatypeCopy;
+                    }
+                }
+            });
+            modalInstance.result.then(function (datatypeLibrary) {
+  				var idx = _.findIndex($scope.datatypeLibStruct.children, function (child) {
+  					return datatypeCopy.id === child.id;
+  				});
+  				if(idx > -1) {
+  					$scope.datatypeLibStruct.children.splice(idx, 1);
+  				}
+  				var idx1 = _.findIndex($scope.DataTypeTree[0].children, function (child) {
+  					return datatypeCopy.id === child.id;
+  				});
+  				if(idx1 > -1) {
+  					$scope.DataTypeTree[0].children.splice(idx1, 1);
+  				}
+  				DatatypeService.delete(datatypeCopy.id);
+                DatatypeLibrarySvc.save($scope.datatypeLibStruct);
+           });
+        };
+
+          $scope.getTableWidth = function () {
+              if ($scope.tableWidth === null || $scope.tableWidth == 0) {
+                  $scope.tableWidth = $("#nodeDetailsPanel").width();
+              }
+              return $scope.tableWidth;
+          };
+
+          $scope.getDynamicWidth = function (a, b, otherColumsWidth) {
+              var tableWidth = $scope.getTableWidth();
+              if (tableWidth > 0) {
+                  var left = tableWidth - otherColumsWidth;
+                  return {"width": a * parseInt(left / b) + "px"};
+              }
+              return "";
+          };    
+
+          $scope.isVisible = function (node) {
+              var isVis = DatatypeService.isVisible(node);
+              return isVis;
+          };
+
+          $scope.hasChildren = function (node) {
+              return node && node != null && node.datatype && $scope.getDatatype(node.datatype.id) != undefined && $scope.getDatatype(node.datatype.id).components != null && $scope.getDatatype(node.datatype.id).components.length > 0;
+          };
+          
+          $scope.isChildSelected = function (component) {
+              return  $scope.selectedChildren.indexOf(component) >= 0;
+          };
+
+          $scope.isChildNew = function (component) {
+              return component && component != null && component.status === 'DRAFT';
+          };
+          
+          $scope.recordDatatypeChange = function (type, command, id, valueType, value) {
+              var datatypeFromChanges = $rootScope.findObjectInChanges("datatype", "add", $Scope.datatype.id);
+              if (datatypeFromChanges === undefined) {
+                  $rootScope.recordChangeForEdit2(type, command, id, valueType, value);
+              }
+          };
+          
+          $scope.countPredicate = function (position) {
+              if ($rootScope.datatype != null)
+                  for (var i = 0, len1 = $rootScope.datatype.predicates.length; i < len1; i++) {
+                      if ($rootScope.datatype.predicates[i].constraintTarget.indexOf(position + '[') === 0)
+                          return 1;
+                  }
+
+              return 0;
+          };
+          
+          $scope.showSelectDatatypeFlavorDlg = function (component) {
+              var modalInstance = $modal.open({
+                  templateUrl: 'SelectDatatypeFlavor.html',
+                  controller: 'SelectDatatypeFlavorCtrl',
+                  windowClass: 'app-modal-window',
+                  resolve: {
+                      currentDatatype: function () {
+                          return $rootScope.datatypesMap[component.datatype.id];
+                      },
+                      hl7Version: function () {
+                          return $rootScope.igdocument.metaData.hl7Version;
+                      },
+                      datatypeLibrary: function () {
+                          return $rootScope.igdocument.profile.datatypeLibrary;
+                      }
+                  }
+              });
+              modalInstance.result.then(function (datatype, ext) {
+                  component.datatype.id = datatype.id;
+                  MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
+                  if ($scope.datatypesParams)
+                      $scope.datatypesParams.refresh();
+              });
+
+          };
+
+
+          $scope.getDatatype = function (id) {
+              return $scope.datatypesMap && $scope.datatypesMap[id];
+          };
+
+         $scope.getNodes = function (parent, root) {
+              var children = [];
+             if (parent && parent != null) {
+                  if (parent.datatype) {
+                      var dt = $scope.datatypesMap[parent.datatype.id];
+                      children = dt.components;
+                  } else {
+                      children = parent.components;
+                  }
+              } else {
+                  if (root != null) {
+                     children = root.components;
+                  } else {
+                     children = [];
+                  }
+              }
+              return children;
+          };
+
     $scope.getEditTemplate = function (node, root) {
         return node.type === 'datatype' ? 'DatatypeLibraryEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeLibraryComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeLibrarySubComponentEditTree.html' : '';
     };
@@ -264,49 +466,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     		label : function(dt) {
     			return $rootScope.getLabel(dt.name, $scope.datatypeLibStruct.metaData.ext)
     		}
-    }
-
-  $scope.copyDatatype = function(datatypeLink) {
-		console.log("copy datatype=" + JSON.stringify(datatypeLink));
-		var newDatatypeLink = angular.copy(datatypeLink);
-		newDatatypeLink.ext = newDatatypeLink.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
-       DatatypeService.getOne(datatypeLink.id).then(function(datatype) {
-        	$scope.datatypeStruct = datatype;
-        	$scope.datatypeStruct.id = null;
-           	DatatypeService.save($scope.datatypeStruct).then(function(savedDatatype){
-            	$scope.datatypeStruct = savedDatatype;
-            	newDatatypeLink.id = savedDatatype.id;
-          	});
-        });
-		console.log("copy datatype=" + JSON.stringify(newDatatypeLink));
-		$scope.datatypeLibStruct.children.push(newDatatypeLink);
-  	}
-
-    $scope.deleteDatatype = function(datatype) {
-		console.log("delete datatype=" + JSON.stringify(datatype.label));
- 				var idx = _.findIndex($scope.datatypeLibStruct.children, function (child) {
-					return datatype.id === child.id;
-				});
- 				$scope.datatypeCopy = null;
-				$scope.datatypeLibStruct.children.splice(idx, 1);
-				DatatypeService.delete(datatype.id);
-      };
-
-        $scope.getTableWidth = function () {
-            if ($scope.tableWidth === null || $scope.tableWidth == 0) {
-                $scope.tableWidth = $("#nodeDetailsPanel").width();
-            }
-            return $scope.tableWidth;
-        };
-
-        $scope.getDynamicWidth = function (a, b, otherColumsWidth) {
-            var tableWidth = $scope.getTableWidth();
-            if (tableWidth > 0) {
-                var left = tableWidth - otherColumsWidth;
-                return {"width": a * parseInt(left / b) + "px"};
-            }
-            return "";
-        };
+    };
 
 			$scope.openStandardDataypes = function(scope) {
 					var standardDatatypesInstance = $modal.open({
@@ -355,15 +515,21 @@ angular.module('igl').controller('DatatypeLibraryCtl',
            ids.push(result.id);
         });
 
-        	DatatypeLibrarySvc.bindDatatypes(ids, $scope.datatypeLibStruct.id, $scope.datatypeLibStruct.metaData.ext).then(function(datatypes) {
-        	console.log("$scope.openDataypeList.bindDatatypes datatypes=" + datatypes.length);
-          angular.forEach(datatypes, function(datatype){
-        	  $scope.datatypeLibStruct.children.push(datatype);
+        	DatatypeLibrarySvc.bindDatatypes(ids, $scope.datatypeLibStruct.id, $scope.datatypeLibStruct.metaData.ext).then(function(datatypeLinks) {
+         	var ids = [];
+        	angular.forEach(datatypeLinks, function(datatypeLink){
+        	  $scope.datatypeLibStruct.children.push(datatypeLink);
+        	  ids.push(datatypeLink.id);
             });
+    	  DatatypeService.get(ids).then(function(datatypes) {
+          	angular.forEach(datatypes, function(datatype){
+          	$scope.datatypeLibCopy.children.push(datatype);
+    	  });
         });
     });
-  };
-});   
+  });   
+};
+});
 angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 		function($scope, $rootScope, $modalInstance, $timeout, hl7Versions, DatatypeLibrarySvc, DatatypeService) {
 
@@ -440,46 +606,33 @@ angular.module('igl').controller('DatatypeListInstanceDlgCtl',
 			};
 });
 
-angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function ($scope, $rootScope, $http, $modalInstance, datatypeLibStructToDelete) {
+angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function ($scope, $rootScope, $http, $modalInstance, datatypeLibraryToDelete) {
 	
-    $scope.datatypeLibStructToDelete = datatypeLibStructToDelete;
+    $scope.datatypeLibStructToDelete = datatypeLibraryToDelete;
     $scope.loading = false;
     
     $scope.delete = function () {
-        $scope.loading = true;
-        $http.post($rootScope.api('api/datatype-library/' + $scope.datatypeLibStructToDelete.id + '/delete')).then(function (response) {
-            var index = $rootScope.datatypeLibsStruct.indexOf($scope.datatypeLibStructToDelete);
-            if (index > -1) $rootScope.datatypeLibsStruct.splice(index, 1);
-            $rootScope.backUp = null;
-            if ($scope.datatypeLibStructToDelete === $scope.datatypeLibStruct) {
-                $scope.closeDatatypeLibrary();
-            }
-            $rootScope.msg().text = "dtDeleteSuccess";
-            $rootScope.msg().type = "success";
-            $rootScope.msg().show = true;
-            $rootScope.manualHandle = true;
-            $scope.igdocumentToDelete = null;
-            $scope.loading = false;
-            $modalInstance.close($scope.datatypeLibStructToDelete);
-
-        }, function (error) {
-            $scope.error = error;
-            $scope.loading = false;
-            $modalInstance.dismiss('cancel');
-            $rootScope.msg().text = "dtDeleteFailed";
-            $rootScope.msg().type = "danger";
-            $rootScope.msg().show = true;
-
-
-// waitingDialog.hide();
-        });
-    };
+		$modalInstance.close($scope.datatypeLibStructToDelete);
+        };
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
 });
 
+angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $rootScope, $http, $modalInstance, datatypeToDelete) {
+	
+    $scope.datatypeToDelete = datatypeToDelete;
+    $scope.loading = false;
+    
+    $scope.delete = function () {
+		$modalInstance.close($scope.datatypeToDelete);
+        };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
 
 angular.module('igl').controller('ConfirmDatatypeLibraryCloseCtrl', function ($scope, $modalInstance, $rootScope, $http) {
     $scope.loading = false;

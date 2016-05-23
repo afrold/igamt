@@ -16,19 +16,18 @@
 	</div>
 	<div ng-show="!loadingSelection">
 		<div ng-show="table !== null" id="executionPanel">
-			<form name="editForm" id="editForm" novalidate class="form-horizontal" confirm-on-leave>
 				<div class="row" style="margin-left:0px; margin-right: 20px">
 					<div class="page-header" style="margin-bottom: 20px">
     					<span class="header4">Table: {{table.bindingIdentifier}}</span>
             				<span class="pull-right">
          					<button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 				ng-disabled="editForm.$invalid && !editForm.$dirty"
+                 				ng-disabled="editForm.$invalid && editForm.$pristine"
                  				ng-hide="viewSettings.tableReadonly || table.scope !== 'USER'"
                 	 			ng-click="save()">
              					<span><i class="fa fa-check fa-fw"></i> Save</span>
          					</button>
 							<button title="Cancel Changes" type="button" class="btn btn-sm btn-warning"
-								ng-disabled="editForm.$invalid && !editForm.$dirty"
+								ng-disabled="editForm.$invalid && editForm.$pristine"
                 	       		ng-hide="viewSettings.tableReadonly || table.scope !== 'USER'"
                 	        	ng-click="reset()">
                 	        	<span><i class="fa fa-times fa-fw"></i> Reset</span>
@@ -271,7 +270,6 @@
 						</tab>
 					</tabset>
 				</div>
-			</form>
 		</div>
 	</div>
 </div>

@@ -18,7 +18,8 @@ angular.module('igl')
         };
         
         $scope.reset = function () {
-        	$scope.editForm.$dirty = false;
+            $scope.editForm.$setPristine();
+            $scope.editForm.$dirty = false;
             $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
             $rootScope.clearChanges();
             if ($scope.datatypesParams) {
@@ -251,6 +252,7 @@ angular.module('igl')
                 var child = ComponentService.create($rootScope.datatype.components.length + 1);
                 $rootScope.datatype.components.push(child);
                 //TODO update master map
+                //MastermapSvc.addDatatypeObject($rootScope.datatype, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 //TODO:remove as legacy code
                 $rootScope.parentsMap[child.id] = $rootScope.datatype;
                 if ($scope.datatypesParams)
@@ -364,7 +366,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (datatype, ext) {
                 component.datatype.id = datatype.id;
-//                MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
+                //MastermapSvc.addDatatypeObject(datatype, [[component.id, component.type]]);
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
             });

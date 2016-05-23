@@ -993,19 +993,7 @@ public class IGDocumentController extends CommonController {
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
 		}
-		
-//		for (Message message: d.getProfile().getMessages().getChildren() ){
-//			for(MessageMap map : messagesMap){
-//				if(message.getId().equals(map.getId())){
-//					message.setPosition(map.getPosition());
-//					
-//				}
-//			}
-//			
-//		}
-		
-		
-//		
+
 		Profile p = d.getProfile();
 		Messages msgs = p.getMessages();
 

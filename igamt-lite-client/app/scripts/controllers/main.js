@@ -1767,13 +1767,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getLabel = function (name, ext) {
-        	//console.log("*********"+name+ext);
         	var label=name;
             if (ext && ext !== null && ext !== "") {
-//            	console.log("*********"+name + "_" + ext);
             	label= label + "_" + ext;
             }
-//            console.log(label);
             return label;
         };
 

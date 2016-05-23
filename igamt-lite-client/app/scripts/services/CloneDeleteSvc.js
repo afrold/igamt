@@ -591,6 +591,7 @@ angular.module('igl').factory(
             var rval = deleteSegments(segmentRefsLive, segmentRefsSincerelyDead);
             //TODO mastermap need to delete message
 //            MastermapSvc.deleteMessage(message.id);
+//            FilteringSvc.removeMsgFromFilter(message.id);
             return rval;
         }
 

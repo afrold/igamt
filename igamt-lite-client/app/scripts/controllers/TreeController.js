@@ -104,9 +104,9 @@ angular
     
                     console.log(sourceNode);
                     if(source.type="message"){
-                    	console.log("****************************************************");
-                    	
+
                     	$scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
+
                     	$scope.reOrderMessages();
                     	
                     }else{
@@ -244,9 +244,7 @@ angular
                                 		  $itemScope.section.childSections.push(newSection);
                                 		  newSection.sectionPosition=$itemScope.section.childSections.length;
                                 	  }
-                                	  console.log("**********************************")
                                 	  console.log($itemScope.section);
-                                	  console.log("***********************************")
                                       SectionSvc.update($rootScope.igdocument.id,$itemScope.section);
                                       $scope.editSection(newSection);
                                       $scope.activeModel =newSection.id;
@@ -276,6 +274,7 @@ angular
                 [
                     'delete',
                     function ($itemScope) {
+
                     	var section=$itemScope.section;
                         var index = $itemScope.$nodeScope.$parentNodesScope.$modelValue.indexOf($itemScope.$nodeScope.$modelValue);
                         if (index > -1) {
@@ -284,7 +283,9 @@ angular
                     }
                         $scope.updatePositions($itemScope.$nodeScope.$parentNodesScope.$modelValue);
                     	
-                        SectionSvc.delete($rootScope.igdocument.id, section.id);
+ 
+                       SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id);
+
                     }
                 ]
 
@@ -309,7 +310,6 @@ angular
                                           $rootScope.igdocument.childSections.push(newSection);
                                       
                                           newSection.sectionPosition=$rootScope.igdocument.childSections.length;
-                                         // SectionSvc.save($rootScope.igdocument.id,newSection);
                                           $scope.updateChildeSections($rootScope.igdocument.childSections);
 
 
@@ -418,7 +418,7 @@ angular
 
                                            ['create a copy',
                                                function ($itemScope) {
-                                         	 	console.log("create a copy");	
+                                         	 	console.log("create a copy=" + $itemScope);	
                                            	console.log($itemScope.data);
                                            	$scope.copyDatatype($itemScope.data); 
     
@@ -426,7 +426,7 @@ angular
                                            null,
                                            ['delete',
                                                function ($itemScope) {
-                                        	 	console.log("delete");	
+                                        	 	console.log("delete=" + $itemScope);	
                                                	console.log($itemScope.data);
                                         	   $scope.deleteDatatype($itemScope.data);
                                                } ]
@@ -440,33 +440,23 @@ angular
             ];
             
             $scope.editSeg = function (seg) {
-
-       
-
-                // console.log("EditSeg")
-                preventChangesLost();
-
                 $scope.$emit('event:openSegment', seg);
-
             }
 
             $scope.editIg = function (ig) {
-                preventChangesLost();
-                $rootScope.igdocument = ig;
+                 $rootScope.igdocument = ig;
                 $scope.$emit('event:openDocumentMetadata',
                     $rootScope.igdocument);
             }
 
             $scope.editSection = function (section) {
-                preventChangesLost();
-                $rootScope.section = section;
+                 $rootScope.section = section;
                 $scope.$emit('event:openSection', $rootScope.section);
             }
 
 
             $scope.editRoutSection = function (param) {
-                preventChangesLost();
-                $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
+                 $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
             }
 
 
@@ -504,25 +494,21 @@ angular
                 return section;
             }
             $scope.editDataType = function (data) {
-                preventChangesLost();
-                $rootScope.datatype = data;
+                 $rootScope.datatype = data;
                 $scope.$emit('event:openDatatype', $rootScope.datatype);
             }
 
             $scope.editTable = function (table) {
-                preventChangesLost();
-                $rootScope.table = table;
+                 $rootScope.table = table;
                 $scope.$emit('event:openTable', $rootScope.table);
             }
 
             $scope.editMessage = function (message) {
-                preventChangesLost();
-                $rootScope.message = message;
+                 $rootScope.message = message;
                 $scope.$emit('event:openMessage', message);
             }
             $scope.editProfile = function () {
-                preventChangesLost();
-            	 $scope.Activate("Message Infrastructure");
+             	 $scope.Activate("Message Infrastructure");
                 $scope.$emit('event:openProfileMetadata',
                     $rootScope.igdocument);
             }
@@ -633,8 +619,7 @@ angular
 
 
             $scope.showToC = function (leaf) {
-//                return FilteringSvc.showToC(leaf);
-                return true;
+                return FilteringSvc.showToC(leaf);
             };
 
             $scope.getScopeLabel = function (leaf) {
@@ -642,7 +627,7 @@ angular
             	return 'HL7';
             }
             else  if(leaf.scope==='USER') {
-            	return 'USR';
+            	return 'USE';
             	
             }
             
@@ -671,15 +656,6 @@ angular
                 return label; 
             };
 
-
-            var preventChangesLost = function(event){
-
-                if ($rootScope.hasChanges()) {
-                    if(!confirm("You have unsaved changes, Do you want to stay on the page?")) {
-                        event.preventDefault();
-                    }
-                }
-            }
 
         }]);
 
