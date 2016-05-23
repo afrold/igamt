@@ -18,6 +18,7 @@ angular
             $scope.collapsevalueSet=false;
             $scope.profilecollapsed = false;
             $scope.openMetadata=false;
+            $scope.ordredMessages=[];
             $scope.dataTypeLibraryCollapsed=false;
             $scope.activeModel = "";
             $scope.Activate = function (param) {
@@ -67,8 +68,7 @@ angular
                 $scope.collapsedata = !$scope.collapsedata;
 
             };
-            
-            
+
             $scope.treeOptions = {
 
                 accept: function (sourceNodeScope, destNodesScope, destIndex) {
@@ -101,21 +101,25 @@ angular
 
                     var dataType = destNodes.$element.attr('data-type');
                     event.source.nodeScope.$modelValue.sectionPosition = sortAfter + 1;
-                    $scope.updatePositions(event.dest.nodesScope.$modelValue);
-                    $scope.updatePositions(event.source.nodesScope.$modelValue);
+    
                     console.log(sourceNode);
                     if(source.type="message"){
+
+                    	$scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
+
                     	$scope.reOrderMessages();
                     	
                     }else{
-                    $scope.updateChildeSections($rootScope.igdocument.childSections);
+                      $scope.updatePositions(event.dest.nodesScope.$modelValue);
+                      $scope.updatePositions(event.source.nodesScope.$modelValue);
+                      $scope.updateChildeSections($rootScope.igdocument.childSections);
 
                     }
 
 
                 }
             };
-
+            
 
             $scope.updatePositions = function (arr) {
                 if (arr !== undefined) {
@@ -126,15 +130,18 @@ angular
                 return "";
             };
             
-
+            
             $scope.updateMessagePositions = function (arr) {
-                if (arr !== undefined) {
-                    for (var i = arr.length - 1; i >= 0; i--) {
-                        arr[i].position = i + 1;
-                    }
+            	
+
+            	if (arr !== undefined){
+                for (var i = 0; i<=arr.length - 1; i++) {
+                    arr[i].position = i + 1;
                 }
+            	   }
                 return "";
             };
+
 
             $scope.getLastPosition = function (arr) {
                 var position = arr.length;
@@ -267,7 +274,18 @@ angular
                 [
                     'delete',
                     function ($itemScope) {
+
+                    	var section=$itemScope.section;
+                        var index = $itemScope.$nodeScope.$parentNodesScope.$modelValue.indexOf($itemScope.$nodeScope.$modelValue);
+                        if (index > -1) {
+                        $itemScope.$nodeScope.$parentNodesScope.$modelValue
+                            .splice(index, 1);
+                    }
+                        $scope.updatePositions($itemScope.$nodeScope.$parentNodesScope.$modelValue);
+                    	
+ 
                        SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id);
+
                     }
                 ]
 
@@ -403,8 +421,7 @@ angular
                                          	 	console.log("create a copy=" + $itemScope);	
                                            	console.log($itemScope.data);
                                            	$scope.copyDatatype($itemScope.data); 
-
-                                                 
+    
                                                } ],
                                            null,
                                            ['delete',
@@ -560,13 +577,14 @@ angular
             
             $scope.reOrderMessages = function () {
             	var messagesMap=[];
+            	
             	var messages=$rootScope.igdocument.profile.messages.children;
-            	for (var i=0; i<=messages.length-1; i++){
-            		var messageMap={};
-            		messageMap.id =messages[i].id;
-            		messageMap.position=messages[i].position;
-            		messagesMap.push(messageMap);
-            	}
+//            	for (var i=0; i<=messages.length-1; i++){
+//            		var messageMap={};
+//            		messageMap.id =messages[i].id;
+//            		messageMap.position=messages[i].position;
+//            		messagesMap.push(messageMap);
+//            	}
             	console.log(messagesMap);
                 var id = $rootScope.igdocument.id;
                 var req = {
@@ -575,7 +593,7 @@ angular
                     headers: {
                         'Content-Type': "application/json"
                     },
-                    data: messagesMap
+                    data: $rootScope.igdocument.profile.messages.children
                 }
 
 

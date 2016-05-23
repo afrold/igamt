@@ -98,7 +98,8 @@
     <div ng-controller="TreeCtrl">
         <div ui-tree="treeOptions">
             <ol ui-tree-nodes="" ng-model="TreeIgs">
-                <li ng-repeat="ig in TreeIgs" ui-tree-node ng-init="updatePositions(ig.childSections)">
+           
+                <li ng-repeat="ig in TreeIgs" ui-tree-node >
                     <div ui-tree-handle class="treeRoot">
 
                         <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">{{igdocument.metaData.title}}</span>
@@ -126,6 +127,8 @@
                         </ol>
                         {{updatePositions(section.childSections)}}
                     </script>
+                     {{updatePositions(ig.childSections)}}
+                    
                     <ol  ui-tree-nodes="" ng-model="ig.childSections" data-type="sections" >
                         <li ng-repeat="section in ig.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:5px;"></li>
 
@@ -136,7 +139,8 @@
                            ng-class="{'fa-caret-down': !profilecollapsed, 'fa-caret-right': profilecollapsed}"></i>
          
 
-						<span  data-nodrag ng-click="editProfile();" confirm-click  ng-class="{selected :activeModel ==='Message Infrastructure'}">
+						<span  data-nodrag ng-click="editProfile();"  ng-class="{selected :activeModel ==='Message Infrastructure'}">
+
 						{{ig.childSections.length+1}}.Message Infrastructure</span>
                     </div>
                     <ol ui-tree-nodes="" ng-model="ig.profile.messages.children"
@@ -150,8 +154,9 @@
                                    ng-click="editRoutSection('Conformance Profiles');" confirm-click data-nodrag >
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
-                        <li ng-repeat="msg in ig.profile.messages.children " ui-tree-node
-                            ng-if="!collapsemessage" data-type="message">
+
+                        <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
+                             ng-if="!collapsemessage" data-type="message">
                             <div ui-tree-handle class="messageSubContent"
                                  context-menu="MessagesOption">
                                 <span class="glyphicon glyphicon-move"></span> <span data-nodrag style ="font-weight: normal;"
