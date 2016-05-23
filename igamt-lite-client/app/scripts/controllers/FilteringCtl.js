@@ -36,12 +36,12 @@ angular
             $scope.filterusagetexts = function(){
                 return FilteringSvc.getUsagestexts();
             };
-
-            $rootScope.$on('event:loadFilter', function (event, igdocument) {
-                FilteringSvc.loadMessages(igdocument);
-                FilteringSvc.loadUsages();
-            });
-
+//
+//            $rootScope.$on('event:loadFilter', function (event, igdocument) {
+//                FilteringSvc.loadMessages(igdocument);
+//                FilteringSvc.loadUsages();
+//            });
+//
 //            $rootScope.$on('event:loadMastermap', function (event, igdocument) {
 //              MastermapSvc.parseIg(igdocument);
 //            });

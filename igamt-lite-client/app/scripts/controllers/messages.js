@@ -41,9 +41,10 @@ angular.module('igl')
                 var index = findIndex(message.id);
                 if (index < 0) {
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
-//                    FilteringSvc.addMsgInFilter(message.name, message.id);
+                    FilteringSvc.addMsgInFilter(message.name, message.id);
                 }
-                MastermapSvc.addMessage(message, []);
+//                MastermapSvc.addMessage(message, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+
                 $rootScope.$broadcast('event:SetToC');
                 $rootScope.message = angular.copy(message);
             }, function (error) {
@@ -87,7 +88,7 @@ angular.module('igl')
                 segmentRef.ref.id = segment.id;
                 segmentRef.ref.ext = segment.ext;
                 segmentRef.ref.name = segment.name;
-                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
+//                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
                 if ($scope.messagesParams)
                     $scope.messagesParams.refresh();
             });
