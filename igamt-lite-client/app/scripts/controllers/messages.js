@@ -15,7 +15,8 @@ angular.module('igl')
 
         $scope.reset = function () {
             $scope.editForm.$setPristine();
-            $rootScope.message = angular.copy($rootScope.originalMessage);
+            $scope.editForm.$dirty = false;
+            $rootScope.message = angular.copy($rootScope.messagesMap[$rootScope.message.id]);
             $rootScope.clearChanges();
             if ($scope.messagesParams) {
                 $scope.messagesParams.refresh();
@@ -192,11 +193,11 @@ angular.module('igl')
             }
         };
 
-        $scope.$watch(function(){
-            return $rootScope.message;
-        }, function() {
-            $rootScope.recordChanged();
-        }, true);
+//        $scope.$watch(function(){
+//            return $rootScope.message;
+//        }, function(newValue, oldValue) {
+//            $scope.editForm.$dirty = newValue !=null &&  oldValue != null;
+//        });
 
     });
 
@@ -204,6 +205,17 @@ angular.module('igl')
 angular.module('igl')
     .controller('MessageRowCtrl', function ($scope, $filter) {
         $scope.formName = "form_" + new Date().getTime();
+
+
+//        $scope.init = function(){
+//            $scope.$watch(function(){
+//            return  $scope.formName.$dirty;
+//        }, function(newValue, oldValue) {
+//            $scope.editForm.$dirty = newValue !=null &&  oldValue != null;
+//        });
+//
+//        }
+
     });
 
 

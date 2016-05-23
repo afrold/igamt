@@ -322,16 +322,23 @@ angular.module('igl')
             });
         };
 
-        $scope.cancel = function () {
-            //TODO: remove changes from master ma
-            angular.forEach($rootScope.datatype.components, function (child) {
-                if ($scope.isChildNew(child.status)) {
-                    delete $rootScope.parentsMap[child.id];
-                }
-            });
-            $rootScope.datatype = null;
-            $scope.selectedChildren = [];
-            // revert
+//        $scope.cancel = function () {
+//            //TODO: remove changes from master ma
+//            angular.forEach($rootScope.datatype.components, function (child) {
+//                if ($scope.isChildNew(child.status)) {
+//                    delete $rootScope.parentsMap[child.id];
+//                }
+//            });
+//            $rootScope.datatype = null;
+//            $scope.selectedChildren = [];
+//            // revert
+//        };
+
+
+        $scope.reset = function () {
+            $scope.editForm.$setPristine();
+            $scope.editForm.$dirty = false;
+            $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
         };
 
         var searchById = function (id) {

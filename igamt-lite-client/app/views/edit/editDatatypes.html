@@ -19,23 +19,22 @@
 </div>
 <div ng-show="!loadingSelection">
 <div ng-show="datatype !== null" id="executionPanel">
-<form name="editForm" id="editForm" novalidate class="form-horizontal" confirm-on-leave>
 <div class="row" style="margin-left:0px; margin-right: 20px">
 <div class="page-header" style="margin-bottom: 20px">
     <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
             <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 ng-disabled="editForm.$invalid || editForm.$pristine"
+                 ng-disabled="editForm.$invalid"
                  ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
-                         <button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
-                                 ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                                 ng-disabled="editForm.$pristine"
-                                 ng-click="reset()">
-                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                         </button>
+                         <!--<button title="Reset Changes" type="button" class="btn btn-sm btn-warning"-->
+                                 <!--ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"-->
+                                 <!--ng-disabled="editForm.$pristine"-->
+                                 <!--ng-click="reset()">-->
+                             <!--<span><i class="fa fa-times fa-fw"></i> Reset</span>-->
+                         <!--</button>-->
     </span>
 </div>
 
@@ -59,7 +58,7 @@
         <div class="col-md-10">
             <input type="text"
                    ng-change="recordChanged()"
-                   ng-disabled="viewSettings.tableReadonly || (datatype.scope !== 'USER' && datatype.scope !== 'MASTER')"
+                   ng-disabled="viewSettings.tableReadonly || (datatype.scope !== 'USER' || datatype.scope === 'MASTER')"
                    name="ext" id="ext" class="form-control" ng-model="datatype.ext"
                    required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
@@ -97,7 +96,7 @@
 
         <div class="col-md-10">
             <textarea rows="3" cols="20"
-                      ng-disabled="viewSettings.tableReadonly || (datatype.scope !== 'USER' && datatype.scope !== 'MASTER')"
+                      ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')"
                       ng-change="recordDatatypeChange('datatype','edit',datatype.id,'purposeUse', datatype.purposeUse)"
                       name="purposeUse" id="purposeUse" class="form-control"
                       ng-model="datatype.purposeUse"
@@ -111,7 +110,7 @@
 
         <div class="col-md-10">
             <textarea rows="3" cols="20"
-                      ng-disabled="viewSettings.tableReadonly || (datatype.scope !== 'USER' && datatype.scope !== 'MASTER')"
+                      ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')"
                       ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
                       name="comment" id="comment" class="form-control"
                       ng-model="datatype.comment"
@@ -243,7 +242,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="c in datatype.conformanceStatements | orderBy:'constraintTarget'"
-                        ">
+                        >
                         <td class="col-md-1">
                             {{c.constraintId}}
                         </td>
@@ -324,7 +323,6 @@
 </tab>
 </tabset>
 </div>
-</form>
 </div>
 </div>
 </div>

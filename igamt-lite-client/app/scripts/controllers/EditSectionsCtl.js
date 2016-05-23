@@ -13,10 +13,6 @@ angular.module('igl')
 //	    	};
 //
 
-        $scope.init = function(){
-            $scope.editForm.$setPristine();
-        };
-
         $scope.close = function () {
             $rootScope.section = null;
             $scope.refreshTree();
@@ -61,19 +57,24 @@ angular.module('igl')
 
         $scope.reset = function () {
             $scope.editForm.$setPristine();
+            $scope.editForm.$dirty = false;
             $rootScope.section = angular.copy($rootScope.originalSection);
-            $rootScope.clearChanges();
         };
 
-        $scope.$watch(function(){
-            return $scope.editForm.$pristine;
-        }, function(value) {
-            if(!value){
-                $rootScope.recordChanged();
-            }else{
-                $rootScope.clearChanges();
-            }
-        });
+
+//        $scope.$watch(
+//            function(){
+//              return $scope.editForm.$dirty;
+//            },
+//            function handleFormState( newValue) {
+//                if(newValue){
+//                    $rootScope.recordChanged();
+//                }else{
+//                    $rootScope.clearChanges();
+//                }
+//            }
+//        );
+
 
 
 });

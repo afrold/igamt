@@ -311,18 +311,29 @@ angular.module('igl')
             });
         };
 
-        $scope.cancel = function () {
-            //TODO: remove changes from master ma
-            angular.forEach($rootScope.segment.fields, function (child) {
-                if ($scope.isChildNew(child.status)) {
-                    delete $rootScope.parentsMap[child.id];
-                }
-            });
-            $rootScope.segment = null;
-            $scope.selectedChildren = [];
+//        $scope.cancel = function () {
+//            //TODO: remove changes from master ma
+//            angular.forEach($rootScope.segment.fields, function (child) {
+//                if ($scope.isChildNew(child.status)) {
+//                    delete $rootScope.parentsMap[child.id];
+//                }
+//            });
+//            $rootScope.segment = null;
+//            $scope.selectedChildren = [];
+//            $rootScope.clearChanges();
+//            // revert
+//        };
+
+        $scope.reset = function () {
+            $scope.editForm.$setPristine();
+            $scope.editForm.$dirty = false;
+            $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
             $rootScope.clearChanges();
-            // revert
+            if ($scope.segmentsParams) {
+                $scope.segmentsParams.refresh();
+            }
         };
+
 
         var searchById = function (id) {
             var children = $rootScope.igdocument.profile.segmentLibrary.children;
@@ -375,12 +386,6 @@ angular.module('igl')
             });
 
         };
-
-        $scope.$watch(function(){
-            return $rootScope.segment;
-        }, function() {
-            $rootScope.recordChanged();
-        }, true);
 
     });
 

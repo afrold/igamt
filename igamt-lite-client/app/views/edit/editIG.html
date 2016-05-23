@@ -131,10 +131,12 @@
     <div ng-class="{'col-md-9': !hideToc, 'col-md-11 col-98-5-percent':hideToc}">
         <div class="panel panel-primary">
             <div class="panel-heading">Edit Area</div>
-            <div class="panel-body" style="padding-bottom:100px">
+            <div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init">
+                <form name="editForm" id="editForm" class="form-horizontal" novalidate confirm-on-leave unsaved-warning-form>
                 <div id="edit" ng-show="subview !== undefined" style="width:100%">
                     <ng-include src="subview"></ng-include>
                 </div>
+                </form>
             </div>
         </div>
     </div>

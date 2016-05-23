@@ -18,7 +18,8 @@ angular.module('igl')
         };
         
         $scope.reset = function () {
-        	$scope.editForm.$setPristine();
+            $scope.editForm.$setPristine();
+            $scope.editForm.$dirty = false;
             $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
             $rootScope.clearChanges();
             if ($scope.datatypesParams) {
