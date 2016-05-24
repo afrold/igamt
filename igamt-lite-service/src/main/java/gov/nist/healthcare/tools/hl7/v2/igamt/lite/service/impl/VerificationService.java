@@ -604,7 +604,7 @@ public class VerificationService {
 //		}
 //
 //		String result = this.validateChangeLength(currentMinLength, currentMaxLength);
-		return null; //åthis.generateOneJsonResult(id, type, eltName, eltValue, result);
+		return null; //this.generateOneJsonResult(id, type, eltName, eltValue, result);
 	}
 
 
