@@ -53,27 +53,33 @@
 						st-safe-src="datatypeLibsStruct"
 						class="table table-bordered table-fix-header">
 						<thead>
-							<tr class="tbl-header">
-								<th st-ratio="2" style="text-align: center;">#</th>
-								<th st-ratio="10" st-sort="datatypeLibsDisplay(dtLib)"
+						
+						<tr>
+                        <th st-ratio="100">
+                            <input st-search placeholder="Search" class="input-sm form-control" type="search"/>
+                        </th>
+                    </tr>
+							<tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
+								<th st-ratio="2" style="text-align: right;">#</th>
+								<th st-ratio="8" st-sort="datatypeLibsDisplay(dtLib)"
 									st-sort-default="true">Name</th>
-								<th st-ratio="30">Extension</th>
-								<th st-ratio="30">Date</th>
+								<th st-ratio="20">Extension</th>
+								<th st-ratio="20">Date</th>
 								<th st-ratio="10">Scope</th>
 								<th st-ratio="10">HL7 Version</th>
-								<th st-ratio="38">Actions</th>
+								<th st-ratio="30">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr ng-class="{'new' : dtLib.new}"
 								ng-repeat="dtLib in datatypeLibsDisplay">
 								<td st-ratio="2" style="text-align: right;">{{$index + 1}}</td>
-								<td st-ratio="10">{{dtLib.metaData.name}}</td>
-								<td st-ratio="10">{{dtLib.metaData.ext}}</td>
-								<td st-ratio="30">{{dtLib.metaData.date}}
+								<td st-ratio="8">{{dtLib.metaData.name}}</td>
+								<td st-ratio="20">{{dtLib.metaData.ext}}</td>
+								<td st-ratio="20">{{dtLib.metaData.date}}
 								<td st-ratio="10">{{dtLib.scope}}</td>
 								<td st-ratio="10">{{dtLib.metaData.hl7Version}}</td>
-								<td st-ratio="38">
+								<td st-ratio="30">
 									<button title="Edit" type="button"
 										class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib)">
 										<span><i class="fa fa-pencil fa-fw"></i> Edit</span>
@@ -159,7 +165,9 @@
 </accordion>
 </div>
 
+
 <script type="text/ng-template" id="LibraryMetaData.html">
+
 <div class="container>
 <div class="row">
 <div class="col-sm-4 pull-right" style="margin-right:20px">

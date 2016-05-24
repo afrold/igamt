@@ -202,7 +202,7 @@
                                   ng-click="editRoutSection('Segments and field descriptions')">
 								{{ig.childSections.length+1}}.2.Segments and field descriptions</span>
                         </div>
-                        <li ng-repeat="segment in segments  | orderBy :'label' "
+                        <li ng-repeat="segment in segments  | orderBy :'label'" 
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
                                  confirm-click
