@@ -10,36 +10,22 @@
     }
 </script>
 <script type="text/ng-template" id="EditSections.html">
-    <div ng-controller="SectionsListCtrl" ng-init="init()" class="container">
-        <div ng-show="loadingSelection"
-        style="text-align: center;">
-        <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
-        </div>
-        <div ng-show="!loadingSelection">
-        <form name="editForm" id="editForm" class="form-horizontal" novalidate confirm-on-leave>
-            <div class="row" style="margin-left:0px; margin-right: 20px">
+    <div ng-controller="SectionsListCtrl" ng-init="init()">
+             <div class="row" style="margin-left:0px; margin-right: 20px">
                 <div class="col-md-12 igl-page-header">
-                    <!--<span style="text-align:center">-->
-                    <!--<span ng-show="saving" style="text-align: center;">-->
-                    <!--<i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>-->
-                    <!--</span>-->
-                    <!--<span style="font-size:20px;font-weight: normal" ng-show="saved && !saving">-->
-                    <!--<i-->
-                    <!--class="fa fa-check fa-fw green"></i> Saved-->
-                    <!--</span>-->
-                    <!--</span>-->
 
                         <span class="pull-right">
-         <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+         <button title="Save Changes" type="submit" class="btn btn-sm btn-primary"
+                 ng-disabled="editForm.$invalid || editForm.$pristine"
+                 ng-click="save()"
                  ng-hide="viewSettings.tableReadonly"
-                 ng-click="save()">
+                >
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
-                         <button title="Cancel Changes" type="button" class="btn btn-sm btn-default"
+                         <button title="Cancel Changes" type="button" class="btn btn-sm btn-warning"
                                  ng-hide="viewSettings.tableReadonly"
-                                 ng-disabled="!editForm.$dirty"
-                                 ng-click="reset()">
+                                 ng-disabled="editForm.$pristine"
+                                  ng-click="reset()">
                              <span><i class="fa fa-times fa-fw"></i> Reset</span>
                          </button>
     </span>
@@ -79,8 +65,6 @@
                     </div>
                 </div>
             </div>
-
-        </form>
-        </div>
+        <!--</div>-->
     </div>
 </script>

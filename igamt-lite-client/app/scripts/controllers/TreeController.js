@@ -18,6 +18,7 @@ angular
             $scope.collapsevalueSet=false;
             $scope.profilecollapsed = false;
             $scope.openMetadata=false;
+            $scope.ordredMessages=[];
             $scope.dataTypeLibraryCollapsed=false;
             $scope.activeModel = "";
             $scope.Activate = function (param) {
@@ -67,8 +68,7 @@ angular
                 $scope.collapsedata = !$scope.collapsedata;
 
             };
-            
-            
+
             $scope.treeOptions = {
 
                 accept: function (sourceNodeScope, destNodesScope, destIndex) {
@@ -101,21 +101,25 @@ angular
 
                     var dataType = destNodes.$element.attr('data-type');
                     event.source.nodeScope.$modelValue.sectionPosition = sortAfter + 1;
-                    $scope.updatePositions(event.dest.nodesScope.$modelValue);
-                    $scope.updatePositions(event.source.nodesScope.$modelValue);
+    
                     console.log(sourceNode);
                     if(source.type="message"){
+
+                    	$scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
+
                     	$scope.reOrderMessages();
                     	
                     }else{
-                    $scope.updateChildeSections($rootScope.igdocument.childSections);
+                      $scope.updatePositions(event.dest.nodesScope.$modelValue);
+                      $scope.updatePositions(event.source.nodesScope.$modelValue);
+                      $scope.updateChildeSections($rootScope.igdocument.childSections);
 
                     }
 
 
                 }
             };
-
+            
 
             $scope.updatePositions = function (arr) {
                 if (arr !== undefined) {
@@ -126,15 +130,18 @@ angular
                 return "";
             };
             
-
+            
             $scope.updateMessagePositions = function (arr) {
-                if (arr !== undefined) {
-                    for (var i = arr.length - 1; i >= 0; i--) {
-                        arr[i].position = i + 1;
-                    }
+            	
+
+            	if (arr !== undefined){
+                for (var i = 0; i<=arr.length - 1; i++) {
+                    arr[i].position = i + 1;
                 }
+            	   }
                 return "";
             };
+
 
             $scope.getLastPosition = function (arr) {
                 var position = arr.length;
@@ -267,7 +274,18 @@ angular
                 [
                     'delete',
                     function ($itemScope) {
+
+                    	var section=$itemScope.section;
+                        var index = $itemScope.$nodeScope.$parentNodesScope.$modelValue.indexOf($itemScope.$nodeScope.$modelValue);
+                        if (index > -1) {
+                        $itemScope.$nodeScope.$parentNodesScope.$modelValue
+                            .splice(index, 1);
+                    }
+                        $scope.updatePositions($itemScope.$nodeScope.$parentNodesScope.$modelValue);
+                    	
+ 
                        SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id);
+
                     }
                 ]
 
@@ -403,8 +421,7 @@ angular
                                          	 	console.log("create a copy=" + $itemScope);	
                                            	console.log($itemScope.data);
                                            	$scope.copyDatatype($itemScope.data); 
-
-                                                 
+    
                                                } ],
                                            null,
                                            ['delete',
@@ -423,33 +440,23 @@ angular
             ];
             
             $scope.editSeg = function (seg) {
-
-       
-
-                // console.log("EditSeg")
-                preventChangesLost();
-
                 $scope.$emit('event:openSegment', seg);
-
             }
 
             $scope.editIg = function (ig) {
-                preventChangesLost();
-                $rootScope.igdocument = ig;
+                 $rootScope.igdocument = ig;
                 $scope.$emit('event:openDocumentMetadata',
                     $rootScope.igdocument);
             }
 
             $scope.editSection = function (section) {
-                preventChangesLost();
-                $rootScope.section = section;
+                 $rootScope.section = section;
                 $scope.$emit('event:openSection', $rootScope.section);
             }
 
 
             $scope.editRoutSection = function (param) {
-                preventChangesLost();
-                $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
+                 $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
             }
 
 
@@ -487,25 +494,21 @@ angular
                 return section;
             }
             $scope.editDataType = function (data) {
-                preventChangesLost();
-                $rootScope.datatype = data;
+                 $rootScope.datatype = data;
                 $scope.$emit('event:openDatatype', $rootScope.datatype);
             }
 
             $scope.editTable = function (table) {
-                preventChangesLost();
-                $rootScope.table = table;
+                 $rootScope.table = table;
                 $scope.$emit('event:openTable', $rootScope.table);
             }
 
             $scope.editMessage = function (message) {
-                preventChangesLost();
-                $rootScope.message = message;
+                 $rootScope.message = message;
                 $scope.$emit('event:openMessage', message);
             }
             $scope.editProfile = function () {
-                preventChangesLost();
-            	 $scope.Activate("Message Infrastructure");
+             	 $scope.Activate("Message Infrastructure");
                 $scope.$emit('event:openProfileMetadata',
                     $rootScope.igdocument);
             }
@@ -574,6 +577,7 @@ angular
             
             $scope.reOrderMessages = function () {
             	var messagesMap=[];
+            	
             	var messages=$rootScope.igdocument.profile.messages.children;
             	for (var i=0; i<=messages.length-1; i++){
             		var messageMap={};
@@ -615,8 +619,7 @@ angular
 
 
             $scope.showToC = function (leaf) {
-//                return FilteringSvc.showToC(leaf);
-                return true;
+                return FilteringSvc.showToC(leaf);
             };
 
             $scope.getScopeLabel = function (leaf) {
@@ -653,15 +656,6 @@ angular
                 return label; 
             };
 
-
-            var preventChangesLost = function(event){
-
-                if ($rootScope.hasChanges()) {
-                    if(!confirm("You have unsaved changes, Do you want to stay on the page?")) {
-                        event.preventDefault();
-                    }
-                }
-            }
 
         }]);
 

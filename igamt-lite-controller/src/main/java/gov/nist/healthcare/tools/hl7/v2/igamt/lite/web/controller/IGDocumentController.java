@@ -20,7 +20,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguratio
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageConparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageMap;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
@@ -57,12 +59,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCo
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+import net.sf.ehcache.util.SetAsList;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -973,7 +978,6 @@ public class IGDocumentController extends CommonController {
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
 		}
-
 		d.setChildSections(childSections);
 		igDocumentService.save(d);
 
@@ -982,24 +986,35 @@ public class IGDocumentController extends CommonController {
 	
 	@RequestMapping(value = "/{id}/reorderMessages", method = RequestMethod.POST)
 	public String reorderMessages(@PathVariable("id") String id,
-			@RequestBody Set<MessageMap> messagesMap) throws IOException,
+			@RequestBody Set<MessageMap> messages) throws IOException,
 			IGDocumentNotFoundException, IGDocumentException {
-		System.out.println(id);
 
+		System.out.println(id);
+		System.out.println();
 		IGDocument d = igDocumentService.findOne(id);
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
 		}
-		for (Message message: d.getProfile().getMessages().getChildren() ){
-			for(MessageMap map : messagesMap){
-				if(message.getId().equals(map.getId())){
-					message.setPosition(map.getPosition());
+
+		Profile p = d.getProfile();
+		Messages msgs = p.getMessages();
+		for(Message m : msgs.getChildren()){
+			for(MessageMap x : messages){
+				if(m.getId().equals(x.getId())){
+					m.setPosition(x.getPosition());
 				}
 			}
-			
 		}
-		messageService.save(d.getProfile().getMessages().getChildren());
-
+		List<Message> sortedList = new ArrayList<Message>();
+		sortedList.addAll(msgs.getChildren());
+		MessageConparator comparator= new MessageConparator();
+		Collections.sort(sortedList, comparator);
+		Set<Message> sortedSet = new HashSet<Message>();
+		sortedSet.addAll(sortedList);
+		msgs.setChildren(sortedSet);
+		p.setMessages(msgs);
+		d.setProfile(p);
+		igDocumentService.save(d);
 		return null;
 	}
 

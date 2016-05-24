@@ -12,10 +12,9 @@
     }
 </script>
 <script type="text/ng-template" id="EditDocumentMetadata.html">
-    <form name="editForm" class="form-horizontal" novalidate confirm-on-leave>
+    <div ng-controller="DocumentMetaDataCtrl" ng-init="init()">
         <div class="row" style="margin-left:0px; margin-right: 20px">
             <div ng-show="metaData !== null">
-                <div ng-controller="DocumentMetaDataCtrl">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Document Metadata</span>
             <span class="pull-right">
@@ -155,25 +154,23 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+     </div>
 </script>
 
 <script type="text/ng-template" id="EditProfileMetadata.html">
-    <form name="editForm" id="editForm" class="form-horizontal" novalidate confirm-on-leave>
-        <div class="row" style="margin-left:0px; margin-right: 20px"  ng-show="metaData !== null">
+         <div class="row" style="margin-left:0px; margin-right: 20px"  ng-show="metaData !== null">
             <div class="page-header" style="margin-bottom: 20px">
                 <span class="header4">Message Infrastructure</span>
             <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-md btn-primary"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                 ng-disabled="editForm.$invalid || editForm.$pristine"
                  ng-hide="viewSettings.tableReadonly"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
                          <button title="Cancel Changes" type="button" class="btn btn-md btn-warning"
                                  ng-hide="viewSettings.tableReadonly"
-                                 ng-disabled="!editForm.$dirty"
+                                 ng-disabled="editForm.$pristine"
                                  ng-click="reset()">
                              <span><i class="fa fa-times fa-fw"></i> Reset</span>
                          </button>
@@ -231,5 +228,5 @@
                            class="form-control" ng-model="metaData.schemaVersion" required>
                 </div>
             </div>
-    </form>
-</script>
+             </div>
+ </script>

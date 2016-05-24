@@ -73,7 +73,7 @@ public class IGDocumentConverterFromOldToNew{
 
 		MongoOperations mongoOps;
 		try {
-			mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igl"));
+			mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igamt"));
 			mongoOps.dropCollection(Table.class);
 			mongoOps.dropCollection(TableLibrary.class);
 			mongoOps.dropCollection(Datatype.class);
@@ -117,6 +117,7 @@ public class IGDocumentConverterFromOldToNew{
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
 			e.printStackTrace();
 		}
 		

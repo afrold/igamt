@@ -10,6 +10,17 @@ $icon-font-path: "../fonts/";
   color: #000;
   padding: 0.2em 0;
 }
+
+    .label-USE{
+    background-color: green;}
+    
+       .label-HL7{
+    background-color: red;}
+    
+    .label-MASTER{
+    background-color: yellow;
+    }
+
     .selected {
 
         color: white;
@@ -2071,6 +2082,13 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 li.nav-header.active {
   background-color: #ffcc00;
 }
+
+
+.nav-tabs > li.active > a {
+  background-color: #1b51ca;
+  color: white;
+}
+
 
 
 tr.current {

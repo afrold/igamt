@@ -7,18 +7,19 @@ angular.module('igl').directive('confirmOnLeave', function ($rootScope) {
         link: function ($scope, elem, attrs) {
             window.onbeforeunload = function () {
                 if ($rootScope.hasChanges()) {
-                    return "You have unsaved changes, Do you want to stay on the page?";
+                    return "You have unsaved data on this page. If you leave this page your data will be lost.\n\n Are you sure you want to leave this page?";
                 }
             };
-            $scope.$on('$locationChangeStart', function (event, next, current) {
-                if ($rootScope.hasChanges()) {
-                    if (!confirm("You have unsaved changes, Do you want to stay on the page?")) {
-                        event.preventDefault();
-                    }else{
-                        $rootScope.clearChanges();
-                    }
-                }
-            });
+//            $scope.$on('$locationChangeStart', function (event, next, current) {
+//                if ($rootScope.hasChanges()) {
+//                    if (!confirm("You have unsaved data. If you leave this section your data will be lost.\n\n Are you sure you want to leave this page?")) {
+//                        event.stopImmediatePropagation();
+//                        event.preventDefault();
+//                    }else{
+//                        $rootScope.clearChanges();
+//                    }
+//                }
+//            });
         }
     };
 });
@@ -26,40 +27,21 @@ angular.module('igl').directive('confirmOnLeave', function ($rootScope) {
 angular.module('igl').directive("confirmClick",
     function ($rootScope) {
         return {
-            priority: 1,
-            link: function (scope, element, attr) {
-                var clickAction = attr.ngClick;
-                attr.ngClick = "";
-                element.bind('click', function (event) {
-                    var message = "You have unsaved changes, Do you want to stay on the page?";
-                    if (confirm(message)) {
-                        scope.$eval(clickAction);
-                    }else{
-                        $rootScope.clearChanges();
-                    }
-//                    if ($rootScope.hasChanges()) {
-//                        var message = "You have unsaved changes, Do you want to stay on the page?";
-//                        if (confirm(message)) {
-//                            scope.$eval(clickAction);
-//                        }else{
-//                            $rootScope.clearChanges();
-//                        }
-//                    } else {
-//                        scope.$eval(clickAction);
-//                    }
-                });
-
-//                element.bind('click', function (e) {
-//                    if ($rootScope.hasChanges()) {
-//                        // message defaults to "Are you sure?"
-//                        var message = "You have unsaved changes, Do you want to stay on the page?";
-//                        if (confirm(message)) {
-//                            scope.confirmFunction();
-//                        }
-//                    } else {
-//                        scope.confirmFunction();
-//                    }
-//                });
+            priority: 100,
+            link: {
+                pre: function (scope, element, attr) {
+                    element.bind('click', function (event) {
+                        if ($rootScope.hasChanges()) {
+                            var message = "You have unsaved data. If you leave this section your data will be lost.\n\n Are you sure you want to leave this page?";
+                            if (!confirm(message)) {
+                                event.stopImmediatePropagation();
+                                event.preventDefault();
+                            }else{
+                                $rootScope.clearChanges();
+                            }
+                        }
+                    });
+                }
             }
         }
     });

@@ -74,7 +74,7 @@
         margin-left:45px;
     }
     .uitree{
- margin-left:8px;
+ 	margin-left:8px;
     }
     .label-USE{
     background-color: green;}
@@ -91,6 +91,23 @@
     font-weight: normal;
  
     }
+    
+    
+    .angular-ui-tree-handle {
+    margin-left:0px;
+    cursor: move;
+    text-decoration: none;
+        text-decoration-color: -moz-use-text-color;
+        text-decoration-line: none;
+        text-decoration-style: solid;
+    font-weight: 700;
+  
+
+}
+.angular-ui-tree-nodes .angular-ui-tree-nodes {
+    padding-left: 0px;
+}
+
 
 </style>
 <div ng-controller="IGDocumentListCtrl" class="uitree">
@@ -98,17 +115,18 @@
     <div ng-controller="TreeCtrl">
         <div ui-tree="treeOptions">
             <ol ui-tree-nodes="" ng-model="TreeIgs">
-                <li ng-repeat="ig in TreeIgs" ui-tree-node ng-init="updatePositions(ig.childSections)">
+           
+                <li ng-repeat="ig in TreeIgs" ui-tree-node >
                     <div ui-tree-handle class="treeRoot">
 
-                        <span data-nodrag ng-click="editIg(ig)" context-menu="igOptions">{{igdocument.metaData.title}}</span>
+                        <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">{{igdocument.metaData.title}}</span>
 
                     </div>
 
 
                     <script type="text/ng-template" id="nodes_renderer.html">
 
-                        <div ui-tree-handle context-menu="sectionOption" style="font-size:{{18-1*this.depth()}}px;">
+                        <div ui-tree-handle context-menu="sectionOption" style="font-size:{{18-1*this.depth()}}px;margin-left:{{(this.depth()-2)*30}}px;">
                             <span class="glyphicon glyphicon-move cursorMove" ></span> <i
                                 ng-show="section.childSections.length>0" data-nodrag
                                 ng-click="toggle(this);" class="fa fa-caret-down"
@@ -126,40 +144,46 @@
                         </ol>
                         {{updatePositions(section.childSections)}}
                     </script>
-                    <ol  ui-tree-nodes="" ng-model="ig.childSections" data-type="sections" >
-                        <li ng-repeat="section in ig.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:5px;"></li>
+                     {{updatePositions(ig.childSections)}}
+                    
+                    <ol  ui-tree-nodes="" ng-model="ig.childSections" data-type="sections"  style="margin-left:0px;">
+                        <li ng-repeat="section in ig.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:0px;"></li>
 
                     </ol>
                     
-                    <div  class="message" style="margin-left:45px;">
+                    <div  class="message">
                         <i data-nodrag ng-click="switcherprofile()" class="fa fa-caret-down"
                            ng-class="{'fa-caret-down': !profilecollapsed, 'fa-caret-right': profilecollapsed}"></i>
          
 
 						<span  data-nodrag ng-click="editProfile();"  ng-class="{selected :activeModel ==='Message Infrastructure'}">
+
 						{{ig.childSections.length+1}}.Message Infrastructure</span>
                     </div>
                     <ol ui-tree-nodes="" ng-model="ig.profile.messages.children"
                         ng-show="!profilecollapsed" data-type="messages">
-                        <div  ui-tree-handle class="messageContent" style="margin-left:45px;">
+                        <div  ui-tree-handle class="messageContent" style= "margin-left:15px;">
 
                             <i data-nodrag ng-click="switchermsg()" class="fa fa-caret-down"
                                ng-class="{'fa-caret-down': !collapsemessage, 'fa-caret-right': collapsemessage}"></i>
 
-							 <span context-menu="MessagesRootOption" ng-class="{selected :activeModel ==='Conformance Profiles'}"
-                                   ng-click="editRoutSection('Conformance Profiles');" data-nodrag >
+							 <span  style= "font-size:14px;"context-menu="MessagesRootOption" ng-class="{selected :activeModel ==='Conformance Profiles'}"
+                                   ng-click="editRoutSection('Conformance Profiles');" confirm-click data-nodrag >
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
-                        <li ng-repeat="msg in ig.profile.messages.children | filter:showToC" ui-tree-node
-                            ng-if="!collapsemessage" data-type="message">
-                            <div ui-tree-handle class="messageSubContent"
-                                 context-menu="MessagesOption">
-                                <span class="glyphicon glyphicon-move"></span> <span data-nodrag style ="font-weight: normal;"
 
+                        <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
+
+                            ng-if="!collapsemessage" data-type="message">
+                            <div ui-tree-handle 
+                                 context-menu="MessagesOption" style ="margin-left:30px;">
+
+                                <span class="glyphicon glyphicon-move"></span> <span data-nodrag style ="font-weight: normal;"
+                                                                                     confirm-click
                                                                                      ng-class="{selected : msg.id===activeModel}"
                                                                                      ng-click="editMessage(msg);Activate(msg.id)">
 									{{updateMessagePositions(ig.profile.messages.children)}}
-									[{{msg.position}}]	{{msg.name}}-{{msg.description}}	
+									[{{msg.position}}]	{{msg.name}}-{{msg.description}}
 									</span>
 
                             </div>
@@ -169,21 +193,23 @@
 
                     <ol ui-tree-nodes="" ng-model="segments"
                         ng-show="!profilecollapsed" data-type="segments">
-                        <div ui-tree-handle class="messageContent" style="margin-left:45px;">
+                        <div ui-tree-handle class="messageContent" style="margin-left:15px;">
                             <i data-nodrag ng-click="switcherseg()" class="fa fa-caret-down"
                                ng-class="{'fa-caret-down': !collapsesegment, 'fa-caret-right': collapsesegment}"></i>
 
 							<span data-nodrag  ng-class="{selected :activeModel ==='Segments and field descriptions'}"
+                                  confirm-click
                                   ng-click="editRoutSection('Segments and field descriptions')">
 								{{ig.childSections.length+1}}.2.Segments and field descriptions</span>
                         </div>
-                        <li ng-repeat="segment in segments  | orderBy :'label' | filter:showToC"
+                        <li ng-repeat="segment in segments  | orderBy :'label' "
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
                                  confirm-click
-                                 ng-click="editSeg(segment)" context-menu="SegmentOptions">
+                                 ng-click="editSeg(segment)" context-menu="SegmentOptions" style ="margin-left:30px;">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : segment.id===activeModel}"
+                                      confirm-click
                                       ng-click=" editSeg(segment);Activate(segment.id)">
                                       
                                        <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
@@ -194,22 +220,23 @@
                     </ol>
 
                     <ol ui-tree-nodes="" ng-model="datatypes" ng-show="!profilecollapsed" data-type="datatypes" >
-                        <div ui-tree-handle class="messageContent" style="margin-left:45px;">
+                        <div ui-tree-handle class="messageContent" style="margin-left:15px;">
                             <i data-nodrag ng-click="switcherdata()"
                                class="fa fa-caret-down" 
                                ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i>
 
 							<span ng-class="{selected :activeModel ==='Datatypes'}"
-                                    data-nodrag ng-click="editRoutSection('Datatypes')">{{ig.childSections.length+1}}.3.Datatypes</span>
+                                    data-nodrag ng-click="editRoutSection('Datatypes')" confirm-click>{{ig.childSections.length+1}}.3.Datatypes</span>
                         </div>
 
-                        <li ng-repeat="data in datatypes  | orderBy :'label' | filter:showToC" ui-tree-node
+                        <li ng-repeat="data in datatypes  | orderBy :'label' " ui-tree-node
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
                                  confirm-click
-                                 ng-click="editDataType(data);debug(data)" context-menu="DataTypeOptions">
+                                 ng-click="editDataType(data);debug(data)" context-menu="DataTypeOptions" style ="margin-left:30px;">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : data.id===activeModel}"
+                                      confirm-click
                                       ng-click="editDataType(data); Activate(data.id)">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                    'label-USE':  getScopeLabel(data)==='USE','label-MASTER':getScopeLabel(data)==='MAS'}" >  {{getScopeLabel(data)}}</span> 
@@ -221,23 +248,24 @@
                     </ol>
 
                     <ol ui-tree-nodes="" ng-model="tables" ng-show="!profilecollapsed" data-type="tables">
-                        <div ui-tree-handle class="messageContent" style="margin-left:45px;">
+                        <div ui-tree-handle class="messageContent" style="margin-left:15px;">
                             <i data-nodrag ng-click="switchervalueSet()"
                                class="fa fa-caret-down" 
                                ng-class="{'fa-caret-down': !collapsevalueSet, 'fa-caret-right': collapsevalueSet}"></i>
 
-							<span ng-class="{selected :activeModel ==='Value Sets'}"
+							<span ng-class="{selected :activeModel ==='Value Sets'}" confirm-click
                                     data-nodrag ng-click="editRoutSection('Value Sets')">{{ig.childSections.length+1}}.4.Value Sets</span>
                         </div>
 
-                        <li ng-repeat="table in tables |  orderBy :'name' | filter:showToC" ui-tree-node
+                        <li ng-repeat="table in tables |  orderBy :'name' " ui-tree-node
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
-
-                                 ng-click="editTable(table);" context-menu="ValueSetOptions">
+                                 confirm-click
+                                 ng-click="editTable(table);" context-menu="ValueSetOptions" style ="margin-left:30px;">
 
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : table.id===activeModel}"
+                                      confirm-click
                                       ng-click="editTable(table); Activate(table.id)">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE':  getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> 

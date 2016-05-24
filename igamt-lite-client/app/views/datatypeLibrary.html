@@ -120,7 +120,6 @@
 					<!-- Default panel contents -->
 					<div class="panel-heading panel-heading-collapsable">
 						<i class="glyphicon glyphicon-list"></i> Table of Contents
-
 						<button title="Hide  Table of Contents"
 							class="btn btn-xs btn-default pull-right" style="margin: 0px"
 							ng-click="hideToc = !hideToc">
@@ -231,7 +230,7 @@
       <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="DataTypeLibraryOptions">
     <i data-nodrag ng-click="toggle(this)"
                             class="fa fa-caret-down"
-                            ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !collapsed}"></i>
+                            ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i>
      {{dataLibrary.metaData.name}}
       </div>
       <ol ui-tree-nodes="" ng-model="dataLibrary.children">

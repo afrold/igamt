@@ -31,7 +31,7 @@ var app = angular
         'ngDragDrop',
         'ui.tree',
         'blockUI'
-    ]);
+     ]);
 
 var
 //the HTTP headers to be used by all requests

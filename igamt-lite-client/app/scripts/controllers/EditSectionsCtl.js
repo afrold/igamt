@@ -6,12 +6,13 @@ angular.module('igl')
         $scope.fixedSectionTitles = [
             'Message Infrastructure','Metadata','Introduction','Conformance Profiles','Segments and Field Descriptions','Datatypes','Value Sets'
         ];
+//
+//	    	$scope.copy = function(section) {
+//	    		var tocSection = ToCSvc.findEntryFromRefId(section.id, $rootScope.tocData);
+//        		CloneDeleteSvc.copySection(tocSection);
+//	    	};
+//
 
-	    	$scope.copy = function(section) {
-	    		var tocSection = ToCSvc.findEntryFromRefId(section.id, $rootScope.tocData);
-        		CloneDeleteSvc.copySection(tocSection);
-	    	};
-	    	
         $scope.close = function () {
             $rootScope.section = null;
             $scope.refreshTree();
@@ -55,9 +56,25 @@ angular.module('igl')
         };
 
         $scope.reset = function () {
+            $scope.editForm.$setPristine();
             $scope.editForm.$dirty = false;
             $rootScope.section = angular.copy($rootScope.originalSection);
-            $rootScope.clearChanges();
         };
+
+
+//        $scope.$watch(
+//            function(){
+//              return $scope.editForm.$dirty;
+//            },
+//            function handleFormState( newValue) {
+//                if(newValue){
+//                    $rootScope.recordChanged();
+//                }else{
+//                    $rootScope.clearChanges();
+//                }
+//            }
+//        );
+
+
 
 });
