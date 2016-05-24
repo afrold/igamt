@@ -1,12 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
@@ -16,7 +9,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+
 
 @Document(collection = "igdocument")
 public class IGDocumentPreLib extends DataModel implements java.io.Serializable,

@@ -81,6 +81,7 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		igd.setChildSections(sections((DBObject) source.get("childSections")));
 		igd.setComment(readString(source, "comment"));
 		igd.setId(readMongoId(source));
+		System.out.println(igd.getId());
 		igd.setMetaData(documentMetaData((DBObject) source.get("metaData")));
 		igd.setProfile(profile((DBObject) source.get("profile")));
 		igd.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
@@ -503,10 +504,12 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 
 	private TableLink tableLink(String id, Tables tables){
 		if(id == null || id.isEmpty()) return null;
-		
 		TableLink tl = new TableLink();
 		tl.setId(id);
 		Table t = tables.findOneTableById(id);
+		
+		
+		if(t == null) return null;
 		tl.setBindingIdentifier(t.getBindingIdentifier());
 		return tl;
 	}
@@ -679,10 +682,14 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 	
 	private SegmentLink segmentLink(String id, Segments segments){
 		if(id == null || id.isEmpty()) return null;
-		
 		SegmentLink sl = new SegmentLink();
 		sl.setId(id);
 		Segment s = segments.findOneSegmentById(id);
+		if(s == null){
+			System.out.println("NULL Segment: "+ id);
+		}
+		
+		
 		sl.setName(s.getName());
 		if(s.getName().equals(s.getLabel())){
 			sl.setExt(null);

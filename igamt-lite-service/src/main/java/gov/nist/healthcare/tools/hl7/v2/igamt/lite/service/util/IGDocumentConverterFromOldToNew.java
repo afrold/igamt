@@ -61,6 +61,7 @@ import org.springframework.data.mongodb.core.query.Update;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -87,31 +88,40 @@ public class IGDocumentConverterFromOldToNew{
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			IGDocumentReadConverterPreLib conv = new IGDocumentReadConverterPreLib();
 			DBCollection coll1 = mongoOps.getCollection("igdocumentPreLib");
-			DBCursor cur1 = coll1.find();
+			BasicDBObject query1 = new BasicDBObject("scope", "HL7STANDARD");
+			DBCursor cur1 = coll1.find(query1);
 			while (cur1.hasNext()) {
 				DBObject source = cur1.next();
 				IGDocumentPreLib appPreLib = conv.convert(source);
 				if(appPreLib.getScope().equals(IGDocumentScope.HL7STANDARD)){
+					System.out.println("HL7 IGDOC Converting started!");
+					System.out.println(appPreLib.getId());
 					HL7STANDARD(appPreLib, mongoOps);
 				}
 			}
 			
 			DBCollection coll2 = mongoOps.getCollection("igdocumentPreLib");
-			DBCursor cur2 = coll2.find();
+			BasicDBObject query2 = new BasicDBObject("scope", "PRELOADED");
+			DBCursor cur2 = coll2.find(query2);
 			while (cur2.hasNext()) {
 				DBObject source = cur2.next();
 				IGDocumentPreLib appPreLib = conv.convert(source);
 				if (appPreLib.getScope().equals(IGDocumentScope.PRELOADED)){
+					System.out.println("PRELOADED IGDOC Converting started!");
+					System.out.println(appPreLib.getId());
 					USER(appPreLib, mongoOps);
 				}
 			}
 			
 			DBCollection coll3 = mongoOps.getCollection("igdocumentPreLib");
-			DBCursor cur3 = coll3.find();
+			BasicDBObject query3 = new BasicDBObject("scope", "USER");
+			DBCursor cur3 = coll3.find(query3);
 			while (cur3.hasNext()) {
 				DBObject source = cur3.next();
 				IGDocumentPreLib appPreLib = conv.convert(source);
 				if (appPreLib.getScope().equals(IGDocumentScope.USER)){
+					System.out.println("USER IGDOC Converting started!");
+					System.out.println(appPreLib.getId());
 					USER(appPreLib, mongoOps);
 				}
 			}
