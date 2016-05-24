@@ -7,18 +7,19 @@ angular.module('igl').directive('confirmOnLeave', function ($rootScope) {
         link: function ($scope, elem, attrs) {
             window.onbeforeunload = function () {
                 if ($rootScope.hasChanges()) {
-                    return "You'll lose your changes if you leave. Are you sure you want to leave this page?";
+                    return "You have unsaved data on this page. If you leave this page your data will be lost.\n\n Are you sure you want to leave this page?";
                 }
             };
-            $scope.$on('$locationChangeStart', function (event, next, current) {
-                if ($rootScope.hasChanges()) {
-                    if (!confirm("You'll lose your changes if you leave. Are you sure you want to leave this page?")) {
-                        event.preventDefault();
-                    }else{
-                        $rootScope.clearChanges();
-                    }
-                }
-            });
+//            $scope.$on('$locationChangeStart', function (event, next, current) {
+//                if ($rootScope.hasChanges()) {
+//                    if (!confirm("You have unsaved data. If you leave this section your data will be lost.\n\n Are you sure you want to leave this page?")) {
+//                        event.stopImmediatePropagation();
+//                        event.preventDefault();
+//                    }else{
+//                        $rootScope.clearChanges();
+//                    }
+//                }
+//            });
         }
     };
 });
@@ -31,10 +32,12 @@ angular.module('igl').directive("confirmClick",
                 pre: function (scope, element, attr) {
                     element.bind('click', function (event) {
                         if ($rootScope.hasChanges()) {
-                            var message = "This section contains unsaved data. \n\n Are you sure you want to leave this page? Data you have entered will not be saved";
+                            var message = "You have unsaved data. If you leave this section your data will be lost.\n\n Are you sure you want to leave this page?";
                             if (!confirm(message)) {
                                 event.stopImmediatePropagation();
                                 event.preventDefault();
+                            }else{
+                                $rootScope.clearChanges();
                             }
                         }
                     });
