@@ -327,8 +327,8 @@ angular.module('igl')
                             $scope.loadTables().then(function () {
                                 $scope.collectMessages();
                                 $scope.sortByLabels();
-//                                $scope.loadMastermap();
-//                                $scope.loadFilter();
+                                $scope.loadMastermap();
+                                $scope.loadFilter();
                                 $scope.loadToc();
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();
@@ -438,7 +438,7 @@ angular.module('igl')
 
         $scope.loadMastermap = function () {
 //            $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
-//            MastermapSvc.parseIg($rootScope.igdocument);
+            MastermapSvc.parseIg($rootScope.igdocument);
         };
 
 

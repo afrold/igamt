@@ -168,12 +168,11 @@ angular
      };
 
     svc.showToC = function(node){
-        return true;
-//        var rst1 = false;
-//        _.each(svc.getMsgmodel(), function(filterElt){
-//            rst1 = rst1 || svc.filterByMsg(node, filterElt);
-//        });
-//        return rst1;
+        var rst1 = false;
+        _.each(svc.getMsgmodel(), function(filterElt){
+            rst1 = rst1 || svc.filterByMsg(node, filterElt);
+        });
+        return rst1;
     };
 
     svc.show = function(leaf){

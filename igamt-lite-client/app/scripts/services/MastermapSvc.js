@@ -52,18 +52,18 @@ angular
 
     svc.addComponent = function(c, parent){
         if (c !== undefined && c !==  null) {
-              svc.createMMElement(c.id, "component");
-              svc.addParentsId(c.id, "component", parent);
-              if (svc.getElementByKey(c.id, "component", "usage") !== undefined){
+            svc.createMMElement(c.id, "component");
+            svc.addParentsId(c.id, "component", parent);
+            if (svc.getElementByKey(c.id, "component", "usage") !== undefined){
                 svc.setElement(c.id, "component", "usage", [c["usage"]]);
-              }
-              if (c.datatype !== undefined){
-                svc.addDatatypeId(c.datatype, parent.concat([[c.id, "component"]]));
-              }
-              if (c.table !== undefined){
-                svc.addValueSetId(c.table, parent.concat([[c.id, "component"]]));
-              }
-         }
+            }
+            if (c.datatype !== undefined && svc.getDatatypeLibrary()[c.datatype] !== null){
+                svc.addDatatypeObject(svc.getDatatypeLibrary()[c.datatype], parent.concat([[c.id, "component"]]));
+            }
+            if (c.table !== undefined && svc.getTableLibrary()[c.table] !== null){
+                svc.addValueSetObject(svc.getTableLibrary()[c.table], parent.concat([[c.id, "component"]]));
+            }
+        }
     };
 
 
@@ -257,6 +257,7 @@ angular
         svc.createTableLibrary($rootScope.tablesMap);
 
         svc.createMMElement(igdocument.id, "ig");
+        svc.addParentsId(igdocument.id, "ig", [[igdocument.id, "ig"]]);
 
         var parents = [[igdocument.id, "ig"]];
         svc.createMMElement(profile.id, "profile");
@@ -289,12 +290,12 @@ angular
         _.each(profile.messages.children, function(msg) {
             svc.addMessageObject(msg, parents);
         });
-        try {
-            console.log("mm");
-            console.log(svc.getMastermap());
-        } catch (err) {
-                console.log(err);
-        }
+//        try {
+//            console.log("mm");
+//            console.log(svc.getMastermap());
+//        } catch (err) {
+//                console.log(err);
+//        }
 
     }
 
@@ -328,24 +329,24 @@ angular
     }
 
     svc.createMMElement = function (id, type) {
-      if (svc.getElement(id, type) === undefined) {
-        var eltColl = new Object();
-        eltColl["ig"] =[];
-        eltColl["profile"] =[];
-        eltColl["message"] =[];
-        eltColl["field"] =[];
-        eltColl["segment"] =[];
-        eltColl["segmentRef"] =[];
-        eltColl["group"] =[];
-        eltColl["table"] =[];
-        eltColl["datatype"] =[];
-        eltColl["component"] =[];
-        eltColl["code"] =[];
-        eltColl["usage"] =[];
-        eltColl["type"] = type;
-        eltColl["id"] = id;
+        if (svc.getElement(id, type) === undefined) {
+            var eltColl = new Object();
+            eltColl["ig"] =[];
+            eltColl["profile"] =[];
+            eltColl["message"] =[];
+            eltColl["field"] =[];
+            eltColl["segment"] =[];
+            eltColl["segmentRef"] =[];
+            eltColl["group"] =[];
+            eltColl["table"] =[];
+            eltColl["datatype"] =[];
+            eltColl["component"] =[];
+            eltColl["code"] =[];
+            eltColl["usage"] =[];
+            eltColl["type"] = type;
+            eltColl["id"] = id;
 
-        svc.mastermap[id.concat(type)] = eltColl;
+            svc.mastermap[id.concat(type)] = eltColl;
       }
     }
 
@@ -378,16 +379,16 @@ angular
     }
 
     svc.getElement = function(id, type){
-      var rst = svc.mastermap[id.concat(type)];
-      return rst;
+        var rst = svc.mastermap[id.concat(type)];
+        return rst;
     }
 
     svc.getElementByKey = function(id, type, key){
-      return svc.mastermap[id.concat(type)][key];
+        return svc.getElement(id, type)[key];
     }
 
     svc.setElement = function(id, type, key, value){
-      svc.mastermap[id.concat(type)][key] = value;
+        svc.mastermap[id.concat(type)][key] = value;
     }
 
 
