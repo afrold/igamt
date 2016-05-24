@@ -1,0 +1,126 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'grunt-contrib-imagemin',
+1 verbose cli   '--save-dev' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.37
+4 verbose node symlink /usr/bin/node
+5 warn package.json igl@0.0.0 No repository field.
+6 verbose readDependencies using package.json deps
+7 verbose cache add [ 'grunt-contrib-imagemin', null ]
+8 verbose cache add name=undefined spec="grunt-contrib-imagemin" args=["grunt-contrib-imagemin",null]
+9 verbose parsed url { protocol: null,
+9 verbose parsed url   slashes: null,
+9 verbose parsed url   auth: null,
+9 verbose parsed url   host: null,
+9 verbose parsed url   port: null,
+9 verbose parsed url   hostname: null,
+9 verbose parsed url   hash: null,
+9 verbose parsed url   search: null,
+9 verbose parsed url   query: null,
+9 verbose parsed url   pathname: 'grunt-contrib-imagemin',
+9 verbose parsed url   path: 'grunt-contrib-imagemin',
+9 verbose parsed url   href: 'grunt-contrib-imagemin' }
+10 silly lockFile d53d0dd9-grunt-contrib-imagemin grunt-contrib-imagemin
+11 verbose lock grunt-contrib-imagemin /home/ena3/.npm/d53d0dd9-grunt-contrib-imagemin.lock
+12 silly lockFile d53d0dd9-grunt-contrib-imagemin grunt-contrib-imagemin
+13 silly lockFile d53d0dd9-grunt-contrib-imagemin grunt-contrib-imagemin
+14 verbose addNamed [ 'grunt-contrib-imagemin', '' ]
+15 verbose addNamed [ null, '*' ]
+16 silly lockFile 400cb004-grunt-contrib-imagemin grunt-contrib-imagemin@
+17 verbose lock grunt-contrib-imagemin@ /home/ena3/.npm/400cb004-grunt-contrib-imagemin.lock
+18 silly addNameRange { name: 'grunt-contrib-imagemin', range: '*', hasData: false }
+19 verbose request where is /grunt-contrib-imagemin
+20 verbose request registry https://registry.npmjs.org/
+21 verbose request id 00c42676bdea6238
+22 verbose url raw /grunt-contrib-imagemin
+23 verbose url resolving [ 'https://registry.npmjs.org/', './grunt-contrib-imagemin' ]
+24 verbose url resolved https://registry.npmjs.org/grunt-contrib-imagemin
+25 verbose request where is https://registry.npmjs.org/grunt-contrib-imagemin
+26 info trying registry request attempt 1 at 16:34:55
+27 verbose etag "4JP2003IA2VJ9031DHF0EJKQU"
+28 http GET https://registry.npmjs.org/grunt-contrib-imagemin
+29 http 200 https://registry.npmjs.org/grunt-contrib-imagemin
+30 silly registry.get cb [ 200,
+30 silly registry.get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+30 silly registry.get     etag: '"PQH1ZKWVL9BVD7V9GVKNG8QH"',
+30 silly registry.get     'content-type': 'application/json',
+30 silly registry.get     'content-encoding': 'gzip',
+30 silly registry.get     'cache-control': 'max-age=300',
+30 silly registry.get     'content-length': '9282',
+30 silly registry.get     'accept-ranges': 'bytes',
+30 silly registry.get     date: 'Mon, 23 May 2016 20:34:57 GMT',
+30 silly registry.get     via: '1.1 varnish',
+30 silly registry.get     age: '178',
+30 silly registry.get     connection: 'keep-alive',
+30 silly registry.get     'x-served-by': 'cache-dfw1838-DFW',
+30 silly registry.get     'x-cache': 'HIT',
+30 silly registry.get     'x-cache-hits': '2',
+30 silly registry.get     'x-timer': 'S1464035697.118939,VS0,VE0',
+30 silly registry.get     vary: 'Accept-Encoding' } ]
+31 silly addNameRange number 2 { name: 'grunt-contrib-imagemin', range: '*', hasData: true }
+32 silly addNameRange versions [ 'grunt-contrib-imagemin',
+32 silly addNameRange   [ '0.1.0',
+32 silly addNameRange     '0.1.1',
+32 silly addNameRange     '0.1.2',
+32 silly addNameRange     '0.1.3',
+32 silly addNameRange     '0.1.4',
+32 silly addNameRange     '0.1.1-rc7',
+32 silly addNameRange     '0.1.1-rc8',
+32 silly addNameRange     '0.2.0',
+32 silly addNameRange     '0.2.1',
+32 silly addNameRange     '0.3.0',
+32 silly addNameRange     '0.4.0',
+32 silly addNameRange     '0.4.1',
+32 silly addNameRange     '0.5.0',
+32 silly addNameRange     '0.6.0',
+32 silly addNameRange     '0.6.1',
+32 silly addNameRange     '0.7.0',
+32 silly addNameRange     '0.7.1',
+32 silly addNameRange     '0.7.2',
+32 silly addNameRange     '0.8.0',
+32 silly addNameRange     '0.8.1',
+32 silly addNameRange     '0.9.0',
+32 silly addNameRange     '0.9.1',
+32 silly addNameRange     '0.9.2',
+32 silly addNameRange     '0.9.3',
+32 silly addNameRange     '0.9.4',
+32 silly addNameRange     '1.0.0',
+32 silly addNameRange     '1.0.1' ] ]
+33 verbose addNamed [ 'grunt-contrib-imagemin', '1.0.1' ]
+34 verbose addNamed [ '1.0.1', '1.0.1' ]
+35 silly lockFile 117aa2fa-grunt-contrib-imagemin-1-0-1 grunt-contrib-imagemin@1.0.1
+36 verbose lock grunt-contrib-imagemin@1.0.1 /home/ena3/.npm/117aa2fa-grunt-contrib-imagemin-1-0-1.lock
+37 silly lockFile 9391a5a0-grunt-contrib-imagemin-1-0-1-tgz https://registry.npmjs.org/grunt-contrib-imagemin/-/grunt-contrib-imagemin-1.0.1.tgz
+38 verbose lock https://registry.npmjs.org/grunt-contrib-imagemin/-/grunt-contrib-imagemin-1.0.1.tgz /home/ena3/.npm/9391a5a0-grunt-contrib-imagemin-1-0-1-tgz.lock
+39 verbose addRemoteTarball [ 'https://registry.npmjs.org/grunt-contrib-imagemin/-/grunt-contrib-imagemin-1.0.1.tgz',
+39 verbose addRemoteTarball   'e47a35613376f4caa9c1f90446503cae1c944d79' ]
+40 info retry fetch attempt 1 at 16:34:56
+41 verbose fetch to= /tmp/npm-16976-UaXaw6Qx/registry.npmjs.org/grunt-contrib-imagemin/-/grunt-contrib-imagemin-1.0.1.tgz
+42 http GET https://registry.npmjs.org/grunt-contrib-imagemin/-/grunt-contrib-imagemin-1.0.1.tgz
+43 http 200 https://registry.npmjs.org/grunt-contrib-imagemin/-/grunt-contrib-imagemin-1.0.1.tgz
+44 silly lockFile 9391a5a0-grunt-contrib-imagemin-1-0-1-tgz https://registry.npmjs.org/grunt-contrib-imagemin/-/grunt-contrib-imagemin-1.0.1.tgz
+45 silly lockFile 9391a5a0-grunt-contrib-imagemin-1-0-1-tgz https://registry.npmjs.org/grunt-contrib-imagemin/-/grunt-contrib-imagemin-1.0.1.tgz
+46 silly lockFile 117aa2fa-grunt-contrib-imagemin-1-0-1 grunt-contrib-imagemin@1.0.1
+47 silly lockFile 117aa2fa-grunt-contrib-imagemin-1-0-1 grunt-contrib-imagemin@1.0.1
+48 silly lockFile 400cb004-grunt-contrib-imagemin grunt-contrib-imagemin@
+49 silly lockFile 400cb004-grunt-contrib-imagemin grunt-contrib-imagemin@
+50 error Error: EACCES, mkdir '/home/ena3/.npm/grunt-contrib-imagemin/1.0.1'
+50 error  { [Error: EACCES, mkdir '/home/ena3/.npm/grunt-contrib-imagemin/1.0.1']
+50 error   errno: 3,
+50 error   code: 'EACCES',
+50 error   path: '/home/ena3/.npm/grunt-contrib-imagemin/1.0.1',
+50 error   parent: 'igl' }
+51 error Please try running this command again as root/Administrator.
+52 error System Linux 3.13.0-24-generic
+53 error command "/usr/bin/node" "/usr/bin/npm" "install" "grunt-contrib-imagemin" "--save-dev"
+54 error cwd /home/ena3/IGAMTALLLIB/igamt/igamt-lite-client
+55 error node -v v0.10.37
+56 error npm -v 1.4.28
+57 error path /home/ena3/.npm/grunt-contrib-imagemin/1.0.1
+58 error code EACCES
+59 error errno 3
+60 error stack Error: EACCES, mkdir '/home/ena3/.npm/grunt-contrib-imagemin/1.0.1'
+61 verbose exit [ 3, true ]

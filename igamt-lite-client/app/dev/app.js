@@ -30,8 +30,8 @@ var app = angular
         'ngNotificationsBar',
         'ngMockE2E'
         ,'ui.tree',
-        'blockUI',
-        'unsavedChanges'
+        'blockUI'
+      
     ]);
 
 var
