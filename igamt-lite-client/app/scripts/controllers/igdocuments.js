@@ -327,8 +327,8 @@ angular.module('igl')
                             $scope.loadTables().then(function () {
                                 $scope.collectMessages();
                                 //$scope.sortByLabels();
-//                                $scope.loadMastermap();
-//                                $scope.loadFilter();
+                                $scope.loadMastermap();
+                                $scope.loadFilter();
                                 $scope.loadToc();
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();

@@ -579,12 +579,12 @@ angular
             	var messagesMap=[];
             	
             	var messages=$rootScope.igdocument.profile.messages.children;
-//            	for (var i=0; i<=messages.length-1; i++){
-//            		var messageMap={};
-//            		messageMap.id =messages[i].id;
-//            		messageMap.position=messages[i].position;
-//            		messagesMap.push(messageMap);
-//            	}
+            	for (var i=0; i<=messages.length-1; i++){
+            		var messageMap={};
+            		messageMap.id =messages[i].id;
+            		messageMap.position=messages[i].position;
+            		messagesMap.push(messageMap);
+            	}
             	console.log(messagesMap);
                 var id = $rootScope.igdocument.id;
                 var req = {
@@ -593,7 +593,7 @@ angular
                     headers: {
                         'Content-Type': "application/json"
                     },
-                    data: $rootScope.igdocument.profile.messages.children
+                    data: messagesMap
                 }
 
 
