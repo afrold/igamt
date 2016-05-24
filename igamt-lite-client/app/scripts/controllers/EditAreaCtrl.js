@@ -5,6 +5,7 @@ angular.module('igl')
             if($scope.editForm) {
                 $scope.editForm.$setPristine();
                 $scope.editForm.$dirty = false;
+                console.log("=====> set $dirty to false")
             }
         };
 

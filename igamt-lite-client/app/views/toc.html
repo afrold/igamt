@@ -154,9 +154,9 @@
                                    ng-click="editRoutSection('Conformance Profiles');" confirm-click data-nodrag >
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
-                        
+
                         <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
-                            ng-if="!collapsemessage" data-type="message">
+                             ng-if="!collapsemessage" data-type="message">
                             <div ui-tree-handle class="messageSubContent"
                                  context-menu="MessagesOption">
                                 <span class="glyphicon glyphicon-move"></span> <span data-nodrag style ="font-weight: normal;"
@@ -183,7 +183,7 @@
                                   ng-click="editRoutSection('Segments and field descriptions')">
 								{{ig.childSections.length+1}}.2.Segments and field descriptions</span>
                         </div>
-                        <li ng-repeat="segment in segments  | orderBy :'label' | filter:showToC"
+                        <li ng-repeat="segment in segments  | orderBy :'label' "
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
                                  confirm-click
@@ -210,7 +210,7 @@
                                     data-nodrag ng-click="editRoutSection('Datatypes')" confirm-click>{{ig.childSections.length+1}}.3.Datatypes</span>
                         </div>
 
-                        <li ng-repeat="data in datatypes  | orderBy :'label' | filter:showToC" ui-tree-node
+                        <li ng-repeat="data in datatypes  | orderBy :'label' " ui-tree-node
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
                                  confirm-click
@@ -238,7 +238,7 @@
                                     data-nodrag ng-click="editRoutSection('Value Sets')">{{ig.childSections.length+1}}.4.Value Sets</span>
                         </div>
 
-                        <li ng-repeat="table in tables |  orderBy :'name' | filter:showToC" ui-tree-node
+                        <li ng-repeat="table in tables |  orderBy :'name' " ui-tree-node
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle class="messageSubContent" data-nodrag
                                  confirm-click

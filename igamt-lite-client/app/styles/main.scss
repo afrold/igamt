@@ -2073,6 +2073,13 @@ li.nav-header.active {
 }
 
 
+.nav-tabs > li.active > a {
+  background-color: #1b51ca;
+  color: white;
+}
+
+
+
 tr.current {
   background-color: #fff1c8;
 }
