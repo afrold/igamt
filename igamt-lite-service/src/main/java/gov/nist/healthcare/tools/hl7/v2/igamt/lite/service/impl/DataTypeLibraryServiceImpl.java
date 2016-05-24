@@ -161,6 +161,9 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 		List<DatatypeLink> datatypeLinks = new ArrayList<DatatypeLink>();
 		for (Datatype dt : datatypes) {
 			dt.setId(null);
+			if (SCOPE.HL7STANDARD == dt.getScope()) {
+				dt.getLibIds().clear();
+			}
 			dt.getLibIds().add(datatypeLibraryId);
 			dt.setExt(decorateExt(dtLib.getExt()));
 			dt.setType(Constant.DATATYPE);
