@@ -244,7 +244,7 @@
       <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="DataTypeLibraryOptions">
     <i data-nodrag ng-click="toggle(this)"
                             class="fa fa-caret-down"
-                            ng-class="{'fa-caret-down': profilecollapsed, 'fa-caret-right': !collapsed}"></i>
+                            ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i>
      {{dataLibrary.metaData.name}}
       </div>
       <ol ui-tree-nodes="" ng-model="dataLibrary.children">
