@@ -251,7 +251,14 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         var response = angular.fromJson(datatype);
         return [200, response, {}];
     });
-
+    
+  $httpBackend.whenPOST('api/datatypes/saveAll').respond(function (method, url, datatype, headers) {
+  var request = new XMLHttpRequest();
+  console.log('api/saveAll begin=' + datatype);
+  var response = angular.fromJson(datatype);
+  return [200, response, {}];
+});
+  
     $httpBackend.whenGET(/^api\/segments\/.*/).respond(function (method, url, data, headers) {
         var id = url.split('/')[2];
         return [200, findSegment(id), {}];
