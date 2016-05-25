@@ -594,7 +594,7 @@ angular
                 return promise;
             }
             
-            $scope.isUnused = function (node) {
+            $scope.showUnused = function (node) {
                 return FilteringSvc.isUnused(node);
             };
 
