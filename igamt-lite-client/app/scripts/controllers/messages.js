@@ -88,6 +88,7 @@ angular.module('igl')
                 segmentRef.ref.id = segment.id;
                 segmentRef.ref.ext = segment.ext;
                 segmentRef.ref.name = segment.name;
+                // TODO: Delete segment ref from MasterMap
 //                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
                 if ($scope.messagesParams)
                     $scope.messagesParams.refresh();
@@ -263,7 +264,7 @@ angular.module('igl')
                     }
                     delay.resolve(true);
                 }, function (error) {
-                    $rootScope.msg().text = "Sorry could not load the data types";
+                    $rootScope.msg().text = "Sorry could not load the segments";
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
                     delay.reject(error);
@@ -1066,7 +1067,7 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function ($scope, $
     $scope.delete = function () {
         $scope.loading = true;
         MessagesSvc.delete($scope.messageToDelete).then(function (result) {
-            IgDocumentService.deleteMessage($scope.messageToDelete.id).then(function (res) {
+            IgDocumentService.deleteMessage($rootScope.igdocument.id, $scope.messageToDelete.id).then(function (res) {
                 // We must delete from two collections.
                 CloneDeleteSvc.execDeleteMessage($scope.messageToDelete);
                 var index = $rootScope.messages.indexOf($scope.messageToDelete);

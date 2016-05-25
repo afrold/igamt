@@ -4,10 +4,10 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -53,13 +53,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
-import net.sf.ehcache.util.SetAsList;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -311,7 +309,8 @@ public class IGDocumentController extends CommonController {
 			segmentLibraryService.save(clonedSegmentLibrary);
 			tableLibraryService.save(clonedTableLibrary);
 
-			igDocument.getProfile().setMetaData(igDocument.getProfile().getMetaData().clone());
+			igDocument.getProfile().setMetaData(
+					igDocument.getProfile().getMetaData().clone());
 			igDocument.getProfile().setDatatypeLibrary(clonedDatatypeLibrary);
 			igDocument.getProfile().setSegmentLibrary(clonedSegmentLibrary);
 			igDocument.getProfile().setTableLibrary(clonedTableLibrary);
@@ -338,15 +337,23 @@ public class IGDocumentController extends CommonController {
 		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
 			Segment s = segmentService.findById(sl.getId());
 			for (Field f : s.getFields()) {
-				if (f.getDatatype() != null && f.getDatatype().getId() != null && datatypeIdChangeMap.containsKey(f.getDatatype().getId()))
-					f.getDatatype().setId(datatypeIdChangeMap.get(f.getDatatype().getId()));
-				if (f.getTable() != null && f.getTable().getId() != null && tableIdChangeMap.containsKey(f.getTable().getId()))
-					f.getTable().setId(tableIdChangeMap.get(f.getTable().getId()));
+				if (f.getDatatype() != null
+						&& f.getDatatype().getId() != null
+						&& datatypeIdChangeMap.containsKey(f.getDatatype()
+								.getId()))
+					f.getDatatype().setId(
+							datatypeIdChangeMap.get(f.getDatatype().getId()));
+				if (f.getTable() != null && f.getTable().getId() != null
+						&& tableIdChangeMap.containsKey(f.getTable().getId()))
+					f.getTable().setId(
+							tableIdChangeMap.get(f.getTable().getId()));
 			}
-			
-			for(Mapping map:s.getDynamicMapping().getMappings()){
-				for(Case c : map.getCases()){
-					if(c.getDatatype() != null && datatypeIdChangeMap.containsKey(c.getDatatype())) c.setDatatype(datatypeIdChangeMap.get(c.getDatatype()));
+
+			for (Mapping map : s.getDynamicMapping().getMappings()) {
+				for (Case c : map.getCases()) {
+					if (c.getDatatype() != null
+							&& datatypeIdChangeMap.containsKey(c.getDatatype()))
+						c.setDatatype(datatypeIdChangeMap.get(c.getDatatype()));
 				}
 			}
 			segmentService.save(s);
@@ -355,10 +362,16 @@ public class IGDocumentController extends CommonController {
 		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
 			Datatype d = datatypeService.findById(dl.getId());
 			for (Component c : d.getComponents()) {
-				if (c.getDatatype() != null && c.getDatatype().getId() != null && datatypeIdChangeMap.containsKey(c.getDatatype().getId()))
-					c.getDatatype().setId(datatypeIdChangeMap.get(c.getDatatype().getId()));
-				if (c.getTable() != null && c.getTable().getId() != null && tableIdChangeMap.containsKey(c.getTable().getId()))
-					c.getTable().setId(tableIdChangeMap.get(c.getTable().getId()));
+				if (c.getDatatype() != null
+						&& c.getDatatype().getId() != null
+						&& datatypeIdChangeMap.containsKey(c.getDatatype()
+								.getId()))
+					c.getDatatype().setId(
+							datatypeIdChangeMap.get(c.getDatatype().getId()));
+				if (c.getTable() != null && c.getTable().getId() != null
+						&& tableIdChangeMap.containsKey(c.getTable().getId()))
+					c.getTable().setId(
+							tableIdChangeMap.get(c.getTable().getId()));
 			}
 			datatypeService.save(d);
 		}
@@ -377,7 +390,8 @@ public class IGDocumentController extends CommonController {
 		if (sog instanceof SegmentRef) {
 			SegmentRef segmentRef = (SegmentRef) sog;
 			if (segmentIdChangeMap.containsKey(segmentRef.getRef().getId()))
-				segmentRef.getRef().setId(segmentIdChangeMap.get(segmentRef.getRef().getId()));
+				segmentRef.getRef().setId(
+						segmentIdChangeMap.get(segmentRef.getRef().getId()));
 		}
 
 		if (sog instanceof Group) {
@@ -768,9 +782,9 @@ public class IGDocumentController extends CommonController {
 		return igDocument;
 	}
 
-	@RequestMapping(value = "/{id}/deleteMessage", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/{id}/deleteMessage/{messageId}", method = RequestMethod.POST, produces = "application/json")
 	public boolean deleteMessage(@PathVariable("id") String id,
-			@RequestParam("messageId") String messageId,
+			@PathVariable("messageId") String messageId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException,
 			IGDocumentException {
@@ -830,14 +844,14 @@ public class IGDocumentController extends CommonController {
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
 		}
-		
+
 		Set<Section> newChildSection = d.getChildSections();
 		newChildSection.add(section);
 		d.setChildSections(newChildSection);
 		igDocumentService.save(d);
 		return true;
 	}
-	
+
 	@RequestMapping(value = "/{id}/section/update", method = RequestMethod.POST)
 	public boolean updateSection(@PathVariable("id") String id,
 			@RequestBody Section section, HttpServletRequest request,
@@ -847,17 +861,15 @@ public class IGDocumentController extends CommonController {
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
 		}
-		String idSect= section.getId();
-        Section s = findSection(d, idSect);
+		String idSect = section.getId();
+		Section s = findSection(d, idSect);
 		if (s == null)
-		throw new IGDocumentException("Unknown Section");
-		
+			throw new IGDocumentException("Unknown Section");
+
 		s.merge(section);
 		igDocumentService.save(d);
 		return true;
 	}
-	
-	
 
 	@RequestMapping(value = "/{id}/section/{sectionId}/delete", method = RequestMethod.POST)
 	public boolean updateSection(@PathVariable("id") String id,
@@ -909,14 +921,14 @@ public class IGDocumentController extends CommonController {
 			return parent;
 		if (parent.getChildSections() != null)
 			for (Section child : parent.getChildSections()) {
-			
-					Section section = (Section) child;
-					Section f = findSection(section, sectionId);
-					if (f != null) {
-						return f;
-					}
+
+				Section section = child;
+				Section f = findSection(section, sectionId);
+				if (f != null) {
+					return f;
 				}
-			
+			}
+
 		return null;
 	}
 
@@ -983,7 +995,7 @@ public class IGDocumentController extends CommonController {
 
 		return null;
 	}
-	
+
 	@RequestMapping(value = "/{id}/reorderMessages", method = RequestMethod.POST)
 	public String reorderMessages(@PathVariable("id") String id,
 			@RequestBody Set<MessageMap> messages) throws IOException,
@@ -998,16 +1010,16 @@ public class IGDocumentController extends CommonController {
 
 		Profile p = d.getProfile();
 		Messages msgs = p.getMessages();
-		for(Message m : msgs.getChildren()){
-			for(MessageMap x : messages){
-				if(m.getId().equals(x.getId())){
+		for (Message m : msgs.getChildren()) {
+			for (MessageMap x : messages) {
+				if (m.getId().equals(x.getId())) {
 					m.setPosition(x.getPosition());
 				}
 			}
 		}
 		List<Message> sortedList = new ArrayList<Message>();
 		sortedList.addAll(msgs.getChildren());
-		MessageConparator comparator= new MessageConparator();
+		MessageConparator comparator = new MessageConparator();
 		Collections.sort(sortedList, comparator);
 		Set<Message> sortedSet = new HashSet<Message>();
 		sortedSet.addAll(sortedList);
@@ -1019,8 +1031,3 @@ public class IGDocumentController extends CommonController {
 	}
 
 }
-	
-	
-	
-	
-
