@@ -44,7 +44,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 
 	@Override
 	public IGDocument convert(DBObject source) {
-		System.out.println("convert==>");
+//		System.out.println("convert==>");
 		IGDocument igd = new IGDocument();
 		igd.setAccountId(readLong(source, "accountId"));
 		igd.setChildSections(sections((DBObject) source.get("childSections")));
@@ -55,7 +55,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		igd.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
 		igd.setType(((String) source.get("type")));
 		igd.setUsageNote(readString(source, "usageNote"));
-		System.out.println("<==convert");
+//		System.out.println("<==convert");
 		return igd;
 	}
 	
