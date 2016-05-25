@@ -46,6 +46,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.IGDocumen
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfileMetaDataPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePreLib;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -75,19 +76,19 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 
 	@Override
 	public IGDocumentPreLib convert(DBObject source) {
-		System.out.println("convert==>");
+//		System.out.println("convert==>");
 		IGDocumentPreLib igd = new IGDocumentPreLib();
 		igd.setAccountId(readLong(source, "accountId"));
 		igd.setChildSections(sections((DBObject) source.get("childSections")));
 		igd.setComment(readString(source, "comment"));
 		igd.setId(readMongoId(source));
-		System.out.println(igd.getId());
+//		System.out.println(igd.getId());
 		igd.setMetaData(documentMetaData((DBObject) source.get("metaData")));
 		igd.setProfile(profile((DBObject) source.get("profile")));
 		igd.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
 		igd.setType(((String) source.get("type")));
 		igd.setUsageNote(readString(source, "usageNote"));
-		System.out.println("<==convert");
+//		System.out.println("<==convert");
 		return igd;
 	}
 	
@@ -463,6 +464,8 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		
 		if(dt == null){
 			dl= this.findDatatypeLinkOnDBList(id, datatypesDBObjects);
+			
+			if(dl == null) System.out.println("Missing dl!!!::::" + id);
 		}else {
 			dl.setName(dt.getName());
 			if(dt.getLabel().equals(dt.getName())){
@@ -858,5 +861,6 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 	// throw new IllegalArgumentException("Table " + id
 	// + " not found in the profile");
 	// }
+
 
 }

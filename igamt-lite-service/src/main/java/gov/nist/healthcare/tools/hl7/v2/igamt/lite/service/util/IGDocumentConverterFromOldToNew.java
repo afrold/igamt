@@ -42,6 +42,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converter
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters.SegmentReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters.TableReadConverter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -87,9 +88,10 @@ public class IGDocumentConverterFromOldToNew{
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			IGDocumentReadConverterPreLib conv = new IGDocumentReadConverterPreLib();
-			DBCollection coll1 = mongoOps.getCollection("igdocumentPreLib");
-			BasicDBObject query1 = new BasicDBObject("scope", "HL7STANDARD");
-			DBCursor cur1 = coll1.find(query1);
+
+			
+			DBCollection coll1 = mongoOps.getCollection("igdocumentPreLibHL7");
+			DBCursor cur1 = coll1.find();
 			while (cur1.hasNext()) {
 				DBObject source = cur1.next();
 				IGDocumentPreLib appPreLib = conv.convert(source);
@@ -99,10 +101,9 @@ public class IGDocumentConverterFromOldToNew{
 					HL7STANDARD(appPreLib, mongoOps);
 				}
 			}
-			
-			DBCollection coll2 = mongoOps.getCollection("igdocumentPreLib");
-			BasicDBObject query2 = new BasicDBObject("scope", "PRELOADED");
-			DBCursor cur2 = coll2.find(query2);
+						
+			DBCollection coll2 = mongoOps.getCollection("igdocumentPreLibPRELOADED");
+			DBCursor cur2 = coll2.find();
 			while (cur2.hasNext()) {
 				DBObject source = cur2.next();
 				IGDocumentPreLib appPreLib = conv.convert(source);
@@ -113,9 +114,8 @@ public class IGDocumentConverterFromOldToNew{
 				}
 			}
 			
-			DBCollection coll3 = mongoOps.getCollection("igdocumentPreLib");
-			BasicDBObject query3 = new BasicDBObject("scope", "USER");
-			DBCursor cur3 = coll3.find(query3);
+			DBCollection coll3 = mongoOps.getCollection("igdocumentPreLibUSER");
+			DBCursor cur3 = coll3.find();
 			while (cur3.hasNext()) {
 				DBObject source = cur3.next();
 				IGDocumentPreLib appPreLib = conv.convert(source);
@@ -125,6 +125,19 @@ public class IGDocumentConverterFromOldToNew{
 					USER(appPreLib, mongoOps);
 				}
 			}
+			
+//			DBCollection coll4 = mongoOps.getCollection("igdocumentPreLibCORRECTED");
+//			DBCursor cur4 = coll4.find();
+//			while (cur4.hasNext()) {
+//				DBObject source = cur4.next();
+//				IGDocumentPreLib appPreLib = conv.convert(source);
+//				if (appPreLib.getScope().equals(IGDocumentScope.USER)){
+//					System.out.println("USER IGDOC Converting started!");
+//					System.out.println(appPreLib.getId());
+//					USER(appPreLib, mongoOps);
+//				}
+//			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -258,6 +271,8 @@ public class IGDocumentConverterFromOldToNew{
 							    
 							    app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(dt.getId(), dt.getName(), ""));
 							}
+						}else{
+							System.out.println("Field DT missing!!" + f.getPosition() + " of STD " + seg.getId());
 						}
 					}
 				}else {
@@ -298,6 +313,10 @@ public class IGDocumentConverterFromOldToNew{
 								    app.getProfile().getTableLibrary().addTable(new TableLink(t.getId(), t.getBindingIdentifier()));
 								}
 							}
+						}
+						
+						if(f.getDatatype() == null){
+							System.out.println("Field DT missing!!" + f.getPosition() + " of USER " + seg.getId());
 						}
 						
 					}
@@ -369,6 +388,8 @@ public class IGDocumentConverterFromOldToNew{
 							    
 							    app.getProfile().getDatatypeLibrary().addDatatype(new DatatypeLink(cdt.getId(), cdt.getName(), ""));
 							}
+						}else{
+							System.out.println("COMPONENT DT missing!!" + c.getPosition() + " of STD " + dt.getId());
 						}
 					}
 					
@@ -408,6 +429,10 @@ public class IGDocumentConverterFromOldToNew{
 								    app.getProfile().getTableLibrary().addTable(new TableLink(t.getId(), t.getBindingIdentifier()));
 								}
 							}
+						}
+						
+						if(c.getDatatype() == null){
+							System.out.println("Field DT missing!!" + c.getPosition() + " of USER " + dt.getId());
 						}
 					}
 					String oldDatatypeId = dt.getId();
@@ -714,5 +739,9 @@ public class IGDocumentConverterFromOldToNew{
 				this.updateUsageAndVisitGroupChild(child);
 			}
 		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		new IGDocumentConverterFromOldToNew().convert();
 	}
 }

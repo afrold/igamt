@@ -17,36 +17,36 @@
 </div>
 <div ng-show="isEditing">
 <div class="row">
-    <!--<div class="col-md-12" ng-show="igDocumentMsg !== null">-->
-    <!--<div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">-->
-    <!--<button type="button" class="close" ng-click="igDocumentMsg.show = false">×</button>-->
-    <!--<div msg key-expr="igDocumentMsg.text"></div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!---->
+    <div class="col-md-12" ng-show="igDocumentMsg !== null">
+    <div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">
+    <button type="button" class="close" ng-click="igDocumentMsg.show = false">×</button>
+    <div msg key-expr="igDocumentMsg.text"></div>
+    </div>
+    </div>
+
     <div class="col-md-12 igl-page-header">
-      <!--<span class="header4 pull-left">-->
-        <!--<div ng-controller="FilteringCtl">-->
-           <!--<div class="row form-inline" style="margin:10px">-->
-            <!--<label class="label label-default">Filters:</label>-->
-            <!--<label>Conf Profiles</label>-->
-            <!--<span  ng-dropdown-multiselect="" options="filtermsgdata()" selected-model="filtermsgmodel()" extra-settings="filtermsgsettings()" translation-texts="filtermsgtexts()">-->
-            <!--</span>-->
+      <span class="header4 pull-left">
+        <div ng-controller="FilteringCtl">
+           <div class="row form-inline" style="margin:10px">
+            <label class="label label-default">Filters:</label>
+            <label>Conf Profiles</label>
+            <span  ng-dropdown-multiselect="" options="filtermsgdata()" selected-model="filtermsgmodel()" extra-settings="filtermsgsettings()" translation-texts="filtermsgtexts()">
+            </span>
             <!--<label>Usages</label>-->
             <!--<span  ng-dropdown-multiselect="" options="filterusagesdata()" selected-model="filterusagesmodel()" extra-settings="filterusagessettings()" translation-texts="filterusagestexts()">-->
             <!--</span>-->
-          <!--</div>-->
-<!--&lt;!&ndash;           <div class="row" style="margin:10px">-->
-<!--&lt;!&ndash;             <div class="col-md-4" />-->
- <!--&ndash;&gt;-->
-<!--&lt;!&ndash;             <div class="col-md-4" ng-dropdown-multiselect="" options="filterusagesdata()" selected-model="filterusagesmodel()" extra-settings="filterusagessettings()" translation-texts="filterusagestexts()">-->
-            <!--</div>-->
-          <!--</div> &ndash;&gt;-->
-         <!--</div>-->
+          </div>
+<!--           <div class="row" style="margin:10px">
+<!--             <div class="col-md-4" />
+ -->
+<!--             <div class="col-md-4" ng-dropdown-multiselect="" options="filterusagesdata()" selected-model="filterusagesmodel()" extra-settings="filterusagessettings()" translation-texts="filterusagestexts()">
+            </div>
+          </div> -->
+         </div>
 
-        <!--&lt;!&ndash;<span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>&ndash;&gt;-->
-      <!--</span>-->
+        <!--<span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>-->
+        <!--<span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>-->
+      </span>
 
       <span class="pull-right">
          <!--<button title="Save Changes" type="button" class="btn btn-xs btn-success"-->
