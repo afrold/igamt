@@ -627,7 +627,7 @@ angular
             	return 'HL7';
             }
             else  if(leaf.scope==='USER') {
-            	return 'USE';
+            	return 'USR';
             	
             }
             

@@ -366,6 +366,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (datatype, ext) {
                 component.datatype.id = datatype.id;
+                // TODO: Delete component from MasterMap
                 //MastermapSvc.addDatatypeObject(datatype, [[component.id, component.type]]);
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
