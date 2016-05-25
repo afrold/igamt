@@ -36,6 +36,8 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
 	public Segment convert(DBObject source) {
 		Segment seg = new Segment();
 		seg.setId(readMongoId(source));
+		
+//		System.out.println(seg.getId());
 		seg.setType((String) source.get(TYPE));
 		seg.setLabel((String) source.get(LABEL));
 		seg.setName(((String) source.get(NAME)));
