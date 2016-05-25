@@ -234,7 +234,7 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
         }
     }
     svc.addIG = function(igdocument) {
-        console.log("Creating mastermap\nprocessing IG : " + igdocument.id);
+        //console.log("Creating mastermap\nprocessing IG : " + igdocument.id);
 
         var profile = igdocument.profile;
 
@@ -248,11 +248,11 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
             svc.createMMElement(tbl.id, "table");
         });
         _.each(svc.getDatatypeLibrary(), function(dt) {
-            console.log(dt);
+            //console.log(dt);
             svc.createMMElement(dt.id, "datatype");
         });
         _.each(svc.getSegmentLibrary(), function(sgt) {
-            console.log(sgt);
+            //console.log(sgt);
             svc.createMMElement(sgt.id, "segment");
         });
 
@@ -292,9 +292,9 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
     }
     svc.addParentsId = function(elementId, elementType, parentsList) {
         // Element refers to self
-        svc.setElement(elementId, elementType, elementType, svc.getElementByKey(
-            elementId, elementType, elementType).concat(
-            elementId));
+//        svc.setElement(elementId, elementType, elementType, svc.getElementByKey(
+//            elementId, elementType, elementType).concat(
+//            elementId));
         _.each(parentsList, function(parent) {
             var parentId = parent[0];
             var parentType = parent[1];
@@ -336,7 +336,7 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
             svc.mastermap[id.concat(type)] = eltColl;
         }
         else {
-        console.log("null id")
+        //console.log("null id")
         }
     }
     svc.removeMastermapElt = function(toBeRemovedId, toBeRemovedType) {
@@ -371,7 +371,7 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
         if (id !== null || id !== undefined) {
             return svc.mastermap[id.concat(type)];
         } else {
-            console.log(type);
+            //console.log(type);
             return null;
         }
     }

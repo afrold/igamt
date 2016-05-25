@@ -17,7 +17,6 @@ angular.module('igl').factory(
             newSection.label = newSection.sectionTitle;
             section.parent.childSections.splice(0, 0, newSection);
             section.parent.childSections = positionElements(section.parent.childSections);
-            $rootScope.$broadcast('event:SetToC');
             $rootScope.$broadcast('event:openSection', newSection);
         }
 
@@ -58,9 +57,9 @@ angular.module('igl').factory(
                 	$rootScope.segment = newSegment;
                 	$rootScope.segmentsMap[newSegment.id] = newSegment;
                 	//TODO MasterMap need to add Segment
-                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 	$rootScope.processElement(newSegment);
-                	$rootScope.$broadcast('event:SetToC');
+                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+
                     $rootScope.$broadcast('event:openSegment', newSegment);
                  }, function (error) {
                 	$rootScope.saving = false;
@@ -118,10 +117,10 @@ angular.module('igl').factory(
                     $rootScope.datatypesMap[newDatatype.id] = newDatatype;
                     
                     //TODO MasterMap need to add Datatype
-                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
                     
                     $rootScope.processElement(newDatatype);
-                    $rootScope.$broadcast('event:SetToC');
+                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
+
                     $rootScope.$broadcast('event:openDatatype', newDatatype);
                  }, function (error) {
                 	$rootScope.saving = false;
@@ -176,7 +175,6 @@ angular.module('igl').factory(
                     }
                     //TODO MasterMap need to add table
                     MastermapSvc.addValueSetObject(newTable, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-                    $rootScope.$broadcast('event:SetToC');
                     $rootScope.$broadcast('event:openTable', newTable);
 
                 }, function (error) {
