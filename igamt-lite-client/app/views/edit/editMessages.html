@@ -214,6 +214,26 @@
         </thead>
         <tbody></tbody>
     </table>
+    
+    <span class="pull-right">
+                                     <div class="btn-group">
+                        <button type="button"
+                                class="btn btn-info btn-md"><span><i
+                                class="glyphicon glyphicon-plus"></i> Add</span>
+                        </button>
+                        <button type="button"
+                                class="btn btn-info btn-md dropdown-toggle"
+                                data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu igl-menu" role="menu">
+                            
+                            <li><a class="point" ng-click="addSegment()">Segment</a></li>
+                            <li><a class="point" ng-click="addGroup()">Group</a></li>
+                        </ul>
+                    </div>
+                                     </span>
 
 
     <div class="row" style="margin-top:20px">
@@ -360,11 +380,12 @@
 </script>
 
 <script type="text/ng-template" id="MessageSegmentRefEditTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
-        <td class="col-xs-2 col-fixed-250">
+
+    <tr  tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
+        <td  class="col-xs-2 col-fixed-250">
             <span class="label label-segment label-icon">S</span>
 
-            <a ng-click="showSelectSegmentFlavorDlg(node.obj)" class="point">
+            <a  context-menu ="segOption" ng-click="showSelectSegmentFlavorDlg(node.obj)" class="point">
                 {{getSegmentRefNodeName(node.obj)}}
             </a>
 
@@ -461,11 +482,12 @@
 </script>
 
 <script type="text/ng-template" id="MessageGroupEditTree.html">
+
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
         <td class="col-xs-2 col-fixed-250">
         	<span>
             	<span class="label label-success label-icon">G</span>
-            	<span
+            	<span context-menu="segOption"
                         ng-bind="getGroupNodeName(node.obj)"/>
             </span>
         </td>

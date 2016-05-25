@@ -37,6 +37,7 @@ angular.module('igl').factory('MessageService',
                         return 'MessageReadTree.html';
                     }
                 } else {
+                    
                     if (node.obj.type === 'segmentRef') {
                         return 'MessageSegmentRefEditTree.html';
                     } else if (node.obj.type === 'group') {
