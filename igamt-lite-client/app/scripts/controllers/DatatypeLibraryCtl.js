@@ -14,6 +14,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			$scope.publishSelections = [];
 			$scope.datatypeDisplay	= [];
 	        $scope.selectedChildren = [];
+	        $scope.datatypesMap = [];
    $scope.viewSettings = ViewSettings;
       $scope.editView = null;
       $scope.datatypeListView = null;
