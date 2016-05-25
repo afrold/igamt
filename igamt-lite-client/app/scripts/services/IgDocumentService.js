@@ -49,7 +49,7 @@ angular.module('igl').factory('IgDocumentService',
             },
             deleteMessage: function (igId, messageId) {
                 var delay = $q.defer();
-                $http.post('api/igdocuments/' + igId + '/deleteMessage', {params:{messageId:messageId}}).then(function (response) {
+                $http.post('api/igdocuments/' + igId + '/deleteMessage/'+messageId).then(function (response) {
                     var res = angular.fromJson(response.data);
                     delay.resolve(res);
                 }, function (error) {
