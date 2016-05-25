@@ -871,10 +871,10 @@
                                         <span>
                                             <span class="label label-sub-component label-icon">S</span>
                                              <span
-                                                     tooltip-html="getComponentNodeName(node)"
+                                                     tooltip-html="node.name"
                                                      tooltip-append-to-body="true"
                                                      tooltip-class="constraints-tooltip"
-                                                     ng-bind-html="getComponentNodeName(node)" tooltip-trigger
+                                                     ng-bind-html="node.name" tooltip-trigger
                                                      tooltip-animation="false" tooltip-placement="left"
                                                      ></span>
                                         </span>
@@ -892,8 +892,8 @@
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
-                <a ng-click="goToDatatype(datatypesCopy)"
-                   class="point">{{getLabel(datatypesCopy.name, datatypesCopy.ext)}}
+                <a ng-click="goToDatatype(node.datatype)"
+                   class="point">{{getLabel(node.datatype.name, node.datatype.ext)}}
                 </a>
             </div>
         </td>

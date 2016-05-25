@@ -333,7 +333,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
   				var idx2 = _.indexOf(datatypeCopy.libIds, $scope.datatypeLibStruct.id);
   				if(idx2 > -1) {
   					datatypeCopy.libIds.splice(idx2, 1);
-  	 				DatatypeService.save(datatypeCopy.id);
+  	 				DatatypeService.save(datatypeCopy);
   					console.log("deleted=" + $scope.datatypeLibStruct.id);
   				}
   				if (datatypeCopy.libIds.length === 0) {
@@ -364,6 +364,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
           };
 
           $scope.hasChildren = function (node) {
+        	  console.log("hasChildren getDatatype=" + $scope.getDatatype(node.datatype.id));
               return node && node != null && node.datatype && $scope.getDatatype(node.datatype.id) != undefined && $scope.getDatatype(node.datatype.id).components != null && $scope.getDatatype(node.datatype.id).components.length > 0;
           };
           
