@@ -439,7 +439,7 @@ angular.module('igl')
 
         $scope.loadMastermap = function () {
 //            $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
-//            MastermapSvc.parseIg($rootScope.igdocument);
+            MastermapSvc.parseIg($rootScope.igdocument);
         };
 
 

@@ -345,7 +345,7 @@
 </div>
 </script>
 <script type="text/ng-template" id="datatypeListDlg.html">
-<div id="datatypelibrary-dialog" style="width : 100%">
+<div id="datatypelibrary-dialog">
 <div class="modal-content">
   <div class="modal-header">
     <h3 class="modal-title">Data Types</h3>
@@ -582,6 +582,7 @@
 </div>
 </div>
 </tab>
+</tabset>
 </script>
 <script type="text/ng-template" id="DatatypeLibraryEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
@@ -746,7 +747,7 @@
 	id="DatatypeLibrarySubComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-1 col-fixed-100">
-            <div>-</div>
+            {{node.position}}
         </td>
         <td class="col-xs-2 col-fixed-250">
                                         <span>

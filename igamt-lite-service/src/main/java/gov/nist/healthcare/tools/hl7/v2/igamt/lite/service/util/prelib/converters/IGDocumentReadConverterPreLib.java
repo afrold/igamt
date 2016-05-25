@@ -46,6 +46,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.IGDocumen
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfileMetaDataPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePreLib;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -75,18 +76,19 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 
 	@Override
 	public IGDocumentPreLib convert(DBObject source) {
-		System.out.println("convert==>");
+//		System.out.println("convert==>");
 		IGDocumentPreLib igd = new IGDocumentPreLib();
 		igd.setAccountId(readLong(source, "accountId"));
 		igd.setChildSections(sections((DBObject) source.get("childSections")));
 		igd.setComment(readString(source, "comment"));
 		igd.setId(readMongoId(source));
+//		System.out.println(igd.getId());
 		igd.setMetaData(documentMetaData((DBObject) source.get("metaData")));
 		igd.setProfile(profile((DBObject) source.get("profile")));
 		igd.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
 		igd.setType(((String) source.get("type")));
 		igd.setUsageNote(readString(source, "usageNote"));
-		System.out.println("<==convert");
+//		System.out.println("<==convert");
 		return igd;
 	}
 	
@@ -462,6 +464,8 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		
 		if(dt == null){
 			dl= this.findDatatypeLinkOnDBList(id, datatypesDBObjects);
+			
+			if(dl == null) System.out.println("Missing dl!!!::::" + id);
 		}else {
 			dl.setName(dt.getName());
 			if(dt.getLabel().equals(dt.getName())){
@@ -503,10 +507,12 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 
 	private TableLink tableLink(String id, Tables tables){
 		if(id == null || id.isEmpty()) return null;
-		
 		TableLink tl = new TableLink();
 		tl.setId(id);
 		Table t = tables.findOneTableById(id);
+		
+		
+		if(t == null) return null;
 		tl.setBindingIdentifier(t.getBindingIdentifier());
 		return tl;
 	}
@@ -679,10 +685,14 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 	
 	private SegmentLink segmentLink(String id, Segments segments){
 		if(id == null || id.isEmpty()) return null;
-		
 		SegmentLink sl = new SegmentLink();
 		sl.setId(id);
 		Segment s = segments.findOneSegmentById(id);
+		if(s == null){
+			System.out.println("NULL Segment: "+ id);
+		}
+		
+		
 		sl.setName(s.getName());
 		if(s.getName().equals(s.getLabel())){
 			sl.setExt(null);
@@ -851,5 +861,6 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 	// throw new IllegalArgumentException("Table " + id
 	// + " not found in the profile");
 	// }
+
 
 }

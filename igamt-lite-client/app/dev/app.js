@@ -31,9 +31,7 @@ var app = angular
         'ngMockE2E'
         ,'ui.tree',
         'blockUI'
-
      ]);
-
 
 var
 //the HTTP headers to be used by all requests
