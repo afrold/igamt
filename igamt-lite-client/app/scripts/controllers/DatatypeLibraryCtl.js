@@ -120,11 +120,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 				$scope.datatypeLibMetaDataCopy = $scope.DataTypeTree[0].metaData;
 	            $scope.editView = "LibraryMetaData.html";			
 			}
-			
-			$scope.changeLibraryName = function(name) {
-				$scope.DataTypeTree[0].metaData.name = name;
-				$rootScope.recordChanged();
-			}
 		
 			$scope.editLibrary = function(datatypeLibrary) {
 		        $scope.datatypeListView = "DatatypeList.html";
@@ -317,7 +312,43 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     		};
 
       $scope.deleteDatatype = function(datatypeCopy) {
-  		console.log("delete datatype=" + JSON.stringify(datatypeCopy.label));
+//  		console.log("delete datatype=" + JSON.stringify(datatypeCopy.label));
+//  				var idx = _.findIndex($scope.datatypeLibStruct.children, function (child) {
+//  					return datatypeCopy.id === child.id;
+//  				});
+//  				if(idx > -1) {
+//  					$scope.datatypeLibStruct.children.splice(idx, 1);
+//  				}
+//  				var idx1 = _.findIndex($scope.DataTypeTree[0].children, function (child) {
+//  					return datatypeCopy.id === child.id;
+//  				});
+//  				if(idx1 > -1) {
+//  					$scope.DataTypeTree[0].children.splice(idx1, 1);
+//  				}
+//  				var idx2 = _.indexOf(datatypeCopy.libIds, $scope.datatypeLibStruct.id);
+//  				if(idx2 > -1) {
+//  					datatypeCopy.libIds.splice(idx2, 1);
+//  	 				DatatypeService.save(datatypeCopy.id);
+//  					console.log("deleted=" + $scope.datatypeLibStruct.id);
+//  				}
+//  				if (datatypeCopy.libIds.length === 0) {
+//  					DatatypeService.delete(datatypeCopy.id);
+//  				}
+				$scope.confirmLDelete(datatypeCopy);
+       };
+		
+        $scope.confirmLDelete = function (datatypeCopy) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
+                controller: 'ConfirmDatatypeDeleteCtl',
+                resolve: {
+                	datatypeToDelete: function () {
+                        return datatypeCopy;
+                    }
+                }
+            });
+            modalInstance.result.then(function (datatypeCopy) {
+          		console.log("delete datatype=" + JSON.stringify(datatypeCopy.label));
   				var idx = _.findIndex($scope.datatypeLibStruct.children, function (child) {
   					return datatypeCopy.id === child.id;
   				});
@@ -338,35 +369,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
   				}
   				if (datatypeCopy.libIds.length === 0) {
   					DatatypeService.delete(datatypeCopy.id);
-//  				$scope.confirmLDelete(datatypeCopy);
   				}
-        };
-		
-        $scope.confirmLDelete = function (datatypeCopy) {
-            var modalInstance = $modal.open({
-                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
-                controller: 'ConfirmDatatypeDeleteCtrl',
-                resolve: {
-                	datatypeToDelete: function () {
-                        return datatypeCopy;
-                    }
-                }
-            });
-            modalInstance.result.then(function (datatypeLibrary) {
-  				var idx = _.findIndex($scope.datatypeLibStruct.children, function (child) {
-  					return datatypeCopy.id === child.id;
-  				});
-  				if(idx > -1) {
-  					$scope.datatypeLibStruct.children.splice(idx, 1);
-  				}
-  				var idx1 = _.findIndex($scope.DataTypeTree[0].children, function (child) {
-  					return datatypeCopy.id === child.id;
-  				});
-  				if(idx1 > -1) {
-  					$scope.DataTypeTree[0].children.splice(idx1, 1);
-  				}
-  				DatatypeService.delete(datatypeCopy.id);
-                DatatypeLibrarySvc.save($scope.datatypeLibStruct);
            });
         };
 
@@ -625,11 +628,11 @@ angular.module('igl').controller('DatatypeListInstanceDlgCtl',
 
 angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function ($scope, $rootScope, $http, $modalInstance, datatypeLibraryToDelete) {
 	
-    $scope.datatypeLibStructToDelete = datatypeLibraryToDelete;
+    $scope.datatypeLibraryToDelete = datatypeLibraryToDelete;
     $scope.loading = false;
     
     $scope.delete = function () {
-		$modalInstance.close($scope.datatypeLibStructToDelete);
+		$modalInstance.close($scope.datatypeLibraryToDelete);
         };
 
     $scope.cancel = function () {
@@ -637,7 +640,7 @@ angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function ($
     };
 });
 
-angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $rootScope, $http, $modalInstance, datatypeToDelete) {
+angular.module('igl').controller('ConfirmDatatypeDeleteCtl', function ($scope, $rootScope, $http, $modalInstance, datatypeToDelete) {
 	
     $scope.datatypeToDelete = datatypeToDelete;
     $scope.loading = false;

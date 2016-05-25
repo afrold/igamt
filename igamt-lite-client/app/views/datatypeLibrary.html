@@ -161,10 +161,6 @@
 </accordion-group>
 </accordion>
 </div>
-
-
-=======
->>>>>>> branch 'all-lib' of https://github.com/haffonist/igamt.git
 <script type="text/ng-template" id="LibraryMetaData.html">
 
 <div class="container>
@@ -313,7 +309,7 @@
 </div>
 </script>
 <script type="text/ng-template" id="datatypeListDlg.html">
-<div id="datatypelibrary-dialog" style="width : 100%">
+<div id="datatypelibrary-dialog">
 <div class="modal-content">
   <div class="modal-header">
     <h3 class="modal-title">Data Types</h3>
@@ -714,7 +710,7 @@
 	id="DatatypeLibrarySubComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-1 col-fixed-100">
-            <div>-</div>
+            {{node.position}}
         </td>
         <td class="col-xs-2 col-fixed-250">
                                         <span>
