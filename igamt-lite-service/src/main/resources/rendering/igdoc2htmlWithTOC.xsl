@@ -916,8 +916,7 @@
 	<xsl:template name="csheader">
 		<col style="width:10%"></col>
 		<col style="width:10%"></col>
-		<col style="width:10%"></col>
-		<col style="width:70%"></col>
+		<col style="width:80%"></col>
 		<thead>
 			<tr style="background:#F0F0F0; color:#B21A1C; align:center">
 				<th>
@@ -925,9 +924,6 @@
 				</th>
 				<th>
 					Location
-				</th>
-				<th>
-					Classification
 				</th>
 				<th>
 					Description
@@ -941,8 +937,7 @@
 	<xsl:template name="preheader">
 		<col style="width:10%"></col>
 		<col style="width:10%"></col>
-		<col style="width:10%"></col>
-		<col style="width:70%"></col>
+		<col style="width:80%"></col>
 		<thead style="background:#F0F0F0; color:#B21A1C; align:center">
 			<tr>
 				<th>
@@ -951,7 +946,7 @@
 				<th>
 					Usage
 				</th>
-				<th colspan='2'>
+				<th>
 					Description
 				</th>
 			</tr>
@@ -961,7 +956,7 @@
 	<!-- Parse constraint for inline mode segment -->
 	<xsl:template match="Constraint" mode="inlineSgt">
 		<xsl:variable name="precolspan" select="4"></xsl:variable>
-		<xsl:variable name="cscolspan" select="5"></xsl:variable>
+		<xsl:variable name="cscolspan" select="4"></xsl:variable>
 		<xsl:if test="./@Type='pre'">
 			<tr style="background-color:#E8E8E8;text-decoration:normal">
 				<td>
@@ -994,8 +989,6 @@
 				<xsl:value-of select="number($cscolspan)" />	
 				</xsl:attribute>
 					<xsl:value-of select="@Id" />
-					:
-					<xsl:value-of select="@Classification" />
 					:
 					<xsl:value-of select="." />
 				</xsl:element>
@@ -1040,8 +1033,6 @@
 				</xsl:attribute>
 					<xsl:value-of select="@Id" />
 					:
-					<xsl:value-of select="@Classification" />
-					:
 					<xsl:value-of select="." />
 				</xsl:element>
 			</tr>
@@ -1058,7 +1049,7 @@
 				<td>
 					<xsl:value-of select="@Usage" />
 				</td>
-				<td colspan='2'>
+				<td>
 					<xsl:value-of select="." />
 				</td>
 			</tr>
@@ -1071,9 +1062,6 @@
 				</td>
 				<td>
 					<xsl:value-of select="concat(@LocationName, @Location)" />
-				</td>
-				<td>
-					<xsl:value-of select="@Classification" />
 				</td>
 				<td>
 					<xsl:value-of select="." />

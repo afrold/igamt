@@ -295,7 +295,11 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 	private nu.xom.Element serializeConstaint(Constraint c, String type) {
 		nu.xom.Element elmConstraint = new nu.xom.Element(type);
-		elmConstraint.addAttribute(new Attribute("ID", c.getConstraintId()));
+		
+		if(c.getConstraintId() != null){
+			elmConstraint.addAttribute(new Attribute("ID", c.getConstraintId()));
+		}
+		
 		if (c.getConstraintTarget() != null && !c.getConstraintTarget().equals(""))
 			elmConstraint.addAttribute(new Attribute("Target", c.getConstraintTarget()));
 

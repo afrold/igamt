@@ -10,6 +10,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -108,11 +109,25 @@ public class DatatypeLibraryController extends CommonController {
 	public List<DatatypeLibrary> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
 		log.info("Fetching the datatype library. scope=" + scopesAndVersion.getScopes() + " hl7Version="
 				+ scopesAndVersion.getHl7Version());
-		List<DatatypeLibrary> datatypes = null;
+		List<DatatypeLibrary> datatypes = new ArrayList<DatatypeLibrary>();
 		try {
-			datatypes = datatypeLibraryService.findByScopesAndVersion(scopesAndVersion.getScopes(),
-					scopesAndVersion.getHl7Version());
-			if (datatypes == null) {
+			Long accountId = null;
+			User u = userService.getCurrentUser();
+			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+			if (account == null) {
+				throw new UserAccountNotFoundException();
+			}
+			accountId = account.getId();
+			// When USER is one of the scopes, we must use the accountId to
+			// narrow the results.
+			// We then remove the USER scope before running the second query.
+			if (scopesAndVersion.getScopes().contains(SCOPE.USER)) {
+				datatypes.addAll(datatypeLibraryService.findByAccountId(accountId, scopesAndVersion.getHl7Version()));
+				scopesAndVersion.getScopes().remove(SCOPE.USER);
+			}
+			datatypes.addAll(datatypeLibraryService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+					scopesAndVersion.getHl7Version()));
+			if (datatypes.isEmpty()) {
 				throw new NotFoundException("Datatype not found for scopesAndVersion=" + scopesAndVersion);
 			}
 		} catch (Exception e) {
@@ -249,8 +264,7 @@ public class DatatypeLibraryController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{libId}/addChildren", method = RequestMethod.POST)
-	public boolean addChild(@PathVariable String libId,
-			@RequestBody Set<DatatypeLink> datatypeLinks)
+	public boolean addChild(@PathVariable String libId, @RequestBody Set<DatatypeLink> datatypeLinks)
 			throws DatatypeSaveException {
 		log.debug("Adding a link to the library");
 		DatatypeLibrary lib = datatypeLibraryService.findById(libId);
