@@ -78,9 +78,8 @@ public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations 
 		Criteria where = Criteria
 				.where("accountId")
 				.is(accountId)
-				.andOperator(Criteria.where("scope").is(SCOPE.USER))
-				.andOperator(
-						Criteria.where("metaData.hl7Version").is(hl7Version));
+				.andOperator(Criteria.where("scope").is(SCOPE.USER.name()),
+							Criteria.where("metaData.hl7Version").is(hl7Version));
 		Query qry = Query.query(where);
 		List<DatatypeLibrary> list = mongo.find(qry, DatatypeLibrary.class);
 		log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion list.size()="
