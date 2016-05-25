@@ -329,7 +329,7 @@ angular.module('igl')
                                 //$scope.sortByLabels();
                                 $scope.loadMastermap();
                                 $scope.loadFilter();
-                                $scope.loadToc();
+                               
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();
                             }, function () {
@@ -429,9 +429,6 @@ angular.module('igl')
         };
 
 
-        $scope.loadToc = function () {
-            $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
-        };
 
         $scope.loadFilter = function () {
             $rootScope.$emit('event:loadFilter', $rootScope.igdocument);
