@@ -376,10 +376,10 @@ angular.module('igl')
             });
             modalInstance.result.then(function (datatype) {
                 field.datatype.id = datatype.id;
-                //TODO: load master map
-                if (!$rootScope.datatypesMap[field.datatype.id] || $rootScope.datatypesMap[field.datatype.id] == null) {
+                 if (!$rootScope.datatypesMap[field.datatype.id] || $rootScope.datatypesMap[field.datatype.id] == null) {
                     $rootScope.datatypesMap[field.datatype.id] = datatype;
                 }
+                // TODO: Delete field from MasterMap
 //                MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
