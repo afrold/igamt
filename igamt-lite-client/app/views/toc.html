@@ -13,92 +13,6 @@
 </script>
 <style>
 
-    .selected {
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#87e0fd+0,05abe0+100 */
-        background: #87e0fd; /* Old browsers */
-        background: -moz-linear-gradient(top, #87e0fd 0%, #05abe0 100%);
-        /* FF3.6-15 */
-        background: -webkit-linear-gradient(top, #87e0fd 0%, #05abe0 100%);
-        /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom, #87e0fd 0%, #05abe0 100%);
-        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd',
-        endColorstr='#05abe0', GradientType=0); /* IE6-9 */
-        color: white;
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#356aa0+0,356aa0+100;Blue+Flat */
-        background: #356aa0; /* Old browsers */
-        background: -moz-linear-gradient(top, #356aa0 0%, #356aa0 100%);
-        /* FF3.6-15 */
-        background: -webkit-linear-gradient(top, #356aa0 0%, #356aa0 100%);
-        /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom, #356aa0 0%, #356aa0 100%);
-        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#356aa0',
-        endColorstr='#356aa0', GradientType=0); /* IE6-9 */
-    }
-
-    .panel-body {
-
-    }
-    .unused{
-    background-color: gray;}
-    
-    /* .fa{ */
-    /* font-size: 18px; */
-    /* } */
-    .treeRoot {
-        font-size: 18px;
-    }
-
-    .treeSection {
-        font-size: 16px;
-        margin-left: -10px;
-    }
-
-    .treeSubSection {
-        font-size: 14px;
-    }
-
-    .treeUnderSubSection {
-        font-size: 13px;
-    }
-    .cursorMove{
-    cursor: move;}
-    .message {
-        font-size: 17px;
-    }
-
-    .messageContent {
-        font-size: 16;
-    }
-
-    .messageSubContent {
-        font-size: 12px;
-        margin-left:45px;
-    }
-    .uitree{
- 	margin-left:8px;
-    }
-    .label-USE{
-    background-color: green;}
-    
-     .label-HL7{
-    background-color: red;}
-    
-    .label-MASTER{
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff7400+0,ff7400+100;Orange+Flat */
-	background: #ff7400; /* Old browsers */
-	background: -moz-linear-gradient(top, #ff7400 0%, #ff7400 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top, #ff7400 0%,#ff7400 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom, #ff7400 0%,#ff7400 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff7400', endColorstr='#ff7400',GradientType=0 ); /* IE6-9 */
-    }
-    
-    span{
-    cursor: pointer;
-    font-weight: normal;
- 
-    }
     
     
     .angular-ui-tree-handle {
@@ -180,7 +94,7 @@
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
 
-                        <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
+                        <li ng-repeat="msg in ig.profile.messages.children |filter :showToC" ui-tree-node
 
                             ng-if="!collapsemessage" data-type="message">
                             <div ui-tree-handle 
@@ -197,7 +111,11 @@
                             </div>
                         </li>
                     </ol>
-
+<script type="text/ng-template" id="segmentPopover">
+  <span>
+    {{segment.scope}}
+  </span>
+</script>
 
                     <ol ui-tree-nodes="" ng-model="segments"
                         ng-show="!profilecollapsed" data-type="segments">
@@ -211,7 +129,7 @@
 								{{ig.childSections.length+1}}.2.Segments and field descriptions</span>
                         </div>
 
-                        <li ng-repeat="segment in segments  | orderBy :'label'"
+                        <li ng-repeat="segment in segments  | orderBy :'label'|filter: showToc"
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click style ="margin-left:30px;"
@@ -222,7 +140,12 @@
                                       ng-click=" editSeg(segment);Activate(segment.id)">
 
                                        <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
-                                   'label-USE':  getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' ,'unused' : showUnused(segment)}" >  {{getScopeLabel(segment)}}</span>
+                                   'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' ,'unused' : showUnused(segment)}"  ns-popover ns-popover-template="segmentPopover"
+  ns-popover-trigger="mouseenter"
+  ns-popover-placement="bottom"
+  ns-popover-theme="ns-popover-custom-theme"
+  ns-popover-timeout="0"
+  >  {{getScopeLabel(segment)}}	</span>
                                         {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                             </div>
                         </li>
@@ -238,7 +161,7 @@
                                     data-nodrag ng-click="editRoutSection('Datatypes')" confirm-click>{{ig.childSections.length+1}}.3.Datatypes</span>
                         </div>
 
-                        <li ng-repeat="data in datatypes  | orderBy :'label'" ui-tree-node
+                        <li ng-repeat="data in datatypes  | orderBy :'label' " ui-tree-node
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle  data-nodrag  
                                  confirm-click
@@ -248,7 +171,7 @@
                                       confirm-click
                                       ng-click="editDataType(data); Activate(data.id)">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','unused' : showUnused(data)}" >  {{getScopeLabel(data)}}</span> 
+                                   'label-USE':  !showUnused(data)&&getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','unused' : showUnused(data)}" >  {{getScopeLabel(data)}}</span> 
                                       
                                        {{getDatatypeLabel(data)}}-{{data.description}}</span>
 
@@ -269,7 +192,7 @@
                         </div>
 
 
-                        <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node
+                        <li ng-repeat="table in tables |  orderBy :'name'|filter :showToC" ui-tree-node
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click
@@ -280,7 +203,7 @@
                                       confirm-click
                                       ng-click="editTable(table); Activate(table.id)">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE':  getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','unused' : showUnused(table)}" >  {{getScopeLabel(table)}}</span> 
+                                   'label-USE':  !showUnused(table)&&getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','unused': showUnused(table)}" >  {{getScopeLabel(table)}}</span> 
                                       
                                       {{table.bindingIdentifier}}-{{table.description}}</span>
 
@@ -299,88 +222,3 @@
  </div>
 </div>
 
-<!--
-	Context menu partials.
--->
-<div class="dropdown position-fixed" id="headContextDiv.html"
-     ng-controller="ContextMenuCtl">
-    <ul class="dropdown-menu" role="menu">
-        <li><a class="pointer" role="menuitem" tabindex="1"
-               ng-click="clicked('Copy')"> <i class="fa fa-plus fa-fw"></i>Copy
-        </a></li>
-    </ul>
-</div>
-
-<div class="dropdown position-fixed" id="messageHeadContextDiv.html"
-     ng-controller="HL7VersionsDlgCtrl">
-    <ul class="dropdown-menu" role="menu">
-        <li><a class="pointer" role="menuitem" tabindex="1"
-               ng-click="hl7Versions('ctx')"><i class="fa fa-plus fa-fw"></i>Add</a></li>
-        <li><a class="pointer" role="menuitem" tabindex="2"
-               ng-click="selectMessagesForExport(igdocument)"><i
-                class="fa fa-download fa-fw"></i>Export</a></li>
-    </ul>
-</div>
-
-<div class="dropdown position-fixed" id="tableHeadContextDiv.html"
-     ng-controller="HL7VersionsDlgCtrl">
-    <ul class="dropdown-menu" role="menu">
-        <li><a class="pointer" role="menuitem" tabindex="1"
-               ng-click="addTable(igdocument)"><i class="fa fa-plus fa-fw"></i>Add</a></li>
-    </ul>
-</div>
-
-<div class="dropdown position-fixed" id="messageContextDiv.html"
-     ng-controller="ContextMenuCtl">
-    <ul class="dropdown-menu" role="menu">
-        <li><a class="pointer" role="menuitem" tabindex="1"
-               ng-click="clicked('Copy')"><i class="fa fa-plus fa-fw"></i>Copy</a></li>
-        <li><a class="pointer" role="menuitem" tabindex="2"
-               ng-click="clicked('Delete')"><i class="fa fa-trash-o fa-fw"></i>Delete</a></li>
-        <li><a class="pointer" role="menuitem" tabindex="3"
-               ng-click="selectMessagesForExport(igdocument)"><i
-                class="fa fa-download fa-fw"></i>Export</a></li>
-    </ul>
-</div>
-
-<div class="dropdown position-fixed" id="contextDiv.html"
-     ng-controller="ContextMenuCtl">
-    <ul class="dropdown-menu" role="menu">
-        <li><a class="pointer" role="menuitem" tabindex="1"
-               ng-click="clicked('Copy')"><i class="fa fa-plus fa-fw"></i>Copy</a></li>
-        <li><a class="pointer" role="menuitem" tabindex="2"
-               ng-click="clicked('Delete')"><i class="fa fa-trash-o fa-fw"></i>Delete</a></li>
-    </ul>
-</div>
-
-<script type="text/ng-template" id="Metadata.html">
-    <a class="point txt" ng-click="tocSelection(node.title, node)">
-        <!--<span class="fa"-->
-        <!--ng-class="{-->
-        <!--'': !collapsed[node.title]-->
-        <!--}"></span>-->
-        <span class="">{{node.title}}</span></a>
-</script>
-<script type="text/ng-template" id="DefaultEntry.html">
-    <a class="point txt">
-        <span class="fa" ng-class="{'': !collapsed[member.label]}">{{member.label}}</span>
-        <!--
-            <span class="" ng-show="nnode.type === 'segment'">{{nnode.label}}</span>
-            <span class="" ng-show="nnode.type === 'table'">{{nnode.bindingIdentifier}}</span>
-            <span class="" ng-show="nnode.type === 'datatype'">{{nnode.label}}</span>
-            <span class="" ng-show="nnode.type === 'message'">{{nnode.structID}}</span>
-        -->
-    </a>
-</script>
-<script type="text/ng-template" id="Message.html">
-    <a class="point txt" ng-click="tocSelection(node.title, nnode)">
-        <!--<span class="fa"-->
-        <!--ng-class="{-->
-        <!--'': !collapsed[node.title]-->
-        <!--}"></span>-->
-        <span class="" ng-show="nnode.type === 'segment'">{{nnode.label}}</span>
-        <span class="" ng-show="nnode.type === 'table'">{{nnode.bindingIdentifier}}</span>
-        <span class="" ng-show="nnode.type === 'datatype'">{{nnode.label}}</span>
-        <span class="" ng-show="nnode.type === 'message'">{{nnode.structID}}</span>
-    </a>
-</script>
