@@ -146,7 +146,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">Edit Area</div>
 					<div class="panel-body" style="padding-bottom: 100px">
-						<form confirmOnLeave name="forms.editForm">
+						<form confirm-on-leave name="forms.editForm">
 							<ng-include src="editView"></ng-include/>
 						</form>
 					</div>
@@ -271,9 +271,9 @@
   <div class="modal-header">
     <h3 class="modal-title">New Data Type Library</h3>
   </div>
+  <div class="modal-body">
   <form>
   <div class="form-group">
-  <div class="modal-body">
   <div class="container" style="max-width: 200%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
       <div class="row">
         <label for="name" class="control-label">Name</label>
@@ -299,8 +299,8 @@
       </div>
     </div>
   </div>
-  </div>
   </form>
+  </div>
     <div class="modal-footer">
       <button class="btn btn-primary" ng-disabled="okDisabled" type="button" ng-click="ok()">Ok</button>
       <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
@@ -576,8 +576,7 @@
         </td>
     </tr>
 </script>
-<script type="text/ng-template"
-	id="DatatypeLibraryComponentEditTree.html">
+<script type="text/ng-template" id="DatatypeLibraryComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)"
         ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
          <td class="col-xs-1 col-fixed-100">{{node.position}}
@@ -707,8 +706,7 @@
         </td>
     </tr>
 </script>
-<script type="text/ng-template"
-	id="DatatypeLibrarySubComponentEditTree.html">
+<script type="text/ng-template" id="DatatypeLibrarySubComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-1 col-fixed-100">
             {{node.position}}
@@ -772,8 +770,7 @@
         </td>
     </tr>
 </script>
-<script type="text/ng-template"
-	id="ConfirmDatatypeLibraryDeleteCtrl.html">
+<script type="text/ng-template" id="ConfirmDatatypeLibraryDeleteCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Delete Confirmation
         </h3>
@@ -815,57 +812,5 @@
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>
     </div>
-    </div>
-</script>
-<script type="text/ng-template"
-	id="ConfirmDatatypeLibraryCloseCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Close Confirmation
-        </h3>
-    </div>
-    <div class="modal-body">
-        <p>You currently have unsaved changes. Are you sure you want to close the Data Type Library? All unsaved changes will
-            be lost</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
-                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
-        </button>
-        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
-                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
-        </button>
-
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
-        </div>
-    </div>
-</script>
-<script type="text/ng-template" id="ConfirmDatatypeLibraryOpenCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Open Confirmation
-        </h3>
-    </div>
-    <div class="modal-body">
-        <p>You currently have an open Data Type Library with unsaved changes. Are you sure you want to open the Data Type Library?
-            All
-            unsaved changes will be lost</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
-                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
-        </button>
-        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
-                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
-        </button>
-
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
-        </div>
     </div>
 </script>
