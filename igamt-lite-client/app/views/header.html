@@ -57,7 +57,8 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right" style="margin-right: 5px">
-            <li  class="nav-header" ng-show="isAuthenticated()" ng-class="activeWhen(path()=='/useraccount')"><a class="point" href="#/useraccount"><i class="fa fa-user"></i>&nbsp;{{getFullName()}}</a></li>
+
+            <li  class="nav-header" ng-show="isAuthenticated()" ng-class="activeWhen(path()=='/useraccount')"><a class="point" href="#/useraccount"><i class="fa fa-user"></i>&nbsp;My Account</a></li>
 
             <li class="nav-header"  class="" style="margin-right: 5em" ng-show="isAuthenticated()">
                 <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span msg class="msg" key="navbar.logout"></span></a>

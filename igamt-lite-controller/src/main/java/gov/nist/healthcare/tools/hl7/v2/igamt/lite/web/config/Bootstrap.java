@@ -50,9 +50,8 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-
-
-		 covertOldToNew();
+        //Carefully use this. It will delete all of existing IGDocuments and make new ones converted from the "igdocumentPreLibHL7", "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER" 
+//		 covertOldToNew();
 
 	}
 
