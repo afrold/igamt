@@ -938,8 +938,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			File tmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
 
 			// Generate xml file containing profile
-//			File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
-			File tmpXmlFile =  new File("IGDocTemp.xml");
+			File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
+//			File tmpXmlFile =  new File("IGDocTemp.xml");
 			String stringIgDoc = profileSerializationDocumentService.serializeIGDocumentToXML(igdoc);
 			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
 					Charset.forName("UTF-8"));
