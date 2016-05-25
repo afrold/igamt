@@ -75,6 +75,22 @@ angular.module('igl')
             StorageService.setIgDocument(null);
             $rootScope.clearChanges();
         };
+        $scope.segOption = [
+
+                ['Add segment',
+                    function ($itemScope) {
+                        $itemScope.node.children.push($rootScope.messageTree.children[0]);
+                        $scope.messagesParams.refresh();
+
+                    } ],
+                null,
+                ['Add group',
+                    function ($itemScope) {
+                        $itemScope.node.children.push($rootScope.messageTree.children[3]);
+                        $scope.messagesParams.refresh();
+                    } ]
+
+            ];
 
         $scope.getMessageParams = function () {
             return new ngTreetableParams({
@@ -86,6 +102,18 @@ angular.module('igl')
                 }
             });
         };
+        $scope.addSegment=function(){
+
+             testSeg = $rootScope.messageTree.children[0];
+            $rootScope.messageTree.children.push(testSeg);
+             $scope.messagesParams.refresh();
+        };
+        $scope.addGroup=function(){
+            testGroup = $rootScope.messageTree.children[3];
+            $rootScope.messageTree.children.push(testGroup);
+             $scope.messagesParams.refresh();
+        };
+
 
         /**
          * init the controller
