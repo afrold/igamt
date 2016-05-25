@@ -58,6 +58,9 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
             }
         }
     };
+    svc.deleteComponent = function(componentId) {
+        svc.removeMastermapElt(componentId, "component");
+    }
     svc.addValueSetId = function(tableId, parent) {
         if (tableId !== undefined && tableId !== null && tableId !==
             "") {
@@ -122,6 +125,9 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
     }
     svc.deleteDatatype = function(datatypeId) {
         svc.removeMastermapElt(datatypeId, "datatype");
+    }
+    svc.deleteElementChildren = function(elementId, elementType, childrenToBeRemoved, childrenType) {
+        svc.removeId(childrenToBeRemoved, svc.getElementByKey(elementId, elementType, childrenType));
     }
     svc.addFieldObject = function(field, parent) {
         if (field !== undefined && field !== null) {
@@ -210,6 +216,9 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
                 }
             }
         }
+    }
+    svc.deleteSegmentRef = function(segmentRefId) {
+        svc.removeMastermapElt(segmentRefId, "segmentRef");
     }
     svc.addGroup = function(group, parent) {
         if (group !== undefined && group !== null) {
