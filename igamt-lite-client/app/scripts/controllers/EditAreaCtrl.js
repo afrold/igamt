@@ -3,6 +3,7 @@ angular.module('igl')
 
         $scope.init = function(){
             if($scope.editForm) {
+                $rootScope.clearChanges();
                 $scope.editForm.$setPristine();
                 $scope.editForm.$dirty = false;
                 console.log("=====> set $dirty to false")
@@ -15,7 +16,7 @@ angular.module('igl')
 
         $scope.$watch(
             function(){
-              return $scope.editForm.$dirty;
+              return $scope.editForm != undefined && $scope.editForm.$dirty;
             },
             function handleFormState( newValue) {
                 if(newValue){
