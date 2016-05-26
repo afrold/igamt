@@ -205,6 +205,7 @@ angular
                 return (MastermapSvc.getElementByKey(leaf.id, leaf.type, "message").indexOf(filterElt.id) !== -1);
             }
         }
+        return false;
     }
 
     svc.filterByUsage = function(leaf, filterElt){
@@ -239,10 +240,6 @@ angular
   }
 
     svc.filterByUsageWithParent = function(node, parentNode, filter){
-//      if (MastermapSvc.getElement(node.id, node.type) !== undefined){
-//        if (MastermapSvc.getUsage(node.id, node.type) !== undefined){
-//          if (node.type === "field" || node.type === "component" ){
-//}
             if (node.type === "subcomponent"){
                 var showElt = svc.filterByUsage({"id":node.id, "type":"component"}, filter);
             } else {
@@ -254,9 +251,7 @@ angular
             } else {
                 return true;
             }
- //        }
-//      }
-}
+    }
 
     svc.isUnused = function(node){
         if (MastermapSvc.getElement(node.id, node.type) !== undefined){
@@ -280,6 +275,8 @@ angular
             } else if (node.type == "profile") {
                  return (MastermapSvc.getElementByKey(node.id, node.type, "ig").length === 0);
             }
+        } else {
+            return false;
         }
     }
 
