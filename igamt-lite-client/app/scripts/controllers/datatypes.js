@@ -298,7 +298,15 @@ angular.module('igl')
                         $scope.selectedChildren = [];
                         if ($scope.datatypesParams)
                             $scope.datatypesParams.refresh();
-                        $rootScope.$broadcast('event:SetToC');
+                        if($scope.editForm) {
+                            $scope.editForm.$setPristine();
+                            $scope.editForm.$dirty = false;
+                        }
+                        $rootScope.clearChanges();
+
+                        $rootScope.msg().text = "datatypeSaved";
+                        $rootScope.msg().type = "success";
+                        $rootScope.msg().show = true;
                     }, function (error) {
                         $scope.saving = false;
                         $rootScope.msg().text = error.data.text;
@@ -365,8 +373,8 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (datatype, ext) {
-                MastermapSvc.deleteElementChildren(component.datatype.id, "datatype", component.id, component.type);
-                MastermapSvc.addDatatypeObject(datatype, [[component.id, component.type]]);
+//                MastermapSvc.deleteElementChildren(component.datatype.id, "datatype", component.id, component.type);
+//                MastermapSvc.addDatatypeObject(datatype, [[component.id, component.type]]);
                 component.datatype.id = datatype.id;
                 // TODO: Delete component from MasterMap
                 if ($scope.datatypesParams)
@@ -375,11 +383,11 @@ angular.module('igl')
 
         };
 
-        $scope.$watch(function(){
-            return $rootScope.datatype;
-        }, function() {
-            $rootScope.recordChanged();
-        }, true);
+//        $scope.$watch(function(){
+//            return $rootScope.datatype;
+//        }, function() {
+//            $rootScope.recordChanged();
+//        }, true);
 
 
     });
