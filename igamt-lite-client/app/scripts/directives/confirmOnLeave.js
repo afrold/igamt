@@ -42,24 +42,24 @@ angular.module('igl').directive("confirmClick",
 
 
 
-                        if ($rootScope.hasChanges()) {
-
-                            $rootScope.openConfirmLeaveDlg().result.then(function () {
-                                $rootScope.clearChanges();
-                            },function(){
-                                event.stopImmediatePropagation();
-                                event.preventDefault();
-                            });
-
-
-//                            var message = "You have unsaved data. If you leave this section your data will be lost.\n\n Are you sure you want to leave this page?";
-//                            if (!confirm(message)) {
+//                        if ($rootScope.hasChanges()) {
+//
+//                            $rootScope.openConfirmLeaveDlg().result.then(function () {
+//                                $rootScope.clearChanges();
+//                            },function(){
 //                                event.stopImmediatePropagation();
 //                                event.preventDefault();
-//                            }else{
-//                                $rootScope.clearChanges();
-//                            }
-                        }
+//                            });
+//
+//
+////                            var message = "You have unsaved data. If you leave this section your data will be lost.\n\n Are you sure you want to leave this page?";
+////                            if (!confirm(message)) {
+////                                event.stopImmediatePropagation();
+////                                event.preventDefault();
+////                            }else{
+////                                $rootScope.clearChanges();
+////                            }
+//                        }
                     });
                 }
             }

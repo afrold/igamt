@@ -1053,6 +1053,12 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
                 $scope.saving = false;
                 $scope.saved = true;
                 $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
+                if($scope.editForm) {
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                }
+                $rootScope.clearChanges();
+
             }, function (error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
@@ -1064,6 +1070,7 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
         }
     };
     $scope.reset = function () {
+        $scope.editForm.$dirty = false;
         $scope.editForm.$setPristine();
         $rootScope.clearChanges();
         $rootScope.metaData = angular.copy($rootScope.igdocument.metaData);
@@ -1081,6 +1088,10 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
                 $scope.saving = false;
                 $scope.saved = true;
                 $rootScope.igdocument.profile.metaData = angular.copy($rootScope.metaData);
+                $scope.editForm.$setPristine();
+                $scope.editForm.$dirty = false;
+                $rootScope.clearChanges();
+
             }, function (error) {
                 $scope.saving = false;
                 $scope.saved = false;
@@ -1091,17 +1102,12 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
         }
     };
     $scope.reset = function () {
+        $scope.editForm.$dirty = false;
         $scope.editForm.$setPristine();
         $rootScope.clearChanges();
         $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
 
     };
-
-    $scope.$watch(function () {
-        return $rootScope.metaData;
-    }, function () {
-        $rootScope.recordChanged();
-    }, true);
 });
 
 

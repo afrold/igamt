@@ -298,7 +298,15 @@ angular.module('igl')
                         $scope.selectedChildren = [];
                         if ($scope.datatypesParams)
                             $scope.datatypesParams.refresh();
-                        $rootScope.$broadcast('event:SetToC');
+                        if($scope.editForm) {
+                            $scope.editForm.$setPristine();
+                            $scope.editForm.$dirty = false;
+                        }
+                        $rootScope.clearChanges();
+
+                        $rootScope.msg().text = "datatypeSaved";
+                        $rootScope.msg().type = "success";
+                        $rootScope.msg().show = true;
                     }, function (error) {
                         $scope.saving = false;
                         $rootScope.msg().text = error.data.text;
@@ -375,11 +383,11 @@ angular.module('igl')
 
         };
 
-        $scope.$watch(function(){
-            return $rootScope.datatype;
-        }, function() {
-            $rootScope.recordChanged();
-        }, true);
+//        $scope.$watch(function(){
+//            return $rootScope.datatype;
+//        }, function() {
+//            $rootScope.recordChanged();
+//        }, true);
 
 
     });
