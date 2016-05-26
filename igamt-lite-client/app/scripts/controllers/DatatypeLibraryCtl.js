@@ -497,7 +497,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     });
   });   
 };
-});
 $scope.confirmPublish = function (datatypeCopy) {
     var modalInstance = $modal.open({
         templateUrl: 'ConfirmDatatypePublishCtl.html',
@@ -507,13 +506,14 @@ $scope.confirmPublish = function (datatypeCopy) {
                 return datatypeCopy;
             }
         }
-    });struct
+    });
     modalInstance.result.then(function (datatypeCopy) {
   		console.log("publsih datatype=" + JSON.stringify(datatypeCopy.label));
   		$scope.datatype
 			DatatypeService.save(datatypeCopy);
    });
 };
+});
 angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 		function($scope, $rootScope, $modalInstance, $timeout, hl7Versions, DatatypeLibrarySvc, DatatypeService) {
 
