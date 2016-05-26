@@ -1946,7 +1946,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.openConfirmLeaveDlg = function () {
-            if($rootScope.modalInstance || $rootScope.modalInstance.opened){
+            if($rootScope.modalInstance != undefined && $rootScope.modalInstance.opened){
                 $rootScope.modalInstance.close();
             }
             $rootScope.modalInstance = $modal.open({

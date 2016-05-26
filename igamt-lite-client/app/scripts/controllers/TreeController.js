@@ -256,7 +256,6 @@ angular
                                 cloneModel.sectionPosition = $scope.getLastPosition($itemScope.$nodeScope.$parentNodesScope.$modelValue);
                                 $itemScope.$nodeScope.$parentNodesScope.$modelValue.push(cloneModel);
                                 $scope.editSection(cloneModel);
-                                $scope.activeModel = cloneModel.id;
                                 if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "document") {
                                     $scope.updateChildeSections($rootScope.igdocument.childSections);
                                 } else if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "section") {
@@ -318,6 +317,7 @@ angular
 
                                 newSection.sectionPosition = $rootScope.igdocument.childSections.length;
                                 $scope.updateChildeSections($rootScope.igdocument.childSections);
+                                $scope.Activate(newSection.id);
                             };
 
                             if($rootScope.hasChanges()){
@@ -507,23 +507,73 @@ angular
                 ];
 
                 $scope.editSeg = function(seg) {
-                    $scope.$emit('event:openSegment', seg);
+                    var process = function(){
+                        $scope.Activate(seg.id);
+                        $scope.$emit('event:openSegment', seg);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
+
                 }
 
                 $scope.editIg = function(ig) {
-                    $rootScope.igdocument = ig;
-                    $scope.$emit('event:openDocumentMetadata',
-                        $rootScope.igdocument);
+                    var process = function(){
+                        $scope.Activate(ig.id);
+                        $rootScope.igdocument = ig;
+                        $scope.$emit('event:openDocumentMetadata',
+                            $rootScope.igdocument);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
+
                 }
 
                 $scope.editSection = function(section) {
-                    $rootScope.section = section;
-                    $scope.$emit('event:openSection', $rootScope.section);
+                    var process = function(){
+                        $scope.Activate(section.id);
+                        $rootScope.section = section;
+                        $scope.$emit('event:openSection', $rootScope.section);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
                 }
 
 
                 $scope.editRoutSection = function(param) {
-                    $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
+                    var process = function(){
+                        $scope.Activate(param.id);
+                        $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
+
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
                 }
 
 
@@ -561,23 +611,69 @@ angular
                     return section;
                 }
                 $scope.editDataType = function(data) {
-                    $rootScope.datatype = data;
-                    $scope.$emit('event:openDatatype', $rootScope.datatype);
+                    var process = function(){
+                        $scope.Activate(data.id);
+                        $rootScope.datatype = data;
+                        $scope.$emit('event:openDatatype', $rootScope.datatype);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
                 }
 
                 $scope.editTable = function(table) {
-                    $rootScope.table = table;
-                    $scope.$emit('event:openTable', $rootScope.table);
+                    var process = function(){
+                        $scope.Activate(table.id);
+                        $rootScope.table = table;
+                        $scope.$emit('event:openTable', $rootScope.table);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
                 }
 
                 $scope.editMessage = function(message) {
-                    $rootScope.message = message;
-                    $scope.$emit('event:openMessage', message);
+                    var process = function(){
+                        $scope.Activate(message.id);
+                        $rootScope.message = message;
+                        $scope.$emit('event:openMessage', message);
+                    };
+                    if($rootScope.hasChanges()){
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
                 }
                 $scope.editProfile = function() {
-                    $scope.Activate("Message Infrastructure");
-                    $scope.$emit('event:openProfileMetadata',
-                        $rootScope.igdocument);
+                    var process = function(){
+                        $scope.Activate("Message Infrastructure");
+                        $scope.$emit('event:openProfileMetadata',
+                            $rootScope.igdocument);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
                 }
 
 
