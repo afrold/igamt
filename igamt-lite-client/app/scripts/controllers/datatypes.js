@@ -699,6 +699,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
 
     $scope.mappingTable = function () {
         $scope.selectedNode.table.id = $scope.selectedTable.id;
+        $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
         $rootScope.recordChangeForEdit2('component', 'edit', $scope.selectedNode.id, 'table', $scope.selectedTable.id);
         $scope.ok();
     };

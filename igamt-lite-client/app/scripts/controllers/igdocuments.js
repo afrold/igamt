@@ -1107,7 +1107,7 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
 
 angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc) {
     $scope.igdocumentToSelect = igdocumentToSelect;
-    $scope.xmlFormat = '';
+    $scope.xmlFormat = 'Validation';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
 
