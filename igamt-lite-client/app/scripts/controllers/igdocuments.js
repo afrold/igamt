@@ -7,6 +7,7 @@ angular.module('igl')
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
+
         $scope.tmpIgs = [].concat($rootScope.igs);
         $scope.error = null;
         $scope.print = function (param) {
@@ -300,11 +301,14 @@ angular.module('igl')
         $scope.edit = function (igdocument) {
             console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
             $scope.viewSettings.setTableReadonly(false);
+            $scope.tocView='views/toc.html';
+            
             $scope.show(igdocument);
         };
-
+        
         $scope.view = function (igdocument) {
             $scope.viewSettings.setTableReadonly(true);
+            $scope.tocView='views/tocReadOnly.html';
             $scope.show(igdocument);
         };
 
@@ -676,6 +680,9 @@ angular.module('igl')
 //            });
 //            return delay.promise;
 //        };
+
+        
+        
 
         $scope.exportChanges = function () {
             var form = document.createElement("form");
