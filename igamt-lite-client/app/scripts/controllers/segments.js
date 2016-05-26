@@ -292,10 +292,19 @@ angular.module('igl')
                         oldLink.name = newLink.name;
                         $scope.saving = false;
                         $scope.selectedChildren = [];
+                        if($scope.editForm) {
+                            $scope.editForm.$setPristine();
+                            $scope.editForm.$dirty = false;
+                        }
+                        $rootScope.clearChanges();
+
                         if ($scope.segmentsParams)
                             $scope.segmentsParams.refresh();
-                        $rootScope.$broadcast('event:SetToC');
-                     }, function (error) {
+                        $rootScope.msg().text = "segmentSaved";
+                        $rootScope.msg().type = "success";
+                        $rootScope.msg().show = true;
+
+                      }, function (error) {
                         $scope.saving = false;
                         $rootScope.msg().text = error.data.text;
                         $rootScope.msg().type = error.data.type;

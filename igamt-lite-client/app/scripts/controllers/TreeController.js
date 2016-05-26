@@ -9,7 +9,7 @@ angular
             'FilteringSvc',
             'SectionSvc',
 
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc) {
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc,$modal) {
 
                 $scope.collapsedata = false;
                 $scope.collapsemessage = false;
@@ -250,17 +250,30 @@ angular
 
                     ['copy',
                         function($itemScope) {
-                            var cloneModel = $scope.cloneSectionTree($itemScope.$nodeScope.$modelValue);
-                            cloneModel.sectionPosition = $scope.getLastPosition($itemScope.$nodeScope.$parentNodesScope.$modelValue);
-                            $itemScope.$nodeScope.$parentNodesScope.$modelValue.push(cloneModel);
-                            $scope.editSection(cloneModel);
-                            $scope.activeModel = cloneModel.id;
-                            if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "document") {
-                                $scope.updateChildeSections($rootScope.igdocument.childSections);
-                            } else if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "section") {
-                                SectionSvc.update($rootScope.igdocument.id, $itemScope.section);
 
+                            var process = function(){
+                                var cloneModel = $scope.cloneSectionTree($itemScope.$nodeScope.$modelValue);
+                                cloneModel.sectionPosition = $scope.getLastPosition($itemScope.$nodeScope.$parentNodesScope.$modelValue);
+                                $itemScope.$nodeScope.$parentNodesScope.$modelValue.push(cloneModel);
+                                $scope.editSection(cloneModel);
+                                if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "document") {
+                                    $scope.updateChildeSections($rootScope.igdocument.childSections);
+                                } else if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "section") {
+                                    SectionSvc.update($rootScope.igdocument.id, $itemScope.section);
+
+                                }
+                            };
+
+                            if($rootScope.hasChanges()){
+                                
+                                $rootScope.openConfirmLeaveDlg().result.then(function () {
+                                    process();
+                                });
+                            }else {
+                                process();
                             }
+
+
                         }
                     ],
                     null, [
@@ -288,21 +301,35 @@ angular
                     ['add Section',
                         function($itemScope) {
 
-                            var newSection = {};
-                            newSection.id = new ObjectId().toString();
+                            var process = function(){
+                                var newSection = {};
+                                newSection.id = new ObjectId().toString();
 
-                            var rand = Math.floor(Math.random() * 100);
-                            if (!$rootScope.igdocument.profile.metaData.ext) {
-                                $rootScope.igdocument.profile.metaData.ext = "";
+                                var rand = Math.floor(Math.random() * 100);
+                                if (!$rootScope.igdocument.profile.metaData.ext) {
+                                    $rootScope.igdocument.profile.metaData.ext = "";
+                                }
+                                newSection.sectionTitle = "New Section" + "-" +
+                                    $rootScope.igdocument.profile.metaData.ext + "-" +
+                                    rand;
+                                newSection.label = newSection.sectionTitle;
+                                $rootScope.igdocument.childSections.push(newSection);
+
+                                newSection.sectionPosition = $rootScope.igdocument.childSections.length;
+                                $scope.updateChildeSections($rootScope.igdocument.childSections);
+                                $scope.Activate(newSection.id);
+                            };
+
+                            if($rootScope.hasChanges()){
+                                
+                                $rootScope.openConfirmLeaveDlg().result.then(function () {
+                                    process();
+                                });
+                            }else {
+                                process();
                             }
-                            newSection.sectionTitle = "New Section" + "-" +
-                                $rootScope.igdocument.profile.metaData.ext + "-" +
-                                rand;
-                            newSection.label = newSection.sectionTitle;
-                            $rootScope.igdocument.childSections.push(newSection);
 
-                            newSection.sectionPosition = $rootScope.igdocument.childSections.length;
-                            $scope.updateChildeSections($rootScope.igdocument.childSections);
+
 
 
                         }
@@ -314,7 +341,19 @@ angular
 
                     ['copy',
                         function($itemScope) {
-                            CloneDeleteSvc.copySegment($itemScope.segment);
+                            var process = function(){
+                                CloneDeleteSvc.copySegment($itemScope.segment);
+                            };
+
+
+                            if($rootScope.hasChanges()){
+                                
+                                $rootScope.openConfirmLeaveDlg().result.then(function () {
+                                    process();
+                                });
+                            }else {
+                                process();
+                            }
 
                         }
                     ],
@@ -331,9 +370,19 @@ angular
                     ['copy',
                         function($itemScope) {
 
-                            CloneDeleteSvc.copyDatatype($itemScope.data);
+                            var process = function(){
+                                CloneDeleteSvc.copyDatatype($itemScope.data);
+                            };
 
 
+                            if($rootScope.hasChanges()){
+                                
+                                $rootScope.openConfirmLeaveDlg().result.then(function () {
+                                    process();
+                                });
+                            }else {
+                                process();
+                            }
                         }
                     ],
                     null, ['delete',
@@ -349,8 +398,16 @@ angular
 
                     ['copy',
                         function($itemScope) {
-                            CloneDeleteSvc.copyTable($itemScope.table);
-
+                            var process = function(){
+                                CloneDeleteSvc.copyTable($itemScope.table);
+                            };
+                            if($rootScope.hasChanges()){
+                                $rootScope.openConfirmLeaveDlg().result.then(function () {
+                                    process();
+                                });
+                            }else {
+                                process();
+                            }
                         }
                     ],
                     null, ['delete',
@@ -366,7 +423,19 @@ angular
                     [
                         'copy',
                         function($itemScope) {
-                            CloneDeleteSvc.copyMessage($itemScope.msg);
+                            var process = function(){
+                                CloneDeleteSvc.copyMessage($itemScope.msg);
+                            };
+                            if($rootScope.hasChanges()){
+                                
+                                $rootScope.openConfirmLeaveDlg().result.then(function () {
+                                    process();
+                                });
+                            }else {
+                                process();
+                            }
+
+
 
                         }
                     ],
@@ -438,23 +507,73 @@ angular
                 ];
 
                 $scope.editSeg = function(seg) {
-                    $scope.$emit('event:openSegment', seg);
+                    var process = function(){
+                        $scope.Activate(seg.id);
+                        $scope.$emit('event:openSegment', seg);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
+
                 }
 
                 $scope.editIg = function(ig) {
-                    $rootScope.igdocument = ig;
-                    $scope.$emit('event:openDocumentMetadata',
-                        $rootScope.igdocument);
+                    var process = function(){
+                        $scope.Activate(ig.id);
+                        $rootScope.igdocument = ig;
+                        $scope.$emit('event:openDocumentMetadata',
+                            $rootScope.igdocument);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
+
                 }
 
                 $scope.editSection = function(section) {
-                    $rootScope.section = section;
-                    $scope.$emit('event:openSection', $rootScope.section);
+                    var process = function(){
+                        $scope.Activate(section.id);
+                        $rootScope.section = section;
+                        $scope.$emit('event:openSection', $rootScope.section);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
                 }
 
 
                 $scope.editRoutSection = function(param) {
-                    $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
+                    var process = function(){
+                        $scope.Activate(param.id);
+                        $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
+
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
                 }
 
 
@@ -492,23 +611,69 @@ angular
                     return section;
                 }
                 $scope.editDataType = function(data) {
-                    $rootScope.datatype = data;
-                    $scope.$emit('event:openDatatype', $rootScope.datatype);
+                    var process = function(){
+                        $scope.Activate(data.id);
+                        $rootScope.datatype = data;
+                        $scope.$emit('event:openDatatype', $rootScope.datatype);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
                 }
 
                 $scope.editTable = function(table) {
-                    $rootScope.table = table;
-                    $scope.$emit('event:openTable', $rootScope.table);
+                    var process = function(){
+                        $scope.Activate(table.id);
+                        $rootScope.table = table;
+                        $scope.$emit('event:openTable', $rootScope.table);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
                 }
 
                 $scope.editMessage = function(message) {
-                    $rootScope.message = message;
-                    $scope.$emit('event:openMessage', message);
+                    var process = function(){
+                        $scope.Activate(message.id);
+                        $rootScope.message = message;
+                        $scope.$emit('event:openMessage', message);
+                    };
+                    if($rootScope.hasChanges()){
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
                 }
                 $scope.editProfile = function() {
-                    $scope.Activate("Message Infrastructure");
-                    $scope.$emit('event:openProfileMetadata',
-                        $rootScope.igdocument);
+                    var process = function(){
+                        $scope.Activate("Message Infrastructure");
+                        $scope.$emit('event:openProfileMetadata',
+                            $rootScope.igdocument);
+                    };
+                    if($rootScope.hasChanges()){
+
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            process();
+                        });
+                    }else {
+                        process();
+                    }
+
                 }
 
 
