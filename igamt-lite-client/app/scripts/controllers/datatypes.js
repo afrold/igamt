@@ -91,6 +91,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -108,6 +109,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -125,6 +127,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -376,10 +379,10 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (datatype, ext) {
-                MastermapSvc.deleteElementChildren(component.datatype.id, "datatype", component.id, component.type);
-                MastermapSvc.addDatatypeObject(datatype, [[component.id, component.type]]);
+//                MastermapSvc.deleteElementChildren(component.datatype.id, "datatype", component.id, component.type);
+//                MastermapSvc.addDatatypeObject(datatype, [[component.id, component.type]]);
                 component.datatype.id = datatype.id;
-                $rootScope.setDirty();
+                $scope.setDirty();
                 // TODO: Delete component from MasterMap
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
@@ -711,6 +714,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
 
     $scope.mappingTable = function () {
         $scope.selectedNode.table.id = $scope.selectedTable.id;
+         $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
         $rootScope.recordChanged();
         $scope.ok();
     };

@@ -88,6 +88,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -117,6 +118,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -134,7 +136,9 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
+
             });
         };
 
@@ -388,9 +392,9 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (datatype) {
-                MastermapSvc.deleteElementChildren(field.datatype.id, "datatype", field.id, field.type);
+//                MastermapSvc.deleteElementChildren(field.datatype.id, "datatype", field.id, field.type);
                 field.datatype.id = datatype.id;
-                MastermapSvc.addDatatypeId(datatype.id, [field.id, field.type]);
+//                MastermapSvc.addDatatypeId(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
             });
@@ -419,6 +423,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
 
     $scope.mappingTable = function () {
         $scope.selectedNode.table.id = $scope.selectedTable.id;
+        $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
         $rootScope.recordChangeForEdit2('field', 'edit', $scope.selectedNode.id, 'table', $scope.selectedNode.table.id);
         $scope.ok();
     };

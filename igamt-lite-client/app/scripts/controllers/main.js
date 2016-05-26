@@ -519,10 +519,6 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.igChanged = true;
         };
 
-        $rootScope.setDirty = function () {
-            $scope.editForm.$dirty = true;
-        };
-
 
         $rootScope.recordChange = function (object, changeType) {
 //        var type = object.type;
@@ -1934,8 +1930,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.setUsage = function (node) {
             ElementUtils.setUsage(node);
-            $rootScope.setDirty();
-        };
+         };
 
 
         $rootScope.findDatatypeInLibrary = function (datatypeId, datatypeLibary) {

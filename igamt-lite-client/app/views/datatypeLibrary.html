@@ -525,6 +525,7 @@
 </div>
 </script>
 <script type="text/ng-template" id="EditDatatypeLibraryDatatype.html">
+<fieldset ng-disabled="datatypeCopy.scope === 'HL7STANDARD' || datatypeCopy.status === 'PUBLISHED'">
 <div class="container">
 <div ng-show="loadingSelection"
      style="text-align: center;">
@@ -575,7 +576,6 @@
                  ng-class="{'igl-has-error has-feedback' : forms.datatypeForm.ext.$invalid}">
                 <label for="ext" class="control-label">Extension</label>
                 <input type="text"
-                       ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
                       name="ext" id="ext" class="form-control" ng-model="datatypeCopy.ext"
                        ng-change="recordChanged()"
                        required ng-change="recordChanged()">
@@ -587,7 +587,6 @@
                  ng-class="{'igl-has-error has-feedback' : forms.datatypeForm.description.$invalid}">
                 <label class="control-label">Description</label>
                 <input type="text"
-                      ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
                        ng-change="recordChanged()"
                        name="description" class="form-control" ng-model="datatypeCopy.description"
                        required ng-change="recordChanged()">
@@ -607,7 +606,6 @@
                  ng-class="{'igl-has-error has-feedback' : forms.datatypeForm.purposeAndUse.$invalid}">
                 <label for="pnu" class="control-label">Purpose and Use</label>
                 <textarea name="pnu" rows="3" cols="20"
-                      ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
                        ng-change="recordChanged()"
                        name="purposeAndUse" class="form-control" ng-model="datatypeCopy.purposeAndUse"
                        required ng-change="recordChanged()"/>
@@ -618,7 +616,6 @@
                  ng-class="{'igl-has-error has-feedback' : forms.datatypeForm.comment.$invalid}">
                 <label for="comment" class="control-label">Comment</label>
                 <input name="pnu" type="text"
-                       ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
                        ng-change="recordChanged()"
                        name="comment" class="form-control"
                        ng-model="datatypeCopy.comment">
@@ -703,6 +700,7 @@
 </div>
 </tab>
 </tabset>
+</fieldset>
 </script>
 <script type="text/ng-template" id="DatatypeLibraryEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">

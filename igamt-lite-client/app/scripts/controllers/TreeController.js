@@ -251,7 +251,7 @@ angular
                     ['copy',
                         function($itemScope) {
 
-                            var process = function(){
+                            function process(){
                                 var cloneModel = $scope.cloneSectionTree($itemScope.$nodeScope.$modelValue);
                                 cloneModel.sectionPosition = $scope.getLastPosition($itemScope.$nodeScope.$parentNodesScope.$modelValue);
                                 $itemScope.$nodeScope.$parentNodesScope.$modelValue.push(cloneModel);
@@ -301,7 +301,7 @@ angular
                     ['add Section',
                         function($itemScope) {
 
-                            var process = function(){
+                            function process(){
                                 var newSection = {};
                                 newSection.id = new ObjectId().toString();
 
@@ -341,7 +341,7 @@ angular
 
                     ['copy',
                         function($itemScope) {
-                            var process = function(){
+                            function process(){
                                 CloneDeleteSvc.copySegment($itemScope.segment);
                             };
 
@@ -370,7 +370,7 @@ angular
                     ['copy',
                         function($itemScope) {
 
-                            var process = function(){
+                            function process(){
                                 CloneDeleteSvc.copyDatatype($itemScope.data);
                             };
 
@@ -398,7 +398,7 @@ angular
 
                     ['copy',
                         function($itemScope) {
-                            var process = function(){
+                            function process(){
                                 CloneDeleteSvc.copyTable($itemScope.table);
                             };
                             if($rootScope.hasChanges()){
@@ -423,7 +423,7 @@ angular
                     [
                         'copy',
                         function($itemScope) {
-                            var process = function(){
+                            function process(){
                                 CloneDeleteSvc.copyMessage($itemScope.msg);
                             };
                             if($rootScope.hasChanges()){
@@ -507,7 +507,7 @@ angular
                 ];
 
                 $scope.editSeg = function(seg) {
-                    var process = function(){
+                    function process(){
                         $scope.Activate(seg.id);
                         $scope.$emit('event:openSegment', seg);
                     };
@@ -524,7 +524,7 @@ angular
                 }
 
                 $scope.editIg = function(ig) {
-                    var process = function(){
+                    function process(){
                         $scope.Activate(ig.id);
                         $rootScope.igdocument = ig;
                         $scope.$emit('event:openDocumentMetadata',
@@ -543,7 +543,7 @@ angular
                 }
 
                 $scope.editSection = function(section) {
-                    var process = function(){
+                    function process(){
                         $scope.Activate(section.id);
                         $rootScope.section = section;
                         $scope.$emit('event:openSection', $rootScope.section);
@@ -561,7 +561,7 @@ angular
 
 
                 $scope.editRoutSection = function(param) {
-                    var process = function(){
+                    function process(){
                         $scope.Activate(param.id);
                         $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
 
@@ -611,14 +611,18 @@ angular
                     return section;
                 }
                 $scope.editDataType = function(data) {
-                    var process = function(){
+                    function process(){
+                        console.log("dialog not opened");
                         $scope.Activate(data.id);
                         $rootScope.datatype = data;
                         $scope.$emit('event:openDatatype', $rootScope.datatype);
                     };
+
                     if($rootScope.hasChanges()){
+                        console.log("found changes");
 
                         $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            console.log("dialog opened");
                             process();
                         });
                     }else {
@@ -628,7 +632,7 @@ angular
                 }
 
                 $scope.editTable = function(table) {
-                    var process = function(){
+                    function process(){
                         $scope.Activate(table.id);
                         $rootScope.table = table;
                         $scope.$emit('event:openTable', $rootScope.table);
@@ -645,7 +649,7 @@ angular
                 }
 
                 $scope.editMessage = function(message) {
-                    var process = function(){
+                    function process(){
                         $scope.Activate(message.id);
                         $rootScope.message = message;
                         $scope.$emit('event:openMessage', message);
@@ -660,7 +664,7 @@ angular
 
                 }
                 $scope.editProfile = function() {
-                    var process = function(){
+                    function process(){
                         $scope.Activate("Message Infrastructure");
                         $scope.$emit('event:openProfileMetadata',
                             $rootScope.igdocument);

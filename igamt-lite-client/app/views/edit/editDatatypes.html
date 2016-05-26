@@ -140,18 +140,7 @@
     </div>
 </tab>
 <tab heading="Data Type Definition">
-    <!--<div  style="margin-left:15px" class="btn-group btn-group-xs" data-toggle="buttons">-->
-    <!--<label class="btn btn-primary" ng-click="viewSettings.setTableRelevance(true)"-->
-    <!--ng-class="{'active': viewSettings.tableRelevance}">-->
-    <!--<input type="radio" ng-model="viewSettings.tableRelevance" ng-click="viewSettings.setTableRelevance(viewSettings.tableRelevance)" autocomplete="off" checked>R,RE,C(only)-->
-    <!--</label>-->
-    <!--<label class="btn  btn-primary" ng-click="viewSettings.setTableRelevance(false)"-->
-    <!--ng-class="{'active': !viewSettings.tableRelevance}">-->
-    <!--<input type="radio" ng-model="viewSettings.tableRelevance"  autocomplete="off">R,RE,C,O,X (All)-->
-    <!--</label>-->
-    <!--</div>-->
 
-    <!--</span>-->
                             <span class="pull-right">
                                      <div style="margin-right: 20px" ng-dropdown-multiselect=""
                                           options="viewSettings.columnOptions"
@@ -161,19 +150,7 @@
                             </span>
 
     <div class="col-md-12">
-        <!--</form>-->
-        <!--<!--</accordion-group>-->-->
-        <!--<!--<accordion-group is-open="true" panel-class="panel-info">-->-->
 
-        <!--<!--<accordion-heading>-->-->
-        <!--<!--<i class="fa"-->-->
-        <!--<!--ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i>-->
-        -->
-        <!--<!--Definition-->-->
-
-        <!--<!--</accordion-heading>-->-->
-
-        <!--<form class="form-horizontal" name="editForm">-->
 
 
         <div class="table-responsive">
@@ -1179,7 +1156,7 @@
 </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
+    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
         &nbsp; </i>Save</span></button>
     <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
@@ -1485,18 +1462,18 @@
 <div class="modal-footer">
 	<span class="pull-right">
 		<button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i
-                class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+                class="fa fa-check fa-fw">&nbsp; </i>Bind</span></button>
 		<button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-            &nbsp; </i>Close</span></button>
+            &nbsp; </i>Cancel</span></button>
 	    <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-            &nbsp; </i>Close</span></button>
+            &nbsp; </i>Cancel</span></button>
 	</span>
 </div>
 </script>
 
 <script type="text/ng-template" id="TableMappingDatatypeCtrl.html">
     <div class="modal-header modal-wide">
-        <h3 class="modal-title">Edit mapping Table for {{datatype.name}}.{{selectedNode.position}}</h3>
+        <h3 class="modal-title">Bind Value Set to {{datatype.name}}.{{selectedNode.position}}</h3>
     </div>
     <div class="modal-body">
         <div class="row">

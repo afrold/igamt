@@ -1,5 +1,5 @@
 angular.module('igl')
-    .controller('EditAreaCtrl', function ($scope, $rootScope, CloneDeleteSvc, ToCSvc,SectionSvc) {
+    .controller('EditAreaCtrl', function ($scope, $rootScope, CloneDeleteSvc, ToCSvc,SectionSvc,ElementUtils) {
 
         $scope.init = function(){
             if($scope.editForm) {
@@ -27,6 +27,18 @@ angular.module('igl')
             }
         );
 
+        $scope.setDirty = function () {
+            $scope.editForm.$dirty = true;
+        };
+
+        $scope.setUsage = function (node) {
+            ElementUtils.setUsage(node);
+            $scope.setDirty();
+        };
 
 
-});
+
+
+
+
+    });

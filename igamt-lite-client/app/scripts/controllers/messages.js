@@ -14,10 +14,11 @@ angular.module('igl')
         };
 
         $scope.reset = function () {
+            $rootScope.message = angular.copy($rootScope.messagesMap[$rootScope.message.id]);
+            $rootScope.processMessageTree($rootScope.message);
+            $rootScope.clearChanges();
             $scope.editForm.$setPristine();
             $scope.editForm.$dirty = false;
-            $rootScope.message = angular.copy($rootScope.messagesMap[$rootScope.message.id]);
-            $rootScope.clearChanges();
             if ($scope.messagesParams) {
                 $scope.messagesParams.refresh();
             }
@@ -89,6 +90,7 @@ angular.module('igl')
                 segmentRef.ref.id = segment.id;
                 segmentRef.ref.ext = segment.ext;
                 segmentRef.ref.name = segment.name;
+                $scope.setDirty();
                 // TODO: Delete segment ref from MasterMap
 //                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
                 if ($scope.messagesParams)
@@ -144,6 +146,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -164,6 +167,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };

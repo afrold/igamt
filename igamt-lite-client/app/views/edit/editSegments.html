@@ -1354,7 +1354,7 @@
 </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
+    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
         &nbsp; </i>Save</span></button>
     <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
@@ -1365,7 +1365,7 @@
 
 <script type="text/ng-template" id="TableMappingSegmentCtrl.html">
     <div class="modal-header">
-        <h3 class="modal-title">Edit mapping Table for {{segment.name}}-{{selectedNode.position}}</h3>
+        <h3 class="modal-title">Bind Value Set to {{segment.name}}-{{selectedNode.position}}</h3>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -1483,10 +1483,10 @@
     </div>
     <div class="modal-footer">
         <button ng-show="changed" type="button" ng-click="mappingTable()" class="btn btn-primary btn-sm"><i
-                class="fa fa-plus fa-fw">&nbsp; </i>Save
+                class="fa fa-check fa-fw">&nbsp; </i>Bind
         </button>
         <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-warning btn-sm"><i
-                class="fa fa-times fa-fw">&nbsp; </i>Close
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel
         </button>
         <button ng-show="!changed" class="btn btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Cancel</span></button>
