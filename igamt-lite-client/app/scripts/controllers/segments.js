@@ -375,9 +375,9 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (datatype) {
-                MastermapSvc.deleteElementChildren(field.datatype.id, "datatype", field.id, field.type);
+//                MastermapSvc.deleteElementChildren(field.datatype.id, "datatype", field.id, field.type);
                 field.datatype.id = datatype.id;
-                MastermapSvc.addDatatypeId(datatype.id, [field.id, field.type]);
+//                MastermapSvc.addDatatypeId(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
             });

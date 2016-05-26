@@ -94,7 +94,7 @@
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
 
-                        <li ng-repeat="msg in ig.profile.messages.children |filter :showToC" ui-tree-node
+                        <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
 
                             ng-if="!collapsemessage" data-type="message">
                             <div ui-tree-handle 
@@ -129,7 +129,7 @@
 								{{ig.childSections.length+1}}.2.Segments and field descriptions</span>
                         </div>
 
-                        <li ng-repeat="segment in segments  | orderBy :'label'|filter: showToc"
+                        <li ng-repeat="segment in segments  | orderBy :'label'"
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click style ="margin-left:30px;"
@@ -192,7 +192,7 @@
                         </div>
 
 
-                        <li ng-repeat="table in tables |  orderBy :'name'|filter :showToC" ui-tree-node
+                        <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click
