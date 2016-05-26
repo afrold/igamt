@@ -4,6 +4,7 @@
 
 angular.module('igl').directive('confirmOnLeave', function ($rootScope) {
     return {
+        priority:-100,
         link: function ($scope, elem, attrs) {
             window.onbeforeunload = function () {
                 if ($rootScope.hasChanges()) {

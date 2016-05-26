@@ -519,6 +519,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.igChanged = true;
         };
 
+        $rootScope.setDirty = function () {
+            $scope.editForm.$dirty = true;
+        };
+
+
         $rootScope.recordChange = function (object, changeType) {
 //        var type = object.type;
 //
@@ -779,7 +784,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             try {
                 if (element != undefined && element != null) {
                     if (element.type === "message") {
-                        var m = new Object();
+                        var m ={};
                         m.children = [];
                         $rootScope.messageTree = m;
 
@@ -789,7 +794,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         });
 
                     } else if (element.type === "group" && element.children) {
-                        var g = new Object();
+                        var g = {};
                         g.path = element.position + "[1]";
                         g.obj = element;
                         g.children = [];
@@ -802,7 +807,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                             $rootScope.processMessageTree(segmentRefOrGroup, g);
                         });
                     } else if (element.type === "segmentRef") {
-                        var s = new Object();
+                        var s = {};
                         s.path = element.position + "[1]";
                         s.obj = element;
                         s.children = [];
@@ -820,14 +825,14 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                             $rootScope.processMessageTree(field, parent);
                         });
                     } else if (element.type === "field") {
-                        var f = new Object();
+                        var f = {};
                         f.obj = element;
                         f.path = parent.path + "." + element.position + "[1]";
                         f.children = [];
                         parent.children.push(f);
                         $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], f);
                     } else if (element.type === "component") {
-                        var c = new Object();
+                        var c = {};
                         c.obj = element;
                         c.path = parent.path + "." + element.position + "[1]";
                         c.children = [];
@@ -1929,7 +1934,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.setUsage = function (node) {
             ElementUtils.setUsage(node);
-            $scope.recordChanged();
+            $rootScope.setDirty();
         };
 
 

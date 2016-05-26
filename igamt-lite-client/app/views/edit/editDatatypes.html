@@ -24,17 +24,17 @@
     <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
             <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 ng-disabled="editForm.$invalid"
+                 ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
-                         <!--<button title="Reset Changes" type="button" class="btn btn-sm btn-warning"-->
-                                 <!--ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"-->
-                                 <!--ng-disabled="editForm.$pristine"-->
-                                 <!--ng-click="reset()">-->
-                             <!--<span><i class="fa fa-times fa-fw"></i> Reset</span>-->
-                         <!--</button>-->
+                         <button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
+                                 ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
+                                 ng-disabled="!editForm.$dirty"
+                                 ng-click="reset()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                         </button>
     </span>
 </div>
 
@@ -44,7 +44,7 @@
          ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
         <label class="col-md-2 control-label">Name</label>
 
-        <div class="col-md-10">
+        <div class="controls col-md-10">
             <input type="text" disabled
                    name="name" class="form-control" ng-model="datatype.name"
                    required>
@@ -55,7 +55,7 @@
          ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}">
         <label class="col-md-2 control-label">Extension</label>
 
-        <div class="col-md-10">
+        <div class="controls col-md-10">
             <input type="text"
                    ng-change="recordChanged()"
                    ng-disabled="viewSettings.tableReadonly || (datatype.scope !== 'USER' || datatype.scope === 'MASTER')"
@@ -70,9 +70,9 @@
          ng-class="{'igl-has-error has-feedback' : editForm.description.$invalid}">
         <label class="col-md-2 control-label">Description</label>
 
-        <div class="col-md-10">
+        <div class="controls col-md-10">
             <input type="text" disabled
-                   ng-change="recordChanged()"
+                   ng-change="setDirty()"
                    name="description" class="form-control" ng-model="datatype.description"
                    required>
         </div>
@@ -82,9 +82,9 @@
          ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
         <label class="col-md-2 control-label">HL7 Version</label>
 
-        <div class="col-md-10">
+        <div class="controls col-md-10">
             <input type="text" disabled
-                   ng-change="recordChanged()"
+                   ng-change="setDirty()"
                    name="hl7Version" class="form-control" ng-model="datatype.hl7Version"
                    required>
         </div>
@@ -94,10 +94,10 @@
          ng-class="{'igl-has-error has-feedback' : editForm.purposeUse.$invalid}">
         <label class="col-md-2 control-label">Purpose and Use</label>
 
-        <div class="col-md-10">
+        <div class="controls col-md-10">
             <textarea rows="3" cols="20"
                       ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')"
-                      ng-change="recordDatatypeChange('datatype','edit',datatype.id,'purposeUse', datatype.purposeUse)"
+                      ng-change="setDirty()"
                       name="purposeUse" id="purposeUse" class="form-control"
                       ng-model="datatype.purposeUse"
                     />
@@ -108,7 +108,7 @@
          ng-class="{'igl-has-error has-feedback' : editForm.comment.$invalid}">
         <label class="col-md-2 control-label">Comment</label>
 
-        <div class="col-md-10">
+        <div class="controls col-md-10">
             <textarea rows="3" cols="20"
                       ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')"
                       ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
@@ -123,12 +123,12 @@
          ng-class="{'igl-has-error has-feedback' : editForm.text.$invalid}">
         <label class="col-md-2 control-label">Definition Text</label>
 
-        <div class="col-md-10">
+        <div class="controls col-md-10">
             <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'">
                 <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote"
                           name="text"
                           id="text"
-                          ng-change="recordChanged()"></textarea>
+                          ng-change="setDirty()"></textarea>
             </div>
 
             <div ng-if="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
@@ -162,16 +162,16 @@
 
     <div class="col-md-12">
         <!--</form>-->
-        <!--&lt;!&ndash;</accordion-group>&ndash;&gt;-->
-        <!--&lt;!&ndash;<accordion-group is-open="true" panel-class="panel-info">&ndash;&gt;-->
+        <!--<!--</accordion-group>-->-->
+        <!--<!--<accordion-group is-open="true" panel-class="panel-info">-->-->
 
-        <!--&lt;!&ndash;<accordion-heading>&ndash;&gt;-->
-        <!--&lt;!&ndash;<i class="fa"&ndash;&gt;-->
-        <!--&lt;!&ndash;ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i>&ndash;&gt;
+        <!--<!--<accordion-heading>-->-->
+        <!--<!--<i class="fa"-->-->
+        <!--<!--ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i>-->
         -->
-        <!--&lt;!&ndash;Definition&ndash;&gt;-->
+        <!--<!--Definition-->-->
 
-        <!--&lt;!&ndash;</accordion-heading>&ndash;&gt;-->
+        <!--<!--</accordion-heading>-->-->
 
         <!--<form class="form-horizontal" name="editForm">-->
 
@@ -436,7 +436,7 @@
                         autofocus
                         style="width:65%"
                         name="name"
-                        ng-change="recordDatatypeChange('component','edit',node.id,'name', node.name)"
+                        ng-change="setDirty()"
                         ng-class="{ 'igl-has-error has-feedback' : {{formName}}.name.$invalid}"
                         ng-model="node.name" required>
 
@@ -465,13 +465,13 @@
             <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
                 <input style="width:45%" class="form-control"
                        name="minLength"
-                       ng-change="recordDatatypeChange('component','edit',node.id,'minLength', node.minLength)"
+                       ng-change="setDirty()"
                        ng-pattern="/^\d+$/"
                        ng-class="{ 'igl-has-error has-feedback' : {{formName}}.minLength.$invalid}"
                        ng-model="node.minLength" required ng-minlength="1">
                 <input style="width:45%" class="form-control" type="text"
                        name="maxLength"
-                       ng-change="recordDatatypeChange('component','edit',node.id,'maxLength', node.maxLength)"
+                       ng-change="setDirty()"
                        ng-class="{ 'igl-has-error has-feedback' : {{formName}}.maxLength.$invalid}"
                        ng-pattern="/^\d+$|^\*?$/"
                        ng-model="node.maxLength" required>
@@ -483,7 +483,7 @@
                 <input style="width:50%" class="form-control" type="text"
                        name="confLength"
                        required
-                       ng-change="recordDatatypeChange('component','edit',node.id,'confLength', node.confLength)"
+                       ng-change="setDirty()"
                        ng-class="{ 'igl-has-error has-feedback' : {{formName}}.confLength.$invalid}"
                        ng-pattern="/^\d+$/"
                        ng-model="node.confLength">
@@ -593,6 +593,7 @@
             <textarea style="width:100%;height:100%"
                       class="form-control"
                       ng-model="node.comment"
+                      ng-change="setDirty()"
                       ng-show="node.comment !== null && node.comment != undefined && node.comment != ''">
             </textarea>
             <a
