@@ -315,14 +315,14 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
                         elementId, elementType,
                         parentType).concat(parentId));
             }
-            // Add element reference in parents if not already present
-            if (svc.getElementByKey(parentId, parentType,
-                elementType).indexOf(elementId) === -1) {
-                svc.setElement(parentId, parentType,
-                    elementType, svc.getElementByKey(
-                        parentId, parentType,
-                        elementType).concat(elementId));
-            }
+//            // Add element reference in parents if not already present
+//            if (svc.getElementByKey(parentId, parentType,
+//                elementType).indexOf(elementId) === -1) {
+//                svc.setElement(parentId, parentType,
+//                    elementType, svc.getElementByKey(
+//                        parentId, parentType,
+//                        elementType).concat(elementId));
+//            }
         });
     }
     svc.createMMElement = function(id, type) {
