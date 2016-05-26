@@ -57,8 +57,12 @@ public class Bootstrap implements InitializingBean {
 		// covertOldToNew();
 		
 		
-		new DataCorrection().updateDatatype();
 		new DataCorrection().updateSegment();
+		new DataCorrection().updateDatatype();
+		new DataCorrection().updateSegmentLibrary();
+		new DataCorrection().updateDatatypeLibrary();
+		new DataCorrection().updateTableLibrary();
+		new DataCorrection().updateMessage();
 
 	}
 
