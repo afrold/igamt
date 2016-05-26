@@ -78,3 +78,22 @@
         </button>
     </div>
 </script>
+
+<script type="text/ng-template" id="ConfirmLeaveDlg.html">
+    <div class="modal-header">
+        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Confirmation
+        </p>
+    </div>
+    <div class="modal-body">
+        <p style="text-align: left">You currently have unsaved changes. Are you sure you want to proceed ? All unsaved changes will
+            be lost</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm"  ng-click="continue()"><span><i
+                class="fa fa-sign-out fa-fw">&nbsp; </i>OK</span>
+        </button>
+        <button class="btn btn-warning btn-sm" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+    </div>
+</script>

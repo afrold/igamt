@@ -409,7 +409,7 @@
                             <div ui-tree-handle class="messageSubContent" data-nodrag style="font-weight:normal;cursor:pointer;"
                                  context-menu="DataTypeOptionsInLib">
                                 <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USE','label-MASTER':getScopeLabel(data)==='MAS'}" >{{getScopeLabel(data)}}</span>
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}" >{{getScopeLabel(data)}}</span>
                                 <span data-nodrag
                                     ng-class="{selected : data.id===activeModel}"
                                     ng-click= "editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}</span>

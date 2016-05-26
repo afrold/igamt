@@ -58,6 +58,9 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
             }
         }
     };
+    svc.deleteComponent = function(componentId) {
+        svc.removeMastermapElt(componentId, "component");
+    }
     svc.addValueSetId = function(tableId, parent) {
         if (tableId !== undefined && tableId !== null && tableId !==
             "") {
@@ -123,6 +126,9 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
     svc.deleteDatatype = function(datatypeId) {
         svc.removeMastermapElt(datatypeId, "datatype");
     }
+    svc.deleteElementChildren = function(elementId, elementType, childrenToBeRemoved, childrenType) {
+        svc.removeId(childrenToBeRemoved, svc.getElementByKey(elementId, elementType, childrenType));
+    }
     svc.addFieldObject = function(field, parent) {
         if (field !== undefined && field !== null) {
             svc.createMMElement(field.id, "field");
@@ -148,21 +154,25 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
                 _.each(segment.fields, function(field) {
                     svc.addFieldObject(field, parent.concat(
                         [
-                            [segment.id, "segment"]
+                            [segmentId, "segment"]
                         ]));
                 });
             }
         }
     }
-    svc.addSegmentObject = function(segment, parent) {
-        if (segment !== undefined) {
-            svc.createMMElement(segment.id, "segment");
-            svc.addParentsId(segment.id, "segment", parent);
-            _.each(segment.fields, function(f) {
-                svc.addFieldObject(f, parent.concat([
-                    [segment.id, "segment"]
-                ]));
-            });
+    svc.addSegmentObject = function(segmentLink, parent) {
+        console.log(segmentLink);
+        if (segmentLink !== undefined && segmentLink !== null) {
+            svc.createMMElement(segmentLink.id, "segment");
+            svc.addParentsId(segmentLink.id, "segment", parent);
+            var segment = svc.getSegmentLibrary()[segmentLink.id];
+            if (segment !== undefined && segment !== null) {
+                _.each(segment.fields, function(f) {
+                    svc.addFieldObject(f, parent.concat([
+                        [segmentLink.id, "segment"]
+                    ]));
+                });
+            }
         }
     }
     svc.deleteSegment = function(segmentId) {
@@ -211,6 +221,9 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
             }
         }
     }
+    svc.deleteSegmentRef = function(segmentRefId) {
+        svc.removeMastermapElt(segmentRefId, "segmentRef");
+    }
     svc.addGroup = function(group, parent) {
         if (group !== undefined && group !== null) {
             svc.createMMElement(group.id, "group");
@@ -234,7 +247,8 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
         }
     }
     svc.addIG = function(igdocument) {
-        console.log("Creating mastermap\nprocessing IG : " + igdocument.id);
+        //console.log("Creating mastermap\nprocessing IG : " + igdocument.id);
+        svc.mastermap = [];
 
         var profile = igdocument.profile;
 
@@ -248,11 +262,11 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
             svc.createMMElement(tbl.id, "table");
         });
         _.each(svc.getDatatypeLibrary(), function(dt) {
-            console.log(dt);
+            //console.log(dt);
             svc.createMMElement(dt.id, "datatype");
         });
         _.each(svc.getSegmentLibrary(), function(sgt) {
-            console.log(sgt);
+            //console.log(sgt);
             svc.createMMElement(sgt.id, "segment");
         });
 
@@ -292,28 +306,32 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
     }
     svc.addParentsId = function(elementId, elementType, parentsList) {
         // Element refers to self
-        svc.setElement(elementId, elementType, elementType, svc.getElementByKey(
-            elementId, elementType, elementType).concat(
-            elementId));
+//        svc.setElement(elementId, elementType, elementType, svc.getElementByKey(
+//            elementId, elementType, elementType).concat(
+//            elementId));
         _.each(parentsList, function(parent) {
             var parentId = parent[0];
             var parentType = parent[1];
             //Add parents reference in element if not present
             if (svc.getElementByKey(elementId, elementType,
-                parentType).indexOf(parentId) === -1) {
-                svc.setElement(elementId, elementType,
-                    parentType, svc.getElementByKey(
-                        elementId, elementType,
-                        parentType).concat(parentId));
+            parentType) !== undefined || svc.getElementByKey(elementId,
+            elementType, parentType) !== null) {
+                if (svc.getElementByKey(elementId, elementType,
+                    parentType).indexOf(parentId) === -1) {
+                    svc.setElement(elementId, elementType,
+                        parentType, svc.getElementByKey(
+                            elementId, elementType,
+                            parentType).concat(parentId));
+                }
             }
-            // Add element reference in parents if not already present
-            if (svc.getElementByKey(parentId, parentType,
-                elementType).indexOf(elementId) === -1) {
-                svc.setElement(parentId, parentType,
-                    elementType, svc.getElementByKey(
-                        parentId, parentType,
-                        elementType).concat(elementId));
-            }
+//            // Add element reference in parents if not already present
+//            if (svc.getElementByKey(parentId, parentType,
+//                elementType).indexOf(elementId) === -1) {
+//                svc.setElement(parentId, parentType,
+//                    elementType, svc.getElementByKey(
+//                        parentId, parentType,
+//                        elementType).concat(elementId));
+//            }
         });
     }
     svc.createMMElement = function(id, type) {
@@ -331,12 +349,13 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
             eltColl["component"] = [];
             eltColl["code"] = [];
             eltColl["usage"] = [];
+            eltColl["scope"] = [];
             eltColl["type"] = type;
             eltColl["id"] = id;
             svc.mastermap[id.concat(type)] = eltColl;
         }
         else {
-        console.log("null id")
+        //console.log("null id")
         }
     }
     svc.removeMastermapElt = function(toBeRemovedId, toBeRemovedType) {
@@ -349,11 +368,13 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
         ];
         // Remove element in parents
         _.each(areas, function(area) {
-            _.each(toBeRemovedInfo[area], function(idParent) {
-                svc.removeId(idParent, svc.getElementByKey(
-                    idParent, area,
-                    toBeRemovedType));
-            });
+            if (toBeRemovedInfo[area] !== null || toBeRemovedInfo[area] !== undefined){
+                _.each(toBeRemovedInfo[area], function(idParent) {
+                    svc.removeId(idParent, svc.getElementByKey(
+                        idParent, area,
+                        toBeRemovedType));
+                });
+            }
         });
         // Remove element in mastermap
         svc.removeId(toBeRemovedId.concat(toBeRemovedType), svc.getMastermap());
@@ -371,7 +392,7 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
         if (id !== null || id !== undefined) {
             return svc.mastermap[id.concat(type)];
         } else {
-            console.log(type);
+            //console.log(type);
             return null;
         }
     }
@@ -382,9 +403,11 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
         svc.mastermap[id.concat(type)][key] = value;
     }
     svc.removeId = function(idKey, myArray) {
-        var index = myArray.indexOf(idKey);
-        if (index !== -1) {
-            myArray.splice(index, 1);
+    if (idKey !== null || idKey !== undefined || myArray !== null || myArray !== undefined) {
+            var index = myArray.indexOf(idKey);
+            if (index !== -1) {
+                myArray.splice(index, 1);
+            }
         }
     };
     svc.searchById = function(idKey, myArray) {
@@ -404,6 +427,7 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
         var item = svc.getElement(id, type);
         if (item !== undefined) {
             if (type === "message") {
+                // usage is union of first level usages of segmentRefs or groups.
                 // usage is union of first level usages of segmentRefs or groups.
                 return svc.getElementByKey(id, type, "usage");
             }
