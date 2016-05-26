@@ -784,14 +784,8 @@ angular
                     return FilteringSvc.isUnused(node);
                 };
 
-
-
                 $scope.showToC = function(leaf) {
-                    if (leaf.id===null||FilteringSvc.isUnused(leaf)) {
-                        return true;
-                    } else {
-                        return FilteringSvc.showToC(leaf);
-                    }
+                    return leaf.id===null || FilteringSvc.isUnused(leaf) || FilteringSvc.showToC(leaf);
                 };
 
                 $scope.getScopeLabel = function(leaf) {

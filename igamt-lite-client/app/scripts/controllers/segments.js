@@ -375,12 +375,9 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (datatype) {
+                MastermapSvc.deleteElementChildren(field.datatype.id, "datatype", field.id, field.type);
                 field.datatype.id = datatype.id;
-                 if (!$rootScope.datatypesMap[field.datatype.id] || $rootScope.datatypesMap[field.datatype.id] == null) {
-                    $rootScope.datatypesMap[field.datatype.id] = datatype;
-                }
-                // TODO: Delete field from MasterMap
-//                MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
+                MastermapSvc.addDatatypeId(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
             });
