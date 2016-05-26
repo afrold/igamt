@@ -198,6 +198,9 @@ angular
 
     svc.filterByMsg = function(leaf, filterElt){
         if (leaf.id !== undefined && leaf.type !== undefined){
+            if (leaf.type === "message" && leaf.id === filterElt.id) {
+                return true;
+            }
             if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined) {
                 return (MastermapSvc.getElementByKey(leaf.id, leaf.type, "message").indexOf(filterElt.id) !== -1);
             }
@@ -257,14 +260,25 @@ angular
 
     svc.isUnused = function(node){
         if (MastermapSvc.getElement(node.id, node.type) !== undefined){
-            if (node.type == "segment") {
-                return (MastermapSvc.getElementByKey(node.id, node.type, "segmentRef").length === 0);
-            } else if (node.type == "datatype") {
+            if (node.type == "datatype") {
                 return (MastermapSvc.getElementByKey(node.id, node.type, "field").length === 0) &&
                 (MastermapSvc.getElementByKey(node.id, node.type, "datatype").length === 0);
             } else if (node.type == "table") {
                 return (MastermapSvc.getElementByKey(node.id, node.type, "field").length === 0) &&
                 (MastermapSvc.getElementByKey(node.id, node.type, "datatype").length === 0);
+            } else if (node.type == "component") {
+                return (MastermapSvc.getElementByKey(node.id, node.type, "datatype").length === 0);
+            } else if (node.type == "field") {
+                return (MastermapSvc.getElementByKey(node.id, node.type, "segment").length === 0);
+            } else if (node.type == "segment") {
+                return (MastermapSvc.getElementByKey(node.id, node.type, "segmentRef").length === 0);
+            } else if (node.type == "group" | node.type == "segmentRef") {
+                 return (MastermapSvc.getElementByKey(node.id, node.type, "field").length === 0) &&
+                 (MastermapSvc.getElementByKey(node.id, node.type, "datatype").length === 0);
+            } else if (node.type == "message") {
+                 return (MastermapSvc.getElementByKey(node.id, node.type, "profile").length === 0);
+            } else if (node.type == "profile") {
+                 return (MastermapSvc.getElementByKey(node.id, node.type, "ig").length === 0);
             }
         }
     }
