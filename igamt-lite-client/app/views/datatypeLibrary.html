@@ -265,7 +265,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">Edit Area</div>
 					<div class="panel-body" style="padding-bottom: 100px">
-						<form confirm-on-leave name="forms.editForm">
+						<form confirm-on-leave unsaved-warning-form name="forms.editForm" id="editForm">
 							<ng-include src="editView"></ng-include/>
 						</form>
 					</div>
@@ -409,7 +409,7 @@
                             <div ui-tree-handle class="messageSubContent" data-nodrag style="font-weight:normal;cursor:pointer;"
                                  context-menu="DataTypeOptionsInLib">
                                 <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}" >{{getScopeLabel(data)}}</span>
+                                'label-USE':  getScopeLabel(data)==='USE','label-MASTER':getScopeLabel(data)==='MAS'}" >{{getScopeLabel(data)}}</span>
                                 <span data-nodrag
                                     ng-class="{selected : data.id===activeModel}"
                                     ng-click= "editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}</span>
@@ -430,27 +430,28 @@
   <div class="modal-body">
   <form>
   <div class="form-group">
-  <div class="container" style="max-width: 200%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
+  <div class="container" style="max-width: 200%; max-height: 200px; white-space:nowrap;">
       <div class="row">
-        <label for="name" class="control-label">Name</label>
-          <input type="text"
-                 name="name" class="form-control" ng-model="standard.name"
-                         required style="width : 250px; height : 30px;"/>
-      </div>
-      <div class="row">
-        <div class="btn-group btn-group-sm" data-toggle="buttons">
-          <label class="btn btn-primary btn-xs" ng-click="standard.hl7Version = vr; $parent.okDisabled = false"
+		<label class="control-label col-xs-2" style="margin-top : 10px">HL7 Versions</label>
+        <span class="btn-group btn-group-sm" data-toggle="buttons">
+          <label class="btn btn-primary btn-xs col-xs-10" ng-click="standard.hl7Version = vr; $parent.okDisabled = false"
                  ng-class="{'active':vr === hl7Version}"
                  ng-repeat="vr in hl7Versions | orderBy:'toString()' track by vr" style="width : 50px; height : 30px;">
             <input ng-disabled="loading" type="radio" ng-value="vr"
                    ng-model="$parent.hl7Version"/>{{vr}}
           </label>
+        </span>
         </div>
-        </div>
-       <div class="row">
-      <label class="control-label" for="ext">Ext</label>
+      <div class="row">
+        <label for="name" class="control-label col-xs-2">Name</label>
           <input type="text"
-                 name="ext" class="form-control" ng-model="standard.ext"
+                 name="name" class="form-control col-xs-10" ng-model="standard.name"
+                         required style="width : 250px; height : 30px;"/>
+      </div>
+       <div class="row">
+      <label class="control-label col-xs-2" for="ext">Ext</label>
+          <input type="text"
+                 name="ext" class="form-control col-xs-10" ng-model="standard.ext"
                          required  style="width : 150px; height : 30px;"/>
       </div>
     </div>
@@ -537,7 +538,7 @@
     <div class="col-md-12 igl-page-header">
         <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeCopy.ext)}}</span>
                      <span class="pull-right">
-  		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-model="datatypeCopy.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatypeCopy.status === 'PUBLISHED'" style="margin-right : 8px"/>Published</label>
+  		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-click="confirmPublish(datatypeCopy)" ng-model="datatypeCopy.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatypeCopy.status === 'PUBLISHED'" style="margin-right : 8px"/>Published</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
 				ng-hide="datatypeCopy.scope === 'HL7STANDARD'"
                  ng-disabled="!forms.editForm.$dirty"
@@ -744,7 +745,7 @@
                   tooltip-animation="false" tooltip-placement="left"
                     ></span>
              <span ng-show="isChildNew(node)">
-                  {{node.position}}.
+<!--                  {{node.position}}. -->
                 <input
                         class="form-control focus"
                         autofocus
@@ -946,13 +947,37 @@
     </div>
     </div>
 </script>
-<script type="text/ng-template" id="ConfirmDatatypeDeleteCtrl.html">
+<script type="text/ng-template" id="ConfirmDatatypeDeleteCtl.html">
     <div class="modal-header">
         <h3 class="modal-title">Delete Confirmation
         </h3>
     </div>
     <div class="modal-body">
         <p>Are you sure you want to delete this Data Type? This operation is irreversible</p>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+        </div>
+    </div>
+    </div>
+</script>
+<script type="text/ng-template" id="ConfirmDatatypePublishCtl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Delete Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to publish this Data Type?</p>
+        <p>Data Type will no longer be editable.</p>
+        <p>This operation is irreversible.</p>
     </div>
     </div>
     <div class="modal-footer">
