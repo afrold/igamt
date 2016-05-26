@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications', 'IdleService','AutoSaveService','StorageService','ViewSettings','DatatypeService','ElementUtils',
-    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle,notifications,IdleService,AutoSaveService,StorageService,ViewSettings,DatatypeService,ElementUtils) {
+angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'ElementUtils',
+    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, notifications, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, ElementUtils) {
         //This line fetches the info from the server if the user is currently logged in.
         //If success, the app is updated according to the role.
         userInfoService.loadFromServer();
@@ -188,7 +188,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             if ($scope.isAuthenticated()) {
                 if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
                     $rootScope.$emit('event:saveAndExecLogout');
-                }else {
+                } else {
                     $rootScope.$emit('event:execLogout');
                 }
             }
@@ -198,7 +198,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             });
         });
 
-        $scope.$on('Keepalive', function() {
+        $scope.$on('Keepalive', function () {
             if ($scope.isAuthenticated()) {
                 IdleService.keepAlive();
             }
@@ -707,26 +707,26 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.calNextCSID = function () {
-        	if($rootScope.igdocument.metaData.ext != null){
-        		var maxIDNum = Number(0);
-        		angular.forEach($rootScope.conformanceStatementIdList, function (id) {
-        			var tempID = parseInt(id.replace($rootScope.igdocument.metaData.ext + "-", ""));
-        			
-        			if(tempID > maxIDNum) maxIDNum = tempID;
-        		});
-        		
-        		return $rootScope.igdocument.metaData.ext + "-" + (maxIDNum + 1);
-        	}else {
-        		return "";
-        	}
+            if ($rootScope.igdocument.metaData.ext != null) {
+                var maxIDNum = Number(0);
+                angular.forEach($rootScope.conformanceStatementIdList, function (id) {
+                    var tempID = parseInt(id.replace($rootScope.igdocument.metaData.ext + "-", ""));
+
+                    if (tempID > maxIDNum) maxIDNum = tempID;
+                });
+
+                return $rootScope.igdocument.metaData.ext + "-" + (maxIDNum + 1);
+            } else {
+                return "";
+            }
         };
         $rootScope.processElement = function (element, parent) {
             try {
-                if(element != undefined && element != null) {
+                if (element != undefined && element != null) {
                     if (element.type === "message") {
                         element.children = $filter('orderBy')(element.children, 'position');
                         angular.forEach(element.conformanceStatements, function (cs) {
-                        	if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+                            if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
                         });
                         angular.forEach(element.children, function (segmentRefOrGroup) {
                             $rootScope.processElement(segmentRefOrGroup, element);
@@ -747,7 +747,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     } else if (element.type === "segment") {
                         element.fields = $filter('orderBy')(element.fields, 'position');
                         angular.forEach(element.conformanceStatements, function (cs) {
-                        	if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+                            if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
                         });
                         angular.forEach(element.fields, function (field) {
                             $rootScope.processElement(field, element);
@@ -761,7 +761,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     } else if (element.type === "datatype") {
                         element.components = $filter('orderBy')(element.components, 'position');
                         angular.forEach(element.conformanceStatements, function (cs) {
-                        	if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+                            if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
                         });
                         angular.forEach(element.components, function (component) {
                             $rootScope.processElement(component, element);
@@ -777,7 +777,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.processMessageTree = function (element, parent) {
 
             try {
-                if(element != undefined && element != null) {
+                if (element != undefined && element != null) {
                     if (element.type === "message") {
                         var m = new Object();
                         m.children = [];
@@ -847,11 +847,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.createNewFlavorName = function (label) {
             if ($rootScope.igdocument != null) {
-            	if($rootScope.igdocument.metaData["ext"] === null){
-            		return label + "_" + (Math.floor(Math.random() * 10000000) + 1);
-            	}else {
-            		return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
-            	}
+                if ($rootScope.igdocument.metaData["ext"] === null) {
+                    return label + "_" + (Math.floor(Math.random() * 10000000) + 1);
+                } else {
+                    return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
+                }
             } else {
                 return null;
             }
@@ -860,10 +860,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.createNewExtension = function (ext) {
             if ($rootScope.igdocument != null) {
                 var rand = (Math.floor(Math.random() * 10000000) + 1);
-                if($rootScope.igdocument.metaData["ext"] === null){
-                    return ext != null && ext != "" ? ext + "_" + rand: rand;
-                }else {
-                    return  ext != null && ext != "" ? ext + "_" + $rootScope.igdocument.metaData["ext"] + "_" + rand + 1: rand +1;
+                if ($rootScope.igdocument.metaData["ext"] === null) {
+                    return ext != null && ext != "" ? ext + "_" + rand : rand;
+                } else {
+                    return  ext != null && ext != "" ? ext + "_" + $rootScope.igdocument.metaData["ext"] + "_" + rand + 1 : rand + 1;
                 }
             } else {
                 return null;
@@ -877,15 +877,15 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.findDatatypeRefs = function (datatype, obj, path) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
                 if (obj.datatype.id === datatype.id) {
-                	var found = angular.copy(obj);
-                	found.path = path;
+                    var found = angular.copy(obj);
+                    found.path = path;
                     $rootScope.references.push(found);
                 }
                 $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path);
             } else if (angular.equals(obj.type, 'segment')) {
-            	angular.forEach(obj.fields, function (field) {
-            		$rootScope.findDatatypeRefs(datatype, field, path + "-" + field.position);
-            	});
+                angular.forEach(obj.fields, function (field) {
+                    $rootScope.findDatatypeRefs(datatype, field, path + "-" + field.position);
+                });
             } else if (angular.equals(obj.type, 'datatype')) {
                 if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                     angular.forEach(obj.components, function (component) {
@@ -894,35 +894,35 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 }
             }
         };
-        
-        $rootScope.findSegmentRefs = function (segment, obj, path){
-        	if (angular.equals(obj.type, 'message') || angular.equals(obj.type, 'group')) {
-        		angular.forEach(obj.children, function (child) {
-        			$rootScope.findSegmentRefs(segment, child, path + "." + child.position);
-        		});
-        	}else if (angular.equals(obj.type, 'segmentRef')) {
-        		if(obj.ref.id === segment.id){
-        			var found = angular.copy(obj);
-        			found.path = path;
-        			$rootScope.references.push(found);
-        		}
-        	}
+
+        $rootScope.findSegmentRefs = function (segment, obj, path) {
+            if (angular.equals(obj.type, 'message') || angular.equals(obj.type, 'group')) {
+                angular.forEach(obj.children, function (child) {
+                    $rootScope.findSegmentRefs(segment, child, path + "." + child.position);
+                });
+            } else if (angular.equals(obj.type, 'segmentRef')) {
+                if (obj.ref.id === segment.id) {
+                    var found = angular.copy(obj);
+                    found.path = path;
+                    $rootScope.references.push(found);
+                }
+            }
         };
 
         $rootScope.findTableRefs = function (table, obj, path) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
                 if (obj.table != undefined) {
                     if (obj.table.id === table.id) {
-                    	var found = angular.copy(obj);
-            			found.path = path;
-            			$rootScope.references.push(found);
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        $rootScope.references.push(found);
                     }
                 }
                 $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
             } else if (angular.equals(obj.type, 'segment')) {
-                    angular.forEach(obj.fields, function (field) {
-                        $rootScope.findTableRefs(table, field, path + "-" + field.position);
-                    });
+                angular.forEach(obj.fields, function (field) {
+                    $rootScope.findTableRefs(table, field, path + "-" + field.position);
+                });
             } else if (angular.equals(obj.type, 'datatype')) {
                 if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                     angular.forEach(obj.components, function (component) {
@@ -993,11 +993,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.generateCompositeConformanceStatement = function (compositeType, firstConstraint, secondConstraint) {
-        	var firstConstraintAssertion = firstConstraint.assertion.replace("<Assertion>", "");
-        	firstConstraintAssertion = firstConstraintAssertion.replace("</Assertion>", "");
-        	var secondConstraintAssertion = secondConstraint.assertion.replace("<Assertion>", "");
-        	secondConstraintAssertion = secondConstraintAssertion.replace("</Assertion>", "");
-        	
+            var firstConstraintAssertion = firstConstraint.assertion.replace("<Assertion>", "");
+            firstConstraintAssertion = firstConstraintAssertion.replace("</Assertion>", "");
+            var secondConstraintAssertion = secondConstraint.assertion.replace("<Assertion>", "");
+            secondConstraintAssertion = secondConstraintAssertion.replace("</Assertion>", "");
+
             var cs = null;
             if (compositeType === 'AND') {
                 cs = {
@@ -1029,11 +1029,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.generateCompositePredicate = function (compositeType, firstConstraint, secondConstraint) {
-        	var firstConstraintAssertion = firstConstraint.assertion.replace("<Condition>", "");
-        	firstConstraintAssertion = firstConstraintAssertion.replace("</Condition>", "");
-        	var secondConstraintAssertion = secondConstraint.assertion.replace("<Condition>", "");
-        	secondConstraintAssertion = secondConstraintAssertion.replace("</Condition>", "");
-        	
+            var firstConstraintAssertion = firstConstraint.assertion.replace("<Condition>", "");
+            firstConstraintAssertion = firstConstraintAssertion.replace("</Condition>", "");
+            var secondConstraintAssertion = secondConstraint.assertion.replace("<Condition>", "");
+            secondConstraintAssertion = secondConstraintAssertion.replace("</Condition>", "");
+
             var cp = null;
             if (compositeType === 'AND') {
                 cp = {
@@ -1080,40 +1080,39 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     assertion: '<Assertion><Presence Path=\"' + newConstraint.position_1 + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'a literal value') {
-            	if(newConstraint.value.indexOf("^") == -1){
-            		cs = {
-                            id: new ObjectId().toString(),
-                            constraintId: newConstraint.constraintId,
-                            constraintTarget: positionPath,
-                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
-                            assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/></Assertion>'
-                        };
-            	}else {
-            		
-            		var componetsList = newConstraint.value.split("^");
-            		var assertionScript = "";
-            		var componentPosition = 0;
-            		
-            		angular.forEach(componetsList, function(componentValue){
-            			componentPosition = componentPosition + 1;
-            			var script = '<PlainText Path=\"' + newConstraint.position_1 + "." + componentPosition + "[1]" + '\" Text=\"' + componentValue + '\" IgnoreCase="false"/>';
-            			if(assertionScript === ""){
-            				assertionScript = script;
-            			}else {
-            				assertionScript = "<AND>" + assertionScript + script + "</AND>";				
-            			}
-            		});
-            		
-            		
-            		
-            		cs = {
-                            id: new ObjectId().toString(),
-                            constraintId: newConstraint.constraintId,
-                            constraintTarget: positionPath,
-                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
-                            assertion: '<Assertion>' + assertionScript + '</Assertion>'
+                if (newConstraint.value.indexOf("^") == -1) {
+                    cs = {
+                        id: new ObjectId().toString(),
+                        constraintId: newConstraint.constraintId,
+                        constraintTarget: positionPath,
+                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
+                        assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/></Assertion>'
                     };
-            	}
+                } else {
+
+                    var componetsList = newConstraint.value.split("^");
+                    var assertionScript = "";
+                    var componentPosition = 0;
+
+                    angular.forEach(componetsList, function (componentValue) {
+                        componentPosition = componentPosition + 1;
+                        var script = '<PlainText Path=\"' + newConstraint.position_1 + "." + componentPosition + "[1]" + '\" Text=\"' + componentValue + '\" IgnoreCase="false"/>';
+                        if (assertionScript === "") {
+                            assertionScript = script;
+                        } else {
+                            assertionScript = "<AND>" + assertionScript + script + "</AND>";
+                        }
+                    });
+
+
+                    cs = {
+                        id: new ObjectId().toString(),
+                        constraintId: newConstraint.constraintId,
+                        constraintTarget: positionPath,
+                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
+                        assertion: '<Assertion>' + assertionScript + '</Assertion>'
+                    };
+                }
             } else if (newConstraint.contraintType === 'one of list values') {
                 cs = {
                     id: new ObjectId().toString(),
@@ -1131,23 +1130,23 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     assertion: '<Assertion><ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'formatted value') {
-            	if(newConstraint.value === 'Regular expression'){
-            		cs = {
-                            id: new ObjectId().toString(),
-                            constraintId: newConstraint.constraintId,
-                            constraintTarget: positionPath,
-                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
-                            assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Assertion>'
-            		};
-            	}else {
-            		cs = {
-                            id: new ObjectId().toString(),
-                            constraintId: newConstraint.constraintId,
-                            constraintTarget: positionPath,
-                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
-                            assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Assertion>'
+                if (newConstraint.value === 'Regular expression') {
+                    cs = {
+                        id: new ObjectId().toString(),
+                        constraintId: newConstraint.constraintId,
+                        constraintTarget: positionPath,
+                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
+                        assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Assertion>'
                     };
-            	}
+                } else {
+                    cs = {
+                        id: new ObjectId().toString(),
+                        constraintId: newConstraint.constraintId,
+                        constraintTarget: positionPath,
+                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                        assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Assertion>'
+                    };
+                }
             } else if (newConstraint.contraintType === 'identical to another node') {
                 cs = {
                     id: new ObjectId().toString(),
@@ -1278,40 +1277,40 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     assertion: '<Condition><Presence Path=\"' + newConstraint.position_1 + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'a literal value') {
-                if(newConstraint.value.indexOf("^") == -1){
-                	cp = {
-                            id: new ObjectId().toString(),
-                            constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                            constraintTarget: positionPath,
-                            description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
-                            trueUsage: newConstraint.trueUsage,
-                            falseUsage: newConstraint.falseUsage,
-                            assertion: '<Condition><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/></Condition>'
+                if (newConstraint.value.indexOf("^") == -1) {
+                    cp = {
+                        id: new ObjectId().toString(),
+                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                        constraintTarget: positionPath,
+                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
+                        trueUsage: newConstraint.trueUsage,
+                        falseUsage: newConstraint.falseUsage,
+                        assertion: '<Condition><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/></Condition>'
                     };
-            	}else {
-            		var componetsList = newConstraint.value.split("^");
-            		var assertionScript = "";
-            		var componentPosition = 0;
-            		
-            		angular.forEach(componetsList, function(componentValue){
-            			componentPosition = componentPosition + 1;
-            			var script = '<PlainText Path=\"' + newConstraint.position_1 + "." + componentPosition + "[1]" + '\" Text=\"' + componentValue + '\" IgnoreCase="false"/>';
-            			if(assertionScript === ""){
-            				assertionScript = script;
-            			}else {
-            				assertionScript = "<AND>" + assertionScript + script + "</AND>";				
-            			}
-            		});
-            		cp = {
-                            id: new ObjectId().toString(),
-                            constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                            constraintTarget: positionPath,
-                            description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
-                            trueUsage: newConstraint.trueUsage,
-                            falseUsage: newConstraint.falseUsage,
-                            assertion: '<Condition>' + assertionScript + '</Condition>'
+                } else {
+                    var componetsList = newConstraint.value.split("^");
+                    var assertionScript = "";
+                    var componentPosition = 0;
+
+                    angular.forEach(componetsList, function (componentValue) {
+                        componentPosition = componentPosition + 1;
+                        var script = '<PlainText Path=\"' + newConstraint.position_1 + "." + componentPosition + "[1]" + '\" Text=\"' + componentValue + '\" IgnoreCase="false"/>';
+                        if (assertionScript === "") {
+                            assertionScript = script;
+                        } else {
+                            assertionScript = "<AND>" + assertionScript + script + "</AND>";
+                        }
+                    });
+                    cp = {
+                        id: new ObjectId().toString(),
+                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                        constraintTarget: positionPath,
+                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
+                        trueUsage: newConstraint.trueUsage,
+                        falseUsage: newConstraint.falseUsage,
+                        assertion: '<Condition>' + assertionScript + '</Condition>'
                     };
-            	}
+                }
             } else if (newConstraint.contraintType === 'one of list values') {
                 cp = {
                     id: new ObjectId().toString(),
@@ -1333,27 +1332,27 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     assertion: '<Condition><ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'formatted value') {
-            	if(newConstraint.value === 'Regular expression'){
-            		cp = {
-                            id: new ObjectId().toString(),
-                            constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                            constraintTarget: positionPath,
-                            description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
-                            trueUsage: newConstraint.trueUsage,
-                            falseUsage: newConstraint.falseUsage,
-                            assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Condition>'
-                        };
-            	}else{
-            		cp = {
-                            id: new ObjectId().toString(),
-                            constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                            constraintTarget: positionPath,
-                            description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
-                            trueUsage: newConstraint.trueUsage,
-                            falseUsage: newConstraint.falseUsage,
-                            assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Condition>'
-                        };
-            	}
+                if (newConstraint.value === 'Regular expression') {
+                    cp = {
+                        id: new ObjectId().toString(),
+                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                        constraintTarget: positionPath,
+                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
+                        trueUsage: newConstraint.trueUsage,
+                        falseUsage: newConstraint.falseUsage,
+                        assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Condition>'
+                    };
+                } else {
+                    cp = {
+                        id: new ObjectId().toString(),
+                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                        constraintTarget: positionPath,
+                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                        trueUsage: newConstraint.trueUsage,
+                        falseUsage: newConstraint.falseUsage,
+                        assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Condition>'
+                    };
+                }
             } else if (newConstraint.contraintType === 'identical to another node') {
                 cp = {
                     id: new ObjectId().toString(),
@@ -1486,193 +1485,192 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 };
             } else if (newConstraint.contraintType === "valued sequentially starting with the value '1'") {
                 cp = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + " valued sequentially starting with the value '1'.",
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<Condition><SetID Path=\"' + newConstraint.position_1 + '\"/></Condition>'
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + " valued sequentially starting with the value '1'.",
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<Condition><SetID Path=\"' + newConstraint.position_1 + '\"/></Condition>'
                 };
             }
 
             return cp;
         };
-        
-        
-        $rootScope.erorrForComplexConfStatement = function (newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint) {
-        	if($rootScope.isEmptyComplexConstraintID(newComplexConstraintId)) return true;
-        	if($rootScope.isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId))  return true;
-        	if($rootScope.isEmptyCompositeType(compositeType))  return true;
-        	if(firstConstraint == null) return true;
-        	if(secondConstraint == null) return true;
-        	 return false;
-        };
-        
-        $rootScope.erorrForComplexPredicate = function (compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage) {
-        	if($rootScope.isEmptyCompositeType(compositeType)) return true;
-        	if(firstConstraint == null) return true;
-        	if(secondConstraint == null) return true;
-        	if(complexConstraintTrueUsage == null) return true;
-        	if(complexConstraintFalseUsage == null) return true;
-        	return false;
-        };
-        
-        $rootScope.erorrForPredicate = function (newConstraint, type) {
-        	if($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
-        	if($rootScope.isEmptyConstraintVerb(newConstraint)) return true;
-        	if($rootScope.isEmptyConstraintPattern(newConstraint)) return true;
-        	if(newConstraint.contraintType == 'a literal value' || 
-			   newConstraint.contraintType == 'equal to' ||
-			   newConstraint.contraintType == 'not-equal to' ||
-			   newConstraint.contraintType == 'greater than' ||
-			   newConstraint.contraintType == 'equal to or greater than' ||
-			   newConstraint.contraintType == 'less than' ||
-			   newConstraint.contraintType == 'equal to or less than' ||
-			   newConstraint.contraintType == 'one of list values' ||
-			   newConstraint.contraintType == 'formatted value'){
-        		if($rootScope.isEmptyConstraintValue(newConstraint)) return true;
-        		if(newConstraint.value == 'Regular expression'){
-        			if($rootScope.isEmptyConstraintValue2(newConstraint)) return true;
-        		}
-        	}else if(newConstraint.contraintType == 'identical to another node' ||
-			   newConstraint.contraintType == 'equal to another node' ||
-			   newConstraint.contraintType == 'not-equal to another node' ||
-			   newConstraint.contraintType == 'greater than another node' ||
-			   newConstraint.contraintType == 'equal to or greater than another node' ||
-			   newConstraint.contraintType == 'less than another node' ||
-			   newConstraint.contraintType == 'equal to or less than another node'){
-        		if($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
-        	}else if(newConstraint.contraintType == 'one of codes in ValueSet'){
-        		if($rootScope.isEmptyConstraintValueSet(newConstraint, type)) return true;
-        	}
-        	if(newConstraint.trueUsage == null) return true;
-        	if(newConstraint.falseUsage == null) return true;
-        	
-        	return false;
-        }
-        
-        
-        $rootScope.erorrForConfStatement = function (newConstraint, targetId, type) {
-        	if($rootScope.isEmptyConstraintID(newConstraint)) return true;
-        	if($rootScope.isDuplicatedConstraintID(newConstraint, targetId)) return true;
-        	if($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
-        	if($rootScope.isEmptyConstraintVerb(newConstraint)) return true;
-        	if($rootScope.isEmptyConstraintPattern(newConstraint)) return true;
-        	if(newConstraint.contraintType == 'a literal value' || 
-			   newConstraint.contraintType == 'equal to' ||
-			   newConstraint.contraintType == 'not-equal to' ||
-			   newConstraint.contraintType == 'greater than' ||
-			   newConstraint.contraintType == 'equal to or greater than' ||
-			   newConstraint.contraintType == 'less than' ||
-			   newConstraint.contraintType == 'equal to or less than' ||
-			   newConstraint.contraintType == 'one of list values' ||
-			   newConstraint.contraintType == 'formatted value'){
-        		if($rootScope.isEmptyConstraintValue(newConstraint)) return true;
-        		if(newConstraint.value == 'Regular expression'){
-        			if($rootScope.isEmptyConstraintValue2(newConstraint)) return true;
-        		}
-        	}else if(newConstraint.contraintType == 'identical to another node' ||
-			   newConstraint.contraintType == 'equal to another node' ||
-			   newConstraint.contraintType == 'not-equal to another node' ||
-			   newConstraint.contraintType == 'greater than another node' ||
-			   newConstraint.contraintType == 'equal to or greater than another node' ||
-			   newConstraint.contraintType == 'less than another node' ||
-			   newConstraint.contraintType == 'equal to or less than another node'){
-        		if($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
-        	}else if(newConstraint.contraintType == 'one of codes in ValueSet'){
-        		if($rootScope.isEmptyConstraintValueSet(newConstraint, type)) return true;
-        	}
-        	return false;
-        };
-        
-        $rootScope.isEmptyConstraintID = function (newConstraint) {
-        	if(newConstraint.constraintId === null) return true;
-        	if(newConstraint.constraintId === '') return true;
-        	
-        	return false;
-        }
-        
-        $rootScope.isEmptyComplexConstraintID = function (id) {
-        	if(id === null) return true;
-        	if(id === '') return true;
-        	
-        	return false;
-        }
-        
-        $rootScope.isDuplicatedConstraintID = function (newConstraint, targetId) {
-        	if($rootScope.conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1 && targetId == newConstraint.constraintId) return true;
-        	
-        	return false;
-        }
-        
-        $rootScope.isDuplicatedComplexConstraintID = function (newComplexConstraintId, targetComplexId) {
-        	if($rootScope.conformanceStatementIdList.indexOf(newComplexConstraintId) != -1 && targetComplexId == newComplexConstraintId) return true;
-        	
-        	return false;
-        }
-        
-        $rootScope.isEmptyConstraintNode = function (newConstraint, type) {
-        	if(type == 'datatype'){
-        		if(newConstraint.component_1 === null) return true;
-        	}else if(type == 'segment'){
-        		if(newConstraint.field_1 === null) return true;
-        	}else if(type == 'message'){
-        		if(newConstraint.position_1 === null) return true;
-        	}
-        	
-        	return false;
-        }
-        
-        $rootScope.isEmptyConstraintVerb = function (newConstraint) {
-        	if(newConstraint.verb === null) return true;
-        	
-        	return false;
-        }
-        
-        $rootScope.isEmptyConstraintPattern = function (newConstraint) {
-        	if(newConstraint.contraintType === null) return true;
-        	
-        	return false;
-        }
-        
-        $rootScope.isEmptyConstraintValue = function (newConstraint) {
-        	if(newConstraint.value === null) return true;
-        	
-        	return false;
-        }
-        
-        $rootScope.isEmptyConstraintValue2 = function (newConstraint) {
-        	if(newConstraint.value2 === null) return true;
-        	
-        	return false;
-        }
-        
-        $rootScope.isEmptyConstraintAnotherNode = function (newConstraint, type) {
-        	if(type == 'datatype'){
-        		if(newConstraint.component_2 === null) return true;
-        	}else if(type == 'segment'){
-        		if(newConstraint.field_2 === null) return true;
-        	}else if(type == 'message'){
-        		if(newConstraint.position_2 === null) return true;
-        	}
 
-        	return false;
+
+        $rootScope.erorrForComplexConfStatement = function (newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint) {
+            if ($rootScope.isEmptyComplexConstraintID(newComplexConstraintId)) return true;
+            if ($rootScope.isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId))  return true;
+            if ($rootScope.isEmptyCompositeType(compositeType))  return true;
+            if (firstConstraint == null) return true;
+            if (secondConstraint == null) return true;
+            return false;
+        };
+
+        $rootScope.erorrForComplexPredicate = function (compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage) {
+            if ($rootScope.isEmptyCompositeType(compositeType)) return true;
+            if (firstConstraint == null) return true;
+            if (secondConstraint == null) return true;
+            if (complexConstraintTrueUsage == null) return true;
+            if (complexConstraintFalseUsage == null) return true;
+            return false;
+        };
+
+        $rootScope.erorrForPredicate = function (newConstraint, type) {
+            if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
+            if ($rootScope.isEmptyConstraintVerb(newConstraint)) return true;
+            if ($rootScope.isEmptyConstraintPattern(newConstraint)) return true;
+            if (newConstraint.contraintType == 'a literal value' ||
+                newConstraint.contraintType == 'equal to' ||
+                newConstraint.contraintType == 'not-equal to' ||
+                newConstraint.contraintType == 'greater than' ||
+                newConstraint.contraintType == 'equal to or greater than' ||
+                newConstraint.contraintType == 'less than' ||
+                newConstraint.contraintType == 'equal to or less than' ||
+                newConstraint.contraintType == 'one of list values' ||
+                newConstraint.contraintType == 'formatted value') {
+                if ($rootScope.isEmptyConstraintValue(newConstraint)) return true;
+                if (newConstraint.value == 'Regular expression') {
+                    if ($rootScope.isEmptyConstraintValue2(newConstraint)) return true;
+                }
+            } else if (newConstraint.contraintType == 'identical to another node' ||
+                newConstraint.contraintType == 'equal to another node' ||
+                newConstraint.contraintType == 'not-equal to another node' ||
+                newConstraint.contraintType == 'greater than another node' ||
+                newConstraint.contraintType == 'equal to or greater than another node' ||
+                newConstraint.contraintType == 'less than another node' ||
+                newConstraint.contraintType == 'equal to or less than another node') {
+                if ($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
+            } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
+                if ($rootScope.isEmptyConstraintValueSet(newConstraint, type)) return true;
+            }
+            if (newConstraint.trueUsage == null) return true;
+            if (newConstraint.falseUsage == null) return true;
+
+            return false;
         }
-        
+
+
+        $rootScope.erorrForConfStatement = function (newConstraint, targetId, type) {
+            if ($rootScope.isEmptyConstraintID(newConstraint)) return true;
+            if ($rootScope.isDuplicatedConstraintID(newConstraint, targetId)) return true;
+            if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
+            if ($rootScope.isEmptyConstraintVerb(newConstraint)) return true;
+            if ($rootScope.isEmptyConstraintPattern(newConstraint)) return true;
+            if (newConstraint.contraintType == 'a literal value' ||
+                newConstraint.contraintType == 'equal to' ||
+                newConstraint.contraintType == 'not-equal to' ||
+                newConstraint.contraintType == 'greater than' ||
+                newConstraint.contraintType == 'equal to or greater than' ||
+                newConstraint.contraintType == 'less than' ||
+                newConstraint.contraintType == 'equal to or less than' ||
+                newConstraint.contraintType == 'one of list values' ||
+                newConstraint.contraintType == 'formatted value') {
+                if ($rootScope.isEmptyConstraintValue(newConstraint)) return true;
+                if (newConstraint.value == 'Regular expression') {
+                    if ($rootScope.isEmptyConstraintValue2(newConstraint)) return true;
+                }
+            } else if (newConstraint.contraintType == 'identical to another node' ||
+                newConstraint.contraintType == 'equal to another node' ||
+                newConstraint.contraintType == 'not-equal to another node' ||
+                newConstraint.contraintType == 'greater than another node' ||
+                newConstraint.contraintType == 'equal to or greater than another node' ||
+                newConstraint.contraintType == 'less than another node' ||
+                newConstraint.contraintType == 'equal to or less than another node') {
+                if ($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
+            } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
+                if ($rootScope.isEmptyConstraintValueSet(newConstraint, type)) return true;
+            }
+            return false;
+        };
+
+        $rootScope.isEmptyConstraintID = function (newConstraint) {
+            if (newConstraint.constraintId === null) return true;
+            if (newConstraint.constraintId === '') return true;
+
+            return false;
+        }
+
+        $rootScope.isEmptyComplexConstraintID = function (id) {
+            if (id === null) return true;
+            if (id === '') return true;
+
+            return false;
+        }
+
+        $rootScope.isDuplicatedConstraintID = function (newConstraint, targetId) {
+            if ($rootScope.conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1 && targetId == newConstraint.constraintId) return true;
+
+            return false;
+        }
+
+        $rootScope.isDuplicatedComplexConstraintID = function (newComplexConstraintId, targetComplexId) {
+            if ($rootScope.conformanceStatementIdList.indexOf(newComplexConstraintId) != -1 && targetComplexId == newComplexConstraintId) return true;
+
+            return false;
+        }
+
+        $rootScope.isEmptyConstraintNode = function (newConstraint, type) {
+            if (type == 'datatype') {
+                if (newConstraint.component_1 === null) return true;
+            } else if (type == 'segment') {
+                if (newConstraint.field_1 === null) return true;
+            } else if (type == 'message') {
+                if (newConstraint.position_1 === null) return true;
+            }
+
+            return false;
+        }
+
+        $rootScope.isEmptyConstraintVerb = function (newConstraint) {
+            if (newConstraint.verb === null) return true;
+
+            return false;
+        }
+
+        $rootScope.isEmptyConstraintPattern = function (newConstraint) {
+            if (newConstraint.contraintType === null) return true;
+
+            return false;
+        }
+
+        $rootScope.isEmptyConstraintValue = function (newConstraint) {
+            if (newConstraint.value === null) return true;
+
+            return false;
+        }
+
+        $rootScope.isEmptyConstraintValue2 = function (newConstraint) {
+            if (newConstraint.value2 === null) return true;
+
+            return false;
+        }
+
+        $rootScope.isEmptyConstraintAnotherNode = function (newConstraint, type) {
+            if (type == 'datatype') {
+                if (newConstraint.component_2 === null) return true;
+            } else if (type == 'segment') {
+                if (newConstraint.field_2 === null) return true;
+            } else if (type == 'message') {
+                if (newConstraint.position_2 === null) return true;
+            }
+
+            return false;
+        }
+
         $rootScope.isEmptyConstraintValueSet = function (newConstraint) {
-        	if(newConstraint.valueSetId === null) return true;
-        	
-        	return false;
+            if (newConstraint.valueSetId === null) return true;
+
+            return false;
         }
-        
+
         $rootScope.isEmptyCompositeType = function (compositeType) {
-        	if(compositeType === null) return true;
-        	
-        	return false;
+            if (compositeType === null) return true;
+
+            return false;
         }
-        
-        
+
 
         //We check for IE when the user load the main page.
         //TODO: Check only once.
@@ -1739,16 +1737,16 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 //
 //        };
 
-        
-        $rootScope.isDuplicatedTwoContexts = function (obj, context1, context2,  list) {
+
+        $rootScope.isDuplicatedTwoContexts = function (obj, context1, context2, list) {
             if (obj == null || obj == undefined) return false;
 
             return _.find(_.without(list, obj), function (item) {
-            	if(item[context1] == obj[context1]){
-            		return item[context2] == obj[context2]  && item.id != obj.id;
-            	}else {
-            		return false;
-            	}
+                if (item[context1] == obj[context1]) {
+                    return item[context2] == obj[context2] && item.id != obj.id;
+                } else {
+                    return false;
+                }
             });
         };
 
@@ -1767,9 +1765,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getLabel = function (name, ext) {
-        	var label=name;
+            var label = name;
             if (ext && ext !== null && ext !== "") {
-            	label= label + "_" + ext;
+                label = label + "_" + ext;
             }
             return label;
         };
@@ -1782,7 +1780,6 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
             return "";
         };
-
 
 
         $rootScope.getTableWidth = function () {
@@ -1848,30 +1845,29 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.getSegmentRefNodeName = function (node) {
             var seg = $rootScope.segmentsMap[node.ref.id];
-            return node.position + "." + $rootScope.getSegmentLabel(seg)  + ":" + seg.description;
+            return node.position + "." + $rootScope.getSegmentLabel(seg) + ":" + seg.description;
         };
 
         $rootScope.getSegmentLabel = function (seg) {
 //            var ext = $rootScope.getSegmentExtension(seg);
-            return $rootScope.getLabel(seg.name,seg.ext);
+            return $rootScope.getLabel(seg.name, seg.ext);
         };
 
         $rootScope.getSegmentExtension = function (seg) {
-            return $rootScope.getExtensionInLibrary(seg.id, $rootScope.igdocument.profile.segmentLibrary,"ext");
+            return $rootScope.getExtensionInLibrary(seg.id, $rootScope.igdocument.profile.segmentLibrary, "ext");
         };
 
         $rootScope.getDatatypeExtension = function (datatype) {
-            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary,"ext");
+            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary, "ext");
         };
 
         $rootScope.getTableBindingIdentifier = function (table) {
-            return $rootScope.getExtensionInLibrary(table.id, $rootScope.igdocument.profile.tableLibrary,"bindingIdentifier");
+            return $rootScope.getExtensionInLibrary(table.id, $rootScope.igdocument.profile.tableLibrary, "bindingIdentifier");
         };
 
 
-
         $rootScope.getDatatypeLabel = function (datatype) {
-            if(datatype && datatype != null) {
+            if (datatype && datatype != null) {
 //                var ext = $rootScope.getDatatypeExtension(datatype);
                 return $rootScope.getLabel(datatype.name, datatype.ext);
             }
@@ -1879,25 +1875,23 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getTableLabel = function (table) {
-        	if(table && table != null){
-        		return $rootScope.getTableBindingIdentifier(table);
-        	}
-        	return "";
+            if (table && table != null) {
+                return $rootScope.getTableBindingIdentifier(table);
+            }
+            return "";
         };
 
-        $rootScope.getExtensionInLibrary = function (id, library,propertyType) {
+        $rootScope.getExtensionInLibrary = function (id, library, propertyType) {
 //            console.log("main Here id=" + id);
-            if(propertyType && library.children){
-                for(var i=0;  i< library.children.length;i ++){
-                    if(library.children[i].id === id){
+            if (propertyType && library.children) {
+                for (var i = 0; i < library.children.length; i++) {
+                    if (library.children[i].id === id) {
                         return library.children[i][propertyType];
                     }
                 }
             }
             return "";
         };
-
-
 
 
         $rootScope.getGroupNodeName = function (node) {
@@ -1929,7 +1923,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.isDatatypeSubDT = function (component) {
-            return DatatypeService.isDatatypeSubDT(component,$rootScope.datatype);
+            return DatatypeService.isDatatypeSubDT(component, $rootScope.datatype);
         };
 
 
@@ -1940,9 +1934,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.findDatatypeInLibrary = function (datatypeId, datatypeLibary) {
-            if(datatypeLibary.children){
-                for(var i=0;  i< datatypeLibary.children.length;i ++){
-                    if(datatypeLibary.children[i].id === id){
+            if (datatypeLibary.children) {
+                for (var i = 0; i < datatypeLibary.children.length; i++) {
+                    if (datatypeLibary.children[i].id === id) {
                         return datatypeLibary.children[i];
                     }
                 }
@@ -1951,7 +1945,17 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
 
-
+        $rootScope.openConfirmLeaveDlg = function () {
+            if($rootScope.modalInstance != undefined && $rootScope.modalInstance != null && $rootScope.modalInstance.opened){
+                $rootScope.modalInstance.close();
+            }
+            $rootScope.modalInstance = $modal.open({
+                templateUrl: 'ConfirmLeaveDlg.html',
+                controller: 'ConfirmLeaveDlgCtrl',
+                'size': 'md'
+            });
+            return $rootScope.modalInstance;
+        };
 
     }]);
 
@@ -2004,3 +2008,13 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
     };
 }]);
 
+
+angular.module('igl').controller('ConfirmLeaveDlgCtrl', ["$scope", "$modalInstance", "$rootScope", "$http", function ($scope, $modalInstance, $rootScope, $http) {
+    $scope.continue = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);

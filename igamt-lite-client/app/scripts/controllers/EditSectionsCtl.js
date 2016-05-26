@@ -45,6 +45,14 @@ angular.module('igl')
                     $scope.saving = false;
                     $scope.saved = true;
                     SectionSvc.merge($rootScope.originalSection,$rootScope.section);
+                    if($scope.editForm) {
+                        $scope.editForm.$setPristine();
+                        $scope.editForm.$dirty = false;
+                    }
+                    $rootScope.clearChanges();
+                    $rootScope.msg().text = "sectionSaved";
+                    $rootScope.msg().type = "success";
+                    $rootScope.msg().show = true;
                  }, function (error) {
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
@@ -58,6 +66,7 @@ angular.module('igl')
         $scope.reset = function () {
             $scope.editForm.$setPristine();
             $scope.editForm.$dirty = false;
+            $rootScope.clearChanges();
             $rootScope.section = angular.copy($rootScope.originalSection);
         };
 

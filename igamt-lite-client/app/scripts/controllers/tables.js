@@ -44,7 +44,14 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                         oldLink.bindingIdentifier = link.bindingIdentifier;
                         $scope.saving = false;
                         $scope.selectedChildren = [];
-                        $rootScope.$broadcast('event:SetToC');
+                        if($scope.editForm) {
+                            $scope.editForm.$setPristine();
+                            $scope.editForm.$dirty = false;
+                        }
+                        $rootScope.clearChanges();
+                        $rootScope.msg().text = "tableSaved";
+                        $rootScope.msg().type = "success";
+                        $rootScope.msg().show = true;
                     }, function (error) {
                         $scope.saving = false;
                         $rootScope.msg().text = error.data.text;
