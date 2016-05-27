@@ -52,14 +52,17 @@ public class DataCorrection{
 				DBObject source = cur1.next();
 				IGDocument igd = conv.convert(source);
 
+				boolean needChange = false;
 				
 				for(Message m:igd.getProfile().getMessages().getChildren()){
 					if(m.getMessageID() == null || m.getMessageID().equals("")){
 						m.setMessageID(UUID.randomUUID().toString());
-						mongoOps.save(m);
+						needChange = true;
 						System.out.println("Updated messageID: " + m.getMessageID());
 					}
 				}
+				
+				if(needChange) mongoOps.save(igd);
 			}
 						
 		} catch (Exception e) {
