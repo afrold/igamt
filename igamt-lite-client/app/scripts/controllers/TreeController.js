@@ -72,21 +72,24 @@ angular
                 $scope.treeOptions = {
 
                     accept: function(sourceNodeScope, destNodesScope, destIndex) {
-                        var dataTypeSource = sourceNodeScope.$element
-                            .attr('data-type');
-                        var dataTypeDest = destNodesScope.$element
-                            .attr('data-type');
 
-
+                    	   
+                    	   var dataTypeSource = sourceNodeScope.$element.attr('data-type');
+                    	   var dataTypeDest = destNodesScope.$element.attr('data-type');
                         if (!dataTypeDest) {
                             return false;
                         } else if (dataTypeSource === "sections" && dataTypeDest === "sections") {
                             return true;
-                        } else if (dataTypeDest === dataTypeSource + "s") {
+                        } else if (dataTypeDest === dataTypeSource +"s") {
                             return true;
-
-                        } else
+                            
+                        } else{
                             return false;
+                        }
+                    
+                    
+
+
                     },
                     dropped: function(event) {
 
@@ -97,23 +100,53 @@ angular
                         var source = sourceNode.$parentNodeScope.$modelValue;
                         var dest = destNodes.$parent.$modelValue;
 
-                        var dataType = destNodes.$element.attr('data-type');
+                        var dataTypeDest = destNodes.$element.attr('data-type');
+                        var dataTypeSource=sourceNode.$element.attr('data-type');
                         event.source.nodeScope.$modelValue.sectionPosition = sortAfter + 1;
 
-                        console.log(sourceNode);
-                        if (source.type = "message") {
+                        var parentSource=sourceNode.$parentNodeScope.$modelValue;
+                        var parentDest= event.dest.nodesScope.$nodeScope.$modelValue; 
 
-                            $scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
+                        		
+                        		
+                                if (dataTypeDest ==="messages"){
+                                	console.log("========ordering messages");
+                                    $scope.reOrderMessages();
+                                	return "";
+                                }else if(parentSource.type==="document"&&parentDest.type==="section"){
+                                    $scope.updateChildeSections($rootScope.igdocument.childSections);
+                                    return "";
+                                }
+                                else if(parentSource.type==="document" && parentDest.type==="document"){
+                        			console.log("========updating childSection of ig");
+                        			$scope.reOrderChildSections();                 
+                        			return "";
+                        		
+                        		}else if(parentSource.type==="section" && parentDest.type==="document") {
+                                    $scope.updateChildeSections($rootScope.igdocument.childSections);
+                        			
+                        			return "";
+                        		}
+      
 
-                            $scope.reOrderMessages();
-
-                        } else {
-                            $scope.updatePositions(event.dest.nodesScope.$modelValue);
-                            $scope.updatePositions(event.source.nodesScope.$modelValue);
-                            $scope.updateChildeSections($rootScope.igdocument.childSections);
-
+                        		else if(dataTypeDest && dataTypeDest==="sections" &&dataTypeSource==="sections"){
+                        	
+                        			if(parentDest.id===parentSource.id){
+                        				console.log("=========ordering the same section");
+                        				SectionSvc.update($rootScope.igdocument.id, parentSource);
+                        				return "";
+                        			}
+                        			else {
+                        		console.log(" ordering 2 sections ");
+                        		SectionSvc.update($rootScope.igdocument.id, parentSource);
+                        		SectionSvc.update($rootScope.igdocument.id, parentDest);
+                        		return "";
+                        	}
+                        	
                         }
-
+                       
+                        		
+                      
 
                     }
                 };
@@ -283,8 +316,7 @@ angular
                             var section = $itemScope.section;
                             var index = $itemScope.$nodeScope.$parentNodesScope.$modelValue.indexOf($itemScope.$nodeScope.$modelValue);
                             if (index > -1) {
-                                $itemScope.$nodeScope.$parentNodesScope.$modelValue
-                                    .splice(index, 1);
+                                $itemScope.$nodeScope.$parentNodesScope.$modelValue.splice(index, 1);
                             }
                             $scope.updatePositions($itemScope.$nodeScope.$parentNodesScope.$modelValue);
 
@@ -305,7 +337,7 @@ angular
                                 var newSection = {};
                                 newSection.id = new ObjectId().toString();
 
-                                var rand = Math.floor(Math.random() * 100);
+                                var rand = Math.floor(Math.random() * 100);edit
                                 if (!$rootScope.igdocument.profile.metaData.ext) {
                                     $rootScope.igdocument.profile.metaData.ext = "";
                                 }
@@ -434,9 +466,6 @@ angular
                             }else {
                                 process();
                             }
-
-
-
                         }
                     ],
                     null, [
@@ -545,8 +574,8 @@ angular
                 $scope.editSection = function(section) {
                     var process = function(){
                         $scope.Activate(section.id);
-                        $rootScope.section = section;
-                        $scope.$emit('event:openSection', $rootScope.section);
+
+                  
                     };
                     if($rootScope.hasChanges()){
 
@@ -776,6 +805,60 @@ angular
                         });
                     return promise;
                 }
+                
+                
+                
+                
+                $scope.reOrderChildSections = function() {
+            
+
+                    var childSections = $rootScope.igdocument.childSections;
+                    var sections=[];
+                    for (var i = 0; i <= childSections.length - 1; i++) {
+                        var sectionMap = {};
+                        sectionMap.id = childSections[i].id;
+                        sectionMap.position = childSections[i].position;
+                        sections.push(sectionMap);
+                    }
+                    var id = $rootScope.igdocument.id;
+                    var req = {
+                        method: 'POST',
+                        url: "api/igdocuments/" + id + "/reorderChildSections",
+                        headers: {
+                            'Content-Type': "application/json"
+                        },
+                        data:sections
+                    }
+
+
+                    var promise = $http(req)
+                        .success(function(data, status, headers, config) {
+
+                            return data;
+                        })
+                        .error(function(data, status, headers, config) {
+                            if (status === 404) {
+                                console.log("Could not reach the server");
+                            } else if (status === 403) {
+                                console.log("limited access");
+                            }
+                        });
+                    return promise;
+                };
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
                 $scope.showUnused = function(node) {
                 	 if (node.id===null){

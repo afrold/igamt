@@ -20,13 +20,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguratio
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageConparator;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageMap;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PositionComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SectionArrow;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SectionMap;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
@@ -844,10 +846,12 @@ public class IGDocumentController extends CommonController {
 		if (d == null) {
 			throw new IGDocumentNotFoundException(id);
 		}
-
+		System.out.println(d.getChildSections());
+		System.out.println(d.getChildSections());
 		Set<Section> newChildSection = d.getChildSections();
 		newChildSection.add(section);
 		d.setChildSections(newChildSection);
+		System.out.println(d.getChildSections());
 		igDocumentService.save(d);
 		return true;
 	}
@@ -953,32 +957,6 @@ public class IGDocumentController extends CommonController {
 		return str.replaceAll(" ", "-");
 	}
 
-	@RequestMapping(value = "{id}/dropped", method = RequestMethod.POST)
-	public String updateAfterDrop(@PathVariable("id") String id,
-			@RequestBody SectionArrow arrow) throws IOException,
-			IGDocumentNotFoundException, IGDocumentException {
-		System.out.println(id);
-
-		IGDocument d = igDocumentService.findOne(id);
-		if (d == null) {
-			throw new IGDocumentNotFoundException(id);
-		}
-		Section s = findSection(d, arrow.getSource().getId());
-		if (s == null)
-			throw new IGDocumentException("Unknown Section");
-
-		Section target = findSection(d, arrow.getDest().getId());
-		if (target == null)
-			throw new IGDocumentException("Unknown Section dest");
-
-		System.out.println(s);
-		s.merge(arrow.getSource());
-		target.merge(arrow.getDest());
-
-		igDocumentService.save(d);
-
-		return null;
-	}
 
 	@RequestMapping(value = "/{id}/updateChildSections", method = RequestMethod.POST)
 	public String updateChildSections(@PathVariable("id") String id,
@@ -1019,7 +997,7 @@ public class IGDocumentController extends CommonController {
 		}
 		List<Message> sortedList = new ArrayList<Message>();
 		sortedList.addAll(msgs.getChildren());
-		MessageConparator comparator = new MessageConparator();
+		MessageComparator comparator = new MessageComparator();
 		Collections.sort(sortedList, comparator);
 		Set<Message> sortedSet = new HashSet<Message>();
 		sortedSet.addAll(sortedList);
@@ -1029,5 +1007,53 @@ public class IGDocumentController extends CommonController {
 		igDocumentService.save(d);
 		return null;
 	}
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/{id}/reorderChildSections", method = RequestMethod.POST)
+	public String reorderChildSections(@PathVariable("id") String id,
+			@RequestBody Set<SectionMap> sections) throws IOException,
+			IGDocumentNotFoundException, IGDocumentException {
+
+		System.out.println(id);
+		System.out.println();
+		IGDocument d = igDocumentService.findOne(id);
+		if (d == null) {
+			throw new IGDocumentNotFoundException(id);
+		}
+
+	
+		for (Section s : d.getChildSections()) {
+			for (SectionMap x :sections) {
+				if (s.getId().equals(x.getId())) {
+					s.setPosition(x.getPosition());
+				}
+			}
+		}
+		List<Section> sortedList = new ArrayList<Section>();
+		sortedList.addAll(d.getChildSections());
+		
+		System.out.println("=========unsorted List=====================");
+		System.out.println(sortedList);
+		
+		PositionComparator comparator = new PositionComparator();
+		Collections.sort(sortedList, comparator);
+		
+		System.out.println("=========sorted List=====================");
+		System.out.println(sortedList);
+		Set<Section> sortedSet = new HashSet<Section>();
+		sortedSet.addAll(sortedList);
+		System.out.println("=========sorted set=====================");
+		System.out.println(sortedSet);
+		d.setChildSections(sortedSet);
+		
+		System.out.println(d.getChildSections());
+		igDocumentService.save(d);
+		return null;
+	}
+	
 
 }

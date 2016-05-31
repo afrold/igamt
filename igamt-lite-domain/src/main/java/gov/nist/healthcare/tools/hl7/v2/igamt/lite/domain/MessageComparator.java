@@ -2,7 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.Comparator;
 
-public class MessageConparator implements Comparator<Message> {
+public class MessageComparator implements Comparator<Message> {
 
 	@Override
 	public int compare(Message o1, Message o2) {

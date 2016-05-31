@@ -873,7 +873,7 @@ angular.module('igl')
                 }, 100);
         };
 
-        $scope.selectSection = function (section, entry) {
+        $scope.selectSection = function (section) {
             $scope.subview = "EditSections.html";
             $scope.loadingSelection = true;
             $timeout(
