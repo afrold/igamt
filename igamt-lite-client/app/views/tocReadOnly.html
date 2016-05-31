@@ -55,7 +55,7 @@
  								<span data-nodrag data-nodrag
                                       ng-class="{selected : section.id===activeModel}"
                                       
-                                      ng-click="editSection(section);Activate(section.id)">
+                                      ng-click="editSection(section);">
  								{{getLabel(this)}}.{{section.sectionTitle}} </span>
                         </div>
 
@@ -102,7 +102,7 @@
                                  <span data-nodrag style ="font-weight: normal;"
                                                                                     
                                                                                      ng-class="{selected : msg.id===activeModel}"
-                                                                                     ng-click="editMessage(msg);Activate(msg.id)">
+                                                                                     ng-click="editMessage(msg);">
 									{{updateMessagePositions(ig.profile.messages.children)}}
 									[{{msg.position}}]	{{msg.name}}-{{msg.description}}
 									</span>
@@ -132,11 +132,11 @@
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle  data-nodrag 
                              style ="margin-left:30px;"
-                             ng-click="editSeg(segment)">
+                              >
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : segment.id===activeModel}"
                                       
-                                      ng-click=" editSeg(segment);Activate(segment.id)">
+                                      ng-click="editSeg(segment);">
 
                                        <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
                                    'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' ,'unused' : showUnused(segment)}"  ns-popover ns-popover-template="segmentPopover"
@@ -164,11 +164,11 @@
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle  data-nodrag  
                                  
-                                 ng-click="editDataType(data);debug(data)"  style ="margin-left:30px;">
+                                   style ="margin-left:30px;">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : data.id===activeModel}"
-                                      
-                                      ng-click="editDataType(data); Activate(data.id)">
+
+                                      ng-click="editDataType(data);">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                    'label-USE':  !showUnused(data)&&getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','unused' : showUnused(data)}" >  {{getScopeLabel(data)}}</span> 
                                       
@@ -195,12 +195,12 @@
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle  data-nodrag 
                                  
-                                 ng-click="editTable(table);"  style ="margin-left:30px;">
+                                   style ="margin-left:30px;">
 
 								<span data-nodrag style ="font-weight:normal;"
                                       ng-class="{selected : table.id===activeModel}"
                                       
-                                      ng-click="editTable(table); Activate(table.id)">
+                                      ng-click="editTable(table);">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE':  !showUnused(table)&&getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','unused': showUnused(table)}" >  {{getScopeLabel(table)}}</span> 
                                       
