@@ -135,11 +135,11 @@
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click style ="margin-left:30px;"
-                                 ng-click="editSeg(segment)" context-menu="SegmentOptions">
+                                 context-menu="SegmentOptions">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : segment.id===activeModel}"
                                       confirm-click
-                                      ng-click=" editSeg(segment);">
+                                      ng-click="editSeg(segment);">
 
                                        <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
                                    'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' ,'unused' : showUnused(segment)}"  ns-popover ns-popover-template="segmentPopover"
@@ -167,7 +167,7 @@
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle  data-nodrag  
                                  confirm-click
-                                 ng-click="editDataType(data)" context-menu="DataTypeOptions" style ="margin-left:30px;">
+                                 context-menu="DataTypeOptions" style ="margin-left:30px;">
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : data.id===activeModel}"
                                       confirm-click
@@ -198,7 +198,7 @@
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click
-                                 ng-click="editTable(table);" context-menu="ValueSetOptions" style ="margin-left:30px;">
+                                 context-menu="ValueSetOptions" style ="margin-left:30px;">
 
 								<span data-nodrag style ="font-weight:normal;"
                                       ng-class="{selected : table.id===activeModel}"
