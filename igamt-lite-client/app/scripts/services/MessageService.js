@@ -7,7 +7,10 @@ angular.module('igl').factory('MessageService',
         var MessageService = {
         	save: function (message) {
         		var delay = $q.defer();
-                $http.post('api/messages/save', message).then(function (response) {
+                console.log(message);
+                $http.post('api/messages/save', message, {
+                    headers:{'Content-Type':'application/json'}
+                }).then(function (response) {
                 	var saved = angular.fromJson(response.data);
                 	delay.resolve(saved);
                 	return saved;

@@ -34,8 +34,11 @@ angular.module('igl')
         };
 
         $scope.save = function () {
+
             $scope.saving = true;
+
             var message = $rootScope.message;
+            console.log(message);
             MessageService.save(message).then(function (result) {
                 $rootScope.processElement(message);
                 var index = findIndex(message.id);
@@ -45,7 +48,7 @@ angular.module('igl')
                 }
 //                MastermapSvc.addMessage(message, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
 
-                $rootScope.$broadcast('event:SetToC');
+                //$rootScope.$broadcast('event:SetToC');
                 $rootScope.message = angular.copy(message);
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
@@ -63,6 +66,9 @@ angular.module('igl')
         $scope.goToSegment = function (segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
         };
+
+
+
 
         $scope.showSelectSegmentFlavorDlg = function (segmentRef) {
             var modalInstance = $modal.open({
@@ -93,6 +99,7 @@ angular.module('igl')
                     $scope.messagesParams.refresh();
             });
         };
+        
 
         $scope.goToDatatype = function (datatype) {
             $scope.$emit('event:openDatatype', datatype);
@@ -218,6 +225,7 @@ angular.module('igl')
 //        }
 
     });
+    
 
 
 angular.module('igl')

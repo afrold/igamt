@@ -248,11 +248,11 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
             svc.createMMElement(tbl.id, "table");
         });
         _.each(svc.getDatatypeLibrary(), function(dt) {
-            console.log(dt);
+            //console.log(dt);
             svc.createMMElement(dt.id, "datatype");
         });
         _.each(svc.getSegmentLibrary(), function(sgt) {
-            console.log(sgt);
+          //  console.log(sgt);
             svc.createMMElement(sgt.id, "segment");
         });
 
@@ -336,7 +336,7 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
             svc.mastermap[id.concat(type)] = eltColl;
         }
         else {
-        console.log("null id")
+        //console.log("null id")
         }
     }
     svc.removeMastermapElt = function(toBeRemovedId, toBeRemovedType) {
