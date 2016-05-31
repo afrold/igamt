@@ -13,7 +13,11 @@ angular.module('igl')
         $scope.saving = false;
 
         $scope.reset = function () {
-        	$scope.editForm.$setPristine();
+            if($scope.editForm){
+                $scope.editForm.$dirty = false;
+                $scope.editForm.$setPristine();
+
+            }
             $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
             $rootScope.clearChanges();
             if ($scope.segmentsParams) {
@@ -84,6 +88,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -113,6 +118,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -130,7 +136,9 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
+
             });
         };
 
@@ -415,6 +423,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
 
     $scope.mappingTable = function () {
         $scope.selectedNode.table.id = $scope.selectedTable.id;
+        $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
         $rootScope.recordChangeForEdit2('field', 'edit', $scope.selectedNode.id, 'table', $scope.selectedNode.table.id);
         $scope.ok();
     };

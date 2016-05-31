@@ -14,10 +14,11 @@ angular.module('igl')
         };
 
         $scope.reset = function () {
+            $rootScope.message = angular.copy($rootScope.messagesMap[$rootScope.message.id]);
+            $rootScope.processMessageTree($rootScope.message);
+            $rootScope.clearChanges();
             $scope.editForm.$setPristine();
             $scope.editForm.$dirty = false;
-            $rootScope.message = angular.copy($rootScope.messagesMap[$rootScope.message.id]);
-            $rootScope.clearChanges();
             if ($scope.messagesParams) {
                 $scope.messagesParams.refresh();
             }
@@ -26,7 +27,7 @@ angular.module('igl')
 
         var findIndex = function (id) {
             for (var i = 0; i < $rootScope.igdocument.profile.messages.children.length; i++) {
-                if ($rootScope.igdocument.profile.messages.children[i].id === i) {
+                if ($rootScope.igdocument.profile.messages.children[i].id === id) {
                     return i;
                 }
             }
@@ -44,9 +45,10 @@ angular.module('igl')
                     FilteringSvc.addMsgInFilter(message.name, message.id);
                 }
 //                MastermapSvc.addMessage(message, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-
-                $rootScope.$broadcast('event:SetToC');
                 $rootScope.message = angular.copy(message);
+                $rootScope.msg().text = "messageSaved";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
@@ -88,6 +90,7 @@ angular.module('igl')
                 segmentRef.ref.id = segment.id;
                 segmentRef.ref.ext = segment.ext;
                 segmentRef.ref.name = segment.name;
+                $scope.setDirty();
                 // TODO: Delete segment ref from MasterMap
 //                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
                 if ($scope.messagesParams)
@@ -143,6 +146,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -163,6 +167,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -180,7 +185,7 @@ angular.module('igl')
         $scope.isVisible = function (node) {
             if (node && node != null) {
 //                return FilteringSvc.show(node);
-            	return true;
+                return true;
             } else {
                 return true;
             }
@@ -189,7 +194,7 @@ angular.module('igl')
         $scope.isVisibleInner = function (node, nodeParent) {
             if (node && node != null && nodeParent && nodeParent != null) {
 //                return FilteringSvc.showInnerHtml(node, nodeParent);
-            	return true;
+                return true;
             } else {
                 return true;
             }
@@ -222,7 +227,7 @@ angular.module('igl')
 
 
 angular.module('igl')
-    .controller('SelectSegmentFlavorCtrl', function ($scope, $filter,$q, $modalInstance, $rootScope, $http, segmentLibrary, SegmentService, $rootScope, hl7Version, ngTreetableParams, ViewSettings, SegmentLibrarySvc, datatypeLibrary, DatatypeLibrarySvc,currentSegment) {
+    .controller('SelectSegmentFlavorCtrl', function ($scope, $filter, $q, $modalInstance, $rootScope, $http, segmentLibrary, SegmentService, $rootScope, hl7Version, ngTreetableParams, ViewSettings, SegmentLibrarySvc, datatypeLibrary, DatatypeLibrarySvc, currentSegment) {
         $scope.segmentLibrary = segmentLibrary;
         $scope.datatypeLibrary = datatypeLibrary;
         $scope.resultsError = null;
@@ -355,7 +360,7 @@ angular.module('igl')
         var getNewDatatypeLinks = function () {
             var links = [];
             _.each($scope.added, function (datatype) {
-                if (indexIn(datatype.id,  $scope.datatypeLibrary.children) < 0) {
+                if (indexIn(datatype.id, $scope.datatypeLibrary.children) < 0) {
                     var link = getNewLink(datatype);
                     links.push(link);
                 }

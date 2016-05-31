@@ -18,8 +18,11 @@ angular.module('igl')
         };
         
         $scope.reset = function () {
-            $scope.editForm.$setPristine();
-            $scope.editForm.$dirty = false;
+            if($scope.editForm){
+                $scope.editForm.$dirty = false;
+                $scope.editForm.$setPristine();
+
+            }
             $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
             $rootScope.clearChanges();
             if ($scope.datatypesParams) {
@@ -88,6 +91,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -105,6 +109,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -122,6 +127,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -376,6 +382,7 @@ angular.module('igl')
 //                MastermapSvc.deleteElementChildren(component.datatype.id, "datatype", component.id, component.type);
 //                MastermapSvc.addDatatypeObject(datatype, [[component.id, component.type]]);
                 component.datatype.id = datatype.id;
+                $scope.setDirty();
                 // TODO: Delete component from MasterMap
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
@@ -707,7 +714,8 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
 
     $scope.mappingTable = function () {
         $scope.selectedNode.table.id = $scope.selectedTable.id;
-        $rootScope.recordChangeForEdit2('component', 'edit', $scope.selectedNode.id, 'table', $scope.selectedTable.id);
+         $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
+        $rootScope.recordChanged();
         $scope.ok();
     };
 
@@ -797,7 +805,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
         if (component != null && subComponent == null) {
             position = component.position + '[1]';
         } else if (component != null && subComponent != null) {
-            Position = component.position + '[1]' + '.' + subComponent.position + '[1]';
+            position = component.position + '[1]' + '.' + subComponent.position + '[1]';
         }
 
         return position;

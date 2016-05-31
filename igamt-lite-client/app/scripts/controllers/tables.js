@@ -16,9 +16,12 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     };
     
     $scope.reset = function () {
-        $scope.editForm.$setPristine();
-        $scope.editForm.$dirty = false;
-    	$rootScope.clearChanges();
+        if($scope.editForm){
+            $scope.editForm.$dirty = false;
+            $scope.editForm.$setPristine();
+
+        }
+        $rootScope.clearChanges();
     	$rootScope.table = angular.copy( $rootScope.tablesMap[$rootScope.table.id]);
     };
     

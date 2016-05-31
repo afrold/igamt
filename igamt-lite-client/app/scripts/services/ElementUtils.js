@@ -20,10 +20,10 @@ angular.module('igl').factory('ElementUtils',
             },
             setUsage: function (node) {
                 if( node.usage && node.min) {
-                    if( node.usage === "R" && node.min == 0){
+                    if( node.usage === "R" && (node.min == 0 || node.min === "0")){
                         node.min = 1;
                     }
-                    if( node.usage === "0"){
+                    if( node.usage === "O"){
                         node.min = 0;
                     }
                 }

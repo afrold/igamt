@@ -69,12 +69,12 @@ angular.module('igl')
         });
 
         $rootScope.closeIGDocument = function () {
+            $rootScope.clearChanges();
             $rootScope.igdocument = null;
             $rootScope.isEditing = false;
             $scope.selectIgTab(0);
             $rootScope.initMaps();
             StorageService.setIgDocument(null);
-            $rootScope.clearChanges();
         };
 
         $scope.getMessageParams = function () {
@@ -126,7 +126,6 @@ angular.module('igl')
 
             $scope.$on('event:openMessage', function (event, message) {
                 $rootScope.messageTree = null;
-                $rootScope.processMessageTree(message);
                 $scope.selectMessage(message); // Should we open in a dialog ??
             });
 
@@ -276,25 +275,25 @@ angular.module('igl')
         }
 
         $scope.show = function (igdocument) {
-            $scope.toEditIGDocumentId = igdocument.id;
-            try {
-
-                if ($rootScope.igdocument != null && $rootScope.igdocument === igdocument) {
+            var process = function(){
+                $scope.toEditIGDocumentId = igdocument.id;
+                try {
                     $scope.openIGDocument(igdocument);
-                } else if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
-                    preventChangesLost();
-                    $scope.openIGDocument(igdocument);
-//                    $scope.confirmOpen(igdocument);
+                } catch (e) {
+                    $rootScope.msg().text = "igInitFailed";
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                    $scope.loadingIGDocument = false;
                     $scope.toEditIGDocumentId = null;
-                } else {
-                    $scope.openIGDocument(igdocument);
                 }
-            } catch (e) {
-                $rootScope.msg().text = "igInitFailed";
-                $rootScope.msg().type = "danger";
-                $rootScope.msg().show = true;
-                $scope.loadingIGDocument = false;
-                $scope.toEditIGDocumentId = null;
+            };
+
+            if($rootScope.hasChanges()){
+                $rootScope.openConfirmLeaveDlg().result.then(function () {
+                    process();
+                });
+            }else {
+                process();
             }
         };
 
@@ -638,9 +637,11 @@ angular.module('igl')
         };
 
         $scope.close = function () {
-            if ($rootScope.hasChanges()) {
-                $scope.confirmClose();
-            } else {
+            if($rootScope.hasChanges()){
+                $rootScope.openConfirmLeaveDlg().result.then(function () {
+                    $rootScope.closeIGDocument();
+                });
+            }else {
                 $rootScope.closeIGDocument();
             }
         };
@@ -838,6 +839,7 @@ angular.module('igl')
             $scope.loadingSelection = true;
             $rootScope.originalMessage = message;
             $rootScope.message = angular.copy(message);
+            $rootScope.processMessageTree($rootScope.message);
             $timeout(
                 function () {
                     $rootScope.tableWidth = null;
@@ -1065,6 +1067,9 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
                     $scope.editForm.$dirty = false;
                 }
                 $rootScope.clearChanges();
+                $rootScope.msg().text = "documentMetaDataSaved";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
 
             }, function (error) {
                 $scope.saving = false;
@@ -1098,6 +1103,9 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
                 $scope.editForm.$setPristine();
                 $scope.editForm.$dirty = false;
                 $rootScope.clearChanges();
+                $rootScope.msg().text = "messageInfrasctructureSaved";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
 
             }, function (error) {
                 $scope.saving = false;
@@ -1120,7 +1128,7 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
 
 angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc) {
     $scope.igdocumentToSelect = igdocumentToSelect;
-    $scope.xmlFormat = '';
+    $scope.xmlFormat = 'Validation';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
 
@@ -1236,7 +1244,15 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
                     $rootScope.tables.splice(0, 0, newTable);
                     $rootScope.tablesMap[newTable.id] = newTable;
 //                    MastermapSvc.addValueSetObject(newTable, []);
-                    $rootScope.$broadcast('event:SetToC');
+
+                    if($scope.editForm) {
+                        $scope.editForm.$setPristine();
+                        $scope.editForm.$dirty = false;
+                    }
+                    $rootScope.clearChanges();
+                    $rootScope.msg().text = "tableSaved";
+                    $rootScope.msg().type = "success";
+                    $rootScope.msg().show = true;
 
                 }, function (error) {
                     $scope.saving = false;

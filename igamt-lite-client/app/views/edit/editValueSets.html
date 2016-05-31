@@ -21,13 +21,13 @@
     					<span class="header4">Table: {{table.bindingIdentifier}}</span>
             				<span class="pull-right">
          					<button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 				ng-disabled="editForm.$invalid && editForm.$pristine"
+                 				ng-disabled="editForm.$invalid || !editForm.$dirty"
                  				ng-hide="viewSettings.tableReadonly || table.scope !== 'USER'"
                 	 			ng-click="save()">
              					<span><i class="fa fa-check fa-fw"></i> Save</span>
          					</button>
-							<button title="Cancel Changes" type="button" class="btn btn-sm btn-warning"
-								ng-disabled="editForm.$invalid && editForm.$pristine"
+							<button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
+								ng-disabled="!editForm.$dirty"
                 	       		ng-hide="viewSettings.tableReadonly || table.scope !== 'USER'"
                 	        	ng-click="reset()">
                 	        	<span><i class="fa fa-times fa-fw"></i> Reset</span>
@@ -37,82 +37,83 @@
 	
 					<tabset>
 						<tab heading="Table MetaData">
+                            <div style="margin-top: 20px">
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIndentifier.$invalid}">
         						<label class="col-md-2 control-label">Mapping Indentifier</label>
 
-        						<div class="col-md-10">
-            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="tableIndentifier" class="form-control" ng-model="table.bindingIdentifier" required>
+        						<div class="controls col-md-10">
+            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="tableIndentifier" class="form-control" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
         						</div>
     						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
         						<label class="col-md-2 control-label">Name</label>
 
-        						<div class="col-md-10">
-            						<input type="text" disabled name="name" class="form-control" ng-model="table.name" required>
+        						<div class="controls col-md-10">
+            						<input type="text" disabled name="name" class="form-control" ng-model="table.name" required ng-change="setDirty()">
         						</div>
     						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.decription.$invalid}">
         						<label class="col-md-2 control-label">Decription</label>
 
-        						<div class="col-md-10">
-            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="description" class="form-control" ng-model="table.description">
+        						<div class="controls col-md-10">
+            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="description" class="form-control" ng-model="table.description" ng-change="setDirty()">
         						</div>
     						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.decription.$invalid}">
         						<label class="col-md-2 control-label">Decription</label>
 
-        						<div class="col-md-10">
-            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="description" class="form-control" ng-model="table.description">
+        						<div class="controls col-md-10">
+            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="description" class="form-control" ng-model="table.description" ng-change="setDirty()">
         						</div>
     						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.oid.$invalid}">
         						<label class="col-md-2 control-label">OID</label>
 
-        						<div class="col-md-10">
-            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="oid" class="form-control" ng-model="table.oid">
+        						<div class="controls col-md-10">
+            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="oid" class="form-control" ng-model="table.oid" ng-change="setDirty()">
         						</div>
     						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.version.$invalid}">
         						<label class="col-md-2 control-label">Version</label>
 
-        						<div class="col-md-10">
-            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="version" class="form-control" ng-model="table.version">
+        						<div class="controls col-md-10">
+            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="version" class="form-control" ng-model="table.version" ng-change="setDirty()">
         						</div>
     						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.extensibility.$invalid}">
         						<label class="col-md-2 control-label">Extensibility</label>
 
-        						<div class="col-md-10">
-									<select class="form-control" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="extensibility" ng-model="table.extensibility" ng-options="extensibility for extensibility in config.tableExtensibilities"/>
+        						<div class="controls col-md-10">
+									<select class="form-control" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="extensibility" ng-model="table.extensibility" ng-options="extensibility for extensibility in config.tableExtensibilities" ng-change="setDirty()"/>
         						</div>
     						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.stability.$invalid}">
         						<label class="col-md-2 control-label">Stability</label>
 
-        						<div class="col-md-10">
-									<select class="form-control" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="stability" ng-model="table.stability" ng-options="stability for stability in config.tableStabilities"/>
+        						<div class="controls col-md-10">
+									<select class="form-control" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="stability" ng-model="table.stability" ng-options="stability for stability in config.tableStabilities" ng-change="setDirty()"/>
         						</div>
     						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.contentDefinition.$invalid}">
         						<label class="col-md-2 control-label">Content Definition</label>
 
-        						<div class="col-md-10">
-									<select class="form-control" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="contentDefinition" ng-model="table.contentDefinition" ng-options="contentDefinition for contentDefinition in config.tableContentDefinitions"/>
+        						<div class="controls col-md-10">
+									<select class="form-control" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="contentDefinition" ng-model="table.contentDefinition" ng-options="contentDefinition for contentDefinition in config.tableContentDefinitions" ng-change="setDirty()"/>
         						</div>
     						</div>
 
 							<div class="form-group control-group">
         						<label class="col-md-2 control-label">Code Systems</label>
 
-								<div class="col-md-10">
+								<div class="controls col-md-10">
 								 	<div class="form-control">
 										<span ng-repeat="cs in codeSystems">
 											{{cs}}
@@ -133,6 +134,7 @@
 									</div>
 								</div>
 							</div>
+                                </div>
 						</tab>
 						
 						<tab heading="Table Definition">
@@ -200,12 +202,14 @@
 													<div ng-show="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">
 														<input type="text" style="width: 100%" name="Value"
                                        						ng-hide="viewSettings.tableReadonly"
+                                                            ng-change="setDirty()"
 									   						class="form-control-warning"
                                        						ng-model="c.value"/>
 														<span style="color:red">Duplicated</span>
 													</div>
 													<div ng-hide="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">
 														<input type="text" style="width: 100%" name="Value"
+                                                               ng-change="setDirty()"
                                        						ng-hide="viewSettings.tableReadonly"
 									   						class="form-control"
                                        						ng-model="c.value"/>
@@ -217,6 +221,7 @@
 													<div ng-show="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)">
 														<input type="text" style="width: 100%" name="Label"
                                        						ng-hide="viewSettings.tableReadonly"
+                                                            ng-change="setDirty()"
 									   						class="form-control-warning"
                                        						ng-model="c.label"/>
 														<span style="color:red">Duplicated</span>
@@ -224,6 +229,7 @@
 													<div ng-hide="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)">
 														<input type="text" style="width: 100%" name="Label"
                                        						ng-hide="viewSettings.tableReadonly"
+                                                            ng-change="setDirty()"
 									   						class="form-control"
                                        						ng-model="c.label"/>
 													</div>
@@ -234,6 +240,7 @@
 													<div ng-show="!c.codeSystem || c.codeSystem === ''">
 														<select class="form-control-warning"
 															ng-hide="viewSettings.tableReadonly"
+                                                            ng-change="setDirty()"
                                         					ng-model="c.codeSystem"
                                         					ng-options="cs for cs in codeSystems">
                                 						</select>
@@ -242,6 +249,7 @@
 													<div ng-hide="!c.codeSystem || c.codeSystem === ''">
 														<select class="form-control"
 															ng-hide="viewSettings.tableReadonly"
+                                                            ng-change="setDirty()"
                                        	 					ng-model="c.codeSystem"
                                         					ng-options="cs for cs in codeSystems">
                                 						</select>
@@ -252,6 +260,7 @@
                                 					<span ng-show="viewSettings.tableReadonly">{{c.codeUsage}}</span>
                                 					<select class="form-control" name="Usage"
                                         				ng-hide="viewSettings.tableReadonly"
+                                                        ng-change="setDirty()"
                                         				ng-model="c.codeUsage"
                                         				ng-options="codeUsage for codeUsage in config.codeUsages">
                                 					</select>

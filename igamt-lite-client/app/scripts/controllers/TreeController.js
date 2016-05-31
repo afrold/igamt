@@ -72,24 +72,21 @@ angular
                 $scope.treeOptions = {
 
                     accept: function(sourceNodeScope, destNodesScope, destIndex) {
+                        var dataTypeSource = sourceNodeScope.$element
+                            .attr('data-type');
+                        var dataTypeDest = destNodesScope.$element
+                            .attr('data-type');
 
-                    	   
-                    	   var dataTypeSource = sourceNodeScope.$element.attr('data-type');
-                    	   var dataTypeDest = destNodesScope.$element.attr('data-type');
+
                         if (!dataTypeDest) {
                             return false;
                         } else if (dataTypeSource === "sections" && dataTypeDest === "sections") {
                             return true;
                         } else if (dataTypeDest === dataTypeSource +"s") {
                             return true;
-                            
-                        } else{
+
+                        } else
                             return false;
-                        }
-                    
-                    
-
-
                     },
                     dropped: function(event) {
 
@@ -107,7 +104,6 @@ angular
                         var parentSource=sourceNode.$parentNodeScope.$modelValue;
                         var parentDest= event.dest.nodesScope.$nodeScope.$modelValue; 
 
-                        		
                         		
                                 if (dataTypeDest ==="messages"){
                                 	console.log("========ordering messages");
@@ -146,7 +142,8 @@ angular
                         }
                        
                         		
-                      
+                        		
+
 
                     }
                 };
@@ -575,7 +572,7 @@ angular
                     var process = function(){
                         $scope.Activate(section.id);
 
-                  
+                        $scope.selectSection(section);
                     };
                     if($rootScope.hasChanges()){
 
