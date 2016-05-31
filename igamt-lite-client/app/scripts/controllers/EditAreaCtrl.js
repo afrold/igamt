@@ -1,8 +1,9 @@
 angular.module('igl')
-    .controller('EditAreaCtrl', function ($scope, $rootScope, CloneDeleteSvc, ToCSvc,SectionSvc) {
+    .controller('EditAreaCtrl', function ($scope, $rootScope, CloneDeleteSvc, ToCSvc,SectionSvc,ElementUtils) {
 
         $scope.init = function(){
             if($scope.editForm) {
+                $rootScope.clearChanges();
                 $scope.editForm.$setPristine();
                 $scope.editForm.$dirty = false;
                 console.log("=====> set $dirty to false")
@@ -15,7 +16,7 @@ angular.module('igl')
 
         $scope.$watch(
             function(){
-              return $scope.editForm.$dirty;
+              return $scope.editForm != undefined && $scope.editForm.$dirty;
             },
             function handleFormState( newValue) {
                 if(newValue){
@@ -26,6 +27,18 @@ angular.module('igl')
             }
         );
 
+        $scope.setDirty = function () {
+            $scope.editForm.$dirty = true;
+        };
+
+        $scope.setUsage = function (node) {
+            ElementUtils.setUsage(node);
+            $scope.setDirty();
+        };
 
 
-});
+
+
+
+
+    });

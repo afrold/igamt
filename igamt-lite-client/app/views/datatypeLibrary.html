@@ -1,3 +1,123 @@
+<style id="antiClickjack">
+    body {
+        display: none !important;
+    }
+</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
+<style>
+
+    .selected {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#87e0fd+0,05abe0+100 */
+        background: #87e0fd; /* Old browsers */
+        background: -moz-linear-gradient(top, #87e0fd 0%, #05abe0 100%);
+        /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #87e0fd 0%, #05abe0 100%);
+        /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #87e0fd 0%, #05abe0 100%);
+        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd',
+        endColorstr='#05abe0', GradientType=0); /* IE6-9 */
+        color: white;
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#356aa0+0,356aa0+100;Blue+Flat */
+        background: #356aa0; /* Old browsers */
+        background: -moz-linear-gradient(top, #356aa0 0%, #356aa0 100%);
+        /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #356aa0 0%, #356aa0 100%);
+        /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #356aa0 0%, #356aa0 100%);
+        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#356aa0',
+        endColorstr='#356aa0', GradientType=0); /* IE6-9 */
+    }
+
+    .panel-body {
+
+    }
+    /* .fa{ */
+    /* font-size: 18px; */
+    /* } */
+    .treeRoot {
+        font-size: 18px;
+    }
+
+    .treeSection {
+        font-size: 16px;
+        margin-left: -10px;
+    }
+
+    .treeSubSection {
+        font-size: 14px;
+    }
+
+    .treeUnderSubSection {
+        font-size: 13px;
+    }
+    .cursorMove{
+    cursor: move;}
+    .message {
+        font-size: 17px;
+    }
+
+    .messageContent {
+        font-size: 16;
+    }
+
+    .messageSubContent {
+        font-size: 12px;
+        margin-left:45px;
+    }
+    .uitree{
+ 	margin-left:8px;
+    }
+    .label-USE{
+    background-color: green;}
+    
+     .label-HL7{
+    background-color: red;}
+    
+ 	.label-MASTER{
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff7400+0,ff7400+100;Orange+Flat */
+	background: #ff7400; /* Old browsers */
+	background: -moz-linear-gradient(top, #ff7400 0%, #ff7400 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #ff7400 0%,#ff7400 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #ff7400 0%,#ff7400 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff7400', endColorstr='#ff7400',GradientType=0 ); /* IE6-9 */
+    }
+    
+    span{
+    cursor: pointer;
+    font-weight: normal;
+ 
+    }
+    
+    
+    .angular-ui-tree-handle {
+    margin-left:0px;
+    cursor: move;
+    text-decoration: none;
+        text-decoration-color: -moz-use-text-color;
+        text-decoration-line: none;
+        text-decoration-style: solid;
+    font-weight: 700;
+  
+
+}
+.angular-ui-tree-nodes .angular-ui-tree-nodes {
+    padding-left: 0px;
+}
+
+
+</style>
+
+
+
 <div class="container" ng-controller="DatatypeLibraryCtl"
 	ng-init="initDatatypeLibrary()">
 
@@ -32,10 +152,10 @@
 							ng-click="openStandardDataypes('MASTER')" ng-show="admin">
 							<i class="fa fa-plus"></i> Create Master Data Type Library
 						</button>
-						<button type="button" class="btn btn-primary btn-sm"
-							ng-click="openStandardDataypes('USER')">
-							<i class="fa fa-plus"></i> Create user Data Type Library
-						</button>
+						<!--<button type="button" class="btn btn-primary btn-sm"-->
+							<!--ng-click="openStandardDataypes('USER')">-->
+							<!--<i class="fa fa-plus"></i> Create user Data Type Library-->
+						<!--</button>-->
 					</div>
 				</div>
 			</form>
@@ -50,35 +170,34 @@
 				<div class="form-group">
 					<table st-table="datatypeLibsDisplay"
 						st-safe-src="datatypeLibsStruct"
-						class="table table-bordered table-fix-header">
-						<thead>
-						
-						<tr>
+						class="table table-striped table-bordered table-fix-header table-condensed igl-list-table">
+				       <thead>
+                    <tr>
                         <th st-ratio="100">
                             <input st-search placeholder="Search" class="input-sm form-control" type="search"/>
                         </th>
                     </tr>
 							<tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
-								<th st-ratio="2" style="text-align: right;">#</th>
+								<th st-ratio="3">#</th>
 								<th st-ratio="8" st-sort="datatypeLibsDisplay(dtLib)"
 									st-sort-default="true">Name</th>
 								<th st-ratio="20">Extension</th>
 								<th st-ratio="20">Date</th>
 								<th st-ratio="10">Scope</th>
 								<th st-ratio="10">HL7 Version</th>
-								<th st-ratio="30">Actions</th>
+								<th st-ratio="29">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr ng-class="{'new' : dtLib.new}"
 								ng-repeat="dtLib in datatypeLibsDisplay">
-								<td st-ratio="2" style="text-align: right;">{{$index + 1}}</td>
+								<td st-ratio="3">{{$index + 1}}</td>
 								<td st-ratio="8">{{dtLib.metaData.name}}</td>
 								<td st-ratio="20">{{dtLib.metaData.ext}}</td>
 								<td st-ratio="20">{{dtLib.metaData.date}}
 								<td st-ratio="10">{{dtLib.scope}}</td>
 								<td st-ratio="10">{{dtLib.metaData.hl7Version}}</td>
-								<td st-ratio="30">
+								<td st-ratio="29">
 									<button title="Edit" type="button"
 										class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib)">
 										<span><i class="fa fa-pencil fa-fw"></i> Edit</span>
@@ -146,7 +265,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">Edit Area</div>
 					<div class="panel-body" style="padding-bottom: 100px">
-						<form confirmOnLeave name="forms.editForm">
+						<form confirm-on-leave unsaved-warning-form name="forms.editForm" id="editForm">
 							<ng-include src="editView"></ng-include/>
 						</form>
 					</div>
@@ -161,77 +280,114 @@
 </accordion-group>
 </accordion>
 </div>
+
 <script type="text/ng-template" id="LibraryMetaData.html">
 
-<div class="container>
-<div class="row">
-<div class="col-sm-4 pull-right" style="margin-right:20px">
-  <button type="button" class="btn btn-success btn-xs"
-          ng-disabled="!forms.editForm.$dirty"
-          ng-click="saveMetaData()"><i class="fa fa-plus fa-fw"></i>
-    Save
-  </button>
-                       <button title="Discard changes" type="button" class="btn btn-xs btn-danger"
-                           ng-disabled="!forms.editForm.$dirty"
-                                ng-click="resetMetaData()">
-                         <span><i class="fa fa-trash-o fa-fw"></i>Reset</span>
-                       </button>
-</div>
-</div>
-<div class="row">
-<div class="col-sm-9 pull-left" style="margin-right:20px">
-  <div class="container form-group control-group" ng-class="{'igl-has-error has-feedback' : forms.datatypeForm.label.$invalid}">
-  <div class="row">
-   <div class="col-sm-6">
-   <label class="control-label" for="hl7Version">HL7 Version</label>
-    <input class="form-control"  type="text"
-           name="hl7Version" disabled
-           ng-model="datatypeLibMetaDataCopy.hl7Version"
-           required/>
-	</div>
-   <div class="col-sm-6">
-   <label class="control-label" for="name">Name</label>
-    <input class="form-control"  type="text"
-           name="name"
-           ng-model="datatypeLibMetaDataCopy.name"
-           required id="name" ng-change="recordChanged()"/>
-	</div>
-	</div>
-  <div class="row">
-   <div class="col-sm-6">
-   <label class="control-label" for="ext">Extension</label>
-    <input class="form-control"  type="text"
-           name="ext"
-           ng-model="datatypeLibMetaDataCopy.ext"
-           required ng-change="recordChanged()"/>
-	</div>
-   <div class="col-sm-6">
-   <label class="control-label" for="orgName">Organization Name</label>
-    <input class="form-control" type="text"
-           name="orgName"
-           ng-model="datatypeLibMetaDataCopy.orgName"
-           required ng-change="recordChanged()"/>
-	</div>
-	</div>
-  <div class="row">
-   <div class="col-sm-6">
-   <label class="control-label" for="version">Version</label>
-    <input class="form-control"  type="text"
-           name="version" disabled
-           ng-model="datatypeLibMetaDataCopy.version"
-           required/>
-	</div>
-   <div class="col-sm-6">
-   <label class="control-label" for="date">Date</label>
-    <input class="form-control"  type="text"
-           name="date" disabled
-           ng-model="datatypeLibMetaDataCopy.date"
-           required/>
-	</div>
-	</div>
-	</div>
-</div>
-</div>
+<div class="row" style="margin-left:0px; margin-right: 20px">
+            <div ng-show="datatypeLibMetaDataCopy !== null">
+                    <div class="page-header" style="margin-bottom: 20px">
+                        <span class="header4">Datatype Library Methadata</span>
+            <span class="pull-right">
+
+  				<button type="button" class="btn btn-sm btn-primary"
+          			ng-disabled="!forms.editForm.$dirty"
+          			ng-click="saveMetaData()">
+
+           <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </button>
+
+                <button title="Discard changes" type="button" class="btn btn-sm btn-warning"
+                     ng-disabled="!forms.editForm.$dirty"
+                     ng-click="resetMetaData()">
+                   <span><i class="fa fa-times fa-fw"></i>Reset</span>
+                </button>
+             </span>
+             </div>
+                       
+     
+                    <div class="form-group control-group"
+                         ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+                        <label class="col-md-2 control-label">HL7 Version</label>
+
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" ng-disabled="viewSettings.tableReadonly"
+                                   name="title"
+                                   ng-model="datatypeLibMetaDataCopy.hl7Version"
+                                   required>
+                        </div>
+                    </div>
+                    
+
+	                 <div class="form-group control-group"
+                         ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+                        <label class="col-md-2 control-label">Name</label>
+
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" ng-disabled="viewSettings.tableReadonly"
+                                   name="name"
+                                   ng-model="datatypeLibMetaDataCopy.name" ng-change="recordChanged()" required id="name"
+                                   required>
+                        </div>
+                    </div>
+	
+	
+                    
+                    
+                    <div class="form-group control-group"
+                         ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
+                        <label class="col-md-2 control-label" for="ext">Extension</label>
+
+                        <div class="col-md-10">
+                            <input type="text" name="identifier" disabled
+                                   ng-change="recordChanged()" name="ext"
+                                   class="form-control" ng-model="datatypeLibMetaDataCopy.ext"
+                                   ng-change="recordChanged()" >
+                        </div>
+                    </div>
+                     
+                     
+                    <div class="form-group control-group"
+                         ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
+                        <label class="col-md-2 control-label" for="orgName">Organization Name</label>
+
+                        <div class="col-md-10">
+                            <input type="text" name="orgName" disabled
+                                   ng-change="recordChanged()"
+                                   class="form-control" ng-model="datatypeLibMetaDataCopy.orgName" 
+                                    >
+                        </div>
+                    </div>
+
+
+
+
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error' : editForm.version.$invalid}">
+                    <label class="col-md-2 control-label">Version</label>
+
+                    <div class="col-md-10">
+                        <input type="text" name="version" disabled
+                               ng-change="recordChanged()"
+                               class="form-control" ng-model="datatypeLibMetaDataCopy.version"
+                                required>
+                    </div>
+                </div>
+
+
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error' : editForm.date.$invalid}">
+                    <label class="col-md-2 control-label">Date</label>
+
+                    <div class="col-md-10">
+                        <input type="text" name="date" disabled
+                               ng-change="recordChanged()"
+                               class="form-control" ng-model="datatypeLibMetaDataCopy.date" required>
+                    </div>
+                </div>
+
+
+
+
 </div>
 </div>
 </script>
@@ -271,36 +427,37 @@
   <div class="modal-header">
     <h3 class="modal-title">New Data Type Library</h3>
   </div>
+  <div class="modal-body">
   <form>
   <div class="form-group">
-  <div class="modal-body">
-  <div class="container" style="max-width: 200%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
+  <div class="container" style="max-width: 200%; max-height: 200px; white-space:nowrap;">
       <div class="row">
-        <label for="name" class="control-label">Name</label>
-          <input type="text"
-                 name="name" class="form-control" ng-model="standard.name"
-                         required style="width : 250px; height : 30px;"/>
-      </div>
-      <div class="row">
-        <div class="btn-group btn-group-sm" data-toggle="buttons">
-          <label class="btn btn-primary btn-xs" ng-click="standard.hl7Version = vr; $parent.okDisabled = false"
+		<label class="control-label col-xs-2" style="margin-top : 10px">HL7 Versions</label>
+        <span class="btn-group btn-group-sm" data-toggle="buttons">
+          <label class="btn btn-primary btn-xs col-xs-10" ng-click="standard.hl7Version = vr; $parent.okDisabled = false"
                  ng-class="{'active':vr === hl7Version}"
                  ng-repeat="vr in hl7Versions | orderBy:'toString()' track by vr" style="width : 50px; height : 30px;">
             <input ng-disabled="loading" type="radio" ng-value="vr"
                    ng-model="$parent.hl7Version"/>{{vr}}
           </label>
+        </span>
         </div>
-        </div>
-       <div class="row">
-      <label class="control-label" for="ext">Ext</label>
+      <div class="row">
+        <label for="name" class="control-label col-xs-2">Name</label>
           <input type="text"
-                 name="ext" class="form-control" ng-model="standard.ext"
+                 name="name" class="form-control col-xs-10" ng-model="standard.name"
+                         required style="width : 250px; height : 30px;"/>
+      </div>
+       <div class="row">
+      <label class="control-label col-xs-2" for="ext">Ext</label>
+          <input type="text"
+                 name="ext" class="form-control col-xs-10" ng-model="standard.ext"
                          required  style="width : 150px; height : 30px;"/>
       </div>
     </div>
   </div>
-  </div>
   </form>
+  </div>
     <div class="modal-footer">
       <button class="btn btn-primary" ng-disabled="okDisabled" type="button" ng-click="ok()">Ok</button>
       <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
@@ -336,10 +493,17 @@
     <td st-ratio="48">{{dtLib.scope}}</td>
   </tr>
 </tbody>
+<tfoot ng-show="datatypesLibStruct.length >= 5">
+<tr style="margin-right: {{scrollbarWidth}}px;">
+<td colspan="5" class="text-center">
+<span st-pagination="" st-items-by-page="5" st-displayed-pages="7"></span>
+</td>
+</tr>
+</tfoot>
 </table>
             </div>
            </div>
-             <div class="col-sm-6" ng-show="selectedLib" style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
+             <div class="col-sm-6" ng-show="selectedLib" style="max-width: 100%">
 <table st-table="datatypesDisplay" st-safe-src="selectedLib.children" st-sticky-header class="table table-striped table-bordered">
 <thead>
   <tr class="row tbl-header">
@@ -355,6 +519,13 @@
     <td st-ratio="48">{{dt.ext}}</td>
   </tr>
 </tbody>
+<tfoot ng-show="selectedLib.children.length >= 5">
+<tr style="margin-right: {{scrollbarWidth}}px;">
+<td colspan="5" class="text-center">
+<span st-pagination="" st-items-by-page="5" st-displayed-pages="7"></span>
+</td>
+</tr>
+</tfoot>
 </table>
            </div>
         </div>
@@ -369,6 +540,7 @@
 </div>
 </script>
 <script type="text/ng-template" id="EditDatatypeLibraryDatatype.html">
+<fieldset ng-disabled="datatypeCopy.scope === 'HL7STANDARD' || datatypeCopy.status === 'PUBLISHED'">
 <div class="container">
 <div ng-show="loadingSelection"
      style="text-align: center;">
@@ -380,7 +552,7 @@
     <div class="col-md-12 igl-page-header">
         <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeCopy.ext)}}</span>
                      <span class="pull-right">
-  		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-model="datatypeCopy.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatypeCopy.status === 'PUBLISHED'" style="margin-right : 8px"/>Published</label>
+  		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-click="confirmPublish(datatypeCopy)" ng-model="datatypeCopy.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatypeCopy.status === 'PUBLISHED'" style="margin-right : 8px"/>Published</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
 				ng-hide="datatypeCopy.scope === 'HL7STANDARD'"
                  ng-disabled="!forms.editForm.$dirty"
@@ -419,7 +591,6 @@
                  ng-class="{'igl-has-error has-feedback' : forms.datatypeForm.ext.$invalid}">
                 <label for="ext" class="control-label">Extension</label>
                 <input type="text"
-                       ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
                       name="ext" id="ext" class="form-control" ng-model="datatypeCopy.ext"
                        ng-change="recordChanged()"
                        required ng-change="recordChanged()">
@@ -431,7 +602,6 @@
                  ng-class="{'igl-has-error has-feedback' : forms.datatypeForm.description.$invalid}">
                 <label class="control-label">Description</label>
                 <input type="text"
-                      ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
                        ng-change="recordChanged()"
                        name="description" class="form-control" ng-model="datatypeCopy.description"
                        required ng-change="recordChanged()">
@@ -451,7 +621,6 @@
                  ng-class="{'igl-has-error has-feedback' : forms.datatypeForm.purposeAndUse.$invalid}">
                 <label for="pnu" class="control-label">Purpose and Use</label>
                 <textarea name="pnu" rows="3" cols="20"
-                      ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
                        ng-change="recordChanged()"
                        name="purposeAndUse" class="form-control" ng-model="datatypeCopy.purposeAndUse"
                        required ng-change="recordChanged()"/>
@@ -462,7 +631,6 @@
                  ng-class="{'igl-has-error has-feedback' : forms.datatypeForm.comment.$invalid}">
                 <label for="comment" class="control-label">Comment</label>
                 <input name="pnu" type="text"
-                       ng-disabled="datatypeCopy.scope === 'HL7STANDARD'"
                        ng-change="recordChanged()"
                        name="comment" class="form-control"
                        ng-model="datatypeCopy.comment">
@@ -547,6 +715,7 @@
 </div>
 </tab>
 </tabset>
+</fieldset>
 </script>
 <script type="text/ng-template" id="DatatypeLibraryEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
@@ -576,8 +745,7 @@
         </td>
     </tr>
 </script>
-<script type="text/ng-template"
-	id="DatatypeLibraryComponentEditTree.html">
+<script type="text/ng-template" id="DatatypeLibraryComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)"
         ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
          <td class="col-xs-1 col-fixed-100">{{node.position}}
@@ -591,7 +759,7 @@
                   tooltip-animation="false" tooltip-placement="left"
                     ></span>
              <span ng-show="isChildNew(node)">
-                  {{node.position}}.
+<!--                  {{node.position}}. -->
                 <input
                         class="form-control focus"
                         autofocus
@@ -707,8 +875,7 @@
         </td>
     </tr>
 </script>
-<script type="text/ng-template"
-	id="DatatypeLibrarySubComponentEditTree.html">
+<script type="text/ng-template" id="DatatypeLibrarySubComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-1 col-fixed-100">
             {{node.position}}
@@ -717,10 +884,10 @@
                                         <span>
                                             <span class="label label-sub-component label-icon">S</span>
                                              <span
-                                                     tooltip-html="getComponentNodeName(node)"
+                                                     tooltip-html="node.name"
                                                      tooltip-append-to-body="true"
                                                      tooltip-class="constraints-tooltip"
-                                                     ng-bind-html="getComponentNodeName(node)" tooltip-trigger
+                                                     ng-bind-html="node.name" tooltip-trigger
                                                      tooltip-animation="false" tooltip-placement="left"
                                                      ></span>
                                         </span>
@@ -738,8 +905,8 @@
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
-                <a ng-click="goToDatatype(datatypesCopy)"
-                   class="point">{{getLabel(datatypesCopy.name, datatypesCopy.ext)}}
+                <a ng-click="goToDatatype(node.datatype)"
+                   class="point">{{getLabel(node.datatype.name, node.datatype.ext)}}
                 </a>
             </div>
         </td>
@@ -772,8 +939,7 @@
         </td>
     </tr>
 </script>
-<script type="text/ng-template"
-	id="ConfirmDatatypeLibraryDeleteCtrl.html">
+<script type="text/ng-template" id="ConfirmDatatypeLibraryDeleteCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Delete Confirmation
         </h3>
@@ -795,7 +961,7 @@
     </div>
     </div>
 </script>
-<script type="text/ng-template" id="ConfirmDatatypeDeleteCtrl.html">
+<script type="text/ng-template" id="ConfirmDatatypeDeleteCtl.html">
     <div class="modal-header">
         <h3 class="modal-title">Delete Confirmation
         </h3>
@@ -817,55 +983,27 @@
     </div>
     </div>
 </script>
-<script type="text/ng-template"
-	id="ConfirmDatatypeLibraryCloseCtrl.html">
+<script type="text/ng-template" id="ConfirmDatatypePublishCtl.html">
     <div class="modal-header">
-        <h3 class="modal-title">Close Confirmation
+        <h3 class="modal-title">Delete Confirmation
         </h3>
     </div>
     <div class="modal-body">
-        <p>You currently have unsaved changes. Are you sure you want to close the Data Type Library? All unsaved changes will
-            be lost</p>
+        <p>Are you sure you want to publish this Data Type?</p>
+        <p>Data Type will no longer be editable.</p>
+        <p>This operation is irreversible.</p>
+    </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
-                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
+        <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
-        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
-                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
-        </button>
-
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>
     </div>
-</script>
-<script type="text/ng-template" id="ConfirmDatatypeLibraryOpenCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Open Confirmation
-        </h3>
-    </div>
-    <div class="modal-body">
-        <p>You currently have an open Data Type Library with unsaved changes. Are you sure you want to open the Data Type Library?
-            All
-            unsaved changes will be lost</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
-                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
-        </button>
-        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
-                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
-        </button>
-
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
-        </div>
     </div>
 </script>

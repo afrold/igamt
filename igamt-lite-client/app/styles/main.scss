@@ -10,15 +10,19 @@ $icon-font-path: "../fonts/";
   color: #000;
   padding: 0.2em 0;
 }
-
     .label-USE{
     background-color: green;}
     
-       .label-HL7{
+     .label-HL7{
     background-color: red;}
     
-    .label-MASTER{
-    background-color: yellow;
+ 	.label-MASTER{
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff7400+0,ff7400+100;Orange+Flat */
+	background: #ff7400; /* Old browsers */
+	background: -moz-linear-gradient(top, #ff7400 0%, #ff7400 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #ff7400 0%,#ff7400 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #ff7400 0%,#ff7400 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff7400', endColorstr='#ff7400',GradientType=0 ); /* IE6-9 */
     }
 
     .selected {
@@ -256,15 +260,15 @@ table{
 }
 
 
-
-.nav-tabs > li > a {
-  color: #666666;
-  border-radius: 0px;
-}
-
-.nav-tabs > li > a:hover {
-  color: #222222;
-}
+//
+//.nav-tabs > li > a {
+//  color: #666666;
+//  border-radius: 0px;
+//}
+//
+//.nav-tabs > li > a:hover {
+//  color: #222222;
+//}
 
 //
 //.navbar-text > a {
@@ -1267,14 +1271,14 @@ h4.addPOAFormDateSectionTitle {
   color: #222222;
 }
 
-.nav-tabs > li > a {
-  color: #666666;
-  border-radius: 0px;
-}
-
-.nav-tabs > li > a:hover {
-  color: #222222;
-}
+//.nav-tabs > li > a {
+//  color: #666666;
+//  border-radius: 0px;
+//}
+//
+//.nav-tabs > li > a:hover {
+//  color: #222222;
+//}
 
 
 .dark-gray {
@@ -1461,14 +1465,14 @@ input.account-input {
   min-height: 32px !important
 }
 
-.nav-tabs > li > a {
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-}
-
-.nav-tabs {
-  min-height: 32px !important
-}
+//.nav-tabs > li > a {
+//  padding-top: 8px !important;
+//  padding-bottom: 8px !important;
+//}
+//
+//.nav-tabs {
+//  min-height: 32px !important
+//}
 
 //.navbar-text {
 //   margin-bottom: 0px;
@@ -1624,12 +1628,12 @@ input.account-input {
 .nav, .pagination, .carousel, .panel-title a {
   cursor: pointer;
 }
-
-.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a {
-    background-color: #1b51ca;
-//    border-color: #bce8f1;
-    color: white;
-}
+//
+//.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a {
+//    background-color: #1b51ca;
+////    border-color: #bce8f1;
+//    color: white;
+//}
 
 .panel {
   border-radius: 0px;
@@ -1976,9 +1980,9 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 
 .navbar-nav > li > a {padding-top:8px !important; padding-bottom:8px !important;}
 .navbar {min-height:32px !important}
-
-.nav-tabs > li > a {padding-top:5px !important; padding-bottom:5px !important;}
-.nav-tabs {min-height:32px !important}
+//
+//.nav-tabs > li > a {padding-top:5px !important; padding-bottom:5px !important;}
+//.nav-tabs {min-height:32px !important}
 
 .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
   background-color: #ffcc00;
@@ -2023,31 +2027,31 @@ ul.dropdown-menu, ul.dropdown-menu > li {
   min-height: 32px !important;
 }
 
-.nav-tabs > li > a {
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
-}
-
-.nav-tabs {
-  min-height: 32px !important
-}
+//.nav-tabs > li > a {
+//  padding-top: 5px !important;
+//  padding-bottom: 5px !important;
+//}
+//
+//.nav-tabs {
+//  min-height: 32px !important
+//}
 
 .navbar .nav > .active > a, .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
   background-color: #ffcc00;
 }
 
-.nav > .active > a {
+.navbar .nav > .active > a {
   background-color: #ffcc00;
 }
 
-.nav > a {
+.navbar .nav > a {
   background-color: #ffec9d;
   color:black;
 }
 
-.nav-tabs > a:hover {
-  color: black;
-}
+//.nav-tabs > a:hover {
+//  color: black;
+//}
 
 //.nav > li > a:hover {
 //background-color: #ffec9d;
@@ -2067,9 +2071,9 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 //  color: #ffef8f;
 //}
 
-.nav-tabs {
-  cursor: pointer;
-}
+//.nav-tabs {
+//  cursor: pointer;
+//}
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 //
@@ -2082,14 +2086,6 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 li.nav-header.active {
   background-color: #ffcc00;
 }
-
-
-.nav-tabs > li.active > a {
-  background-color: #1b51ca;
-  color: white;
-}
-
-
 
 tr.current {
   background-color: #fff1c8;
@@ -2249,12 +2245,7 @@ table.conformance-profiles-table td {
   //padding: 10px 5px;
 }
 
-.toc-container {
-  max-width: 100% !important;
-  max-height: 700px !important;
-  overflow: auto;
-  white-space:nowrap;
-}
+
 
 .red {
   color: #f2aaaa;
@@ -2297,6 +2288,8 @@ table.conformance-profiles-table td {
   height: 500px;
   overflow-y: auto;
 }
+
+
 
 
 .toc-container {

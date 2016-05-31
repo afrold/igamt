@@ -1241,9 +1241,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 				elmComponent.addAttribute(new Attribute("Name", c.getName()));
 				elmComponent.addAttribute(new Attribute("Usage", c.getUsage()
 						.toString()));
-				if (datatypes.findOne(c.getDatatype()) != null && datatypes.findOne(c.getDatatype()).getName() != null) {
+				if (c.getDatatype() != null && datatypes.findOne(c.getDatatype()) != null && datatypes.findOne(c.getDatatype()).getLabel() != null) {
 					elmComponent.addAttribute(new Attribute("Datatype", datatypes.findOne(
-							c.getDatatype()).getName()));
+							c.getDatatype()).getLabel()));
 				}
 				elmComponent.addAttribute(new Attribute("MinLength", ""
 						+ c.getMinLength()));

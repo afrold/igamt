@@ -13,7 +13,11 @@ angular.module('igl')
         $scope.saving = false;
 
         $scope.reset = function () {
-        	$scope.editForm.$setPristine();
+            if($scope.editForm){
+                $scope.editForm.$dirty = false;
+                $scope.editForm.$setPristine();
+
+            }
             $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
             $rootScope.clearChanges();
             if ($scope.segmentsParams) {
@@ -84,6 +88,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -113,6 +118,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -130,7 +136,9 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
+
             });
         };
 
@@ -292,10 +300,19 @@ angular.module('igl')
                         oldLink.name = newLink.name;
                         $scope.saving = false;
                         $scope.selectedChildren = [];
+                        if($scope.editForm) {
+                            $scope.editForm.$setPristine();
+                            $scope.editForm.$dirty = false;
+                        }
+                        $rootScope.clearChanges();
+
                         if ($scope.segmentsParams)
                             $scope.segmentsParams.refresh();
-                        $rootScope.$broadcast('event:SetToC');
-                     }, function (error) {
+                        $rootScope.msg().text = "segmentSaved";
+                        $rootScope.msg().type = "success";
+                        $rootScope.msg().show = true;
+
+                      }, function (error) {
                         $scope.saving = false;
                         $rootScope.msg().text = error.data.text;
                         $rootScope.msg().type = error.data.type;
@@ -375,12 +392,9 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (datatype) {
+//                MastermapSvc.deleteElementChildren(field.datatype.id, "datatype", field.id, field.type);
                 field.datatype.id = datatype.id;
-                //TODO: load master map
-                if (!$rootScope.datatypesMap[field.datatype.id] || $rootScope.datatypesMap[field.datatype.id] == null) {
-                    $rootScope.datatypesMap[field.datatype.id] = datatype;
-                }
-//                MastermapSvc.addDatatype(datatype.id, [field.id, field.type]);
+//                MastermapSvc.addDatatypeId(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
             });
@@ -409,6 +423,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
 
     $scope.mappingTable = function () {
         $scope.selectedNode.table.id = $scope.selectedTable.id;
+        $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
         $rootScope.recordChangeForEdit2('field', 'edit', $scope.selectedNode.id, 'table', $scope.selectedNode.table.id);
         $scope.ok();
     };

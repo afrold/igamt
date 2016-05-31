@@ -22,18 +22,18 @@
     <span class="header4">Segment: {{getSegmentLabel(segment)}}</span>
             <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 ng-disabled="editForm.$invalid"
+                 ng-disabled="editForm.$invalid || !editForm.$dirty "
                  ng-hide="viewSettings.tableReadonly ||(segment.scope !== 'USER' && segment.scope !== 'MASTER')"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
 
-                         <!--<button title="Reset Changes" type="button" class="btn btn-sm btn-warning"-->
-                                 <!--ng-disabled="editForm.$pristine"-->
-                                 <!--ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') "-->
-                                 <!--ng-click="reset()">-->
-                             <!--<span><i class="fa fa-times fa-fw"></i> Reset</span>-->
-                         <!--</button>-->
+                         <button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
+                                 ng-disabled="!editForm.$dirty"
+                                 ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') "
+                                 ng-click="reset()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                         </button>
     </span>
 </div>
     <tabset>
@@ -42,12 +42,12 @@
                  ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
                 <label class="col-md-2 control-label">Name</label>
 
-                <div class="col-md-10">
+                <div class="controls col-md-10">
                     <input type="text" disabled
                            name="identifier"
                            class="form-control"
                            ng-model="segment.name"
-                           ng-change="recordChanged('segment','edit',segment.id,'name', segment.name)"
+                            ng-change="setDirty()"
                            required>
                 </div>
             </div>
@@ -56,10 +56,10 @@
                  ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}">
                 <label class="col-md-2 control-label">Extension</label>
 
-                <div class="col-md-10">
+                <div class="controls col-md-10">
                     <input type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
                            class="form-control"
-                           ng-change="recordChanged()"
+                           ng-change="setDirty()"
                            name="label" class="form-control"
                            ng-model="segment.ext"
                            required required aria-describedby="helpBlock2">
@@ -73,9 +73,9 @@
                  ng-class="{'igl-has-error has-feedback' : editForm.description.$invalid}">
                 <label class="col-md-2 control-label">Description</label>
 
-                <div class="col-md-10">
+                <div class="controls col-md-10">
                     <input type="text" disabled
-                           ng-change="recordChanged('segment','edit',segment.id,'description', segment.description)"
+                           ng-change="setDirty()"
                            name="description"
                            class="form-control"
                            ng-model="segment.description" required>
@@ -86,10 +86,10 @@
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : editForm.comment.$invalid}">
                 <label class="col-md-2 control-label">Comment</label>
-                <div class="col-md-10">
+                <div class="controls col-md-10">
                     <textarea rows="3" cols="20"
                               ng-disabled="viewSettings.tableReadonly || segment.scope === 'HL7STANDARD' || segment.scope === 'MASTER'"
-                              ng-change="recordChanged()"
+                              ng-change="setDirty()"
                               name="comment" id="comment" class="form-control"
                               ng-model="segment.comment"
                             />
@@ -100,11 +100,11 @@
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : editForm.text1.$invalid}">
                 <label class="col-md-2 control-label">Definition Pre-Text</label>
-                <div class="col-md-10">
+                <div class="controls col-md-10">
                 <div ng-if="!viewSettings.tableReadonly && segment.scope === 'USER'">
                     <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1"
                               name="text1"
-                              ng-change="recordChanged()"></textarea>
+                              ng-change="setDirty()"></textarea>
                 </div>
                 <div ng-if="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                     <div froala-view="segment.text1"></div>
@@ -115,11 +115,11 @@
             <div class="form-group control-group"
                  ng-class="{'igl-has-error has-feedback' : editForm.text2.$invalid}">
                 <label class="col-md-2 control-label">Definition Post-Text</label>
-                <div class="col-md-10">
+                <div class="controls col-md-10">
                 <div ng-if="!viewSettings.tableReadonly && segment.scope === 'USER'">
                     <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2"
                               name="text2"
-                              ng-change="recordChanged()"></textarea>
+                              ng-change="setDirty()"></textarea>
                 </div>
                 <div ng-if="viewSettings.tableReadonly || (segment.scope === 'MASTER' || segment.scope === 'HL7STANDARD')">
                     <div class="fr-view">
@@ -410,13 +410,13 @@
                                             <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:45%" class="form-control"
                                                        name="min"
-                                                       ng-change="recordChangeForEdit2('field','edit',node.id,'min', node.min)"
+                                                       ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
                                                        ng-model="node.min" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="max"
-                                                       ng-change="recordChangeForEdit2('field','edit',node.id,'max', node.max)"
+                                                       ng-change="setDirty()"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.max" required>
@@ -428,13 +428,13 @@
                                             <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:45%" class="form-control"
                                                        name="minLength"
-                                                       ng-change="recordChangeForEdit2('field','edit',node.id,'minLength', node.minLength)"
+                                                       ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
                                                        ng-model="node.minLength" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="maxLength"
-                                                       ng-change="recordChangeForEdit2('field','edit',node.id,'maxLength', node.maxLength)"
+                                                       ng-change="setDirty()"
                                                        ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.maxLength" required>
@@ -446,7 +446,7 @@
                                             <span ng-form name="{{formName}}" class="form-inline">
                                             <input style="width:50%" class="form-control" type="text"
                                                    name="confLength"
-                                                   ng-change="recordChangeForEdit2('field','edit',node.id,'confLength', node.confLength)"
+                                                   ng-change="setDirty()"
                                                    ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                                    ng-pattern="/^\d+$/"
                                                    ng-model="node.confLength">
@@ -544,6 +544,7 @@
             <textarea style="width:100%;height:100%"
                       class="form-control"
                       ng-model="node.comment"
+                      ng-change="setDirty()"
                       ng-show="node.comment !== null && node.comment != undefined && node.comment != ''">
             </textarea>
             <a
@@ -1353,7 +1354,7 @@
 </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
+    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
         &nbsp; </i>Save</span></button>
     <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
@@ -1364,7 +1365,7 @@
 
 <script type="text/ng-template" id="TableMappingSegmentCtrl.html">
     <div class="modal-header">
-        <h3 class="modal-title">Edit mapping Table for {{segment.name}}-{{selectedNode.position}}</h3>
+        <h3 class="modal-title">Bind Value Set to {{segment.name}}-{{selectedNode.position}}</h3>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -1482,10 +1483,10 @@
     </div>
     <div class="modal-footer">
         <button ng-show="changed" type="button" ng-click="mappingTable()" class="btn btn-primary btn-sm"><i
-                class="fa fa-plus fa-fw">&nbsp; </i>Save
+                class="fa fa-check fa-fw">&nbsp; </i>Bind
         </button>
         <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-warning btn-sm"><i
-                class="fa fa-times fa-fw">&nbsp; </i>Close
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel
         </button>
         <button ng-show="!changed" class="btn btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Cancel</span></button>

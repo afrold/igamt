@@ -16,9 +16,12 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     };
     
     $scope.reset = function () {
-        $scope.editForm.$setPristine();
-        $scope.editForm.$dirty = false;
-    	$rootScope.clearChanges();
+        if($scope.editForm){
+            $scope.editForm.$dirty = false;
+            $scope.editForm.$setPristine();
+
+        }
+        $rootScope.clearChanges();
     	$rootScope.table = angular.copy( $rootScope.tablesMap[$rootScope.table.id]);
     };
     
@@ -44,7 +47,14 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                         oldLink.bindingIdentifier = link.bindingIdentifier;
                         $scope.saving = false;
                         $scope.selectedChildren = [];
-                        $rootScope.$broadcast('event:SetToC');
+                        if($scope.editForm) {
+                            $scope.editForm.$setPristine();
+                            $scope.editForm.$dirty = false;
+                        }
+                        $rootScope.clearChanges();
+                        $rootScope.msg().text = "tableSaved";
+                        $rootScope.msg().type = "success";
+                        $rootScope.msg().show = true;
                     }, function (error) {
                         $scope.saving = false;
                         $rootScope.msg().text = error.data.text;
@@ -228,7 +238,7 @@ angular.module('igl').controller('TableModalCtrl', function ($scope) {
     };
 });
 
-angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, $modalInstance, tableToDelete, $rootScope, TableService, TableLibrarySvc) {
+angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, $modalInstance, tableToDelete, $rootScope, TableService, TableLibrarySvc,CloneDeleteSvc) {
     $scope.tableToDelete = tableToDelete;
     $scope.loading = false;
     

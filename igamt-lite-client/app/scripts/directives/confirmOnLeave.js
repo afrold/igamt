@@ -4,47 +4,68 @@
 
 angular.module('igl').directive('confirmOnLeave', function ($rootScope) {
     return {
+        priority:-100,
         link: function ($scope, elem, attrs) {
             window.onbeforeunload = function () {
                 if ($rootScope.hasChanges()) {
                     return "You have unsaved data on this page. If you leave this page your data will be lost.\n\n Are you sure you want to leave this page?";
                 }
             };
-//            $scope.$on('$locationChangeStart', function (event, next, current) {
-//                if ($rootScope.hasChanges()) {
+            $scope.$on('$locationChangeStart', function (event, next, current) {
+                if ($rootScope.hasChanges()) {
+
+                    $rootScope.openConfirmLeaveDlg().result.then(function () {
+                        $rootScope.clearChanges();
+                    },function(){
+                        event.stopImmediatePropagation();
+                        event.preventDefault();
+                    });
+
 //                    if (!confirm("You have unsaved data. If you leave this section your data will be lost.\n\n Are you sure you want to leave this page?")) {
 //                        event.stopImmediatePropagation();
 //                        event.preventDefault();
 //                    }else{
 //                        $rootScope.clearChanges();
 //                    }
-//                }
-//            });
+                }
+            });
         }
     };
 });
 
-angular.module('igl').directive("confirmClick",
-    function ($rootScope) {
-        return {
-            priority: 100,
-            link: {
-                pre: function (scope, element, attr) {
-                    element.bind('click', function (event) {
-                        if ($rootScope.hasChanges()) {
-                            var message = "You have unsaved data. If you leave this section your data will be lost.\n\n Are you sure you want to leave this page?";
-                            if (!confirm(message)) {
-                                event.stopImmediatePropagation();
-                                event.preventDefault();
-                            }else{
-                                $rootScope.clearChanges();
-                            }
-                        }
-                    });
-                }
-            }
-        }
-    });
+//angular.module('igl').directive("confirmClick",
+//    function ($rootScope) {
+//        return {
+//            priority: 100,
+//            link: {
+//                pre: function (scope, element, attr) {
+//                    element.bind('click', function (event) {
+//
+//
+//
+////                        if ($rootScope.hasChanges()) {
+////
+////                            $rootScope.openConfirmLeaveDlg().result.then(function () {
+////                                $rootScope.clearChanges();
+////                            },function(){
+////                                event.stopImmediatePropagation();
+////                                event.preventDefault();
+////                            });
+////
+////
+//////                            var message = "You have unsaved data. If you leave this section your data will be lost.\n\n Are you sure you want to leave this page?";
+//////                            if (!confirm(message)) {
+//////                                event.stopImmediatePropagation();
+//////                                event.preventDefault();
+//////                            }else{
+//////                                $rootScope.clearChanges();
+//////                            }
+////                        }
+//                    });
+//                }
+//            }
+//        }
+//    });
 
 //angular.module('igl').directive('a', function() {
 //    return {

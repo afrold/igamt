@@ -18,8 +18,11 @@ angular.module('igl')
         };
         
         $scope.reset = function () {
-            $scope.editForm.$setPristine();
-            $scope.editForm.$dirty = false;
+            if($scope.editForm){
+                $scope.editForm.$dirty = false;
+                $scope.editForm.$setPristine();
+
+            }
             $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
             $rootScope.clearChanges();
             if ($scope.datatypesParams) {
@@ -88,6 +91,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -105,6 +109,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -122,6 +127,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function (node) {
                 $scope.selectedNode = node;
+                $scope.setDirty();
             }, function () {
             });
         };
@@ -298,7 +304,15 @@ angular.module('igl')
                         $scope.selectedChildren = [];
                         if ($scope.datatypesParams)
                             $scope.datatypesParams.refresh();
-                        $rootScope.$broadcast('event:SetToC');
+                        if($scope.editForm) {
+                            $scope.editForm.$setPristine();
+                            $scope.editForm.$dirty = false;
+                        }
+                        $rootScope.clearChanges();
+
+                        $rootScope.msg().text = "datatypeSaved";
+                        $rootScope.msg().type = "success";
+                        $rootScope.msg().show = true;
                     }, function (error) {
                         $scope.saving = false;
                         $rootScope.msg().text = error.data.text;
@@ -365,19 +379,22 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (datatype, ext) {
+//                MastermapSvc.deleteElementChildren(component.datatype.id, "datatype", component.id, component.type);
+//                MastermapSvc.addDatatypeObject(datatype, [[component.id, component.type]]);
                 component.datatype.id = datatype.id;
-                //MastermapSvc.addDatatypeObject(datatype, [[component.id, component.type]]);
+                $scope.setDirty();
+                // TODO: Delete component from MasterMap
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
             });
 
         };
 
-        $scope.$watch(function(){
-            return $rootScope.datatype;
-        }, function() {
-            $rootScope.recordChanged();
-        }, true);
+//        $scope.$watch(function(){
+//            return $rootScope.datatype;
+//        }, function() {
+//            $rootScope.recordChanged();
+//        }, true);
 
 
     });
@@ -697,7 +714,8 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
 
     $scope.mappingTable = function () {
         $scope.selectedNode.table.id = $scope.selectedTable.id;
-        $rootScope.recordChangeForEdit2('component', 'edit', $scope.selectedNode.id, 'table', $scope.selectedTable.id);
+         $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
+        $rootScope.recordChanged();
         $scope.ok();
     };
 
@@ -787,7 +805,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
         if (component != null && subComponent == null) {
             position = component.position + '[1]';
         } else if (component != null && subComponent != null) {
-            Position = component.position + '[1]' + '.' + subComponent.position + '[1]';
+            position = component.position + '[1]' + '.' + subComponent.position + '[1]';
         }
 
         return position;

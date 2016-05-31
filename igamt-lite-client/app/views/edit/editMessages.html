@@ -23,18 +23,138 @@ if (self === top) {
                         <span class="header4">Conformance Profile: {{message.name}}</span>
                         <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 
+
+                 ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="viewSettings.tableReadonly"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
-                        </button>
-                        <!--<button title="Cancel Changes" type="button" class="btn btn-sm btn-warning"-->
-                        <!--ng-hide="viewSettings.tableReadonly"-->
-                        <!--ng-disabled="editForm.$pristine"-->
-                        <!--ng-click="reset()">-->
-                        <!--<span><i class="fa fa-times fa-fw"></i> Reset</span>-->
-                        <!--</button>-->
-                        </span>
+         </button>
+                         <button title="Cancel Changes" type="button" class="btn btn-sm btn-warning"
+                                 ng-hide="viewSettings.tableReadonly"
+                                 ng-disabled="!editForm.$dirty"
+                                 ng-click="reset()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                         </button>
+    </span>
+</div>
+
+<tabset>
+<tab heading="Conformance Profile MetaData">
+    <div style="margin-top: 20px">
+        <div class="form-group control-group"
+             ng-class="{'igl-has-error' : editForm.name.$invalid}">
+            <label class="col-md-2 control-label">Name</label>
+
+            <div class="controls col-md-10">
+                <input
+                        class="form-control"
+                        type="text"
+                        disabled name="name"
+                        ng-change="setDirty()"
+                        ng-model="message.name"
+                        ng-disabled="viewSettings.tableReadonly">
+            </div>
+        </div>
+
+        <div class="form-group control-group"
+             ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
+            <label class="col-md-2 control-label">Identifier</label>
+
+            <div class="controls col-md-10">
+                <input type="text"
+                       ng-change="setDirty()"
+                       name="identifier"
+                       class="form-control"
+                       ng-model="message.identifier"
+                       ng-disabled="viewSettings.tableReadonly"
+                       required>
+            </div>
+        </div>
+
+        <div class="form-group control-group"
+             ng-class="{'igl-has-error' : editForm.description.$invalid}">
+            <label class="col-md-2 control-label">Description</label>
+
+            <div class="controls col-md-10">
+                <input
+                        class="form-control"
+                        type="text"
+                        name="description"
+                        ng-change="setDirty()"
+                        ng-model="message.description"
+                        ng-disabled="viewSettings.tableReadonly">
+            </div>
+        </div>
+
+        <!--<div class="form-group control-group"-->
+             <!--ng-class="{'igl-has-error' : editForm.messageOId.$invalid}">-->
+            <!--<label class="col-md-2 control-label">Message OID</label>-->
+
+            <!--<div class="controls col-md-10"><input type="text" disabled name="messageOId"-->
+                                          <!--class="form-control"-->
+                                          <!--ng-model="message.messageID" required></div>-->
+        <!--</div>-->
+
+        <div class="form-group control-group"
+             ng-class="{'igl-has-error' : editForm.messageType.$invalid}">
+            <label class="col-md-2 control-label">Message Type</label>
+
+            <div class="controls col-md-10">
+                <input type="text" disabled name="messageType" class="form-control"
+                       ng-model="message.messageType" required></div>
+        </div>
+
+
+        <div class="form-group control-group"
+             ng-class="{'igl-has-error' : editForm.messageEvent.$invalid}">
+            <label class="col-md-2 control-label">Message Event</label>
+
+            <div class="controls col-md-10">
+                <input type="text" disabled name="messageEvent" class="form-control"
+                       ng-model="message.event" required ng-disabled="false">
+            </div>
+        </div>
+
+
+        <div class="form-group control-group"
+             ng-class="{'igl-has-error' : editForm.messageStructID.$invalid}">
+            <label class="col-md-2 control-label">Message Structure ID</label>
+
+            <div class="controls col-md-10">
+                <input type="text" disabled name="messageStructID" class="form-control"
+                       ng-model="message.structID" required>
+            </div>
+        </div>
+
+        <div class="form-group control-group"
+             ng-class="{'igl-has-error' : editForm.comment.$invalid}">
+            <label class="col-md-2 control-label">Comment</label>
+
+            <div class="controls col-md-10">
+                <textarea rows="3" cols="20"
+                          ng-disabled="viewSettings.tableReadonly"
+                          ng-change="recordDatatypeChange('message','edit',message.id,'message', message.comment)"
+                          name="comment" id="comment" class="form-control"
+                          ng-model="message.comment"
+                        />
+            </div>
+        </div>
+
+        <div class="form-group control-group"
+             ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
+            <label class="col-md-2 control-label">Definition Text</label>
+
+            <div class="controls col-md-10">
+                <div ng-if="!viewSettings.tableReadonly">
+                    <textarea froala="froalaEditorOptions" ng-model="message.usageNote"
+                              name="text"
+                              id="text"
+                              ng-change="setDirty()"></textarea>
+                </div>
+
+                <div ng-if="viewSettings.tableReadonly">
+                    <div class="fr-view">
+                        <div froala-view="message.usageNote"></div>
                     </div>
                     <tabset>
                         <tab heading="Conformance Profile MetaData">
@@ -310,9 +430,10 @@ if (self === top) {
         </td>
         <td class="col-xs-1 col-fixed-80 " ng-show="viewSettings.isVisibleColumn( 'usage') ">
             <div>
-                <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 ) ">
-                    <select class="form-control input-sm " name="usage " ng-change="recordChanged() " required
-                            ng-model="node.obj.usage " ng-options="usage for usage in config.usages "/>
+
+                <span ng-show="node.obj.usage !== 'C'  || (node.obj.usage === 'C' && countPredicate(node.path) === 0)">
+                	<select class="form-control input-sm" name="usage" ng-change="setDirty()" required
+                            ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
                 </span>
 
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0 ">
@@ -322,21 +443,22 @@ if (self === top) {
                 </div>
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-100 " ng-show="viewSettings.isVisibleColumn( 'cardinality') ">
-            <div ng-controller="MessageRowCtrl ">
-                                            <span ng-form name="{{formName}} " class="form-inline ">
-                                                <input style="width:45% " class="form-control "
-                                                       name="min "
-                                                       ng-change="recordChanged() "
-                                                       ng-pattern="/^\d+$/ "
-                                                       ng-class="{ 'has-error' : {{formName}}.min.$invalid} "
-                                                       ng-model="node.obj.min " required ng-minlength="1 ">
-                                                <input style="width:45% " class="form-control " type="text "
-                                                       name="max "
-                                                       ng-change="recordChanged() "
-                                                       ng-class="{ 'has-error' : {{formName}}.max.$invalid} "
-                                                       ng-pattern="/^\d+$|^\*?$/ "
-                                                       ng-model="node.obj.max " required>
+
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">
+            <div ng-controller="MessageRowCtrl">
+                                            <span ng-form name="{{formName}}" class="form-inline">
+                                                <input style="width:45%" class="form-control"
+                                                       name="min"
+                                                       ng-change="setDirty()"
+                                                       ng-pattern="/^\d+$/"
+                                                       ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
+                                                       ng-model="node.obj.min" required ng-minlength="1">
+                                                <input style="width:45%" class="form-control" type="text"
+                                                       name="max"
+                                                       ng-change="setDirty()"
+                                                       ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
+                                                       ng-pattern="/^\d+$|^\*?$/"
+                                                       ng-model="node.obj.max" required>
                                             </span>
             </div>
         </td>
@@ -411,9 +533,10 @@ if (self === top) {
         </td>
         <td class="col-xs-1 col-fixed-80 " ng-show="viewSettings.isVisibleColumn( 'usage') ">
             <div>
-                <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 ) ">
-                    <select class="form-control input-sm " name="usage " ng-change="recordChanged() " required
-                            ng-model="node.obj.usage " ng-options="usage for usage in config.usages "/>
+
+                <span ng-show="node.obj.usage !== 'C'  || (node.obj.usage === 'C' && countPredicate(node.path) === 0)">
+                	<select class="form-control input-sm" name="usage" ng-change="setDirty()" required
+                            ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
                 </span>
 
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0 ">
@@ -425,20 +548,21 @@ if (self === top) {
         </td>
         <td class="col-xs-1 col-fixed-100 " ng-show="viewSettings.isVisibleColumn( 'cardinality') ">
             <div
-                    ng-controller="MessageRowCtrl ">
-                                            <span ng-form name="{{formName}} ">
-                                                <input style="width:45% " class="form-control "
-                                                       name="min "
-                                                       ng-change="recordChanged() "
-                                                       ng-pattern="/^\d+$/ "
-                                                       ng-class="{ 'has-error' : {{formName}}.min.$invalid} "
-                                                       ng-model="node.obj.min " required ng-minlength="1 ">
-                                                <input style="width:45% " class="form-control " type="text "
-                                                       name="max "
-                                                       ng-change="recordChanged() "
-                                                       ng-class="{ 'has-error' : {{formName}}.max.$invalid} "
-                                                       ng-pattern="/^\d+$|^\*?$/ "
-                                                       ng-model="node.obj.max " required>
+
+                    ng-controller="MessageRowCtrl">
+                                            <span ng-form name="{{formName}}">
+                                                <input style="width:45%" class="form-control"
+                                                       name="min"
+                                                       ng-change="setDirty()"
+                                                       ng-pattern="/^\d+$/"
+                                                       ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
+                                                       ng-model="node.obj.min" required ng-minlength="1">
+                                                <input style="width:45%" class="form-control" type="text"
+                                                       name="max"
+                                                       ng-change="setDirty()"
+                                                       ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
+                                                       ng-pattern="/^\d+$|^\*?$/"
+                                                       ng-model="node.obj.max" required>
                                             </span>
             </div>
         </td>
@@ -1559,7 +1683,7 @@ if (self === top) {
                                         </table>
                                     </div>
                                     <div ng-show="results == null || results.length == 0">
-                                        No Data Type Flavor Available
+                                        No Segment Flavor Available
                                     </div>
                                 </div>
                                 <!--</div>-->
