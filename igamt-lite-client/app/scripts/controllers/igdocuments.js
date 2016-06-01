@@ -324,7 +324,7 @@ angular.module('igl')
                         $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     }
                     //StorageService.setIgDocument($rootScope.igdocument);
-                    $rootScope.initMaps();
+                    $rootScope.initMaps(); 
                     $scope.loadSegments().then(function () {
                         $scope.loadDatatypes().then(function () {
                             $scope.loadTables().then(function () {
