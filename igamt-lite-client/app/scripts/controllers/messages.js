@@ -88,6 +88,78 @@ angular.module('igl')
         $scope.goToSegment = function(segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
         };
+        $scope.segOption = [
+
+            ['Add segment',
+                function($itemScope) {
+                    $scope.addSegmentModal($itemScope.node);
+                    /*
+                                        console.log($itemScope);
+                                        $itemScope.node.children.push($rootScope.messageTree.children[0]);
+                                        if ($scope.messagesParams) {
+                                            $scope.messagesParams.refresh();
+                                        }
+                                        */
+
+                }
+            ],
+            null, ['Add group',
+                function($itemScope) {
+                    $scope.addGroupModal($itemScope.node);
+                    //$itemScope.node.children.push($rootScope.messageTree.children[3]);
+                    //$scope.messagesParams.refresh();
+                }
+            ]
+
+        ];
+        $scope.addSegmentModal = function(place) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AddSegmentModal.html',
+                controller: 'AddSegmentCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    segments: function() {
+                        return $rootScope.segments;
+                    },
+                    place: function() {
+                        return place;
+                    },
+                    messageTree: function() {
+                        return $rootScope.messageTree;
+                    }
+
+                }
+            });
+            modalInstance.result.then(function(segment) {
+
+                if ($scope.messagesParams)
+                    $scope.messagesParams.refresh();
+            });
+        };
+        $scope.addGroupModal = function(place) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AddGroupModal.html',
+                controller: 'AddGroupCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    segments: function() {
+                        return $rootScope.segments;
+                    },
+                    place: function() {
+                        return place;
+                    },
+                    messageTree: function() {
+                        return $rootScope.messageTree;
+                    }
+
+                }
+            });
+            modalInstance.result.then(function(segment) {
+
+                if ($scope.messagesParams)
+                    $scope.messagesParams.refresh();
+            });
+        };
 
 
 
@@ -1133,6 +1205,189 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function($scope, $m
             $rootScope.manualHandle = true;
             $scope.loading = false;
         });
+    };
+
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+});
+
+angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService) {
+
+
+    $scope.newSegment = {
+        accountId: null,
+        comment: "",
+        conformanceStatements: [],
+        date: null,
+        hl7Version: null,
+        id: "",
+        libIds: [],
+        max: "",
+        min: "",
+        participants: [],
+        position: "",
+        predicates: [],
+        ref: {
+            ext: null,
+            id: "",
+            label: "",
+            name: "",
+        },
+        scope: null,
+        status: null,
+        type: "segmentRef",
+        usage: "",
+        version: null,
+
+    };
+    $scope.$watch('newSeg', function() {
+        if ($scope.newSeg) {
+            console.log($scope.newSeg);
+            $scope.newSegment.id = new ObjectId().toString();
+            $scope.newSegment.ref.ext = $scope.newSeg.ext;
+            $scope.newSegment.ref.id = $scope.newSeg.id;
+            $scope.newSegment.ref.name = $scope.newSeg.name;
+            if (place.type === "message") {
+                $scope.newSegment.position = place.children[place.children.length - 1].position + 1;
+            } else if (place.obj && place.obj.type === "group") {
+                if (place.children.length !== 0) {
+                    $scope.newSegment.position = place.children[place.children.length - 1].obj.position + 1;
+
+                } else {
+                    $scope.newSegment.position = 1;
+                }
+
+            }
+
+        }
+
+    }, true);
+    $scope.selectSeg = function(segment) {
+        $scope.newSeg = segment;
+    };
+    $scope.selected = function() {
+        return ($scope.newSeg !== undefined);
+    };
+    $scope.unselect = function() {
+        $scope.newSeg = undefined;
+    };
+    $scope.isActive = function(id) {
+        if ($scope.newSeg) {
+            return $scope.newSeg.id === id;
+        } else {
+            return false;
+        }
+    };
+
+
+    $scope.addSegment = function() {
+
+
+        if (place.type === "message") {
+            $rootScope.message.children.push($scope.newSegment);
+        } else if (place.obj && place.obj.type === "group") {
+            $scope.path = place.path.replace(/\[[0-9]+\]/g, '');
+            $scope.path = $scope.path.split(".");
+            //place.children.push($scope.newSegment);
+            console.log($scope.path);
+            console.log($rootScope.message);
+            SegmentService.addSegToPath($scope.path, $rootScope.message, $scope.newSegment);
+        }
+
+
+        $rootScope.messageTree = null;
+        $rootScope.processMessageTree($rootScope.message);
+        //console.log($rootScope.messageTree);
+
+        if ($scope.messagesParams) {
+            $scope.messagesParams.refresh();
+        }
+        $modalInstance.close();
+
+    };
+
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+});
+
+
+angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService) {
+    console.log($rootScope.message);
+    $scope.newGroup = {
+        accountId: null,
+        children: [],
+        comment: "",
+        conformanceStatements: [],
+        date: null,
+        hl7Version: null,
+        id: "",
+        libIds: [],
+        max: "",
+        min: "",
+        name: "",
+        participants: [],
+        position: "",
+        predicates: [],
+        scope: null,
+        status: null,
+        type: "group",
+        usage: "",
+        version: null,
+
+    };
+
+
+
+
+    $scope.addGroup = function() {
+
+
+        $scope.newGroup.id = new ObjectId().toString();
+        $scope.newGroup.name = $scope.grpName;
+        if (place.children.length !== 0) {
+            $scope.newGroup.position = place.children[place.children.length - 1].obj.position + 1;
+
+        } else {
+            $scope.newGroup.position = 1;
+        }
+
+
+
+
+        if (place.type === "message") {
+            $rootScope.message.children.push($scope.newGroup);
+        } else if (place.obj && place.obj.type === "group") {
+            $scope.path = place.path.replace(/\[[0-9]+\]/g, '');
+            $scope.path = $scope.path.split(".");
+            SegmentService.addSegToPath($scope.path, $rootScope.message, $scope.newGroup);
+
+            //place.children.push($scope.newSegment);
+        }
+
+
+        $rootScope.messageTree = null;
+        $rootScope.processMessageTree($rootScope.message);
+        //console.log($rootScope.messageTree);
+
+        if ($scope.messagesParams) {
+            $scope.messagesParams.refresh();
+        }
+        $modalInstance.close();
+
+
+
+
+
+
+
     };
 
 
