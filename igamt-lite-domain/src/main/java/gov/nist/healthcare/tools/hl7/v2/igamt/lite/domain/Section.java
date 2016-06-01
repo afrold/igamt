@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 
-public class Section extends TextbasedSectionModel implements java.io.Serializable,Cloneable, Comparable<Section> {
+public class Section extends TextbasedSectionModel implements java.io.Serializable,Cloneable, Comparable<Section>, WithPosition{
 
 	/**
 	 * 
@@ -85,6 +85,18 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 	@Override
 	public int compareTo(Section o) {
 		return this.getSectionPosition() - o.getSectionPosition();
+	}
+
+	@Override
+	public Integer getPosition() {
+		// TODO Auto-generated method stub
+		return this.getSectionPosition();
+	}
+
+	@Override
+	public void setPosition(Integer position) {
+		this.sectionPosition=position;
+	
 	}
 	
 }

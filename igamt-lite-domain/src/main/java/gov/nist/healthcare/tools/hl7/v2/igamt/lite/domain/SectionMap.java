@@ -1,6 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-public class MessageMap {
+public class SectionMap {
 	private String id;
 	private Integer position;
 
