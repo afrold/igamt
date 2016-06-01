@@ -660,6 +660,8 @@ angular
             function processEditMessage(message) {
                 $scope.Activate(message.id);
                 $rootScope.message = message;
+                console.log("three");
+                console.log(message);
                 $scope.$emit('event:openMessage', message);
             };
 

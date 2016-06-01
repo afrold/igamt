@@ -2014,4 +2014,12 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
     };
 }]);
 
+angular.module('igl').controller('ConfirmLeaveDlgCtrl', ["$scope", "$modalInstance", "$rootScope", "$http", function ($scope, $modalInstance, $rootScope, $http) {
+    $scope.continue = function () {
+        $modalInstance.close();
+    };
 
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);

@@ -68,7 +68,7 @@ angular.module('igl')
         });
 
 
-        $rootScope.closeIGDocument = function () {
+        $rootScope.closeIGDocument = function() {
             $rootScope.clearChanges();
             $rootScope.igdocument = null;
             $rootScope.isEditing = false;
@@ -111,30 +111,7 @@ angular.module('igl')
                 }
             });
         };
-        $scope.addSegment = function() {
 
-
-            testSeg = $rootScope.message.children[0];
-            testSeg1 = $rootScope.messageTree.children[0];
-            console.log();
-
-
-            $rootScope.messageTree.children.push(testSeg1);
-            $rootScope.message.children.push(testSeg);
-
-            if ($scope.messagesParams) {
-                $scope.messagesParams.refresh();
-            }
-
-
-        };
-        $scope.$watch('messagesParams', function() {
-
-            if ($scope.messagesParams) {
-                $scope.messagesParams.refresh();
-            }
-
-        }, true);
 
 
         $scope.addSegmentModal = function(place) {
@@ -180,15 +157,11 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function(segment) {
+              
 
                 if ($scope.messagesParams)
                     $scope.messagesParams.refresh();
             });
-        };
-        $scope.addGroup = function() {
-            testGroup = $rootScope.messageTree.children[3];
-            $rootScope.messageTree.children.push(testGroup);
-            $scope.messagesParams.refresh();
         };
 
 
@@ -379,8 +352,8 @@ angular.module('igl')
         }
 
 
-        $scope.show = function (igdocument) {
-            var process = function(){
+        $scope.show = function(igdocument) {
+            var process = function() {
                 $scope.toEditIGDocumentId = igdocument.id;
                 try {
                     $scope.openIGDocument(igdocument);
@@ -393,11 +366,11 @@ angular.module('igl')
                 }
             };
 
-            if($rootScope.hasChanges()){
-                $rootScope.openConfirmLeaveDlg().result.then(function () {
+            if ($rootScope.hasChanges()) {
+                $rootScope.openConfirmLeaveDlg().result.then(function() {
                     process();
                 });
-            }else {
+            } else {
                 process();
             }
         };
@@ -405,15 +378,15 @@ angular.module('igl')
         $scope.edit = function(igdocument) {
             console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
             $scope.viewSettings.setTableReadonly(false);
-            $scope.tocView='views/toc.html';
-            
+            $scope.tocView = 'views/toc.html';
+
             $scope.show(igdocument);
         };
 
-        
-        $scope.view = function (igdocument) {
+
+        $scope.view = function(igdocument) {
             $scope.viewSettings.setTableReadonly(true);
-            $scope.tocView='views/tocReadOnly.html';
+            $scope.tocView = 'views/tocReadOnly.html';
             $scope.show(igdocument);
         };
 
@@ -436,9 +409,9 @@ angular.module('igl')
                             $scope.loadTables().then(function() {
                                 $scope.collectMessages();
                                 //$scope.sortByLabels();
-//                                $scope.loadMastermap();
-//                                $scope.loadFilter();
-                               
+                                //                                $scope.loadMastermap();
+                                //                                $scope.loadFilter();
+
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();
                             }, function() {});
@@ -542,9 +515,9 @@ angular.module('igl')
         };
 
 
-        $scope.loadMastermap = function () {
-//            $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
-//            MastermapSvc.parseIg($rootScope.igdocument);
+        $scope.loadMastermap = function() {
+            //            $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
+            //            MastermapSvc.parseIg($rootScope.igdocument);
         };
 
 
@@ -736,12 +709,12 @@ angular.module('igl')
         };
 
 
-        $scope.close = function () {
-            if($rootScope.hasChanges()){
-                $rootScope.openConfirmLeaveDlg().result.then(function () {
+        $scope.close = function() {
+            if ($rootScope.hasChanges()) {
+                $rootScope.openConfirmLeaveDlg().result.then(function() {
                     $rootScope.closeIGDocument();
                 });
-            }else {
+            } else {
                 $rootScope.closeIGDocument();
             }
         };
@@ -751,41 +724,41 @@ angular.module('igl')
             $rootScope.section['type'] = type;
         };
 
-//        $scope.save = function () {
-//            $rootScope.msg().text = null;
-//            $rootScope.msg().type = null;
-//            $rootScope.msg().show = false;
-//            var delay = $q.defer();
-//            waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
-//            IgDocumentService.save($rootScope.igdocument).then(function (saveResponse) {
-//                var found = $scope.findOne($rootScope.igdocument.id);
-//                if (found != null) {
-//                    var index = $rootScope.igs.indexOf(found);
-//                    if (index > 0) {
-//                        $rootScope.igs [index] = $rootScope.igdocument;
-//                    }
-//                }
-//                $rootScope.msg().text = saveResponse.text;
-//                $rootScope.msg().type = saveResponse.type;
-//                $rootScope.msg().show = true;
-//                StorageService.setIgDocument($rootScope.igdocument);
-//                $rootScope.clearChanges();
-//                waitingDialog.hide();
-//                delay.resolve(true);
-//            }, function (error) {
-//                $rootScope.msg().text = error.data.text;
-//                $rootScope.msg().type = error.data.type;
-//                $rootScope.msg().show = true;
-//                waitingDialog.hide();
-//                delay.reject(false);
-//            });
-//            return delay.promise;
-//        };
+        //        $scope.save = function () {
+        //            $rootScope.msg().text = null;
+        //            $rootScope.msg().type = null;
+        //            $rootScope.msg().show = false;
+        //            var delay = $q.defer();
+        //            waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
+        //            IgDocumentService.save($rootScope.igdocument).then(function (saveResponse) {
+        //                var found = $scope.findOne($rootScope.igdocument.id);
+        //                if (found != null) {
+        //                    var index = $rootScope.igs.indexOf(found);
+        //                    if (index > 0) {
+        //                        $rootScope.igs [index] = $rootScope.igdocument;
+        //                    }
+        //                }
+        //                $rootScope.msg().text = saveResponse.text;
+        //                $rootScope.msg().type = saveResponse.type;
+        //                $rootScope.msg().show = true;
+        //                StorageService.setIgDocument($rootScope.igdocument);
+        //                $rootScope.clearChanges();
+        //                waitingDialog.hide();
+        //                delay.resolve(true);
+        //            }, function (error) {
+        //                $rootScope.msg().text = error.data.text;
+        //                $rootScope.msg().type = error.data.type;
+        //                $rootScope.msg().show = true;
+        //                waitingDialog.hide();
+        //                delay.reject(false);
+        //            });
+        //            return delay.promise;
+        //        };
 
-        
-        
 
-        $scope.exportChanges = function () {
+
+
+        $scope.exportChanges = function() {
             var form = document.createElement("form");
             form.action = 'api/igdocuments/export/changes';
             form.method = "POST";
@@ -1155,15 +1128,15 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootS
     $scope.saving = false;
     $scope.saved = false;
 
-     $scope.save = function () {
+    $scope.save = function() {
         $scope.saving = true;
         $scope.saved = false;
         if ($rootScope.igdocument != null && $rootScope.metaData != null) {
-            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
+            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function(result) {
                 $scope.saving = false;
                 $scope.saved = true;
                 $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
-                if($scope.editForm) {
+                if ($scope.editForm) {
                     $scope.editForm.$setPristine();
                     $scope.editForm.$dirty = false;
                 }
@@ -1172,7 +1145,7 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootS
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
 
-            }, function (error) {
+            }, function(error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
@@ -1183,7 +1156,7 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootS
         }
     };
 
-    $scope.reset = function () {
+    $scope.reset = function() {
         $scope.editForm.$dirty = false;
         $scope.editForm.$setPristine();
         $rootScope.clearChanges();
@@ -1194,11 +1167,11 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootS
 angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootScope, $http, ProfileSvc) {
     $scope.saving = false;
     $scope.saved = false;
-    $scope.save = function () {
+    $scope.save = function() {
         $scope.saving = true;
         $scope.saved = false;
         if ($rootScope.igdocument != null && $rootScope.metaData != null) {
-            ProfileSvc.save($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
+            ProfileSvc.save($rootScope.igdocument.id, $rootScope.metaData).then(function(result) {
                 $scope.saving = false;
                 $scope.saved = true;
                 $rootScope.igdocument.profile.metaData = angular.copy($rootScope.metaData);
@@ -1209,7 +1182,7 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootSc
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
 
-            }, function (error) {
+            }, function(error) {
                 $scope.saving = false;
                 $scope.saved = false;
                 $rootScope.msg().text = error.data.text;
@@ -1219,7 +1192,7 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootSc
         }
     };
 
-    $scope.reset = function () {
+    $scope.reset = function() {
         $scope.editForm.$dirty = false;
         $scope.editForm.$setPristine();
         $rootScope.clearChanges();
@@ -1330,26 +1303,26 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
         if (index > -1) $scope.selectedTables.splice(index, 1);
     };
 
-    $scope.save = function () {
+    $scope.save = function() {
         for (var i = 0; i < $scope.selectedTables.length; i++) {
             var newTable = $scope.selectedTables[i];
             console.log(JSON.stringify(newTable));
             newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
 
-            TableService.save(newTable).then(function (result) {
+            TableService.save(newTable).then(function(result) {
                 newTable = result;
                 var newLink = angular.fromJson({
                     id: newTable.id,
                     bindingIdentifier: newTable.bindingIdentifier
                 });
 
-                TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
+                TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function(link) {
                     $rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newLink);
                     $rootScope.tables.splice(0, 0, newTable);
                     $rootScope.tablesMap[newTable.id] = newTable;
-//                    MastermapSvc.addValueSetObject(newTable, []);
+                    //                    MastermapSvc.addValueSetObject(newTable, []);
 
-                    if($scope.editForm) {
+                    if ($scope.editForm) {
                         $scope.editForm.$setPristine();
                         $scope.editForm.$dirty = false;
                     }
@@ -1358,7 +1331,7 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
                     $rootScope.msg().type = "success";
                     $rootScope.msg().show = true;
 
-                }, function (error) {
+                }, function(error) {
                     $scope.saving = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
@@ -1366,7 +1339,7 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
                 });
 
 
-            }, function (error) {
+            }, function(error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
@@ -1418,7 +1391,6 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
     };
     $scope.$watch('newSeg', function() {
         if ($scope.newSeg) {
-            console.log($scope.newSeg);
             $scope.newSegment.id = new ObjectId().toString();
             $scope.newSegment.ref.ext = $scope.newSeg.ext;
             $scope.newSegment.ref.id = $scope.newSeg.id;
@@ -1469,6 +1441,7 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
             console.log($rootScope.message);
             SegmentService.addSegToPath($scope.path, $rootScope.message, $scope.newSegment);
         }
+        console.log($rootScope.message);
 
 
         $rootScope.messageTree = null;
