@@ -53,7 +53,7 @@ public class Bootstrap implements InitializingBean {
 		// Carefully use this. It will delete all of existing IGDocuments and
 		// make new ones converted from the "igdocumentPreLibHL7",
 		// "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
-		// covertOldToNew();
+		new IGDocumentConverterFromOldToNew().convert();
 
 		// new DataCorrection().updateSegment();
 		// new DataCorrection().updateDatatype();
@@ -63,12 +63,7 @@ public class Bootstrap implements InitializingBean {
 		// new DataCorrection().updateMessage();
 
 	}
-
-	private void covertOldToNew() {
-		IGDocumentConverterFromOldToNew old2New = new IGDocumentConverterFromOldToNew();
-		// old2New.convert();
-	}
-
+	
 	private void loadPreloadedIGDocuments() throws Exception {
 		IGDocument d = new IGDocument();
 
