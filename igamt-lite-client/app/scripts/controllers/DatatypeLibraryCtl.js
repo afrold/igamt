@@ -617,4 +617,3 @@ angular.module('igl').controller('ConfirmDatatypePublishCtl', function ($scope, 
         $modalInstance.dismiss('cancel');
     };
 });
-
