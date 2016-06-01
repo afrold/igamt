@@ -266,6 +266,7 @@ angular.module('igl').service('MastermapSvc', function($rootScope) {
             svc.createMMElement(dt.id, "datatype");
         });
         _.each(svc.getSegmentLibrary(), function(sgt) {
+
             //console.log(sgt);
             svc.createMMElement(sgt.id, "segment");
         });

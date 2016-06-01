@@ -31,6 +31,7 @@ var app = angular
         'ngDragDrop',
         'ui.tree',
         'blockUI'
+        
      ]);
 
 var

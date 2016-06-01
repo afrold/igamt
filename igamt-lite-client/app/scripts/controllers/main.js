@@ -708,6 +708,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.calNextCSID = function () {
+
             if ($rootScope.igdocument.metaData.ext != null) {
                 var maxIDNum = Number(0);
                 angular.forEach($rootScope.conformanceStatementIdList, function (id) {
@@ -1743,6 +1744,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             if (obj == null || obj == undefined) return false;
 
             return _.find(_.without(list, obj), function (item) {
+
                 if (item[context1] == obj[context1]) {
                     return item[context2] == obj[context2] && item.id != obj.id;
                 } else {
@@ -1766,11 +1768,13 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getLabel = function (name, ext) {
+
             var label = name;
             if (ext && ext !== null && ext !== "") {
                 label = label + "_" + ext;
             }
-            return label;
+           // console.log(label);
+            return label; 
         };
 
         $rootScope.getDynamicWidth = function (a, b, otherColumsWidth) {
@@ -1850,6 +1854,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getSegmentLabel = function (seg) {
+
 //            var ext = $rootScope.getSegmentExtension(seg);
             return $rootScope.getLabel(seg.name, seg.ext);
         };
@@ -1868,6 +1873,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.getDatatypeLabel = function (datatype) {
+
             if (datatype && datatype != null) {
 //                var ext = $rootScope.getDatatypeExtension(datatype);
                 return $rootScope.getLabel(datatype.name, datatype.ext);
@@ -2007,7 +2013,6 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
         $modalInstance.dismiss('cancel');
     };
 }]);
-
 
 angular.module('igl').controller('ConfirmLeaveDlgCtrl', ["$scope", "$modalInstance", "$rootScope", "$http", function ($scope, $modalInstance, $rootScope, $http) {
     $scope.continue = function () {

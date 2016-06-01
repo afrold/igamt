@@ -20,6 +20,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.IGDocumentConverterFromOldToNew;
 
 import java.util.List;
@@ -53,10 +54,10 @@ public class Bootstrap implements InitializingBean {
 		// Carefully use this. It will delete all of existing IGDocuments and
 		// make new ones converted from the "igdocumentPreLibHL7",
 		// "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
-		// covertOldToNew();
+//		 covertOldToNew();
 
-		// new DataCorrection().updateSegment();
-		// new DataCorrection().updateDatatype();
+//		 new DataCorrection().updateSegment();
+//		 new DataCorrection().updateDatatype();
 		// new DataCorrection().updateSegmentLibrary();
 		// new DataCorrection().updateDatatypeLibrary();
 		// new DataCorrection().updateTableLibrary();
@@ -66,7 +67,7 @@ public class Bootstrap implements InitializingBean {
 
 	private void covertOldToNew() {
 		IGDocumentConverterFromOldToNew old2New = new IGDocumentConverterFromOldToNew();
-		// old2New.convert();
+		 old2New.convert();
 	}
 
 	private void loadPreloadedIGDocuments() throws Exception {
