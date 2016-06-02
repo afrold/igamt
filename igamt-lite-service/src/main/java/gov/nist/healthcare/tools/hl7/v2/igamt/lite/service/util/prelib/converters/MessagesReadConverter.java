@@ -122,7 +122,7 @@ public class MessagesReadConverter extends AbstractReadConverter<DBObject, Messa
 		sl.setExt((String) source.get("ext"));
 		sl.setId(readMongoId(source));
 		sl.setName((String) source.get("name"));
-		return null;
+		return sl;
 	}
 
 	private Group group(DBObject source) {
