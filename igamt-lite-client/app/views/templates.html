@@ -98,3 +98,31 @@
         </button>
     </div>
 </script>
+
+<script type="text/ng-template" id="NotificationSuccessTemplate.html">
+    <div class="ui-notification custom-template">
+        <div class="message">
+            <i class="fa fa-check" aria-hidden="true"></i>
+             <span ng-bind-html="message"></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="NotificationErrorTemplate.html">
+    <div class="ui-notification custom-template">
+        <div class="message">
+            <i class="fa fa-times" aria-hidden="true"></i>
+            <span ng-bind-html="message"></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="NotificationWarningTemplate.html">
+    <div class="ui-notification custom-template">
+        <div class="message">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            <span ng-bind-html="message"></span>
+        </div>
+    </div>
+</script>
+

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'ElementUtils',
-    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, notifications, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, ElementUtils) {
+angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'Notification', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'ElementUtils',
+    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, Notification, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, ElementUtils) {
         //This line fetches the info from the server if the user is currently logged in.
         //If success, the app is updated according to the role.
         userInfoService.loadFromServer();
