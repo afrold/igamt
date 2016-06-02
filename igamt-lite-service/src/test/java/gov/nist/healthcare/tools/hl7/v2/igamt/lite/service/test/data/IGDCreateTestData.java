@@ -1,12 +1,13 @@
 /**
- * This software was developed at the National Institute of Standards and Technology by employees
- * of the Federal Government in the course of their official duties. Pursuant to title 17 Section 105 of the
- * United States Code this software is not subject to copyright protection and is in the public domain.
- * This is an experimental system. NIST assumes no responsibility whatsoever for its use by other parties,
- * and makes no guarantees, expressed or implied, about its quality, reliability, or any other characteristic.
- * We would appreciate acknowledgement if the software is used. This software can be redistributed and/or
- * modified freely provided that any derivative works bear some notice that they are derived from it, and any
- * modified versions bear some notice that they have been modified.
+ * This software was developed at the National Institute of Standards and Technology by employees of
+ * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
+ * of the United States Code this software is not subject to copyright protection and is in the
+ * public domain. This is an experimental system. NIST assumes no responsibility whatsoever for its
+ * use by other parties, and makes no guarantees, expressed or implied, about its quality,
+ * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
+ * used. This software can be redistributed and/or modified freely provided that any derivative
+ * works bear some notice that they are derived from it, and any modified versions bear some notice
+ * that they have been modified.
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.data;
 
@@ -45,81 +46,81 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.Pers
 @ContextConfiguration(classes = {PersistenceContext.class})
 public class IGDCreateTestData {
 
-	Logger log = LoggerFactory.getLogger(IGDCreateTestData.class);
-	
-	@Autowired
-	IGDocumentRepository igDocumentRepository;
+  Logger log = LoggerFactory.getLogger(IGDCreateTestData.class);
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+  @Autowired
+  IGDocumentRepository igDocumentRepository;
 
-	@Autowired
-	IGDocumentService igDocumentService;
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
-	@Autowired
-	IGDocumentCreationService igDocumentCreation;
-	
-	@BeforeClass
-	public static void setup() {
-		try {
-			Properties p = new Properties();
-			InputStream log4jFile = IGDCreateTestData.class
-					.getResourceAsStream("/igl-test-log4j.properties");
-			p.load(log4jFile);
-			PropertyConfigurator.configure(p);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static int randInt(int min, int max) {
+  @Autowired
+  IGDocumentService igDocumentService;
 
-	    // Usually this can be a field rather than a method variable
-	    Random rand = new Random();
+  @Autowired
+  IGDocumentCreationService igDocumentCreation;
 
-	    // nextInt is normally exclusive of the top value,
-	    // so add 1 to make it inclusive
-	    int randomNum = rand.nextInt((max - min)) + min;
+  @BeforeClass
+  public static void setup() {
+    try {
+      Properties p = new Properties();
+      InputStream log4jFile =
+          IGDCreateTestData.class.getResourceAsStream("/igl-test-log4j.properties");
+      p.load(log4jFile);
+      PropertyConfigurator.configure(p);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
-	    return randomNum;
-	}
-	
-	@Test
-	public void testProfileCreation() throws IOException, ProfileException {
-		// Collect version numbers
-		String hl7Version = "2.7";
-		log.info("preload=" + igDocumentRepository.findPreloaded().size());
-		log.info("standard=" + igDocumentRepository.findStandard().size());
-		IGDocument igDocumentSource = igDocumentRepository.findStandardByVersion("2.7").get(0);
-		Set<Message> msgs = igDocumentSource.getProfile().getMessages().getChildren();
-		int limit = msgs.size();
-		Message[] msgsArr = msgs.toArray(new Message[limit]);
-		List<String> msgIds = new ArrayList<String>();
-		for (int i = 0; i < limit; i++) {
-			msgIds.add(msgsArr[randInt(0, limit)].getId());
-		}
-		ObjectMapper mapper = new ObjectMapper();
-//		URL url = IGDCreateTestData.class.getResource("/igdocument/igdocument-2.7.json");
-//		IGDocument pOld = new IGDocument();
-//		InputStream is = url.openStream();
-//		pOld = mapper.readValue(is, IGDocument.class);
-//		List<String> msgIds = new ArrayList<String>();
-//		Message[] msgs = pOld.getProfile().getMessages().getChildren().toArray(new Message[0]);
-//		msgIds.add(msgs[4].getId());
-//		msgIds.add(msgs[14].getId());
-//		msgIds.add(msgs[24].getId());
-		IGDocument pNew = null;
-//		try {
-//			pNew = igDocumentCreation.createIntegratedIGDocument(pOld, msgIds, "2.7", 45L);
-//		} catch (IGDocumentException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		// Captures the newly created igdocument.
-		File OUTPUT_DIR = new File("/Users/gcr1/Documents/nistWorkplace");
-		File outfile = new File(OUTPUT_DIR, "igdocument-" + "2.7.5" + ".json");
-		mapper.writerWithDefaultPrettyPrinter().writeValue(outfile, pNew);
+  public static int randInt(int min, int max) {
 
-	}
+    // Usually this can be a field rather than a method variable
+    Random rand = new Random();
+
+    // nextInt is normally exclusive of the top value,
+    // so add 1 to make it inclusive
+    int randomNum = rand.nextInt((max - min)) + min;
+
+    return randomNum;
+  }
+
+  @Test
+  public void testProfileCreation() throws IOException, ProfileException {
+    // Collect version numbers
+    String hl7Version = "2.7";
+    log.info("preload=" + igDocumentRepository.findPreloaded().size());
+    log.info("standard=" + igDocumentRepository.findStandard().size());
+    IGDocument igDocumentSource = igDocumentRepository.findStandardByVersion("2.7").get(0);
+    Set<Message> msgs = igDocumentSource.getProfile().getMessages().getChildren();
+    int limit = msgs.size();
+    Message[] msgsArr = msgs.toArray(new Message[limit]);
+    List<String> msgIds = new ArrayList<String>();
+    for (int i = 0; i < limit; i++) {
+      msgIds.add(msgsArr[randInt(0, limit)].getId());
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    // URL url = IGDCreateTestData.class.getResource("/igdocument/igdocument-2.7.json");
+    // IGDocument pOld = new IGDocument();
+    // InputStream is = url.openStream();
+    // pOld = mapper.readValue(is, IGDocument.class);
+    // List<String> msgIds = new ArrayList<String>();
+    // Message[] msgs = pOld.getProfile().getMessages().getChildren().toArray(new Message[0]);
+    // msgIds.add(msgs[4].getId());
+    // msgIds.add(msgs[14].getId());
+    // msgIds.add(msgs[24].getId());
+    IGDocument pNew = null;
+    // try {
+    // pNew = igDocumentCreation.createIntegratedIGDocument(pOld, msgIds, "2.7", 45L);
+    // } catch (IGDocumentException e) {
+    // // TODO Auto-generated catch block
+    // e.printStackTrace();
+    // }
+
+    // Captures the newly created igdocument.
+    File OUTPUT_DIR = new File("/Users/gcr1/Documents/nistWorkplace");
+    File outfile = new File(OUTPUT_DIR, "igdocument-" + "2.7.5" + ".json");
+    mapper.writerWithDefaultPrettyPrinter().writeValue(outfile, pNew);
+
+  }
 }

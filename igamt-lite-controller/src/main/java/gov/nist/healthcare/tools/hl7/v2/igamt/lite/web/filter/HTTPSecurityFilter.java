@@ -20,45 +20,43 @@ import org.springframework.core.annotation.Order;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class HTTPSecurityFilter implements Filter {
 
-	/*
-	 * flaw: Browser Mime Sniffing - fix: X-Content-Type-Options flaw: Cached
-	 * SSL Content - fix: Cache-Control flaw: Cross-Frame Scripting - fix:
-	 * X-Frame-Options flaw: Cross-Site Scripting - fix: X-XSS-Protection flaw:
-	 * Force SSL - fix: Strict-Transport-Security
-	 * 
-	 * assure no-cache for login page to prevent IE from caching
-	 */
+  /*
+   * flaw: Browser Mime Sniffing - fix: X-Content-Type-Options flaw: Cached SSL Content - fix:
+   * Cache-Control flaw: Cross-Frame Scripting - fix: X-Frame-Options flaw: Cross-Site Scripting -
+   * fix: X-XSS-Protection flaw: Force SSL - fix: Strict-Transport-Security
+   * 
+   * assure no-cache for login page to prevent IE from caching
+   */
 
-	protected final Log logger = LogFactory.getLog(getClass());
+  protected final Log logger = LogFactory.getLog(getClass());
 
-	private FilterConfig filterConfig;
+  private FilterConfig filterConfig;
 
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		this.filterConfig = filterConfig;
-	}
+  @Override
+  public void init(FilterConfig filterConfig) throws ServletException {
+    this.filterConfig = filterConfig;
+  }
 
-	@Override
-	public void destroy() {
-		this.filterConfig = null;
-	}
+  @Override
+  public void destroy() {
+    this.filterConfig = null;
+  }
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+  @Override
+  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+      throws IOException, ServletException {
 
-		if (response instanceof HttpServletResponse) {
-			HttpServletResponse httpResponse = (HttpServletResponse) response;
-			httpResponse.setHeader("X-Frame-Options", "SAMEORIGIN");
-			httpResponse.setHeader("Cache-Control",
-					"no-cache, no-store, must-revalidate");
-			httpResponse.setHeader("X-Content-Type-Options", "nosniff");
-			httpResponse.setHeader("X-XSS-Protection", "1; mode=block");
-			httpResponse.setHeader("Access-Control-Allow-Headers", "version");
-		}
+    if (response instanceof HttpServletResponse) {
+      HttpServletResponse httpResponse = (HttpServletResponse) response;
+      httpResponse.setHeader("X-Frame-Options", "SAMEORIGIN");
+      httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      httpResponse.setHeader("X-Content-Type-Options", "nosniff");
+      httpResponse.setHeader("X-XSS-Protection", "1; mode=block");
+      httpResponse.setHeader("Access-Control-Allow-Headers", "version");
+    }
 
-		chain.doFilter(request, response);
+    chain.doFilter(request, response);
 
-	}
+  }
 
 }

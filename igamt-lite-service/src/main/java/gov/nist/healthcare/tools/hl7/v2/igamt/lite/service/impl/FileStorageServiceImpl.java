@@ -19,35 +19,31 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
 
 @Service
 public class FileStorageServiceImpl implements FileStorageService {
- 
- 	
-	@Autowired
-	private GridFsTemplate gridFsTemplate; 
-	
-	@PostConstruct
-	public void init() { 		
-  	}
 
-	public GridFSFile store(InputStream inputStream, String fileName,
-			String contentType, DBObject metaData) {
-		return this.gridFsTemplate
-				.store(inputStream, fileName, contentType, metaData);
-	}
 
-	public GridFSDBFile findOne(String id) {
-		return this.gridFsTemplate.findOne(new Query(Criteria.where("_id").is(
-				id)));
-	}
+  @Autowired
+  private GridFsTemplate gridFsTemplate;
 
-	public GridFSDBFile findOneByFilename(String fileName) {
-		return gridFsTemplate.findOne(new Query(Criteria.where("filename").is(
-				fileName)));
-	}
- 
+  @PostConstruct
+  public void init() {}
 
-	public List findAll() {
-		return gridFsTemplate.find(null);
-	}
- 
+  public GridFSFile store(InputStream inputStream, String fileName, String contentType,
+      DBObject metaData) {
+    return this.gridFsTemplate.store(inputStream, fileName, contentType, metaData);
+  }
+
+  public GridFSDBFile findOne(String id) {
+    return this.gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
+  }
+
+  public GridFSDBFile findOneByFilename(String fileName) {
+    return gridFsTemplate.findOne(new Query(Criteria.where("filename").is(fileName)));
+  }
+
+
+  public List findAll() {
+    return gridFsTemplate.find(null);
+  }
+
 
 }

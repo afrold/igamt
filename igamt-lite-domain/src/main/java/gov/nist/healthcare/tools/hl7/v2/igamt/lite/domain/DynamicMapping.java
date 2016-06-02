@@ -8,46 +8,46 @@ import org.bson.types.ObjectId;
 
 public class DynamicMapping implements Serializable, Cloneable {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public DynamicMapping() {
-		super();
-		this.id = ObjectId.get().toString();
-	}
+  public DynamicMapping() {
+    super();
+    this.id = ObjectId.get().toString();
+  }
 
-	private String id;
-	
-	protected List<Mapping> mappings = new ArrayList<Mapping>();
+  private String id;
 
-	public String getId() {
-		return id;
-	}
+  protected List<Mapping> mappings = new ArrayList<Mapping>();
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public List<Mapping> getMappings() {
-		return mappings;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public void setMappings(List<Mapping> mappings) {
-		this.mappings = mappings;
-	}
+  public List<Mapping> getMappings() {
+    return mappings;
+  }
 
-	public void addMapping(Mapping m) {
-		mappings.add(m);
-	}
+  public void setMappings(List<Mapping> mappings) {
+    this.mappings = mappings;
+  }
 
-	@Override
-	public DynamicMapping clone() throws CloneNotSupportedException {
-		DynamicMapping clonedDynamicMapping = new DynamicMapping();
-		clonedDynamicMapping.setId(id);
-		clonedDynamicMapping.setMappings(mappings);
-		for (Mapping m : this.mappings) {
-			clonedDynamicMapping.addMapping(m.clone());
-		}
-		return clonedDynamicMapping;
-	}
+  public void addMapping(Mapping m) {
+    mappings.add(m);
+  }
+
+  @Override
+  public DynamicMapping clone() throws CloneNotSupportedException {
+    DynamicMapping clonedDynamicMapping = new DynamicMapping();
+    clonedDynamicMapping.setId(id);
+    clonedDynamicMapping.setMappings(mappings);
+    for (Mapping m : this.mappings) {
+      clonedDynamicMapping.addMapping(m.clone());
+    }
+    return clonedDynamicMapping;
+  }
 
 }

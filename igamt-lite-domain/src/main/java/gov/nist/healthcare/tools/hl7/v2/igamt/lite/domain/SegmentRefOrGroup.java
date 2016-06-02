@@ -5,82 +5,81 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.PROPERTY, property = "type")
-@JsonSubTypes({
-		@JsonSubTypes.Type(value = Group.class, name = Constant.GROUP),
-		@JsonSubTypes.Type(value = SegmentRef.class, name = Constant.SEGMENTREF) })
+@JsonSubTypes({@JsonSubTypes.Type(value = Group.class, name = Constant.GROUP),
+    @JsonSubTypes.Type(value = SegmentRef.class, name = Constant.SEGMENTREF)})
 public abstract class SegmentRefOrGroup extends DataModelWithConstraints implements
-		java.io.Serializable, Comparable<SegmentRefOrGroup> {
+    java.io.Serializable, Comparable<SegmentRefOrGroup> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	protected String id;
+  protected String id;
 
-	// //@NotNull
-	protected Usage usage;
+  // //@NotNull
+  protected Usage usage;
 
-	// @NotNull
-	// @Min(0)
-	protected Integer min;
+  // @NotNull
+  // @Min(0)
+  protected Integer min;
 
-	// @NotNull
-	protected String max;
+  // @NotNull
+  protected String max;
 
-	// @NotNull
-	// @Column(nullable = false, name = "SEGMENTREFORGROUP_POSITION")
-	protected Integer position = 0;
+  // @NotNull
+  // @Column(nullable = false, name = "SEGMENTREFORGROUP_POSITION")
+  protected Integer position = 0;
 
-	protected String comment = "";
+  protected String comment = "";
 
-	public Usage getUsage() {
-		return usage;
-	}
+  public Usage getUsage() {
+    return usage;
+  }
 
-	public void setUsage(Usage usage) {
-		this.usage = usage;
-	}
+  public void setUsage(Usage usage) {
+    this.usage = usage;
+  }
 
-	public Integer getMin() {
-		return min;
-	}
+  public Integer getMin() {
+    return min;
+  }
 
-	public void setMin(Integer min) {
-		this.min = min;
-	}
+  public void setMin(Integer min) {
+    this.min = min;
+  }
 
-	public String getMax() {
-		return max;
-	}
+  public String getMax() {
+    return max;
+  }
 
-	public void setMax(String max) {
-		this.max = max;
-	}
+  public void setMax(String max) {
+    this.max = max;
+  }
 
-	public Integer getPosition() {
-		return position;
-	}
+  public Integer getPosition() {
+    return position;
+  }
 
-	public void setPosition(Integer position) {
-		this.position = position;
-	}
+  public void setPosition(Integer position) {
+    this.position = position;
+  }
 
-	public String getId() {
-		return id;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public String getComment() {
-		return comment;
-	}
+  public String getComment() {
+    return comment;
+  }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
 
-	@Override
-	public int compareTo(SegmentRefOrGroup o) {
-		return this.getPosition() - o.getPosition();
-	}
+  @Override
+  public int compareTo(SegmentRefOrGroup o) {
+    return this.getPosition() - o.getPosition();
+  }
 }

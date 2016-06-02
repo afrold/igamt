@@ -345,6 +345,7 @@ angular.module('igl')
             }
         };
 
+
         $scope.sortByLabels = function () {
 //
 //            //  $rootScope.igdocument.profile.messages.children = $filter('orderBy')($rootScope.igdocument.profile.messages.children, 'name');
@@ -940,10 +941,10 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function ($scope
         }, function (error) {
             $scope.error = error;
             $scope.loading = false;
-            $modalInstance.dismiss('cancel');
             $rootScope.msg().text = "igDeleteFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
+//            $modalInstance.dismiss('cancel');
 
 
 // waitingDialog.hide();

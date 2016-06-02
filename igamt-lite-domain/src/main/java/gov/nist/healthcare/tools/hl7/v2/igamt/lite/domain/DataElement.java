@@ -1,184 +1,184 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-public abstract class DataElement extends DataModel implements
-		java.io.Serializable, Cloneable, Comparable<DataElement> {
+public abstract class DataElement extends DataModel implements java.io.Serializable, Cloneable,
+    Comparable<DataElement> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	// @Id
-	// //@Column(name = "ID")
-	// //@GeneratedValue(strategy = GenerationType.TABLE)
-	// protected String id;
+  // @Id
+  // //@Column(name = "ID")
+  // //@GeneratedValue(strategy = GenerationType.TABLE)
+  // protected String id;
 
-	// //@NotNull
-	// //@Column(nullable = false, name = "DATAELEMENT_NAME")
-	protected String name;
+  // //@NotNull
+  // //@Column(nullable = false, name = "DATAELEMENT_NAME")
+  protected String name;
 
-	// //@NotNull
-	// //@Column(name = "USAGEE", nullable = false)
-	// // usage is a key word in mysql
-	// @Enumerated(EnumType.STRING)
-	protected Usage usage;
-	//
-	// @Min(0)
-	// //@Column(name = "MIN_LENGTH")
-	protected Integer minLength;
+  // //@NotNull
+  // //@Column(name = "USAGEE", nullable = false)
+  // // usage is a key word in mysql
+  // @Enumerated(EnumType.STRING)
+  protected Usage usage;
+  //
+  // @Min(0)
+  // //@Column(name = "MIN_LENGTH")
+  protected Integer minLength;
 
-	// //@NotNull
-	// //@Column(nullable = false, name = "MAX_LENGTH")
-	protected String maxLength;
+  // //@NotNull
+  // //@Column(nullable = false, name = "MAX_LENGTH")
+  protected String maxLength;
 
-	// //@Column(name = "CONF_LENGTH")
-	protected String confLength;
+  // //@Column(name = "CONF_LENGTH")
+  protected String confLength;
 
-	// @JsonIgnoreProperties({ "mappingAlternateId", "mappingId", "name",
-	// "version", "codesys", "oid", "tableType", "stability",
-	// "extensibility", "type", "codes" })
-	// //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
-	// CascadeType.PERSIST, CascadeType.MERGE })
-	// //@JoinColumn(name = "TABLE_ID")
-	protected TableLink table;
-
-
-	// //@JsonIgnore
-
-	// @JsonIgnoreProperties({ "label", "components", "name", "description",
-	// "predicates", "conformanceStatements", "comment", "usageNote",
-	// "type" })
-	protected DatatypeLink datatype;
-
-	// protected String datatypeId;
-
-	// //@NotNull
-	// //@Column(nullable = false, name = "DATAELEMENT_POSITION")
-	protected Integer position = 0;
-
-	// //@Column(name = "COMMENT")
-	protected String comment = "";
-
-	protected String text = "";
-	
-	protected boolean hide;
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-	
-	public DatatypeLink getDatatype() {
-		return datatype;
-	}
-
-	public void setDatatype(DatatypeLink datatype) {
-		this.datatype = datatype;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Usage getUsage() {
-		return usage;
-	}
-
-	public void setUsage(Usage usage) {
-		this.usage = usage;
-	}
-
-	public Integer getMinLength() {
-		return minLength;
-	}
-
-	public void setMinLength(Integer minLength) {
-		this.minLength = minLength;
-	}
-
-	public String getMaxLength() {
-		return maxLength;
-	}
-
-	public void setMaxLength(String maxLength) {
-		this.maxLength = maxLength;
-	}
-
-	public String getConfLength() {
-		return confLength;
-	}
-
-	public void setConfLength(String confLength) {
-		this.confLength = confLength;
-	}
-
-	public TableLink getTable() {
-		return table;
-	}
-
-	public void setTable(TableLink table) {
-		this.table = table;
-	}
+  // @JsonIgnoreProperties({ "mappingAlternateId", "mappingId", "name",
+  // "version", "codesys", "oid", "tableType", "stability",
+  // "extensibility", "type", "codes" })
+  // //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
+  // CascadeType.PERSIST, CascadeType.MERGE })
+  // //@JoinColumn(name = "TABLE_ID")
+  protected TableLink table;
 
 
-	public Integer getPosition() {
-		return position;
-	}
+  // //@JsonIgnore
 
-	public void setPosition(Integer position) {
-		this.position = position;
-	}
+  // @JsonIgnoreProperties({ "label", "components", "name", "description",
+  // "predicates", "conformanceStatements", "comment", "usageNote",
+  // "type" })
+  protected DatatypeLink datatype;
 
-	// public String getDatatypeLabel() {
-	// return datatypeLabel;
-	// }
-	//
-	// // DO NO SET
-	// public void setDatatypeLabel(String datatypeLabel) {
-	// this.datatypeLabel = datatypeLabel;
-	// }
+  // protected String datatypeId;
 
-	public String getComment() {
-		return comment;
-	}
+  // //@NotNull
+  // //@Column(nullable = false, name = "DATAELEMENT_POSITION")
+  protected Integer position = 0;
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+  // //@Column(name = "COMMENT")
+  protected String comment = "";
 
-	// public String getTableId() {
-	// return tableId;
-	// }
-	//
-	// public void setTableId(String tableId) {
-	// this.tableId = tableId;
-	// }
+  protected String text = "";
 
-	public boolean isHide() {
-		return hide;
-	}
+  protected boolean hide;
 
-	public void setHide(boolean hide) {
-		this.hide = hide;
-	}
+  public String getText() {
+    return text;
+  }
 
-	@Override
-	protected DataElement clone() throws CloneNotSupportedException {
-		DataElement de = (DataElement) super.clone();
-		de.setTable(this.table.clone());
-		// de.setDatatype(this.datatype.clone());
-		de.setDatatype(this.datatype.clone()); // Changed by Harold
+  public void setText(String text) {
+    this.text = text;
+  }
 
-		return de;
-	}
+  public DatatypeLink getDatatype() {
+    return datatype;
+  }
 
-	@Override
-	public int compareTo(DataElement o) {
-		return this.getPosition() - o.getPosition();
-	}
+  public void setDatatype(DatatypeLink datatype) {
+    this.datatype = datatype;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Usage getUsage() {
+    return usage;
+  }
+
+  public void setUsage(Usage usage) {
+    this.usage = usage;
+  }
+
+  public Integer getMinLength() {
+    return minLength;
+  }
+
+  public void setMinLength(Integer minLength) {
+    this.minLength = minLength;
+  }
+
+  public String getMaxLength() {
+    return maxLength;
+  }
+
+  public void setMaxLength(String maxLength) {
+    this.maxLength = maxLength;
+  }
+
+  public String getConfLength() {
+    return confLength;
+  }
+
+  public void setConfLength(String confLength) {
+    this.confLength = confLength;
+  }
+
+  public TableLink getTable() {
+    return table;
+  }
+
+  public void setTable(TableLink table) {
+    this.table = table;
+  }
+
+
+  public Integer getPosition() {
+    return position;
+  }
+
+  public void setPosition(Integer position) {
+    this.position = position;
+  }
+
+  // public String getDatatypeLabel() {
+  // return datatypeLabel;
+  // }
+  //
+  // // DO NO SET
+  // public void setDatatypeLabel(String datatypeLabel) {
+  // this.datatypeLabel = datatypeLabel;
+  // }
+
+  public String getComment() {
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
+
+  // public String getTableId() {
+  // return tableId;
+  // }
+  //
+  // public void setTableId(String tableId) {
+  // this.tableId = tableId;
+  // }
+
+  public boolean isHide() {
+    return hide;
+  }
+
+  public void setHide(boolean hide) {
+    this.hide = hide;
+  }
+
+  @Override
+  protected DataElement clone() throws CloneNotSupportedException {
+    DataElement de = (DataElement) super.clone();
+    de.setTable(this.table.clone());
+    // de.setDatatype(this.datatype.clone());
+    de.setDatatype(this.datatype.clone()); // Changed by Harold
+
+    return de;
+  }
+
+  @Override
+  public int compareTo(DataElement o) {
+    return this.getPosition() - o.getPosition();
+  }
 
 }

@@ -2,60 +2,60 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 import java.io.Serializable;
 
-//@Entity
-//@Table(name = "CONSTRAINTS")
+// @Entity
+// @Table(name = "CONSTRAINTS")
 public class Constraints implements Serializable {
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	// @Id 
-	// @Column(name = "ID")
-	// @GeneratedValue(strategy = GenerationType.AUTO)
-	private String id;
+  private static final long serialVersionUID = 1L;
+  // @Id
+  // @Column(name = "ID")
+  // @GeneratedValue(strategy = GenerationType.AUTO)
+  private String id;
 
-	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
-	// CascadeType.ALL, orphanRemoval = true)
-	// @JoinColumn(name = "DATATYPES_ID")
-	private Context datatypes;
+  // @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
+  // CascadeType.ALL, orphanRemoval = true)
+  // @JoinColumn(name = "DATATYPES_ID")
+  private Context datatypes;
 
-	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
-	// CascadeType.ALL, orphanRemoval = true)
-	// @JoinColumn(name = "SEGMENTS_ID")
-	private Context segments;
+  // @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
+  // CascadeType.ALL, orphanRemoval = true)
+  // @JoinColumn(name = "SEGMENTS_ID")
+  private Context segments;
 
-	private Context messages;
+  private Context messages;
 
-	public String getId() {
-		return id;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public Context getDatatypes() {
-		return datatypes;
-	}
+  public Context getDatatypes() {
+    return datatypes;
+  }
 
-	public void setDatatypes(Context datatypes) {
-		this.datatypes = datatypes;
-	}
+  public void setDatatypes(Context datatypes) {
+    this.datatypes = datatypes;
+  }
 
-	public Context getSegments() {
-		return segments;
-	}
+  public Context getSegments() {
+    return segments;
+  }
 
-	public void setSegments(Context segments) {
-		this.segments = segments;
-	}
+  public void setSegments(Context segments) {
+    this.segments = segments;
+  }
 
-	public Context getMessages() {
-		return messages;
-	}
+  public Context getMessages() {
+    return messages;
+  }
 
-	public void setMessages(Context messages) {
-		this.messages = messages;
-	}
+  public void setMessages(Context messages) {
+    this.messages = messages;
+  }
 
 }

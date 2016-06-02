@@ -4,115 +4,121 @@ import java.io.Serializable;
 
 import org.bson.types.ObjectId;
 
-public class Code extends DataModel implements Serializable, Cloneable,Comparable<Code> {
+public class Code extends DataModel implements Serializable, Cloneable, Comparable<Code> {
 
-	private static final long serialVersionUID = 410373025762745686L;
+  private static final long serialVersionUID = 410373025762745686L;
 
-	private String id;
+  private String id;
 
-	private String value;
+  private String value;
 
-	private String label;
+  private String label;
 
-	private String codeSystem;
-	
-	private String codeSystemVersion;
+  private String codeSystem;
 
-	private String codeUsage;
+  private String codeSystemVersion;
 
-	private String comments;
-	
-	public Code() {
-		super();
-		this.type = Constant.CODE;
-		this.id = ObjectId.get().toString();
-	}
+  private String codeUsage;
 
-	public String getId() {
-		return id;
-	}
+  private String comments;
 
-	public String getValue() {
-		return value;
-	}
+  public Code() {
+    super();
+    this.type = Constant.CODE;
+    this.id = ObjectId.get().toString();
+  }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public String getLabel() {
-		return label;
-	}
+  public String getValue() {
+    return value;
+  }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-	public String getCodeSystem() {
-		return codeSystem;
-	}
+  public String getLabel() {
+    return label;
+  }
 
-	public void setCodeSystem(String codeSystem) {
-		this.codeSystem = codeSystem;
-	}
+  public void setLabel(String label) {
+    this.label = label;
+  }
 
-	public String getCodeSystemVersion() {
-		return codeSystemVersion;
-	}
+  public String getCodeSystem() {
+    return codeSystem;
+  }
 
-	public void setCodeSystemVersion(String codeSystemVersion) {
-		this.codeSystemVersion = codeSystemVersion;
-	}
+  public void setCodeSystem(String codeSystem) {
+    this.codeSystem = codeSystem;
+  }
 
-	public String getComments() {
-		return comments;
-	}
+  public String getCodeSystemVersion() {
+    return codeSystemVersion;
+  }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+  public void setCodeSystemVersion(String codeSystemVersion) {
+    this.codeSystemVersion = codeSystemVersion;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public String getComments() {
+    return comments;
+  }
 
-	public String getCodeUsage() {
-		return codeUsage;
-	}
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
 
-	public void setCodeUsage(String codeUsage) {
-		this.codeUsage = codeUsage;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	@Override
-	public String toString() {
-		return "Code [id=" + id + ", value=" + value + ", label=" + label + ", codeSystem=" + codeSystem
-				+ ", codeSystemVersion=" + codeSystemVersion + ", codeUsage=" + codeUsage + ", comments=" + comments
-				+ "]";
-	}
+  public String getCodeUsage() {
+    return codeUsage;
+  }
 
-	@Override
-	public Code clone() throws CloneNotSupportedException {
-		Code clonedCode = new Code();
-		clonedCode.setId(id);
-		clonedCode.setType(type);
-		clonedCode.setValue(value);
-		clonedCode.setLabel(label);
-		clonedCode.setComments(comments);
-		clonedCode.setCodeUsage(codeUsage);
-		clonedCode.setCodeSystemVersion(codeSystemVersion);
-		clonedCode.setCodeSystem(codeSystem);
+  public void setCodeUsage(String codeUsage) {
+    this.codeUsage = codeUsage;
+  }
 
-		return clonedCode;
-	}
+  @Override
+  public String toString() {
+    return "Code [id=" + id + ", value=" + value + ", label=" + label + ", codeSystem="
+        + codeSystem + ", codeSystemVersion=" + codeSystemVersion + ", codeUsage=" + codeUsage
+        + ", comments=" + comments + "]";
+  }
 
-	public int compareTo(Code o) {
-		int x = String.CASE_INSENSITIVE_ORDER.compare(this.getValue() != null && this.getLabel() != null ? this.getValue() + this.getLabel() : "",
-				o.getValue() != null && this.getLabel() != null ? o.getValue() + this.getLabel() : "");
-		if (x == 0) {
-			x = (this.getValue() != null  && this.getLabel() != null ? this.getValue() + this.getLabel() : "").compareTo(o.getValue() != null && this.getLabel() != null ? o.getValue()+o.getLabel(): "");
-		}
-		return x;
-	}
+  @Override
+  public Code clone() throws CloneNotSupportedException {
+    Code clonedCode = new Code();
+    clonedCode.setId(id);
+    clonedCode.setType(type);
+    clonedCode.setValue(value);
+    clonedCode.setLabel(label);
+    clonedCode.setComments(comments);
+    clonedCode.setCodeUsage(codeUsage);
+    clonedCode.setCodeSystemVersion(codeSystemVersion);
+    clonedCode.setCodeSystem(codeSystem);
+
+    return clonedCode;
+  }
+
+  public int compareTo(Code o) {
+    int x =
+        String.CASE_INSENSITIVE_ORDER.compare(
+            this.getValue() != null && this.getLabel() != null ? this.getValue() + this.getLabel()
+                : "",
+            o.getValue() != null && this.getLabel() != null ? o.getValue() + this.getLabel() : "");
+    if (x == 0) {
+      x =
+          (this.getValue() != null && this.getLabel() != null ? this.getValue() + this.getLabel()
+              : "").compareTo(o.getValue() != null && this.getLabel() != null ? o.getValue()
+              + o.getLabel() : "");
+    }
+    return x;
+  }
 
 }

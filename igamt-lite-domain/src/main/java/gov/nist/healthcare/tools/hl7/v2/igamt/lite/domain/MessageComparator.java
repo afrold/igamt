@@ -4,10 +4,10 @@ import java.util.Comparator;
 
 public class MessageComparator implements Comparator<Message> {
 
-	@Override
-	public int compare(Message o1, Message o2) {
-		// TODO Auto-generated method stub
-		return o1.getPosition()-o2.getPosition();
-	}
+  @Override
+  public int compare(Message o1, Message o2) {
+    // TODO Auto-generated method stub
+    return o1.getPosition() - o2.getPosition();
+  }
 
 }

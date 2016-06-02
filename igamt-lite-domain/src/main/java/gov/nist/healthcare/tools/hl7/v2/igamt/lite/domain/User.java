@@ -6,70 +6,69 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class User implements Serializable, Cloneable {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private String id;
+  private String id;
 
-	private String firstname;
+  private String firstname;
 
-	private String lastname;
+  private String lastname;
 
-	@DBRef
-	private Author author;
+  @DBRef
+  private Author author;
 
-	private UserAccount userAccount;
+  private UserAccount userAccount;
 
-	public String getId() {
-		return id;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public String getFirstname() {
-		return firstname;
-	}
+  public String getFirstname() {
+    return firstname;
+  }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+  public void setFirstname(String firstname) {
+    this.firstname = firstname;
+  }
 
-	public String getLastname() {
-		return lastname;
-	}
+  public String getLastname() {
+    return lastname;
+  }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+  public void setLastname(String lastname) {
+    this.lastname = lastname;
+  }
 
-	public UserAccount getUserAccount() {
-		return userAccount;
-	}
+  public UserAccount getUserAccount() {
+    return userAccount;
+  }
 
-	public void setUserAccount(UserAccount userAccount) {
-		this.userAccount = userAccount;
-	}
+  public void setUserAccount(UserAccount userAccount) {
+    this.userAccount = userAccount;
+  }
 
-	public Author getAuthor() {
-		return author;
-	}
+  public Author getAuthor() {
+    return author;
+  }
 
-	public void setAuthor(Author author) {
-		this.author = author;
-	}
+  public void setAuthor(Author author) {
+    this.author = author;
+  }
 
-	@Override
-	public String toString() {
-		return "Author [id=" + id + ", firstName=" + firstname + ", lastName="
-				+ lastname + "]";
-	}
+  @Override
+  public String toString() {
+    return "Author [id=" + id + ", firstName=" + firstname + ", lastName=" + lastname + "]";
+  }
 
-	@Override
-	public User clone() throws CloneNotSupportedException {
-		User clonedUser = (User) super.clone();
-		clonedUser.setId(null);
-		return clonedUser;
-	}
+  @Override
+  public User clone() throws CloneNotSupportedException {
+    User clonedUser = (User) super.clone();
+    clonedUser.setId(null);
+    return clonedUser;
+  }
 
 }
