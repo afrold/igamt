@@ -55,6 +55,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfileChangeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
@@ -133,6 +134,10 @@ public class IGDocumentController extends CommonController {
 
 	@Autowired
 	private MessageService messageService;
+
+	@Autowired
+	private MessageService ProfileService;
+	
 
 	public IGDocumentService getIgDocumentService() {
 		return igDocumentService;
@@ -866,6 +871,45 @@ public class IGDocumentController extends CommonController {
 			throw new IGDocumentNotFoundException(id);
 		}
 		String idSect = section.getId();
+		
+		//String msgInfraId= d.getProfile().getId();
+		String conformaneId= d.getProfile().getMessages().getId();
+		String dataTypesId=d.getProfile().getDatatypeLibrary().getId();
+		String tableId=d.getProfile().getTableLibrary().getId();
+		String segmentId=d.getProfile().getSegmentLibrary().getId();
+		
+		if(idSect.equalsIgnoreCase(conformaneId)){
+			d.getProfile().getMessages().setSectionContents(section.getSectionContents());
+			
+			igDocumentService.save(d);
+			System.out.println(d.getProfile().getMessages().getSectionContents());
+
+			return true;
+		}
+		else if(idSect.equalsIgnoreCase(dataTypesId)){
+
+			d.getProfile().getDatatypeLibrary().setSectionContents(section.getSectionContents());
+			System.out.println("DTLib ID:::: " + d.getProfile().getDatatypeLibrary().getId());
+			datatypeLibraryService.save(d.getProfile().getDatatypeLibrary());
+			System.out.println("DTLib ID after save:::: " + d.getProfile().getDatatypeLibrary().getId());
+
+			return true;
+		}
+		else if(idSect.equalsIgnoreCase(tableId)){
+
+			d.getProfile().getTableLibrary().setSectionContents(section.getSectionContents());
+			tableLibraryService.save(d.getProfile().getTableLibrary());
+
+			return true;
+		}
+		else if(idSect.equalsIgnoreCase(segmentId)){
+
+			d.getProfile().getSegmentLibrary().setSectionContents(section.getSectionContents());
+			segmentLibraryService.save (d.getProfile().getSegmentLibrary());
+			igDocumentService.save(d);
+			return true;
+		}
+		else{
 		Section s = findSection(d, idSect);
 		if (s == null)
 			throw new IGDocumentException("Unknown Section");
@@ -873,6 +917,7 @@ public class IGDocumentController extends CommonController {
 		s.merge(section);
 		igDocumentService.save(d);
 		return true;
+		}
 	}
 
 	@RequestMapping(value = "/{id}/section/{sectionId}/delete", method = RequestMethod.POST)
@@ -911,6 +956,7 @@ public class IGDocumentController extends CommonController {
 	}
 
 	private Section findSection(IGDocument document, String sectionId) {
+		
 		for (Section section : document.getChildSections()) {
 			Section s = findSection(section, sectionId);
 			if (s != null) {

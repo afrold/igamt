@@ -15,7 +15,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			$scope.datatypeDisplay	= [];
 	        $scope.selectedChildren = [];
 	        $scope.datatypesMap = [];
-   $scope.viewSettings = ViewSettings;
+	        $scope.viewSettings = ViewSettings;
       $scope.editView = null;
       $scope.datatypeListView = null;
       $scope.added = [];

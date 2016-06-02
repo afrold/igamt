@@ -131,7 +131,7 @@ angular.module('igl').factory('SegmentService',
                 return delay.promise;
             },
             getSegmentLink: function (segment) {
-                return {id: segment.id, ext: null, name: segment.name};
+                return {id: segment.id, ext: segment.ext, name: segment.name};
             },
             findByIds: function (ids) {
                 var delay = $q.defer();

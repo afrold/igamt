@@ -177,7 +177,7 @@ angular.module('igl').factory('DatatypeService',
                  return $http.get('api/datatypes/'+ datatype.id+ '/delete');
              },
             getDatatypeLink: function (datatype) {
-                return {id: datatype.id, ext: null, name: datatype.name};
+                return {id: datatype.id, ext: datatype.ext, name: datatype.name};
             },
             collectDatatypes: function (id) {
                 var delay = $q.defer();

@@ -15,6 +15,9 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService) 
     };
     svc.update = function (id, section) {
         var delay = $q.defer();
+        
+        console.log(section);
+        
         $http.post('api/igdocuments/'+ id+ '/section/update', section).then(function (response) {
             var saveResponse = angular.fromJson(response.data);
             delay.resolve(saveResponse);

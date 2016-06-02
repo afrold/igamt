@@ -292,7 +292,8 @@ module.exports = function(grunt) {
 						flow : {
 							html : {
 								steps : {
-									js : [ 'concat', 'uglifyjs' ],
+									js : [ 'concat' ],
+									//js : [ 'concat', 'uglifyjs' ],
 									css : [ 'cssmin' ]
 								},
 								post : {}
@@ -487,7 +488,7 @@ module.exports = function(grunt) {
 	                              'copy:dist', 
 	                              'cdnify', 
 	                              'cssmin', 
-	                              'uglify', 
+	                            //  'uglify', 
 	                              'filerev',
 	                              'usemin', 
 	                              'htmlmin' ]);

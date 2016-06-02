@@ -285,7 +285,7 @@ angular.module('igl')
             $scope.saving = true;
             var segment = $rootScope.segment;
             var ext = segment.ext;
-             if(segment.libIds === undefined) segment.libIds = [];
+            if(segment.libIds === undefined) segment.libIds = [];
             if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1) {
                 segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
             }
@@ -294,7 +294,6 @@ angular.module('igl')
                 if (oldLink != null) {
                     SegmentService.merge($rootScope.segmentsMap[result.id], result);
                     var newLink = SegmentService.getSegmentLink(result);
-                    newLink.ext = ext;
                     SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
@@ -319,7 +318,7 @@ angular.module('igl')
                         $rootScope.msg().show = true;
                      });
                 }
-                //TODO update Toc
+           
             }, function (error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;

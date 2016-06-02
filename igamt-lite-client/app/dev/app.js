@@ -342,6 +342,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             toolbarButtons:['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink','insertImage', 'insertFile'],
             imageUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
             charCounterCount: false,
+            immediateAngularModelUpdate:true,
             quickInsertTags: 8,
             events: {
                 'froalaEditor.initialized': function() {

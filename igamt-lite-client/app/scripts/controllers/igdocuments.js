@@ -7,7 +7,7 @@ angular.module('igl')
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
-
+        $rootScope.currentData = null;
         $scope.tmpIgs = [].concat($rootScope.igs);
         $scope.error = null;
         $scope.print = function (param) {
@@ -117,6 +117,7 @@ angular.module('igl')
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
+           
                 $scope.selectDatatype(datatype); // Should we open in a dialog ??
             });
 
@@ -145,9 +146,7 @@ angular.module('igl')
                 $scope.selectProfileMetaData(metaData); // Should we open in a dialog ??
             });
 
-            $rootScope.$on('event:SetToC', function (event) {
-                $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
-            });
+
 
             $rootScope.$on('event:IgsPushed', function (event, igdocument) {
 //                console.log("event:IgsPushed=" + igdocument)
@@ -345,13 +344,7 @@ angular.module('igl')
             }
         };
 
-        $scope.sortByLabels = function () {
-//
-//            //  $rootScope.igdocument.profile.messages.children = $filter('orderBy')($rootScope.igdocument.profile.messages.children, 'name');
-//            $rootScope.igdocument.profile.segmentLibrary.children = $filter('orderBy')($rootScope.igdocument.profile.segmentLibrary.children, 'name');
-//            $rootScope.igdocument.profile.datatypeLibrary.children = $filter('orderBy')($rootScope.igdocument.profile.datatypeLibrary.children, 'name');
-//            $rootScope.igdocument.profile.tableLibrary.children = $filter('orderBy')($rootScope.igdocument.profile.tableLibrary.children, 'name');
-        };
+
 
         $scope.loadIgDocumentMetaData = function () {
             if (!$rootScope.config || $rootScope.config === null) {
@@ -762,6 +755,7 @@ angular.module('igl')
                 $scope.loadingSelection = true;
                 SegmentService.get(segment.id).then(function (result) {
                     $rootScope.segment = angular.copy(segment);
+                    $rootScope.currentData = $rootScope.segment;
                     $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
                     $rootScope.segment["type"] = "segment";
                     $rootScope.tableWidth = null;
@@ -789,6 +783,7 @@ angular.module('igl')
             $scope.subview = "EditDocumentMetadata.html";
             $scope.loadingSelection = true;
             $rootScope.metaData = angular.copy($rootScope.igdocument.metaData);
+            $rootScope.currentData=$rootScope.igdocument;
             $timeout(
                 function () {
                     $scope.loadingSelection = false;
@@ -799,6 +794,7 @@ angular.module('igl')
         $scope.selectProfileMetaData = function () {
             $scope.subview = "EditProfileMetadata.html";
             $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
+            $rootScope.currentData=$rootScope.igdocument.profile;
             $scope.loadingSelection = true;
             $timeout(
                 function () {
@@ -813,6 +809,8 @@ angular.module('igl')
                 $scope.loadingSelection = true;
                 DatatypeService.getOne(datatype.id).then(function (result) {
                     $rootScope.datatype = angular.copy(result);
+                    $rootScope.currentData =datatype ;
+
                     $rootScope.datatype.ext = $rootScope.getDatatypeExtension($rootScope.datatype);
                     $scope.loadingSelection = false;
                     $rootScope.datatype["type"] = "datatype";
@@ -839,6 +837,7 @@ angular.module('igl')
             $scope.loadingSelection = true;
             $rootScope.originalMessage = message;
             $rootScope.message = angular.copy(message);
+            $rootScope.currentData= $rootScope.message;
             $rootScope.processMessageTree($rootScope.message);
             $timeout(
                 function () {
@@ -861,6 +860,7 @@ angular.module('igl')
             $timeout(
                 function () {
                     $rootScope.table = table;
+                    $rootScope.currentData = $rootScope.table;
                     $rootScope.codeSystems = [];
 
                     for (var i = 0; i < $rootScope.table.codes.length; i++) {
@@ -876,11 +876,16 @@ angular.module('igl')
         };
 
         $scope.selectSection = function (section) {
+        	if(section.sectionContents===null||section.sectionContents===undefined){
+        		section.sectionContents="";
+        		console.log(section);
+        	}
             $scope.subview = "EditSections.html";
             $scope.loadingSelection = true;
             $timeout(
                 function () {
                     $rootScope.section = angular.copy(section);
+                    $rootScope.currentData=$rootScope.section;
                     $rootScope.originalSection = section;
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
@@ -1096,7 +1101,7 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
         $scope.saving = true;
         $scope.saved = false;
         if ($rootScope.igdocument != null && $rootScope.metaData != null) {
-            ProfileSvc.save($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
+            ProfileSvc.saveMetaData($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
                 $scope.saving = false;
                 $scope.saved = true;
                 $rootScope.igdocument.profile.metaData = angular.copy($rootScope.metaData);

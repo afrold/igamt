@@ -129,6 +129,7 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		p.getMessages().setSectionPosition(0);
 		p.getMessages().setSectionTitle("Conformance Profiles");
 		p.getMessages().setType("messages");
+		p.getMessages().setSectionContents("");
 		
 		int messagePositionNum = 0;
 		for(Message m:p.getMessages().getChildren()){
@@ -139,15 +140,16 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		p.getSegmentLibrary().setSectionPosition(1);
 		p.getSegmentLibrary().setSectionTitle("Segments and Field Descriptions");
 		p.getSegmentLibrary().setType("segments");
-
+		p.getSegmentLibrary().setSectionContents("");
 		
 		p.getDatatypeLibrary().setSectionPosition(2);
 		p.getDatatypeLibrary().setSectionTitle("Datatypes");
 		p.getDatatypeLibrary().setType("datatypes");
-		
+		p.getDatatypeLibrary().setSectionContents("");
 		p.getTableLibrary().setSectionPosition(3);
 		p.getTableLibrary().setSectionTitle("Value Sets");
 		p.getTableLibrary().setType("tables");
+		p.getTableLibrary().setSectionContents("xsx");
 		this.setProfile(p);
 	}
 	
