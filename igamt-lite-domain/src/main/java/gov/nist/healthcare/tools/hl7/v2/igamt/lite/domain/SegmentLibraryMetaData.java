@@ -6,31 +6,31 @@ import java.util.UUID;
 
 public class SegmentLibraryMetaData extends MetaData {
 
-	private static final long serialVersionUID = 1L;
-	
-	private String segmentLibId = "";
-	
-	public SegmentLibraryMetaData() {
-		super();
-	}
+  private static final long serialVersionUID = 1L;
 
-	@Override
-	public SegmentLibraryMetaData clone() throws CloneNotSupportedException {
-		SegmentLibraryMetaData clonedProfileMetaData = new SegmentLibraryMetaData();
+  private String segmentLibId = "";
 
-		clonedProfileMetaData.setName(this.getName());
-		clonedProfileMetaData.setOrgName(this.getOrgName());
-		clonedProfileMetaData.setDate(Constant.mdy.format(new Date()));
-		clonedProfileMetaData.setVersion(this.getVersion());
-		clonedProfileMetaData.setSegmentLibId(UUID.randomUUID().toString());
-		return clonedProfileMetaData;
-	}
+  public SegmentLibraryMetaData() {
+    super();
+  }
 
-	public String getSegmentLibId() {
-		return segmentLibId;
-	}
+  @Override
+  public SegmentLibraryMetaData clone() throws CloneNotSupportedException {
+    SegmentLibraryMetaData clonedProfileMetaData = new SegmentLibraryMetaData();
 
-	public void setSegmentLibId(String segmentLibId) {
-		this.segmentLibId = segmentLibId;
-	}
+    clonedProfileMetaData.setName(this.getName());
+    clonedProfileMetaData.setOrgName(this.getOrgName());
+    clonedProfileMetaData.setDate(Constant.mdy.format(new Date()));
+    clonedProfileMetaData.setVersion(this.getVersion());
+    clonedProfileMetaData.setSegmentLibId(UUID.randomUUID().toString());
+    return clonedProfileMetaData;
+  }
+
+  public String getSegmentLibId() {
+    return segmentLibId;
+  }
+
+  public void setSegmentLibId(String segmentLibId) {
+    this.segmentLibId = segmentLibId;
+  }
 }

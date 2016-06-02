@@ -290,5 +290,11 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         var response = angular.fromJson(datatype);
         return [200, response, {}];
     });
+    $httpBackend.whenPOST('api/messages/save').respond(function (method, url, message, headers) {
+        var request = new XMLHttpRequest();
+        console.log('api/save begin=' + message);
+        var response = angular.fromJson(message);
+        return [200, response, {}];
+    });
 
 });

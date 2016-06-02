@@ -9,14 +9,14 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSFile;
 
 public interface FileStorageService {
-	
- 	
-	public GridFSFile store(InputStream inputStream, String fileName,
-			String contentType, DBObject metaData);
 
-	public GridFSDBFile findOne(String id);
 
-	public GridFSDBFile findOneByFilename(String filename);
+  public GridFSFile store(InputStream inputStream, String fileName, String contentType,
+      DBObject metaData);
 
-	public List findAll();
+  public GridFSDBFile findOne(String id);
+
+  public GridFSDBFile findOneByFilename(String filename);
+
+  public List findAll();
 }

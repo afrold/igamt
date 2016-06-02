@@ -1,12 +1,13 @@
 /**
- * This software was developed at the National Institute of Standards and Technology by employees
- * of the Federal Government in the course of their official duties. Pursuant to title 17 Section 105 of the
- * United States Code this software is not subject to copyright protection and is in the public domain.
- * This is an experimental system. NIST assumes no responsibility whatsoever for its use by other parties,
- * and makes no guarantees, expressed or implied, about its quality, reliability, or any other characteristic.
- * We would appreciate acknowledgement if the software is used. This software can be redistributed and/or
- * modified freely provided that any derivative works bear some notice that they are derived from it, and any
- * modified versions bear some notice that they have been modified.
+ * This software was developed at the National Institute of Standards and Technology by employees of
+ * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
+ * of the United States Code this software is not subject to copyright protection and is in the
+ * public domain. This is an experimental system. NIST assumes no responsibility whatsoever for its
+ * use by other parties, and makes no guarantees, expressed or implied, about its quality,
+ * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
+ * used. This software can be redistributed and/or modified freely provided that any derivative
+ * works bear some notice that they are derived from it, and any modified versions bear some notice
+ * that they have been modified.
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
@@ -45,194 +46,192 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContextUnit.class})
-public class IGExportTest {  
-	Logger logger = LoggerFactory.getLogger( IGExportTest.class ); 
+public class IGExportTest {
+  Logger logger = LoggerFactory.getLogger(IGExportTest.class);
 
-	@Autowired
-	IGDocumentServiceImpl igService;
+  @Autowired
+  IGDocumentServiceImpl igService;
 
-	@Autowired
-	IGDocumentExportService igExport;
+  @Autowired
+  IGDocumentExportService igExport;
 
-	@Autowired
-	private DatatypeService datatypeService;
+  @Autowired
+  private DatatypeService datatypeService;
 
-	@Autowired
-	private SegmentService segmentService;
+  @Autowired
+  private SegmentService segmentService;
 
-	@Autowired
-	private TableService tableService;
-	
-	List<IGDocument> igs;
-	IGDocument ig;
-	Profile p;
-	InputStream content = null;
-	File tmpFile = null;
-	String timeStamp = null;
+  @Autowired
+  private TableService tableService;
 
-	@Before
-	public void setUp() throws Exception {
-	}
+  List<IGDocument> igs;
+  IGDocument ig;
+  Profile p;
+  InputStream content = null;
+  File tmpFile = null;
+  String timeStamp = null;
 
-	@After
-	public void tearDown() throws Exception {
-	}
+  @Before
+  public void setUp() throws Exception {}
 
-	@Rule
-	public TestWatcher testWatcher = new TestWatcher() {
-		protected void failed(Throwable e, Description description) {
-			logger.debug(description.getDisplayName() + " failed " + e.getMessage());
-			super.failed(e, description);
-		}
-	};
+  @After
+  public void tearDown() throws Exception {}
 
-	
-
-	@Test
-	public void testCallService() {
-		assertNotNull(datatypeService);
-		assertNotNull(segmentService);
-		assertNotNull(tableService);
-		assertNotNull(datatypeService.findAll().size());
-		assertNotNull(segmentService.findAll().size());
-		assertNotNull(tableService.findAll().size());
-		
-	}	
-
-	@Test
-	public void testCallIGExportDocx() {
-		try {
-//			igs = igService.findAll();
-//			ig = igs.get(0);
-			ig = igService.findOne("573245a43004dc332131d418");
-//			ig = igService.findOne("56b4b811d4c6f591953e7b7a");
-
-			content = igExport.exportAsDocx(ig);
-			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("IG_"+timeStamp+".docx");
-			logger.debug("Writing to file");
-			FileUtils.copyInputStreamToFile(content, tmpFile);
-			logger.debug("Export done");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void testCallDTLExportDocx() {
-		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
-
-			content = igExport.exportAsDocxDatatypes(ig);
-			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("DTL_"+timeStamp+".docx");
-			logger.debug("Writing to file");
-			FileUtils.copyInputStreamToFile(content, tmpFile);
-			logger.debug("Export done");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void testCallDTLExportHtml() {
-		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
-
-			content = igExport.exportAsHtmlDatatypes(ig);
-			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("DTL_"+timeStamp+".html");
-			logger.debug("Writing to file");
-			FileUtils.copyInputStreamToFile(content, tmpFile);
-			logger.debug("Export done");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void testCallDTExportHtml() {
-		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
-			Datatype d = (Datatype) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
-
-			content = igExport.exportAsHtmlDatatype(d, ig);
-			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("DT_"+timeStamp+".html");
-			logger.debug("Writing to file");
-			FileUtils.copyInputStreamToFile(content, tmpFile);
-			logger.debug("Export done");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void testCallDTExportDocx() {
-		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
-			Datatype d = (Datatype) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
-
-			content = igExport.exportAsDocxDatatype(d, ig);
-			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("DT_"+timeStamp+".docx");
-			logger.debug("Writing to file");
-			FileUtils.copyInputStreamToFile(content, tmpFile);
-			logger.debug("Export done");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+  @Rule
+  public TestWatcher testWatcher = new TestWatcher() {
+    protected void failed(Throwable e, Description description) {
+      logger.debug(description.getDisplayName() + " failed " + e.getMessage());
+      super.failed(e, description);
+    }
+  };
 
 
-	@Test
-	public void testCallIGExportPdf() {
-		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
-//			ig = igService.findOne("573245a43004dc332131d418");
 
-			content = igExport.exportAsPdf(ig);
-			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("IG_"+timeStamp+".pdf");
-			logger.debug("Writing to file");
-			FileUtils.copyInputStreamToFile(content, tmpFile);
-			logger.debug("Export done");
+  @Test
+  public void testCallService() {
+    assertNotNull(datatypeService);
+    assertNotNull(segmentService);
+    assertNotNull(tableService);
+    assertNotNull(datatypeService.findAll().size());
+    assertNotNull(segmentService.findAll().size());
+    assertNotNull(tableService.findAll().size());
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+  }
 
-	@Test
-	public void testCallIGExportHtml() {
+  @Test
+  public void testCallIGExportDocx() {
+    try {
+      // igs = igService.findAll();
+      // ig = igs.get(0);
+      ig = igService.findOne("573245a43004dc332131d418");
+      // ig = igService.findOne("56b4b811d4c6f591953e7b7a");
 
-		try {
-			igs = igService.findAll();
-			ig = igs.get(0);
+      content = igExport.exportAsDocx(ig);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("IG_" + timeStamp + ".docx");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
-//			content = igExport.exportAsHtml(ig);
-			content = igExport.exportAsXml(ig);
-			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("IG_"+timeStamp+".xml");
-			logger.debug("Writing to file");
-			FileUtils.copyInputStreamToFile(content, tmpFile);
-			logger.debug("Export done");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+  @Test
+  public void testCallDTLExportDocx() {
+    try {
+      igs = igService.findAll();
+      ig = igs.get(0);
 
-	}
+      content = igExport.exportAsDocxDatatypes(ig);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("DTL_" + timeStamp + ".docx");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testCallDTLExportHtml() {
+    try {
+      igs = igService.findAll();
+      ig = igs.get(0);
+
+      content = igExport.exportAsHtmlDatatypes(ig);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("DTL_" + timeStamp + ".html");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testCallDTExportHtml() {
+    try {
+      igs = igService.findAll();
+      ig = igs.get(0);
+      Datatype d = (Datatype) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
+
+      content = igExport.exportAsHtmlDatatype(d, ig);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("DT_" + timeStamp + ".html");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testCallDTExportDocx() {
+    try {
+      igs = igService.findAll();
+      ig = igs.get(0);
+      Datatype d = (Datatype) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
+
+      content = igExport.exportAsDocxDatatype(d, ig);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("DT_" + timeStamp + ".docx");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+
+  @Test
+  public void testCallIGExportPdf() {
+    try {
+      igs = igService.findAll();
+      ig = igs.get(0);
+      // ig = igService.findOne("573245a43004dc332131d418");
+
+      content = igExport.exportAsPdf(ig);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("IG_" + timeStamp + ".pdf");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testCallIGExportHtml() {
+
+    try {
+      igs = igService.findAll();
+      ig = igs.get(0);
+
+      // content = igExport.exportAsHtml(ig);
+      content = igExport.exportAsXml(ig);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("IG_" + timeStamp + ".xml");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+  }
 
 }

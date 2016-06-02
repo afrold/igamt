@@ -47,208 +47,204 @@ import org.xml.sax.SAXException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContextUnit.class})
 public class SerializationTest {
-	Logger logger = LoggerFactory.getLogger( SerializationTest.class );
+  Logger logger = LoggerFactory.getLogger(SerializationTest.class);
 
-	@Autowired
-	ProfileRepository profileRepository;
+  @Autowired
+  ProfileRepository profileRepository;
 
-	@Autowired
-	ProfileService profileService;
+  @Autowired
+  ProfileService profileService;
 
-	@Autowired
-	ProfileExportService profileExport;
+  @Autowired
+  ProfileExportService profileExport;
 
-	@SuppressWarnings("unused")
-	private Datatype getDatatype(String key, DatatypeLibrary datatypes) {
-		for (Datatype dt : datatypes.getChildren()) {
-			if (dt.getLabel().equals(key)) {
-				return dt;
-			}
-		}
-		return null;
-	}
+  @SuppressWarnings("unused")
+  private Datatype getDatatype(String key, DatatypeLibrary datatypes) {
+    for (Datatype dt : datatypes.getChildren()) {
+      if (dt.getLabel().equals(key)) {
+        return dt;
+      }
+    }
+    return null;
+  }
 
-	@Ignore
-	@Test
-	public void testSerialization() throws IOException {
-		// ProfileSerializationImpl ProfileSerializationImpl = new
-		// ProfileSerializationImpl();
-		// TableSerializationImpl TableSerializationImpl = new
-		// TableSerializationImpl();
-		// ConstraintsSerializationImpl constraintsSerializationImpl = new
-		// ConstraintsSerializationImpl();
-		//
-		String p = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/vxuTest/Profile.xml"));
-		String v = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/vxuTest/ValueSets_all.xml"));
-		String c = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/vxuTest/Constraints.xml"));
-		Profile profile = new ProfileSerializationImpl()
-		.deserializeXMLToProfile(p, v, c);
+  @Ignore
+  @Test
+  public void testSerialization() throws IOException {
+    // ProfileSerializationImpl ProfileSerializationImpl = new
+    // ProfileSerializationImpl();
+    // TableSerializationImpl TableSerializationImpl = new
+    // TableSerializationImpl();
+    // ConstraintsSerializationImpl constraintsSerializationImpl = new
+    // ConstraintsSerializationImpl();
+    //
+    String p = IOUtils.toString(this.getClass().getResourceAsStream("/vxuTest/Profile.xml"));
+    String v = IOUtils.toString(this.getClass().getResourceAsStream("/vxuTest/ValueSets_all.xml"));
+    String c = IOUtils.toString(this.getClass().getResourceAsStream("/vxuTest/Constraints.xml"));
+    Profile profile = new ProfileSerializationImpl().deserializeXMLToProfile(p, v, c);
 
-		Set<Datatype> datatypeSet = new HashSet<Datatype>();
-		collectDatatype(profile, datatypeSet, profile.getDatatypeLibrary());
-		assertEquals(profile.getDatatypeLibrary().getChildren().size(),
-				datatypeSet.size());
+    Set<Datatype> datatypeSet = new HashSet<Datatype>();
+    collectDatatype(profile, datatypeSet, profile.getDatatypeLibrary());
+    assertEquals(profile.getDatatypeLibrary().getChildren().size(), datatypeSet.size());
 
-		// assertEquals(4, profile.getPredicates().getSegmentLibrary()
-		// .getByNameOrByIDs().size());
-		// assertEquals(15, profile.getConformanceStatements().getDatatypeLibrary()
-		// .getByNameOrByIDs().size());
-		// assertEquals(5, profile.getConformanceStatements().getSegmentLibrary()
-		// .getByNameOrByIDs().size());
-		// assertEquals(1, profile.getMessages().getMessages().size());
-	}
+    // assertEquals(4, profile.getPredicates().getSegmentLibrary()
+    // .getByNameOrByIDs().size());
+    // assertEquals(15, profile.getConformanceStatements().getDatatypeLibrary()
+    // .getByNameOrByIDs().size());
+    // assertEquals(5, profile.getConformanceStatements().getSegmentLibrary()
+    // .getByNameOrByIDs().size());
+    // assertEquals(1, profile.getMessages().getMessages().size());
+  }
 
-	private void collectDatatype(Profile p, Set<Datatype> set,
-			DatatypeLibrary datatypes) {
-		for (Segment s : p.getSegmentLibrary().getChildren()) {
-			for (Field f : s.getFields()) {
-				Datatype d = datatypes.findOne(f.getDatatype());
-				collectDatatype(d, set, datatypes);
-			}
-		}
-	}
+  private void collectDatatype(Profile p, Set<Datatype> set, DatatypeLibrary datatypes) {
+    for (Segment s : p.getSegmentLibrary().getChildren()) {
+      for (Field f : s.getFields()) {
+        Datatype d = datatypes.findOne(f.getDatatype());
+        collectDatatype(d, set, datatypes);
+      }
+    }
+  }
 
-	private void collectDatatype(Datatype d, Set<Datatype> set,
-			DatatypeLibrary datatypes) {
-		if (!set.contains(d)) {
-			set.add(d);
-		}
-		if (d.getComponents() != null) {
-			for (Component c : d.getComponents()) {
-				Datatype datatype = datatypes.findOne(c.getDatatype());
-				collectDatatype(datatype, set, datatypes);
-			}
-		}
-	}
+  private void collectDatatype(Datatype d, Set<Datatype> set, DatatypeLibrary datatypes) {
+    if (!set.contains(d)) {
+      set.add(d);
+    }
+    if (d.getComponents() != null) {
+      for (Component c : d.getComponents()) {
+        Datatype datatype = datatypes.findOne(c.getDatatype());
+        collectDatatype(datatype, set, datatypes);
+      }
+    }
+  }
 
-	@Test
-	public void testSerializationProfileToXML() throws IOException {
-		// Sax exception catches different kind of errors but knowing that our file is present and well formed, we'll catch mishaps with the serializer
+  @Test
+  public void testSerializationProfileToXML() throws IOException {
+    // Sax exception catches different kind of errors but knowing that our file is present and well
+    // formed, we'll catch mishaps with the serializer
 
-		int pIndex = ThreadLocalRandom.current().nextInt(0, (int)profileRepository.count());
-		Profile p = profileRepository.findAll().get(pIndex);
-		ProfileSerializationImpl profileSerializationImpl = new
-				ProfileSerializationImpl();
-		String pS = profileSerializationImpl.serializeProfileToXML(p);
+    int pIndex = ThreadLocalRandom.current().nextInt(0, (int) profileRepository.count());
+    Profile p = profileRepository.findAll().get(pIndex);
+    ProfileSerializationImpl profileSerializationImpl = new ProfileSerializationImpl();
+    String pS = profileSerializationImpl.serializeProfileToXML(p);
 
-		try {
-			// parse an XML document into a DOM tree
-			DocumentBuilderFactory parserFactory = DocumentBuilderFactory.newInstance();
-			parserFactory.setNamespaceAware(true);
-			DocumentBuilder parser = parserFactory.newDocumentBuilder();
+    try {
+      // parse an XML document into a DOM tree
+      DocumentBuilderFactory parserFactory = DocumentBuilderFactory.newInstance();
+      parserFactory.setNamespaceAware(true);
+      DocumentBuilder parser = parserFactory.newDocumentBuilder();
 
-			//		Document document = profileSerializationImpl.serializeProfileToDoc(p);
-			//			Document document = (Document) parser.parse(this.getClass().getClassLoader().getResource(
-			//					"profilesAdtTest/Profile.xml").openStream());
+      // Document document = profileSerializationImpl.serializeProfileToDoc(p);
+      // Document document = (Document) parser.parse(this.getClass().getClassLoader().getResource(
+      // "profilesAdtTest/Profile.xml").openStream());
 
-			Document document = (Document) parser.parse(IOUtils.toInputStream(pS));
+      Document document = (Document) parser.parse(IOUtils.toInputStream(pS));
 
-			// create a SchemaFactory capable of understanding WXS schemas and load schema 
-			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Source schemaFile = new StreamSource(this.getClass().getClassLoader().getResource(
-					"profilesSchema/Profile.xsd").openStream());
+      // create a SchemaFactory capable of understanding WXS schemas and load schema
+      SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+      Source schemaFile =
+          new StreamSource(this.getClass().getClassLoader()
+              .getResource("profilesSchema/Profile.xsd").openStream());
 
-			Schema schema = factory.newSchema(schemaFile);
-			Validator validator = schema.newValidator();
+      Schema schema = factory.newSchema(schemaFile);
+      Validator validator = schema.newValidator();
 
-			// validate the DOM tree; if document is invalid, SAXException is raised
-			validator.validate(new DOMSource((Node) document));
-		} catch (SAXException e) {
-			// Instance document is invalid!
-			e.printStackTrace();
-			fail("Instance document is invalid!");
-		} catch (ParserConfigurationException e1) {
-			logger.debug("Parser configuration error!");
-			e1.printStackTrace();
-		}
-	}
+      // validate the DOM tree; if document is invalid, SAXException is raised
+      validator.validate(new DOMSource((Node) document));
+    } catch (SAXException e) {
+      // Instance document is invalid!
+      e.printStackTrace();
+      fail("Instance document is invalid!");
+    } catch (ParserConfigurationException e1) {
+      logger.debug("Parser configuration error!");
+      e1.printStackTrace();
+    }
+  }
 
-	@Test
-	public void testSerializationValueSetToXML() throws IOException {
-		// Sax exception catches different kind of errors but knowing that our file is present and well formed, we'll catch mishaps with the serializer
+  @Test
+  public void testSerializationValueSetToXML() throws IOException {
+    // Sax exception catches different kind of errors but knowing that our file is present and well
+    // formed, we'll catch mishaps with the serializer
 
-		int pIndex = ThreadLocalRandom.current().nextInt(0, (int)profileRepository.count());
-		Profile p = profileRepository.findAll().get(pIndex);
+    int pIndex = ThreadLocalRandom.current().nextInt(0, (int) profileRepository.count());
+    Profile p = profileRepository.findAll().get(pIndex);
 
-		TableSerializationImpl tableSerializationImpl = new
-				TableSerializationImpl();
-		String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTableLibrary());
+    TableSerializationImpl tableSerializationImpl = new TableSerializationImpl();
+    String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTableLibrary());
 
-		try {
-			// parse an XML document into a DOM tree
-			DocumentBuilderFactory parserFactory = DocumentBuilderFactory.newInstance();
-			parserFactory.setNamespaceAware(true);
-			DocumentBuilder parser = parserFactory.newDocumentBuilder();
+    try {
+      // parse an XML document into a DOM tree
+      DocumentBuilderFactory parserFactory = DocumentBuilderFactory.newInstance();
+      parserFactory.setNamespaceAware(true);
+      DocumentBuilder parser = parserFactory.newDocumentBuilder();
 
-			Document document = (Document) parser.parse(IOUtils.toInputStream(tS));
+      Document document = (Document) parser.parse(IOUtils.toInputStream(tS));
 
-			// create a SchemaFactory capable of understanding WXS schemas and load schema 
-			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Source schemaFile = new StreamSource(this.getClass().getClassLoader().getResource(
-					"profilesSchema/ValueSets.xsd").openStream());
+      // create a SchemaFactory capable of understanding WXS schemas and load schema
+      SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+      Source schemaFile =
+          new StreamSource(this.getClass().getClassLoader()
+              .getResource("profilesSchema/ValueSets.xsd").openStream());
 
-			Schema schema = factory.newSchema(schemaFile);
-			Validator validator = schema.newValidator();
+      Schema schema = factory.newSchema(schemaFile);
+      Validator validator = schema.newValidator();
 
-			// validate the DOM tree; if document is invalid, SAXException is raised
-			validator.validate(new DOMSource((Node) document));
-		} catch (SAXException e) {
-			// Instance document is invalid!
-			e.printStackTrace();
-			fail("Instance document is invalid!");
-		} catch (ParserConfigurationException e1) {
-			logger.debug("Parser configuration error!");
-			e1.printStackTrace();
-		}
-	}
+      // validate the DOM tree; if document is invalid, SAXException is raised
+      validator.validate(new DOMSource((Node) document));
+    } catch (SAXException e) {
+      // Instance document is invalid!
+      e.printStackTrace();
+      fail("Instance document is invalid!");
+    } catch (ParserConfigurationException e1) {
+      logger.debug("Parser configuration error!");
+      e1.printStackTrace();
+    }
+  }
 
 
-	@Test
-	public void testSerializationConstraintsToXML() throws IOException {
-		// Sax exception catches different kind of errors but knowing that our file is present and well formed, we'll catch mishaps with the serializer
+  @Test
+  public void testSerializationConstraintsToXML() throws IOException {
+    // Sax exception catches different kind of errors but knowing that our file is present and well
+    // formed, we'll catch mishaps with the serializer
 
-		int pIndex = ThreadLocalRandom.current().nextInt(0, (int)profileRepository.count());
-		Profile p = profileRepository.findAll().get(pIndex);
+    int pIndex = ThreadLocalRandom.current().nextInt(0, (int) profileRepository.count());
+    Profile p = profileRepository.findAll().get(pIndex);
 
-		ConstraintsSerializationImpl constraintsSerializationImpl = new
-				ConstraintsSerializationImpl();
-		String cS = constraintsSerializationImpl.serializeConstraintsToXML(p);
+    ConstraintsSerializationImpl constraintsSerializationImpl = new ConstraintsSerializationImpl();
+    String cS = constraintsSerializationImpl.serializeConstraintsToXML(p);
 
-		try {
-			// parse an XML document into a DOM tree
-			DocumentBuilderFactory parserFactory = DocumentBuilderFactory.newInstance();
-			parserFactory.setNamespaceAware(true);
-			DocumentBuilder parser = parserFactory.newDocumentBuilder();
+    try {
+      // parse an XML document into a DOM tree
+      DocumentBuilderFactory parserFactory = DocumentBuilderFactory.newInstance();
+      parserFactory.setNamespaceAware(true);
+      DocumentBuilder parser = parserFactory.newDocumentBuilder();
 
-			Document document = (Document) parser.parse(IOUtils.toInputStream(cS));
+      Document document = (Document) parser.parse(IOUtils.toInputStream(cS));
 
-			// create a SchemaFactory capable of understanding WXS schemas and load schema 
-			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Source schemaFile = new StreamSource(this.getClass().getClassLoader().getResource(
-					"profilesSchema/ConformanceContext.xsd").openStream());
+      // create a SchemaFactory capable of understanding WXS schemas and load schema
+      SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+      Source schemaFile =
+          new StreamSource(this.getClass().getClassLoader()
+              .getResource("profilesSchema/ConformanceContext.xsd").openStream());
 
-			Schema schema = factory.newSchema(schemaFile);
-			Validator validator = schema.newValidator();
+      Schema schema = factory.newSchema(schemaFile);
+      Validator validator = schema.newValidator();
 
-			// validate the DOM tree; if document is invalid, SAXException is raised
-			validator.validate(new DOMSource((Node) document));
-		} catch (SAXException e) {
-			// Instance document is invalid!
-			e.printStackTrace();
-			fail("Instance document is invalid!");
-		} catch (ParserConfigurationException e1) {
-			logger.debug("Parser configuration error!");
-			e1.printStackTrace();
-		}
-	}
+      // validate the DOM tree; if document is invalid, SAXException is raised
+      validator.validate(new DOMSource((Node) document));
+    } catch (SAXException e) {
+      // Instance document is invalid!
+      e.printStackTrace();
+      fail("Instance document is invalid!");
+    } catch (ParserConfigurationException e1) {
+      logger.debug("Parser configuration error!");
+      e1.printStackTrace();
+    }
+  }
 
-	@Ignore("Not yet implemented")
-	@Test
-	public void testDeserializationXMLToProfile() throws IOException {
-		//TODO
-		assertTrue(false);
-	}	
+  @Ignore("Not yet implemented")
+  @Test
+  public void testDeserializationXMLToProfile() throws IOException {
+    // TODO
+    assertTrue(false);
+  }
 }

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class IGDocumentClone {
-	public IGDocument clone(IGDocument original) throws CloneNotSupportedException {
-		return original.clone();
+  public IGDocument clone(IGDocument original) throws CloneNotSupportedException {
+    return original.clone();
 
-	}
+  }
 }

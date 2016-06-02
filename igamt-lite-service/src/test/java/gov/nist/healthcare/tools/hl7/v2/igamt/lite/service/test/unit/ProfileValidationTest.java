@@ -40,70 +40,72 @@ import com.mongodb.util.JSON;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContextUnit.class})
 public class ProfileValidationTest {
-	Logger logger = LoggerFactory.getLogger( ProfileValidationTest.class );
+  Logger logger = LoggerFactory.getLogger(ProfileValidationTest.class);
 
-	@Autowired
-	private Environment env;
+  @Autowired
+  private Environment env;
 
-	@Resource
-	ApplicationContext ctx;
-	
-	@Autowired
-	ProfileRepository profileRepository;
+  @Resource
+  ApplicationContext ctx;
 
-	@Autowired
-	ProfileValidationService profileValidation;
-	
-	String referenceProfile = "561c7ffbef869a3dfafccc4a";
+  @Autowired
+  ProfileRepository profileRepository;
+
+  @Autowired
+  ProfileValidationService profileValidation;
+
+  String referenceProfile = "561c7ffbef869a3dfafccc4a";
 
 
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
+  @Rule
+  public final ExpectedException exception = ExpectedException.none();
 
-	@Before
-	public void setUp() throws Exception {
-		try {
-			Properties p = new Properties();
-			InputStream log4jFile = ProfileVerificationTest.class
-					.getResourceAsStream("/igl-test-log4j.properties");
-			p.load(log4jFile);
-			PropertyConfigurator.configure(p);
+  @Before
+  public void setUp() throws Exception {
+    try {
+      Properties p = new Properties();
+      InputStream log4jFile =
+          ProfileVerificationTest.class.getResourceAsStream("/igl-test-log4j.properties");
+      p.load(log4jFile);
+      PropertyConfigurator.configure(p);
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
-		MongoClient mongo = (MongoClient)ctx.getBean("mongo");
-		DB db = mongo.getDB(env.getProperty("mongo.dbname"));
-		DBCollection collection = db.getCollection("profile");
+    MongoClient mongo = (MongoClient) ctx.getBean("mongo");
+    DB db = mongo.getDB(env.getProperty("mongo.dbname"));
+    DBCollection collection = db.getCollection("profile");
 
-		if (profileRepository.findOne(referenceProfile) == null){
+    if (profileRepository.findOne(referenceProfile) == null) {
 
-			String profileJson = IOUtils.toString(this.getClass().getClassLoader().getResource("profileUserTest/profile_test.json"));
-			DBObject dbObject = (DBObject) JSON.parse(profileJson);
-			collection.save(dbObject);
-		}
+      String profileJson =
+          IOUtils.toString(this.getClass().getClassLoader()
+              .getResource("profileUserTest/profile_test.json"));
+      DBObject dbObject = (DBObject) JSON.parse(profileJson);
+      collection.save(dbObject);
+    }
 
-	}
+  }
 
-	@After
-	public void tearDown() throws Exception {
-		//		profileRepository.delete(profileRepository.findOne(referenceProfile));
-	}
-	
-	@Test
-	public void testValidateProfile() {
-		
-		int pIndex = ThreadLocalRandom.current().nextInt(0, (int)profileRepository.count());
-		Profile p = profileRepository.findAll().get(pIndex);
-		
-		p = profileRepository.findOne(referenceProfile);
-		
-		try {
-			profileValidation.validate(p);
-			fail();
-		} catch (ProfileValidationException e) {
-			assertTrue(e.getMessage().contains("invalid"));
-		} 
-	}	
+  @After
+  public void tearDown() throws Exception {
+    // profileRepository.delete(profileRepository.findOne(referenceProfile));
+  }
+
+  @Test
+  public void testValidateProfile() {
+
+    int pIndex = ThreadLocalRandom.current().nextInt(0, (int) profileRepository.count());
+    Profile p = profileRepository.findAll().get(pIndex);
+
+    p = profileRepository.findOne(referenceProfile);
+
+    try {
+      profileValidation.validate(p);
+      fail();
+    } catch (ProfileValidationException e) {
+      assertTrue(e.getMessage().contains("invalid"));
+    }
+  }
 }

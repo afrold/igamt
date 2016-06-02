@@ -4,10 +4,10 @@ import java.util.Comparator;
 
 public class PositionComparator implements Comparator<Section> {
 
-	@Override
-	public int compare(Section o1, Section o2) {
-		// TODO Auto-generated method stub
-		return o1.getPosition()-o2.getPosition();
-	}
+  @Override
+  public int compare(Section o1, Section o2) {
+    // TODO Auto-generated method stub
+    return o1.getPosition() - o2.getPosition();
+  }
 
 }

@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 public class TableRepositoryImpl implements TableOperations {
@@ -51,6 +53,14 @@ public class TableRepositoryImpl implements TableOperations {
 			Query qry = Query.query(where);
 			qry.fields().include("bindingIdentifier");
 			List<Table> tables = mongo.find(qry, Table.class);
+			return tables;
+		} 
+		
+		@Override
+		public List<Table> findUserTablesByIds(Set<String> ids) {
+			Criteria where = Criteria.where("id").in(ids).andOperator(Criteria.where("scope").is(SCOPE.USER.toString()));
+			Query qry = Query.query(where);
+ 			List<Table> tables = mongo.find(qry, Table.class);
 			return tables;
 		}
 }

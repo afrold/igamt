@@ -18,45 +18,44 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/messages")
 public class MessageController extends CommonController {
-	static final Logger logger = LoggerFactory
-			.getLogger(MessageController.class);
-	Logger log = LoggerFactory.getLogger(MessageController.class);
+  static final Logger logger = LoggerFactory.getLogger(MessageController.class);
+  Logger log = LoggerFactory.getLogger(MessageController.class);
 
-	@Autowired
-	private MessageService messageService;
+  @Autowired
+  private MessageService messageService;
 
-	@Autowired
-	UserService userService;
+  @Autowired
+  UserService userService;
 
-	@Autowired
-	AccountRepository accountRepository;
+  @Autowired
+  AccountRepository accountRepository;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-	public Message getMessageById(@PathVariable("id") String id) {
-		log.info("Fetching messageById..." + id);
-		Message result = messageService.findById(id);
-		return result;
-	}
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+  public Message getMessageById(@PathVariable("id") String id) {
+    log.info("Fetching messageById..." + id);
+    Message result = messageService.findById(id);
+    return result;
+  }
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public Message save(@RequestBody Message message) {
-		log.debug("message=" + message);
-		log.debug("message.getId()=" + message.getId());
-		log.info("Saving the " + message.getScope() + " message.");
-		message.setDate(DateUtils.getCurrentTime());
-		Message saved = messageService.save(message);
-		log.debug("saved.getId()=" + saved.getId());
-		log.debug("saved.getScope()=" + saved.getScope());
-		return message;
+  @RequestMapping(value = "/save", method = RequestMethod.POST)
+  public Message save(@RequestBody Message message) {
+    log.debug("message=" + message);
+    log.debug("message.getId()=" + message.getId());
+    log.info("Saving the " + message.getScope() + " message.");
+    message.setDate(DateUtils.getCurrentTime());
+    Message saved = messageService.save(message);
+    log.debug("saved.getId()=" + saved.getId());
+    log.debug("saved.getScope()=" + saved.getScope());
+    return message;
 
-	}
+  }
 
-	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
-	public boolean save(@PathVariable("id") String messageId) {
-		log.info("Deleting message " + messageId);
-		messageService.delete(messageId);
-		// TODO:
-		return true;
-	}
+  @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
+  public boolean save(@PathVariable("id") String messageId) {
+    log.info("Deleting message " + messageId);
+    messageService.delete(messageId);
+    // TODO:
+    return true;
+  }
 
 }

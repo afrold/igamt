@@ -177,7 +177,7 @@ angular
             $scope.updateMessagePositions = function (arr) {
 
 
-                if (arr !== undefined) {
+                if (arr !== undefined && arr != null) {
                     for (var i = 0; i <= arr.length - 1; i++) {
                         arr[i].position = i + 1;
                     }
@@ -703,6 +703,8 @@ angular
             function processEditMessage(message) {
                 $scope.Activate(message.id);
                 $rootScope.message = message;
+                console.log("three");
+                console.log(message);
                 $scope.$emit('event:openMessage', message);
             };
 

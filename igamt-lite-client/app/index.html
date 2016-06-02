@@ -43,9 +43,9 @@
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/quick_insert.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/table.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/plugins/video.min.css" />
-    <link rel="stylesheet" href="bower_components/ng-notifications-bar/dist/ngNotificationsBar.min.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.css" />
     <link rel="stylesheet" href="bower_components/angular-block-ui/dist/angular-block-ui.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-notification/dist/angular-ui-notification.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -78,7 +78,6 @@
     </script>
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit block-ui="main">
-<notifications-bar class="notifications" closeIcon="fa fa-times-circle"></notifications-bar>
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
@@ -178,14 +177,15 @@
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/url.min.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/plugins/video.min.js"></script>
     <script src="bower_components/angular-froala/src/angular-froala.js"></script>
-    <script src="bower_components/ng-notifications-bar/dist/ngNotificationsBar.min.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
     <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
     <script src="bower_components/angular-bootstrap-contextmenu/contextMenu.js"></script>
     <script src="bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
-    <script src="bower_components/angular-unsavedChanges/unsavedChanges.js"></script>
     <script src="bower_components/nsPopover/src/nsPopover.js"></script>
+
+    <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.js"></script>
+
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js scripts/modules.js -->

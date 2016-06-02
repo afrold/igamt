@@ -91,7 +91,18 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		Query qry = Query.query(where);
 		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
 		return datatypes;
+	} 
+	
+
+	@Override
+	public List<Datatype> findUserDatatypesByIds(Set<String> ids) {
+		Criteria where = Criteria.where("id").in(ids).andOperator(Criteria.where("scope").is(SCOPE.USER.toString()));
+		Query qry = Query.query(where);
+//		qry = set4Brevis(qry);
+		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
+		return datatypes;
 	}
+	
 
 //	Query set4Brevis(Query qry) {
 //		qry.fields().include("_id");

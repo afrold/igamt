@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProfileClone {
-	public Profile clone(Profile original) throws CloneNotSupportedException {
-		return original.clone();
+  public Profile clone(Profile original) throws CloneNotSupportedException {
+    return original.clone();
 
-	}
+  }
 }

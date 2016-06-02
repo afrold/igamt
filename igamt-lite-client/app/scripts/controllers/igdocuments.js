@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -323,7 +323,7 @@ angular.module('igl')
                         $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     }
                     //StorageService.setIgDocument($rootScope.igdocument);
-                    $rootScope.initMaps();
+                    $rootScope.initMaps(); 
                     $scope.loadSegments().then(function () {
                         $scope.loadDatatypes().then(function () {
                             $scope.loadTables().then(function () {
@@ -343,6 +343,7 @@ angular.module('igl')
                 }, 100);
             }
         };
+
 
 
 
@@ -945,10 +946,10 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function ($scope
         }, function (error) {
             $scope.error = error;
             $scope.loading = false;
-            $modalInstance.dismiss('cancel');
             $rootScope.msg().text = "igDeleteFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
+//            $modalInstance.dismiss('cancel');
 
 
 // waitingDialog.hide();

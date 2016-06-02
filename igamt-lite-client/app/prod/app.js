@@ -27,10 +27,11 @@ var app = angular
         'angularjs-dropdown-multiselect',
         'dndLists',
         'froala',
-        'ngNotificationsBar',
+        'ui-notification',
         'ngDragDrop',
         'ui.tree',
         'blockUI'
+        
      ]);
 
 var
@@ -49,7 +50,7 @@ var
 //the message to be shown to the user
 var msg = {};
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, notificationsConfigProvider,blockUIConfig) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, NotificationProvider,blockUIConfig) {
 
 
     $routeProvider
@@ -271,14 +272,13 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     IdleProvider.timeout(30);
     KeepaliveProvider.interval(60);
 
-    // auto hide
-    notificationsConfigProvider.setAutoHide(true);
 
-    // delay before hide
-    notificationsConfigProvider.setHideDelay(30000);
+    NotificationProvider.setOptions({
+        delay: 30000,
+        maxCount:1
+    });
 
-    // delay between animation and removing the nofitication
-    notificationsConfigProvider.setAutoHideAnimationDelay(1200);
+
 
     var spinnerStarter = function (data, headersGetter) {
         spinner = true;
@@ -297,7 +297,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 });
 
 
-app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http, AppInfo, StorageService, $templateCache, $window, notifications) {
+app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http, AppInfo, StorageService, $templateCache, $window, Notification) {
     $rootScope.appInfo = {};
     //Check if the login dialog is already displayed.
     $rootScope.loginDialogShown = false;
@@ -542,17 +542,16 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     };
 
     $rootScope.showNotification = function (m) {
-        if(m != undefined && m.show && m.text != null && m.text) {
+        if(m != undefined && m.show && m.text != null) {
             var msg = angular.copy(m);
             var message = $.i18n.prop(msg.text);
             var type = msg.type;
-            notifications.closeAll();
             if (type === "danger") {
-                notifications.showError({message: message});
+                Notification.error({message: message, templateUrl: "NotificationErrorTemplate.html", scope: $rootScope, delay:10000});
             } else if (type === 'warning') {
-                notifications.showWarning({message: message});
+                Notification.warning({message: message, templateUrl: "NotificationWarningTemplate.html", scope: $rootScope, delay:5000});
             } else if (type === 'success') {
-                notifications.showSuccess({message: message});
+                Notification.success({message: message, templateUrl: "NotificationSuccessTemplate.html", scope: $rootScope, delay:5000});
             }
             //reset
             m.text = null;

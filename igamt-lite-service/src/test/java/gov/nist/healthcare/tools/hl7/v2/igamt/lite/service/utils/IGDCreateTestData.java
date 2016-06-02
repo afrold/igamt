@@ -30,60 +30,68 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.Pers
 @ContextConfiguration(classes = {PersistenceContext.class})
 public class IGDCreateTestData {
 
-	private static final Logger log = LoggerFactory.getLogger(IGDCreateTestData.class);
+  private static final Logger log = LoggerFactory.getLogger(IGDCreateTestData.class);
 
-	public final static File OUTPUT_DIR = new File(System.getenv("IGAMT") + "/igDocuments");
+  public final static File OUTPUT_DIR = new File(System.getenv("IGAMT") + "/igDocuments");
 
-	@Autowired
-	IGDocumentCreationService create;
-	
-	public static final String hl7Version = "2.5.1";
-	public static final Long accountId = 45L;
-	
-	@BeforeClass
-	public static void beforeClass() {
-		if (!OUTPUT_DIR.exists()) {
-			OUTPUT_DIR.mkdir();
-		}		
-	}
+  @Autowired
+  IGDocumentCreationService create;
 
-	@Test
-	public void createMessageEventsData() {
-		try {
-			List<MessageEvents> msgEvts1 = create.summary(hl7Version);
-			IGDocument igDocumentTarget = create.createIntegratedIGDocument(msgEvts1, hl7Version, accountId);
-			
-			File outfile = new File(OUTPUT_DIR, "mes-" + "hl7Version" + "-" + igDocumentTarget.getScope().name() + "-" + igDocumentTarget.getMetaData().getVersion() + ".json"); 
-			Writer mesJson = new FileWriter(outfile);
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.writerWithDefaultPrettyPrinter().writeValue(mesJson, msgEvts1);
-		} catch (JsonGenerationException e) {
-			log.error("" , e);
-		} catch (JsonMappingException e) {
-			log.error("" , e);
-		} catch (IOException e) {
-			log.error("" , e);
-		} catch (IGDocumentException e) {
-			log.error("" , e);
-		}	}
-	
-//	@Test
-	public void createIntegratedIGDocumentData() {
-		try {
-			List<MessageEvents> msgEvts = new ArrayList<MessageEvents>();
-			IGDocument igDocumentTarget = create.createIntegratedIGDocument(msgEvts, hl7Version, accountId);
-			File outfile = new File(OUTPUT_DIR, "igdocument-" + "hl7Version" + ".5" + "-" + igDocumentTarget.getScope().name() + "-" + igDocumentTarget.getMetaData().getVersion() + ".json"); 
-			Writer igdocumentJson = new FileWriter(outfile);
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.writerWithDefaultPrettyPrinter().writeValue(igdocumentJson, igDocumentTarget);
-		} catch (JsonGenerationException e) {
-			log.error("" , e);
-		} catch (JsonMappingException e) {
-			log.error("" , e);
-		} catch (IOException e) {
-			log.error("" , e);
-		} catch (IGDocumentException e) {
-			log.error("" , e);
-		}
-	}
+  public static final String hl7Version = "2.5.1";
+  public static final Long accountId = 45L;
+
+  @BeforeClass
+  public static void beforeClass() {
+    if (!OUTPUT_DIR.exists()) {
+      OUTPUT_DIR.mkdir();
+    }
+  }
+
+  @Test
+  public void createMessageEventsData() {
+    try {
+      List<MessageEvents> msgEvts1 = create.summary(hl7Version);
+      IGDocument igDocumentTarget =
+          create.createIntegratedIGDocument(msgEvts1, hl7Version, accountId);
+
+      File outfile =
+          new File(OUTPUT_DIR, "mes-" + "hl7Version" + "-" + igDocumentTarget.getScope().name()
+              + "-" + igDocumentTarget.getMetaData().getVersion() + ".json");
+      Writer mesJson = new FileWriter(outfile);
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.writerWithDefaultPrettyPrinter().writeValue(mesJson, msgEvts1);
+    } catch (JsonGenerationException e) {
+      log.error("", e);
+    } catch (JsonMappingException e) {
+      log.error("", e);
+    } catch (IOException e) {
+      log.error("", e);
+    } catch (IGDocumentException e) {
+      log.error("", e);
+    }
+  }
+
+  // @Test
+  public void createIntegratedIGDocumentData() {
+    try {
+      List<MessageEvents> msgEvts = new ArrayList<MessageEvents>();
+      IGDocument igDocumentTarget =
+          create.createIntegratedIGDocument(msgEvts, hl7Version, accountId);
+      File outfile =
+          new File(OUTPUT_DIR, "igdocument-" + "hl7Version" + ".5" + "-"
+              + igDocumentTarget.getScope().name() + "-"
+              + igDocumentTarget.getMetaData().getVersion() + ".json");
+      Writer igdocumentJson = new FileWriter(outfile);
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.writerWithDefaultPrettyPrinter().writeValue(igdocumentJson, igDocumentTarget);
+    } catch (JsonGenerationException e) {
+      log.error("", e);
+    } catch (JsonMappingException e) {
+      log.error("", e);
+    } catch (IOException e) {
+      log.error("", e);
+    } catch (IGDocumentException e) {
+      log.error("", e);
+    }
+  }
 }

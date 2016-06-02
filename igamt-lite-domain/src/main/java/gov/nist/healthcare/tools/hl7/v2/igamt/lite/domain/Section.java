@@ -7,96 +7,97 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 
-public class Section extends TextbasedSectionModel implements java.io.Serializable,Cloneable, Comparable<Section>, WithPosition{
+public class Section extends TextbasedSectionModel implements java.io.Serializable, Cloneable,
+    Comparable<Section>, WithPosition {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	
-	public Section() {
-		super();
-		this.type = Constant.SECTION;
-		this.id = ObjectId.get().toString();
-	}
-	
-	public Section(String title) {
-		super();
-		this.type = Constant.SECTION;
-		this.id = ObjectId.get().toString();
-		this.sectionTitle = title;
-	}
-	
-	private String id;
-	
-	protected Set<Section> childSections = new HashSet<Section>();
+  private static final long serialVersionUID = 1L;
 
-	public String getId() {
-		return id;
-	}
+  public Section() {
+    super();
+    this.type = Constant.SECTION;
+    this.id = ObjectId.get().toString();
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public Set<Section> getChildSections() {
-		return childSections;
-	}
+  public Section(String title) {
+    super();
+    this.type = Constant.SECTION;
+    this.id = ObjectId.get().toString();
+    this.sectionTitle = title;
+  }
 
-	public void setChildSections(Set<Section> childSections) {
-		this.childSections = childSections;
-	}
-	
-	public void addSection(Section section){
-		section.setSectionPosition(this.childSections.size() + 1);
-		@SuppressWarnings("unchecked")
-		Set<Section> sections = (Set<Section>) this.childSections;
-		sections.add(section);
-		
-		this.setChildSections(sections);
-	}
-	
-	@Override
-	public Section clone() throws CloneNotSupportedException {
-		Section clonedSection = new Section();
-		
-		clonedSection.setSectionContents(this.sectionContents);
-		clonedSection.setSectionDescription(this.sectionDescription);
-		clonedSection.setSectionPosition(this.sectionPosition);
-		clonedSection.setSectionTitle(this.sectionTitle);
-		clonedSection.setChildSections(new HashSet<Section>());
-		
-		for(Object s:this.childSections){
-			clonedSection.addSection(((Section)s).clone());
-		}
-		
-		return clonedSection;
-	} 
-	
-	public void merge(Section from) {		
-		this.setSectionContents(from.sectionContents);
-		this.setSectionDescription(from.sectionDescription);
-		this.setSectionPosition(from.sectionPosition);
-		this.setSectionTitle(from.sectionTitle);
- 		this.setChildSections(from.getChildSections());	
- 	}
-	
-	
-	@Override
-	public int compareTo(Section o) {
-		return this.getSectionPosition() - o.getSectionPosition();
-	}
+  private String id;
 
-	@Override
-	public Integer getPosition() {
-		// TODO Auto-generated method stub
-		return this.getSectionPosition();
-	}
+  protected Set<Section> childSections = new HashSet<Section>();
 
-	@Override
-	public void setPosition(Integer position) {
-		this.sectionPosition=position;
-	
-	}
-	
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public Set<Section> getChildSections() {
+    return childSections;
+  }
+
+  public void setChildSections(Set<Section> childSections) {
+    this.childSections = childSections;
+  }
+
+  public void addSection(Section section) {
+    section.setSectionPosition(this.childSections.size() + 1);
+    @SuppressWarnings("unchecked")
+    Set<Section> sections = (Set<Section>) this.childSections;
+    sections.add(section);
+
+    this.setChildSections(sections);
+  }
+
+  @Override
+  public Section clone() throws CloneNotSupportedException {
+    Section clonedSection = new Section();
+
+    clonedSection.setSectionContents(this.sectionContents);
+    clonedSection.setSectionDescription(this.sectionDescription);
+    clonedSection.setSectionPosition(this.sectionPosition);
+    clonedSection.setSectionTitle(this.sectionTitle);
+    clonedSection.setChildSections(new HashSet<Section>());
+
+    for (Object s : this.childSections) {
+      clonedSection.addSection(((Section) s).clone());
+    }
+
+    return clonedSection;
+  }
+
+  public void merge(Section from) {
+    this.setSectionContents(from.sectionContents);
+    this.setSectionDescription(from.sectionDescription);
+    this.setSectionPosition(from.sectionPosition);
+    this.setSectionTitle(from.sectionTitle);
+    this.setChildSections(from.getChildSections());
+  }
+
+
+  @Override
+  public int compareTo(Section o) {
+    return this.getSectionPosition() - o.getSectionPosition();
+  }
+
+  @Override
+  public Integer getPosition() {
+    // TODO Auto-generated method stub
+    return this.getSectionPosition();
+  }
+
+  @Override
+  public void setPosition(Integer position) {
+    this.sectionPosition = position;
+
+  }
+
 }

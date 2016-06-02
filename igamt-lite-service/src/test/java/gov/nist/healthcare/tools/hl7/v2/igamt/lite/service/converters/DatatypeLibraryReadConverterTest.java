@@ -25,27 +25,27 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 
 public class DatatypeLibraryReadConverterTest {
 
-	private static final Logger log = LoggerFactory.getLogger(DatatypeLibraryReadConverterTest.class);
+  private static final Logger log = LoggerFactory.getLogger(DatatypeLibraryReadConverterTest.class);
 
-	static MongoOperations mongoOps;
-	static DBCollection coll;
+  static MongoOperations mongoOps;
+  static DBCollection coll;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igl"));
-		coll = mongoOps.getCollection("datatype-library");
-	}
+  @BeforeClass
+  public static void setUpBeforeClass() throws Exception {
+    mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "igl"));
+    coll = mongoOps.getCollection("datatype-library");
+  }
 
-	@Test
-	public void testConvert() {
-		DatatypeLibraryReadConverter cnv = new DatatypeLibraryReadConverter();
-		DBCursor cur = coll.find();
-		while (cur.hasNext()) {
-			DBObject source = cur.next();
-			DatatypeLibrary sut = cnv.convert(source);
-			log.info("converted version=" + sut.getMetaData().getHl7Version());
-			assertNotNull(sut);
-		}
-	}
+  @Test
+  public void testConvert() {
+    DatatypeLibraryReadConverter cnv = new DatatypeLibraryReadConverter();
+    DBCursor cur = coll.find();
+    while (cur.hasNext()) {
+      DBObject source = cur.next();
+      DatatypeLibrary sut = cnv.convert(source);
+      log.info("converted version=" + sut.getMetaData().getHl7Version());
+      assertNotNull(sut);
+    }
+  }
 
 }

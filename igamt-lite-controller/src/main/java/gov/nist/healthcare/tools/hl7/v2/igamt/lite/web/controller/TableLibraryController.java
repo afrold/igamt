@@ -1,12 +1,13 @@
 /**
- * This software was developed at the National Institute of Standards and Technology by employees
- * of the Federal Government in the course of their official duties. Pursuant to title 17 Section 105 of the
- * United States Code this software is not subject to copyright protection and is in the public domain.
- * This is an experimental system. NIST assumes no responsibility whatsoever for its use by other parties,
- * and makes no guarantees, expressed or implied, about its quality, reliability, or any other characteristic.
- * We would appreciate acknowledgement if the software is used. This software can be redistributed and/or
- * modified freely provided that any derivative works bear some notice that they are derived from it, and any
- * modified versions bear some notice that they have been modified.
+ * This software was developed at the National Institute of Standards and Technology by employees of
+ * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
+ * of the United States Code this software is not subject to copyright protection and is in the
+ * public domain. This is an experimental system. NIST assumes no responsibility whatsoever for its
+ * use by other parties, and makes no guarantees, expressed or implied, about its quality,
+ * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
+ * used. This software can be redistributed and/or modified freely provided that any derivative
+ * works bear some notice that they are derived from it, and any modified versions bear some notice
+ * that they have been modified.
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
@@ -51,159 +52,152 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/table-library")
 public class TableLibraryController extends CommonController {
 
-	Logger log = LoggerFactory.getLogger(TableLibraryController.class);
+  Logger log = LoggerFactory.getLogger(TableLibraryController.class);
 
-	@Autowired
-	private TableLibraryService tableLibraryService;
+  @Autowired
+  private TableLibraryService tableLibraryService;
 
-	@Autowired
-	private TableService tableService;
+  @Autowired
+  private TableService tableService;
 
-	@Autowired
-	UserService userService;
+  @Autowired
+  UserService userService;
 
-	@Autowired
-	AccountRepository accountRepository;
+  @Autowired
+  AccountRepository accountRepository;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public List<TableLibrary> getTableLibraries() {
-		log.info("Fetching all table libraries.");
-		List<TableLibrary> tableLibraries = tableLibraryService.findAll();
-		return tableLibraries;
-	}
+  @RequestMapping(method = RequestMethod.GET)
+  public List<TableLibrary> getTableLibraries() {
+    log.info("Fetching all table libraries.");
+    List<TableLibrary> tableLibraries = tableLibraryService.findAll();
+    return tableLibraries;
+  }
 
-	@RequestMapping(value = "/{tabLibId}/tables", method = RequestMethod.GET, produces = "application/json")
-	public List<Table> getTablesByLibrary(
-			@PathVariable("tabLibId") String tabLibId) {
-		log.info("Fetching tableByLibrary..." + tabLibId);
-		List<Table> result = tableService.findByLibIds(tabLibId);
-		return result;
-	}
+  @RequestMapping(value = "/{tabLibId}/tables", method = RequestMethod.GET,
+      produces = "application/json")
+  public List<Table> getTablesByLibrary(@PathVariable("tabLibId") String tabLibId) {
+    log.info("Fetching tableByLibrary..." + tabLibId);
+    List<Table> result = tableService.findByLibIds(tabLibId);
+    return result;
+  }
 
-	@RequestMapping(value = "/findByScopes", method = RequestMethod.POST, produces = "application/json")
-	public List<TableLibrary> findByScopes(@RequestBody List<String> scopes) {
-		log.info("Fetching table libraries...");
-		List<SCOPE> scopes1 = new ArrayList<SCOPE>();
-		try {
-			for (String s : scopes) {
-				SCOPE scope = SCOPE.valueOf(s);
-				if (scope != null) {
-					scopes1.add(scope);
-				}
-			}
-		} catch (Exception e) {
-			log.error("", e);
-		}
-		List<TableLibrary> tableLibraries = tableLibraryService
-				.findByScopes(scopes1);
-		return tableLibraries;
-	}
+  @RequestMapping(value = "/findByScopes", method = RequestMethod.POST,
+      produces = "application/json")
+  public List<TableLibrary> findByScopes(@RequestBody List<String> scopes) {
+    log.info("Fetching table libraries...");
+    List<SCOPE> scopes1 = new ArrayList<SCOPE>();
+    try {
+      for (String s : scopes) {
+        SCOPE scope = SCOPE.valueOf(s);
+        if (scope != null) {
+          scopes1.add(scope);
+        }
+      }
+    } catch (Exception e) {
+      log.error("", e);
+    }
+    List<TableLibrary> tableLibraries = tableLibraryService.findByScopes(scopes1);
+    return tableLibraries;
+  }
 
-	@RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST, produces = "application/json")
-	public List<Table> findByScopesAndVersion(
-			@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
-		log.info("Fetching the table library. scope="
-				+ scopesAndVersion.getScopes() + " hl7Version="
-				+ scopesAndVersion.getHl7Version());
-		List<Table> tables = null;
-		try {
-			tables = tableService.findByScopesAndVersion(
-					scopesAndVersion.getScopes(),
-					scopesAndVersion.getHl7Version());
-			if (tables == null) {
-				throw new NotFoundException(
-						"Table not found for scopesAndVersion="
-								+ scopesAndVersion);
-			}
-		} catch (Exception e) {
-			log.error("", e);
-		}
-		return tables;
-	}
+  @RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST,
+      produces = "application/json")
+  public List<Table> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
+    log.info("Fetching the table library. scope=" + scopesAndVersion.getScopes() + " hl7Version="
+        + scopesAndVersion.getHl7Version());
+    List<Table> tables = null;
+    try {
+      tables =
+          tableService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+              scopesAndVersion.getHl7Version());
+      if (tables == null) {
+        throw new NotFoundException("Table not found for scopesAndVersion=" + scopesAndVersion);
+      }
+    } catch (Exception e) {
+      log.error("", e);
+    }
+    return tables;
+  }
 
-	@RequestMapping(value = "/findHl7Versions", method = RequestMethod.GET, produces = "application/json")
-	public List<String> findHl7Versions() {
-		log.info("Fetching all HL7 versions.");
-		List<String> result = tableLibraryService.findHl7Versions();
-		return result;
-	}
+  @RequestMapping(value = "/findHl7Versions", method = RequestMethod.GET,
+      produces = "application/json")
+  public List<String> findHl7Versions() {
+    log.info("Fetching all HL7 versions.");
+    List<String> result = tableLibraryService.findHl7Versions();
+    return result;
+  }
 
-	@RequestMapping(value = "/{accountId}/{hl7Version}/findByAccountId", method = RequestMethod.GET)
-	public List<TableLibrary> findByAccountId(
-			@PathVariable("accountId") Long accountId,
-			@PathVariable("hl7Version") String hl7Version)
-			throws LibraryNotFoundException, UserAccountNotFoundException,
-			LibraryException {
-		log.info("Fetching the table libraries...");
-		List<TableLibrary> result = tableLibraryService.findByAccountId(
-				accountId, hl7Version);
-		return result;
-	}
+  @RequestMapping(value = "/{accountId}/{hl7Version}/findByAccountId", method = RequestMethod.GET)
+  public List<TableLibrary> findByAccountId(@PathVariable("accountId") Long accountId,
+      @PathVariable("hl7Version") String hl7Version) throws LibraryNotFoundException,
+      UserAccountNotFoundException, LibraryException {
+    log.info("Fetching the table libraries...");
+    List<TableLibrary> result = tableLibraryService.findByAccountId(accountId, hl7Version);
+    return result;
+  }
 
-	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public TableLibrary create(@RequestBody LibraryCreateWrapper dtlcw) {
-		SCOPE scope = SCOPE.valueOf(dtlcw.getScope());
+  @RequestMapping(value = "/create", method = RequestMethod.POST)
+  public TableLibrary create(@RequestBody LibraryCreateWrapper dtlcw) {
+    SCOPE scope = SCOPE.valueOf(dtlcw.getScope());
 
-		return tableLibraryService.create(dtlcw.getName(), dtlcw.getExt(),
-				scope, dtlcw.getHl7Version(), dtlcw.getAccountId());
-	}
+    return tableLibraryService.create(dtlcw.getName(), dtlcw.getExt(), scope,
+        dtlcw.getHl7Version(), dtlcw.getAccountId());
+  }
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public LibrarySaveResponse save(@RequestBody TableLibrary tableLibrary)
-			throws LibrarySaveException {
-		log.debug("tableLibrary=" + tableLibrary);
-		log.debug("tableLibrary.getId()=" + tableLibrary.getId());
-		log.info("Saving the " + tableLibrary.getScope() + " table library.");
-		User u = userService.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u
-				.getUsername());
-		tableLibrary.setAccountId(account.getId());
-		// TODO This is necessary for a cascading save. For now we are
-		// having the user save dts one at a time.
-		// for (Table dt : tableLibrary.getChildren()) {
-		// dt.setAccountId(account.getId());
-		// tableService.save(dt);
-		// }
-		TableLibrary saved = tableLibraryService.save(tableLibrary);
-		log.debug("saved.getId()=" + saved.getId());
-		log.debug("saved.getScope()=" + saved.getScope());
-		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved
-				.getScope().name());
-	}
+  @RequestMapping(value = "/save", method = RequestMethod.POST)
+  public LibrarySaveResponse save(@RequestBody TableLibrary tableLibrary)
+      throws LibrarySaveException {
+    log.debug("tableLibrary=" + tableLibrary);
+    log.debug("tableLibrary.getId()=" + tableLibrary.getId());
+    log.info("Saving the " + tableLibrary.getScope() + " table library.");
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    tableLibrary.setAccountId(account.getId());
+    // TODO This is necessary for a cascading save. For now we are
+    // having the user save dts one at a time.
+    // for (Table dt : tableLibrary.getChildren()) {
+    // dt.setAccountId(account.getId());
+    // tableService.save(dt);
+    // }
+    TableLibrary saved = tableLibraryService.save(tableLibrary);
+    log.debug("saved.getId()=" + saved.getId());
+    log.debug("saved.getScope()=" + saved.getScope());
+    return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
+  }
 
-	@RequestMapping(value = "/{libId}/addChild", method = RequestMethod.POST)
-	public TableLink addChild(@PathVariable String libId,
-			@RequestBody TableLink child) throws TableSaveException {
-		log.debug("Adding a link to the library");
-		TableLibrary lib = tableLibraryService.findById(libId);
-		lib.addTable(child);
-		tableLibraryService.save(lib);
-		return child;
-	}
+  @RequestMapping(value = "/{libId}/addChild", method = RequestMethod.POST)
+  public TableLink addChild(@PathVariable String libId, @RequestBody TableLink child)
+      throws TableSaveException {
+    log.debug("Adding a link to the library");
+    TableLibrary lib = tableLibraryService.findById(libId);
+    lib.addTable(child);
+    tableLibraryService.save(lib);
+    return child;
+  }
 
-	@RequestMapping(value = "/{libId}/updateChild", method = RequestMethod.POST)
-	public TableLink updateChild(@PathVariable String libId,
-			@RequestBody TableLink child) throws DatatypeSaveException {
-		log.debug("Adding a link to the library");
-		TableLibrary lib = tableLibraryService.findById(libId);
-		TableLink found = lib.findOneTableById(child.getId());
-		if (found != null) {
-			found.setBindingIdentifier(child.getBindingIdentifier());
-		}
-		tableLibraryService.save(lib);
-		return child;
-	}
+  @RequestMapping(value = "/{libId}/updateChild", method = RequestMethod.POST)
+  public TableLink updateChild(@PathVariable String libId, @RequestBody TableLink child)
+      throws DatatypeSaveException {
+    log.debug("Adding a link to the library");
+    TableLibrary lib = tableLibraryService.findById(libId);
+    TableLink found = lib.findOneTableById(child.getId());
+    if (found != null) {
+      found.setBindingIdentifier(child.getBindingIdentifier());
+    }
+    tableLibraryService.save(lib);
+    return child;
+  }
 
-	@RequestMapping(value = "/{libId}/deleteChild/{id}", method = RequestMethod.POST)
-	public boolean deleteChild(@PathVariable String libId,
-			@PathVariable String id) throws TableSaveException {
-		log.debug("Deleting a link to the library");
-		TableLibrary lib = tableLibraryService.findById(libId);
-		TableLink found = lib.findOneTableById(id);
-		if (found != null) {
-			lib.getChildren().remove(found);
-			tableLibraryService.save(lib);
-		}
-		return true;
-	}
+  @RequestMapping(value = "/{libId}/deleteChild/{id}", method = RequestMethod.POST)
+  public boolean deleteChild(@PathVariable String libId, @PathVariable String id)
+      throws TableSaveException {
+    log.debug("Deleting a link to the library");
+    TableLibrary lib = tableLibraryService.findById(libId);
+    TableLink found = lib.findOneTableById(id);
+    if (found != null) {
+      lib.getChildren().remove(found);
+      tableLibraryService.save(lib);
+    }
+    return true;
+  }
 }

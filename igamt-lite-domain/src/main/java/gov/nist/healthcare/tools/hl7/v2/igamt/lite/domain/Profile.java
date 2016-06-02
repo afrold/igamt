@@ -19,209 +19,209 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 public class Profile extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public Profile() {
-		super();
-		this.type = Constant.PROFILE;
-		scope = IGDocumentScope.PRELOADED;
-		this.id = ObjectId.get().toString();
-	}
+  public Profile() {
+    super();
+    this.type = Constant.PROFILE;
+    scope = IGDocumentScope.PRELOADED;
+    this.id = ObjectId.get().toString();
+  }
 
-	private IGDocumentScope scope;
+  private IGDocumentScope scope;
 
-	private String id;
+  private String id;
 
-	private ProfileMetaData metaData;
+  private ProfileMetaData metaData;
 
-	@JsonIgnoreProperties(value= {"accountId", "date"})
-	@DBRef
-	private SegmentLibrary segmentLibrary = new SegmentLibrary();
-	
-	@JsonIgnoreProperties(value= {"accountId", "date"})
-	@DBRef
-	private DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
+  @JsonIgnoreProperties(value = {"accountId", "date"})
+  @DBRef
+  private SegmentLibrary segmentLibrary = new SegmentLibrary();
 
-	private Messages messages = new Messages();
+  @JsonIgnoreProperties(value = {"accountId", "date"})
+  @DBRef
+  private DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
 
-	@DBRef
-	private TableLibrary tableLibrary = new TableLibrary();
+  private Messages messages = new Messages();
 
-	private Long accountId;
+  @DBRef
+  private TableLibrary tableLibrary = new TableLibrary();
 
-	protected String comment = "";
+  private Long accountId;
 
-	protected String usageNote = "";
+  protected String comment = "";
 
-	private String changes = "";
+  protected String usageNote = "";
 
-	private String baseId = null; // baseId is the original version of the
-									// profile that was cloned
+  private String changes = "";
 
-	private String constraintId;
+  private String baseId = null; // baseId is the original version of the
+  // profile that was cloned
 
-	private String sourceId;
+  private String constraintId;
 
-	public String getBaseId() {
-		return baseId;
-	}
+  private String sourceId;
 
-	public void setBaseId(String baseId) {
-		this.baseId = baseId;
-	}
+  public String getBaseId() {
+    return baseId;
+  }
 
-	public String getId() {
-		return id;
-	}
+  public void setBaseId(String baseId) {
+    this.baseId = baseId;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public ProfileMetaData getMetaData() {
-		return metaData;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public void setMetaData(ProfileMetaData metaData) {
-		this.metaData = metaData;
-	}
+  public ProfileMetaData getMetaData() {
+    return metaData;
+  }
 
-	public SegmentLibrary getSegmentLibrary() {
-		return segmentLibrary;
-	}
+  public void setMetaData(ProfileMetaData metaData) {
+    this.metaData = metaData;
+  }
 
-	public void setSegmentLibrary(SegmentLibrary segmentLibrary) {
-		this.segmentLibrary = segmentLibrary;
-	}
+  public SegmentLibrary getSegmentLibrary() {
+    return segmentLibrary;
+  }
 
-	public DatatypeLibrary getDatatypeLibrary() {
-		return datatypeLibrary;
-	}
+  public void setSegmentLibrary(SegmentLibrary segmentLibrary) {
+    this.segmentLibrary = segmentLibrary;
+  }
 
-	public void setDatatypeLibrary(DatatypeLibrary datatypeLibrary) {
-		this.datatypeLibrary = datatypeLibrary;
-	}
+  public DatatypeLibrary getDatatypeLibrary() {
+    return datatypeLibrary;
+  }
 
-	public TableLibrary getTableLibrary() {
-		return tableLibrary;
-	}
+  public void setDatatypeLibrary(DatatypeLibrary datatypeLibrary) {
+    this.datatypeLibrary = datatypeLibrary;
+  }
 
-	public void setTableLibrary(TableLibrary tableLibrary) {
-		this.tableLibrary = tableLibrary;
-	}
+  public TableLibrary getTableLibrary() {
+    return tableLibrary;
+  }
 
-	public Messages getMessages() {
-		return messages;
-	}
+  public void setTableLibrary(TableLibrary tableLibrary) {
+    this.tableLibrary = tableLibrary;
+  }
 
-	public void setMessages(Messages messages) {
-		this.messages = messages;
-	}
+  public Messages getMessages() {
+    return messages;
+  }
 
-	public String getConstraintId() {
-		return constraintId;
-	}
+  public void setMessages(Messages messages) {
+    this.messages = messages;
+  }
 
-	public void setConstraintId(String constraintId) {
-		this.constraintId = constraintId;
-	}
+  public String getConstraintId() {
+    return constraintId;
+  }
 
-	/**
-	 * Do not set the version. Hibernate set the version automatically
-	 * 
-	 * @param version
-	 * @return
-	 */
-	public String getComment() {
-		return comment;
-	}
+  public void setConstraintId(String constraintId) {
+    this.constraintId = constraintId;
+  }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+  /**
+   * Do not set the version. Hibernate set the version automatically
+   * 
+   * @param version
+   * @return
+   */
+  public String getComment() {
+    return comment;
+  }
 
-	public String getUsageNote() {
-		return usageNote;
-	}
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
 
-	public void setUsageNote(String usageNote) {
-		this.usageNote = usageNote;
-	}
+  public String getUsageNote() {
+    return usageNote;
+  }
 
-	public String getChanges() {
-		return changes;
-	}
+  public void setUsageNote(String usageNote) {
+    this.usageNote = usageNote;
+  }
 
-	public void setChanges(String changes) {
-		this.changes = changes;
-	}
+  public String getChanges() {
+    return changes;
+  }
 
-	public IGDocumentScope getScope() {
-		return scope;
-	}
+  public void setChanges(String changes) {
+    this.changes = changes;
+  }
 
-	public void setScope(IGDocumentScope scope) {
-		this.scope = scope;
-	}
+  public IGDocumentScope getScope() {
+    return scope;
+  }
 
-	public Long getAccountId() {
-		return accountId;
-	}
+  public void setScope(IGDocumentScope scope) {
+    this.scope = scope;
+  }
 
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
+  public Long getAccountId() {
+    return accountId;
+  }
 
-	public String getSourceId() {
-		return sourceId;
-	}
+  public void setAccountId(Long accountId) {
+    this.accountId = accountId;
+  }
 
-	public void setSourceId(String sourceId) {
-		this.sourceId = sourceId;
-	}
+  public String getSourceId() {
+    return sourceId;
+  }
 
-	@Override
-	public String toString() {
-		// return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
-		// + messages;
-		return "Profile [id=" + id + ", metaData=" + metaData;
-	}
+  public void setSourceId(String sourceId) {
+    this.sourceId = sourceId;
+  }
 
-	@Override
-	public Profile clone() throws CloneNotSupportedException {
-		Profile clonedProfile = new Profile();
-		HashMap<String, Datatype> dtRecords = new HashMap<String, Datatype>();
-		HashMap<String, Segment> segRecords = new HashMap<String, Segment>();
-		HashMap<String, Table> tabRecords = new HashMap<String, Table>();
+  @Override
+  public String toString() {
+    // return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
+    // + messages;
+    return "Profile [id=" + id + ", metaData=" + metaData;
+  }
 
-		clonedProfile.setChanges(changes);
-		clonedProfile.setComment(comment);
-		clonedProfile.setDatatypeLibrary(datatypeLibrary.clone(dtRecords, tabRecords));
-//		clonedProfile.setSegmentLibrary(segmentLibrary.clone(segRecords, dtRecords, tabRecords));
-		clonedProfile.setTableLibrary(tableLibrary.clone(tabRecords));
+  @Override
+  public Profile clone() throws CloneNotSupportedException {
+    Profile clonedProfile = new Profile();
+    HashMap<String, Datatype> dtRecords = new HashMap<String, Datatype>();
+    HashMap<String, Segment> segRecords = new HashMap<String, Segment>();
+    HashMap<String, Table> tabRecords = new HashMap<String, Table>();
 
-		clonedProfile.setMessages(messages.clone(dtRecords, segRecords, tabRecords));
-		clonedProfile.setMetaData(metaData.clone());
-		clonedProfile.setUsageNote(usageNote);
-		clonedProfile.setAccountId(accountId);
-		clonedProfile.setScope(scope);
-		clonedProfile.setBaseId(baseId != null ? baseId : id);
-		clonedProfile.setSourceId(id);
-		clonedProfile.setConstraintId(constraintId);
+    clonedProfile.setChanges(changes);
+    clonedProfile.setComment(comment);
+    clonedProfile.setDatatypeLibrary(datatypeLibrary.clone(dtRecords, tabRecords));
+    // clonedProfile.setSegmentLibrary(segmentLibrary.clone(segRecords, dtRecords, tabRecords));
+    clonedProfile.setTableLibrary(tableLibrary.clone(tabRecords));
 
-		return clonedProfile;
-	}
+    clonedProfile.setMessages(messages.clone(dtRecords, segRecords, tabRecords));
+    clonedProfile.setMetaData(metaData.clone());
+    clonedProfile.setUsageNote(usageNote);
+    clonedProfile.setAccountId(accountId);
+    clonedProfile.setScope(scope);
+    clonedProfile.setBaseId(baseId != null ? baseId : id);
+    clonedProfile.setSourceId(id);
+    clonedProfile.setConstraintId(constraintId);
 
-	public void merge(Profile p) {
-		// Note: merge is used for creation of new profiles do we don't consider
-		// constraints and annotations
-		// in each profile, there is one message library with one message
-		this.tableLibrary.merge(p.getTableLibrary());
-		this.datatypeLibrary.merge(p.getDatatypeLibrary());
-		this.segmentLibrary.merge(p.getSegmentLibrary());
+    return clonedProfile;
+  }
 
-		for (Message m : p.getMessages().getChildren()) {
-			this.messages.addMessage(m);
-		}
-	}
+  public void merge(Profile p) {
+    // Note: merge is used for creation of new profiles do we don't consider
+    // constraints and annotations
+    // in each profile, there is one message library with one message
+    this.tableLibrary.merge(p.getTableLibrary());
+    this.datatypeLibrary.merge(p.getDatatypeLibrary());
+    this.segmentLibrary.merge(p.getSegmentLibrary());
+
+    for (Message m : p.getMessages().getChildren()) {
+      this.messages.addMessage(m);
+    }
+  }
 }
