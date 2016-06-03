@@ -46,18 +46,18 @@
 					</configuration>
 				</plugin>
 				<!-- plugin to handle test process and report -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.14</version>
-				<configuration>
-					<forkCount>1</forkCount>
-					<argLine>
-						-javaagent:${settings.localRepository.internal}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
-					</argLine>
-					<useSystemClassloader>true</useSystemClassloader>
-				</configuration>
-			</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.14</version>
+					<configuration>
+						<forkCount>1</forkCount>
+						<argLine>
+							-javaagent:${settings.localRepository.internal}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
+						</argLine>
+						<useSystemClassloader>true</useSystemClassloader>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -70,13 +70,13 @@
 			<artifactId>igamt-lite-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>gov.nist.healthcare.tools.hl7.v2.igamt.lite</groupId>
 			<artifactId>igamt-lite-acmgt</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 
 		<dependency>
 			<groupId>gov.nist.healthcare.tools.hl7.v2.igamt.lite</groupId>
@@ -205,11 +205,8 @@
 			<artifactId>jackson-mapper-asl</artifactId> <version>1.8.5</version> </dependency> -->
 
 
-<!-- 		<dependency>
-			<artifactId>acmgt-api</artifactId>
-			<groupId>gov.nist.healthcare.tools.nht.acmgt</groupId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency> -->
+		<!-- <dependency> <artifactId>acmgt-api</artifactId> <groupId>gov.nist.healthcare.tools.nht.acmgt</groupId> 
+			<version>1.0.0-SNAPSHOT</version> </dependency> -->
 
 
 		<dependency>
@@ -221,7 +218,7 @@
 			<groupId>gov.cdc.phinvads</groupId>
 			<artifactId>vocabServiceClient</artifactId>
 			<version>1.0</version>
-		</dependency>	
+		</dependency>
 	</dependencies>
 
 	<repositories>
