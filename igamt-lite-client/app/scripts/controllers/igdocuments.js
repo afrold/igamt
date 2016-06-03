@@ -39,7 +39,8 @@ angular.module('igl')
 //        AutoSaveService.stop();
         $rootScope.saved = false;
 
-
+     
+        
         $scope.selectIgTab = function (value) {
             if (value === 1) {
                 $scope.accordi.igList = false;
@@ -300,7 +301,8 @@ angular.module('igl')
             console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
             $scope.viewSettings.setTableReadonly(false);
             $scope.tocView='views/toc.html';
-            
+           
+
             $scope.show(igdocument);
         };
         
@@ -316,6 +318,9 @@ angular.module('igl')
                 $timeout(function () {
                     $rootScope.TreeIgs = [];
                     $rootScope.TreeIgs.push(igdocument);
+                    $rootScope.selectedMessages=[];;
+                    //$rootScope.selectedMessages.push(igdocument.profile.messages.children);
+                    console.log(igdocument.profile.messages.children);
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
