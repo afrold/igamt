@@ -610,8 +610,8 @@ angular
             function processEditRoutSection(param) {
             	
                 $scope.Activate(param.id);
-                var section = $scope.getRoutSectionByname(param);
-                $rootScope.currentData=section;
+                $rootScope.section = $scope.getRoutSectionByname(param);
+                //$rootScope.currentData=section;
                 
                 if(section.sectionContents===null){
                 	section.sectionContents="";
@@ -633,27 +633,24 @@ angular
             };
 
             $scope.getRoutSectionByname = function (name) {
-            	$rootScope.section = {};
+            	$rootScope.currentData = {};
                 $scope.Activate(name);
                 if (name.toLowerCase() === 'conformance profiles') {
-                	$rootScope.section= $rootScope.igdocument.profile.messages;
-                	console.log("sssssssssssssssss");
-                	console.log(section);
+                	$rootScope.currentData= $rootScope.igdocument.profile.messages;
 
                 } else if (name.toLowerCase() === 'segments and field descriptions') {
-                	$rootScope.section = $rootScope.igdocument.profile.segmentLibrary;
-
+                	$rootScope.currentData = $rootScope.igdocument.profile.segmentLibrary;
 
                 } else if (name.toLowerCase() === 'value sets') {
-                	$rootScope.section = $rootScope.igdocument.profile.tableLibrary;
+                	$rootScope.currentData = $rootScope.igdocument.profile.tableLibrary;
                 } else if (name.toLowerCase() === 'datatypes') {
-                	$rootScope.section=$rootScope.igdocument.profile.datatypeLibrary;
+                	$rootScope.currentData=$rootScope.igdocument.profile.datatypeLibrary;
                 }
-                if($rootScope.section.sectionContents===null||$rootScope.section.sectionContents===undefined){
-                	$rootScope.section.sectionContents="";
+                if($rootScope.currentData.sectionContents===null||$rootScope.currentData.sectionContents===undefined){
+                	$rootScope.currentData.sectionContents="";
                 }
                
-                return $rootScope.section;
+                return $rootScope.currentData;
             };
 
             function processEditDataType(data) {

@@ -25,10 +25,10 @@
 	<sec:http pattern="/views/**" security="none" />
 	<sec:http pattern="/fonts/**" security="none" />
 	<sec:http pattern="/lib/**" security="none" />
- 	
+
 	<sec:http pattern="/api/igdocuments/config" security="none" />
 	<sec:http pattern="/api/datatype-library/config" security="none" />
- 
+
 	<sec:http pattern="/api/appInfo" security="none" />
 	<sec:http pattern="/api/uploaded_files/file" security="none" />
 
@@ -43,9 +43,8 @@
 
 		<sec:intercept-url pattern="/api/igdocuments/config"
 			access="isAnonymous()" />
-<!--		<sec:intercept-url pattern="/api/datatype-library/config"
-			access="isAnonymous()" />
--->
+		<!-- <sec:intercept-url pattern="/api/datatype-library/config" access="isAnonymous()" 
+			/> -->
 		<sec:intercept-url pattern="/api/sooa/emails/**"
 			access="isAnonymous()" />
 		<sec:intercept-url pattern="/api/sooa/issues/**"
@@ -53,26 +52,26 @@
 		<sec:intercept-url pattern="/api/accounts/cuser"
 			access="isAnonymous() or isFullyAuthenticated()" />
 		<sec:intercept-url pattern="/api/**" access="isFullyAuthenticated()" />
-			<sec:intercept-url pattern="/api/session/keepAlive"
+		<sec:intercept-url pattern="/api/session/keepAlive"
 			access="isAnonymous()" />
 		<sec:intercept-url pattern="/j_spring_security_logout"
 			access="isFullyAuthenticated()" />
 		<sec:intercept-url pattern="/**"
 			access="isFullyAuthenticated() and hasRole('admin')" />
-		<sec:intercept-url pattern="/api/uploaded_files/file" access="isAnonymous()" />
-		<sec:intercept-url pattern="/api/uploaded_files/upload" access="isFullyAuthenticated()" />
+		<sec:intercept-url pattern="/api/uploaded_files/file"
+			access="isAnonymous()" />
+		<sec:intercept-url pattern="/api/uploaded_files/upload"
+			access="isFullyAuthenticated()" />
 
 		<sec:logout logout-success-url="/index.html" />
 		<!-- <sec:custom-filter ref="csrfHeaderFilter" after="CSRF_FILTER"/> -->
 		<!-- <sec:csrf token-repository-ref="csrfTokenRepository" /> -->
 		<!-- <sec:csrf disabled="true" /> -->
 	</sec:http>
-	
-<!-- 	<sec:http>
-    	<sec:session-management invalid-session-url="/views/sessionTimeout.html">
-        	<sec:concurrency-control max-sessions="2" expired-url="/views/sessionTimeout.html"/>
-     	</sec:session-management>
-	</sec:http> -->
+
+	<!-- <sec:http> <sec:session-management invalid-session-url="/views/sessionTimeout.html"> 
+		<sec:concurrency-control max-sessions="2" expired-url="/views/sessionTimeout.html"/> 
+		</sec:session-management> </sec:http> -->
 
 	<bean id="restAuthenticationEntryPoint"
 		class="gov.nist.healthcare.nht.acmgt.web.RestAuthenticationEntryPoint" />
