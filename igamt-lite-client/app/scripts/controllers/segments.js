@@ -41,7 +41,26 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function (node) {
-            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype.id) && $rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0));
+            if(node && node != null){
+                if(node.fields && node.fields.length > 0) return true;
+                else {
+                    if(node.type === 'case'){
+                        if($rootScope.getDatatype(node.datatype).components  && $rootScope.getDatatype(node.datatype).components.length > 0) return true;
+                    }else {
+                        if(node.datatype && $rootScope.getDatatype(node.datatype.id)){
+                            if($rootScope.getDatatype(node.datatype.id).components  && $rootScope.getDatatype(node.datatype.id).components.length > 0) return true;
+                            else {
+                                if($rootScope.getDatatype(node.datatype.id).name === 'varies'){
+                                    var mapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping){ return mapping.position == node.position; });
+                                    if(mapping && mapping.cases && mapping.cases.length > 0 ) return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         };
 
 
@@ -401,12 +420,47 @@ angular.module('igl')
 
         };
 
+        $scope.showEditDynamicMappingDlg = function (node) {
+            var modalInstance = $modal.open({
+                templateUrl: 'DynamicMappingCtrl.html',
+                controller: 'DynamicMappingCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    selectedNode: function () {
+                        return node;
+                    }
+                }
+            });
+            modalInstance.result.then(function (node) {
+                $scope.selectedNode = node;
+                $scope.setDirty();
+            }, function () {
+            });
+        };
+
     });
 
 angular.module('igl')
     .controller('SegmentRowCtrl', function ($scope, $filter) {
         $scope.formName = "form_" + new Date().getTime();
     });
+
+angular.module('igl').controller('DynamicMappingCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+    $scope.changed = false;
+    $scope.selectedNode = selectedNode;
+    $scope.selectedMapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping){ return mapping.position == $scope.selectedNode.position; });
+    if(!$scope.selectedMapping) $scope.selectedMapping = {};
+
+
+    $scope.updateMapping = function () {
+        $scope.ok();
+    };
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.selectedNode);
+    };
+
+});
 
 angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.changed = false;

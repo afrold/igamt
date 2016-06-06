@@ -57,12 +57,12 @@ public class Bootstrap implements InitializingBean {
 //		 new IGDocumentConverterFromOldToNew().convert();
 
 
-		 new DataCorrection().updateSegment();
-		 new DataCorrection().updateDatatype();
-		 new DataCorrection().updateSegmentLibrary();
-		 new DataCorrection().updateDatatypeLibrary();
-		 new DataCorrection().updateTableLibrary();
-		 new DataCorrection().updateMessage();
+//		 new DataCorrection().updateSegment();
+//		 new DataCorrection().updateDatatype();
+//		 new DataCorrection().updateSegmentLibrary();
+//		 new DataCorrection().updateDatatypeLibrary();
+//		 new DataCorrection().updateTableLibrary();
+//		 new DataCorrection().updateMessage();
 
 	}
 
