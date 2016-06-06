@@ -82,7 +82,7 @@
 
 						{{ig.childSections.length+1}}.Message Infrastructure</span>
                     </div>
-                    <ol ui-tree-nodes="" ng-model="ig.profile.messages.children"
+                    <ol ui-tree-nodes="" ng-model="selectedMessages"
                         ng-show="!profilecollapsed" data-type="messages">
                         <div  ui-tree-handle  style= "margin-left:15px;">
 
@@ -95,7 +95,7 @@
                         </div>
 
 
-                        <li ng-repeat="msg in ig.profile.messages.children " ui-tree-node
+                        <li ng-repeat="msg in selectedMessages" ui-tree-node
 
 
                             ng-if="!collapsemessage" data-type="message">
@@ -119,7 +119,7 @@
   </span>
 </script>
 
-                    <ol ui-tree-nodes="" ng-model="segments"
+                    <ol ui-tree-nodes="" ng-model="selectedSegments"
                         ng-show="!profilecollapsed" data-type="segments">
                         <div ui-tree-handle class="messageContent" style="margin-left:15px;">
                             <i data-nodrag ng-click="switcherseg()" class="fa fa-caret-down"
@@ -128,10 +128,10 @@
 							<span data-nodrag  ng-class="{selected :activeModel ==='Segments and field descriptions'}"
                                   confirm-click
                                   ng-click="editRoutSection('Segments and field descriptions')">
-								{{ig.childSections.length+1}}.2.Segments and field descriptions</span>
+								{{ig.childSections.length+1}}.2.Segments and field descriptions:{{selectedSegments.length}}/{{segments.length}}</span>
                         </div>
 
-                        <li ng-repeat="segment in segments  | orderBy :'label'"
+                        <li ng-repeat="segment in selectedSegments  | orderBy :'label'"
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click style ="margin-left:30px;"
@@ -142,7 +142,7 @@
                                       ng-click="editSeg(segment);">
 
                                        <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
-                                   'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' ,'unused' : showUnused(segment)}"  ns-popover ns-popover-template="segmentPopover"
+                                   'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }"  ns-popover ns-popover-template="segmentPopover"
   ns-popover-trigger="mouseenter"
   ns-popover-placement="bottom"
   ns-popover-theme="ns-popover-custom-theme"
@@ -153,17 +153,17 @@
                         </li>
                     </ol>
 
-                    <ol ui-tree-nodes="" ng-model="datatypes" ng-show="!profilecollapsed" data-type="datatypes" >
+                    <ol ui-tree-nodes="" ng-model="selectedDataTypes" ng-show="!profilecollapsed" data-type="datatypes" >
                         <div ui-tree-handle  style="margin-left:15px;">
                             <i data-nodrag ng-click="switcherdata()"
                                class="fa fa-caret-down" 
                                ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i>
 
 							<span ng-class="{selected :activeModel ==='Datatypes'}"
-                                    data-nodrag ng-click="editRoutSection('Datatypes')" confirm-click>{{ig.childSections.length+1}}.3.Datatypes</span>
+                                    data-nodrag ng-click="editRoutSection('Datatypes')" confirm-click>{{ig.childSections.length+1}}.3.Datatypes {{selectedDataTypes.length}}/{{datatypes.length}}</span>
                         </div>
 
-                        <li ng-repeat="data in datatypes  | orderBy :'label'" ui-tree-node
+                        <li ng-repeat="data in selectedDataTypes | orderBy :'label'" ui-tree-node
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle  data-nodrag  
                                  confirm-click
@@ -173,7 +173,7 @@
                                       confirm-click
                                       ng-click="editDataType(data)">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                   'label-USE':  !showUnused(data)&&getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','unused' : showUnused(data)}" >  {{getScopeLabel(data)}}</span> 
+                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}" >  {{getScopeLabel(data)}}</span> 
                                       
                                        {{getDatatypeLabel(data)}}-{{data.description}}</span>
 
@@ -183,18 +183,19 @@
 
                     </ol>
 
-                    <ol ui-tree-nodes="" ng-model="tables" ng-show="!profilecollapsed" data-type="tables">
+                    <ol ui-tree-nodes="" ng-model="selectedTables" ng-show="!profilecollapsed" data-type="tables">
                         <div ui-tree-handle  style="margin-left:15px;" context-menu="addValueSets">
                             <i data-nodrag ng-click="switchervalueSet()"
                                class="fa fa-caret-down" 
                                ng-class="{'fa-caret-down': !collapsevalueSet, 'fa-caret-right': collapsevalueSet}"></i>
 
 							<span ng-class="{selected :activeModel ==='Value Sets'}" confirm-click
-                                    data-nodrag ng-click="editRoutSection('Value Sets')">{{ig.childSections.length+1}}.4.Value Sets</span>
+                                    data-nodrag ng-click="editRoutSection('Value Sets')">{{ig.childSections.length+1}}.4.Value Sets
+                                    {{selectedTables.length}}/{{tables.length}}</span>
                         </div>
 
 
-                        <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node
+                        <li ng-repeat="table in selectedTables |  orderBy :'name'" ui-tree-node
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click
@@ -205,7 +206,7 @@
                                       confirm-click
                                       ng-click="editTable(table)">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE':  !showUnused(table)&&getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','unused': showUnused(table)}" >  {{getScopeLabel(table)}}</span> 
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> 
                                       
                                       {{table.bindingIdentifier}}-{{table.description}}</span>
 

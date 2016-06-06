@@ -31,7 +31,8 @@ var app = angular
         'ngMockE2E'
         ,'ui.tree',
         'blockUI',
-        'nsPopover'
+        'nsPopover',
+        'ui.select',
      ]);
 
 var

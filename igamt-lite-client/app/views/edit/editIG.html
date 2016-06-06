@@ -27,17 +27,16 @@
     <div class="col-md-12 igl-page-header">
       <span class="header4 pull-left">
 
-<!--         <div ng-controller="FilteringCtl"> -->
-<!--            <div class="row form-inline" style="margin:10px"> -->
-<!--             <label class="label label-default">Filters by:</label> -->
-<!--             <label>Conf Profiles</label> -->
-<!--             <span  ng-dropdown-multiselect="" options="filtermsgdata()" selected-model="filtermsgmodel()" extra-settings="filtermsgsettings()" translation-texts="filtermsgtexts()"> -->
-<!--             </span> -->
-      
-<!--           </div> -->
+        <div ng-controller="FilteringCtl">
+           <div class="row form-inline" style="margin:10px">
+            <label class="label label-default">Filters by:</label>
+            <label>Conf Profiles</label>
+            <span   ng-dropdown-multiselect="" options="igdocument.profile.messages.children" selected-model="selectedMessagesIDS"  events="{ onItemSelect: addToSelection, onItemDeselect:removeFromSelection}">
+            </span>
+      {{selectedMessagesIDS}}
+          </div>
           
-   
-<!--          </div> -->
+         </div>
          </div>
 
         <span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>

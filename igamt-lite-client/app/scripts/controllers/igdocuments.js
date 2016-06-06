@@ -311,6 +311,21 @@ angular.module('igl')
             $scope.tocView='views/tocReadOnly.html';
             $scope.show(igdocument);
         };
+//        
+//        $scope.reproccess= function(igdocument){
+//        	
+//        	igdocument.profile.messages.children=$rootScope.selectedMessages;
+//
+//            for(var i =0; i<igdocument.profile.messages.children.length; i++){
+//            	if(igdocument.profile.messages.children[i].children){
+//            		$rootScope.segments=_.union($rootScope.segments,igdocument.profile.messages.children[i].children);
+//            		console.log($rootScope.segments);
+//            	}
+//            	console.log($rootScope.segments);
+//            }
+//
+//        }
+        
 
         $scope.openIGDocument = function (igdocument) {
             if (igdocument != null) {
@@ -318,9 +333,11 @@ angular.module('igl')
                 $timeout(function () {
                     $rootScope.TreeIgs = [];
                     $rootScope.TreeIgs.push(igdocument);
-                    $rootScope.selectedMessages=[];;
-                    //$rootScope.selectedMessages.push(igdocument.profile.messages.children);
-                    console.log(igdocument.profile.messages.children);
+                    $rootScope.selectedMessagesIDS=[];
+
+                    //$rootScope.getMessagesFromIDS($rootScope.selectedMessagesIDS,igdocument);
+                    $rootScope.selectedMessages=angular.copy(igdocument.profile.messages.children);
+
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
@@ -330,7 +347,9 @@ angular.module('igl')
                     //StorageService.setIgDocument($rootScope.igdocument);
                     $rootScope.initMaps(); 
                     $scope.loadSegments().then(function () {
+                        $rootScope.selectedSegments=angular.copy($rootScope.segments);
                         $scope.loadDatatypes().then(function () {
+                             $rootScope.selectedDataTypes=angular.copy($rootScope.datatypes);
                             $scope.loadTables().then(function () {
                                 $scope.collectMessages();
                                 //$scope.sortByLabels();
@@ -339,6 +358,7 @@ angular.module('igl')
                                
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();
+                                $rootScope.selectedTables=angular.copy($rootScope.tables);
                             }, function () {
                             });
                         }, function () {
@@ -347,10 +367,16 @@ angular.module('igl')
                     });
                 }, 100);
             }
+
         };
+   
 
+        $rootScope.getMessagesFromIDS=function(selectedMessagesIDS,ig){
+            $rootScope.selectedMessages=[]
+        	
+        }
 
-
+        
 
         $scope.loadIgDocumentMetaData = function () {
             if (!$rootScope.config || $rootScope.config === null) {
