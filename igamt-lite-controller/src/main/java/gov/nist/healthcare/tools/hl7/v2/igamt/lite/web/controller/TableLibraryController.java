@@ -33,6 +33,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotF
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -200,4 +201,15 @@ public class TableLibraryController extends CommonController {
     }
     return true;
   }
+
+  @RequestMapping(value = "/{libId}/addChildren", method = RequestMethod.POST)
+  public boolean addChild(@PathVariable String libId, @RequestBody Set<TableLink> tableLinks)
+      throws DatatypeSaveException {
+    log.debug("Adding a link to the library");
+    TableLibrary lib = tableLibraryService.findById(libId);
+    lib.addTables(tableLinks);
+    tableLibraryService.save(lib);
+    return true;
+  }
+
 }

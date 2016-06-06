@@ -11,20 +11,18 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
 /**
  * @author gcr1
@@ -38,6 +36,7 @@ public class TableServiceImpl implements TableService {
   @Autowired
   private TableRepository tableRepository;
 
+  @Override
   public List<Table> findAll() {
     return tableRepository.findAll();
   }
@@ -86,11 +85,12 @@ public class TableServiceImpl implements TableService {
     tableRepository.save(tables);
   }
 
-  // @Override
-  // Map<String, String> findBindingIdentifiers(List<String> tableIds) {
-  // List<Table> tables = tableRepository.findBindingIdentifiers(tableIds);
-  // for
-  // }
+
+  @Override
+  public List<Table> findAllByIds(Set<String> ids) {
+    // TODO Auto-generated method stub
+    return tableRepository.findAllByIds(ids);
+  }
 
 
 }

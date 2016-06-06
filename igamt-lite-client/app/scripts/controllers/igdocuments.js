@@ -179,12 +179,15 @@ angular.module('igl')
 
             $rootScope.$on('event:saveAndExecLogout', function (event) {
                 if ($rootScope.igdocument != null) {
-                    IgDocumentService.save($rootScope.igdocument).then(function (result) {
-                        StorageService.setIgDocument($rootScope.igdocument);
+                    if ($rootScope.hasChanges()) {
+                        $rootScope.openConfirmLeaveDlg().result.then(function () {
+                            $rootScope.$emit('event:execLogout');
+                        });
+                    } else {
                         $rootScope.$emit('event:execLogout');
-                    }, function (error) {
-                        $rootScope.$emit('event:execLogout');
-                    });
+                    }
+                }else {
+                    $rootScope.$emit('event:execLogout');
                 }
             });
         };

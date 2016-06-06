@@ -86,15 +86,14 @@
         </p>
     </div>
     <div class="modal-body">
-        <p style="text-align: left">You currently have unsaved changes. Are you sure you want to proceed ? All unsaved changes will
-            be lost</p>
+        <p style="text-align: left">You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.</p>
     </div>
     <div class="modal-footer">
 
         <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-warning btn-sm"  ng-click="continue()"><span><i
+        <button class="btn btn-warning btn-sm"  ng-click="discard()"><span><i
                 class="fa fa-sign-out fa-fw">&nbsp; </i>Discard Changes</span>
         </button>
         <button class="btn btn-success btn-sm"  ng-click="save()"><span><i

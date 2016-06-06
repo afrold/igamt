@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('SegmentService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', '$q', '$http', 'FilteringSvc', 'userInfoService', function ($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, userInfoService) {
+    function ($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, userInfoService, DatatypeLibrarySvc, TableLibrarySvc) {
         var SegmentService = {
             getNodes: function (parent, root) {
                 var children = parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components : parent.children : root != null ? root.fields : [];
@@ -152,8 +152,76 @@ angular.module('igl').factory('SegmentService',
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+
+
+            saveNewElements: function () {
+                var delay = $q.defer();
+                var datatypeLinks = ElementUtils.getNewDatatypeLinks();
+                if (datatypeLinks.length > 0) {
+                    DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, datatypeLinks).then(function () {
+                        $rootScope.igdocument.profile.datatypeLibrary.children = $rootScope.igdocument.profile.datatypeLibrary.children.concat(datatypeLinks);
+                        _.each($rootScope.addedDatatypes, function (datatype) {
+                            if (ElementUtils.indexIn(datatype.id, $rootScope.datatypes) < 0) {
+                                $rootScope.datatypes.push(datatype);
+                            }
+                        });
+                        var tableLinks = ElementUtils.getNewTableLinks();
+                        if (tableLinks.length > 0) {
+                            TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, tableLinks).then(function () {
+                                $rootScope.igdocument.profile.tableLibrary.children = $rootScope.igdocument.profile.tableLibrary.children.concat(tableLinks);
+                                _.each($rootScope.addedTables, function (table) {
+                                    if (ElementUtils.indexIn(table.id, $rootScope.tables) < 0) {
+                                        $rootScope.tables.push(table);
+                                    }
+                                });
+                                SegmentService.completeSave();
+                                delay.resolve(true);
+                            }, function (error) {
+                                delay.reject(error);
+                            });
+                        } else {
+                            SegmentService.completeSave();
+                            delay.resolve(true);
+                        }
+                    }, function (error) {
+                        delay.reject(error);
+                    });
+                } else {
+                    SegmentService.completeSave();
+                    delay.resolve(true);
+                }
+                return delay.promise;
+            },
+
+            completeSave: function () {
+                $rootScope.addedDatatypes = [];
+                $rootScope.addedTables = [];
+                $rootScope.clearChanges();
+                $rootScope.msg().text = "segmentSaved";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+            },
+
+            reset : function(){
+                if ($rootScope.addedDatatypes != null && $rootScope.addedDatatypes.length > 0) {
+                    _.each($rootScope.addedDatatypes, function (id) {
+                        delete $rootScope.datatypesMap[id];
+                    });
+                }
+                if ($rootScope.addedTables != null && $rootScope.addedTables.length > 0) {
+                    _.each($rootScope.addedTables, function (id) {
+                        delete $rootScope.tablesMap[id];
+                    });
+                }
+                $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
             }
+
+
+
+
+
 
         };
         return SegmentService;
-    }]);
+    });

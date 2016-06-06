@@ -1613,45 +1613,39 @@
 </div>
 <div class="modal-body">
 <div class="row">
-    <div class="col-md-12">
-        <span class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                    <label class="btn  btn-primary btn-xs"
-                           ng-click="loadLibrariesByFlavorName('USER')"
-                           ng-class="{'active':selection.scope === 'USER'}">
-                        <input type="radio" value="USER"
-                               ng-model="$parent.selection.scope"><i class="fa fa-th-list"></i>MY IG DATA TYPES
-                    </label>
-                    <label class="btn  btn-primary btn-xs"
-                           ng-click="loadLibrariesByFlavorName('HL7STANDARD')"
-                           ng-class="{'active':selection.scope === 'HL7STANDARD'}">
-                        <input type="radio" value="HL7STANDARD"
-                               ng-model="$parent.selection.scope"><i class="fa fa-th-list"></i>HL7 DATA TYPES
-                    </label>
-                    <label class="btn  btn-primary btn-xs"
-                           ng-click="loadLibrariesByFlavorName('MASTER')"
-                           ng-class="{'active':selection.scope === 'MASTER'}">
-                        <input type="radio" value="MASTER"
-                               ng-model="$parent.selection.scope"><i class="fa fa-th-list"></i>MASTER DATA TYPES
-                    </label>
-           </span>
-     </div>
+    <!--<div class="col-md-12">-->
+        <!--<span class="btn-group btn-group-sm pull-left" data-toggle="buttons">-->
+                    <!--<label class="btn  btn-primary btn-xs"-->
+                           <!--ng-click="loadLibrariesByFlavorName('USER')"-->
+                           <!--ng-class="{'active':selection.scope === 'USER'}">-->
+                        <!--<input type="radio" value="USER"-->
+                               <!--ng-model="$parent.selection.scope"><i class="fa fa-th-list"></i>MY IG DATA TYPES-->
+                    <!--</label>-->
+                    <!--<label class="btn  btn-primary btn-xs"-->
+                           <!--ng-click="loadLibrariesByFlavorName('HL7STANDARD')"-->
+                           <!--ng-class="{'active':selection.scope === 'HL7STANDARD'}">-->
+                        <!--<input type="radio" value="HL7STANDARD"-->
+                               <!--ng-model="$parent.selection.scope"><i class="fa fa-th-list"></i>HL7 DATA TYPES-->
+                    <!--</label>-->
+                    <!--<label class="btn  btn-primary btn-xs"-->
+                           <!--ng-click="loadLibrariesByFlavorName('MASTER')"-->
+                           <!--ng-class="{'active':selection.scope === 'MASTER'}">-->
+                        <!--<input type="radio" value="MASTER"-->
+                               <!--ng-model="$parent.selection.scope"><i class="fa fa-th-list"></i>MASTER DATA TYPES-->
+                    <!--</label>-->
+           <!--</span>-->
+     <!--</div>-->
 <div class="col-md-12">
-<div class="col-md-3">
-    <div class="row">
-
-    </div>
-
-    <div class="row">
-        <div class="panel panel-primary">
-            <!-- Default panel contents -->
-            <div class="panel-heading panel-heading-collapsable">
-                <i class="glyphicon glyphicon-list"></i>Data Type Flavors
-                <!--<button title="Hide Flavors" class="btn btn-xs btn-primary pull-right"-->
-                <!--ng-click="collapsed = !collapsed">-->
-                <!--<i class="fa fa-caret-left"></i>-->
-                <!--</button>-->
-            </div>
-            <div class="panel-body">
+        <!--<div class="panel panel-primary">-->
+            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+            <!--<div class="panel-heading panel-heading-collapsable">-->
+                <!--<i class="glyphicon glyphicon-list"></i>Data Type Flavors-->
+                <!--&lt;!&ndash;<button title="Hide Flavors" class="btn btn-xs btn-primary pull-right"&ndash;&gt;-->
+                <!--&lt;!&ndash;ng-click="collapsed = !collapsed">&ndash;&gt;-->
+                <!--&lt;!&ndash;<i class="fa fa-caret-left"></i>&ndash;&gt;-->
+                <!--&lt;!&ndash;</button>&ndash;&gt;-->
+            <!--</div>-->
+            <!--<div class="panel-body">-->
                 <!--<div ng-show="!resultsLoading">-->
                          <div class="container-testcase">
                             <div ng-show="results != null && results.length > 0">
@@ -1659,31 +1653,31 @@
                                        class="table table-striped table-bordered table-condensed igl-list-table">
                                     <thead>
                                     <tr>
-                                        <th colspan="3" st-ratio="100">
+                                        <th colspan="1" st-ratio="100">
                                             <input st-search placeholder="Search" class="input-sm form-control"
                                                    type="search"/>
                                         </th>
                                     </tr>
 
                                     <tr class="tbl-header">
-                                        <th st-ratio="40" st-sort="ext">Label</th>
-                                        <th st-ratio="20" st-sort="hl7Version">Hl7 Version</th>
-                                        <th st-ratio="40" st-sort="libraryName">From Library</th>
+                                        <th st-ratio="100" st-sort="ext">Label</th>
+                                        <!--<th st-ratio="20" st-sort="hl7Version">Hl7 Version</th>-->
+                                        <!--<th st-ratio="40" st-sort="libraryName">From Library</th>-->
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="row in tmpResults | orderBy:'row.ext'">
-                                        <td st-ratio="40">{{$index + 1}}
+                                    <tr ng-repeat="row in tmpResults | orderBy:'row.ext'" ng-class="{'active':selection.selected != null && selection.selected === row.id}">
+                                        <td st-ratio="100">{{$index + 1}}
                                             <input type="radio" ng-model="selection.selected" ng-value="row.id"
                                                    ng-click="showSelectedDetails(row)"> {{getDatatypeLabel(row)}}
                                         </td>
-                                        <td st-ratio="20">{{row.hl7Version}}</td>
-                                        <td st-ratio="40">{{row.libraryName}}</td>
+                                        <!--<td st-ratio="20">{{row.hl7Version}}</td>-->
+                                        <!--<td st-ratio="40">{{row.libraryName}}</td>-->
                                     </tr>
                                     </tbody>
                                     <tfoot ng-show="results.length >= 10">
                                     <tr>
-                                        <td colspan="3">
+                                        <td colspan="1">
                                             <div st-pagination="" st-items-by-page="10"
                                                  st-displayed-pages="7"></div>
                                         </td>
@@ -1701,100 +1695,29 @@
                 <!--<div ng-show="resultsLoading" style="text-align:center">-->
                     <!--<i class="fa fa-circle-o-notch fa-spin fa-2x"></i>-->
                 <!--</div>-->
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-md-9">
-    <!--<div ng-show="!loadingSelection">-->
-    <!--<div class="" ng-show="selection.datatype != null">-->
-    <div class="panel panel-primary" ng-show="selection.datatype != null">
-        <div class="panel-heading">
-                            <span>
-                               Datatype Definition <span>: {{getLabel(selection.datatype.name, selection.datatype.ext)}}</span>
-                            </span>
-
-        </div>
-        <div class="panel-body">
-            <!--<div ng-show="datatypeError != null">-->
-            <!--<div class="alert alert-danger" role="alert" ng-bind="datatypeError"></div>-->
-            <!--</div>-->
-            <!--<div ng-show="datatypeError === null" ng-controller="SelectedDatatypeFlavorDefCtrl">-->
-
-            <div class="pull-right">
-                                 <span style="margin-right: 20px" ng-dropdown-multiselect=""
-                                       options="viewSettings.columnOptions"
-
-                                       selected-model="viewSettings.visibleColumns"
-                                       events="viewSettings.events" extra-settings="viewSettings.extra"
-                                       translation-texts="viewSettings.translations"></span>
-            </div>
-
-            <div class="table-responsive">
-                <table tt-table tt-params="datatypeFlavorParams"
-                       class="table table-bordered table-fix-header table-condensed profile-table">
-                    <thead>
-                    <tr class="tbl-header"
-                        style="margin-right: {{scrollbarWidth}}px;">
-                        <th class="col-xs-2 col-fixed-250">
-                            Name
-                        </th>
-                        <th class="col-xs-1 col-fixed-80"
-                            ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                        </th>
-                        <th class="col-xs-1 col-fixed-100"
-                            ng-show="viewSettings.isVisibleColumn('length')">Length
-                        </th>
-                        <th class="col-xs-1 col-fixed-80"
-                            ng-show="viewSettings.isVisibleColumn('confLength')">Conformance
-                            Length
-                        </th>
-                        <th class="col-xs-1 col-fixed-100"
-                            ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
-                        </th>
-                        <th class="col-xs-1 col-fixed-130"
-                            ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
-                        </th>
-                        <th class="col-xs-1" ng-style="predWidth"
-                            ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
-                        </th>
-                        <th class="col-xs-2" ng-style="csWidth"
-                            ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance
-                            Statement
-                        </th>
-                        <th class="col-xs-1 col-fixed-80"
-                            ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
-                        </th>
-                        <th class="col-xs-1" ng-style="commentWidth"
-                            ng-show="viewSettings.isVisibleColumn('comment')">Comment
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-
-
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-        </div>
-    </div>
-    <!--<div ng-show="loadingSelection" style="text-align:center">-->
-    <!--<i class="fa fa-circle-o-notch fa-spin fa-2x"></i>-->
     <!--</div>-->
-</div>
-</div>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary btn-sm" ng-click="submit()" ng-disabled="selection.datatype === null"><span><i
-            class="fa fa-play fa-fw">
-        &nbsp; </i>Select</span>
-    </button>
-    <button class="btn btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
+    <!--</div>-->
+ </div>
+    </div>
+    </div>
+ <div class="modal-footer">
+     <div class="row">
+         <div class="col-md-12">
+             <div class="pull-right">
+
+    <button class="btn tbn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Cancel</span>
     </button>
-</div>
+
+                 <button class="btn btn-primary btn-sm" ng-click="submit()" ng-disabled="selection.selected === null || selection.selected.id === currentDatatype.id"><span><i
+                         class="fa fa-play fa-fw">
+                     &nbsp; </i>Bind</span>
+                 </button>
+
+
+             </div>
+             </div>
+         </div>
 </div>
 </script>
 
