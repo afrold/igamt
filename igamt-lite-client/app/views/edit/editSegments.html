@@ -1426,6 +1426,7 @@
 
                 <div class="col-md-8">
                     <select class="form-control" name="reference"
+                            ng-change="recordChange()"
                             ng-model="selectedMapping.reference"
                             ng-options="field.position as segment.name + '-' + field.position + ' : ' + field.name for field in segment.fields"/>
                 </div>
@@ -1436,23 +1437,30 @@
                             <tr class="tbl-header">
                                 <th class="col-md-4">Reference Value</th>
                                 <th class="col-md-7">Datatype</th>
-                                <th class="col-md-1"></th>
+                                <th class="col-md-1">
+                                    <button title="Add" type="button" class="btn btn-xs btn-info" ng-click="addCase()">
+                                        <i class="fa fa-plus fa-fw"></i>
+                                    </button>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="case in selectedMapping.cases">
                                 <td class="col-md-4">
-                                    <input type="text" class="form-control" ng-model="case.value"/>
+                                    <input type="text" class="form-control" ng-model="case.value" ng-change="recordChange()"/>
                                 </td>
                                 <td class="col-md-7">
-                                    <select ng-model="case.datatype" class="form-control"
-                                            ng-options="link.id as getDatatypeLabel(datatypesMap[link.id]) for link in igdocument.profile.datatypeLibrary.children" />
+                                    <select ng-model="case.datatype" class="form-control" ng-change="recordChange()"
+                                            ng-options="link.id as getDatatypeLabel(datatypesMap[link.id]) for link in igdocument.profile.datatypeLibrary.children | filter: {name: case.value}" />
                                 </td>
                                 <td class="col-md-1">
-
+                                    <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="deleteCase(case)">
+                                        <i class="fa fa-trash-o fa-fw"></i>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
+                    </table>
                 </div>
 
             </form>
@@ -1461,7 +1469,7 @@
 
     <div class="modal-footer">
         <button ng-show="changed" type="button" ng-click="updateMapping()" class="btn btn-primary btn-sm"><i
-                class="fa fa-check fa-fw">&nbsp; </i>Bind
+                class="fa fa-check fa-fw">&nbsp; </i>Update
         </button>
         <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-warning btn-sm"><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel
