@@ -1441,10 +1441,15 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="case in selectedMapping.cases">
-                                <td class="col-md-4">{{case.value}}</td>
-                                <td class="col-md-7">{{getDatatypeLabel(datatypesMap[case.datatype])}}</td>
+                                <td class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="case.value"/>
+                                </td>
+                                <td class="col-md-7">
+                                    <select ng-model="case.datatype" class="form-control"
+                                            ng-options="link.id as getDatatypeLabel(datatypesMap[link.id]) for link in igdocument.profile.datatypeLibrary.children" />
+                                </td>
                                 <td class="col-md-1">
-                                    
+
                                 </td>
                             </tr>
                         </tbody>
