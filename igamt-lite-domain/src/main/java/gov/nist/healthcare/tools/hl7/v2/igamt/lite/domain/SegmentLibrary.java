@@ -9,186 +9,186 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "segment-library")
-public class SegmentLibrary extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
+public class SegmentLibrary extends TextbasedSectionModel implements java.io.Serializable,
+    Cloneable {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private String id;
+  @Id
+  private String id;
 
-	private Long accountId;
-	
-	private String ext;
+  private Long accountId;
 
-	private SegmentLibraryMetaData metaData;
+  private String ext;
 
-	private Constant.SCOPE scope;
-	
-	public SegmentLibrary() {
-		super();
-		type = Constant.SEGMENTS;
-	}
+  private SegmentLibraryMetaData metaData;
 
-	private Set<SegmentLink> children = new HashSet<SegmentLink>();
+  private Constant.SCOPE scope;
 
-	public String getId() {
-		return id;
-	}
+  public SegmentLibrary() {
+    super();
+    type = Constant.SEGMENTS;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  private Set<SegmentLink> children = new HashSet<SegmentLink>();
 
-	public Long getAccountId() {
-		return accountId;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public Set<SegmentLink> getChildren() {
-		return children;
-	}
+  public Long getAccountId() {
+    return accountId;
+  }
 
-	public void setChildren(Set<SegmentLink> children) {
-		this.children = children;
-	}
+  public void setAccountId(Long accountId) {
+    this.accountId = accountId;
+  }
 
-	public Constant.SCOPE getScope() {
-		return scope;
-	}
+  public Set<SegmentLink> getChildren() {
+    return children;
+  }
 
-	public void setScope(Constant.SCOPE scope) {
-		this.scope = scope;
-	}
+  public void setChildren(Set<SegmentLink> children) {
+    this.children = children;
+  }
 
-	public void addSegment(SegmentLink seg) {
-		children.add(seg);
-	}
+  public Constant.SCOPE getScope() {
+    return scope;
+  }
 
-	public void addSegment(Segment seg) {
-		children.add(new SegmentLink(seg.getId(), seg.getName(), null));
-	}
+  public void setScope(Constant.SCOPE scope) {
+    this.scope = scope;
+  }
 
-	public SegmentLink save(SegmentLink seg) {
-		children.add(seg);
-		return seg;
-	}
+  public void addSegment(SegmentLink seg) {
+    children.add(seg);
+  }
 
-	public void delete(SegmentLink sgl) {
-		this.children.remove(sgl);
-	}
-	
-	public SegmentLink findOneSegmentById(String id) {
-		System.out.println("ID: " + id);
-		
-		if (this.children != null) {
-			for (SegmentLink segl : this.children) {
-				if (segl.getId().equals(id)) {
-					return segl;
-				}
-			}
-		}
+  public void addSegment(Segment seg) {
+    children.add(new SegmentLink(seg.getId(), seg.getName(), null));
+  }
 
-		return null;
-	}
-	
-	public SegmentLink findOne(SegmentLink segl) {
-		if (this.children != null) {
-			for (SegmentLink segl1 : this.children) {
-				if (segl.equals(segl1)) {
-					return segl1;
-				}
-			}
-		}
+  public SegmentLink save(SegmentLink seg) {
+    children.add(seg);
+    return seg;
+  }
 
-		return null;
-	}
-	
-	public SegmentLink findOne(String sgId) {
-		if (this.children != null) {
-			for (SegmentLink segl1 : this.children) {
-				if (segl1.getId().equals(sgId)) {
-					return segl1;
-				}
-			}
-		}
+  public void delete(SegmentLink sgl) {
+    this.children.remove(sgl);
+  }
 
-		return null;
-	}
-	
-	public SegmentLink findOneByName(String name) {
-		if (this.children != null) {
-			for (SegmentLink segl : this.children) {
-				if (segl.getName().equals(name)) {
-					return segl;
-				}
-			}
-		}
+  public SegmentLink findOneSegmentById(String id) {
+    System.out.println("ID: " + id);
 
-		return null;
-	}
+    if (this.children != null) {
+      for (SegmentLink segl : this.children) {
+        if (segl.getId().equals(id)) {
+          return segl;
+        }
+      }
+    }
 
-	public void merge(SegmentLibrary segLib) {
-		segLib.getChildren().addAll(segLib.getChildren());
-	}
+    return null;
+  }
 
-	public SegmentLibraryMetaData getMetaData() {
-		return metaData;
-	}
+  public SegmentLink findOne(SegmentLink segl) {
+    if (this.children != null) {
+      for (SegmentLink segl1 : this.children) {
+        if (segl.equals(segl1)) {
+          return segl1;
+        }
+      }
+    }
 
-	public void setMetaData(SegmentLibraryMetaData metaData) {
-		this.metaData = metaData;
-	}
-	
-	
-	public String getExt() {
-		return ext;
-	}
+    return null;
+  }
 
-	public void setExt(String ext) {
-		this.ext = ext;
-	}
+  public SegmentLink findOne(String sgId) {
+    if (this.children != null) {
+      for (SegmentLink segl1 : this.children) {
+        if (segl1.getId().equals(sgId)) {
+          return segl1;
+        }
+      }
+    }
 
-	public boolean contains(String id) {
-		if (this.children != null) {
-			for (SegmentLink segl : this.children) {
-				if (segl.getId().equals(id)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	public SegmentLibrary clone() throws CloneNotSupportedException {
-		SegmentLibrary clone = new SegmentLibrary();
-		
-		HashSet<SegmentLink> clonedChildren = new HashSet<SegmentLink>();
-		for(SegmentLink sl:this.children){
-			clonedChildren.add(sl.clone());
-		}
-		clone.setChildren(clonedChildren);
-		clone.setExt(this.getExt()+ "-" + genRand());
-		clone.setMetaData(this.getMetaData().clone());
-		clone.setScope(this.getScope());
-		clone.setSectionContents(this.getSectionContents()); 
-		clone.setSectionDescription(this.getSectionDescription());
-		clone.setSectionPosition(this.getSectionPosition());
-		clone.setSectionTitle(this.getSectionTitle());
-		clone.setType(this.getType());
-		return clone;	
-	}
-	
-	
-	private String genRand() {
-		return Integer.toString( new Random().nextInt(100));
-	}
-	
+    return null;
+  }
 
-	public void addSegments(Set<SegmentLink> segs) {
-		children.addAll(segs);
-	}
+  public SegmentLink findOneByName(String name) {
+    if (this.children != null) {
+      for (SegmentLink segl : this.children) {
+        if (segl.getName().equals(name)) {
+          return segl;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  public void merge(SegmentLibrary segLib) {
+    segLib.getChildren().addAll(segLib.getChildren());
+  }
+
+  public SegmentLibraryMetaData getMetaData() {
+    return metaData;
+  }
+
+  public void setMetaData(SegmentLibraryMetaData metaData) {
+    this.metaData = metaData;
+  }
+
+
+  public String getExt() {
+    return ext;
+  }
+
+  public void setExt(String ext) {
+    this.ext = ext;
+  }
+
+  public boolean contains(String id) {
+    if (this.children != null) {
+      for (SegmentLink segl : this.children) {
+        if (segl.getId().equals(id)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public SegmentLibrary clone() throws CloneNotSupportedException {
+    SegmentLibrary clone = new SegmentLibrary();
+
+    HashSet<SegmentLink> clonedChildren = new HashSet<SegmentLink>();
+    for (SegmentLink sl : this.children) {
+      clonedChildren.add(sl.clone());
+    }
+    clone.setChildren(clonedChildren);
+    clone.setExt(this.getExt() + "-" + genRand());
+    clone.setMetaData(this.getMetaData().clone());
+    clone.setScope(this.getScope());
+    clone.setSectionContents(this.getSectionContents());
+    clone.setSectionDescription(this.getSectionDescription());
+    clone.setSectionPosition(this.getSectionPosition());
+    clone.setSectionTitle(this.getSectionTitle());
+    clone.setType(this.getType());
+    return clone;
+  }
+
+
+  private String genRand() {
+    return Integer.toString(new Random().nextInt(100));
+  }
+
+
+  public void addSegments(Set<SegmentLink> segs) {
+    children.addAll(segs);
+  }
 }
-

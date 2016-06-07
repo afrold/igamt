@@ -8,120 +8,120 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ProfileMetaData extends MetaData {
 
-	private static final long serialVersionUID = 1L;
-	
-	public ProfileMetaData() {
-		super();
-	}
+  private static final long serialVersionUID = 1L;
 
-	/* XSD Attributes */
-	
-	private String type = ""; 					//ConformanceProfile/@Type
-	
-	private String schemaVersion = ""; 			//ConformanceProfile/@SchemaVersion
-	
-	private String specificationName = ""; 		//ConformanceProfile/MetaData/@SpecificationName
-	
-	private String status = ""; 				//ConformanceProfile/MetaData/@Status
-	
-	private String topics = ""; 				//ConformanceProfile/MetaData/@Topics
-	
-	private String profileID = "";
-	
-	/* XSD Attributes END */
-	
-	
+  public ProfileMetaData() {
+    super();
+  }
 
-	@JsonIgnore
-	private String subTitle = "";
+  /* XSD Attributes */
 
-	private Set<String> encodings = new HashSet<String>();
+  private String type = ""; // ConformanceProfile/@Type
 
-	public String getStatus() {
-		return status;
-	}
+  private String schemaVersion = ""; // ConformanceProfile/@SchemaVersion
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+  private String specificationName = ""; // ConformanceProfile/MetaData/@SpecificationName
 
-	public String getTopics() {
-		return topics;
-	}
+  private String status = ""; // ConformanceProfile/MetaData/@Status
 
-	public void setTopics(String topics) {
-		this.topics = topics;
-	}
+  private String topics = ""; // ConformanceProfile/MetaData/@Topics
 
-	public String getType() {
-		return type;
-	}
+  private String profileID = "";
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  /* XSD Attributes END */
 
-	public String getSchemaVersion() {
-		return schemaVersion;
-	}
 
-	public void setSchemaVersion(String schemaVersion) {
-		this.schemaVersion = schemaVersion;
-	}
 
-	public Set<String> getEncodings() {
-		return encodings;
-	}
+  @JsonIgnore
+  private String subTitle = "";
 
-	public void setEncodings(Set<String> encodings) {
-		this.encodings = encodings;
-	}
+  private Set<String> encodings = new HashSet<String>();
 
-	public String getSubTitle() {
-		return subTitle;
-	}
+  public String getStatus() {
+    return status;
+  }
 
-	public void setSubTitle(String subTitle) {
-		this.subTitle = subTitle;
-	}
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
-	@Override
-	public ProfileMetaData clone() throws CloneNotSupportedException {
-		ProfileMetaData clonedProfileMetaData = new ProfileMetaData();
+  public String getTopics() {
+    return topics;
+  }
 
-		clonedProfileMetaData.setEncodings(new HashSet<String>());
-		for (String s : this.encodings) {
-			clonedProfileMetaData.getEncodings().add(s);
-		}
+  public void setTopics(String topics) {
+    this.topics = topics;
+  }
 
-		clonedProfileMetaData.setHl7Version(getHl7Version());
-		clonedProfileMetaData.setName(this.getName());
-		clonedProfileMetaData.setOrgName(this.getOrgName());
-		clonedProfileMetaData.setSchemaVersion(schemaVersion);
-		clonedProfileMetaData.setStatus(status);
-		clonedProfileMetaData.setTopics(topics);
-		clonedProfileMetaData.setType(type);
-		clonedProfileMetaData.setDate(this.getDate());
-		clonedProfileMetaData.setVersion(this.getVersion());
-		clonedProfileMetaData.setSubTitle(subTitle);
-		clonedProfileMetaData.setVersion(getHl7Version());
-		clonedProfileMetaData.setProfileID(UUID.randomUUID().toString());
-		return clonedProfileMetaData;
-	}
+  public String getType() {
+    return type;
+  }
 
-	public String getSpecificationName() {
-		return specificationName;
-	}
+  public void setType(String type) {
+    this.type = type;
+  }
 
-	public void setSpecificationName(String specificationName) {
-		this.specificationName = specificationName;
-	}
+  public String getSchemaVersion() {
+    return schemaVersion;
+  }
 
-	public String getProfileID() {
-		return profileID;
-	}
+  public void setSchemaVersion(String schemaVersion) {
+    this.schemaVersion = schemaVersion;
+  }
 
-	public void setProfileID(String profileID) {
-		this.profileID = profileID;
-	}
+  public Set<String> getEncodings() {
+    return encodings;
+  }
+
+  public void setEncodings(Set<String> encodings) {
+    this.encodings = encodings;
+  }
+
+  public String getSubTitle() {
+    return subTitle;
+  }
+
+  public void setSubTitle(String subTitle) {
+    this.subTitle = subTitle;
+  }
+
+  @Override
+  public ProfileMetaData clone() throws CloneNotSupportedException {
+    ProfileMetaData clonedProfileMetaData = new ProfileMetaData();
+
+    clonedProfileMetaData.setEncodings(new HashSet<String>());
+    for (String s : this.encodings) {
+      clonedProfileMetaData.getEncodings().add(s);
+    }
+
+    clonedProfileMetaData.setHl7Version(getHl7Version());
+    clonedProfileMetaData.setName(this.getName());
+    clonedProfileMetaData.setOrgName(this.getOrgName());
+    clonedProfileMetaData.setSchemaVersion(schemaVersion);
+    clonedProfileMetaData.setStatus(status);
+    clonedProfileMetaData.setTopics(topics);
+    clonedProfileMetaData.setType(type);
+    clonedProfileMetaData.setDate(this.getDate());
+    clonedProfileMetaData.setVersion(this.getVersion());
+    clonedProfileMetaData.setSubTitle(subTitle);
+    clonedProfileMetaData.setVersion(getHl7Version());
+    clonedProfileMetaData.setProfileID(UUID.randomUUID().toString());
+    return clonedProfileMetaData;
+  }
+
+  public String getSpecificationName() {
+    return specificationName;
+  }
+
+  public void setSpecificationName(String specificationName) {
+    this.specificationName = specificationName;
+  }
+
+  public String getProfileID() {
+    return profileID;
+  }
+
+  public void setProfileID(String profileID) {
+    this.profileID = profileID;
+  }
 }

@@ -199,7 +199,12 @@ angular.module('igl').factory(
             angular.forEach(groups, function (group) {
                 group.id = new ObjectId().toString();
             });
-            
+
+            var segRefs = ProfileAccessSvc.Messages().getSegmentRefs(newMessage);
+            angular.forEach(segRefs, function (segRef) {
+                segRef.id = new ObjectId().toString();
+            });
+
             MessageService.save(newMessage).then(function (result){
             	newMessage = result;
             	$rootScope.igdocument.profile.messages.children.splice(0, 0, newMessage);
@@ -210,7 +215,7 @@ angular.module('igl').factory(
                     $rootScope.processElement(newMessage);
                     //TODO Mastermap need to add Message
 //                    MastermapSvc.addMessageObject(newMessage, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-                    FilteringSvc.addMsgInFilter(newMessage.name, newMessage.id);
+//                    FilteringSvc.addMsgInFilter(newMessage.name, newMessage.id);
                     $rootScope.$broadcast('event:openMessage', newMessage);
                      return newMessage;
                 }, function (error) {
@@ -587,7 +592,7 @@ angular.module('igl').factory(
             var rval = deleteSegments(segmentRefsLive, segmentRefsSincerelyDead);
             //TODO mastermap need to delete message
 //            MastermapSvc.deleteMessage(message.id);
-            FilteringSvc.removeMsgFromFilter(message.id);
+//            FilteringSvc.removeMsgFromFilter(message.id);
             return rval;
         }
 

@@ -1,5 +1,5 @@
 angular.module('igl')
-    .controller('EditAreaCtrl', function($scope, $rootScope, CloneDeleteSvc, ToCSvc, SectionSvc, ElementUtils) {
+    .controller('EditAreaCtrl', function ($scope, $rootScope, CloneDeleteSvc,SectionSvc,ElementUtils) {
 
         $scope.init = function() {
             if ($scope.editForm) {
@@ -9,8 +9,9 @@ angular.module('igl')
                 console.log("=====> set $dirty to false")
             }
         };
+        
+        $rootScope.$on("event:initEditArea", function (event) {
 
-        $rootScope.$on("event:initEditArea", function(event) {
             $scope.init();
         });
 

@@ -3,29 +3,29 @@
  */
 'use strict';
 angular.module('igl').factory('MessageService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http', 'FilteringSvc', function ($rootScope, ViewSettings,ElementUtils,$q,$http, FilteringSvc) {
+   function ($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, SegmentLibrarySvc,TableLibrarySvc,DatatypeLibrarySvc) {
         var MessageService = {
-        	save: function (message) {
-        		var delay = $q.defer();
+            save: function (message) {
+                var delay = $q.defer();
                 $http.post('api/messages/save', message, {
-                    headers:{'Content-Type':'application/json'}
+                    headers: {'Content-Type': 'application/json'}
                 }).then(function (response) {
-                	var saved = angular.fromJson(response.data);
-                	delay.resolve(saved);
-                	return saved;
+                    var saved = angular.fromJson(response.data);
+                    delay.resolve(saved);
+                    return saved;
                 }, function (error) {
-                	delay.reject(error);
+                    delay.reject(error);
                 });
                 return delay.promise;
-        	},
-        	getNodes: function (parent,root) {
+            },
+            getNodes: function (parent, root) {
                 if (!parent || parent == null) {
                     return root.children;
                 } else {
                     return parent.children;
                 }
             },
-            getTemplate: function (node,root) {
+            getTemplate: function (node, root) {
                 if (ViewSettings.tableReadonly) {
                     if (node.obj.type === 'segmentRef') {
                         return 'MessageSegmentRefReadTree.html';
@@ -39,7 +39,7 @@ angular.module('igl').factory('MessageService',
                         return 'MessageReadTree.html';
                     }
                 } else {
-                    
+
                     if (node.obj.type === 'segmentRef') {
                         return 'MessageSegmentRefEditTree.html';
                     } else if (node.obj.type === 'group') {
@@ -61,7 +61,7 @@ angular.module('igl').factory('MessageService',
                 to.date = from.date;
                 to.description = from.description;
                 to.event = from.event;
-                to.hl7Version= from.hl7Version;
+                to.hl7Version = from.hl7Version;
                 to.id = from.id;
                 to.identifier = from.identifier;
                 to.libIds = from.libIds;
@@ -79,6 +79,117 @@ angular.module('igl').factory('MessageService',
                 to.version = from.version;
                 return to;
             },
-        };
-        return MessageService;
-    }]);
+
+            indexIn: function (id, collection) {
+                for (var i = 0; i < collection.length; i++) {
+                    if (collection[i].id === id) {
+                        return i;
+                    }
+                }
+                return -1;
+            },
+
+
+            completeSave: function () {
+                $rootScope.addedDatatypes = [];
+                $rootScope.addedTables = [];
+                $rootScope.addedSegments = [];
+                $rootScope.msg().text = "messageSaved";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+                $rootScope.processElement($rootScope.message);
+                $rootScope.clearChanges();
+                $rootScope.messageTree = null;
+                $rootScope.processMessageTree($rootScope.message);
+            },
+
+
+            saveNewElements: function () {
+                var delay = $q.defer();
+                var links = ElementUtils.getNewSegmentLinks();
+                if (links.length > 0) {
+                    SegmentLibrarySvc.addChildren( $rootScope.igdocument.profile.segmentLibrary.id, links).then(function () {
+                        $rootScope.igdocument.profile.segmentLibrary.children = $rootScope.igdocument.profile.segmentLibrary.children.concat(links);
+                        _.each($rootScope.addedSegments, function (segment) {
+                            if (ElementUtils.indexIn(segment.id, $rootScope.segments) < 0) {
+                                $rootScope.segments.push(segment);
+                            }
+                        });
+                        var datatypeLinks = ElementUtils.getNewDatatypeLinks();
+                        if (datatypeLinks.length > 0) {
+                            DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, datatypeLinks).then(function () {
+                                $rootScope.igdocument.profile.datatypeLibrary.children = $rootScope.igdocument.profile.datatypeLibrary.children.concat(datatypeLinks);
+                                _.each($rootScope.addedDatatypes, function (datatype) {
+                                    if (ElementUtils.indexIn(datatype.id, $rootScope.datatypes) < 0) {
+                                        $rootScope.datatypes.push(datatype);
+                                    }
+                                });
+                                var tableLinks = ElementUtils.getNewTableLinks();
+                                if (tableLinks.length > 0) {
+                                    TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, tableLinks).then(function () {
+                                        $rootScope.igdocument.profile.tableLibrary.children = $rootScope.igdocument.profile.tableLibrary.children.concat(tableLinks);
+                                        _.each($rootScope.addedTables, function (table) {
+                                            if (ElementUtils.indexIn(table.id, $rootScope.tables) < 0) {
+                                                $rootScope.tables.push(table);
+                                            }
+                                        });
+                                        MessageService.completeSave();
+                                        delay.resolve(true);
+                                    }, function (error) {
+                                        delay.reject(error);
+                                    });
+                                } else {
+                                    MessageService.completeSave();
+                                    delay.resolve(true);
+                                }
+                            }, function (error) {
+                                delay.reject(error);
+                            });
+                        } else {
+                            MessageService.completeSave();
+                            delay.resolve(true);
+                        }
+                    }, function (error) {
+                        delay.reject(error);
+                    });
+                } else {
+                    MessageService.completeSave();
+                    delay.resolve(true);
+                }
+                return delay.promise;
+            },
+
+
+            reset: function(){
+                if ($rootScope.addedSegments != null && $rootScope.addedSegments.length > 0) {
+                    _.each($rootScope.addedSegments, function (segment) {
+                        delete $rootScope.segmentsMap[segment.id];
+                    });
+                }
+                if ($rootScope.addedDatatypes != null && $rootScope.addedDatatypes.length > 0) {
+                    _.each($rootScope.addedDatatypes, function (datatype) {
+                        delete $rootScope.datatypesMap[datatype.id];
+                    });
+                }
+                if ($rootScope.addedTables != null && $rootScope.addedTables.length > 0) {
+                    _.each($rootScope.addedTables, function (table) {
+                        delete $rootScope.tablesMap[table.id];
+                    });
+                }
+                $rootScope.message = angular.copy($rootScope.messagesMap[$rootScope.message.id]);
+            },
+
+            findIndex : function (id) {
+                for (var i = 0; i < $rootScope.igdocument.profile.messages.children.length; i++) {
+                    if ($rootScope.igdocument.profile.messages.children[i].id === id) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+
+
+    };
+return MessageService;
+})
+;

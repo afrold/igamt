@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'FilteringSvc', 'userInfoService', function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService) {
+    function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc) {
         var DatatypeService = {
             getNodes: function (parent, root) {
                 var children = [];
@@ -116,7 +116,7 @@ angular.module('igl').factory('DatatypeService',
                     delay.reject(error);
                 });
                 return delay.promise;
-            },            
+            },
             getOne: function (id) {
                 var delay = $q.defer();
                 if ($rootScope.datatypesMap[id] === undefined || $rootScope.datatypesMap[id] === null) {
@@ -173,25 +173,87 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
-            delete: function(datatype) {
-                 return $http.get('api/datatypes/'+ datatype.id+ '/delete');
-             },
+
+            delete: function (datatype) {
+                return $http.get('api/datatypes/' + datatype.id + '/delete');
+            },
+
             getDatatypeLink: function (datatype) {
-                return {id: datatype.id, ext: null, name: datatype.name};
+                return {id: datatype.id, ext: datatype.ext, name: datatype.name};
             },
             collectDatatypes: function (id) {
                 var delay = $q.defer();
-                $http.get('api/datatypes/'+ id+'/datatypes').then(function (response) {
-                     delay.resolve(angular.fromJson(response.data));
+                $http.get('api/datatypes/' + id + '/datatypes').then(function (response) {
+                    delay.resolve(angular.fromJson(response.data));
                 }, function (error) {
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+
+
+            saveNewElements: function () {
+                var delay = $q.defer();
+                var datatypeLinks = ElementUtils.getNewDatatypeLinks();
+                if (datatypeLinks.length > 0) {
+                    DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, datatypeLinks).then(function () {
+                        $rootScope.igdocument.profile.datatypeLibrary.children = $rootScope.igdocument.profile.datatypeLibrary.children.concat(datatypeLinks);
+                        _.each($rootScope.addedDatatypes, function (datatype) {
+                            if (ElementUtils.indexIn(datatype.id, $rootScope.datatypes) < 0) {
+                                $rootScope.datatypes.push(datatype);
+                            }
+                        });
+                        var tableLinks = ElementUtils.getNewTableLinks();
+                        if (tableLinks.length > 0) {
+                            TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, tableLinks).then(function () {
+                                $rootScope.igdocument.profile.tableLibrary.children = $rootScope.igdocument.profile.tableLibrary.children.concat(tableLinks);
+                                _.each($rootScope.addedTables, function (table) {
+                                    if (ElementUtils.indexIn(table.id, $rootScope.tables) < 0) {
+                                        $rootScope.tables.push(table);
+                                    }
+                                });
+                                DatatypeService.completeSave();
+                                delay.resolve(true);
+                            }, function (error) {
+                                delay.reject(error);
+                            });
+                        } else {
+                            DatatypeService.completeSave();
+                            delay.resolve(true);
+                        }
+                    }, function (error) {
+                        delay.reject(error);
+                    });
+                } else {
+                    DatatypeService.completeSave();
+                    delay.resolve(true);
+                }
+                return delay.promise;
+            },
+
+            completeSave: function () {
+                $rootScope.addedDatatypes = [];
+                $rootScope.addedTables = [];
+                $rootScope.clearChanges();
+                $rootScope.msg().text = "datatypeSaved";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+            },
+
+            reset: function () {
+                if ($rootScope.addedDatatypes != null && $rootScope.addedDatatypes.length > 0) {
+                    _.each($rootScope.addedDatatypes, function (id) {
+                        delete $rootScope.datatypesMap[id];
+                    });
+                }
+                if ($rootScope.addedTables != null && $rootScope.addedTables.length > 0) {
+                    _.each($rootScope.addedTables, function (id) {
+                        delete $rootScope.tablesMap[id];
+                    });
+                }
+                $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
             }
-
-
-
         };
         return DatatypeService;
-    }])
+    })
 ;

@@ -13,6 +13,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -36,4 +39,6 @@ public interface DatatypeOperations {
 	List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
 	List<Datatype> findDups(Datatype dt);
+	
+	List<Datatype> findUserDatatypesByIds(Set<String> ids);
 }

@@ -15,7 +15,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			$scope.datatypeDisplay	= [];
 	        $scope.selectedChildren = [];
 	        $scope.datatypesMap = [];
-   $scope.viewSettings = ViewSettings;
+	        $scope.viewSettings = ViewSettings;
       $scope.editView = null;
       $scope.datatypeListView = null;
       $scope.added = [];
@@ -369,7 +369,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
               });
               modalInstance.result.then(function (datatype, ext) {
                   component.datatype.id = datatype.id;
-                  MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
+//                  MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
                   if ($scope.datatypesParams)
                       $scope.datatypesParams.refresh();
               });

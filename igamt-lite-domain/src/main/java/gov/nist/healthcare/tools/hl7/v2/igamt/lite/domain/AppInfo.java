@@ -26,49 +26,49 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource(value = "classpath:app-web-config.properties")
 public class AppInfo implements Serializable {
 
-	private static final long serialVersionUID = 8805967508478985159L;
+  private static final long serialVersionUID = 8805967508478985159L;
 
-	@Value("${app.version}")
-	private String version;
+  @Value("${app.version}")
+  private String version;
 
-	@Value("${app.date}")
-	private String date;
+  @Value("${app.date}")
+  private String date;
 
-	private String uploadedImagesUrl;
+  private String uploadedImagesUrl;
 
-	@Value("${admin.email}")
-	private String adminEmail;
+  @Value("${admin.email}")
+  private String adminEmail;
 
-	public String getVersion() {
-		return version;
-	}
+  public String getVersion() {
+    return version;
+  }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+  public void setVersion(String version) {
+    this.version = version;
+  }
 
-	public String getDate() {
-		return date;
-	}
+  public String getDate() {
+    return date;
+  }
 
-	public void setDate(String date) {
-		this.date = date;
-	}
+  public void setDate(String date) {
+    this.date = date;
+  }
 
-	public String getAdminEmail() {
-		return adminEmail;
-	}
+  public String getAdminEmail() {
+    return adminEmail;
+  }
 
-	public void setAdminEmail(String adminEmail) {
-		this.adminEmail = adminEmail;
-	}
+  public void setAdminEmail(String adminEmail) {
+    this.adminEmail = adminEmail;
+  }
 
-	public String getUploadedImagesUrl() {
-		return uploadedImagesUrl;
-	}
+  public String getUploadedImagesUrl() {
+    return uploadedImagesUrl;
+  }
 
-	public void setUploadedImagesUrl(String uploadedImagesUrl) {
-		this.uploadedImagesUrl = uploadedImagesUrl;
-	}
+  public void setUploadedImagesUrl(String uploadedImagesUrl) {
+    this.uploadedImagesUrl = uploadedImagesUrl;
+  }
 
 }

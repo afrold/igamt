@@ -29,7 +29,8 @@
 	<xs:simpleType name="CommaSeparatedStringType">
 		<xs:annotation>
 			<xs:documentation> A comma separated values where each value is an
-				alphanumeric</xs:documentation>
+				alphanumeric
+			</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[0-9a-zA-Z]+(,[0-9a-zA-Z]+)*" />
@@ -39,7 +40,8 @@
 	<xs:simpleType name="CommaSeparatedNumberType">
 		<xs:annotation>
 			<xs:documentation>A comma separated values where each value is a
-				number</xs:documentation>
+				number
+			</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:pattern value="\s*(\+|\-)?\d+(\.\d+)?(\s*,\s*(\+|\-)?\d+(\.\d+)?\s*)*" />

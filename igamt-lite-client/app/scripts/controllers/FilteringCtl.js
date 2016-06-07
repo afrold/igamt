@@ -12,7 +12,7 @@ angular
             $scope.filtermsgdata = function(){
                 return FilteringSvc.getMsgdata();
             };
-
+            
             $scope.filtermsgsettings = function(){
                 return FilteringSvc.getMsgsettings();
             };
@@ -36,6 +36,8 @@ angular
             $scope.filterusagetexts = function(){
                 return FilteringSvc.getUsagestexts();
             };
+
+
 //
 //            $rootScope.$on('event:loadFilter', function (event, igdocument) {
 //                FilteringSvc.loadMessages(igdocument);
@@ -45,5 +47,7 @@ angular
 //            $rootScope.$on('event:loadMastermap', function (event, igdocument) {
 //              MastermapSvc.parseIg(igdocument);
 //            });
+            
+            
   }
 );

@@ -29,78 +29,85 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageEventFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { PersistenceContext.class })
+@ContextConfiguration(classes = {PersistenceContext.class})
 public class MessageEventFactoryTest {
 
-	Logger log = LoggerFactory.getLogger(MessageEventFactoryTest.class);
+  Logger log = LoggerFactory.getLogger(MessageEventFactoryTest.class);
 
-	@Autowired
-	IGDocumentRepository igDocumentRepository;
+  @Autowired
+  IGDocumentRepository igDocumentRepository;
 
-	@Autowired
-	TableRepository tableRepository;
+  @Autowired
+  TableRepository tableRepository;
 
-	@Test
-	public void testFixUnderscore() {
-		List<IGDocument> igds = igDocumentRepository
-				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
-		IGDocument igd = igds.get(0);
-		MessageEventFactory sut = new MessageEventFactory(tableRepository);
-//		assertEquals("ACK", sut.fixUnderscore("ACK_"));
-//		assertEquals("ACK", sut.fixUnderscore("ACK"));
-	}
+  @Test
+  public void testFixUnderscore() {
+    List<IGDocument> igds =
+        igDocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD,
+            "2.5.1");
+    IGDocument igd = igds.get(0);
+    MessageEventFactory sut = new MessageEventFactory(tableRepository);
+    // assertEquals("ACK", sut.fixUnderscore("ACK_"));
+    // assertEquals("ACK", sut.fixUnderscore("ACK"));
+  }
 
-	@Test
-	public void testCreateMessageEvents() {
-		List<IGDocument> igds = igDocumentRepository
-				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
-		IGDocument igd = igds.get(0);
-		Messages msgs = new Messages();
-		Collections.addAll(msgs.getChildren(), igd.getProfile().getMessages().getChildren()
-				.toArray(new Message[igd.getProfile().getMessages().getChildren().size()]));
-		MessageEventFactory sut = new MessageEventFactory(tableRepository);
-		List<MessageEvents> mes = sut.createMessageEvents(msgs);
-		assertNotNull(mes);
-		assertEquals(msgs.getChildren().size(), mes.size());
-	}
+  @Test
+  public void testCreateMessageEvents() {
+    List<IGDocument> igds =
+        igDocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD,
+            "2.5.1");
+    IGDocument igd = igds.get(0);
+    Messages msgs = new Messages();
+    Collections.addAll(
+        msgs.getChildren(),
+        igd.getProfile().getMessages().getChildren()
+            .toArray(new Message[igd.getProfile().getMessages().getChildren().size()]));
+    MessageEventFactory sut = new MessageEventFactory(tableRepository);
+    List<MessageEvents> mes = sut.createMessageEvents(msgs);
+    assertNotNull(mes);
+    assertEquals(msgs.getChildren().size(), mes.size());
+  }
 
-	@Test
-	public void testFindEvents() {
-		List<IGDocument> igds = igDocumentRepository
-				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
-		IGDocument igd = igds.get(0);
-		Set<Message> msgs = igd.getProfile().getMessages().getChildren();
-		for (Message msg : msgs) {
-			String structID = msg.getStructID();
-			MessageEventFactory sut = new MessageEventFactory(tableRepository);
-			Set<String> events = sut.findEvents(structID);
-			assertNotNull(events);
-			assertTrue(events.size() > 0);
-		}
-	}
+  @Test
+  public void testFindEvents() {
+    List<IGDocument> igds =
+        igDocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD,
+            "2.5.1");
+    IGDocument igd = igds.get(0);
+    Set<Message> msgs = igd.getProfile().getMessages().getChildren();
+    for (Message msg : msgs) {
+      String structID = msg.getStructID();
+      MessageEventFactory sut = new MessageEventFactory(tableRepository);
+      Set<String> events = sut.findEvents(structID);
+      assertNotNull(events);
+      assertTrue(events.size() > 0);
+    }
+  }
 
-//	@Test
-	public void testFindEvents4ACK() {
-		List<IGDocument> igds = igDocumentRepository
-				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
-		IGDocument igd = igds.get(0);
-		String structID = "ACK_";
-		MessageEventFactory sut = new MessageEventFactory(tableRepository);
-		Set<String> events = sut.findEvents(structID);
-		for (String event : events) {
-			assertEquals("ACK", event);
-		}
-		assertNotNull(events);
-		assertTrue(events.size() > 0);
-	}
+  // @Test
+  public void testFindEvents4ACK() {
+    List<IGDocument> igds =
+        igDocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD,
+            "2.5.1");
+    IGDocument igd = igds.get(0);
+    String structID = "ACK_";
+    MessageEventFactory sut = new MessageEventFactory(tableRepository);
+    Set<String> events = sut.findEvents(structID);
+    for (String event : events) {
+      assertEquals("ACK", event);
+    }
+    assertNotNull(events);
+    assertTrue(events.size() > 0);
+  }
 
-	@Test
-	public void testGet0354Table() {
-		List<IGDocument> igds = igDocumentRepository
-				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
-		IGDocument igd = igds.get(0);
-		MessageEventFactory sut = new MessageEventFactory(tableRepository);
-		Table tab = sut.get0354Table();
-		assertEquals("0354", tab.getBindingIdentifier());
-	}
+  @Test
+  public void testGet0354Table() {
+    List<IGDocument> igds =
+        igDocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD,
+            "2.5.1");
+    IGDocument igd = igds.get(0);
+    MessageEventFactory sut = new MessageEventFactory(tableRepository);
+    Table tab = sut.get0354Table();
+    assertEquals("0354", tab.getBindingIdentifier());
+  }
 }
