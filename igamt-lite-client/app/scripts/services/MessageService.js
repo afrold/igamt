@@ -177,6 +177,15 @@ angular.module('igl').factory('MessageService',
                     });
                 }
                 $rootScope.message = angular.copy($rootScope.messagesMap[$rootScope.message.id]);
+            },
+
+            findIndex : function (id) {
+                for (var i = 0; i < $rootScope.igdocument.profile.messages.children.length; i++) {
+                    if ($rootScope.igdocument.profile.messages.children[i].id === id) {
+                        return i;
+                    }
+                }
+                return -1;
             }
 
 

@@ -369,7 +369,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
               });
               modalInstance.result.then(function (datatype, ext) {
                   component.datatype.id = datatype.id;
-                  MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
+//                  MastermapSvc.addDatatypeObject(datatype, [component.id, component.type]);
                   if ($scope.datatypesParams)
                       $scope.datatypesParams.refresh();
               });

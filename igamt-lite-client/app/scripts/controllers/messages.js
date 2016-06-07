@@ -166,7 +166,7 @@ angular.module('igl')
                 windowClass: 'flavor-modal-window',
                 resolve: {
                     currentSegment: function () {
-                        return $rootScope.segmentsMap[segmentRef.ref.id];
+                        return $rootScope.segmentsMap[segmentRef.obj.ref.id];
                     },
                     datatypeLibrary: function () {
                         return $rootScope.igdocument.profile.datatypeLibrary;
@@ -182,11 +182,13 @@ angular.module('igl')
             modalInstance.result.then(function (segment) {
                 if (segment && segment != null) {
                     $scope.loadingSelection = true;
-                    segmentRef.ref.id = segment.id;
-                    segmentRef.ref.ext = segment.ext;
-                    segmentRef.ref.name = segment.name;
+                    segmentRef.obj.ref.id = segment.id;
+                    segmentRef.obj.ref.ext = segment.ext;
+                    segmentRef.obj.ref.name = segment.name;
+                    segmentRef.children = [];
                     $scope.setDirty();
-                    $rootScope.processElement(segment);
+                    var ref = $rootScope.segmentsMap[segmentRef.obj.ref.id];
+                    $rootScope.processMessageTree(ref, segmentRef);
                     if ($scope.messagesParams)
                         $scope.messagesParams.refresh();
                     $scope.loadingSelection = false;
@@ -1133,14 +1135,22 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function ($scope, $
             MessagesSvc.delete($scope.messageToDelete).then(function (result) {
                 // We must delete from two collections.
                 //CloneDeleteSvc.execDeleteMessage($scope.messageToDelete);
-                var index = $rootScope.messages.indexOf($scope.messageToDelete);
-                $rootScope.messages.splice(index, 1);
-                var tmp = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.igdocument.profile.messages);
-                var index = $rootScope.igdocument.profile.messages.children.indexOf(tmp);
-                $rootScope.igdocument.profile.messages.children.splice(index, 1);
+                var index = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.messages.children);
+                if(index >= 0) {
+                    $rootScope.messages.children.splice(index, 1);
+                }
+
+                var tmp = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.igdocument.profile.messages.children);
+                if(tmp != null) {
+                    var index = $rootScope.igdocument.profile.messages.children.indexOf(tmp);
+                    if(index >= 0) {
+                        $rootScope.igdocument.profile.messages.children.splice(index, 1);
+                    }
+                }
+
                 $rootScope.messagesMap[$scope.messageToDelete.id] = null;
                 $rootScope.references = [];
-                if ($rootScope.message === $scope.messageToDelete) {
+                if ($rootScope.message != null && $rootScope.message.id === $scope.messageToDelete.id) {
                     $rootScope.message = null;
                 }
                 $rootScope.msg().text = "messageDeleteSuccess";

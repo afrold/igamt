@@ -378,7 +378,7 @@ angular.module('igl')
                 field.datatype.id = datatype.id;
                 field.datatype.name = datatype.name;
                 field.datatype.ext = datatype.ext;
-                $rootScope.processElement(datatype);
+                $rootScope.processElement(field);
                 $scope.setDirty();
 //                MastermapSvc.addDatatypeId(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)

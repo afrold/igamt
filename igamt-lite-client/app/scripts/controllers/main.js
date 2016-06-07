@@ -817,10 +817,12 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         s.path = element.position + "[1]";
                         s.obj = element;
                         s.children = [];
-                        if (parent.path) {
-                            s.path = parent.path + "." + element.position + "[1]";
+                        if(parent) {
+                            if (parent.path) {
+                                s.path = parent.path + "." + element.position + "[1]";
+                            }
+                            parent.children.push(s);
                         }
-                        parent.children.push(s);
 
                         var ref = $rootScope.segmentsMap[element.ref.id];
                         $rootScope.processMessageTree(ref, s);
@@ -2040,8 +2042,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
         $rootScope.addedSegments = [];
         $rootScope.addedDatatypes = [];
         $rootScope.addedTables = [];
-        $rootScope.clearChanges();
-        $scope.continue();
+         $scope.continue();
     };
 
     $scope.error = null;
@@ -2061,8 +2062,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
                 console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
-                $rootScope.clearChanges();
-                $scope.continue();
+                 $scope.continue();
             });
         } else if (data.type && data.type === "messages") {
             console.log($rootScope.originalSection);
@@ -2070,8 +2070,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
                 console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
-                $rootScope.clearChanges();
-                $scope.continue();
+                 $scope.continue();
             });
         } else if (data.type && data.type === "segments") {
             console.log($rootScope.originalSection);
@@ -2080,8 +2079,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
                 console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
-                $rootScope.clearChanges();
-                $scope.continue();
+                 $scope.continue();
             });
         } else if (data.type && data.type === "datatypes") {
             console.log($rootScope.originalSection);
@@ -2090,8 +2088,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
                 console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
-                $rootScope.clearChanges();
-                $scope.continue();
+                 $scope.continue();
             });
         } else if (data.type && data.type === "tables") {
             console.log($rootScope.originalSection);
@@ -2100,8 +2097,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
                 console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
-                $rootScope.clearChanges();
-                $scope.continue();
+                 $scope.continue();
             });
         }
 
@@ -2109,7 +2105,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
             var message = $rootScope.message;
             console.log($rootScope.message);
             MessageService.save(message).then(function (result) {
-                var index = findIndex(message.id);
+                var index = MessageService.findIndex(message.id);
                 if (index < 0) {
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
                 }
@@ -2145,8 +2141,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                         oldLink.name = newLink.name;
                         $scope.continue();
                     }, function (error) {
-                        $scope.saving = false;
-                        $rootScope.msg().text = "Sorry an error occured. Please try again";
+                         $rootScope.msg().text = "Sorry an error occured. Please try again";
                         $rootScope.msg().type = "danger";
                         $rootScope.msg().show = true;
                     });
@@ -2178,32 +2173,27 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                         DatatypeService.merge($rootScope.datatypesMap[result.id], result);
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
-                        $scope.saving = false;
-                        $scope.continue();
+                         $scope.continue();
                     }, function (error) {
-                        $scope.saving = false;
-                        $rootScope.msg().text = "Sorry an error occured. Please try again";
+                         $rootScope.msg().text = "Sorry an error occured. Please try again";
                         $rootScope.msg().type = "danger";
                         $rootScope.msg().show = true;
                     });
                 }, function (error) {
-                    $scope.saving = false;
-                    $rootScope.msg().text = "Sorry an error occured. Please try again";
+                     $rootScope.msg().text = "Sorry an error occured. Please try again";
                     $rootScope.msg().type = "danger";
                     $rootScope.msg().show = true;
                 });
 
             }, function (error) {
-                $scope.saving = false;
-                $rootScope.msg().text = error.data.text;
+                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
             });
 
 
         } else if (data.type && data.type === "table") {
-            $scope.saving = true;
-            var table = $rootScope.table;
+             var table = $rootScope.table;
             var bindingIdentifier = table.bindingIdentifier;
             if (table.libIds == undefined) table.libIds = [];
             if (table.libIds.indexOf($rootScope.igdocument.profile.tableLibrary.id) == -1) {
@@ -2216,19 +2206,17 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 newLink.bindingIdentifier = bindingIdentifier;
                 TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
                     oldLink.bindingIdentifier = link.bindingIdentifier;
-                    $scope.continue();
                     $rootScope.msg().text = "tableSaved";
                     $rootScope.msg().type = "success";
                     $rootScope.msg().show = true;
+                    $scope.continue();
                 }, function (error) {
-                    $scope.saving = false;
-                    $rootScope.msg().text = error.data.text;
+                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
                 });
             }, function (error) {
-                $scope.saving = false;
-                $rootScope.msg().text = error.data.text;
+                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
             });
@@ -2236,15 +2224,8 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
         } else if (data.type === "document") {
 
             IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
-                $scope.saving = false;
-                $scope.saved = true;
-                $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
-                if ($scope.editForm) {
-                    $scope.editForm.$setPristine();
-                    $scope.editForm.$dirty = false;
-                }
-                $rootScope.clearChanges();
-                $scope.continue();
+                  $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
+                 $scope.continue();
 
             });
 
@@ -2252,12 +2233,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
 
             if ($rootScope.igdocument != null && $rootScope.metaData != null) {
                 ProfileSvc.saveMetaData($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
-                    $scope.saving = false;
-                    $scope.saved = true;
-
-                    $rootScope.clearChanges();
-                    $scope.continue();
-
+                     $scope.continue();
                 });
             }
         }

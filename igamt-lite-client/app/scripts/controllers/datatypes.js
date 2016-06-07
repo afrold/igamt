@@ -383,7 +383,7 @@ angular.module('igl')
                 component.datatype.id = datatype.id;
                 component.datatype.name = datatype.name;
                 component.datatype.ext = datatype.ext;
-                $rootScope.processElement(datatype);
+                $rootScope.processElement(component);
                 $scope.setDirty();
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();

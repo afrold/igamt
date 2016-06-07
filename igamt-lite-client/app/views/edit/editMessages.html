@@ -321,7 +321,7 @@
         <td class="col-xs-2 col-fixed-250 ">
             <span class="label label-segment label-icon ">S</span>
 
-            <a context-menu="segOption " ng-click="showSelectSegmentFlavorDlg(node.obj) " class="point ">
+            <a context-menu="segOption " ng-click="showSelectSegmentFlavorDlg(node) " class="point ">
                 {{getSegmentRefNodeName(node.obj)}}
             </a>
 
@@ -1704,9 +1704,9 @@
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-danger" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        <button class="btn btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
     </div>
 </script>
