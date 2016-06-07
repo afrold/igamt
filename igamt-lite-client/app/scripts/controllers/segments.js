@@ -426,7 +426,9 @@ angular.module('igl')
                 controller: 'DynamicMappingCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
-                    selectedNode: function () {
+                    selectedNode: function (
+                        
+                    ) {
                         return node;
                     }
                 }
@@ -448,8 +450,11 @@ angular.module('igl')
 angular.module('igl').controller('DynamicMappingCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.changed = false;
     $scope.selectedNode = selectedNode;
-    $scope.selectedMapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping){ return mapping.position == $scope.selectedNode.position; });
-    if(!$scope.selectedMapping) $scope.selectedMapping = {};
+    $scope.selectedMapping = angular.copy(_.find($rootScope.segment.dynamicMapping.mappings, function(mapping){ return mapping.position == $scope.selectedNode.position; }));
+    if(!$scope.selectedMapping) {
+        $scope.selectedMapping = {};
+        $scope.selectedMapping.position = $scope.selectedNode.position;
+    }
 
 
     $scope.updateMapping = function () {
