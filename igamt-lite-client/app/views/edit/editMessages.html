@@ -105,9 +105,15 @@ if (self === top) {
                                           events="viewSettings.events" extra-settings="viewSettings.extra"
                                           translation-texts="viewSettings.translations"></div>
                                      </span>
-                            <table tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                            <table id="messageTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                                <caption>
+                                    <a href="#" onclick="jQuery('#messageTable').treetable('expandAll');  return false;">Expand all</a>
+                                    <a href="#" onclick="jQuery('#messageTable').treetable('collapseAll'); return false;">Collapse all</a>
+                                </caption>
                                 <thead>
                                     <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
+                                        <button ng-show="expanded" class="pull-left" ng-click="expandAll()">Expand All</button>
+                                        <button ng-show="!expanded" class="pull-left" ng-click="collapseAll()">Collapse All</button>
                                         <th class="col-xs-2 col-fixed-250">Name</th>
                                         <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
                                             Usage
@@ -295,9 +301,35 @@ if (self === top) {
         <td  class="col-xs-2 col-fixed-250 ">
             <span class="label label-segment label-icon ">S</span>
 
-            <a  context-menu ="segOption " ng-click="showSelectSegmentFlavorDlg(node.obj) " class="point ">
+            <a  ng-show="editableSeg!==node.obj.id "  context-menu ="segOption " ng-click="showSelectSegmentFlavorDlg(node.obj) " class="point ">
                 {{getSegmentRefNodeName(node.obj)}}
             </a>
+            
+                    <input class="point " type="text " ng-model="searchSeg.name " ng-show="editableSeg===node.obj.id " >
+                     <li ng-if="searchSeg.name && editableSeg===node.obj.id " class="point " ng-class="{ 'active':isSegActive(segment.id)} " ng-click="selectSeg(node,segment) " ng-repeat="segment in segments | filter:searchSeg ">
+                        {{segment.name}} <span ng-show="segment.ext ">_{{segment.description}}</span><span ng-show="segment.description ">:{{segment.description}}</span>
+                    </li>
+
+            <a ng-show="editableSeg!==node.obj.id " ng-click="editSeg(node) " class="point ">
+                    <span><i class="fa fa-pencil fa-fw "></i></span>
+            </a>
+               <a ng-show="editableSeg===node.obj.id "ng-click="backSeg() " class="point ">
+                    <span><i class="glyphicon glyphicon-step-backward "></i></span>
+            </a>
+
+
+
+
+
+            <div ng-show="editableSeg===node.obj.id ">
+             
+                <div ng-if="searchSeg.name && !selectedSeg() ">
+                   
+                </div>
+                <a ng-show="editableSeg===node.obj.id && Segselected "ng-click="confirmSeg(node) " >
+                    <span><i class="glyphicon glyphicon-ok "></i></span>
+            </a>
+            </div>
 
         </td>
         <td class="col-xs-1 col-fixed-80 " ng-show="viewSettings.isVisibleColumn( 'usage') ">
@@ -542,7 +574,7 @@ if (self === top) {
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
             <div>
-                <span ng-show="node.obj.table !=u ndefined && node.obj.table !=n ull ">
+                <span ng-show="node.obj.table !=undefined && node.obj.table !=null ">
                     <a class="point " ng-click="goToTable(tablesMap[node.obj.table.id]) ">{{getTableLabel(tablesMap[node.obj.table.id])}}</a>
                 </span>
             </div>
@@ -620,7 +652,7 @@ if (self === top) {
         </td>
         <td class="col-xs-1 " ng-style="commentWidth " ng-show="viewSettings.isVisibleColumn( 'comment') ">
             <p class="form-control " style="width:100%;height:100% " ng-bind="node.obj.comment "
-               ng-show="node.obj.comment !=n ull && node.obj.comment !='' ">
+               ng-show="node.obj.comment !=null && node.obj.comment !='' ">
             </p>
         </td>
     </tr>
@@ -669,7 +701,7 @@ if (self === top) {
         </td>
         <td class="col-xs-1 col-fixed-130 ">
             <div>
-                <span ng-show="node.obj.table !=u ndefined && node.obj.table !=n ull ">
+                <span ng-show="node.obj.table !=undefined && node.obj.table !=null ">
                     <a class="point " ng-click="goToTable(tablesMap[node.obj.table.id]) ">{{getTableLabel(tablesMap[node.obj.table.id])}}</a>
                 </span>
             </div>
@@ -748,7 +780,7 @@ if (self === top) {
         </td>
         <td class="col-xs-1 " ng-style="commentWidth " ng-show="viewSettings.isVisibleColumn( 'comment') ">
             <p class="form-control " style="width:100%;height:100% " ng-bind="node.obj.comment "
-               ng-show="node.obj.comment !=n ull && node.obj.comment !='' ">
+               ng-show="node.obj.comment !=null && node.obj.comment !='' ">
             </p>
         </td>
     </tr>
@@ -846,7 +878,7 @@ if (self === top) {
         </td>
         <td class="col-md-2 ">
             <span>{{newConstraint.location_1}}</span>
-                    <span ng-show="newConstraint.childNodes_1 !=n ull && newConstraint.childNodes_1.length> 0">
+                    <span ng-show="newConstraint.childNodes_1 !=null && newConstraint.childNodes_1.length> 0">
                                                 <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'message')}" ng-change="updateLocation1()" ng-model="newConstraint.currentNode_1" ng-options="child as child.name for child in newConstraint.childNodes_1" />
                                                 </span>
                                                 <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'message')">Empty node</span>
@@ -1429,51 +1461,60 @@ if (self === top) {
     </div>
     <hr/>
     <div class="modal-body">
-        <div class="row">
+        <div class="row" style="margin-bottom: 20px">
             <div class="form-group control-group">
                 <label class="col-md-3 control-label col-md-offset-3">Existing Segment</label>
                 <div class="controls ">
                     <input class="list-group-item col-md-4" type="text" ng-model="search.name" ng-hide="selected()" />
                     <li class="list-group-item col-md-4" ng-show="selected()">
-                        {{newSeg.name}}
+                        {{newSeg.name}} <span ng-show="newSeg.ext">_{{newSeg.ext}}</span>
                         <button type="button" class="close" aria-label="Close" ng-click="unselect()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </li>
                 </div>
                 <div ng-if="search.name && !selected()">
-                    <li class="list-group-item col-md-4 col-md-offset-6" ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments | filter:search "> {{segment.name}}
+                    <li class="list-group-item col-md-4 col-md-offset-6" ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments | filter:search ">
+                        {{segment.name}} <span ng-show="segment.ext">_{{segment.ext}}</span>
                     </li>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin-bottom: 20px">
             <div class="form-group control-group">
                 <label class="col-md-3 control-label col-md-offset-3">Usage</label>
                 <div class="controls ">
-                    <select class="list-group-item col-md-4" name="usage " ng-change="setDirty() " required ng-model="newSegment.usage " ng-options="usage for usage in config.usages " />
+                    <select class="list-group-item col-md-4" name="usage " ng-change="setDirty() " required ng-model="newSegment.usage " ng-options="usage for usage in config.usages " required />
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin-bottom: 20px">
             <div class="form-group control-group">
                 <label class="col-md-3 control-label col-md-offset-3">Cardinality</label>
                 <div class="controls " ng-controller="MessageRowCtrl ">
                     <span ng-form name="{{formName}} " class="form-inline ">
                                                 <input  class="list-group-item col-md-2 "
+                                                    placeholder="Min"
                                                        name="min "
                                                        ng-change="setDirty() "
                                                        ng-pattern="/^\d+$/ "
-                                                       ng-class="{ 'has-error' : {{formName}}.min.$invalid} "
                                                        ng-model="newSegment.min " required ng-minlength="1 ">
                                                 <input  class="list-group-item col-md-2 " type="text "
+                                                    placeholder="Max"
                                                        name="max "
                                                        ng-change="setDirty() "
-                                                       ng-class="{ 'has-error' : {{formName}}.max.$invalid} "
+                                                       
                                                        ng-pattern="/^\d+$|^\*?$/ "
                                                        ng-model="newSegment.max " required>
                                             </span>
                 </div>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 20px">
+            <div class="form-group control-group">
+                <label class="col-md-3 control-label col-md-offset-3">Comment</label>
+                <textarea class="list-group-item col-md-4" ng-model="newSegment.comment ">
+                </textarea>
             </div>
         </div>
         <hr/>
@@ -1494,11 +1535,54 @@ if (self === top) {
             <span class="header4 pull-left">Add Group</span>
         </div>
     </div>
+    <hr/>
     <div class="modal-body">
-        <div class="col-md-12">
-            <label>Group Name</label>
-            <input class="list-group-item " type="text" ng-model="grpName" />
+        <div class="row" style="margin-bottom: 20px">
+            <div class="form-group control-group">
+                <label class="col-md-3 control-label col-md-offset-3">Group Name</label>
+                <div class="controls ">
+                    <input class="list-group-item col-md-4" type="text" ng-model="grpName" />
+                </div>
+            </div>
         </div>
+        <div class="row" style="margin-bottom: 20px">
+            <div class="form-group control-group">
+                <label class="col-md-3 control-label col-md-offset-3">Usage</label>
+                <div class="controls ">
+                    <select class="list-group-item col-md-4" name="usage " ng-change="setDirty() " required ng-model="newGroup.usage " ng-options="usage for usage in config.usages " required />
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 20px">
+            <div class="form-group control-group">
+                <label class="col-md-3 control-label col-md-offset-3">Cardinality</label>
+                <div class="controls " ng-controller="MessageRowCtrl ">
+                    <span ng-form name="{{formName}} " class="form-inline ">
+                                                <input  class="list-group-item col-md-2 "
+                                                    placeholder="Min"
+                                                       name="min "
+                                                       ng-change="setDirty() "
+                                                       ng-pattern="/^\d+$/ "
+                                                       ng-model="newGroup.min " required ng-minlength="1 ">
+                                                <input  class="list-group-item col-md-2 " type="text "
+                                                    placeholder="Max"
+                                                       name="max "
+                                                       ng-change="setDirty() "
+                                                       
+                                                       ng-pattern="/^\d+$|^\*?$/ "
+                                                       ng-model="newGroup.max " required>
+                                            </span>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 20px">
+            <div class="form-group control-group">
+                <label class="col-md-3 control-label col-md-offset-3">Comment</label>
+                <textarea class="list-group-item col-md-4" ng-model="newGroup.comment ">
+                </textarea>
+            </div>
+        </div>
+        <hr/>
         <div class="modal-footer">
             <button class="btn btn-primary btn-sm" ng-click="addGroup()" ng-disabled="selection.datatype === null"><span><i
                     class="fa fa-play fa-fw">
@@ -1508,6 +1592,7 @@ if (self === top) {
                 &nbsp; </i>Cancel</span>
             </button>
         </div>
+    </div>
 </script>
 <script type="text/ng-template" id="SelectSegmentFlavor.html">
     <div class="modal-header modal-wide">

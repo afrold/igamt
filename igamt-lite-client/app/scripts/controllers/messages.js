@@ -6,11 +6,38 @@ angular.module('igl')
     .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService) {
 
         $scope.init = function() {};
+        $scope.expanded = true;
+        $scope.expandAll = function() {
+            $scope.expanded = !$scope.expanded;
+            //console.log($($('table')[1]));
+            //console.log($($('tr')[1]));
+
+            console.log($('#messageTable').treetable("node", "1"));
+            $('#messageTable').treetable("reveal", "1");
+            $('#messageTable').treetable("reveal", "2");
+
+            //$($('table')[1]).treetable('expandAll');
+
+            //$($('table')[2]).treetable('expandAll');
+            //$($('table')[0]).treetable('expandNode', 0);
+            //($($('tr')[1]).data().ttId)
+            //            $scope.messagesParams.treetable("collapseAll");
+        };
+        $scope.collapseAll = function() {
+            $scope.expanded = !$scope.expanded;
+            $('#messageTable').treetable('collapseAll');
+
+            // $($('table')[1]).treetable('collapseAll');
+        };
 
         $scope.copy = function(message) {
             CloneDeleteSvc.copyMessage(message);
             $rootScope.$broadcast('event:SetToC');
         };
+
+
+
+
 
         $scope.reset = function() {
             $rootScope.message = angular.copy($rootScope.messagesMap[$rootScope.message.id]);
@@ -38,7 +65,7 @@ angular.module('igl')
             $scope.saving = true;
 
             var message = $rootScope.message;
-            
+
             console.log($rootScope.message);
             MessageService.save(message).then(function(result) {
 
@@ -61,14 +88,10 @@ angular.module('igl')
                 $scope.clearDirty();
                 $rootScope.clearChanges();
                 console.log($scope.editForm);
-                
+
                 $rootScope.messageTree = null;
                 $rootScope.processMessageTree($rootScope.message);
-                console.log("one");
-                console.log(message);
-                console.log("two");
-                console.log($rootScope.message);
-                //console.log($rootScope.messageTree);
+
 
 
 
@@ -84,6 +107,52 @@ angular.module('igl')
             CloneDeleteSvc.deleteMessage(message);
             $rootScope.$broadcast('event:SetToC');
         };
+        $scope.editableSeg = '';
+
+
+        $scope.editSeg = function(segmentRef) {
+            $scope.editableSeg = segmentRef.obj.id;
+        }
+        $scope.backSeg = function() {
+            $scope.editableSeg = '';
+        };
+
+        $scope.selectSeg = function(segmentRef, segment) {
+            $scope.editableSeg = '';
+
+            console.log("segmentRef");
+            console.log(segmentRef);
+            segmentRef.obj.ref.id = segment.id;
+            segmentRef.obj.ref.ext = segment.ext;
+            segmentRef.obj.ref.label = segment.label;
+            segmentRef.obj.ref.name = segment.name;
+
+            $scope.setDirty();
+            $scope.Segselected = false;
+
+
+            console.log(segment);
+
+        };
+
+        $scope.selectedSeg = function() {
+            return ($scope.tempSeg !== undefined);
+        };
+        $scope.unselectSeg = function() {
+            $scope.tempSeg = undefined;
+            //$scope.newSeg = undefined;
+        };
+        $scope.isSegActive = function(id) {
+            if ($scope.tempSeg) {
+                return $scope.tempSeg.id === id;
+            } else {
+                return false;
+            }
+
+        };
+
+
+
 
         $scope.goToSegment = function(segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
@@ -113,6 +182,7 @@ angular.module('igl')
 
         ];
         $scope.addSegmentModal = function(place) {
+            console.log($rootScope.igdocument);
             var modalInstance = $modal.open({
                 templateUrl: 'AddSegmentModal.html',
                 controller: 'AddSegmentCtrl',
@@ -1292,9 +1362,7 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
         } else if (place.obj && place.obj.type === "group") {
             $scope.path = place.path.replace(/\[[0-9]+\]/g, '');
             $scope.path = $scope.path.split(".");
-            //place.children.push($scope.newSegment);
-            console.log($scope.path);
-            console.log($rootScope.message);
+
             SegmentService.addSegToPath($scope.path, $rootScope.message, $scope.newSegment);
         }
 
@@ -1353,7 +1421,13 @@ angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance
         $scope.newGroup.id = new ObjectId().toString();
         $scope.newGroup.name = $scope.grpName;
         if (place.children.length !== 0) {
-            $scope.newGroup.position = place.children[place.children.length - 1].obj.position + 1;
+            if (place.type === "message") {
+                $scope.newGroup.position = place.children[place.children.length - 1].position + 1;
+
+            } else {
+                $scope.newGroup.position = place.children[place.children.length - 1].obj.position + 1;
+
+            }
 
         } else {
             $scope.newGroup.position = 1;
