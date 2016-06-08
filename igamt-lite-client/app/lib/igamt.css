@@ -119,6 +119,10 @@ input.igl-has-error,select.igl-has-error {
     background-color: #f2c60d;
 }
 
+.label-dynamicCase {
+    background-color: #ff43d8;
+}
+
 .label-sub-component {
     background-color: rgba(0, 0, 0, 0.91);
 }

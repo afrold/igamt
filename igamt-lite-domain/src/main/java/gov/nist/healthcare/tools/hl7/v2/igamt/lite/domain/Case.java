@@ -18,7 +18,10 @@ public class Case implements Serializable, Cloneable {
 	public Case() {
 		super();
 		this.id = ObjectId.get().toString();
+		this.type = "case";
 	}
+	
+	private String type;
 
 	private String id;
 
@@ -61,6 +64,7 @@ public class Case implements Serializable, Cloneable {
 		clonedCase.setId(null);
 		clonedCase.setValue(value);
 		clonedCase.setDatatype(datatype);
+		clonedCase.setType(this.type);
 
 		// if (dtRecords.containsKey(datatype.getId())) {
 		// } else {
@@ -70,6 +74,14 @@ public class Case implements Serializable, Cloneable {
 		// }
 
 		return clonedCase;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

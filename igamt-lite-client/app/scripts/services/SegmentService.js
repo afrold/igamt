@@ -5,7 +5,19 @@
 angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', 'ElementUtils', '$q', '$http', 'FilteringSvc', 'userInfoService', function($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, userInfoService) {
     var SegmentService = {
         getNodes: function(parent, root) {
-            var children = parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components : parent.children : root != null ? root.fields : [];
+            var children = [];
+
+            if(parent && parent.type && parent.type === 'case'){
+                children = $rootScope.datatypesMap[parent.datatype].components;
+            }else {
+                children = parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components : parent.children : root != null ? root.fields : [];
+
+                if(parent && parent.datatype && $rootScope.datatypesMap[parent.datatype.id].name === 'varies'){
+                    var mapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping){ return mapping.position == parent.position; });
+                    if(mapping) children = mapping.cases;
+                }
+            }
+
             return children;
         },
         getParent: function(child) {
@@ -23,12 +35,12 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
         },
 
         getReadTemplate: function(node, root) {
-            var template = node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
+            var template = node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : node.type === 'case' ? 'SegmentCaseReadTree.html' : 'SegmentComponentReadTree.html';
             return template;
         },
 
         getEditTemplate: function(node, root) {
-            var template = node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
+            var template = node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : node.type === 'case' ? 'SegmentCaseReadTree.html' : 'SegmentComponentEditTree.html';
             return template;
         },
 

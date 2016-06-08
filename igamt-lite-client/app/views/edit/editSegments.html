@@ -366,6 +366,50 @@
     </tr>
 </script>
 
+
+<script type="text/ng-template" id="SegmentCaseReadTree.html">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
+        <td class="col-xs-2 col-fixed-250">
+
+            <span ng-if="node.type === 'case'" class="label label-dynamicCase label-icon">D</span>
+            <span ng-bind="node.value"></span>
+        </td>
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
+            <div>-</div>
+        </td>
+
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+            {{getDatatypeLabel(datatypesMap[node.datatype])}}
+        </td>
+        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
+            <div>-</div>
+        </td>
+    </tr>
+</script>
+
+
+
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)"
         ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
@@ -467,6 +511,10 @@
 
             <a ng-click="showSelectDatatypeFlavorDlg(node)" class="point">
                 {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            </a>
+
+            <a ng-show="datatypesMap[node.datatype.id].name === 'varies'" ng-click="showEditDynamicMappingDlg(node)" class="point">
+                <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
 
         </td>
@@ -1362,6 +1410,73 @@
     <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
 </div>
+</script>
+
+<script type="text/ng-template" id="DynamicMappingCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Edit Dynamic Mapping for {{segment.name}}-{{selectedNode.position}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <form role="form">
+
+                <div class="col-md-4">
+                    Reference:
+                </div>
+
+                <div class="col-md-8">
+                    <select class="form-control" name="reference"
+                            ng-change="recordChange()"
+                            ng-model="selectedMapping.reference"
+                            ng-options="field.position as segment.name + '-' + field.position + ' : ' + field.name for field in segment.fields"/>
+                </div>
+
+                <div ng-show="selectedMapping.reference" class="col-md-12">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr class="tbl-header">
+                                <th class="col-md-4">Reference Value</th>
+                                <th class="col-md-7">Datatype</th>
+                                <th class="col-md-1">
+                                    <button title="Add" type="button" class="btn btn-xs btn-info" ng-click="addCase()">
+                                        <i class="fa fa-plus fa-fw"></i>
+                                    </button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="case in selectedMapping.cases">
+                                <td class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="case.value" ng-change="recordChange()"/>
+                                </td>
+                                <td class="col-md-7">
+                                    <select ng-model="case.datatype" class="form-control" ng-change="recordChange()"
+                                            ng-options="link.id as getDatatypeLabel(datatypesMap[link.id]) for link in igdocument.profile.datatypeLibrary.children | filter: {name: case.value}" />
+                                </td>
+                                <td class="col-md-1">
+                                    <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="deleteCase(case)">
+                                        <i class="fa fa-trash-o fa-fw"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button ng-show="changed" type="button" ng-click="updateMapping()" class="btn btn-primary btn-sm"><i
+                class="fa fa-check fa-fw">&nbsp; </i>Update
+        </button>
+        <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-warning btn-sm"><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel
+        </button>
+        <button ng-show="!changed" class="btn btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+            &nbsp; </i>Cancel</span></button>
+    </div>
 </script>
 
 <script type="text/ng-template" id="TableMappingSegmentCtrl.html">
