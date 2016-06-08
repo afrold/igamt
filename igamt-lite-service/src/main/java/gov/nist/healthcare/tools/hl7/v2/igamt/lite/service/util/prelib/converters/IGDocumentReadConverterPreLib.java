@@ -1,12 +1,13 @@
 /**
- * This software was developed at the National Institute of Standards and Technology by employees
- * of the Federal Government in the course of their official duties. Pursuant to title 17 Section 105 of the
- * United States Code this software is not subject to copyright protection and is in the public domain.
- * This is an experimental system. NIST assumes no responsibility whatsoever for its use by other parties,
- * and makes no guarantees, expressed or implied, about its quality, reliability, or any other characteristic.
- * We would appreciate acknowledgement if the software is used. This software can be redistributed and/or
- * modified freely provided that any derivative works bear some notice that they are derived from it, and any
- * modified versions bear some notice that they have been modified.
+ * This software was developed at the National Institute of Standards and Technology by employees of
+ * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
+ * of the United States Code this software is not subject to copyright protection and is in the
+ * public domain. This is an experimental system. NIST assumes no responsibility whatsoever for its
+ * use by other parties, and makes no guarantees, expressed or implied, about its quality,
+ * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
+ * used. This software can be redistributed and/or modified freely provided that any derivative
+ * works bear some notice that they are derived from it, and any modified versions bear some notice
+ * that they have been modified.
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converters;
 
@@ -46,7 +47,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.IGDocumen
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfileMetaDataPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePreLib;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -66,32 +66,34 @@ import com.mongodb.DBObject;
  * @author Harold Affo (harold.affo@nist.gov) Mar 31, 2015
  */
 @ReadingConverter
-public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocumentPreLib> {
+public class IGDocumentReadConverterPreLib implements
+		Converter<DBObject, IGDocumentPreLib> {
 
-	private static final Logger log = LoggerFactory.getLogger(IGDocumentReadConverterPreLib.class);
-	
+	private static final Logger log = LoggerFactory
+			.getLogger(IGDocumentReadConverterPreLib.class);
+
 	public IGDocumentReadConverterPreLib() {
 		log.info("IGDocument Read Converter Created");
 	}
 
 	@Override
 	public IGDocumentPreLib convert(DBObject source) {
-//		System.out.println("convert==>");
+		// System.out.println("convert==>");
 		IGDocumentPreLib igd = new IGDocumentPreLib();
 		igd.setAccountId(readLong(source, "accountId"));
 		igd.setChildSections(sections((DBObject) source.get("childSections")));
 		igd.setComment(readString(source, "comment"));
 		igd.setId(readMongoId(source));
-//		System.out.println(igd.getId());
+		// System.out.println(igd.getId());
 		igd.setMetaData(documentMetaData((DBObject) source.get("metaData")));
 		igd.setProfile(profile((DBObject) source.get("profile")));
 		igd.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
 		igd.setType(((String) source.get("type")));
 		igd.setUsageNote(readString(source, "usageNote"));
-//		System.out.println("<==convert");
+		// System.out.println("<==convert");
 		return igd;
 	}
-	
+
 	private ProfilePreLib profile(DBObject source) {
 		ProfilePreLib profile = new ProfilePreLib();
 		profile.setId(readMongoId(source));
@@ -103,15 +105,16 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		profile.setAccountId(readLong(source, "accountId"));
 		profile.setMetaData(profileMetaData((DBObject) source.get("metaData")));
 		profile.setTables(tables((DBObject) source.get("tables")));
-		profile.setDatatypes(datatypes((DBObject) source.get("datatypes"), profile));
+		profile.setDatatypes(datatypes((DBObject) source.get("datatypes"),
+				profile));
 		profile.setSegments(segments((DBObject) source.get("segments"), profile));
 		profile.setMessages(messages((DBObject) source.get("messages"), profile));
-		
+
 		profile.setSectionContents((String) source.get("sectionContents"));
 		profile.setSectionDescription((String) source.get("sectionDescription"));
 		profile.setSectionPosition((Integer) source.get("sectionPosition"));
 		profile.setSectionTitle((String) source.get("sectionTitle"));
-		
+
 		profile.setConstraintId((String) source.get("constraintId"));
 
 		Object baseId = source.get("baseId");
@@ -125,20 +128,31 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 
 	private DocumentMetaDataPreLib documentMetaData(DBObject source) {
 		DocumentMetaDataPreLib metaData = new DocumentMetaDataPreLib();
-		metaData.setDate(source.get("date") != null ? ((String) source.get("date")) : null);
-		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext")) : null);
-		metaData.setIdentifier(source.get("identifier") != null ? ((String) source.get("identifier")) : null);
-		metaData.setOrgName(source.get("orgName") != null ? ((String) source.get("orgName")) : null);
-		metaData.setSpecificationName(source.get("specificationName") != null ? ((String) source.get("specificationName")) : null);
-		metaData.setStatus(source.get("status") != null ? ((String) source.get("status")) : null);
-		metaData.setSubTitle(source.get("subTitle") != null ? ((String) source.get("subTitle")) : null);
-		metaData.setTitle(source.get("title") != null ? ((String) source.get("title")) : null);
-		metaData.setTopics(source.get("topics") != null ? ((String) source.get("topics")) : null);
-		metaData.setType(source.get("type") != null ? ((String) source.get("type")) : null);
-		metaData.setVersion(source.get("version") != null ? ((String) source.get("version")) : null);
+		metaData.setDate(source.get("date") != null ? ((String) source
+				.get("date")) : null);
+		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext"))
+				: null);
+		metaData.setIdentifier(source.get("identifier") != null ? ((String) source
+				.get("identifier")) : null);
+		metaData.setOrgName(source.get("orgName") != null ? ((String) source
+				.get("orgName")) : null);
+		metaData.setSpecificationName(source.get("specificationName") != null ? ((String) source
+				.get("specificationName")) : null);
+		metaData.setStatus(source.get("status") != null ? ((String) source
+				.get("status")) : null);
+		metaData.setSubTitle(source.get("subTitle") != null ? ((String) source
+				.get("subTitle")) : null);
+		metaData.setTitle(source.get("title") != null ? ((String) source
+				.get("title")) : null);
+		metaData.setTopics(source.get("topics") != null ? ((String) source
+				.get("topics")) : null);
+		metaData.setType(source.get("type") != null ? ((String) source
+				.get("type")) : null);
+		metaData.setVersion(source.get("version") != null ? ((String) source
+				.get("version")) : null);
 		return metaData;
 	}
-	
+
 	private Set<Section> sections(DBObject source) {
 		Set<Section> sections = new HashSet<Section>();
 		BasicDBList sectionsDBObjects = (BasicDBList) source;
@@ -146,32 +160,39 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		while (it.hasNext()) {
 			DBObject childSource = (DBObject) it.next();
 			Section targetSection = new Section();
-			targetSection.setChildSections(sections((DBObject) childSource.get("childSections")));
+			targetSection.setChildSections(sections((DBObject) childSource
+					.get("childSections")));
 			targetSection.setId(readMongoId(childSource));
-			targetSection.setSectionContents((String) childSource.get("sectionContents"));
-			targetSection.setSectionDescription((String) childSource.get("sectionDescription"));
-			targetSection.setSectionPosition((Integer) childSource.get("sectionPosition"));
-			targetSection.setSectionTitle((String) childSource.get("sectionTitle"));
+			targetSection.setSectionContents((String) childSource
+					.get("sectionContents"));
+			targetSection.setSectionDescription((String) childSource
+					.get("sectionDescription"));
+			targetSection.setSectionPosition((Integer) childSource
+					.get("sectionPosition"));
+			targetSection.setSectionTitle((String) childSource
+					.get("sectionTitle"));
 			targetSection.setType((String) childSource.get("type"));
 			sections.add(targetSection);
 		}
 		return sections;
 	}
-	
+
 	private ProfileMetaDataPreLib profileMetaData(DBObject source) {
 		ProfileMetaDataPreLib metaData = new ProfileMetaDataPreLib();
-//		metaData.setName(((String) source.get("name")));
-//		metaData.setOrgName("NIST");
+		// metaData.setName(((String) source.get("name")));
+		// metaData.setOrgName("NIST");
 		metaData.setStatus(((String) source.get("status")));
 		metaData.setTopics(((String) source.get("topics")));
 		metaData.setType(((String) source.get("type")));
-		metaData.setSpecificationName(source.get("specificationName") != null ? ((String) source.get("specificationName")) : null);
+		metaData.setSpecificationName(source.get("specificationName") != null ? ((String) source
+				.get("specificationName")) : null);
 		metaData.setHl7Version(((String) source.get("hl7Version")));
 		metaData.setSchemaVersion(((String) source.get("schemaVersion")));
 		metaData.setSubTitle(((String) source.get("subTitle")));
-//		metaData.setVersion(((String) source.get("version")));
-//		metaData.setDate(Constant.mdy.format(new Date()));
-		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext")): null);
+		// metaData.setVersion(((String) source.get("version")));
+		// metaData.setDate(Constant.mdy.format(new Date()));
+		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext"))
+				: null);
 		Set<String> encodings = new HashSet<String>();
 		Object encodingObj = source.get("encodings");
 		BasicDBList encodingDBObjects = (BasicDBList) encodingObj;
@@ -188,10 +209,11 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		segments.setId(readMongoId(source));
 		segments.setType("segments");
 		segments.setSectionContents((String) source.get("sectionContents"));
-		segments.setSectionDescription((String) source.get("sectionDescription"));
+		segments.setSectionDescription((String) source
+				.get("sectionDescription"));
 		segments.setSectionPosition((Integer) source.get("sectionPosition"));
 		segments.setSectionTitle((String) source.get("sectionTitle"));
-		
+
 		BasicDBList segmentsDBObjects = (BasicDBList) source.get("children");
 		if (segmentsDBObjects != null) {
 			Set<Segment> children = new HashSet<Segment>();
@@ -206,7 +228,7 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 
 	private Segment segment(DBObject source, Datatypes datatypes, Tables tables) {
 		Segment seg = new Segment();
-		seg.setId(readMongoId(source)); 
+		seg.setId(readMongoId(source));
 		seg.setType(((String) source.get("type")));
 		seg.setLabel((String) source.get("label"));
 		seg.setName(((String) source.get("name")));
@@ -247,9 +269,11 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 			seg.setPredicates(predicates);
 		}
 
-		DBObject dynamicMappingDBObject = (DBObject) source.get("dynamicMapping");
+		DBObject dynamicMappingDBObject = (DBObject) source
+				.get("dynamicMapping");
 		if (dynamicMappingDBObject != null) {
-			DynamicMapping dyn = dynamicMapping(dynamicMappingDBObject, datatypes);
+			DynamicMapping dyn = dynamicMapping(dynamicMappingDBObject,
+					datatypes);
 			seg.setDynamicMapping(dyn);
 		}
 
@@ -260,21 +284,22 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		Datatypes datatypes = new Datatypes();
 		datatypes.setId(readMongoId(source));
 		datatypes.setType("datatypes");
-		
+
 		datatypes.setSectionContents((String) source.get("sectionContents"));
-		datatypes.setSectionDescription((String) source.get("sectionDescription"));
+		datatypes.setSectionDescription((String) source
+				.get("sectionDescription"));
 		datatypes.setSectionPosition((Integer) source.get("sectionPosition"));
 		datatypes.setSectionTitle((String) source.get("sectionTitle"));
-		
+
 		BasicDBList datatypesDBObjects = (BasicDBList) source.get("children");
 		datatypes.setChildren(new HashSet<Datatype>());
-		
-		
+
 		if (datatypesDBObjects != null) {
 			for (Object childObj : datatypesDBObjects) {
 				DBObject child = (DBObject) childObj;
 				if (datatypes.findOne(readMongoId(child)) == null) {
-					datatypes.addDatatype(datatype(child, datatypes, profile.getTables(), datatypesDBObjects));
+					datatypes.addDatatype(datatype(child, datatypes,
+							profile.getTables(), datatypesDBObjects));
 				}
 			}
 		}
@@ -284,7 +309,7 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 
 	private Datatype datatype(DBObject source, Datatypes datatypes,
 			Tables tables, BasicDBList datatypesDBObjects)
-					throws ProfileConversionException {
+			throws ProfileConversionException {
 		Datatype dt = new Datatype();
 		dt.setId(readMongoId(source));
 		dt.setType(((String) source.get("type")));
@@ -295,7 +320,7 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		dt.setComment(readString(source, "comment"));
 		dt.setUsageNote(readString(source, "usageNote"));
 		dt.setComponents(new ArrayList<Component>());
-		
+
 		BasicDBList componentObjects = (BasicDBList) source.get("components");
 		if (componentObjects != null) {
 			List<Component> components = new ArrayList<Component>();
@@ -308,7 +333,8 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 			dt.setComponents(components);
 		}
 
-		BasicDBList confStsObjects = (BasicDBList) source.get("conformanceStatements");
+		BasicDBList confStsObjects = (BasicDBList) source
+				.get("conformanceStatements");
 		if (confStsObjects != null) {
 			List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
 			for (Object confStObj : confStsObjects) {
@@ -353,7 +379,8 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		cs.setDescription((String) source.get("description"));
 		cs.setAssertion(((String) source.get("assertion")));
 		cs.setReference(reference(((DBObject) source.get("reference"))));
-		cs.setConstraintClassification(source.get("constraintClassification")==null?"E":((String) source.get("constraintClassification")));
+		cs.setConstraintClassification(source.get("constraintClassification") == null ? "E"
+				: ((String) source.get("constraintClassification")));
 		return cs;
 	}
 
@@ -365,8 +392,10 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		p.setDescription((String) source.get("description"));
 		p.setAssertion(((String) source.get("assertion")));
 		p.setReference(reference(((DBObject) source.get("reference"))));
-		p.setFalseUsage(source.get("falseUsage") != null ? Usage.valueOf(((String) source.get("falseUsage"))): null);
-		p.setTrueUsage(source.get("trueUsage") != null ?Usage.valueOf(((String) source.get("trueUsage"))): null);
+		p.setFalseUsage(source.get("falseUsage") != null ? Usage
+				.valueOf(((String) source.get("falseUsage"))) : null);
+		p.setTrueUsage(source.get("trueUsage") != null ? Usage
+				.valueOf(((String) source.get("trueUsage"))) : null);
 		return p;
 	}
 
@@ -435,13 +464,14 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		f.setMin((Integer) source.get("min"));
 		f.setMax((String) source.get("max"));
 		f.setText(readString(source, "text"));
-		f.setDatatype((datatypeLink((String) source.get("datatype"), datatypes, null)));
+		f.setDatatype((datatypeLink((String) source.get("datatype"), datatypes,
+				null)));
 		return f;
 	}
 
 	private Component component(DBObject source, Datatypes datatypes,
 			Tables tables, BasicDBList datatypesDBObjects)
-					throws ProfileConversionException {
+			throws ProfileConversionException {
 		Component c = new Component();
 		c.setId(readMongoId(source));
 		c.setType(((String) source.get("type")));
@@ -453,66 +483,71 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		c.setPosition((Integer) source.get("position"));
 		c.setTable((tableLink((String) source.get("table"), tables)));
 		c.setUsage(Usage.valueOf((String) source.get("usage")));
-		c.setDatatype((datatypeLink((String) source.get("datatype"), datatypes, datatypesDBObjects)));
+		c.setDatatype((datatypeLink((String) source.get("datatype"), datatypes,
+				datatypesDBObjects)));
 		return c;
 	}
-	
-	private DatatypeLink datatypeLink(String id, Datatypes datatypes, BasicDBList datatypesDBObjects){
+
+	private DatatypeLink datatypeLink(String id, Datatypes datatypes,
+			BasicDBList datatypesDBObjects) {
 		DatatypeLink dl = new DatatypeLink();
 		dl.setId(id);
-		Datatype dt =  datatypes.findOne(id);
-		
-		if(dt == null){
-			dl= this.findDatatypeLinkOnDBList(id, datatypesDBObjects);
-			
-			if(dl == null) System.out.println("Missing dl!!!::::" + id);
-		}else {
+		Datatype dt = datatypes.findOne(id);
+
+		if (dt == null) {
+			dl = this.findDatatypeLinkOnDBList(id, datatypesDBObjects);
+
+			if (dl == null)
+				System.out.println("Missing dl!!!::::" + id);
+		} else {
 			dl.setName(dt.getName());
-			if(dt.getLabel().equals(dt.getName())){
+			if (dt.getLabel().equals(dt.getName())) {
 				dl.setExt(null);
-			}else{
+			} else {
 				dl.setExt(dt.getLabel().replace(dt.getName() + "_", ""));
 			}
 		}
 		return dl;
 	}
-	
-	private DatatypeLink findDatatypeLinkOnDBList(String id, BasicDBList datatypesDBObjects){
+
+	private DatatypeLink findDatatypeLinkOnDBList(String id,
+			BasicDBList datatypesDBObjects) {
 		DatatypeLink dl = new DatatypeLink();
 		dl.setId(id);
-		if(datatypesDBObjects != null){
+		if (datatypesDBObjects != null) {
 			for (Object obj : datatypesDBObjects) {
 				DBObject datatypeObject = (DBObject) obj;
 				String dtid = readMongoId(datatypeObject);
-				
-				if(dtid.equals(id)){
+
+				if (dtid.equals(id)) {
 					String name = (String) datatypeObject.get("name");
 					String label = (String) datatypeObject.get("label");
-					
-					if(name.equals(label)){
+
+					if (name.equals(label)) {
 						dl.setExt(null);
-					}else {
+					} else {
 						dl.setExt(label.replace(name + "_", ""));
 					}
 
 					dl.setName(name);
-					
+
 					return dl;
 				}
 			}
 		}
-		
+
 		return null;
 	}
 
-	private TableLink tableLink(String id, Tables tables){
-		if(id == null || id.isEmpty()) return null;
+	private TableLink tableLink(String id, Tables tables) {
+		if (id == null || id.isEmpty())
+			return null;
 		TableLink tl = new TableLink();
 		tl.setId(id);
 		Table t = tables.findOneTableById(id);
-		
-		
-		if(t == null) return null;
+
+		if (t == null)
+			return null;
 		tl.setBindingIdentifier(t.getBindingIdentifier());
 		return tl;
 	}
@@ -521,14 +556,16 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		Tables tables = new Tables();
 		tables.setId(readMongoId(source));
 		tables.setType("tables");
-		tables.setValueSetLibraryIdentifier(((String) source.get("valueSetLibraryIdentifier")));
+		tables.setValueSetLibraryIdentifier(((String) source
+				.get("valueSetLibraryIdentifier")));
 		tables.setStatus(((String) source.get("status")));
-		tables.setValueSetLibraryVersion(((String) source.get("valueSetLibraryVersion")));
+		tables.setValueSetLibraryVersion(((String) source
+				.get("valueSetLibraryVersion")));
 		tables.setOrganizationName(((String) source.get("organizationName")));
 		tables.setName(((String) source.get("name")));
 		tables.setDescription(((String) source.get("description")));
 		tables.setDateCreated(((String) source.get("dateCreated")));
-		
+
 		tables.setSectionContents((String) source.get("sectionContents"));
 		tables.setSectionDescription((String) source.get("sectionDescription"));
 		tables.setSectionPosition((Integer) source.get("sectionPosition"));
@@ -542,28 +579,37 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 				DBObject tableObject = (DBObject) tableObj;
 				Table table = new Table();
 				table.setType("table");
-				
+
 				table.setCodes(new ArrayList<Code>());
 				table.setId(readMongoId(tableObject));
-				table.setBindingIdentifier(((String) tableObject.get("bindingIdentifier")));
-				//Nullity tests added for retro compatibility
-				if (tableObject.get("bindingIdentifier") == null){
-					table.setBindingIdentifier(((String) tableObject.get("mappingId")));
+				table.setBindingIdentifier(((String) tableObject
+						.get("bindingIdentifier")));
+				// Nullity tests added for retro compatibility
+				if (tableObject.get("bindingIdentifier") == null) {
+					table.setBindingIdentifier(((String) tableObject
+							.get("mappingId")));
 				}
 				table.setName(((String) tableObject.get("bindingIdentifier")));
 				table.setDescription(((String) tableObject.get("description")));
-				//Nullity tests added for retro compatibility
-				if (tableObject.get("description") == null){
+				// Nullity tests added for retro compatibility
+				if (tableObject.get("description") == null) {
 					table.setDescription((String) tableObject.get("name"));
 				}
-				table.setOrder(tableObject.get("order") != null ? ((Integer) tableObject.get("order")): 0);
+				table.setOrder(tableObject.get("order") != null ? ((Integer) tableObject
+						.get("order")) : 0);
 				table.setGroup(((String) tableObject.get("group")));
 				table.setVersion(((String) tableObject.get("version")));
 				table.setOid(((String) tableObject.get("oid")));
-				//Nullity tests added for retro compatibility
-				table.setStability(tableObject.get("stability") == null ? Stability.Dynamic : Stability.fromValue((String) tableObject.get("stability")));
-				table.setExtensibility(tableObject.get("extensibility") == null ? Extensibility.Open : Extensibility.fromValue((String) tableObject.get("extensibility")));
-				table.setContentDefinition(tableObject.get("contentDefinition") == null ? ContentDefinition.Intensional : ContentDefinition.fromValue((String) tableObject.get("contentDefinition")));
+				// Nullity tests added for retro compatibility
+				table.setStability(tableObject.get("stability") == null ? Stability.Dynamic
+						: Stability.fromValue((String) tableObject
+								.get("stability")));
+				table.setExtensibility(tableObject.get("extensibility") == null ? Extensibility.Open
+						: Extensibility.fromValue((String) tableObject
+								.get("extensibility")));
+				table.setContentDefinition(tableObject.get("contentDefinition") == null ? ContentDefinition.Intensional
+						: ContentDefinition.fromValue((String) tableObject
+								.get("contentDefinition")));
 				BasicDBList codesDBObjects = (BasicDBList) tableObject
 						.get("codes");
 				if (codesDBObjects != null)
@@ -572,18 +618,21 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 						Code code = new Code();
 						code.setId(readMongoId(codeObject));
 						code.setValue(((String) codeObject.get("value")));
-						code.setCodeSystem(((String) codeObject.get("codeSystem")));
-						code.setCodeSystemVersion(((String) codeObject.get("codeSystemVersion")));
+						code.setCodeSystem(((String) codeObject
+								.get("codeSystem")));
+						code.setCodeSystemVersion(((String) codeObject
+								.get("codeSystemVersion")));
 						code.setCodeUsage(((String) codeObject.get("codeUsage")));
 						code.setType(((String) codeObject.get("type")));
 						code.setLabel(((String) codeObject.get("label")));
 						code.setComments(readString(codeObject, "comments"));
-						//Added for retro compatibility
-						if (codeObject.get("value") == null){
+						// Added for retro compatibility
+						if (codeObject.get("value") == null) {
 							code.setValue(((String) codeObject.get("code")));
 						}
-						if (codeObject.get("codeSystem") == null){
-							code.setCodeSystem((String) codeObject.get("codesys"));
+						if (codeObject.get("codeSystem") == null) {
+							code.setCodeSystem((String) codeObject
+									.get("codesys"));
 						}
 						table.addCode(code);
 					}
@@ -601,11 +650,11 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		messages.setId(readMongoId(source));
 		messages.setType("messages");
 		messages.setSectionContents((String) source.get("sectionContents"));
-		messages.setSectionDescription((String) source.get("sectionDescription"));
+		messages.setSectionDescription((String) source
+				.get("sectionDescription"));
 		messages.setSectionPosition((Integer) source.get("sectionPosition"));
 		messages.setSectionTitle((String) source.get("sectionTitle"));
-		
-		
+
 		BasicDBList messagesDBObjects = (BasicDBList) source.get("children");
 		messages.setChildren(new HashSet<Message>());
 		for (Object childObj : messagesDBObjects) {
@@ -613,8 +662,9 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 			DBObject child = (DBObject) childObj;
 			message.setId(readMongoId(child));
 			message.setName((String) child.get("name"));
-			if (child.get("name") == null){
-				message.setName((String) child.get("messageType") + "_" + (String) child.get("event"));
+			if (child.get("name") == null) {
+				message.setName((String) child.get("messageType") + "_"
+						+ (String) child.get("event"));
 			}
 			message.setMessageType((String) child.get("messageType"));
 			message.setComment(readString(child, "comment"));
@@ -625,10 +675,9 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 			message.setStructID((String) child.get("structID"));
 			message.setType((String) child.get("type"));
 			message.setMessageID((String) child.get("messageID"));
-			message.setUsageNote((String) child.get("usageNote"));
-			
-			
-			BasicDBList confStsObjects = (BasicDBList) child.get("conformanceStatements");
+
+			BasicDBList confStsObjects = (BasicDBList) child
+					.get("conformanceStatements");
 			if (confStsObjects != null) {
 				List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
 				for (Object confStObj : confStsObjects) {
@@ -683,24 +732,24 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		segRef.setRef(segmentLink((String) source.get("ref"), segments));
 		return segRef;
 	}
-	
-	private SegmentLink segmentLink(String id, Segments segments){
-		if(id == null || id.isEmpty()) return null;
+
+	private SegmentLink segmentLink(String id, Segments segments) {
+		if (id == null || id.isEmpty())
+			return null;
 		SegmentLink sl = new SegmentLink();
 		sl.setId(id);
 		Segment s = segments.findOneSegmentById(id);
-		if(s == null){
-			System.out.println("NULL Segment: "+ id);
+		if (s == null) {
+			System.out.println("NULL Segment: " + id);
 		}
-		
-		
+
 		sl.setName(s.getName());
-		if(s.getName().equals(s.getLabel())){
+		if (s.getName().equals(s.getLabel())) {
 			sl.setExt(null);
-		}else {
+		} else {
 			sl.setExt(s.getLabel().replace(s.getName() + "_", ""));
 		}
-		
+
 		return sl;
 	}
 
@@ -732,9 +781,9 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 			}
 		}
 		group.setChildren(segOrGroups);
-		
-		
-		BasicDBList confStsObjects = (BasicDBList) source.get("conformanceStatements");
+
+		BasicDBList confStsObjects = (BasicDBList) source
+				.get("conformanceStatements");
 		if (confStsObjects != null) {
 			List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
 			for (Object confStObj : confStsObjects) {
@@ -755,10 +804,7 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 			}
 			group.setPredicates(predicates);
 		}
-		
-		
-		
-		
+
 		return group;
 	}
 
@@ -786,15 +832,15 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		return null;
 	}
 
-	private String readMongoId(DBObject source){
-		if ( source.get("_id") != null){
-			if (source.get("_id") instanceof ObjectId){
+	private String readMongoId(DBObject source) {
+		if (source.get("_id") != null) {
+			if (source.get("_id") instanceof ObjectId) {
 				return ((ObjectId) source.get("_id")).toString();
 			} else {
 				return (String) source.get("_id");
 			}
-		} else if ( source.get("id") != null){
-			if (source.get("id") instanceof ObjectId){
+		} else if (source.get("id") != null) {
+			if (source.get("id") instanceof ObjectId) {
 				return ((ObjectId) source.get("id")).toString();
 			} else {
 				return (String) source.get("id");
@@ -803,65 +849,34 @@ public class IGDocumentReadConverterPreLib implements Converter<DBObject, IGDocu
 		return null;
 	}
 
-	private Long readLong(DBObject source, String tag){
-		if ( source.get(tag) != null){
-			if (source.get(tag) instanceof Integer){
+	private Long readLong(DBObject source, String tag) {
+		if (source.get(tag) != null) {
+			if (source.get(tag) instanceof Integer) {
 				return Long.valueOf((Integer) source.get(tag));
 			} else if (source.get(tag) instanceof String) {
-				return Long.valueOf((String)source.get(tag));
+				return Long.valueOf((String) source.get(tag));
 			} else if (source.get(tag) instanceof Long) {
-				return Long.valueOf((Long)source.get(tag));
+				return Long.valueOf((Long) source.get(tag));
 			}
 		}
 		return Long.valueOf(0);
 	}
 
-	private String readString(DBObject source, String tag){
-		if ( source.get(tag) != null){
-				return String.valueOf((String) source.get(tag));
-			}
+	private String readString(DBObject source, String tag) {
+		if (source.get(tag) != null) {
+			return String.valueOf((String) source.get(tag));
+		}
 		return "";
-	} 
-	
-	
-	private Integer getMinLength(DBObject source){
-		return ((Integer) source.get("minLength") == -1 ? 0:((Integer) source.get("minLength")));
-	} 
-	
-	private String getConfLength(DBObject source){
-		return "-1".equals((String) source.get("confLength")) ? "":(String) source.get("confLength");
-	} 
-	
+	}
 
-	// private DBObject findDatatypeById(String id, BasicDBList datatypes)
-	// throws ProfileConversionException {
-	// if (datatypes != null) {
-	// for (Object d : datatypes) {
-	// DBObject dbObj = (DBObject) d;
-	// String di = ((ObjectId) dbObj.get("_id")).toString();
-	// if (id.equals(di)) {
-	// return dbObj;
-	// }
-	// }
-	// }
-	// throw new ProfileConversionException("Datatype DBObject " + id
-	// + " not found");
-	// }
-	//
-	// private Table findTableById(String id, Tables tables) {
-	// if (id == null) {
-	// return null;
-	// }
-	// if (tables != null) {
-	// for (Table t : tables.getChildren()) {
-	// if (t.getId().equals(id)) {
-	// return t;
-	// }
-	// }
-	// }
-	// throw new IllegalArgumentException("Table " + id
-	// + " not found in the profile");
-	// }
+	private Integer getMinLength(DBObject source) {
+		return ((Integer) source.get("minLength") == -1 ? 0 : ((Integer) source
+				.get("minLength")));
+	}
 
+	private String getConfLength(DBObject source) {
+		return "-1".equals((String) source.get("confLength")) ? ""
+				: (String) source.get("confLength");
+	}
 
 }

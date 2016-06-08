@@ -21,286 +21,284 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Document(collection = "table")
-public class Table extends DataModel implements Serializable,
-		Comparable<Table>, Cloneable {
+public class Table extends DataModel implements Serializable, Comparable<Table>, Cloneable {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 734059059225906039L;
+  private static final long serialVersionUID = 734059059225906039L;
 
-	@Id
-	private String id;
+  @Id
+  private String id;
 
-	private String hl7Version;
+  private String hl7Version;
 
-	private Set<String> libIds = new HashSet<String>();
+  private Set<String> libIds = new HashSet<String>();
 
-	private String bindingIdentifier;
+  private String bindingIdentifier;
 
- 	private String name;
+  private String name;
 
-	private String description;
-	private String version;
-	private String oid;
-	private Stability stability;
-	private Extensibility extensibility;
+  private String description;
+  private String version;
+  private String oid;
+  private Stability stability;
+  private Extensibility extensibility;
 
-	private ContentDefinition contentDefinition;
-	private String group;
-	private int order;
+  private ContentDefinition contentDefinition;
+  private String group;
+  private int order;
 
-	private List<Code> codes = new ArrayList<Code>();
+  private List<Code> codes = new ArrayList<Code>();
 
-	private Constant.SCOPE scope;
-	
-	protected Long accountId; 
-		
-	protected String date;
-			
-	protected STATUS status; 
-	
-	
-	
-	
-	public Table() {
-		super();
-		this.type = Constant.TABLE;
-	}
+  private Constant.SCOPE scope;
 
-	public String getId() {
-		return id;
-	}
+  protected Long accountId;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  protected String date;
 
-	public String getHl7Version() {
-		return hl7Version;
-	}
+  protected STATUS status;
 
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
-	}
 
-	public Constant.SCOPE getScope() {
-		return scope;
-	}
 
-	public void setScope(Constant.SCOPE scope) {
-		this.scope = scope;
-	}
+  public Table() {
+    super();
+    this.type = Constant.TABLE;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public Set<String> getLibIds() {
-		return libIds;
-	}
+  public String getHl7Version() {
+    return hl7Version;
+  }
 
-	public void setLibIds(Set<String> libIds) {
-		this.libIds = libIds;
-	}
+  public void setHl7Version(String hl7Version) {
+    this.hl7Version = hl7Version;
+  }
 
-	public String getBindingIdentifier() {
-		return bindingIdentifier;
-	}
+  public Constant.SCOPE getScope() {
+    return scope;
+  }
 
-	public void setBindingIdentifier(String bindingIdentifier) {
-		this.bindingIdentifier = bindingIdentifier;
-	}
+  public void setScope(Constant.SCOPE scope) {
+    this.scope = scope;
+  }
 
-	public String getDescription() {
-		return description;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public String getVersion() {
-		return version;
-	}
+  public Set<String> getLibIds() {
+    return libIds;
+  }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+  public void setLibIds(Set<String> libIds) {
+    this.libIds = libIds;
+  }
 
-	public String getOid() {
-		return oid;
-	}
+  public String getBindingIdentifier() {
+    return bindingIdentifier;
+  }
 
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
+  public void setBindingIdentifier(String bindingIdentifier) {
+    this.bindingIdentifier = bindingIdentifier;
+  }
 
-	public List<Code> getCodes() {
-		return codes;
-	}
+  public String getDescription() {
+    return description;
+  }
 
-	public void setCodes(List<Code> codes) {
-		this.codes = codes;
-	}
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-	public void addCode(Code c) {
-		codes.add(c);
-	}
+  public String getVersion() {
+    return version;
+  }
 
-	public boolean deleteCode(Code c) {
-		return codes.remove(c);
-	}
+  public void setVersion(String version) {
+    this.version = version;
+  }
 
-	public String getGroup() {
-		return group;
-	}
+  public String getOid() {
+    return oid;
+  }
 
-	public void setGroup(String group) {
-		this.group = group;
-	}
+  public void setOid(String oid) {
+    this.oid = oid;
+  }
 
-	public int getOrder() {
-		return order;
-	}
+  public List<Code> getCodes() {
+    return codes;
+  }
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
-	
-	public Stability getStability() {
-		return stability;
-	}
+  public void setCodes(List<Code> codes) {
+    this.codes = codes;
+  }
 
-	public void setStability(Stability stability) {
-		this.stability = stability;
-	}
+  public void addCode(Code c) {
+    codes.add(c);
+  }
 
-	public Extensibility getExtensibility() {
-		return extensibility;
-	}
+  public boolean deleteCode(Code c) {
+    return codes.remove(c);
+  }
 
-	public void setExtensibility(Extensibility extensibility) {
-		this.extensibility = extensibility;
-	}
+  public String getGroup() {
+    return group;
+  }
 
-	public ContentDefinition getContentDefinition() {
-		return contentDefinition;
-	}
+  public void setGroup(String group) {
+    this.group = group;
+  }
 
-	public void setContentDefinition(ContentDefinition contentDefinition) {
-		this.contentDefinition = contentDefinition;
-	}
+  public int getOrder() {
+    return order;
+  }
 
-	public Code findOneCodeById(String id) {
-		if (this.codes != null)
-			for (Code m : this.codes) {
-				if (id.equals(m.getId())) {
-					return m;
-				}
-			}
-		return null;
-	}
+  public void setOrder(int order) {
+    this.order = order;
+  }
 
-	public Code findOneCodeByValue(String value) {
-		if (this.codes != null)
-			for (Code c : this.codes) {
-				if (value.equals(c.getValue())) {
-					return c;
-				}
-			}
-		return null;
-	}
+  public Stability getStability() {
+    return stability;
+  }
 
-	@Override
-	public String toString() {
-		return "Table [id=" + id + ", bindingIdentifier=" + bindingIdentifier + ", name=" + name + ", description="
-				+ description + ", version=" + version + ", oid=" + oid + ", stability=" + stability
-				+ ", extensibility=" + extensibility + ", contentDefinition=" + contentDefinition + ", group=" + group
-				+ ", order=" + order + ", codes=" + codes + "]";
-	}
+  public void setStability(Stability stability) {
+    this.stability = stability;
+  }
 
-	@Override
-	public int compareTo(Table o) {
-		int x = String.CASE_INSENSITIVE_ORDER.compare(this.bindingIdentifier != null ? this.bindingIdentifier: "",
-				o.bindingIdentifier != null ? o.bindingIdentifier: "");
-		if (x == 0) {
-			x = (this.bindingIdentifier != null ? this.bindingIdentifier: "").compareTo(o.bindingIdentifier != null ? o.bindingIdentifier: "");
-		}
-		return x;
-	}
+  public Extensibility getExtensibility() {
+    return extensibility;
+  }
 
-	@Override
-	public Table clone() throws CloneNotSupportedException {
-		Table clonedTable = new Table();
-		for (Code c : this.codes) {
-			clonedTable.addCode(c.clone());
-		}
+  public void setExtensibility(Extensibility extensibility) {
+    this.extensibility = extensibility;
+  }
 
-		clonedTable.setId(id);
-		clonedTable.setExtensibility(extensibility);
-		clonedTable.setBindingIdentifier(bindingIdentifier);
-		clonedTable.setDescription(description);
-		clonedTable.setContentDefinition(contentDefinition);
-		clonedTable.setName(name);
-		clonedTable.setOid(oid);
-		clonedTable.setStability(stability);
-		clonedTable.setVersion(version);
-		clonedTable.setType(type);
-		clonedTable.setGroup(group);
-		clonedTable.setOrder(order);
+  public ContentDefinition getContentDefinition() {
+    return contentDefinition;
+  }
 
-		return clonedTable;
-	}
-	
-	
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 31).
-            append(id).
-            toHashCode();
+  public void setContentDefinition(ContentDefinition contentDefinition) {
+    this.contentDefinition = contentDefinition;
+  }
+
+  public Code findOneCodeById(String id) {
+    if (this.codes != null)
+      for (Code m : this.codes) {
+        if (id.equals(m.getId())) {
+          return m;
+        }
+      }
+    return null;
+  }
+
+  public Code findOneCodeByValue(String value) {
+    if (this.codes != null)
+      for (Code c : this.codes) {
+        if (value.equals(c.getValue())) {
+          return c;
+        }
+      }
+    return null;
+  }
+
+  @Override
+  public String toString() {
+    return "Table [id=" + id + ", bindingIdentifier=" + bindingIdentifier + ", name=" + name
+        + ", description=" + description + ", version=" + version + ", oid=" + oid + ", stability="
+        + stability + ", extensibility=" + extensibility + ", contentDefinition="
+        + contentDefinition + ", group=" + group + ", order=" + order + ", codes=" + codes + "]";
+  }
+
+  @Override
+  public int compareTo(Table o) {
+    int x =
+        String.CASE_INSENSITIVE_ORDER.compare(
+            this.bindingIdentifier != null ? this.bindingIdentifier : "",
+            o.bindingIdentifier != null ? o.bindingIdentifier : "");
+    if (x == 0) {
+      x =
+          (this.bindingIdentifier != null ? this.bindingIdentifier : "")
+              .compareTo(o.bindingIdentifier != null ? o.bindingIdentifier : "");
     }
-	
-    @Override
-    public boolean equals(Object obj) {
-       if (!(obj instanceof Table))
-            return false;
-        if (obj == this)
-            return true;
+    return x;
+  }
 
-        Table rhs = (Table) obj;
-        return new EqualsBuilder().
-            append(id, rhs.id).
-            isEquals();
+  @Override
+  public Table clone() throws CloneNotSupportedException {
+    Table clonedTable = new Table();
+    for (Code c : this.codes) {
+      clonedTable.addCode(c.clone());
     }
 
-	public Long getAccountId() {
-		return accountId;
-	}
+    clonedTable.setId(id);
+    clonedTable.setExtensibility(extensibility);
+    clonedTable.setBindingIdentifier(bindingIdentifier);
+    clonedTable.setDescription(description);
+    clonedTable.setContentDefinition(contentDefinition);
+    clonedTable.setName(name);
+    clonedTable.setOid(oid);
+    clonedTable.setStability(stability);
+    clonedTable.setVersion(version);
+    clonedTable.setType(type);
+    clonedTable.setGroup(group);
+    clonedTable.setOrder(order);
 
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
+    return clonedTable;
+  }
 
-	public String getDate() {
-		return date;
-	}
 
-	public void setDate(String date) {
-		this.date = date;
-	}
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).append(id).toHashCode();
+  }
 
-	public STATUS getStatus() {
-		return status;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Table))
+      return false;
+    if (obj == this)
+      return true;
 
-	public void setStatus(STATUS status) {
-		this.status = status;
-	}
-    
-    
+    Table rhs = (Table) obj;
+    return new EqualsBuilder().append(id, rhs.id).isEquals();
+  }
+
+  public Long getAccountId() {
+    return accountId;
+  }
+
+  public void setAccountId(Long accountId) {
+    this.accountId = accountId;
+  }
+
+  public String getDate() {
+    return date;
+  }
+
+  public void setDate(String date) {
+    this.date = date;
+  }
+
+  public STATUS getStatus() {
+    return status;
+  }
+
+  public void setStatus(STATUS status) {
+    this.status = status;
+  }
+
+
 }

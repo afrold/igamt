@@ -72,7 +72,8 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
 
             //                 return  node ? SegmentService.isRelevant(node) ? SegmentService.isVisible(SegmentService.getParent(node)) : false : true;
         },
-        isRelevant: function(node) {
+
+        isRelevant: function (node) {
             if (node === undefined || !ViewSettings.tableRelevance)
                 return true;
             if (node.hide == undefined || !node.hide || node.hide === false) {
@@ -82,26 +83,28 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                 return false;
             }
         },
-        save: function(segment) {
+
+        save: function (segment) {
             var delay = $q.defer();
             segment.accountId = userInfoService.getAccountID();
-            $http.post('api/segments/save', segment).then(function(response) {
+            $http.post('api/segments/save', segment).then(function (response) {
                 var saveResponse = angular.fromJson(response.data);
                 segment.date = saveResponse.date;
                 segment.version = saveResponse.version;
                 delay.resolve(saveResponse);
-            }, function(error) {
+            }, function (error) {
                 delay.reject(error);
             });
             return delay.promise;
         },
-        get: function(id) {
+
+        get: function (id) {
             var delay = $q.defer();
             if ($rootScope.segmentsMap[id] === undefined || $rootScope.segmentsMap[id] === undefined) {
-                $http.get('api/segments/' + id).then(function(response) {
+                $http.get('api/segments/' + id).then(function (response) {
                     var segment = angular.fromJson(response.data);
                     delay.resolve(segment);
-                }, function(error) {
+                }, function (error) {
                     delay.reject(error);
                 });
             } else {
@@ -109,7 +112,8 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
             }
             return delay.promise;
         },
-        merge: function(to, from) {
+
+        merge: function (to, from) {
             to.name = from.name;
             to.ext = from.ext;
             to.label = from.label;
@@ -131,53 +135,105 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
             to.purposeAndUse = from.purposeAndUse;
             return to;
         },
-        delete: function(segmentId) {
+
+        delete: function (segmentId) {
             var delay = $q.defer();
-            $http.post('api/segments/' + segmentId + '/delete').then(function(response) {
+            $http.post('api/segments/' + segmentId + '/delete').then(function (response) {
                 var saveResponse = angular.fromJson(response.data);
                 delay.resolve(saveResponse);
-            }, function(error) {
+            }, function (error) {
                 delay.reject(error);
             });
             return delay.promise;
         },
-        getSegmentLink: function(segment) {
-            return { id: segment.id, ext: null, name: segment.name };
+
+        getSegmentLink: function (segment) {
+            return {id: segment.id, ext: segment.ext, name: segment.name};
         },
-        findByIds: function(ids) {
+
+        findByIds: function (ids) {
             var delay = $q.defer();
-            $http.post('api/segments/findByIds', ids).then(function(response) {
+            $http.post('api/segments/findByIds', ids).then(function (response) {
                 var datatypes = angular.fromJson(response.data);
                 delay.resolve(datatypes);
-            }, function(error) {
+            }, function (error) {
                 delay.reject(error);
             });
             return delay.promise;
         },
-        collectDatatypes: function(id) {
+
+        collectDatatypes: function (id) {
             var delay = $q.defer();
-            $http.get('api/segments/' + id + '/datatypes').then(function(response) {
+            $http.get('api/segments/' + id + '/datatypes').then(function (response) {
                 var datatypes = angular.fromJson(response.data);
                 delay.resolve(datatypes);
-            }, function(error) {
+            }, function (error) {
                 delay.reject(error);
             });
             return delay.promise;
         },
-        addSegToPath: function(path, message,segment) {
-            if (path.length === 1) {
-                if (message.children) {
-                    (message.children[path[0] - 1]).children.push(segment);
-                }
+
+        saveNewElements: function () {
+            var delay = $q.defer();
+            var datatypeLinks = ElementUtils.getNewDatatypeLinks();
+            if (datatypeLinks.length > 0) {
+                DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, datatypeLinks).then(function () {
+                    $rootScope.igdocument.profile.datatypeLibrary.children = $rootScope.igdocument.profile.datatypeLibrary.children.concat(datatypeLinks);
+                    _.each($rootScope.addedDatatypes, function (datatype) {
+                        if (ElementUtils.indexIn(datatype.id, $rootScope.datatypes) < 0) {
+                            $rootScope.datatypes.push(datatype);
+                        }
+                    });
+                    var tableLinks = ElementUtils.getNewTableLinks();
+                    if (tableLinks.length > 0) {
+                        TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, tableLinks).then(function () {
+                            $rootScope.igdocument.profile.tableLibrary.children = $rootScope.igdocument.profile.tableLibrary.children.concat(tableLinks);
+                            _.each($rootScope.addedTables, function (table) {
+                                if (ElementUtils.indexIn(table.id, $rootScope.tables) < 0) {
+                                    $rootScope.tables.push(table);
+                                }
+                            });
+                            SegmentService.completeSave();
+                            delay.resolve(true);
+                        }, function (error) {
+                            delay.reject(error);
+                        });
+                    } else {
+                        SegmentService.completeSave();
+                        delay.resolve(true);
+                    }
+                }, function (error) {
+                    delay.reject(error);
+                });
             } else {
-                var x = angular.copy(path);
-                path.splice(0, 1);
-                message.children[x[0] - 1]
-                SegmentService.addSegToPath(path, message.children[x[0] - 1],segment);
-
+                SegmentService.completeSave();
+                delay.resolve(true);
             }
-        }
+            return delay.promise;
+        },
 
+        completeSave: function () {
+            $rootScope.addedDatatypes = [];
+            $rootScope.addedTables = [];
+            $rootScope.clearChanges();
+            $rootScope.msg().text = "segmentSaved";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+        },
+
+        reset : function(){
+            if ($rootScope.addedDatatypes != null && $rootScope.addedDatatypes.length > 0) {
+                _.each($rootScope.addedDatatypes, function (id) {
+                    delete $rootScope.datatypesMap[id];
+                });
+            }
+            if ($rootScope.addedTables != null && $rootScope.addedTables.length > 0) {
+                _.each($rootScope.addedTables, function (id) {
+                    delete $rootScope.tablesMap[id];
+                });
+            }
+            $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
+        }
     };
     return SegmentService;
 }]);

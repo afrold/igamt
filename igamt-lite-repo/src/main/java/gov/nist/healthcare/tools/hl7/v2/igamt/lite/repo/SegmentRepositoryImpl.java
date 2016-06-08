@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -51,6 +52,15 @@ public class SegmentRepositoryImpl implements SegmentOperations {
 		Criteria where = Criteria.where("id").in(ids);
 		Query qry = Query.query(where);
  		List<Segment> segments = mongo.find(qry, Segment.class);
+		return segments;
+	} 
+	
+	@Override
+	public List<Segment> findUserSegmentsByIds(Set<String> ids) {
+		Criteria where = Criteria.where("id").in(ids).andOperator(Criteria.where("scope").is(SCOPE.USER.toString()));
+		Query qry = Query.query(where);
+//		qry = set4Brevis(qry);
+		List<Segment> segments = mongo.find(qry, Segment.class);
 		return segments;
 	}
 }

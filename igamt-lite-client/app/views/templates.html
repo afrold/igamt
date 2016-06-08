@@ -61,6 +61,7 @@
 </script>
 
 <script type="text/ng-template" id="ConfirmLogout.html">
+
     <div class="modal-header">
         <h3 class="modal-title">Logout Confirmation
         </h3>
@@ -85,16 +86,47 @@
         </p>
     </div>
     <div class="modal-body">
-        <p style="text-align: left">You currently have unsaved changes. Are you sure you want to proceed ? All unsaved changes will
-            be lost</p>
+        <p style="text-align: left">You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.</p>
     </div>
     <div class="modal-footer">
 
-        <button class="btn btn-warning btn-sm" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Stay</span>
+        <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-primary btn-sm"  ng-click="continue()"><span><i
+        <button class="btn btn-warning btn-sm"  ng-click="discard()"><span><i
                 class="fa fa-sign-out fa-fw">&nbsp; </i>Discard Changes</span>
         </button>
+        <button class="btn btn-success btn-sm"  ng-click="save()"><span><i
+                class="fa fa-sign-out fa-fw">&nbsp; </i>Save and Continue</span>
+        </button>
+	<div ng-show="error!=null" ng-bind="error"></div>
     </div>
 </script>
+
+<script type="text/ng-template" id="NotificationSuccessTemplate.html">
+    <div class="ui-notification custom-template">
+        <div class="message">
+            <i class="fa fa-check" aria-hidden="true"></i>
+             <span ng-bind-html="message"></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="NotificationErrorTemplate.html">
+    <div class="ui-notification custom-template">
+        <div class="message">
+            <i class="fa fa-times" aria-hidden="true"></i>
+            <span ng-bind-html="message"></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="NotificationWarningTemplate.html">
+    <div class="ui-notification custom-template">
+        <div class="message">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            <span ng-bind-html="message"></span>
+        </div>
+    </div>
+</script>
+

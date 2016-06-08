@@ -79,15 +79,32 @@ angular
 
 
                         if (!dataTypeDest) {
+                        	
                             return false;
                         } else if (dataTypeSource === "sections" && dataTypeDest === "sections") {
-                            return true;
+                        	
+                        		  return true;
+                          
+                          
                         } else if (dataTypeDest === dataTypeSource +"s") {
                             return true;
 
                         } else
                             return false;
                     },
+                    
+                    
+                    dragStart: function(event){
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function () {
+                       
+                            });
+                        } 
+
+                    },
+
+                    
                     dropped: function(event) {
 
                         var sourceNode = event.source.nodeScope;
@@ -96,7 +113,6 @@ angular
                         var sortAfter = event.dest.index;
                         var source = sourceNode.$parentNodeScope.$modelValue;
                         var dest = destNodes.$parent.$modelValue;
-
                         var dataTypeDest = destNodes.$element.attr('data-type');
                         var dataTypeSource=sourceNode.$element.attr('data-type');
                         event.source.nodeScope.$modelValue.sectionPosition = sortAfter + 1;
@@ -161,8 +177,9 @@ angular
             $scope.updateMessagePositions = function (arr) {
 
 
-                if (arr !== undefined) {
+                if (arr !== undefined && arr != null) {
                     for (var i = 0; i <= arr.length - 1; i++) {
+                        if(arr[i] != null) // wierd but happened
                         arr[i].position = i + 1;
                     }
                 }
@@ -578,7 +595,9 @@ angular
 
 
             $scope.editSection = function (section) {
-
+            	if(section.sectionContents===null){
+            		section.sectionContents="";
+            	}
                 if ($rootScope.hasChanges()) {
 
                     $rootScope.openConfirmLeaveDlg().result.then(function () {
@@ -590,8 +609,15 @@ angular
 
             }
             function processEditRoutSection(param) {
+            	
                 $scope.Activate(param.id);
-                $scope.$emit('event:openSection', $scope.getRoutSectionByname(param));
+                $rootScope.section = $scope.getRoutSectionByname(param);
+                //$rootScope.currentData=section;
+                
+                if($rootScope.section.sectionContents===null){
+                    $rootScope.section.sectionContents="";
+                }
+                $scope.$emit('event:openSection', $rootScope.section);
 
             };
 
@@ -607,39 +633,25 @@ angular
                 }
             };
 
-
             $scope.getRoutSectionByname = function (name) {
-                var section = {};
+            	$rootScope.currentData = {};
                 $scope.Activate(name);
                 if (name.toLowerCase() === 'conformance profiles') {
-
-                    section.sectionContents = $rootScope.igdocument.profile.messages.sectionContents;
-                    section.sectionTitle = $rootScope.igdocument.profile.messages.sectionTitle;
-                    section.sectionPosition = $rootScope.igdocument.profile.messages.sectionPosition;
-                    section.sectionType = $rootScope.igdocument.profile.messages.sectionType;
-                    section.sectionDescription = $rootScope.igdocument.profile.messages.description;
+                	$rootScope.currentData= $rootScope.igdocument.profile.messages;
 
                 } else if (name.toLowerCase() === 'segments and field descriptions') {
+                	$rootScope.currentData = $rootScope.igdocument.profile.segmentLibrary;
 
-                    section.sectionContents = $rootScope.igdocument.profile.segmentLibrary.sectionContents;
-                    section.sectionTitle = $rootScope.igdocument.profile.segmentLibrary.sectionTitle;
-                    section.sectionPosition = $rootScope.igdocument.profile.segmentLibrary.sectionPosition;
-                    section.sectionDescription = $rootScope.igdocument.profile.segmentLibrary.description;
                 } else if (name.toLowerCase() === 'value sets') {
-                    section.sectionContents = $rootScope.igdocument.profile.tableLibrary.sectionContents;
-                    section.sectionTitle = $rootScope.igdocument.profile.tableLibrary.sectionTitle;
-                    section.sectionPosition = $rootScope.igdocument.profile.tableLibrary.sectionPosition;
-                    section.sectionType = $rootScope.igdocument.profile.tableLibrary.sectionType;
-                    section.sectionDescription = $rootScope.igdocument.profile.tableLibrary.description;
+                	$rootScope.currentData = $rootScope.igdocument.profile.tableLibrary;
                 } else if (name.toLowerCase() === 'datatypes') {
-                    section.sectionContents = $rootScope.igdocument.profile.datatypeLibrary.sectionContents;
-                    section.sectionTitle = $rootScope.igdocument.profile.datatypeLibrary.sectionTitle;
-                    section.sectionPosition = $rootScope.igdocument.profile.datatypeLibrary.sectionPosition;
-                    section.sectionType = $rootScope.igdocument.profile.datatypeLibrary.sectionType;
-                    section.sectionDescription = $rootScope.igdocument.profile.datatypeLibrary.description;
+                	$rootScope.currentData=$rootScope.igdocument.profile.datatypeLibrary;
                 }
-
-                return section;
+                if($rootScope.currentData.sectionContents===null||$rootScope.currentData.sectionContents===undefined){
+                	$rootScope.currentData.sectionContents="";
+                }
+               
+                return $rootScope.currentData;
             };
 
             function processEditDataType(data) {
@@ -725,40 +737,6 @@ angular
                 }
 
             };
-
-
-            $scope.updateAfterDrop = function (source, dest) {
-
-                var id = $rootScope.igdocument.id;
-
-                var req = {
-                    method: 'POST',
-                    url: "api/igdocuments/" + id + "/dropped",
-                    headers: {
-                        'Content-Type': "application/json"
-                    },
-                    data: {
-                        source: source,
-                        dest: dest
-                    }
-                }
-
-
-                var promise = $http(req)
-                    .success(function (data, status, headers, config) {
-                        // //console.log(data);
-                        return data;
-                    })
-                    .error(function (data, status, headers, config) {
-                        if (status === 404) {
-                            console.log("Could not reach the server");
-                        } else if (status === 403) {
-                            console.log("limited access");
-                        }
-                    });
-                return promise;
-            }
-
 
             $scope.updateChildeSections = function (childSections) {
 
@@ -864,13 +842,13 @@ angular
                         }
                     });
                 return promise;
-            }
+            };
 
             $scope.showUnused = function (node) {
                 if (node.id === null) {
                     return true;
                 }
-                return FilteringSvc.isUnused(node);
+                 return FilteringSvc.isUnused(node);
             };
 
             $scope.showToC = function (leaf) {
@@ -892,7 +870,7 @@ angular
                 }
             };
 
-
+            
             $rootScope.getLabelOfData = function (name, ext) {
 
                 var label = "";
@@ -906,7 +884,14 @@ angular
                 }
                 return label;
             };
-
-
+            
+            
+            
+            
+            
+            
+            
+            
+            
         }
     ]);

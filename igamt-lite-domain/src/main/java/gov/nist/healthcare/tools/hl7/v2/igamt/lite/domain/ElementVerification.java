@@ -4,123 +4,118 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ElementVerification {
-	String id;
+  String id;
 
-	String type;
+  String type;
 
-	List<ElementVerificationResult> elementVerifications;
+  List<ElementVerificationResult> elementVerifications;
 
-	List<ElementVerification> childrenVerification;
-
-
-
-	public ElementVerification(String id, String type) {
-		super();
-		this.id = id;
-		this.type = type;
-		this.elementVerifications = new ArrayList<ElementVerificationResult>();
-		this.childrenVerification = new ArrayList<ElementVerification>();
-	}
+  List<ElementVerification> childrenVerification;
 
 
 
-	public ElementVerification(String id, String type,
-			List<ElementVerificationResult> elementVerifications,
-			List<ElementVerification> childrenVerification) {
-		super();
-		this.id = id;
-		this.type = type;
-		this.elementVerifications = elementVerifications;
-		this.childrenVerification = childrenVerification;
-	}
+  public ElementVerification(String id, String type) {
+    super();
+    this.id = id;
+    this.type = type;
+    this.elementVerifications = new ArrayList<ElementVerificationResult>();
+    this.childrenVerification = new ArrayList<ElementVerification>();
+  }
 
 
 
-	public String getId() {
-		return id;
-	}
+  public ElementVerification(String id, String type,
+      List<ElementVerificationResult> elementVerifications,
+      List<ElementVerification> childrenVerification) {
+    super();
+    this.id = id;
+    this.type = type;
+    this.elementVerifications = elementVerifications;
+    this.childrenVerification = childrenVerification;
+  }
 
 
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public String getId() {
+    return id;
+  }
 
 
 
-	public String getType() {
-		return type;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
 
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  public String getType() {
+    return type;
+  }
 
 
 
-	public List<ElementVerificationResult> getElementVerifications() {
-		return elementVerifications;
-	}
+  public void setType(String type) {
+    this.type = type;
+  }
 
 
 
-	public void setElementVerifications(
-			List<ElementVerificationResult> elementVerifications) {
-		this.elementVerifications = elementVerifications;
-	}
+  public List<ElementVerificationResult> getElementVerifications() {
+    return elementVerifications;
+  }
 
 
 
-	public List<ElementVerification> getChildrenVerification() {
-		return childrenVerification;
-	}
+  public void setElementVerifications(List<ElementVerificationResult> elementVerifications) {
+    this.elementVerifications = elementVerifications;
+  }
 
 
 
-	public void setChildrenVerification(
-			List<ElementVerification> childrenVerification) {
-		this.childrenVerification = childrenVerification;
-	}
-
-	public void addElementVerifications(
-			ElementVerificationResult elementVerifications) {
-		if (this.elementVerifications != null){
-			this.elementVerifications.add(elementVerifications);
-		}
-	}
-
-	public void addChildrenVerification(ElementVerification childrenVerification) {
-		if (this.childrenVerification != null){
-			this.childrenVerification.add(childrenVerification);
-		}
-	}
+  public List<ElementVerification> getChildrenVerification() {
+    return childrenVerification;
+  }
 
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("ElementVerification [id=" + id + ", type=" + type);
-		sb.append(", elementVerifications=[");
-		for (ElementVerificationResult evr: elementVerifications)
-		{
-		    sb.append(evr.toString());
-		    sb.append("\t");
-		}
-		sb.append("]");
-		sb.append(", childrenVerification=[");
-		for (ElementVerification evr: childrenVerification)
-		{
-		    sb.append(evr.toString());
-		    sb.append("\t");
-		}
-		sb.append("]");		
-//		return "ElementVerification [id=" + id + ", type=" + type
-//				+ ", elementVerifications=" + elementVerifications
-//				+ ", childrenVerification=" + childrenVerification + "]";
-		return sb.toString();
-	}
+
+  public void setChildrenVerification(List<ElementVerification> childrenVerification) {
+    this.childrenVerification = childrenVerification;
+  }
+
+  public void addElementVerifications(ElementVerificationResult elementVerifications) {
+    if (this.elementVerifications != null) {
+      this.elementVerifications.add(elementVerifications);
+    }
+  }
+
+  public void addChildrenVerification(ElementVerification childrenVerification) {
+    if (this.childrenVerification != null) {
+      this.childrenVerification.add(childrenVerification);
+    }
+  }
+
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("ElementVerification [id=" + id + ", type=" + type);
+    sb.append(", elementVerifications=[");
+    for (ElementVerificationResult evr : elementVerifications) {
+      sb.append(evr.toString());
+      sb.append("\t");
+    }
+    sb.append("]");
+    sb.append(", childrenVerification=[");
+    for (ElementVerification evr : childrenVerification) {
+      sb.append(evr.toString());
+      sb.append("\t");
+    }
+    sb.append("]");
+    // return "ElementVerification [id=" + id + ", type=" + type
+    // + ", elementVerifications=" + elementVerifications
+    // + ", childrenVerification=" + childrenVerification + "]";
+    return sb.toString();
+  }
 
 
 

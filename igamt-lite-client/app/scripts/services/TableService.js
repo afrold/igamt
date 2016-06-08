@@ -73,6 +73,15 @@ angular.module('igl').factory('TableService',
 
             getTableLink : function(table){
                 return {id:table.id, bindingIdentifier: table.bindingIdentifier};
+            },
+            findAllByIds: function (tableIds) {
+                var delay = $q.defer();
+                $http.get('api/tables/findAllByIds', tableIds).then(function (response) {
+                    delay.resolve(angular.fromJson(response.data));
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
         };

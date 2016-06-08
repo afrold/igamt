@@ -41,8 +41,8 @@ $icon-font-path: "../fonts/";
     }
 #wrapper {
   position: relative;
-  width: 95%;
-  height: 95%;
+  width: 99%;
+  height: 99%;
   margin: 0 auto;
   background: white;
   color: black;
@@ -1166,6 +1166,7 @@ h4.addPOAFormDateSectionTitle {
   margin-left: 10px;
   font-size: 32px;
   color: #F3C60D;
+  font-weight: bold;
 }
 
 
@@ -1455,6 +1456,13 @@ input.account-input {
   height: 90%;
   overflow-y: auto;
 }
+
+.flavor-modal-window .modal-dialog {
+  width: 50%;
+  height: 50%;
+  overflow-y: auto;
+}
+
 
 .nav > li > a {
   padding-top: 8px !important;

@@ -6,54 +6,53 @@ import java.io.Serializable;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-//@Entity
-//@Table(name = "PREDICATE")
+// @Entity
+// @Table(name = "PREDICATE")
 
 @Document(collection = "predicate")
 public class Predicate extends Constraint implements Serializable {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 5723342171557075960L;
+  private static final long serialVersionUID = 5723342171557075960L;
 
-	public Predicate() {
-		super();
-	}
+  public Predicate() {
+    super();
+  }
 
-	// @Column(name = "TRUEUSAGE")
-	private Usage trueUsage;
+  // @Column(name = "TRUEUSAGE")
+  private Usage trueUsage;
 
-	// @Column(name = "FALSEUSAGE")
-	private Usage falseUsage;
+  // @Column(name = "FALSEUSAGE")
+  private Usage falseUsage;
 
-	public Usage getTrueUsage() {
-		return trueUsage;
-	}
+  public Usage getTrueUsage() {
+    return trueUsage;
+  }
 
-	public void setTrueUsage(Usage trueUsage) {
-		this.trueUsage = trueUsage;
-	}
+  public void setTrueUsage(Usage trueUsage) {
+    this.trueUsage = trueUsage;
+  }
 
-	public Usage getFalseUsage() {
-		return falseUsage;
-	}
+  public Usage getFalseUsage() {
+    return falseUsage;
+  }
 
-	public void setFalseUsage(Usage falseUsage) {
-		this.falseUsage = falseUsage;
-	}
+  public void setFalseUsage(Usage falseUsage) {
+    this.falseUsage = falseUsage;
+  }
 
-	@Override
-	public String toString() {
-		return "Constraint [id=" + id + ", constraintId=" + constraintId
-				+ ", constraintTarget=" + constraintTarget + ", reference="
-				+ reference + ", description=" + description + ", assertion="
-				+ assertion + "]";
-	}
+  @Override
+  public String toString() {
+    return "Constraint [id=" + id + ", constraintId=" + constraintId + ", constraintTarget="
+        + constraintTarget + ", reference=" + reference + ", description=" + description
+        + ", assertion=" + assertion + "]";
+  }
 
-	@Override
-	public Predicate clone() throws CloneNotSupportedException {
-		return (Predicate) super.clone();
-	}
+  @Override
+  public Predicate clone() throws CloneNotSupportedException {
+    return (Predicate) super.clone();
+  }
 
 }

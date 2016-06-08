@@ -8,46 +8,32 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "igdocument")
-public class IGDocument extends DataModel implements java.io.Serializable,
-		Cloneable {
+public class IGDocument extends DataModel implements java.io.Serializable, Cloneable {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public IGDocument() {
-		super();
-		this.type = Constant.Document;
-	}
+  public IGDocument() {
+    super();
+    this.type = Constant.Document;
+  }
 
-	@Id
-	private String id;
+  @Id
+  private String id;
 
-	private Long accountId;
+  private Long accountId;
 
-	private String comment;
+  private String comment;
 
-	private String usageNote;
+  private String usageNote;
 
-	private DocumentMetaData metaData;
-	
-	private Profile profile;
-	
-	private IGDocumentScope scope;
+  private DocumentMetaData metaData;
 
-	private Set<Section> childSections = new HashSet<Section>();
-	
-	
-	@Override
-	public IGDocument clone() throws CloneNotSupportedException {
-		IGDocument clonedDocument = new IGDocument();
-		clonedDocument.setMetaData(metaData.clone());
-		clonedDocument.setProfile(profile.clone());
-		clonedDocument.setChildSections(new HashSet<Section>());
-		for(Section section:this.childSections){
-			clonedDocument.addSection(section.clone());
-		}
+  private Profile profile;
 
-		return clonedDocument;
-	}
+  private IGDocumentScope scope;
+
+  private Set<Section> childSections = new HashSet<Section>();
+
 
 
 	private void addSection(Section s) {
@@ -129,6 +115,7 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		p.getMessages().setSectionPosition(0);
 		p.getMessages().setSectionTitle("Conformance Profiles");
 		p.getMessages().setType("messages");
+		p.getMessages().setSectionContents("");
 		
 		int messagePositionNum = 0;
 		for(Message m:p.getMessages().getChildren()){
@@ -139,15 +126,16 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		p.getSegmentLibrary().setSectionPosition(1);
 		p.getSegmentLibrary().setSectionTitle("Segments and Field Descriptions");
 		p.getSegmentLibrary().setType("segments");
-
+		p.getSegmentLibrary().setSectionContents("");
 		
 		p.getDatatypeLibrary().setSectionPosition(2);
 		p.getDatatypeLibrary().setSectionTitle("Datatypes");
 		p.getDatatypeLibrary().setType("datatypes");
-		
+		p.getDatatypeLibrary().setSectionContents("");
 		p.getTableLibrary().setSectionPosition(3);
 		p.getTableLibrary().setSectionTitle("Value Sets");
 		p.getTableLibrary().setType("tables");
+		p.getTableLibrary().setSectionContents("xsx");
 		this.setProfile(p);
 	}
 	
@@ -264,89 +252,101 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		this.setProfile(p);
 	}
 
+  @Override
+  public IGDocument clone() throws CloneNotSupportedException {
+    IGDocument clonedDocument = new IGDocument();
+    clonedDocument.setMetaData(metaData.clone());
+    clonedDocument.setProfile(profile.clone());
+    clonedDocument.setChildSections(new HashSet<Section>());
+    for (Section section : this.childSections) {
+      clonedDocument.addSection(section.clone());
+    }
 
-	public String getId() {
-		return id;
-	}
+    return clonedDocument;
+  }
 
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-
-	public Long getAccountId() {
-		return accountId;
-	}
-
-
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
+  public String getId() {
+    return id;
+  }
 
 
-	public String getComment() {
-		return comment;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+  public Long getAccountId() {
+    return accountId;
+  }
 
 
-	public String getUsageNote() {
-		return usageNote;
-	}
+  public void setAccountId(Long accountId) {
+    this.accountId = accountId;
+  }
 
 
-	public void setUsageNote(String usageNote) {
-		this.usageNote = usageNote;
-	}
-
-	public DocumentMetaData getMetaData() {
-		return metaData;
-	}
+  public String getComment() {
+    return comment;
+  }
 
 
-	public void setMetaData(DocumentMetaData metaData) {
-		this.metaData = metaData;
-	}
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
 
 
-	public Profile getProfile() {
-		return profile;
-	}
+  public String getUsageNote() {
+    return usageNote;
+  }
 
 
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
+  public void setUsageNote(String usageNote) {
+    this.usageNote = usageNote;
+  }
+
+  public DocumentMetaData getMetaData() {
+    return metaData;
+  }
 
 
-	public Set<Section> getChildSections() {
-		return childSections;
-	}
+  public void setMetaData(DocumentMetaData metaData) {
+    this.metaData = metaData;
+  }
 
 
-	public void setChildSections(Set<Section> childSections) {
-		this.childSections = childSections;
-	}
-	
-	public void makeDefaultDocument(){
-		//TODO
-	}
+  public Profile getProfile() {
+    return profile;
+  }
 
 
-	public IGDocumentScope getScope() {
-		return scope;
-	}
+  public void setProfile(Profile profile) {
+    this.profile = profile;
+  }
 
 
-	public void setScope(IGDocumentScope scope) {
-		this.scope = scope;
-	}
-	
-	
-	
+  public Set<Section> getChildSections() {
+    return childSections;
+  }
+
+
+  public void setChildSections(Set<Section> childSections) {
+    this.childSections = childSections;
+  }
+
+  public void makeDefaultDocument() {
+    // TODO
+  }
+
+
+  public IGDocumentScope getScope() {
+    return scope;
+  }
+
+
+  public void setScope(IGDocumentScope scope) {
+    this.scope = scope;
+  }
+
+
+
 }

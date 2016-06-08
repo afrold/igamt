@@ -12,137 +12,128 @@ import org.bson.types.ObjectId;
  */
 // @Entity
 // @Table(name = "FIELD")
-public class Field extends DataElement implements java.io.Serializable,
-		Cloneable {
+public class Field extends DataElement implements java.io.Serializable, Cloneable {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	protected String id;
+  protected String id;
 
-	public Field() {
-		super();
-		type = Constant.FIELD;
-		this.id = ObjectId.get().toString();
-	}
+  public Field() {
+    super();
+    type = Constant.FIELD;
+    this.id = ObjectId.get().toString();
+  }
 
-	private String itemNo;
+  private String itemNo;
 
-	private Integer min;
+  private Integer min;
 
-	private String max;
+  private String max;
 
-	public String getItemNo() {
-		return itemNo;
-	}
+  public String getItemNo() {
+    return itemNo;
+  }
 
-	public void setItemNo(String itemNo) {
-		this.itemNo = itemNo;
-	}
+  public void setItemNo(String itemNo) {
+    this.itemNo = itemNo;
+  }
 
-	public Integer getMin() {
-		return min;
-	}
+  public Integer getMin() {
+    return min;
+  }
 
-	public void setMin(Integer min) {
-		this.min = min;
-	}
+  public void setMin(Integer min) {
+    this.min = min;
+  }
 
-	public String getMax() {
-		return max;
-	}
+  public String getMax() {
+    return max;
+  }
 
-	public void setMax(String max) {
-		this.max = max;
-	}
+  public void setMax(String max) {
+    this.max = max;
+  }
 
-	public String getId() {
-		return id;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
 
-	@Override
-	public String toString() {
-		return "Field [id=" + id + ", itemNo=" + itemNo + ", min=" + min
-				+ ", max=" + max + ", name=" + name + ", usage=" + usage
-				+ ", minLength=" + minLength + ", maxLength=" + maxLength
-				+ ", confLength=" + confLength + ", table=" + table
-				+ ", datatype=" + datatype + ", position="
-				+ position + ", comment=" + comment + ", text=" + text
-				+ ", type=" + type + "]";
-	}
+  @Override
+  public String toString() {
+    return "Field [id=" + id + ", itemNo=" + itemNo + ", min=" + min + ", max=" + max + ", name="
+        + name + ", usage=" + usage + ", minLength=" + minLength + ", maxLength=" + maxLength
+        + ", confLength=" + confLength + ", table=" + table + ", datatype=" + datatype
+        + ", position=" + position + ", comment=" + comment + ", text=" + text + ", type=" + type
+        + "]";
+  }
 
-	public int compareTo(Field o) {
-		// return this.getPosition() - o.getPosition();
-		return Integer.parseInt(this.getItemNo())
-				- Integer.parseInt(o.getItemNo());
+  public int compareTo(Field o) {
+    // return this.getPosition() - o.getPosition();
+    return Integer.parseInt(this.getItemNo()) - Integer.parseInt(o.getItemNo());
 
-	}
+  }
 
-	public Field clone(HashMap<String, Datatype> dtRecords,
-			HashMap<String, Table> tableRecords)
-			throws CloneNotSupportedException {
-		Field clonedField = new Field();
+  public Field clone(HashMap<String, Datatype> dtRecords, HashMap<String, Table> tableRecords)
+      throws CloneNotSupportedException {
+    Field clonedField = new Field();
 
-		clonedField.setId(id);
-		clonedField.setComment(comment);
-		clonedField.setConfLength(confLength);
-		clonedField.setDatatype(datatype.clone());
+    clonedField.setId(id);
+    clonedField.setComment(comment);
+    clonedField.setConfLength(confLength);
+    clonedField.setDatatype(datatype.clone());
 
-		// if (dtRecords.containsKey(datatype)) {
-		// clonedField.setDatatype(dtRecords.get(datatype.getId()));
-		// } else {
-		// Datatype dt = datatype.clone(dtRecords, tableRecords);
-		// clonedField.setDatatype(dt);
-		// dtRecords.put(datatype.getId(), dt);
-		// }
-		clonedField.setItemNo(itemNo);
-		clonedField.setMax(max);
-		clonedField.setMaxLength(maxLength);
-		clonedField.setMin(min);
-		clonedField.setMinLength(minLength);
-		clonedField.setName(name);
-		clonedField.setPosition(position);
-		clonedField.setTable(table.clone());
+    // if (dtRecords.containsKey(datatype)) {
+    // clonedField.setDatatype(dtRecords.get(datatype.getId()));
+    // } else {
+    // Datatype dt = datatype.clone(dtRecords, tableRecords);
+    // clonedField.setDatatype(dt);
+    // dtRecords.put(datatype.getId(), dt);
+    // }
+    clonedField.setItemNo(itemNo);
+    clonedField.setMax(max);
+    clonedField.setMaxLength(maxLength);
+    clonedField.setMin(min);
+    clonedField.setMinLength(minLength);
+    clonedField.setName(name);
+    clonedField.setPosition(position);
+    clonedField.setTable(table.clone());
 
-		// if (table != null) {
-		// if (tableRecords.containsKey(table.getId())) {
-		// clonedField.setTable(tableRecords.get(table.getId()));
-		// } else {
-		// Table dt = table.clone();
-		// clonedField.setTable(dt);
-		// tableRecords.put(table.getId(), dt);
-		// }
-		// } else {
-		// clonedField.setTable(null);
-		// }
+    // if (table != null) {
+    // if (tableRecords.containsKey(table.getId())) {
+    // clonedField.setTable(tableRecords.get(table.getId()));
+    // } else {
+    // Table dt = table.clone();
+    // clonedField.setTable(dt);
+    // tableRecords.put(table.getId(), dt);
+    // }
+    // } else {
+    // clonedField.setTable(null);
+    // }
 
-		clonedField.setText(text);
-		clonedField.setUsage(usage);
+    clonedField.setText(text);
+    clonedField.setUsage(usage);
 
-		return clonedField;
-	}
-	
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 31).
-            append(id).
-            toHashCode();
-    }
-	
-    @Override
-    public boolean equals(Object obj) {
-       if (!(obj instanceof Field))
-            return false;
-        if (obj == this)
-            return true;
+    return clonedField;
+  }
 
-        Field rhs = (Field) obj;
-        return new EqualsBuilder().
-            append(id, rhs.id).
-            isEquals();
-    }
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).append(id).toHashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Field))
+      return false;
+    if (obj == this)
+      return true;
+
+    Field rhs = (Field) obj;
+    return new EqualsBuilder().append(id, rhs.id).isEquals();
+  }
 }

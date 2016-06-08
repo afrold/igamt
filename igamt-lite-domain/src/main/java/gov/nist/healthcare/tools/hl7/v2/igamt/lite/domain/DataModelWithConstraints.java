@@ -10,147 +10,148 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DataModelWithConstraints extends DataModel{
-	protected String hl7Version;
+public class DataModelWithConstraints extends DataModel {
+  protected String hl7Version;
 
-	protected Long accountId; 
-	
-	protected SCOPE scope; 
-	
-	protected String date;
-	
-	protected String version;
-		
-	protected STATUS status; 
-	
-	protected Set<String> participants = new HashSet<String>();
-	
-	protected Set<String> libIds = new HashSet<String>();
+  protected Long accountId;
 
-	protected List<Predicate> predicates = new ArrayList<Predicate>();
+  protected SCOPE scope;
 
-	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
+  protected String date;
 
-	public String getHl7Version() {
-		return hl7Version;
-	}
+  protected String version;
 
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
-	}
+  protected STATUS status;
 
-	public Long getAccountId() {
-		return accountId;
-	}
+  protected Set<String> participants = new HashSet<String>();
 
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
+  protected Set<String> libIds = new HashSet<String>();
 
-	public Set<String> getLibIds() {
-		if (libIds == null) {
-			libIds = new HashSet<String>();
-		}
-		return libIds;
-	}
+  protected List<Predicate> predicates = new ArrayList<Predicate>();
 
-	public void setLibId(Set<String> libIds) {
-		this.libIds = libIds;
-	}
+  protected List<ConformanceStatement> conformanceStatements =
+      new ArrayList<ConformanceStatement>();
 
-	public List<Predicate> getPredicates() {
-		return predicates;
-	}
+  public String getHl7Version() {
+    return hl7Version;
+  }
 
-	public void setPredicates(List<Predicate> predicates) {
-		this.predicates = predicates;
-	}
+  public void setHl7Version(String hl7Version) {
+    this.hl7Version = hl7Version;
+  }
 
-	public List<ConformanceStatement> getConformanceStatements() {
-		return conformanceStatements;
-	}
+  public Long getAccountId() {
+    return accountId;
+  }
 
-	public void setConformanceStatements(List<ConformanceStatement> conformanceStatements) {
-		this.conformanceStatements = conformanceStatements;
-	}
-	
-	public void addPredicate(Predicate p) {
-		predicates.add(p);
-	}
+  public void setAccountId(Long accountId) {
+    this.accountId = accountId;
+  }
 
-	public void addConformanceStatement(ConformanceStatement cs) {
-		conformanceStatements.add(cs);
-	}
-	
-	public Predicate findOnePredicate(String predicateId) {
-		for (Predicate predicate : this.getPredicates()) {
-			if (predicate.getId().equals(predicateId)) {
-				return predicate;
-			}
-		}
-		return null;
-	}
+  public Set<String> getLibIds() {
+    if (libIds == null) {
+      libIds = new HashSet<String>();
+    }
+    return libIds;
+  }
 
-	public ConformanceStatement findOneConformanceStatement(String confId) {
-		for (ConformanceStatement conf : this.getConformanceStatements()) {
-			if (conf.getId().equals(confId)) {
-				return conf;
-			}
-		}
-		return null;
-	}
+  public void setLibId(Set<String> libIds) {
+    this.libIds = libIds;
+  }
 
-	public boolean deletePredicate(String predicateId) {
-		Predicate p = findOnePredicate(predicateId);
-		return p != null && this.getPredicates().remove(p);
-	}
+  public List<Predicate> getPredicates() {
+    return predicates;
+  }
 
-	public boolean deleteConformanceStatement(String cId) {
-		ConformanceStatement c = findOneConformanceStatement(cId);
-		return c != null && this.getConformanceStatements().remove(c);
-	}
+  public void setPredicates(List<Predicate> predicates) {
+    this.predicates = predicates;
+  }
 
-	public SCOPE getScope() {
-		return scope;
-	}
+  public List<ConformanceStatement> getConformanceStatements() {
+    return conformanceStatements;
+  }
 
-	public void setScope(SCOPE scope) {
-		this.scope = scope;
-	}
+  public void setConformanceStatements(List<ConformanceStatement> conformanceStatements) {
+    this.conformanceStatements = conformanceStatements;
+  }
 
-	public Set<String> getParticipants() {
-		return participants;
-	}
+  public void addPredicate(Predicate p) {
+    predicates.add(p);
+  }
 
-	public void setParticipants(Set<String> participants) {
-		this.participants = participants;
-	}
+  public void addConformanceStatement(ConformanceStatement cs) {
+    conformanceStatements.add(cs);
+  }
 
-	public String getDate() {
-		return date;
-	}
+  public Predicate findOnePredicate(String predicateId) {
+    for (Predicate predicate : this.getPredicates()) {
+      if (predicate.getId().equals(predicateId)) {
+        return predicate;
+      }
+    }
+    return null;
+  }
 
-	public void setDate(String date) {
-		this.date = date;
-	}
+  public ConformanceStatement findOneConformanceStatement(String confId) {
+    for (ConformanceStatement conf : this.getConformanceStatements()) {
+      if (conf.getId().equals(confId)) {
+        return conf;
+      }
+    }
+    return null;
+  }
 
-	public String getVersion() {
-		return version;
-	}
+  public boolean deletePredicate(String predicateId) {
+    Predicate p = findOnePredicate(predicateId);
+    return p != null && this.getPredicates().remove(p);
+  }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+  public boolean deleteConformanceStatement(String cId) {
+    ConformanceStatement c = findOneConformanceStatement(cId);
+    return c != null && this.getConformanceStatements().remove(c);
+  }
 
-	public void setLibIds(Set<String> libIds) {
-		this.libIds = libIds;
-	}
+  public SCOPE getScope() {
+    return scope;
+  }
 
-	public STATUS getStatus() {
-		return status;
-	}
+  public void setScope(SCOPE scope) {
+    this.scope = scope;
+  }
 
-	public void setStatus(STATUS status) {
-		this.status = status;
-	}
+  public Set<String> getParticipants() {
+    return participants;
+  }
+
+  public void setParticipants(Set<String> participants) {
+    this.participants = participants;
+  }
+
+  public String getDate() {
+    return date;
+  }
+
+  public void setDate(String date) {
+    this.date = date;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public void setLibIds(Set<String> libIds) {
+    this.libIds = libIds;
+  }
+
+  public STATUS getStatus() {
+    return status;
+  }
+
+  public void setStatus(STATUS status) {
+    this.status = status;
+  }
 }
