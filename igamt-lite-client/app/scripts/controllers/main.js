@@ -783,18 +783,23 @@ $rootScope.processElement = function (element, parent) {
 		throw e;
 	}
 };
-
+$rootScope.filteredSegmentsList=[];
+$rootScope.filteredTablesList=[];
+$rootScope.filteredDatatypesList=[];
 
 $rootScope.processMessageTree = function (element, parent) {
-
+	
+	
 	try {
 		if (element != undefined && element != null) {
 			if (element.type === "message") {
+				$rootScope.filteredSegmentsList=[];
+				$rootScope.filteredTablesList=[];
+				$rootScope.filteredDatatypesList=[];
 				var m ={};
 				m.children = [];
 				$rootScope.messageTree = m;
 
-				element.children = $filter('orderBy')(element.children, 'position');
 				angular.forEach(element.children, function (segmentRefOrGroup) {
 					$rootScope.processMessageTree(segmentRefOrGroup, m);
 				});
@@ -808,7 +813,6 @@ $rootScope.processMessageTree = function (element, parent) {
 					g.path = parent.path + "." + element.position + "[1]";
 				}
 				parent.children.push(g);
-				element.children = $filter('orderBy')(element.children, 'position');
 				angular.forEach(element.children, function (segmentRefOrGroup) {
 					$rootScope.processMessageTree(segmentRefOrGroup, g);
 				});
@@ -826,7 +830,17 @@ $rootScope.processMessageTree = function (element, parent) {
 				$rootScope.processMessageTree(ref, s);
 
 			} else if (element.type === "segment") {
-				element.fields = $filter('orderBy')(element.fields, 'position');
+				if(!parent){
+					var s = {};
+					s.obj = element;
+					s.path = element.name;
+					s.children = [];
+					parent = s;
+				}
+				$rootScope.filteredSegmentsList.push(element);
+				console.log($rootScope.filteredSegmentsList);
+				$rootScope.filteredSegmentsList=_.uniq($rootScope.filteredSegmentsList);
+				console.log($rootScope.filteredSegmentsList);
 				angular.forEach(element.fields, function (field) {
 					$rootScope.processMessageTree(field, parent);
 				});
@@ -836,6 +850,12 @@ $rootScope.processMessageTree = function (element, parent) {
 				f.path = parent.path + "." + element.position + "[1]";
 				f.children = [];
 				parent.children.push(f);
+				$rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
+				$rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+				if(element.table!= null){
+				$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+				}
+				$rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
 				$rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], f);
 			} else if (element.type === "component") {
 				var c = {};
@@ -843,9 +863,21 @@ $rootScope.processMessageTree = function (element, parent) {
 				c.path = parent.path + "." + element.position + "[1]";
 				c.children = [];
 				parent.children.push(c);
+				$rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
+				$rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+				if(element.table!= null){
+				$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+				}
+				$rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
 				$rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], c);
 			} else if (element.type === "datatype") {
-				element.components = $filter('orderBy')(element.components, 'position');
+				if(!parent){
+					var d = {};
+					d.obj = element;
+					d.path = element.name;
+					d.children = [];
+					parent = d;
+				}
 				angular.forEach(element.components, function (component) {
 					$rootScope.processMessageTree(component, parent);
 				});
@@ -855,6 +887,120 @@ $rootScope.processMessageTree = function (element, parent) {
 		throw e;
 	}
 };
+
+$rootScope.processSegmentsTree= function (element, parent) {
+    
+    
+    try {
+         if (element.type === "segment") {
+				$rootScope.filteredTablesList=[];
+				$rootScope.filteredDatatypesList=[];
+        	 
+        	 	console.log("IN SEGMENT")
+
+                if(!parent){
+                    var s = {};
+                    s.obj = element;
+                    s.path = element.name;
+                    s.children = [];
+                    parent = s;
+                }
+                element.fields = $filter('orderBy')(element.fields, 'position');
+
+                angular.forEach(element.fields, function (field) {
+                    $rootScope.processSegmentsTree(field, parent);
+                });
+            } else if (element.type === "field") {
+                var f = {};
+                f.obj = element;
+                f.path = parent.path + "." + element.position + "[1]";
+                f.children = [];
+                parent.children.push(f);
+                $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
+                $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+                if(element.table!= null){
+                $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                }
+                $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
+                console.log("IN DATATYPES ");
+                $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], f);
+            } else if (element.type === "component") {
+                var c = {};
+                c.obj = element;
+                c.path = parent.path + "." + element.position + "[1]";
+                c.children = [];
+                parent.children.push(c);
+                $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
+                $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+                if(element.table!= null){
+                $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                }
+                $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
+                console.log($rootScope.filteredTablesList);
+                console.log($rootScope.filteredTablesList);
+                
+                $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], c);
+            } else if (element.type === "datatype") {
+            
+                if(!parent){
+                    var d = {};
+                    d.obj = element;
+                    d.path = element.name;
+                    d.children = [];
+                    parent = d;
+                }
+                console.log("IN Data TYPE ")
+
+                angular.forEach(element.components, function (component) {
+                    $rootScope.processSegmentsTree(component, parent);
+                });
+            }
+        
+    } catch (e) {
+        throw e;
+    }
+};
+
+
+$rootScope.processDatatypeTree= function (element, parent) {
+    
+    
+    try {
+    	if (element.type === "datatype") {
+			$rootScope.filteredTablesList=[];
+                if(!parent){
+                    var d = {};
+                    d.obj = element;
+                    d.path = element.name;
+                    d.children = [];
+                    parent = d;
+                }
+                console.log("IN Data TYPE ")
+
+                angular.forEach(element.components, function (component) {
+                    $rootScope.processDatatypeTree(component, parent);
+                });
+            } else if(element.type === "component") {
+            var c = {};
+            c.obj = element;
+            c.path = parent.path + "." + element.position + "[1]";
+            c.children = [];
+            parent.children.push(c);
+            $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
+            $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+            if(element.table!= null){
+            $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+            }
+            $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
+            $rootScope.processDatatypeTree($rootScope.datatypesMap[element.datatype.id], c);
+        } 
+        
+    } catch (e) {
+        throw e;
+    }
+};
+
+
 
 $rootScope.createNewFlavorName = function (label) {
 	if ($rootScope.igdocument != null) {

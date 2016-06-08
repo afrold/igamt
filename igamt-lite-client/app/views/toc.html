@@ -82,7 +82,7 @@
 
 						{{ig.childSections.length+1}}.Message Infrastructure</span>
                     </div>
-                    <ol ui-tree-nodes="" ng-model="selectedMessages"
+                    <ol ui-tree-nodes="" ng-model="ig.profile.messages.children"
                         ng-show="!profilecollapsed" data-type="messages">
                         <div  ui-tree-handle  style= "margin-left:15px;">
 
@@ -95,7 +95,7 @@
                         </div>
 
 
-                        <li ng-repeat="msg in selectedMessages" ui-tree-node
+                        <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
 
 
                             ng-if="!collapsemessage" data-type="message">
@@ -107,7 +107,10 @@
                                                                                      ng-class="{selected : msg.id===activeModel}"
                                                                                      ng-click="editMessage(msg)">
 									{{updateMessagePositions(ig.profile.messages.children)}}
-									[{{msg.position}}]	{{msg.name}}-{{msg.description}}
+							 <input type="radio"
+               ng-model="selection"
+              name="messagesRadio"
+              value="{{msg}}" ng-click="processMessageTree(msg, null)"/>[{{msg.position}}]	{{msg.name}}-{{msg.description}}
 									</span>
 
                             </div>
@@ -117,21 +120,21 @@
   <span>
     {{segment.scope}}
   </span>
-</script>
+</script>                                           
 
-                    <ol ui-tree-nodes="" ng-model="selectedSegments"
+                    <ol ui-tree-nodes="" ng-model="filteredSegmentsList"
                         ng-show="!profilecollapsed" data-type="segments">
                         <div ui-tree-handle class="messageContent" style="margin-left:15px;">
                             <i data-nodrag ng-click="switcherseg()" class="fa fa-caret-down"
                                ng-class="{'fa-caret-down': !collapsesegment, 'fa-caret-right': collapsesegment}"></i>
 
-							<span data-nodrag  ng-class="{selected :activeModel ==='Segments and field descriptions'}"
+							   <span data-nodrag  ng-class="{selected :activeModel ==='Segments and field descriptions'}"
                                   confirm-click
                                   ng-click="editRoutSection('Segments and field descriptions')">
-								{{ig.childSections.length+1}}.2.Segments and field descriptions:{{selectedSegments.length}}/{{segments.length}}</span>
+								{{ig.childSections.length+1}}.2.Segments and field descriptions:{{filteredSegmentsList.length}}/{{segments.length}}</span>
                         </div>
 
-                        <li ng-repeat="segment in selectedSegments  | orderBy :'label'"
+                        <li ng-repeat="segment in filteredSegmentsList | orderBy :'label'"
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click style ="margin-left:30px;"
@@ -140,6 +143,12 @@
                                       ng-class="{selected : segment.id===activeModel}"
                                       confirm-click
                                       ng-click="editSeg(segment);">
+
+               <input type="radio"
+                ng-model="segSelection"
+                name="segmentsRadio"
+                value="{{segement}}" ng-click="processSegmentsTree(segment, null)"/>
+
 
                                        <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
                                    'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }"  ns-popover ns-popover-template="segmentPopover"
@@ -153,17 +162,17 @@
                         </li>
                     </ol>
 
-                    <ol ui-tree-nodes="" ng-model="selectedDataTypes" ng-show="!profilecollapsed" data-type="datatypes" >
+                    <ol ui-tree-nodes="" ng-model="filteredDatatypesList" ng-show="!profilecollapsed" data-type="datatypes" >
                         <div ui-tree-handle  style="margin-left:15px;">
                             <i data-nodrag ng-click="switcherdata()"
                                class="fa fa-caret-down" 
                                ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i>
 
 							<span ng-class="{selected :activeModel ==='Datatypes'}"
-                                    data-nodrag ng-click="editRoutSection('Datatypes')" confirm-click>{{ig.childSections.length+1}}.3.Datatypes {{selectedDataTypes.length}}/{{datatypes.length}}</span>
+                                    data-nodrag ng-click="editRoutSection('Datatypes')" confirm-click>{{ig.childSections.length+1}}.3.Datatypes {{filteredDatatypesList.length}}/{{datatypes.length}}</span>
                         </div>
 
-                        <li ng-repeat="data in selectedDataTypes | orderBy :'label'" ui-tree-node
+                        <li ng-repeat="data in filteredDatatypesList | orderBy :'label'" ui-tree-node
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle  data-nodrag  
                                  confirm-click
@@ -172,10 +181,16 @@
                                       ng-class="{selected : data.id===activeModel}"
                                       confirm-click
                                       ng-click="editDataType(data)">
+
+                                        <input type="radio"
+                ng-model="dataSelection"
+                name="dataTypesRadio"
+                value="{{data}}" ng-click="processDatatypeTree(data, null)"/>  
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                    'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}" >  {{getScopeLabel(data)}}</span> 
                                       
-                                       {{getDatatypeLabel(data)}}-{{data.description}}</span>
+          
+                                        {{getDatatypeLabel(data)}}-{{data.description}}</span>
 
                             </div>
                         </li>
@@ -183,7 +198,7 @@
 
                     </ol>
 
-                    <ol ui-tree-nodes="" ng-model="selectedTables" ng-show="!profilecollapsed" data-type="tables">
+                    <ol ui-tree-nodes="" ng-model="filteredTablesList" ng-show="!profilecollapsed" data-type="tables">
                         <div ui-tree-handle  style="margin-left:15px;" context-menu="addValueSets">
                             <i data-nodrag ng-click="switchervalueSet()"
                                class="fa fa-caret-down" 
@@ -191,11 +206,11 @@
 
 							<span ng-class="{selected :activeModel ==='Value Sets'}" confirm-click
                                     data-nodrag ng-click="editRoutSection('Value Sets')">{{ig.childSections.length+1}}.4.Value Sets
-                                    {{selectedTables.length}}/{{tables.length}}</span>
+                                    {{filteredTablesList.length}}/{{tables.length}}</span>
                         </div>
 
 
-                        <li ng-repeat="table in selectedTables |  orderBy :'name'" ui-tree-node
+                        <li ng-repeat="table in filteredTablesList |  orderBy :'name'" ui-tree-node
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click

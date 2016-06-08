@@ -119,10 +119,11 @@ angular
 
                         var parentSource=sourceNode.$parentNodeScope.$modelValue;
                         var parentDest= event.dest.nodesScope.$nodeScope.$modelValue; 
-
-                        		
+                        $scope.updatePositions($rootScope.igdocument.childSections);
                                 if (dataTypeDest ==="messages"){
                                 	console.log("========ordering messages");
+                                    $scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
+
                                     $scope.reOrderMessages();
                                 	return "";
                                 }else if(parentSource.type==="document"&&parentDest.type==="section"){
@@ -893,12 +894,108 @@ angular
             };
             
             
+
+
+            $scope.getSegmentsFromgroup= function(group){
+
+              //_.union($rootScope.selectedSegments,temp);
+              for( var i=0; i<group.children.length; i++){
+                if(group.children[i].type === "segmentRef"){
+                        console.log("IN IF ");
+                        var segment = $rootScope.segmentsMap[group.children[i].ref.id];
+                        var temp2=[];
+                        temp2.push(segment);
+                        $rootScope.FilteredSegments.push(segment);
+                        //$rootScope.FilteredSegments=_.union($rootScope.FilteredSegments,temp2);
+
+                    
+              }else if(group.children[i].type==="group"){
+                        console.log("group case ");
+                        $scope.getSegmentsFromgroup(group.children[i]);
+              }
+            }
+
+          }
+
+
+            $scope.getDatatypeFromDatatype = function(datatype){
+              var data=[];
+              if(datatype.components.length===0){
+                $scope.getTablesFromDatatype(datatype);
+                return 0;
+              }
+              else {
+
+                for(var i=0; i<datatype.components.length; i++){
+                  var temp= [];
+                  temp.push($rootScope.datatypesMap[datatype.components[i].datatype.id]);
+                  $scope.getTablesFromDatatype($rootScope.datatypesMap[datatype.components[i].datatype.id]);
+                  data=_.union(data,temp);
+                }
+              }
+              return data;
+            }
+
+            $scope.FilterbyConformance=function(msg){
+
+                $rootScope.FilteredSegments=[];
+                $rootScope.filteredDatatypes=[];
+                $rootScope.filterdTables=[];
+                for (var i = msg.children.length - 1; i >= 0; i--) {
+
+                
+                    if( msg.children[i].type==="segmentRef"){
+                        var seg = $rootScope.segmentsMap[msg.children[i].ref.id];
+                        console.log(seg);
+                        $rootScope.FilteredSegments.push(seg);
+                        var temp=[];
+                        temp.push(seg);
+                        $rootScope.filteredDatatype=_.union($rootScope.selectedDataTypes, $scope.getDatataypeFromSegment(segment));
+                        $scope.getTablesFromSegment(segment);
+
+                        }else if(msg.children[i].type==="group"){
+                            $scope.getSegmentsFromgroup(msg.children[i]);
+                        }
+                      }
+
+
+            }
+
+            $scope.getDatataypeFromSegment=function(seg){
+              var data=[];
+              for(var i=0; i<seg.fields.length; i++){
+                console.log(seg.fields[i].datatype.id);
+                var datatype = $rootScope.datatypesMap[seg.fields[i].datatype.id];
+                console.log(datatype);
+                $scope.getTablesFromDatatype(datatype);
+                var temp=[];
+                temp.push(datatype);
+                temp=_.union(temp, $scope.getDatatypeFromDatatype(datatype));
+                data=_.union(data,temp);
+
+              }
+              return data;
+            }
+
+              $scope.getTablesFromSegment=function(seg){
+              var tables=[];
+              for(var i=0; i<seg.fields.length; i++){
+                if(seg.fields[i].table!=null){
+                var table = $rootScope.tablesMap[seg.fields[i].table.id];
+                //console.log(datatype);
+                var temp=[];
+                temp.push(table);
+                tables=_.union(tables,temp);
+                $rootScope.filtererTables=_.union($rootScope.selectedTables,tables);
+                }
+
+              }
             
-            
-            
-            
-            
-            
-            
+            }
+
+
+
+
+
         }
     ]);
