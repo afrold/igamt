@@ -59,7 +59,7 @@ public class MessagesReadConverter extends AbstractReadConverter<DBObject, Messa
 			message.setStructID((String) child.get("structID"));
 			message.setType((String) child.get("type"));
 			message.setMessageID((String) child.get("messageID"));
-			
+			message.setUsageNote((String) child.get("usageNote"));
 			
 			
 			BasicDBList confStsObjects = (BasicDBList) child.get(CONFORMANCE_STATEMENTS);
