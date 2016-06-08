@@ -1516,7 +1516,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="table in tables|filter:searchTableValue|orderBy:predicate:reverse">
+                            <tr ng-repeat="table in sortedTables|filter:searchTableValue|orderBy:predicate:reverse">
                                 <td>
                                     <a ng-click="selectTable(table)">{{table.bindingIdentifier}}</a>
                                 </td>
