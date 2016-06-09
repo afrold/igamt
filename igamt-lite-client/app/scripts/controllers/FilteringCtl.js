@@ -6,7 +6,15 @@ angular
             var ctl = this;
 
            // $scope.filtermsgmodel = $rootScope.igdocument.profile.messages.children;
-            
+          
+          $scope.selectAll= function(){
+
+            $rootScope.selectedMessages=$rootScope.igdocument.profile.messages.children;
+            $rootScope.selectedSegments=$rootScope.segments;
+            $rootScope.selectedDataTypes=$rootScope.datatypes;
+            $rootScope.selectedTables=$rootScope.tables;
+
+          } 
           $scope.addToSelection  =function(item) {
                 if($rootScope.selectedMessages.length===$rootScope.igdocument.profile.messages.children.length){
                       $rootScope.selectedMessages=[];
@@ -41,9 +49,11 @@ angular
                       }
                    }
               }
-
-
             }
+
+
+
+
             $scope.getSegmentsFromgroup= function(group){
 
               //_.union($rootScope.selectedSegments,temp);

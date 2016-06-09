@@ -786,13 +786,14 @@ $rootScope.processElement = function (element, parent) {
 $rootScope.filteredSegmentsList=[];
 $rootScope.filteredTablesList=[];
 $rootScope.filteredDatatypesList=[];
-
+$rootScope.selectedMessage=null;
 $rootScope.processMessageTree = function (element, parent) {
 	
 	
 	try {
 		if (element != undefined && element != null) {
 			if (element.type === "message") {
+				$rootScope.selectedMessage=element;
 				$rootScope.filteredSegmentsList=[];
 				$rootScope.filteredTablesList=[];
 				$rootScope.filteredDatatypesList=[];
@@ -895,8 +896,6 @@ $rootScope.processSegmentsTree= function (element, parent) {
          if (element.type === "segment") {
 				$rootScope.filteredTablesList=[];
 				$rootScope.filteredDatatypesList=[];
-        	 
-        	 	console.log("IN SEGMENT")
 
                 if(!parent){
                     var s = {};
@@ -922,7 +921,6 @@ $rootScope.processSegmentsTree= function (element, parent) {
                 $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                 }
                 $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
-                console.log("IN DATATYPES ");
                 $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], f);
             } else if (element.type === "component") {
                 var c = {};
@@ -949,7 +947,6 @@ $rootScope.processSegmentsTree= function (element, parent) {
                     d.children = [];
                     parent = d;
                 }
-                console.log("IN Data TYPE ")
 
                 angular.forEach(element.components, function (component) {
                     $rootScope.processSegmentsTree(component, parent);
@@ -961,13 +958,20 @@ $rootScope.processSegmentsTree= function (element, parent) {
     }
 };
 
+$rootScope.checkedDatatype=null;
+
+$rootScope.rebuildTreeFromDatatype= function(data){
+	$rootScope.checkedDatatype=data;	
+	$rootScope.filteredTablesList=[];
+	$rootScope.processDatatypeTree(data, null);
+}
 
 $rootScope.processDatatypeTree= function (element, parent) {
-    
+	
+    console.log(element);
     
     try {
     	if (element.type === "datatype") {
-			$rootScope.filteredTablesList=[];
                 if(!parent){
                     var d = {};
                     d.obj = element;
@@ -989,6 +993,8 @@ $rootScope.processDatatypeTree= function (element, parent) {
             $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
             $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
             if(element.table!= null){
+            	console.log("added table");
+            	console.log($rootScope.tablesMap[element.table.id])
             $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
             }
             $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
@@ -2271,7 +2277,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', ["$scope", "$modalInstan
 			});
 
 		}
-		else if(data.type && data.type==="datataypes"){
+		else if(data.type && data.type==="datataype"){
 			var datatype = $rootScope.datatype;
             var ext = datatype.ext;
             if (datatype.libIds == undefined) datatype.libIds = [];
@@ -2292,7 +2298,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', ["$scope", "$modalInstan
                 });
     
 	
-		}else if(data.type && data.type==="tables"){
+		}else if(data.type && data.type==="table"){
 			var table = $rootScope.table;
 			var bindingIdentifier = table.bindingIdentifier;
 	

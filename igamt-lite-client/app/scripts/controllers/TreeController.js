@@ -15,14 +15,15 @@ angular
             $scope.collapsemessage = false;
             $scope.collapsesegment = false;
             $scope.collapsetable = false;
+            $rootScope.selectedMessage=null;
             $scope.collapsevalueSet = false;
             $scope.profilecollapsed = false;
             $scope.openMetadata = false;
             $scope.ordredMessages = [];
             $scope.dataTypeLibraryCollapsed = false;
-            $scope.activeModel = "";
+            $rootScope.activeModel = "";
             $scope.Activate = function (param) {
-                $scope.activeModel = param;
+                $rootScope.activeModel = param;
             }
 
             $rootScope.switcherDatatypeLibrary = function () {
@@ -286,7 +287,7 @@ angular
                         console.log($itemScope.section);
                         SectionSvc.update($rootScope.igdocument.id, $itemScope.section);
                         $scope.editSection(newSection);
-                        $scope.activeModel = newSection.id;
+                        $rootScope.activeModel = newSection.id;
 
 
                     }
@@ -336,8 +337,13 @@ angular
                         $scope.updatePositions($itemScope.$nodeScope.$parentNodesScope.$modelValue);
 
 
-                        SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id);
-
+                        SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id).then(function(){
+                        	if($itemScope.section.id===$rootScope.activeModel){
+                            $scope.displayNullView();
+                            }
+                        });
+            
+                        
                     }
                 ]
 
@@ -389,13 +395,14 @@ angular
                 ['copy',
                     function ($itemScope) {
 
-
+                		
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
                                 CloneDeleteSvc.copySegment($itemScope.segment);
                             });
                         } else {
+                        	console.log($itemScope.segment);
                             CloneDeleteSvc.copySegment($itemScope.segment);
                         }
 
@@ -404,7 +411,7 @@ angular
                 null,
                 ['delete',
                     function ($itemScope) {
-                        CloneDeleteSvc.deleteSegment($itemScope.segment);
+                        	CloneDeleteSvc.deleteSegment($itemScope.segment);
                     }
                 ]
 
@@ -430,6 +437,7 @@ angular
                 ['delete',
                     function ($itemScope) {
                         CloneDeleteSvc.deleteDatatype($itemScope.data);
+                      
                     }
                 ]
 
@@ -454,6 +462,7 @@ angular
                 ['delete',
                     function ($itemScope) {
                         CloneDeleteSvc.deleteValueSet($itemScope.table);
+                    
                     }
                 ]
 

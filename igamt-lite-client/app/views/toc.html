@@ -108,9 +108,9 @@
                                                                                      ng-click="editMessage(msg)">
 									{{updateMessagePositions(ig.profile.messages.children)}}
 							 <input type="radio"
-               ng-model="selection"
-              name="messagesRadio"
-              value="{{msg}}" ng-click="processMessageTree(msg, null)"/>[{{msg.position}}]	{{msg.name}}-{{msg.description}}
+               		ng-model="selection"
+              name="messagesRadio" title="filter by this conformance profile"
+              value="{{msg}}" ng-click="selectedMessage=msg;processMessageTree(msg, null)"/>[{{msg.position}}]	{{msg.name}}-{{msg.description}}
 									</span>
 
                             </div>
@@ -131,10 +131,13 @@
 							   <span data-nodrag  ng-class="{selected :activeModel ==='Segments and field descriptions'}"
                                   confirm-click
                                   ng-click="editRoutSection('Segments and field descriptions')">
-								{{ig.childSections.length+1}}.2.Segments and field descriptions:{{filteredSegmentsList.length}}/{{segments.length}}</span>
+								               <input type="radio"
+                ng-model="segSelection"
+                name="segmentsRadio" ng-model="AllSegment.checked" ng-dbclick="segment.checked=null"/> 
+                {{ig.childSections.length+1}}.2.Segments and field descriptions:{{filteredSegmentsList.length}}/{{segments.length}}</span>
                         </div>
 
-                        <li ng-repeat="segment in filteredSegmentsList | orderBy :'label'"
+                        <li ng-repeat="segment in filteredSegmentsList"
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click style ="margin-left:30px;"
@@ -143,12 +146,13 @@
                                       ng-class="{selected : segment.id===activeModel}"
                                       confirm-click
                                       ng-click="editSeg(segment);">
-
+<!-- 
                <input type="radio"
                 ng-model="segSelection"
-                name="segmentsRadio"
-                value="{{segement}}" ng-click="processSegmentsTree(segment, null)"/>
+                name="segmentsRadio" ng-model="segment.checked" ng-dbclick="segment.checked=null"
+                value="{{segement}}" ng-click="processSegmentsTree(segment, null)"/> -->
 
+<input type="checkbox" ng-model="segment.checked" ng-click="uncheckAndDisableOthers(segment)" ng-disabled="anOtherIsChecked(segement)"/>
 
                                        <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
                                    'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }"  ns-popover ns-popover-template="segmentPopover"
@@ -185,7 +189,7 @@
                                         <input type="radio"
                 ng-model="dataSelection"
                 name="dataTypesRadio"
-                value="{{data}}" ng-click="processDatatypeTree(data, null)"/>  
+                value="{{data}}" ng-click="rebuildTreeFromDatatype(data)"/>  
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                    'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}" >  {{getScopeLabel(data)}}</span> 
                                       

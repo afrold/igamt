@@ -301,8 +301,6 @@ angular.module('igl')
             console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
             $scope.viewSettings.setTableReadonly(false);
             $scope.tocView='views/toc.html';
-           
-
             $scope.show(igdocument);
         };
         
@@ -311,6 +309,27 @@ angular.module('igl')
             $scope.tocView='views/tocReadOnly.html';
             $scope.show(igdocument);
         };
+        $scope.displayNullView= function(){
+        	console.log("before");
+        	console.log($rootScope.subview);
+        	$rootScope.subview='Blank.html';
+        	console.log("after");
+        	console.log($rootScope.subview);
+        }      
+        
+        // switcher
+        
+        $scope.enabled = true;
+        $scope.onOff = true;
+        $scope.yesNo = true;
+        $scope.disabled = true;
+
+
+        $scope.changeCallback = function() {
+          console.log('This is the state of my model ' + $scope.enabled);
+        };
+        
+        
 //        
 //        $scope.reproccess= function(igdocument){
 //        	
@@ -347,9 +366,10 @@ angular.module('igl')
                     //StorageService.setIgDocument($rootScope.igdocument);
                     $rootScope.initMaps(); 
                     $scope.loadSegments().then(function () {
-                        $rootScope.selectedSegments=angular.copy($rootScope.segments);
+                    	$rootScope.filteredSegmentsList=angular.copy($rootScope.segments);
                         $scope.loadDatatypes().then(function () {
-                             $rootScope.selectedDataTypes=angular.copy($rootScope.datatypes);
+                        	
+                             $rootScope.filteredDatatypesList=angular.copy($rootScope.datatypes);
                             $scope.loadTables().then(function () {
                                 $scope.collectMessages();
                                 //$scope.sortByLabels();
@@ -358,7 +378,8 @@ angular.module('igl')
                                
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();
-                                $rootScope.selectedTables=angular.copy($rootScope.tables);
+                				
+                				$rootScope.filteredTablesList=angular.copy($rootScope.tables);
                             }, function () {
                             });
                         }, function () {
@@ -782,7 +803,7 @@ angular.module('igl')
         };
 
         $scope.selectSegment = function (segment) {
-            $scope.subview = "EditSegments.html";
+            $rootScope.subview = "EditSegments.html";
             if (segment && segment != null) {
                 $scope.loadingSelection = true;
                 SegmentService.get(segment.id).then(function (result) {
@@ -812,7 +833,7 @@ angular.module('igl')
         };
 
         $scope.selectDocumentMetaData = function () {
-            $scope.subview = "EditDocumentMetadata.html";
+            $rootScope.subview = "EditDocumentMetadata.html";
             $scope.loadingSelection = true;
             $rootScope.metaData = angular.copy($rootScope.igdocument.metaData);
             $rootScope.currentData=$rootScope.igdocument;
@@ -824,7 +845,7 @@ angular.module('igl')
         };
 
         $scope.selectProfileMetaData = function () {
-            $scope.subview = "EditProfileMetadata.html";
+            $rootScope.subview = "EditProfileMetadata.html";
             $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
             $rootScope.currentData=$rootScope.igdocument.profile;
             $scope.loadingSelection = true;
@@ -836,7 +857,7 @@ angular.module('igl')
         };
 
         $scope.selectDatatype = function (datatype) {
-            $scope.subview = "EditDatatypes.html";
+            $rootScope.subview = "EditDatatypes.html";
             if (datatype && datatype != null) {
                 $scope.loadingSelection = true;
                 DatatypeService.getOne(datatype.id).then(function (result) {
@@ -865,7 +886,7 @@ angular.module('igl')
         };
 
         $scope.selectMessage = function (message) {
-            $scope.subview = "EditMessages.html";
+            $rootScope.subview = "EditMessages.html";
             $scope.loadingSelection = true;
             $rootScope.originalMessage = message;
             $rootScope.message = angular.copy(message);
@@ -887,7 +908,7 @@ angular.module('igl')
 
         $scope.selectTable = function (t) {
             var table = angular.copy(t);
-            $scope.subview = "EditValueSets.html";
+            $rootScope.subview = "EditValueSets.html";
             $scope.loadingSelection = true;
             $timeout(
                 function () {
@@ -912,7 +933,7 @@ angular.module('igl')
         		section.sectionContents="";
         		console.log(section);
         	}
-            $scope.subview = "EditSections.html";
+            $rootScope.subview = "EditSections.html";
             $scope.loadingSelection = true;
             $timeout(
                 function () {

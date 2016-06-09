@@ -32,7 +32,7 @@ var app = angular
         ,'ui.tree',
         'blockUI',
         'nsPopover',
-        'ui.select',
+        'uiSwitch'
      ]);
 
 var

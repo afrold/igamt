@@ -4,7 +4,7 @@
 
 angular.module('igl').run(function ($httpBackend, $q, $http) {
 
-	$httpBackend.whenGET('api/session/keepAlive').respond(function (method, url, data, headers) {
+    $httpBackend.whenGET('api/session/keepAlive').respond(function (method, url, data, headers) {
         return [200, {}, {}];
     });
 
@@ -189,12 +189,12 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     $httpBackend.whenGET(/resources\//).passThrough();
 
     $httpBackend.whenGET('api/igdocuments?type=PRELOADED').respond(function (method, url, data, headers) {
-    		console.log("api/igdocuments/:type==>");
+            console.log("api/igdocuments/:type==>");
         return [200, {}, {}];
    });
 
     $httpBackend.whenGET('api/igdocuments?type=USER').respond(function (method, url, data, headers) {
-    		var userDocs = [];
+            var userDocs = [];
          console.log('api/igdocuments?type=USER' + ' data=' + data);
          var request = new XMLHttpRequest();
          request.open('GET', '../../resources/igDocuments/igd-USER-2.5.1.json', false);
@@ -216,7 +216,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     });
 
     $httpBackend.whenGET('api/igdocuments/findVersions').respond(function (method, url, data, headers) {
-    	console.log('api/igdocuments/hl7/findVersions');
+        console.log('api/igdocuments/hl7/findVersions');
         return [200, ["2.5.1","2.6","2.7"], {}];
     });
 
@@ -234,7 +234,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
 
     $httpBackend.whenPOST('api/igdocuments/createIntegrationProfile').respond(function (method, url, data, headers) {
-    	console.log('api/igdocuments/hl7/createIntegrationProfile start' + ' data=' + data);
+        console.log('api/igdocuments/hl7/createIntegrationProfile start' + ' data=' + data);
         var profile = null;
         var request = new XMLHttpRequest();
 //        request.open('GET', '../../resources/igDocuments/igdocument-2.7-HL7STANDARD-.json', false);
@@ -246,7 +246,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     });
 
     $httpBackend.whenPOST('api/igdocuments/updateIntegrationProfile').respond(function (method, url, data, headers) {
-    	console.log('api/igdocuments/hl7/updateIntegrationProfile start');
+        console.log('api/igdocuments/hl7/updateIntegrationProfile start');
         var profile = null;
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/igDocuments/igdocument-2.6.1-USER-ABC2.json', false);
@@ -332,11 +332,11 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
          var scope = data;
          var d = null;
          if (scope === 'MASTER') {
-        	 	request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
-//        	 	request.open('GET', 'test/fixtures/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
-//        	 	request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
-         	request.send(null);
-        		d = angular.fromJson(request.response);
+                request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
+//              request.open('GET', 'test/fixtures/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
+//              request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+            request.send(null);
+                d = angular.fromJson(request.response);
          } else {
              request.open('GET', '../../resources/datatypes/dtLib-2.5.1-HL7STANDARD.json', false);
              request.send(null);
@@ -347,4 +347,3 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     });
 
 });
-

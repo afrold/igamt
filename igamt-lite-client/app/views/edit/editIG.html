@@ -24,19 +24,23 @@
     </div>
     </div>
 
+<script type="text/ng-template" id="switch.html">
+	<form ng-controller="IGDocumentListCtrl">
+		<switch id="enabled" name="enabled" ng-model="enabled" class="green"></switch>
+		<br>{{ enabled }}
+	</form>
+</script>
     <div class="col-md-12 igl-page-header">
       <span class="header4 pull-left">
 
-        <div ng-controller="FilteringCtl">
+
            <div class="row form-inline" style="margin:10px">
-            <label class="label label-default">Filters by:</label>
-            <label>Conf Profiles</label>
-            <span   ng-dropdown-multiselect="" options="igdocument.profile.messages.children" selected-model="selectedMessagesIDS"  events="{ onItemSelect: addToSelection, onItemDeselect:removeFromSelection}">
-            </span>
-      {{selectedMessagesIDS}}
+            <label class="label label-default">Filtering mode:</label>
+            <ng-include src="switch.html"></ng-include>
+
           </div>
           
-         </div>
+
          </div>
 
         <span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>
@@ -129,8 +133,8 @@
             <div class="panel-heading">Edit Area</div>
             <div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init">
                 <form name="editForm" id="editForm" class="form-horizontal" novalidate confirm-on-leave unsaved-warning-form>
-                <div id="edit" ng-show="subview !== undefined" style="width:100%">
-                    <ng-include src="subview"></ng-include>
+                <div id="edit" ng-show="subview" style="width:100%">
+                    <div ng-include="subview"></div>
                 </div>
                 </form>
             </div>
