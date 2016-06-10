@@ -9,6 +9,9 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     $scope.saved = false;
     $scope.message = false;
     $scope.params = null;
+    $scope.predicate = 'value';
+    $scope.reverse = false;
+
     $scope.init = function () {
         $rootScope.$on('event:cloneTableFlavor', function (event, table) {
             $scope.copyTable(table);

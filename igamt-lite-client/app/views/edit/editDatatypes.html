@@ -873,7 +873,7 @@
 <div class="modal-header">
     <h3 ng-show="selectedNode === null" class="header4">Predicate for {{datatype.name}}</h3>
 
-    <h3 ng-show="selectedNode !== null" class="header4">Predicate for {{datatype.name}}-{{selectedNode.position}}</h3>
+    <h3 ng-show="selectedNode !== null" class="header4">Predicate for {{datatype.name}}.{{selectedNode.position}}</h3>
 </div>
 <div class="modal-body">
 <form role="form">
@@ -1172,8 +1172,7 @@
 <div class="modal-header">
     <h3 ng-show="selectedNode === null" class="header4">Conformance statement for {{datatype.name}}</h3>
 
-    <h3 ng-show="selectedNode !== null" class="header4">Conformance statement for
-        {{datatype.name}}-{{selectedNode.position}}</h3>
+    <h3 ng-show="selectedNode !== null" class="header4">Conformance statement for {{datatype.name}}.{{selectedNode.position}}</h3>
 </div>
 <div class="modal-body">
 <form role="form">

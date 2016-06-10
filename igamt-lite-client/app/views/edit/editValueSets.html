@@ -116,7 +116,8 @@
 								<div class="controls col-md-10">
 								 	<div class="form-control">
 										<span ng-repeat="cs in codeSystems">
-											{{cs}}
+											<span ng-hide="codeSysEditMode">{{cs}}</span>
+											<input ng-model="cs"  type="text" ng-show="codeSysEditMode"/>
 											<a ng-click="delCodeSystem(cs)" ng-show="codeSysEditMode" class="point">
                                         		<span><i class="fa fa-times-circle fa-fw"></i></span>
                                         	</a>
