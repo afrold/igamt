@@ -38,7 +38,7 @@ $scope.reproccess
         </form>
     </div>
 
-    <div ng-hide="loading">
+    <!--<div ng-hide="loading">-->
 
         <div class="col-md-12">
             <div ng-show="error === null">
@@ -62,7 +62,7 @@ $scope.reproccess
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="row in igs | orderBy:'metaData.date'"
+                    <tr ng-repeat="row in tmpIgs track by row.id | orderBy:'metaData.date'"
                         ng-class="{'current': igdocument != null && row.id === igdocument.id}">
                         <td st-ratio="5">{{$index + 1}}</td>
                         <td st-ratio="25" ng-bind="row.metaData.title"></td>
@@ -111,9 +111,9 @@ $scope.reproccess
 
         </div>
     </div>
-</div>
-<div ng-show="loading" style="text-align:center">
-    <i class="fa fa-spinner fa-pulse fa-2x"></i>
-</div>
+<!--</div>-->
+<!--<div ng-show="loading" style="text-align:center">-->
+    <!--<i class="fa fa-spinner fa-pulse fa-2x"></i>-->
+<!--</div>-->
 
 </div>

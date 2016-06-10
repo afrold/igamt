@@ -11,10 +11,11 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import java.util.List;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+
+import java.util.List;
+import java.util.Set;
 
 public interface TableService {
 
@@ -33,4 +34,8 @@ public interface TableService {
   void delete(String id);
 
   void save(List<Table> tables);
+
+  List<Table> findAllByIds(Set<String> ids);
+
+
 }

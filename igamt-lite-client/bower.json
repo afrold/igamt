@@ -35,7 +35,6 @@
 	"angular-ui-switch":"0.1.1",
     "angular-ui-notification": "^0.2.0",
     "angular-material":"1.1.0-rc.5-master-39911d3"
-
   },
   "devDependencies": {
     "angular-scenario": "1.3.15",

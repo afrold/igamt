@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService) {
+    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc) {
 
         $scope.init = function () {
         };
@@ -14,16 +14,10 @@ angular.module('igl')
         };
 
         $scope.reset = function () {
-            $rootScope.message = angular.copy($rootScope.messagesMap[$rootScope.message.id]);
+            MessageService.reset();
             $rootScope.processMessageTree($rootScope.message);
-            $rootScope.clearChanges();
-            $scope.editForm.$setPristine();
-            $scope.editForm.$dirty = false;
-            if ($scope.messagesParams) {
-                $scope.messagesParams.refresh();
-            }
+            cleanState();
         };
-
 
         var findIndex = function (id) {
             for (var i = 0; i < $rootScope.igdocument.profile.messages.children.length; i++) {
@@ -34,44 +28,46 @@ angular.module('igl')
             return -1;
         };
 
+        var indexIn = function (id, collection) {
+            for (var i = 0; i < collection.length; i++) {
+                if (collection[i].id === id) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+
+        var cleanState = function () {
+            $rootScope.addedSegments = [];
+            $rootScope.addedDatatypes = [];
+            $rootScope.addedTables = [];
+            $scope.clearDirty();
+            $scope.editForm.$setPristine();
+            $scope.editForm.$dirty = false;
+            $rootScope.clearChanges();
+            if ($scope.messagesParams) {
+                $scope.messagesParams.refresh();
+            }
+        };
+
+
         $scope.save = function () {
-
             $scope.saving = true;
-
             var message = $rootScope.message;
-
             console.log($rootScope.message);
             MessageService.save(message).then(function (result) {
-
                 var index = findIndex(message.id);
                 if (index < 0) {
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
-                    FilteringSvc.addMsgInFilter(message.name, message.id);
                 }
-                //                MastermapSvc.addMessage(message, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-
-                //$rootScope.message = angular.copy(message);
-                MessageService.merge($rootScope.messagesMap[message.id], message);
-                $rootScope.processElement($rootScope.message);
-                $rootScope.msg().text = "messageSaved";
-                $rootScope.msg().type = "success";
-                $rootScope.msg().show = true;
-                if ($scope.messagesParams) {
-                    $scope.messagesParams.refresh();
-                }
-                $scope.clearDirty();
-                $rootScope.clearChanges();
-                console.log($scope.editForm);
-
-                $rootScope.messageTree = null;
-                $rootScope.processMessageTree($rootScope.message);
-                console.log("one");
-                console.log(message);
-                console.log("two");
-                console.log($rootScope.message);
-                //console.log($rootScope.messageTree);
-
-
+                MessageService.saveNewElements().then(function () {
+                    MessageService.merge($rootScope.messagesMap[message.id], message);
+                    cleanState();
+                }, function (error) {
+                    $rootScope.msg().text = "Sorry an error occured. Please try again";
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                });
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
@@ -167,10 +163,10 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'SelectSegmentFlavor.html',
                 controller: 'SelectSegmentFlavorCtrl',
-                windowClass: 'app-modal-window',
+                windowClass: 'flavor-modal-window',
                 resolve: {
                     currentSegment: function () {
-                        return $rootScope.segmentsMap[segmentRef.ref.id];
+                        return $rootScope.segmentsMap[segmentRef.obj.ref.id];
                     },
                     datatypeLibrary: function () {
                         return $rootScope.igdocument.profile.datatypeLibrary;
@@ -179,19 +175,24 @@ angular.module('igl')
                         return $rootScope.igdocument.profile.segmentLibrary;
                     },
                     hl7Version: function () {
-                        return $rootScope.igdocument.metaData.hl7Version;
+                        return $rootScope.igdocument.profile.metaData.hl7Version;
                     }
                 }
             });
             modalInstance.result.then(function (segment) {
-                segmentRef.ref.id = segment.id;
-                segmentRef.ref.ext = segment.ext;
-                segmentRef.ref.name = segment.name;
-                $scope.setDirty();
-                // TODO: Delete segment ref from MasterMap
-                //                MastermapSvc.addSegmentObject(segment, [segmentRef.id, segmentRef.type]);
-                if ($scope.messagesParams)
-                    $scope.messagesParams.refresh();
+                if (segment && segment != null) {
+                    $scope.loadingSelection = true;
+                    segmentRef.obj.ref.id = segment.id;
+                    segmentRef.obj.ref.ext = segment.ext;
+                    segmentRef.obj.ref.name = segment.name;
+                    segmentRef.children = [];
+                    $scope.setDirty();
+                    var ref = $rootScope.segmentsMap[segmentRef.obj.ref.id];
+                    $rootScope.processMessageTree(ref, segmentRef);
+                    if ($scope.messagesParams)
+                        $scope.messagesParams.refresh();
+                    $scope.loadingSelection = false;
+                }
             });
         };
 
@@ -209,9 +210,9 @@ angular.module('igl')
                 if (node.type === 'group') {
                     return node.children && node.children.length > 0;
                 } else if (node.type === 'segmentRef') {
-                    return $rootScope.segmentsMap[node.ref.id].fields && $rootScope.segmentsMap[node.ref.id].fields.length > 0;
+                    return $rootScope.segmentsMap[node.ref.id] && $rootScope.segmentsMap[node.ref.id].fields && $rootScope.segmentsMap[node.ref.id].fields.length > 0;
                 } else if (node.type === 'field' || node.type === 'component') {
-                    return $rootScope.datatypesMap[node.datatype.id].components && $rootScope.datatypesMap[node.datatype.id].components.length > 0;
+                    return $rootScope.datatypesMap[node.datatype.id] && $rootScope.datatypesMap[node.datatype.id].components && $rootScope.datatypesMap[node.datatype.id].components.length > 0;
                 }
                 return false;
             } else {
@@ -325,7 +326,7 @@ angular.module('igl')
 
 
 angular.module('igl')
-    .controller('SelectSegmentFlavorCtrl', function ($scope, $filter, $q, $modalInstance, $rootScope, $http, segmentLibrary, SegmentService, $rootScope, hl7Version, ngTreetableParams, ViewSettings, SegmentLibrarySvc, datatypeLibrary, DatatypeLibrarySvc, currentSegment) {
+    .controller('SelectSegmentFlavorCtrl', function ($scope, $filter, $q, $modalInstance, $rootScope, $http, segmentLibrary, SegmentService, $rootScope, hl7Version, ngTreetableParams, ViewSettings, SegmentLibrarySvc, datatypeLibrary, DatatypeLibrarySvc, currentSegment, TableService) {
         $scope.segmentLibrary = segmentLibrary;
         $scope.datatypeLibrary = datatypeLibrary;
         $scope.resultsError = null;
@@ -346,36 +347,36 @@ angular.module('igl')
             }
         });
 
-        $scope.loadLibrariesByFlavorName = function (scope) {
+        $scope.loadLibrariesByFlavorName = function () {
             var delay = $q.defer();
-            $scope.selection.scope = scope;
             $scope.selection.segment = null;
             $scope.selection.selected = null;
             $scope.resetMap();
             $scope.ext = null;
             $scope.results = [];
             $scope.tmpResults = [];
-            if ($scope.selection.scope !== 'USER') {
-                SegmentLibrarySvc.findLibrariesByFlavorName($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (libraries) {
-                    if (libraries != null) {
-                        $scope.results = [];
-                        _.each(libraries, function (library) {
-                            $scope.results = $scope.results.concat(filterFlavors(library, $scope.selection.name));
-                        });
-                        $scope.tmpResults = [].concat($scope.results);
+            $scope.results = $scope.results.concat(filterFlavors($scope.segmentLibrary, $scope.selection.name));
+            $scope.tmpResults = [].concat($scope.results);
+            SegmentLibrarySvc.findLibrariesByFlavorName($scope.selection.name, 'HL7STANDARD', $scope.selection.hl7Version).then(function (libraries) {
+                if (libraries != null) {
+                    _.each(libraries, function (library) {
+                        $scope.results = $scope.results.concat(filterFlavors(library, $scope.selection.name));
+                    });
+                }
 
-                    }
-                    delay.resolve(true);
-                }, function (error) {
-                    $rootScope.msg().text = "Sorry could not load the segments";
-                    $rootScope.msg().type = error.data.type;
-                    $rootScope.msg().show = true;
-                    delay.reject(error);
+                $scope.results = _.uniq($scope.results, function (item, key, a) {
+                    return item.id;
                 });
-            } else {
-                $scope.results = $scope.results.concat(filterFlavors(segmentLibrary, $scope.selection.name));
+
+                $scope.tmpResults = [].concat($scope.results);
+
                 delay.resolve(true);
-            }
+            }, function (error) {
+                $rootScope.msg().text = "Sorry could not load the segments";
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+                delay.reject(error);
+            });
             return delay.promise;
         };
 
@@ -392,48 +393,11 @@ angular.module('igl')
         };
 
 
-        $scope.showSelectedDetails = function (segment) {
+        $scope.selectSegment = function (segment) {
             if (segment && segment != null) {
                 $scope.loadingSelection = true;
-                $scope.selection.segment = null;
-                $scope.resetMap();
-                $scope.bindingError = null;
-                $scope.added = [];
-                $scope.ext = null;
-                SegmentService.get(segment.id).then(function (full) {
-                    SegmentService.collectDatatypes(full.id).then(function (datatypes) {
-                        angular.forEach(datatypes, function (child) {
-                            if ($rootScope.datatypesMap[child.id] === null || $rootScope.datatypesMap[child.id] === undefined) {
-                                $rootScope.datatypesMap[child.id] = child;
-                                $scope.added.push(child.id);
-                            }
-                        });
-                        $rootScope.processElement(full);
-                        $scope.ext = segment.ext;
-                        $scope.selection.segment = full;
-                        $scope.selection.segment["type"] = "segment";
-                        $rootScope.tableWidth = null;
-                        $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                        $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                        $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                        $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                        $scope.loadingSelection = false;
-                        if ($scope.segmentFlavorParams)
-                            $scope.segmentFlavorParams.refresh();
-                    }, function (error) {
-                        $scope.loadingSelection = false;
-                        $rootScope.msg().text = "Sorry could not load the data type";
-                        $rootScope.msg().type = "danger";
-                        $rootScope.msg().show = true;
-                        $scope.selection.segment = null;
-                    });
-                }, function (error) {
-                    $scope.resultsLoading = false;
-                    $rootScope.msg().text = "Sorry could not load the data type";
-                    $rootScope.msg().type = "danger";
-                    $rootScope.msg().show = true;
-                    $scope.selection.segment = null;
-                });
+                $scope.selection.segment = segment;
+                $scope.selection.segment["type"] = "segment";
             }
         };
 
@@ -446,64 +410,61 @@ angular.module('igl')
             return -1;
         };
 
-        var addDatatypes = function () {
-            _.each($scope.added, function (datatype) {
-                if (indexIn(datatype.id, $rootScope.datatypes) < 0) {
-                    $rootScope.datatypes.push(datatype);
-                    $rootScope.datatypesMap[datatype.id] = datatype;
+        var collectNewSegmentAndDatatypesAndTables = function (segment, datatypes) {
+            $rootScope.segmentsMap[segment.id] = segment;
+            if (indexIn(segment.id, $rootScope.addedSegments) < 0) {
+                $rootScope.addedSegments.push(segment);
+            }
+            var tmpTables = [];
+            angular.forEach(datatypes, function (child) {
+                if (indexIn(child.id, $rootScope.datatypes) < 0) {
+                    $rootScope.datatypesMap[child.id] = child;
+                }
+                if (indexIn(child.id, $rootScope.addedDatatypes) < 0) {
+                    $rootScope.addedDatatypes.push(child);
+                }
+                if (indexIn(child.table.id, $rootScope.addedTables) < 0) {
+                    tmpTables.push(child.table.id);
                 }
             });
-        };
 
-        var getNewDatatypeLinks = function () {
-            var links = [];
-            _.each($scope.added, function (datatype) {
-                if (indexIn(datatype.id, $scope.datatypeLibrary.children) < 0) {
-                    var link = getNewLink(datatype);
-                    links.push(link);
-                }
-            });
-            return links;
-        };
-
-        var getNewLink = function (obj) {
-            var link = {};
-            link['id'] = obj.id;
-            link['name'] = obj.name;
-            link['ext'] = obj.ext;
-            return link;
-        };
-
-
-        $scope.submit = function () {
-            var index = indexIn($scope.selection.segment.id, $scope.segmentLibrary.children);
-            if (index < 0) {
-                var link = getNewLink($scope.selection.segment);
-                SegmentLibrarySvc.addChild($scope.segmentLibrary.id, link).then(function () {
-                    $scope.segmentLibrary.children.push(link);
-                    $rootScope.segmentsMap[link.id] = $scope.selection.segment;
-                    if (indexIn($scope.selection.segment.id, $rootScope.segments) < 0) {
-                        $rootScope.segments.push($scope.selection.segment);
-                    }
-                    if ($scope.added === null)
-                        $scope.added = [];
-                    var links = getNewDatatypeLinks();
-                    if (links.length > 0) {
-                        DatatypeLibrarySvc.addChildren($scope.datatypeLibrary.id, links).then(function () {
-                            $scope.datatypeLibrary.children = $scope.datatypeLibrary.children.concat(links);
-                            addDatatypes();
-                            $modalInstance.close($scope.selection.segment);
-                        }, function (error) {
-                            $rootScope.msg().text = "Sorry an error occured. Please try again";
-                            $rootScope.msg().type = "danger";
-                            $rootScope.msg().show = true;
-                        });
-                    } else {
-                        addDatatypes();
-                        $modalInstance.close($scope.selection.segment);
-                    }
+            if (tmpTables.length > 0) {
+                TableService.findAllByIds(tmpTables).then(function (tables) {
+                    $rootScope.addedTables = $rootScope.addedTables.concat(tables);
+                    angular.forEach(tables, function (table) {
+                        $rootScope.tablesMap[table.id] = table;
+                    });
+                    $modalInstance.close($scope.selection.segment);
                 }, function (error) {
                     $rootScope.msg().text = "Sorry an error occured. Please try again";
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                });
+            } else {
+                $modalInstance.close($scope.selection.segment);
+            }
+        };
+
+        $scope.submit = function () {
+            var indexFromLibrary = indexIn($scope.selection.segment.id, $scope.segmentLibrary.children);
+            var indexFromCollection = indexIn($scope.selection.segment.id, $rootScope.segments);
+            var indexFromMap = $rootScope.segmentsMap[$scope.selection.segment.id] != undefined && $rootScope.segmentsMap[$scope.selection.segment.id] != null ? 100 : -1;
+            if (indexFromLibrary < 0 | indexFromCollection < 0 | indexFromMap < 0) {
+                SegmentService.get($scope.selection.segment.id).then(function (full) {
+                    $scope.ext = $scope.selection.segment.ext;
+                    $scope.selection.segment = full;
+                    $scope.selection.segment["type"] = "segment";
+                    SegmentService.collectDatatypes(full.id).then(function (datatypes) {
+                        collectNewSegmentAndDatatypesAndTables($scope.selection.segment, datatypes);
+                    }, function (error) {
+                        $scope.loadingSelection = false;
+                        $rootScope.msg().text = "Sorry could not load the data type";
+                        $rootScope.msg().type = "danger";
+                        $rootScope.msg().show = true;
+                    });
+                }, function (error) {
+                    $scope.resultsLoading = false;
+                    $rootScope.msg().text = "Sorry could not load the data type";
                     $rootScope.msg().type = "danger";
                     $rootScope.msg().show = true;
                 });
@@ -595,8 +556,8 @@ angular.module('igl')
         };
 
         $scope.resetMap = function () {
-            if ($scope.added = null) {
-                angular.forEach($scope.added, function (child) {
+            if ($rootScope.addedDatatypes = null) {
+                angular.forEach($rootScope.addedDatatypes, function (child) {
                     delete $rootScope.datatypesMap[child];
                 });
             }
@@ -610,12 +571,13 @@ angular.module('igl')
             return link != null ? $rootScope.getLabel(link.name, link.ext) : null;
         };
 
-        $scope.loadLibrariesByFlavorName('USER').then(function (done) {
+        $scope.loadLibrariesByFlavorName().then(function (done) {
             $scope.selection.selected = $scope.currentSegment.id;
-            $scope.showSelectedDetails($scope.currentSegment);
+            $scope.selectSegment($scope.currentSegment);
         });
 
-    });
+    })
+;
 
 
 angular.module('igl')
@@ -1173,14 +1135,22 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function ($scope, $
             MessagesSvc.delete($scope.messageToDelete).then(function (result) {
                 // We must delete from two collections.
                 //CloneDeleteSvc.execDeleteMessage($scope.messageToDelete);
-                var index = $rootScope.messages.indexOf($scope.messageToDelete);
-                $rootScope.messages.splice(index, 1);
-                var tmp = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.igdocument.profile.messages);
-                var index = $rootScope.igdocument.profile.messages.children.indexOf(tmp);
-                $rootScope.igdocument.profile.messages.children.splice(index, 1);
+                var index = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.messages.children);
+                if(index >= 0) {
+                    $rootScope.messages.children.splice(index, 1);
+                }
+
+                var tmp = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.igdocument.profile.messages.children);
+                if(tmp != null) {
+                    var index = $rootScope.igdocument.profile.messages.children.indexOf(tmp);
+                    if(index >= 0) {
+                        $rootScope.igdocument.profile.messages.children.splice(index, 1);
+                    }
+                }
+
                 $rootScope.messagesMap[$scope.messageToDelete.id] = null;
                 $rootScope.references = [];
-                if ($rootScope.message === $scope.messageToDelete) {
+                if ($rootScope.message != null && $rootScope.message.id === $scope.messageToDelete.id) {
                     $rootScope.message = null;
                 }
                 $rootScope.msg().text = "messageDeleteSuccess";

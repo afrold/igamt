@@ -257,5 +257,10 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 
   private String genRand() {
     return Integer.toString(new Random().nextInt(100));
+  } 
+  
+  public void addTables(Set<TableLink> dtls) {
+    children.addAll(dtls);
   }
+
 }

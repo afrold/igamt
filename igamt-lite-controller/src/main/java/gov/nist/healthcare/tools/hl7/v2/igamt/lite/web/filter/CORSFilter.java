@@ -27,8 +27,8 @@ import org.springframework.stereotype.Component;
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 8, 2015
  */
-// @Component("corsFilter")
-// @WebFilter(asyncSupported = true)
+@Component("corsFilter")
+@WebFilter(asyncSupported = true)
 public class CORSFilter implements Filter {
 
 	@Override

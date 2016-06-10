@@ -9,6 +9,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.TableSaveException;
 
+import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +66,11 @@ public class TableController extends CommonController {
 		tableService.delete(tableId);
 		return true;
 	}
+
+  @RequestMapping(value = "/findAllByIds", method = RequestMethod.POST)
+  public List<Table> collect(@RequestBody Set<String> tableIds) {
+    return tableService.findAllByIds(tableIds);
+  }
+
 
 }

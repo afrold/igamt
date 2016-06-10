@@ -182,6 +182,7 @@ angular
 
                 if (arr !== undefined && arr != null) {
                     for (var i = 0; i <= arr.length - 1; i++) {
+                        if(arr[i] != null) // wierd but happened
                         arr[i].position = i + 1;
                     }
                 }
@@ -632,10 +633,10 @@ angular
                 $rootScope.section = $scope.getRoutSectionByname(param);
                 //$rootScope.currentData=section;
                 
-                if(section.sectionContents===null){
-                	section.sectionContents="";
+                if($rootScope.section.sectionContents===null){
+                    $rootScope.section.sectionContents="";
                 }
-                $scope.$emit('event:openSection', section);
+                $scope.$emit('event:openSection', $rootScope.section);
 
             };
 
@@ -860,13 +861,13 @@ angular
                         }
                     });
                 return promise;
-            }
+            };
 
             $scope.showUnused = function (node) {
                 if (node.id === null) {
                     return true;
                 }
-                return FilteringSvc.isUnused(node);
+                 return FilteringSvc.isUnused(node);
             };
 
             $scope.showToC = function (leaf) {

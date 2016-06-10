@@ -11,7 +11,10 @@ angular.module('igl').controller(
 				console.log("$scope.hl7Versions  clickSource=" + clickSource);
 				$rootScope.clickSource = clickSource;
 				if ($rootScope.hasChanges()) {
-					$scope.confirmOpen($rootScope.igdocument);
+                    $rootScope.openConfirmLeaveDlg().result.then(function () {
+                        $rootScope.clearChanges();
+                        $scope.hl7VersionsInstance();
+                    });
 				} else {
 					$rootScope.hl7Versions = false;
 					$scope.hl7VersionsInstance();
@@ -96,7 +99,7 @@ angular.module('igl').controller(
 									var igdocument = angular
 											.fromJson(response.data);
 									$rootScope
-											.$broadcast(
+											.$emit(
 													'event:openIGDocumentRequest',
 													igdocument);
 									$rootScope.$broadcast('event:IgsPushed',

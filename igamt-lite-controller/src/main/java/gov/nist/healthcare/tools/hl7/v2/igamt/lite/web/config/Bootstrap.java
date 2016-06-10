@@ -1,12 +1,13 @@
 /**
- * This software was developed at the National Institute of Standards and Technology by employees
- * of the Federal Government in the course of their official duties. Pursuant to title 17 Section 105 of the
- * United States Code this software is not subject to copyright protection and is in the public domain.
- * This is an experimental system. NIST assumes no responsibility whatsoever for its use by other parties,
- * and makes no guarantees, expressed or implied, about its quality, reliability, or any other characteristic.
- * We would appreciate acknowledgement if the software is used. This software can be redistributed and/or
- * modified freely provided that any derivative works bear some notice that they are derived from it, and any
- * modified versions bear some notice that they have been modified.
+ * This software was developed at the National Institute of Standards and Technology by employees of
+ * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
+ * of the United States Code this software is not subject to copyright protection and is in the
+ * public domain. This is an experimental system. NIST assumes no responsibility whatsoever for its
+ * use by other parties, and makes no guarantees, expressed or implied, about its quality,
+ * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
+ * used. This software can be redistributed and/or modified freely provided that any derivative
+ * works bear some notice that they are derived from it, and any modified versions bear some notice
+ * that they have been modified.
  */
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
@@ -20,7 +21,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.IGDocumentConverterFromOldToNew;
 
 import java.util.List;
 
@@ -53,20 +53,16 @@ public class Bootstrap implements InitializingBean {
 		// Carefully use this. It will delete all of existing IGDocuments and
 		// make new ones converted from the "igdocumentPreLibHL7",
 		// "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
-		// covertOldToNew();
+//		 new IGDocumentConverterFromOldToNew().convert();
 
-		// new DataCorrection().updateSegment();
-		// new DataCorrection().updateDatatype();
-		// new DataCorrection().updateSegmentLibrary();
-		// new DataCorrection().updateDatatypeLibrary();
-		// new DataCorrection().updateTableLibrary();
-		// new DataCorrection().updateMessage();
 
-	}
+//		 new DataCorrection().updateSegment();
+//		 new DataCorrection().updateDatatype();
+//		 new DataCorrection().updateSegmentLibrary();
+//		 new DataCorrection().updateDatatypeLibrary();
+//		 new DataCorrection().updateTableLibrary();
+//		 new DataCorrection().updateMessage();
 
-	private void covertOldToNew() {
-		IGDocumentConverterFromOldToNew old2New = new IGDocumentConverterFromOldToNew();
-		// old2New.convert();
 	}
 
 	private void loadPreloadedIGDocuments() throws Exception {

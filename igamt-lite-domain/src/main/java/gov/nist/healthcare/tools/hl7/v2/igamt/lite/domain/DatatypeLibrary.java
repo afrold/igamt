@@ -98,7 +98,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
   public DatatypeLink findOne(String dtId) {
     if (this.children != null) {
       for (DatatypeLink dtl : this.children) {
-        if (dtl.getId().equals(dtId)) {
+        if (dtId.equals(dtl.getId())) {
           return dtl;
         }
       }
