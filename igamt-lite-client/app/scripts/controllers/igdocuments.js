@@ -296,7 +296,25 @@ angular.module('igl')
                 process();
             }
         };
-
+        $scope.displayFilteredTree= function(){
+        	$scope.tocView='views/tocFilterMd.html';		
+        }
+        
+        $scope.displayRegularTree= function(){
+        	$scope.tocView='views/toc.html';
+        		
+        }
+        $scope.filtering=false;
+        $scope.goToFilter= function(){
+        	$scope.filtering=true;	
+        }
+        $scope.goToRegular= function(){
+        	$scope.filtering=false;
+      		
+        }
+        
+  
+        
         $scope.edit = function (igdocument) {
             console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
             $scope.viewSettings.setTableReadonly(false);
@@ -367,9 +385,11 @@ angular.module('igl')
                     $rootScope.initMaps(); 
                     $scope.loadSegments().then(function () {
                     	$rootScope.filteredSegmentsList=angular.copy($rootScope.segments);
+                        //$rootScope.filteredSegmentsList=[];
                         $scope.loadDatatypes().then(function () {
                         	
-                             $rootScope.filteredDatatypesList=angular.copy($rootScope.datatypes);
+                            $rootScope.filteredDatatypesList=angular.copy($rootScope.datatypes);
+                            //$rootScope.filteredDatatypesList=[];
                             $scope.loadTables().then(function () {
                                 $scope.collectMessages();
                                 //$scope.sortByLabels();
@@ -380,6 +400,8 @@ angular.module('igl')
                                 $scope.loadIgDocumentMetaData();
                 				
                 				$rootScope.filteredTablesList=angular.copy($rootScope.tables);
+                                //$rootScope.filteredTablesList=[];
+
                             }, function () {
                             });
                         }, function () {

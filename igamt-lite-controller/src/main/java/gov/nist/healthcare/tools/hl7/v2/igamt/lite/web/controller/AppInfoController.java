@@ -30,14 +30,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/appInfo")
 public class AppInfoController {
 
-  @Autowired
-  private AppInfo appInfo;
+	@Autowired
+	private AppInfo appInfo;
 
-  @RequestMapping(method = RequestMethod.GET)
-  public AppInfo info(HttpServletRequest request) {
-    if (appInfo.getUploadedImagesUrl() == null) {
-      appInfo.setUploadedImagesUrl(HttpUtil.getImagesRootUrl(request));
-    }
-    return appInfo;
-  }
+	@RequestMapping(method = RequestMethod.GET)
+	public AppInfo info(HttpServletRequest request) {
+		if (appInfo.getUploadedImagesUrl() == null) {
+			appInfo.setUploadedImagesUrl(HttpUtil.getImagesRootUrl(request));
+		}
+		return appInfo;
+	}
 }

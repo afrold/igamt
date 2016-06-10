@@ -15,13 +15,14 @@ angular
             $scope.collapsemessage = false;
             $scope.collapsesegment = false;
             $scope.collapsetable = false;
-            $rootScope.selectedMessage=null;
             $scope.collapsevalueSet = false;
             $scope.profilecollapsed = false;
             $scope.openMetadata = false;
             $scope.ordredMessages = [];
             $scope.dataTypeLibraryCollapsed = false;
             $rootScope.activeModel = "";
+            $scope.segmentsChecked=false; 
+            $rootScope.filteringMode=false;
             $scope.Activate = function (param) {
                 $rootScope.activeModel = param;
             }
@@ -1001,8 +1002,85 @@ angular
               }
             
             }
+            $scope.resetSegments = function(){
+                $rootScope.selectedSegment=null;
+                console.log("called");
+                $rootScope.filteredDatatypesList=angular.copy($rootScope.datatypes);
+                $rootScope.filteredTablesList=angular.copy($rootScope.tables);
+//                $rootScope.filteredTablesList=[];
+//                $rootScope.filteredDatatypesList=[];
+                if($rootScope.selectedMessage!=null){
+                    $rootScope.processMessageTree($rootScope.selectedMessage, null);
+                }
+                        $rootScope.filteredSegmentsList.forEach(function (segment, i) {
+                        segment.checked = false;
+                });
 
 
+            }
+            $scope.resetDatatypes = function(){
+                console.log("called");
+                if($rootScope.selectedSegment!=null){
+                    $rootScope.processSegmentsTree($rootScope.selectedSegment, null);
+                }
+                else if($rootScope.selectedMessage!=null){
+                    $rootScope.processMessageTree($rootScope.selectedMessage, null);
+                }
+                
+
+                    $rootScope.filteredDatatypesList.forEach(function (data, i) {
+                    data.checked = false;
+                });
+
+
+            }
+
+
+            $scope.resetMessages = function(){
+                $rootScope.selectedMessage=null;
+                $rootScope.filteredDatatypesList=angular.copy($rootScope.datatypes);
+             	$rootScope.filteredSegmentsList=angular.copy($rootScope.segments);
+                $rootScope.filteredTablesList=angular.copy($rootScope.tables);
+           
+                $rootScope.igdocument.profile.messages.children.forEach(function (msg, i) {
+                    msg.checked = false;
+                });
+            }
+
+            $scope.checkSegment=function(segment){
+
+                for (var i = $rootScope.filteredSegmentsList.length - 1; i >= 0; i--) {
+
+                    if(segment.checked && $rootScope.filteredSegmentsList[i].id != segment.id){
+                        $rootScope.filteredSegmentsList[i].checked=false;
+                        $rootScope.filteredSegmentsList[i].anotherIsChecked=true;
+                    }
+                    else if(!segment.checked && $rootScope.filteredSegmentsList[i].id != segment.id){
+
+                        $rootScope.filteredSegmentsList[i].checked=false;
+                        $rootScope.filteredSegmentsList[i].anotherIsChecked=false;
+                    }
+                }
+            }
+    
+            $scope.checkDatatype=function(datatype){
+
+
+
+
+                for (var i = $rootScope.filteredDatatypesList.length - 1; i >= 0; i--) {
+
+                    if(segment.checked && $rootScope.filteredDatatypesList[i].id != segment.id){
+                        $rootScope.filteredDatatypesList[i].checked=false;
+                        $rootScope.filteredDatatypesList[i].anotherIsChecked=true;
+                    }
+                    else if(!segment.checked && $rootScope.filteredDatatypesList[i].id != segment.id){
+
+                        $rootScope.filteredDatatypesList[i].checked=false;
+                        $rootScope.filteredDatatypesList[i].anotherIsChecked=false;
+                    }
+                }
+            }
 
 
 

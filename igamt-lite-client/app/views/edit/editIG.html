@@ -33,11 +33,6 @@
     <div class="col-md-12 igl-page-header">
       <span class="header4 pull-left">
 
-
-           <div class="row form-inline" style="margin:10px">
-            <label class="label label-default">Filtering mode:</label>
-            <ng-include src="switch.html"></ng-include>
-
           </div>
           
 
@@ -110,9 +105,18 @@
     <div ng-show="!hideToc" class="col-md-3">
         <div class="panel panel-primary">
             <!-- Default panel contents -->
-            <div class="panel-heading panel-heading-collapsable">
-                <i class="glyphicon glyphicon-list"></i> Table of Contents
-
+            <div class="panel-heading panel-heading-collapsable row">
+                <i class="glyphicon glyphicon-list col-md-1"></i><span class="col-md-5"> Table of Contents</span>
+<!-- 		 		<md-switch  ng-model="filteringMode" aria-label="filteringmode" ng-click="switchview()"> -->
+<!--   				</md-switch> -->
+				<span class="col-md-2">Filter:</span>
+  				
+  				<label class="btn btn-primary col-md-1"  ng-class ="{active:filtering===true}"  style="margin-top:0px;  padding:0px;" ng-click="goToFilter();displayFilteredTree()">
+    				 ON
+  				</label>
+  				<label class="btn btn-primary col-md-1" ng-class ="{active:filtering===false}"  style="margin-top:0px;  padding:0px;" ng-click="goToRegular();displayRegularTree()">
+    				 OFF
+  				</label>
                 <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
                         style="margin:0px"
                         ng-click="hideToc = !hideToc">

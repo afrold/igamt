@@ -787,6 +787,8 @@ $rootScope.filteredSegmentsList=[];
 $rootScope.filteredTablesList=[];
 $rootScope.filteredDatatypesList=[];
 $rootScope.selectedMessage=null;
+$rootScope.selectedSegment=null;
+
 $rootScope.processMessageTree = function (element, parent) {
 	
 	
@@ -894,6 +896,7 @@ $rootScope.processSegmentsTree= function (element, parent) {
     
     try {
          if (element.type === "segment") {
+        	 	$rootScope.selectedSegment= element;
 				$rootScope.filteredTablesList=[];
 				$rootScope.filteredDatatypesList=[];
 

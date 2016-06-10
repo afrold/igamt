@@ -18,44 +18,46 @@ import org.apache.commons.logging.LogFactory;
 @WebFilter(urlPatterns = "/api/*")
 public class VersionChangedFilter implements Filter {
 
-  /*
-   * flaw: Browser Mime Sniffing - fix: X-Content-Type-Options flaw: Cached SSL Content - fix:
-   * Cache-Control flaw: Cross-Frame Scripting - fix: X-Frame-Options flaw: Cross-Site Scripting -
-   * fix: X-XSS-Protection flaw: Force SSL - fix: Strict-Transport-Security
-   * 
-   * assure no-cache for login page to prevent IE from caching
-   */
+	/*
+	 * flaw: Browser Mime Sniffing - fix: X-Content-Type-Options flaw: Cached
+	 * SSL Content - fix: Cache-Control flaw: Cross-Frame Scripting - fix:
+	 * X-Frame-Options flaw: Cross-Site Scripting - fix: X-XSS-Protection flaw:
+	 * Force SSL - fix: Strict-Transport-Security
+	 * 
+	 * assure no-cache for login page to prevent IE from caching
+	 */
 
-  protected final Log logger = LogFactory.getLog(getClass());
+	protected final Log logger = LogFactory.getLog(getClass());
 
-  private FilterConfig filterConfig;
+	private FilterConfig filterConfig;
 
-  @Override
-  public void init(FilterConfig filterConfig) throws ServletException {
-    this.filterConfig = filterConfig;
-  }
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		this.filterConfig = filterConfig;
+	}
 
-  @Override
-  public void destroy() {
-    this.filterConfig = null;
-  }
+	@Override
+	public void destroy() {
+		this.filterConfig = null;
+	}
 
-  @Override
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-      throws IOException, ServletException {
-    HttpServletRequest req = (HttpServletRequest) request;
-    HttpServletResponse res = (HttpServletResponse) response;
-    String path = req.getRequestURI().substring(req.getContextPath().length());
-    // if (!Pattern.compile("\\/api\\/appInfo").matcher(path).find()) {
-    // String headerVersion = req.getHeader("version");
-    // String contextVersion = req.getServletContext().getInitParameter(
-    // "version");
-    // if (!contextVersion.equals(headerVersion)) {
-    // res.sendError(498);
-    // return;
-    // }
-    // }
-    chain.doFilter(request, response);
-  }
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
+		String path = req.getRequestURI().substring(
+				req.getContextPath().length());
+		// if (!Pattern.compile("\\/api\\/appInfo").matcher(path).find()) {
+		// String headerVersion = req.getHeader("version");
+		// String contextVersion = req.getServletContext().getInitParameter(
+		// "version");
+		// if (!contextVersion.equals(headerVersion)) {
+		// res.sendError(498);
+		// return;
+		// }
+		// }
+		chain.doFilter(request, response);
+	}
 
 }

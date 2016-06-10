@@ -33,7 +33,8 @@
     "angular-unsavedChanges": "^0.1.1",
     "nsPopover": "0.6.8",
 	"angular-ui-switch":"0.1.1",
-    "angular-ui-notification": "^0.2.0"
+    "angular-ui-notification": "^0.2.0",
+    "angular-material":"1.1.0-rc.5-master-39911d3"
 
   },
   "devDependencies": {

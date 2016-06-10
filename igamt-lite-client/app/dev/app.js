@@ -32,7 +32,8 @@ var app = angular
         ,'ui.tree',
         'blockUI',
         'nsPopover',
-        'uiSwitch'
+        'uiSwitch',
+        'ngMaterial'
      ]);
 
 var
