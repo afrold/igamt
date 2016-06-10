@@ -167,7 +167,7 @@ angular.module('igl')
                         }, 100);
                         $rootScope.igs.push(igdocument);
                     } else {
-                        console.log("pushed=>")
+                        console.log("pushed=>");
                         $rootScope.igs.push(igdocument);
                     }
                 } else {

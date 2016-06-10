@@ -65,7 +65,7 @@
                                    ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
                                    ng-model="metaData.subTitle"
-                                   required>
+                                   >
                         </div>
                     </div>
 
@@ -90,7 +90,7 @@
                                    ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
                                    ng-model="metaData.orgName"
-                                   required>
+                                   >
                         </div>
                     </div>
 
@@ -101,7 +101,7 @@
                         <div class="controls col-md-10">
                             <input class="form-control" type="text" name="ext" ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
-                                   ng-model="metaData.ext" required>
+                                   ng-model="metaData.ext">
                         </div>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                                ng-disabled="viewSettings.tableReadonly"
                                ng-change="setDirty()"
                                ng-model="metaData.specificationName"
-                               required>
+                               >
                     </div>
                 </div>
 
@@ -128,7 +128,7 @@
                                ng-disabled="viewSettings.tableReadonly"
                                ng-change="setDirty()"
                                ng-model="metaData.status"
-                               required>
+                               >
                     </div>
                 </div>
                 <div class="form-group control-group" ng-disabled="viewSettings.tableReadonly"
@@ -140,25 +140,25 @@
                                ng-disabled="viewSettings.tableReadonly"
                                ng-change="setDirty()"
                                ng-model="metaData.topics"
-                               required>
+                               >
                     </div>
                 </div>
 
 
-                <div class="form-group control-group"
-                     ng-class="{'igl-has-error has-feedback' : editForm.version.$invalid}">
-                    <label class="col-md-2 control-label">Version</label>
+                <!--<div class="form-group control-group"-->
+                     <!--ng-class="{'igl-has-error has-feedback' : editForm.version.$invalid}">-->
+                    <!--<label class="col-md-2 control-label">Version</label>-->
 
-                    <div class="controls col-md-10">
-                        <input type="text" name="version" disabled
-                               ng-change="setDirty()"
-                               class="form-control" ng-model="metaData.version"
-                                >
-                    </div>
-                </div>
+                    <!--<div class="controls col-md-10">-->
+                        <!--<input type="text" name="version" disabled-->
+                               <!--ng-change="setDirty()"-->
+                               <!--class="form-control" ng-model="metaData.version"-->
+                                <!-->-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="form-group control-group"
                      ng-class="{'igl-has-error has-feedback' : editForm.date.$invalid}">
-                    <label class="col-md-2 control-label">Date</label>
+                    <label class="col-md-2 control-label">Date Created</label>
 
                     <div class="controls col-md-10">
                         <input type="text" name="date" disabled

@@ -366,7 +366,7 @@ angular.module('igl')
                         return $rootScope.datatypesMap[field.datatype.id];
                     },
                     hl7Version: function () {
-                        return $rootScope.igdocument.metaData.hl7Version;
+                        return $rootScope.igdocument.profile.metaData.hl7Version;
                     },
                     datatypeLibrary: function () {
                         return $rootScope.igdocument.profile.datatypeLibrary;
