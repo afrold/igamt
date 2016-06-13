@@ -413,8 +413,9 @@ angular.module('igl')
                     segmentLibrary: function() {
                         return $rootScope.igdocument.profile.segmentLibrary;
                     },
-                    hl7Version: function() {
-                        return $rootScope.igdocument.metaData.hl7Version;
+
+                    hl7Version: function () {
+                        return $rootScope.igdocument.profile.metaData.hl7Version;
                     }
                 }
             });

@@ -281,8 +281,28 @@ angular.module('igl')
             $rootScope.$broadcast('event:SetToC');
         };
 
-        $scope.hasChildren = function(node) {
-            return node && node != null && ((node.fields && node.fields.length > 0) || (node.datatype && $rootScope.getDatatype(node.datatype.id) && $rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0));
+
+        $scope.hasChildren = function (node) {
+            if(node && node != null){
+                if(node.fields && node.fields.length > 0) return true;
+                else {
+                    if(node.type === 'case'){
+                        if($rootScope.getDatatype(node.datatype).components  && $rootScope.getDatatype(node.datatype).components.length > 0) return true;
+                    }else {
+                        if(node.datatype && $rootScope.getDatatype(node.datatype.id)){
+                            if($rootScope.getDatatype(node.datatype.id).components  && $rootScope.getDatatype(node.datatype.id).components.length > 0) return true;
+                            else {
+                                if($rootScope.getDatatype(node.datatype.id).name === 'varies'){
+                                    var mapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping){ return mapping.position == node.position; });
+                                    if(mapping && mapping.cases && mapping.cases.length > 0 ) return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         };
 
 
@@ -610,8 +630,9 @@ angular.module('igl')
                     currentDatatype: function() {
                         return $rootScope.datatypesMap[field.datatype.id];
                     },
-                    hl7Version: function() {
-                        return $rootScope.igdocument.metaData.hl7Version;
+
+                    hl7Version: function () {
+                        return $rootScope.igdocument.profile.metaData.hl7Version;
                     },
 
                     datatypeLibrary: function() {
@@ -634,6 +655,27 @@ angular.module('igl')
 
         };
 
+        $scope.showEditDynamicMappingDlg = function (node) {
+            var modalInstance = $modal.open({
+                templateUrl: 'DynamicMappingCtrl.html',
+                controller: 'DynamicMappingCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    selectedNode: function (
+                        
+                    ) {
+                        return node;
+                    }
+                }
+            });
+            modalInstance.result.then(function (node) {
+                $scope.selectedNode = node;
+                $scope.setDirty();
+                $scope.segmentsParams.refresh();
+            }, function () {
+            });
+        };
+
     });
 
 angular.module('igl')
@@ -641,7 +683,56 @@ angular.module('igl')
         $scope.formName = "form_" + new Date().getTime();
     });
 
-angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
+
+angular.module('igl').controller('DynamicMappingCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+    $scope.changed = false;
+    $scope.selectedNode = selectedNode;
+    $scope.selectedMapping = angular.copy(_.find($rootScope.segment.dynamicMapping.mappings, function(mapping){ return mapping.position == $scope.selectedNode.position; }));
+    if(!$scope.selectedMapping) {
+        $scope.selectedMapping = {};
+        $scope.selectedMapping.cases = [];
+        $scope.selectedMapping.position = $scope.selectedNode.position;
+    }
+
+    $scope.deleteCase = function (c) {
+        var index =  $scope.selectedMapping.cases.indexOf(c);
+        $scope.selectedMapping.cases.splice(index , 1);
+        $scope.recordChange();
+    };
+
+    $scope.addCase = function () {
+        var newCase = {
+            id: new ObjectId().toString(),
+            type: 'case',
+            value: '',
+            datatype: null
+        };
+
+        $scope.selectedMapping.cases.unshift(newCase);
+        $scope.recordChange();
+    };
+
+    $scope.recordChange = function () {
+        $scope.changed = true;
+    };
+
+
+    $scope.updateMapping = function () {
+        var oldMapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping){ return mapping.position == $scope.selectedNode.position; });
+        var index =  $rootScope.segment.dynamicMapping.mappings.indexOf(oldMapping);
+        $rootScope.segment.dynamicMapping.mappings.splice(index , 1);
+        $rootScope.segment.dynamicMapping.mappings.unshift($scope.selectedMapping );
+        $scope.changed = false;
+        $scope.ok();
+    };
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.selectedNode);
+    };
+
+});
+
+angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.changed = false;
     $scope.selectedNode = selectedNode;
     $scope.selectedTable = null;
@@ -654,7 +745,9 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mo
         $scope.changed = true;
     };
 
-    $scope.mappingTable = function() {
+
+    $scope.mappingTable = function () {
+        if($scope.selectedNode.table == null || $scope.selectedNode.table == undefined) $scope.selectedNode.table = {};
         $scope.selectedNode.table.id = $scope.selectedTable.id;
         $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
         $rootScope.recordChangeForEdit2('field', 'edit', $scope.selectedNode.id, 'table', $scope.selectedNode.table.id);

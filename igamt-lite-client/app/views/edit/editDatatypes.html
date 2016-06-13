@@ -729,6 +729,7 @@ if (self === top) {
         <form role="form">
             <span class="pull-right">
     <select class="form-control input-sm" ng-model="selectedNode"
+
             ng-options="component as (datatype.name + '.' + component.position + ': ' + component.name) for component in datatype.components | filter:{usage : 'C'}">
         <option value="">Root of {{datatype.name}}</option>
     </select>
@@ -987,6 +988,7 @@ if (self === top) {
         <form role="form">
             <span class="pull-right">
             <select class="form-control input-sm" ng-model="selectedNode"
+
                     ng-options="component as (datatype.name + '.' + component.position + ': ' + component.name) for component in datatype.components">
                 <option value="">Root of {{datatype.name}}</option>
             </select>

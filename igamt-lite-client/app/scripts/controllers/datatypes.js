@@ -612,8 +612,9 @@ angular.module('igl')
                     currentDatatype: function() {
                         return $rootScope.datatypesMap[component.datatype.id];
                     },
-                    hl7Version: function() {
-                        return $rootScope.igdocument.metaData.hl7Version;
+
+                    hl7Version: function () {
+                        return $rootScope.igdocument.profile.metaData.hl7Version;
                     },
                     datatypeLibrary: function() {
                         return $rootScope.igdocument.profile.datatypeLibrary;
@@ -930,7 +931,10 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
         $scope.selectedTable = table;
     };
 
-    $scope.mappingTable = function() {
+
+    $scope.mappingTable = function () {
+        if($scope.selectedNode.table == null || $scope.selectedNode.table == undefined) $scope.selectedNode.table = {};
+
         $scope.selectedNode.table.id = $scope.selectedTable.id;
         $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
         $rootScope.recordChanged();
