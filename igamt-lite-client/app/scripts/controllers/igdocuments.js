@@ -329,7 +329,8 @@ angular.module('igl')
             $scope.tocView = 'views/tocReadOnly.html';
             $scope.show(igdocument);
         };
-        $scope.displayNullView= function(){
+
+        $rootScope.displayNullView= function(){
         	console.log("before");
         	console.log($rootScope.subview);
         	$rootScope.subview='Blank.html';

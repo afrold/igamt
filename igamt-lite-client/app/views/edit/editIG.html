@@ -24,23 +24,20 @@
     </div>
     </div>
 
-<script type="text/ng-template" id="switch.html">
-	<form ng-controller="IGDocumentListCtrl">
-		<switch id="enabled" name="enabled" ng-model="enabled" class="green"></switch>
-		<br>{{ enabled }}
-	</form>
-</script>
     <div class="col-md-12 igl-page-header">
-      <span class="header4 pull-left">
-
-          </div>
-          
-
-         </div>
-
-        <span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>
-        <span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>
-      </span>
+      <!--<span class="header4 pull-left">-->
+        <!--<span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>-->
+        <!--<span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>-->
+      <!--</span>-->
+        <span class="pull-left">
+            <span class="">Filter:</span>
+  				<label class="btn btn-primary"  ng-class ="{active:filtering===true}"  style="margin-top:0px;  padding:0px;" ng-click="goToFilter();displayFilteredTree()">
+                    ON
+                </label>
+  				<label class="btn btn-primary" ng-class ="{active:filtering===false}"  style="margin-top:0px;  padding:0px;" ng-click="goToRegular();displayRegularTree()">
+                    OFF
+                </label>
+        </span>
 
       <span class="pull-right">
          <!--<button title="Save Changes" type="button" class="btn btn-xs btn-success"-->
@@ -109,14 +106,7 @@
                 <i class="glyphicon glyphicon-list col-md-1"></i><span class="col-md-5"> Table of Contents</span>
 <!-- 		 		<md-switch  ng-model="filteringMode" aria-label="filteringmode" ng-click="switchview()"> -->
 <!--   				</md-switch> -->
-				<span class="col-md-2">Filter:</span>
-  				
-  				<label class="btn btn-primary col-md-1"  ng-class ="{active:filtering===true}"  style="margin-top:0px;  padding:0px;" ng-click="goToFilter();displayFilteredTree()">
-    				 ON
-  				</label>
-  				<label class="btn btn-primary col-md-1" ng-class ="{active:filtering===false}"  style="margin-top:0px;  padding:0px;" ng-click="goToRegular();displayRegularTree()">
-    				 OFF
-  				</label>
+
                 <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
                         style="margin:0px"
                         ng-click="hideToc = !hideToc">

@@ -31,10 +31,8 @@ var app = angular
         'ngMockE2E'
         ,'ui.tree',
         'blockUI',
-        'nsPopover',
-        'uiSwitch',
-        'ngMaterial'
-     ]);
+        'nsPopover'
+       ]);
 
 var
 //the HTTP headers to be used by all requests
