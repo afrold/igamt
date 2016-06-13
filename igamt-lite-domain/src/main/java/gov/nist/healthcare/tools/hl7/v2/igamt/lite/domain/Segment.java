@@ -1,8 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +8,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Document(collection = "segment")
 public class Segment extends DataModelWithConstraints implements java.io.Serializable, Cloneable,
@@ -43,6 +44,8 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
   private String text1 = "";
 
   private String text2 = "";
+  
+  private CoConstraints coConstraints = new CoConstraints();
 
 
   public String getId() {
@@ -227,4 +230,12 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
   public String getLabel() {
     return label;
   }
+
+public CoConstraints getCoConstraints() {
+	return coConstraints;
+}
+
+public void setCoConstraints(CoConstraints coConstraints) {
+	this.coConstraints = coConstraints;
+}
 }
