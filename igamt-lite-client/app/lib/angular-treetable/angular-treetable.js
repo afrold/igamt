@@ -51,6 +51,7 @@ angular.module('ngTreetable', [])
 
         var params = $scope.ttParams;
         var table = $element;
+        console.log("inside tt Table");
 
         $scope.compileElement = function(node, parentId, parentNode) {
             var tpl = params.getTemplate(node);

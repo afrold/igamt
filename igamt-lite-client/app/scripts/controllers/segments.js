@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc) {
+    .controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService) {
         //        $scope.loading = false;
         $scope.editableDT = '';
         $scope.editableVS = '';
@@ -16,11 +16,89 @@ angular.module('igl')
         $scope.saving = false;
 
         console.log($rootScope.tables);
+        $scope.OtoX = function(message) {
+            var modalInstance = $modal.open({
+                templateUrl: 'OtoX.html',
+                controller: 'OtoXCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    message: function() {
+                        return message;
+                    },
 
-        $scope.selectDT = function(field, datatype) {
-            console.log("field");
 
-            console.log($scope.datatype);
+                }
+            });
+            modalInstance.result.then(function() {
+                $scope.setDirty();
+
+                if ($scope.segmentsParams)
+                    $scope.segmentsParams.refresh();
+            });
+        };
+
+        $scope.deleteField = function(fieldToDelete, segment) {
+            var modalInstance = $modal.open({
+                templateUrl: 'DeleteField.html',
+                controller: 'DeleteFieldCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    fieldToDelete: function() {
+                        return fieldToDelete;
+                    },
+                    segment: function() {
+                        return segment;
+                    }
+
+
+                }
+            });
+            modalInstance.result.then(function() {
+                $scope.setDirty();
+
+                if ($scope.segmentsParams)
+                    $scope.segmentsParams.refresh();
+            });
+        };
+        $scope.editableField = '';
+        $scope.editField = function(field) {
+            $scope.editableField = field.id;
+            $scope.fieldName = field.name;
+
+        };
+
+        $scope.backField = function() {
+            $scope.editableField = '';
+        };
+        $scope.applyField = function(segment, field, name, position) {
+            $scope.editableField = '';
+            if (field) {
+                field.name = name;
+
+
+            }
+            if (position) {
+                MessageService.updatePosition(segment.fields, field.position - 1, position - 1);
+            }
+            $scope.setDirty();
+
+            if ($scope.segmentsParams)
+                $scope.segmentsParams.refresh();
+            $scope.Posselected = false;
+
+
+        };
+
+
+
+
+        $scope.selectDT = function() {
+
+            $scope.DTselected = true;
+
+        };
+        $scope.applyDT = function(field, datatype) {
+            $scope.editableDT = '';
 
             field.datatype.ext = JSON.parse(datatype).ext;
             field.datatype.id = JSON.parse(datatype).id;
@@ -28,48 +106,45 @@ angular.module('igl')
             field.datatype.name = JSON.parse(datatype).name;
             console.log(field);
             $scope.setDirty();
+            $rootScope.processElement(field);
+            if ($scope.segmentsParams)
+                $scope.segmentsParams.refresh();
             $scope.DTselected = false;
-            $scope.editableDT = '';
+
         };
 
         $scope.editDT = function(field) {
             $scope.editableDT = field.id;
-
-
-            $scope.loadLibrariesByFlavorName = function(scope) {
+            $scope.loadLibrariesByFlavorName = function() {
+                console.log($rootScope.igdocument);
                 var delay = $q.defer();
-                console.log(scope);
-                console.log("field");
-                console.log(field);
-                //$scope.selection.scope = scope;
-                //$scope.selection.datatype = null;
-                //$scope.selection.selected = null;
-                //$scope.resetMap();
                 $scope.ext = null;
                 $scope.results = [];
                 $scope.tmpResults = [];
-                if (scope !== 'USER') {
-                    DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, scope, $rootScope.igdocument.metaData.hl7Version).then(function(libraries) {
-                        if (libraries != null) {
-                            $scope.results = [];
-                            _.each(libraries, function(library) {
-                                $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
-                            });
-                            $scope.tmpResults = [].concat($scope.results);
-                        }
-                        delay.resolve(true);
-                    }, function(error) {
-                        $rootScope.msg().text = "Sorry could not load the data types";
-                        $rootScope.msg().type = error.data.type;
-                        $rootScope.msg().show = true;
-                        delay.reject(error);
+                $scope.results = $scope.results.concat(filterFlavors($rootScope.igdocument.profile.datatypeLibrary, field.datatype.name));
+                $scope.tmpResults = [].concat($scope.results);
+                DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
+                    if (libraries != null) {
+                        _.each(libraries, function(library) {
+                            $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
+                        });
+                    }
+
+                    $scope.results = _.uniq($scope.results, function(item, key, a) {
+                        return item.id;
                     });
-                } else {
-                    $scope.results = $scope.results.concat(filterFlavors($rootScope.igdocument.profile.datatypeLibrary, field.datatype.name));
+                    $scope.tmpResults = [].concat($scope.results);
+
                     delay.resolve(true);
-                }
+                }, function(error) {
+                    $rootScope.msg().text = "Sorry could not load the data types";
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                    delay.reject(error);
+                });
                 return delay.promise;
             };
+
 
             var filterFlavors = function(library, name) {
                 var results = [];
@@ -84,15 +159,12 @@ angular.module('igl')
             };
 
 
-            $scope.loadLibrariesByFlavorName('USER').then(function(done) {
-                console.log("done");
-                console.log(done);
-                console.log("$scope.results");
 
+
+            $scope.loadLibrariesByFlavorName().then(function(done) {
                 console.log($scope.results);
-
-                //$scope.selection.selected = $scope.currentDatatype.id;
-                //$scope.showSelectedDetails($scope.currentDatatype);
+                // $scope.selection.selected = $scope.currentDatatype.id;
+                // $scope.showSelectedDetails($scope.currentDatatype);
             });
         };
         $scope.backDT = function() {
@@ -112,33 +184,35 @@ angular.module('igl')
         $scope.backVS = function() {
             $scope.editableVS = '';
         };
-
-        $scope.selectVS = function(field, valueSet) {
+        $scope.applyVS = function(field) {
             $scope.editableVS = '';
-            console.log("valueSet");
-            console.log(valueSet);
-            console.log("field");
-            console.log(field);
-            field.table.id = valueSet.id;
-            field.table.bindingIdentifier = valueSet.bindingIdentifier;
+
+            field.table.id = $scope.selectedValueSet.id;
+            field.table.bindingIdentifier = $scope.selectedValueSet.bindingIdentifier;
             $scope.setDirty();
             $scope.VSselected = false;
 
+        };
 
-            console.log(valueSet);
+        $scope.selectVS = function(valueSet) {
+            $scope.selectedValueSet = valueSet;
 
+
+            $scope.VSselected = true;
         };
 
         $scope.selectedVS = function() {
-            return ($scope.tempVS !== undefined);
+            return ($scope.selectedValueSet !== undefined);
         };
         $scope.unselectVS = function() {
-            $scope.tempVS = undefined;
+            $scope.selectedValueSet = undefined;
+            $scope.VSselected = false;
+
             //$scope.newSeg = undefined;
         };
         $scope.isVSActive = function(id) {
-            if ($scope.tempVS) {
-                return $scope.tempVS.id === id;
+            if ($scope.selectedValueSet) {
+                return $scope.selectedValueSet.id === id;
             } else {
                 return false;
             }
@@ -155,8 +229,8 @@ angular.module('igl')
                     valueSets: function() {
                         return $rootScope.tables;
                     },
-                    fields: function() {
-                        //return $rootScope.segments;
+                    datatypes: function() {
+                        return $rootScope.datatypes;
                     },
                     segment: function() {
                         return segment;
@@ -168,6 +242,7 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function(field) {
+                $scope.setDirty();
 
                 if ($scope.segmentsParams) {
                     $scope.segmentsParams.refresh();
@@ -175,8 +250,8 @@ angular.module('igl')
             });
         };
 
-        
-        $scope.reset = function () {
+
+        $scope.reset = function() {
             SegmentService.reset();
             if ($scope.editForm) {
                 $scope.editForm.$dirty = false;
@@ -449,7 +524,7 @@ angular.module('igl')
 
 
 
-        var cleanState = function () {
+        var cleanState = function() {
             $scope.saving = false;
             $scope.selectedChildren = [];
             if ($scope.editForm) {
@@ -462,7 +537,7 @@ angular.module('igl')
         };
 
 
-        $scope.save = function () {
+        $scope.save = function() {
             $scope.saving = true;
             var segment = $rootScope.segment;
             var ext = segment.ext;
@@ -471,23 +546,23 @@ angular.module('igl')
                 segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
             }
 
-            SegmentService.save($rootScope.segment).then(function (result) {
+            SegmentService.save($rootScope.segment).then(function(result) {
                 var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
                 var newLink = SegmentService.getSegmentLink(result);
-                SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
-                    SegmentService.saveNewElements().then(function () {
+                SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {
+                    SegmentService.saveNewElements().then(function() {
                         SegmentService.merge($rootScope.segmentsMap[result.id], result);
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
                         cleanState();
-                    }, function (error) {
+                    }, function(error) {
                         $scope.saving = false;
 
                         $rootScope.msg().text = "Sorry an error occured. Please try again";
                         $rootScope.msg().type = "danger";
                         $rootScope.msg().show = true;
                     });
-                }, function (error) {
+                }, function(error) {
                     $scope.saving = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
@@ -495,7 +570,7 @@ angular.module('igl')
                 });
 
 
-            }, function (error) {
+            }, function(error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
@@ -504,7 +579,7 @@ angular.module('igl')
         };
 
 
-        var searchById = function (id) {
+        var searchById = function(id) {
             var children = $rootScope.igdocument.profile.segmentLibrary.children;
             for (var i = 0; i < $rootScope.igdocument.profile.segmentLibrary.children; i++) {
                 if (children[i].id === id) {
@@ -539,7 +614,7 @@ angular.module('igl')
                         return $rootScope.igdocument.metaData.hl7Version;
                     },
 
-                    datatypeLibrary: function () {
+                    datatypeLibrary: function() {
                         return $rootScope.igdocument.profile.datatypeLibrary;
                     }
                 }
@@ -552,7 +627,7 @@ angular.module('igl')
                 field.datatype.ext = datatype.ext;
                 $rootScope.processElement(field);
                 $scope.setDirty();
-//                MastermapSvc.addDatatypeId(datatype.id, [field.id, field.type]);
+                //                MastermapSvc.addDatatypeId(datatype.id, [field.id, field.type]);
                 if ($scope.segmentsParams)
                     $scope.segmentsParams.refresh();
             });
@@ -593,7 +668,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mo
 });
 
 
-angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
@@ -696,7 +771,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     };
 
 
-    $scope.addPredicate = function () {
+    $scope.addPredicate = function() {
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
 
         $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
@@ -756,7 +831,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 });
 
 
-angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
@@ -857,7 +932,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         return position;
     };
 
-    $scope.addComplexConformanceStatement = function () {
+    $scope.addComplexConformanceStatement = function() {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
         $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
         if ($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
@@ -912,11 +987,11 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 
 
 
-angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
+angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
 
-    $scope.delete = function () {
+    $scope.delete = function() {
         $scope.loading = true;
         if ($scope.segToDelete.scope === 'USER') {
             CloneDeleteSvc.deleteSegmentAndSegmentLink($scope.segToDelete);
@@ -946,8 +1021,8 @@ angular.module('igl').controller('SegmentReferencesCtrl', function($scope, $moda
 });
 
 
-angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance, fields, segment, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc) {
-    $scope.getDTs = function() {
+angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance, datatypes, segment, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc,MessageService) {
+    /*   $scope.getDTs = function() {
         DatatypeLibrarySvc.getDataTypeLibraryByScopesAndVersion(["HL7STANDARD"], segment.hl7Version).then(function(data) {
             console.log(data);
 
@@ -961,12 +1036,18 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
         });
     }
 
-
-    console.log(segment);
-    console.log($scope.allDatatypes);
+*/
+    //console.log(segment);
+    // console.log($scope.allDatatypes);
 
 
     $scope.valueSets = valueSets;
+    $scope.datatypes = datatypes;
+
+    console.log("$scope.valueSets");
+    console.log($scope.valueSets);
+    console.log("$scope.datatypes");
+    console.log($scope.datatypes);
 
 
     $scope.newField = {
@@ -1069,13 +1150,20 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
 
 
     $scope.addField = function() {
-        $scope.newField.position = $rootScope.segment.fields[$rootScope.segment.fields.length - 1].position + 1;
+        if ($rootScope.segment.fields.length !== 0) {
+            $scope.newField.position = $rootScope.segment.fields[$rootScope.segment.fields.length - 1].position + 1;
+
+        } else {
+            $scope.newField.position = 1
+        }
         $scope.newField.id = new ObjectId().toString();
 
         if ($rootScope.segment != null) {
             if (!$rootScope.segment.fields || $rootScope.segment.fields === null)
                 $rootScope.segment.fields = [];
             $rootScope.segment.fields.push($scope.newField);
+            MessageService.updatePosition(segment.fields, $scope.newField.position - 1, $scope.position - 1);
+
 
 
             if ($scope.segmentsParams) {
@@ -1084,6 +1172,44 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
 
         }
         $modalInstance.close();
+
+    };
+
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+});
+
+
+angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInstance, fieldToDelete, segment, $rootScope, SegmentService) {
+    $scope.fieldToDelete = fieldToDelete;
+    $scope.loading = false;
+    console.log(segment);
+    console.log($scope.fieldToDelete);
+    $scope.updatePosition = function(node) {
+        angular.forEach(node.fields, function(field) {
+            field.position = node.fields.indexOf(field) + 1;
+
+        })
+
+    };
+    $scope.delete = function() {
+        $scope.loading = true;
+        segment.fields.splice(fieldToDelete.position - 1, 1);
+
+
+        $rootScope.msg().text = "FieldDeleteSuccess";
+
+        $rootScope.msg().type = "success";
+        $rootScope.msg().show = true;
+        $rootScope.manualHandle = true;
+        $scope.loading = false;
+        $modalInstance.close($scope.fieldToDelete);
+        $scope.updatePosition(segment);
+
 
     };
 

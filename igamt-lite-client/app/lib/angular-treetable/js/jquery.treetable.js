@@ -103,14 +103,14 @@
         };
 
         Node.prototype.isBranchNode = function() {
-            if(this.children.length > 0 || this.row.data(this.settings.branchAttr) === true) {
+            if (this.children.length > 0 || this.row.data(this.settings.branchAttr) === true) {
                 return true;
             } else {
                 return false;
             }
         };
 
-        Node.prototype.updateBranchLeafClass = function(){
+        Node.prototype.updateBranchLeafClass = function() {
             this.row.removeClass('branch');
             this.row.removeClass('leaf');
             this.row.addClass(this.isBranchNode() ? 'branch' : 'leaf');
@@ -262,17 +262,27 @@
         };
 
         Tree.prototype.expandAll = function() {
+
             var node, _i, _len, _ref, _results;
+
             _ref = this.nodes;
+            console.log(_ref);
             _results = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                 node = _ref[_i];
                 _results.push(node.expand());
             }
+
             return _results;
+
+        };
+        Tree.prototype.draggable = function() {
+            console.log("here again");
+
+
         };
 
-        Tree.prototype.findLastNode = function (node) {
+        Tree.prototype.findLastNode = function(node) {
             if (node.children.length > 0) {
                 return this.findLastNode(node.children[node.children.length - 1]);
             } else {
@@ -328,10 +338,10 @@
                 }
             }
 
-            if(nodeParent){
+            if (nodeParent) {
                 nodeParent.updateBranchLeafClass();
             }
-            if(node.parentNode()){
+            if (node.parentNode()) {
                 node.parentNode().updateBranchLeafClass();
             }
             node.updateBranchLeafClass();
@@ -389,7 +399,8 @@
         };
 
         Tree.prototype._moveRows = function(node, destination) {
-            var children = node.children, i;
+            var children = node.children,
+                i;
 
             node.row.insertAfter(destination.row);
             node.render();
@@ -437,7 +448,8 @@
             }, options);
 
             return this.each(function() {
-                var el = $(this), tree;
+                var el = $(this),
+                    tree;
 
                 if (force || el.data("treetable") === undefined) {
                     tree = new Tree(this, settings);
@@ -478,7 +490,15 @@
         },
 
         expandAll: function() {
+            console.log(this.data("treetable"));
             this.data("treetable").expandAll();
+            return this;
+        },
+        draggable: function() {
+            console.log("hereeerre");
+            console.log(this.data("treetable"));
+
+            this.data("treetable").draggable();
             return this;
         },
 
