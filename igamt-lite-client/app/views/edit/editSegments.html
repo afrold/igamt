@@ -480,7 +480,7 @@ if (self === top) {
             <!--ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name ">-->
             <!--</select>-->
 
-            <a ng-click="showSelectDatatypeFlavorDlg(node) " class="point " ng-show="editableDT!==node.id ">
+            <a  class="point " ng-show="editableDT!==node.id ">
                 {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </a>
            
@@ -520,7 +520,7 @@ if (self === top) {
 
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') " style="text-align:center ">
             <div ng-show="node.table !=undefined && node.table !==null ">
-                <a ng-show="editableVS!==node.id " ng-click="goToTable(tablesMap[node.table.id]) " class="point ">
+                <a ng-show="editableVS!==node.id "  class="point ">
                     <span>{{getTableLabel(tablesMap[node.table.id])}}</span>
                 </a>
                  <a ng-show="editableVS!==node.id " ng-click="editVS(node) " class="point ">
@@ -560,7 +560,7 @@ if (self === top) {
 
 
             <div ng-show="(node.table==undefined || node.table===null) && isAvailableDTForTable(datatypesMap[node.datatype.id]) ">
-                <a ng-click="mapTable(node) " class="point ">
+                <a ng-click="editVS(node) " class="point ">
                     <span><i class="fa fa-plus fa-fw "></i></span>
                 </a>
             </div>

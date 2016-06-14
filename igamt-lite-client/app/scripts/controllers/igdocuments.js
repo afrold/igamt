@@ -153,29 +153,26 @@ angular.module('igl')
 
 
 
-            $rootScope.$on('event:IgsPushed', function (event, igdocument) {
-//                console.log("event:IgsPushed=" + igdocument)
-                if ($scope.igDocumentConfig.selectedType === 'USER') {
-                    var idx = $rootScope.igs.findIndex(function (igd) {
-                        return igd.id === igdocument.id;
-                    });
-                    if (idx > -1) {
-                        $timeout(function () {
-                            _.each($rootScope.igs, function (igd) {
-                                console.log("b msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
-                            });
-                            $rootScope.igs.splice(idx, 1);
-                            $scope.tmpIgs = [].concat($rootScope.igs);
-                            _.each($scope.tmpIgs, function (igd) {
-                                console.log("a msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
-                                console.log("msgs=" + igd.metaData.title + " len=" + igd.profile.messages.children.length);
-                            });
-                        }, 100);
-                        $rootScope.igs.push(igdocument);
-                    } else {
-                        console.log("pushed=>");
-                        $rootScope.igs.push(igdocument);
-                    }
+        $rootScope.$on('event:IgsPushed', function(event, igdocument) {
+            //                console.log("event:IgsPushed=" + igdocument)
+            if ($scope.igDocumentConfig.selectedType === 'USER') {
+                var idx = $rootScope.igs.findIndex(function(igd) {
+                    return igd.id === igdocument.id;
+                });
+                if (idx > -1) {
+                    $timeout(function() {
+                        _.each($rootScope.igs, function(igd) {
+                            console.log("b msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
+                        });
+                        $rootScope.igs.splice(idx, 1);
+                        $scope.tmpIgs = [].concat($rootScope.igs);
+                        _.each($scope.tmpIgs, function(igd) {
+                            console.log("a msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
+                            console.log("msgs=" + igd.metaData.title + " len=" + igd.profile.messages.children.length);
+                        });
+                    }, 100);
+                    $rootScope.igs.push(igdocument);
+
                 } else {
                     console.log("pushed=>")
                     $rootScope.igs.push(igdocument);
