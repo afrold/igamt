@@ -293,8 +293,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                 return $q.reject(response);
             }
         };
-
-
     });
 
 
