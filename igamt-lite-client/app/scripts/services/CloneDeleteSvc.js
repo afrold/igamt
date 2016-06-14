@@ -59,7 +59,8 @@ angular.module('igl').factory(
                 	//TODO MasterMap need to add Segment
                 	$rootScope.processElement(newSegment);
 //                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-
+    				$rootScope.filteredSegmentsList.push(newSegment);
+    				$rootScope.filteredSegmentsList=_.uniq($rootScope.filteredSegmentsList);
                     $rootScope.$broadcast('event:openSegment', newSegment);
                  }, function (error) {
                 	$rootScope.saving = false;
@@ -120,7 +121,8 @@ angular.module('igl').factory(
                     
                     $rootScope.processElement(newDatatype);
 //                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
-
+    				$rootScope.filteredDatatypesList.push(newDatatype);
+    				$rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
                     $rootScope.$broadcast('event:openDatatype', newDatatype);
                  }, function (error) {
                 	$rootScope.saving = false;
@@ -175,6 +177,9 @@ angular.module('igl').factory(
                     }
                     //TODO MasterMap need to add table
 //                    MastermapSvc.addValueSetObject(newTable, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                    
+                    $rootScope.filteredTablesList.push(newTable);
+                    $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
                     $rootScope.$broadcast('event:openTable', newTable);
 
                 }, function (error) {
@@ -272,7 +277,7 @@ angular.module('igl').factory(
                 }
             });
             modalInstance.result.then(function (table) {
-               // $scope.tableToDelete = table;
+               // $rootScope.tableToDelete = table;
             }, function () {
             });
         };
@@ -289,6 +294,12 @@ angular.module('igl').factory(
             });
             modalInstance.result.then(function (table) {
                 tableToDelete = table;
+            	if(table.id===$rootScope.activeModel){
+                    $rootScope.displayNullView();
+                    }
+                var index = $rootScope.filteredTablesList.indexOf(table);
+                $rootScope.filteredTablesList.splice(index, 1);
+                
             }, function () {
             });
         };
@@ -375,8 +386,7 @@ angular.module('igl').factory(
         svc.deleteSegmentLink = function (segment){
         	SegmentLibrarySvc.deleteChild($rootScope.igdocument.profile.segmentLibrary.id, segment.id).then(function (res) {
                 // We must delete from two collections.
-                var index = $rootScope.segments.indexOf(segment);
-                $rootScope.segments.splice(index, 1);
+            	
                 var tmp = SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary);
                 index = $rootScope.igdocument.profile.segmentLibrary.children.indexOf(tmp);
                 $rootScope.igdocument.profile.segmentLibrary.children.splice(index, 1);
@@ -391,7 +401,6 @@ angular.module('igl').factory(
                 $rootScope.msg().show = true;
                 //TODO MasterMap need to delete segment
 //                MastermapSvc.deleteSegment($scope.segment.id);
-                $rootScope.$broadcast('event:SetToC');
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = "danger";
@@ -465,6 +474,11 @@ angular.module('igl').factory(
                 }
             });
             modalInstance.result.then(function (datatype) {
+                var index = $rootScope.filteredDatatypesList.indexOf(datatype);
+            	if(datatype.id===$rootScope.activeModel){
+                    $rootScope.displayNullView();
+                    }
+                $rootScope.filteredDatatypesList.splice(index, 1);
                 dtToDelete = datatype;
             }, function () {
             });
@@ -498,6 +512,7 @@ angular.module('igl').factory(
             if ($rootScope.references != null && $rootScope.references.length > 0) {
                 abortSegmentDelete(segment);
             } else {
+          
                 confirmSegmentDelete(segment);
             }
         }
@@ -532,6 +547,12 @@ angular.module('igl').factory(
             });
             modalInstance.result.then(function (segment) {
                 segToDelete = segment;
+            	if(segment.id===$rootScope.activeModel){
+                    $rootScope.displayNullView();
+                    }
+                var index = $rootScope.filteredSegmentsList.indexOf(segment);
+                $rootScope.filteredSegmentsList.splice(index, 1);
+                
             }, function () {
             });
         };

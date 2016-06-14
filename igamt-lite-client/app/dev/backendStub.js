@@ -122,10 +122,10 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         var request = new XMLHttpRequest();
         console.log('api/findByScope begin=' + data);
         if ("MASTER" === data) {
-        	request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.7.json', false);
-	    } else {
-	        request.open('GET', '../../resources/datatypeLibraries/dtLib-USER-2.7.json', false);
-	    }
+            request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.7.json', false);
+        } else {
+            request.open('GET', '../../resources/datatypeLibraries/dtLib-USER-2.7.json', false);
+        }
       request.send(null);
         var datatypeLib = [angular.fromJson(request.response)];
         return [200, datatypeLib, {}];
@@ -218,13 +218,13 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         var datatypes = [];
         request.open('GET', '../../resources/datatypes/datatype-AD-HL7STANDARD-2.7.json', false);
         request.send(null);
-		datatypes.push(angular.fromJson(request.response));
-		request.open('GET', '../../resources/datatypes/datatype-AUI-HL7STANDARD-2.7.json', false);
-		request.send(null);
-		datatypes.push(angular.fromJson(request.response));
-		request.open('GET', '../../resources/datatypes/datatype-CCD-HL7STANDARD-2.7.json', false);
-		request.send(null);
-		datatypes.push(angular.fromJson(request.response));
+        datatypes.push(angular.fromJson(request.response));
+        request.open('GET', '../../resources/datatypes/datatype-AUI-HL7STANDARD-2.7.json', false);
+        request.send(null);
+        datatypes.push(angular.fromJson(request.response));
+        request.open('GET', '../../resources/datatypes/datatype-CCD-HL7STANDARD-2.7.json', false);
+        request.send(null);
+        datatypes.push(angular.fromJson(request.response));
         return [200, datatypes, {}];
     });
 

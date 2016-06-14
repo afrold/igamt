@@ -25,24 +25,19 @@
     </div>
 
     <div class="col-md-12 igl-page-header">
-      <span class="header4 pull-left">
-
-<!--         <div ng-controller="FilteringCtl"> -->
-<!--            <div class="row form-inline" style="margin:10px"> -->
-<!--             <label class="label label-default">Filters by:</label> -->
-<!--             <label>Conf Profiles</label> -->
-<!--             <span  ng-dropdown-multiselect="" options="filtermsgdata()" selected-model="filtermsgmodel()" extra-settings="filtermsgsettings()" translation-texts="filtermsgtexts()"> -->
-<!--             </span> -->
-      
-<!--           </div> -->
-          
-   
-<!--          </div> -->
-         <!--</div>-->
-
+      <!--<span class="header4 pull-left">-->
         <!--<span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>-->
         <!--<span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>-->
-      </span>
+      <!--</span>-->
+        <span class="pull-left">
+            <span class="">Filter:</span>
+  				<label class="btn btn-primary"  ng-class ="{active:filtering===true}"  style="margin-top:0px;  padding:0px;" ng-click="goToFilter();displayFilteredTree()">
+                    ON
+                </label>
+  				<label class="btn btn-primary" ng-class ="{active:filtering===false}"  style="margin-top:0px;  padding:0px;" ng-click="goToRegular();displayRegularTree()">
+                    OFF
+                </label>
+        </span>
 
       <span class="pull-right">
          <!--<button title="Save Changes" type="button" class="btn btn-xs btn-success"-->
@@ -107,8 +102,10 @@
     <div ng-show="!hideToc" class="col-md-3">
         <div class="panel panel-primary">
             <!-- Default panel contents -->
-            <div class="panel-heading panel-heading-collapsable">
-                <i class="glyphicon glyphicon-list"></i> Table of Contents
+            <div class="panel-heading panel-heading-collapsable row">
+                <i class="glyphicon glyphicon-list col-md-1"></i><span class="col-md-5"> Table of Contents</span>
+<!-- 		 		<md-switch  ng-model="filteringMode" aria-label="filteringmode" ng-click="switchview()"> -->
+<!--   				</md-switch> -->
 
                 <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
                         style="margin:0px"
@@ -130,8 +127,8 @@
             <div class="panel-heading">Edit Area</div>
             <div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init">
                 <form name="editForm" id="editForm" class="form-horizontal" novalidate confirm-on-leave unsaved-warning-form>
-                <div id="edit" ng-show="subview !== undefined" style="width:100%">
-                    <ng-include src="subview"></ng-include>
+                <div id="edit" ng-show="subview" style="width:100%">
+                    <div ng-include="subview"></div>
                 </div>
                 </form>
             </div>
