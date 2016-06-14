@@ -20,9 +20,11 @@ angular
             $scope.openMetadata = false;
             $scope.ordredMessages = [];
             $scope.dataTypeLibraryCollapsed = false;
-            $scope.activeModel = "";
+            $rootScope.activeModel = "";
+            $scope.segmentsChecked=false; 
+            $rootScope.filteringMode=false;
             $scope.Activate = function (param) {
-                $scope.activeModel = param;
+                $rootScope.activeModel = param;
             }
 
             $rootScope.switcherDatatypeLibrary = function () {
@@ -119,10 +121,11 @@ angular
 
                         var parentSource=sourceNode.$parentNodeScope.$modelValue;
                         var parentDest= event.dest.nodesScope.$nodeScope.$modelValue; 
-
-                        		
+                        $scope.updatePositions($rootScope.igdocument.childSections);
                                 if (dataTypeDest ==="messages"){
                                 	console.log("========ordering messages");
+                                    $scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
+
                                     $scope.reOrderMessages();
                                 	return "";
                                 }else if(parentSource.type==="document"&&parentDest.type==="section"){
@@ -286,7 +289,7 @@ angular
                         console.log($itemScope.section);
                         SectionSvc.update($rootScope.igdocument.id, $itemScope.section);
                         $scope.editSection(newSection);
-                        $scope.activeModel = newSection.id;
+                        $rootScope.activeModel = newSection.id;
 
 
                     }
@@ -336,8 +339,13 @@ angular
                         $scope.updatePositions($itemScope.$nodeScope.$parentNodesScope.$modelValue);
 
 
-                        SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id);
-
+                        SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id).then(function(){
+                        	if($itemScope.section.id===$rootScope.activeModel){
+                            $scope.displayNullView();
+                            }
+                        });
+            
+                        
                     }
                 ]
 
@@ -389,13 +397,14 @@ angular
                 ['copy',
                     function ($itemScope) {
 
-
+                		
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
                                 CloneDeleteSvc.copySegment($itemScope.segment);
                             });
                         } else {
+                        	console.log($itemScope.segment);
                             CloneDeleteSvc.copySegment($itemScope.segment);
                         }
 
@@ -404,7 +413,7 @@ angular
                 null,
                 ['delete',
                     function ($itemScope) {
-                        CloneDeleteSvc.deleteSegment($itemScope.segment);
+                        	CloneDeleteSvc.deleteSegment($itemScope.segment);
                     }
                 ]
 
@@ -430,6 +439,7 @@ angular
                 ['delete',
                     function ($itemScope) {
                         CloneDeleteSvc.deleteDatatype($itemScope.data);
+                      
                     }
                 ]
 
@@ -454,6 +464,7 @@ angular
                 ['delete',
                     function ($itemScope) {
                         CloneDeleteSvc.deleteValueSet($itemScope.table);
+                    
                     }
                 ]
 
@@ -544,7 +555,15 @@ angular
                     }
                 ]
             ];
+            $scope.addValueSets = [
+                                             ['Add Value Sets',
+                                                 function ($itemScope) {
+                                                     $scope.addTable($rootScope.igdocument);
+                                                 }
+                                             ]
+                                         ];
 
+            
             function processEditSeg(seg) {
                 $scope.Activate(seg.id);
                 $scope.$emit('event:openSegment', seg);
@@ -886,12 +905,185 @@ angular
             };
             
             
+
+
+            $scope.getSegmentsFromgroup= function(group){
+
+              //_.union($rootScope.selectedSegments,temp);
+              for( var i=0; i<group.children.length; i++){
+                if(group.children[i].type === "segmentRef"){
+                        console.log("IN IF ");
+                        var segment = $rootScope.segmentsMap[group.children[i].ref.id];
+                        var temp2=[];
+                        temp2.push(segment);
+                        $rootScope.FilteredSegments.push(segment);
+                        //$rootScope.FilteredSegments=_.union($rootScope.FilteredSegments,temp2);
+
+                    
+              }else if(group.children[i].type==="group"){
+                        console.log("group case ");
+                        $scope.getSegmentsFromgroup(group.children[i]);
+              }
+            }
+
+          }
+
+
+            $scope.getDatatypeFromDatatype = function(datatype){
+              var data=[];
+              if(datatype.components.length===0){
+                $scope.getTablesFromDatatype(datatype);
+                return 0;
+              }
+              else {
+
+                for(var i=0; i<datatype.components.length; i++){
+                  var temp= [];
+                  temp.push($rootScope.datatypesMap[datatype.components[i].datatype.id]);
+                  $scope.getTablesFromDatatype($rootScope.datatypesMap[datatype.components[i].datatype.id]);
+                  data=_.union(data,temp);
+                }
+              }
+              return data;
+            }
+
+            $scope.FilterbyConformance=function(msg){
+
+                $rootScope.FilteredSegments=[];
+                $rootScope.filteredDatatypes=[];
+                $rootScope.filterdTables=[];
+                for (var i = msg.children.length - 1; i >= 0; i--) {
+
+                
+                    if( msg.children[i].type==="segmentRef"){
+                        var seg = $rootScope.segmentsMap[msg.children[i].ref.id];
+                        console.log(seg);
+                        $rootScope.FilteredSegments.push(seg);
+                        var temp=[];
+                        temp.push(seg);
+                        $rootScope.filteredDatatype=_.union($rootScope.selectedDataTypes, $scope.getDatataypeFromSegment(segment));
+                        $scope.getTablesFromSegment(segment);
+
+                        }else if(msg.children[i].type==="group"){
+                            $scope.getSegmentsFromgroup(msg.children[i]);
+                        }
+                      }
+
+
+            }
+
+            $scope.getDatataypeFromSegment=function(seg){
+              var data=[];
+              for(var i=0; i<seg.fields.length; i++){
+                console.log(seg.fields[i].datatype.id);
+                var datatype = $rootScope.datatypesMap[seg.fields[i].datatype.id];
+                console.log(datatype);
+                $scope.getTablesFromDatatype(datatype);
+                var temp=[];
+                temp.push(datatype);
+                temp=_.union(temp, $scope.getDatatypeFromDatatype(datatype));
+                data=_.union(data,temp);
+
+              }
+              return data;
+            }
+
+              $scope.getTablesFromSegment=function(seg){
+              var tables=[];
+              for(var i=0; i<seg.fields.length; i++){
+                if(seg.fields[i].table!=null){
+                var table = $rootScope.tablesMap[seg.fields[i].table.id];
+                //console.log(datatype);
+                var temp=[];
+                temp.push(table);
+                tables=_.union(tables,temp);
+                $rootScope.filtererTables=_.union($rootScope.selectedTables,tables);
+                }
+
+              }
             
-            
-            
-            
-            
-            
-            
+            }
+            $scope.resetSegments = function(){
+                $rootScope.selectedSegment=null;
+                console.log("called");
+                $rootScope.filteredDatatypesList=angular.copy($rootScope.datatypes);
+                $rootScope.filteredTablesList=angular.copy($rootScope.tables);
+//                $rootScope.filteredTablesList=[];
+//                $rootScope.filteredDatatypesList=[];
+                if($rootScope.selectedMessage!=null){
+                    $rootScope.processMessageTree($rootScope.selectedMessage, null);
+                }
+                        $rootScope.filteredSegmentsList.forEach(function (segment, i) {
+                        segment.checked = false;
+                });
+
+
+            }
+            $scope.resetDatatypes = function(){
+                console.log("called");
+                if($rootScope.selectedSegment!=null){
+                    $rootScope.processSegmentsTree($rootScope.selectedSegment, null);
+                }
+                else if($rootScope.selectedMessage!=null){
+                    $rootScope.processMessageTree($rootScope.selectedMessage, null);
+                }
+                
+
+                    $rootScope.filteredDatatypesList.forEach(function (data, i) {
+                    data.checked = false;
+                });
+
+
+            }
+
+
+            $scope.resetMessages = function(){
+                $rootScope.selectedMessage=null;
+                $rootScope.filteredDatatypesList=angular.copy($rootScope.datatypes);
+             	$rootScope.filteredSegmentsList=angular.copy($rootScope.segments);
+                $rootScope.filteredTablesList=angular.copy($rootScope.tables);
+           
+                $rootScope.igdocument.profile.messages.children.forEach(function (msg, i) {
+                    msg.checked = false;
+                });
+            }
+
+            $scope.checkSegment=function(segment){
+
+                for (var i = $rootScope.filteredSegmentsList.length - 1; i >= 0; i--) {
+
+                    if(segment.checked && $rootScope.filteredSegmentsList[i].id != segment.id){
+                        $rootScope.filteredSegmentsList[i].checked=false;
+                        $rootScope.filteredSegmentsList[i].anotherIsChecked=true;
+                    }
+                    else if(!segment.checked && $rootScope.filteredSegmentsList[i].id != segment.id){
+
+                        $rootScope.filteredSegmentsList[i].checked=false;
+                        $rootScope.filteredSegmentsList[i].anotherIsChecked=false;
+                    }
+                }
+            }
+    
+            $scope.checkDatatype=function(datatype){
+
+
+
+
+                for (var i = $rootScope.filteredDatatypesList.length - 1; i >= 0; i--) {
+
+                    if(segment.checked && $rootScope.filteredDatatypesList[i].id != segment.id){
+                        $rootScope.filteredDatatypesList[i].checked=false;
+                        $rootScope.filteredDatatypesList[i].anotherIsChecked=true;
+                    }
+                    else if(!segment.checked && $rootScope.filteredDatatypesList[i].id != segment.id){
+
+                        $rootScope.filteredDatatypesList[i].checked=false;
+                        $rootScope.filteredDatatypesList[i].anotherIsChecked=false;
+                    }
+                }
+            }
+
+
+
         }
     ]);

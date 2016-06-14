@@ -32,7 +32,7 @@ var app = angular
         ,'ui.tree',
         'blockUI',
         'nsPopover'
-     ]);
+       ]);
 
 var
 //the HTTP headers to be used by all requests

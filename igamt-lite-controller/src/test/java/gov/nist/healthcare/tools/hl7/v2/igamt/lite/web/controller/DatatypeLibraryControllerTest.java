@@ -7,12 +7,13 @@ import org.junit.Test;
 
 public class DatatypeLibraryControllerTest {
 
-  @BeforeClass
-  public static void setUpBeforeClass() throws Exception {}
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+	}
 
-  @Test
-  public void testGetDataTypeLibraryByScope() {
-    fail("Not yet implemented");
-  }
+	@Test
+	public void testGetDataTypeLibraryByScope() {
+		fail("Not yet implemented");
+	}
 
 }
