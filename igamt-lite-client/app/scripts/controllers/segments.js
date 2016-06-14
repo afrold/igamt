@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService) {
+    .controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService,DatatypeService,TableService) {
         //        $scope.loading = false;
         $scope.editableDT = '';
         $scope.editableVS = '';
@@ -41,7 +41,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'DeleteField.html',
                 controller: 'DeleteFieldCtrl',
-                windowClass: 'app-modal-window',
+                windowClass: 'flavor-modal-window',
                 resolve: {
                     fieldToDelete: function() {
                         return fieldToDelete;
@@ -62,6 +62,7 @@ angular.module('igl')
         };
         $scope.editableField = '';
         $scope.editField = function(field) {
+            console.log(field);
             $scope.editableField = field.id;
             $scope.fieldName = field.name;
 
@@ -172,10 +173,29 @@ angular.module('igl')
         };
 
 
+         $scope.redirectDT = function(datatype) {
+            DatatypeService.getOne(datatype.id).then(function(datatype) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'redirectCtrl.html',
+                    controller: 'redirectCtrl',
+                    windowClass: 'flavor-modal-window',
+                    resolve: {
+                        destination:function(){
+                            return datatype;
+                        }
+                    }
 
 
+                    
+                });
+                modalInstance.result.then(function() {
+                    $rootScope.editDataType(datatype);
+                });
 
 
+                
+            });
+        };
 
 
         $scope.editVS = function(field) {
@@ -192,6 +212,31 @@ angular.module('igl')
             $scope.setDirty();
             $scope.VSselected = false;
 
+        };
+
+
+         $scope.redirectVS = function(valueSet) {
+            TableService.getOne(valueSet.id).then(function(valueSet) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'redirectCtrl.html',
+                    controller: 'redirectCtrl',
+                    windowClass: 'flavor-modal-window',
+                    resolve: {
+                        destination:function(){
+                            return valueSet;
+                        }
+                    }
+
+
+                    
+                });
+                modalInstance.result.then(function() {
+                    $rootScope.editTable(valueSet);
+                });
+
+
+                
+            });
         };
 
         $scope.selectVS = function(valueSet) {

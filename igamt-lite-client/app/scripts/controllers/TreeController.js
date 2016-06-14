@@ -569,7 +569,8 @@ angular
                 $scope.$emit('event:openSegment', seg);
             };
 
-            $scope.editSeg = function (seg) {
+            $rootScope.editSeg = function (seg) {
+                console.log(seg);
 
                 if ($rootScope.hasChanges()) {
 
@@ -680,7 +681,7 @@ angular
                 $scope.$emit('event:openDatatype', $rootScope.datatype);
             };
 
-            $scope.editDataType = function (data) {
+            $rootScope.editDataType = function (data) {
 
                 console.log("editDataType");
 
@@ -704,7 +705,7 @@ angular
                 $scope.$emit('event:openTable', $rootScope.table);
             };
 
-            $scope.editTable = function (table) {
+            $rootScope.editTable = function (table) {
 
                 if ($rootScope.hasChanges()) {
 

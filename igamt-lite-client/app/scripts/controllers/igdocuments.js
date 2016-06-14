@@ -826,6 +826,7 @@ angular.module('igl')
         };
 
         $scope.selectSegment = function (segment) {
+            console.log(segment);
             $rootScope.subview = "EditSegments.html";
             if (segment && segment != null) {
                 $scope.loadingSelection = true;

@@ -843,9 +843,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                             parent = s;
                         }
                         $rootScope.filteredSegmentsList.push(element);
-                        console.log($rootScope.filteredSegmentsList);
                         $rootScope.filteredSegmentsList=_.uniq($rootScope.filteredSegmentsList);
-                        console.log($rootScope.filteredSegmentsList);
                         angular.forEach(element.fields, function (field) {
                             $rootScope.processMessageTree(field, parent);
                         });

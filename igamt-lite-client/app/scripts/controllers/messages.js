@@ -3,16 +3,85 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc) {
+    .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc,TableService,DatatypeService) {
 
 
 
         $scope.init = function() {};
+        $scope.redirectSeg = function(segmentRef) {
+            SegmentService.get(segmentRef.id).then(function(segment) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'redirectCtrl.html',
+                    controller: 'redirectCtrl',
+                    windowClass: 'flavor-modal-window',
+                    resolve: {
+                        destination:function(){
+                            return segment;
+                        }
+                    }
+
+
+                    
+                });
+                modalInstance.result.then(function() {
+                    $rootScope.editSeg(segment);
+                });
+
+
+                
+            });
+        };
+        $scope.redirectDT = function(datatype) {
+            DatatypeService.getOne(datatype.id).then(function(datatype) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'redirectCtrl.html',
+                    controller: 'redirectCtrl',
+                    windowClass: 'flavor-modal-window',
+                    resolve: {
+                        destination:function(){
+                            return datatype;
+                        }
+                    }
+
+
+                    
+                });
+                modalInstance.result.then(function() {
+                    $rootScope.editDataType(datatype);
+                });
+
+
+                
+            });
+        };
+         $scope.redirectVS = function(valueSet) {
+            TableService.getOne(valueSet.id).then(function(valueSet) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'redirectCtrl.html',
+                    controller: 'redirectCtrl',
+                    windowClass: 'flavor-modal-window',
+                    resolve: {
+                        destination:function(){
+                            return valueSet;
+                        }
+                    }
+
+
+                    
+                });
+                modalInstance.result.then(function() {
+                    $rootScope.editTable(valueSet);
+                });
+
+
+                
+            });
+        };
         $scope.OtoX = function(message) {
             var modalInstance = $modal.open({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
-                windowClass: 'app-modal-window',
+                windowClass: 'flavor-modal-window',
                 resolve: {
                     message: function() {
                         return message;
@@ -124,7 +193,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'DeleteSegmentRefOrGrp.html',
                 controller: 'DeleteSegmentRefOrGrpCtrl',
-                windowClass: 'app-modal-window',
+                windowClass: 'flavor-modal-window',
                 resolve: {
                     segOrGrpToDelete: function() {
                         return segmentRefOrGrp;
@@ -201,6 +270,7 @@ angular.module('igl')
                     if (libraries != null) {
                         _.each(libraries, function(library) {
                             $scope.results = $scope.results.concat(filterFlavors(library, segmentRef.obj.ref.name));
+
                         });
                     }
 
@@ -209,6 +279,7 @@ angular.module('igl')
                     });
 
                     $scope.tmpResults = [].concat($scope.results);
+                    console.log($scope.tmpResults);
 
                     delay.resolve(true);
                 }, function(error) {
@@ -251,6 +322,7 @@ angular.module('igl')
 
         $scope.applySeg = function(segmentRef, segment, position) {
             $scope.editableSeg = '';
+            console.log(segment);
 
             if (segment) {
                 segmentRef.obj.ref.id = JSON.parse(segment).id;
@@ -265,10 +337,12 @@ angular.module('igl')
                 MessageService.updatePosition($rootScope.segParent.children, segmentRef.obj.position - 1, position - 1);
 
             }
+            console.log(segmentRef);
             $scope.setDirty();
-
-
+            var ref = $rootScope.segmentsMap[segmentRef.obj.ref.id];
             $rootScope.processMessageTree($rootScope.message);
+
+
             if ($scope.messagesParams)
                 $scope.messagesParams.refresh();
             $scope.Segselected = false;
@@ -414,7 +488,7 @@ angular.module('igl')
                         return $rootScope.igdocument.profile.segmentLibrary;
                     },
 
-                    hl7Version: function () {
+                    hl7Version: function() {
                         return $rootScope.igdocument.profile.metaData.hl7Version;
                     }
                 }
@@ -1701,7 +1775,7 @@ angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, me
                     message.fields[node].min = 0;
 
                 }
-               
+
 
 
 
@@ -1714,7 +1788,7 @@ angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, me
                     message.components[node].min = 0;
 
                 }
-               
+
 
 
 
@@ -1729,6 +1803,28 @@ angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, me
         $modalInstance.close($scope.message);
         $rootScope.messageTree = null;
         $rootScope.processMessageTree($rootScope.message);
+
+
+    };
+
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+});
+
+
+angular.module('igl').controller('redirectCtrl', function($scope, $modalInstance, destination, $rootScope) {
+    $scope.destination = destination;
+    $scope.loading = false;
+
+    $scope.confirm = function() {
+        
+      
+        $modalInstance.close($scope.destination);
+        
 
 
     };

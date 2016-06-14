@@ -323,7 +323,7 @@ if (self === top) {
             <ng-form class="form-inline">
             <span id="segEditTree " class="label label-segment label-icon ">S</span>
 
-            <a  ng-show="editableSeg!==node.obj.id "  context-menu ="segOption " ng-click="showSelectSegmentFlavorDlg(node.obj) " class="point ">
+            <a  ng-show="editableSeg!==node.obj.id "  context-menu ="segOption " ng-click="redirectSeg(node.obj.ref) " class="point ">
 
 
                 {{getSegmentRefNodeName(node.obj)}}
@@ -333,12 +333,12 @@ if (self === top) {
                  <select ng-show="editableSeg===node.obj.id " ng-model="position " ng-change="selectPos() "  style="width:15% " class="form-control input-sm ">
                     <option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position "> {{child.position}}
                 </select>
-                <select ng-show="editableSeg===node.obj.id " ng-model="segment " ng-change="selectSeg() "  style="width:40% " class="form-control input-sm ">
-                    <option ng-repeat="segment in results "   ng-selected="node.obj.ref.name===segment.name "> {{segment.name}}<span ng-show="segment.ext ">_{{segment.ext}}</span>
+                <select ng-show="editableSeg===node.obj.id " ng-model="segmentRef " ng-change="selectSeg() "  style="width:40% " class="form-control input-sm ">
+                    <option ng-repeat="segmentRef in tmpResults " value="{{segmentRef}}"  ng-selected="node.obj.ref.name===segmentRef.name "> {{getSegmentLabel(segmentRef)}}
                 </select>
             <div align="center">
 
-               <a  ng-show="editableSeg===node.obj.id && (Segselected ||Posselected) "  ng-click="applySeg(node,segment,position) " >
+               <a  ng-show="editableSeg===node.obj.id && (Segselected ||Posselected) " ng-click="applySeg(node,segmentRef,position) " >
                     <span><i  align="center" class="glyphicon glyphicon-ok "></i></span>
             </a>
             <a  ng-show="editableSeg===node.obj.id "ng-click="backSeg() " >
@@ -616,14 +616,14 @@ if (self === top) {
             <span>{{node.obj.confLength}}</span>
         </td>
         <td class="col-xs-1 col-fixed-100 " ng-show="viewSettings.isVisibleColumn( 'datatype') ">
-            <span class="point "
+            <span class="point " ng-click="redirectDT(node.obj.datatype)"
                     >{{getDatatypeLabel(node.obj.datatype)}}</span>
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
             <div>
                 <span ng-show="node.obj.table !=undefined && node.obj.table !=null ">
 
-                    <a class="point " ng-click="goToTable(tablesMap[node.obj.table.id]) ">{{getTableLabel(tablesMap[node.obj.table.id])}}</a>
+                    <a class="point " ng-click="redirectVS(node.obj.table)">{{getTableLabel(tablesMap[node.obj.table.id])}}</a>
                 </span>
             </div>
         </td>
@@ -746,13 +746,13 @@ if (self === top) {
         </td>
 
         <td class="col-xs-1 col-fixed-100 " ng-show="viewSettings.isVisibleColumn( 'datatype') ">
-            <span class="point ">{{getDatatypeLabel(node.obj.datatype)}}</span>
+            <span class="point " ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}</span>
         </td>
         <td class="col-xs-1 col-fixed-130 ">
             <div>
                 <span ng-show="node.obj.table !=undefined && node.obj.table !=null ">
 
-                    <a class="point " ng-click="goToTable(tablesMap[node.obj.table.id]) ">{{getTableLabel(tablesMap[node.obj.table.id])}}</a>
+                    <a class="point " ng-click="redirectVS(node.obj.table) ">{{getTableLabel(tablesMap[node.obj.table.id])}}</a>
                 </span>
             </div>
         </td>
@@ -1741,7 +1741,7 @@ if (self === top) {
         </div>
 </script>
 <script type="text/ng-template" id="ConfirmMessageDeleteCtrl.html">
-    <div class="modal-header">
+    <div class="modal-header modal-wide">
         <h3 class="modal-title">Delete Confirmation</h3>
     </div>
     <div class="modal-body">
@@ -1783,7 +1783,23 @@ if (self === top) {
     <div class="modal-footer">
         <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-danger btn-sm" ng-click="confirm(message)"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
+        <button class="btn btn-danger btn-sm" ng-click="confirm(message)"><span><i class="fa fa-play fa-fw">&nbsp; </i>Confirm</span>
+        </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="redirectCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title"></h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to leave this page and go to {{destination.type}} : {{destination.name}} </p>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-primary btn-sm" ng-click="confirm()"><span><i class="fa fa-play fa-fw">&nbsp; </i>Confirm</span>
         </button>
     </div>
 </script>

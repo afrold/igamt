@@ -94,7 +94,7 @@ if (self === top) {
                                     <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                                         <th class="col-xs-2 col-fixed-250">Name</th>
                                         <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                                            <button class="btn-info"> <span ng-click="OtoX(segment)">(O to X)</span></button>
+                                            <button ng-show="(segment.scope === 'USER' || segment.scope === 'MASTER')" class="btn-info"> <span ng-click="OtoX(segment)">(O to X)</span></button>
                                         </th>
                                         <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
                                         </th>
@@ -385,6 +385,7 @@ if (self === top) {
                             ng-class="{ 'igl-has-error has-feedback' : {{formName}}.name.$invalid} "
                             ng-model="node.name " required>
             </span>
+            </span >
             <span ng-show="editableField===node.id ">
              <select  ng-model="position " ng-change="selectPos() "  style="width:15% " class="form-control input-sm ">
                     <option ng-repeat="child in segment.fields "  ng-selected="node.position===child.position "> {{child.position}}
@@ -392,8 +393,8 @@ if (self === top) {
             
 
             <input  style="width:55% " class="form-control "  ng-model="fieldName " type="text "/>
-
             </span>
+
             <div align="center ">
 
                
@@ -480,13 +481,13 @@ if (self === top) {
             <!--ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name ">-->
             <!--</select>-->
 
-            <a  class="point " ng-show="editableDT!==node.id ">
+            <a  class="point " ng-show="editableDT!==node.id " ng-click="redirectDT(node.datatype)">
                 {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </a>
            
             <div ng-show="editableDT===node.id " >
             <select  ng-model="datatype "  ng-change="selectDT() "  class="form-control input-sm ">
-                <option ng-repeat="datatype in results "   value="{{datatype}} " ng-selected="node.datatype.ext===datatype.ext "> {{datatype.name}}<span ng-show="datatype.ext ">_{{datatype.ext}}</span> FROM {{datatype.libraryName}}</option>
+                <option ng-repeat="datatype in results "   value="{{datatype}} " ng-selected="node.datatype.ext===datatype.ext "> {{getDatatypeLabel(datatype)}} FROM {{datatype.libraryName}}</option>
             </select>
             
 
@@ -520,7 +521,7 @@ if (self === top) {
 
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') " style="text-align:center ">
             <div ng-show="node.table !=undefined && node.table !==null ">
-                <a ng-show="editableVS!==node.id "  class="point ">
+                <a ng-show="editableVS!==node.id "  class="point " ng-click="redirectVS(node.table)">
                     <span>{{getTableLabel(tablesMap[node.table.id])}}</span>
                 </a>
                  <a ng-show="editableVS!==node.id " ng-click="editVS(node) " class="point ">
@@ -762,13 +763,13 @@ if (self === top) {
 
         <td class="col-xs-1 col-fixed-100 " ng-show="viewSettings.isVisibleColumn( 'datatype') ">
             <div>
-                <span>{{getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
+                <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
             <div>
                 <span ng-show="node.table !=undefined && node.table !=null ">
-                    <a ng-click="goToTable(tablesMap[node.table.id]) " class="point ">
+                    <a  ng-click="redirectVS(node.table) " class="point ">
                         <span>{{getTableLabel(tablesMap[node.table.id])}}</span>
                     </a>
                 </span>
