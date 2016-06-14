@@ -81,7 +81,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableSerialization;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import nu.xom.Attribute;
 import nu.xom.Builder;
@@ -98,9 +97,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Autowired
   private SegmentService segmentService;
-
-  @Autowired
-  private TableService tableService;
 
   @Autowired
   private TableSerialization tableSerializationService;
@@ -2153,9 +2149,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       datatypes.addDatatype(datatypesMap.get(key));
     }
 
-
     TableLibrary tables = new TableLibrary();
+    
     for (String key : tablesMap.keySet()) {
+    	
       if (tablesMap.get(key) != null)
         tables.addTable(tablesMap.get(key));
     }
@@ -2249,7 +2246,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       for (Field f : s.getFields()) {
         this.addDatatype(f.getDatatype(), original, datatypesMap, tablesMap);
         if (f.getTable() != null) {
-          tablesMap.put(f.getTable().getBindingLocation(), f.getTable());
+          tablesMap.put(f.getTable().getBindingIdentifier(), f.getTable());
         }
       }
 
