@@ -8,7 +8,7 @@ public class CoConstraint {
 	private String description;
 	private String comments;
 	
-	private List<String> values = new ArrayList<String>();
+	private List<CCValue> values = new ArrayList<CCValue>();
 
 	public String getDescription() {
 		return description;
@@ -26,11 +26,11 @@ public class CoConstraint {
 		this.comments = comments;
 	}
 
-	public List<String> getValues() {
+	public List<CCValue> getValues() {
 		return values;
 	}
 
-	public void setValues(List<String> values) {
+	public void setValues(List<CCValue> values) {
 		this.values = values;
 	}
 	

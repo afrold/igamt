@@ -364,6 +364,7 @@ angular.module('igl')
             $scope.tocView = 'views/tocReadOnly.html';
             $scope.show(igdocument);
         };
+
         $scope.displayNullView = function() {
             console.log("before");
             console.log($rootScope.subview);
@@ -371,6 +372,7 @@ angular.module('igl')
             console.log("after");
             console.log($rootScope.subview);
         }
+
 
         // switcher
 

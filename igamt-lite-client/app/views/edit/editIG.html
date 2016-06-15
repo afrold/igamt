@@ -40,6 +40,7 @@
   <input type="radio" ng-model="!getFilter()" autocomplete="off" >Filter OFF
   </label>
 
+
 </div>
   <span class="nav-header ng-hide" ng-show="showSpinner()" aria-hidden="true"><i class="fa fa-spinner fa-pulse fa-align-center"></i></span>
  </span>
@@ -109,18 +110,6 @@
             <!-- Default panel contents -->
             <div class="panel-heading panel-heading-collapsable row">
                 <i class="glyphicon glyphicon-list col-md-1"></i><span class="col-md-5"> Table of Contents </span>
-<!-- 		 		<md-switch  ng-model="filteringMode" aria-label="filteringmode" ng-click="switchview()"> -->
-<!--   				</md-switch> -->
-<!-- 				<span class="col-md-2"><strong>Filter:</strong></span>
-  				
-  				<label class="btn btn-primary col-md-1"  ng-class ="{active:filtering===true}"  style="margin-top:0px;  padding:0px;" ng-click="goToFilter();displayFilteredTree()">
-    				 <stong>ON</stong>
-  				</label>
-  				<label class="btn btn-primary col-md-1" ng-class ="{active:filtering===false}"  style="margin-top:0px;  padding:0px;" ng-click="goToRegular();displayRegularTree()">
-    				 <strong>OFF</strong>
-  				</label> 
-          ng-show="showLoading()||showSpinner()"
-          -->
                 <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
                         style="margin:0px"
                         ng-click="hideToc = !hideToc">
