@@ -27,23 +27,22 @@
     <div class="col-md-12 igl-page-header">
       <span class="header4 pull-left">
 
-<!--         <div ng-controller="FilteringCtl"> -->
-<!--            <div class="row form-inline" style="margin:10px"> -->
-<!--             <label class="label label-default">Filters by:</label> -->
-<!--             <label>Conf Profiles</label> -->
-<!--             <span  ng-dropdown-multiselect="" options="filtermsgdata()" selected-model="filtermsgmodel()" extra-settings="filtermsgsettings()" translation-texts="filtermsgtexts()"> -->
-<!--             </span> -->
-      
-<!--           </div> -->
-          
-   
-<!--          </div> -->
-         <!--</div>-->
 
-        <!--<span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>-->
-        <!--<span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>-->
-      </span>
+<div class="btn-group btn-group-sm" data-toggle="buttons" style="margin-right: 10px;">
+  <label class="btn btn-primary btn-sm" ng-click="setFilter(true);displayFilteredTree()"
+  ng-class="{'active': getFilter()}">
+  <input type="radio" ng-model="getFilter()" autocomplete="off" ng-disabled="true">Filter ON
+  </label>
+  
+<label class="btn btn-primary btn-sm
+" ng-click="setFilter(false);displayRegularTree()"
+  ng-class="{'active': !getFilter()}" ng-disabled="!getFilter()">
+  <input type="radio" ng-model="!getFilter()" autocomplete="off" >Filter OFF
+  </label>
 
+</div>
+  <span class="nav-header ng-hide" ng-show="showSpinner()" aria-hidden="true"><i class="fa fa-spinner fa-pulse fa-align-center"></i></span>
+ </span>
       <span class="pull-right">
          <!--<button title="Save Changes" type="button" class="btn btn-xs btn-success"-->
                  <!--ng-hide="viewSettings.tableReadonly"-->
@@ -71,7 +70,7 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu igl-menu" role="menu">
-                        	<li><a class="point" ng-click="selectMessagesForExport(igdocument)">As XML for Conformance Profile</a></li>
+                          <li><a class="point" ng-click="selectMessagesForExport(igdocument)">As XML for Conformance Profile</a></li>
                             <li><a class="point" ng-click="exportAs('pdf')">As PDF</a></li>
                             <li><a class="point" ng-click="exportAs('docx')">As WORD</a></li>
                             <li><a class="point" ng-click="exportAs('html')">As HTML</a></li>
@@ -96,6 +95,7 @@
     <!--</div>-->
 </div>
 
+
 <div class="row">
     <div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">
         <button title="Show Table of Contents" class="btn btn-xs btn-primary"
@@ -107,9 +107,20 @@
     <div ng-show="!hideToc" class="col-md-3">
         <div class="panel panel-primary">
             <!-- Default panel contents -->
-            <div class="panel-heading panel-heading-collapsable">
-                <i class="glyphicon glyphicon-list"></i> Table of Contents
-
+            <div class="panel-heading panel-heading-collapsable row">
+                <i class="glyphicon glyphicon-list col-md-1"></i><span class="col-md-5"> Table of Contents </span>
+<!-- 		 		<md-switch  ng-model="filteringMode" aria-label="filteringmode" ng-click="switchview()"> -->
+<!--   				</md-switch> -->
+<!-- 				<span class="col-md-2"><strong>Filter:</strong></span>
+  				
+  				<label class="btn btn-primary col-md-1"  ng-class ="{active:filtering===true}"  style="margin-top:0px;  padding:0px;" ng-click="goToFilter();displayFilteredTree()">
+    				 <stong>ON</stong>
+  				</label>
+  				<label class="btn btn-primary col-md-1" ng-class ="{active:filtering===false}"  style="margin-top:0px;  padding:0px;" ng-click="goToRegular();displayRegularTree()">
+    				 <strong>OFF</strong>
+  				</label> 
+          ng-show="showLoading()||showSpinner()"
+          -->
                 <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
                         style="margin:0px"
                         ng-click="hideToc = !hideToc">
@@ -119,7 +130,6 @@
             </div>
 
             <div class="panel-body toc-container">
-             
                     <div ng-include="tocView"></div>
             </div>
             
@@ -130,8 +140,8 @@
             <div class="panel-heading">Edit Area</div>
             <div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init">
                 <form name="editForm" id="editForm" class="form-horizontal" novalidate confirm-on-leave unsaved-warning-form>
-                <div id="edit" ng-show="subview !== undefined" style="width:100%">
-                    <ng-include src="subview"></ng-include>
+                <div id="edit" ng-show="subview" style="width:100%">
+                    <div ng-include="subview"></div>
                 </div>
                 </form>
             </div>

@@ -30,7 +30,8 @@ var app = angular
         'ui-notification',
         'ngDragDrop',
         'ui.tree',
-        'blockUI'
+        'blockUI',
+        'ngMaterial'
         
      ]);
 

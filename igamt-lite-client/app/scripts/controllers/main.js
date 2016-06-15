@@ -46,12 +46,12 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $scope.login = function () {
-// console.log("in login");
+// //console.log("in login");
             $scope.$emit('event:loginRequest', $scope.username, $scope.password);
         };
 
         $scope.loginReq = function () {
-// console.log("in loginReq");
+// //console.log("in loginReq");
             if ($rootScope.loginMessage()) {
                 $rootScope.loginMessage().text = "";
                 $rootScope.loginMessage().show = false;
@@ -546,7 +546,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 // $rootScope.changes[type][object.id][changeType] = object[changeType];
 // }
 
-// console.log("Change is " + $rootScope.changes[type][object.id][changeType]);
+// //console.log("Change is " + $rootScope.changes[type][object.id][changeType]);
             $rootScope.recordChanged();
         };
 
@@ -785,16 +785,26 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
 
+        $rootScope.filteredSegmentsList=[];
+        $rootScope.filteredTablesList=[];
+        $rootScope.filteredDatatypesList=[];
+        $rootScope.selectedMessage=null;
+        $rootScope.selectedSegment=null;
+
         $rootScope.processMessageTree = function (element, parent) {
+
 
             try {
                 if (element != undefined && element != null) {
                     if (element.type === "message") {
-                        var m = {};
+                        $rootScope.selectedMessage=element;
+                        $rootScope.filteredSegmentsList=[];
+                        $rootScope.filteredTablesList=[];
+                        $rootScope.filteredDatatypesList=[];
+                        var m ={};
                         m.children = [];
                         $rootScope.messageTree = m;
 
-                        element.children = $filter('orderBy')(element.children, 'position');
                         angular.forEach(element.children, function (segmentRefOrGroup) {
                             $rootScope.processMessageTree(segmentRefOrGroup, m);
                         });
@@ -808,7 +818,6 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                             g.path = parent.path + "." + element.position + "[1]";
                         }
                         parent.children.push(g);
-                        element.children = $filter('orderBy')(element.children, 'position');
                         angular.forEach(element.children, function (segmentRefOrGroup) {
                             $rootScope.processMessageTree(segmentRefOrGroup, g);
                         });
@@ -817,18 +826,26 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         s.path = element.position + "[1]";
                         s.obj = element;
                         s.children = [];
-                        if(parent) {
-                            if (parent.path) {
-                                s.path = parent.path + "." + element.position + "[1]";
-                            }
-                            parent.children.push(s);
+                        if (parent.path) {
+                            s.path = parent.path + "." + element.position + "[1]";
                         }
+                        parent.children.push(s);
 
                         var ref = $rootScope.segmentsMap[element.ref.id];
                         $rootScope.processMessageTree(ref, s);
 
                     } else if (element.type === "segment") {
-                        element.fields = $filter('orderBy')(element.fields, 'position');
+                        if(!parent){
+                            var s = {};
+                            s.obj = element;
+                            s.path = element.name;
+                            s.children = [];
+                            parent = s;
+                        }
+                        $rootScope.filteredSegmentsList.push(element);
+                        //console.log($rootScope.filteredSegmentsList);
+                        $rootScope.filteredSegmentsList=_.uniq($rootScope.filteredSegmentsList);
+                        //console.log($rootScope.filteredSegmentsList);
                         angular.forEach(element.fields, function (field) {
                             $rootScope.processMessageTree(field, parent);
                         });
@@ -838,6 +855,12 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         f.path = parent.path + "." + element.position + "[1]";
                         f.children = [];
                         parent.children.push(f);
+                        $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
+                        $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+                        if(element.table!= null){
+                            $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                        }
+                        $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
                         $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], f);
                     } else if (element.type === "component") {
                         var c = {};
@@ -845,14 +868,144 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         c.path = parent.path + "." + element.position + "[1]";
                         c.children = [];
                         parent.children.push(c);
+                        $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
+                        $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+                        if(element.table!= null){
+                            $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                        }
+                        $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
                         $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], c);
                     } else if (element.type === "datatype") {
-                        element.components = $filter('orderBy')(element.components, 'position');
+                        if(!parent){
+                            var d = {};
+                            d.obj = element;
+                            d.path = element.name;
+                            d.children = [];
+                            parent = d;
+                        }
                         angular.forEach(element.components, function (component) {
                             $rootScope.processMessageTree(component, parent);
                         });
                     }
                 }
+            } catch (e) {
+                throw e;
+            }
+        };
+
+        $rootScope.processSegmentsTree= function (element, parent) {
+            console.log(element);
+
+            try {
+                if (element.type === "segment") {
+                    $rootScope.selectedSegment= element;
+                    $rootScope.filteredTablesList=[];
+                    $rootScope.filteredDatatypesList=[];
+
+                    if(!parent){
+                        var s = {};
+                        s.obj = element;
+                        s.path = element.name;
+                        s.children = [];
+                        parent = s;
+                    }
+                    element.fields = $filter('orderBy')(element.fields, 'position');
+
+                    angular.forEach(element.fields, function (field) {
+                        $rootScope.processSegmentsTree(field, parent);
+                    });
+                } else if (element.type === "field") {
+                    var f = {};
+                    f.obj = element;
+                    f.path = parent.path + "." + element.position + "[1]";
+                    f.children = [];
+                    parent.children.push(f);
+                    $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
+                    $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+                    if(element.table!= null){
+                        $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                    }
+                    $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
+                    $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], f);
+                } else if (element.type === "component") {
+                    var c = {};
+                    c.obj = element;
+                    c.path = parent.path + "." + element.position + "[1]";
+                    c.children = [];
+                    parent.children.push(c);
+                    $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
+                    $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+                    if(element.table!= null){
+                        $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                    }
+                    $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
+                    //console.log($rootScope.filteredTablesList);
+                    //console.log($rootScope.filteredTablesList);
+
+                    $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], c);
+                } else if (element.type === "datatype") {
+
+                    if(!parent){
+                        var d = {};
+                        d.obj = element;
+                        d.path = element.name;
+                        d.children = [];
+                        parent = d;
+                    }
+
+                    angular.forEach(element.components, function (component) {
+                        $rootScope.processSegmentsTree(component, parent);
+                    });
+                }
+
+            } catch (e) {
+                throw e;
+            }
+        };
+
+        $rootScope.checkedDatatype=null;
+
+        $rootScope.rebuildTreeFromDatatype= function(data){
+            $rootScope.checkedDatatype=data;
+            $rootScope.filteredTablesList=[];
+            $rootScope.processDatatypeTree(data, null);
+        }
+
+        $rootScope.processDatatypeTree= function (element, parent) {
+
+            //console.log(element);
+
+            try {
+                if (element.type === "datatype") {
+                    if(!parent){
+                        var d = {};
+                        d.obj = element;
+                        d.path = element.name;
+                        d.children = [];
+                        parent = d;
+                    }
+                    //console.log("IN Data TYPE ")
+
+                    angular.forEach(element.components, function (component) {
+                        $rootScope.processDatatypeTree(component, parent);
+                    });
+                } else if(element.type === "component") {
+                    var c = {};
+                    c.obj = element;
+                    c.path = parent.path + "." + element.position + "[1]";
+                    c.children = [];
+                    parent.children.push(c);
+                    $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
+                    $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+                    if(element.table!= null){
+                        //console.log("added table");
+                        //console.log($rootScope.tablesMap[element.table.id])
+                        $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                    }
+                    $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
+                    $rootScope.processDatatypeTree($rootScope.datatypesMap[element.datatype.id], c);
+                }
+
             } catch (e) {
                 throw e;
             }
@@ -1896,7 +2049,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getExtensionInLibrary = function (id, library, propertyType) {
-// console.log("main Here id=" + id);
+// //console.log("main Here id=" + id);
             if (propertyType && library.children) {
                 for (var i = 0; i < library.children.length; i++) {
                     if (library.children[i].id === id) {
@@ -1980,7 +2133,7 @@ angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user
     };
 
     $scope.login = function () {
-// console.log("logging in...");
+// //console.log("logging in...");
         $modalInstance.close($scope.user);
     };
 }]);
@@ -2053,57 +2206,77 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
     $scope.save = function () {
         var data = $rootScope.currentData;
         var section = {id: data.id, sectionTitle: data.sectionTitle, sectionDescription: data.sectionDescription, sectionPosition: data.sectionPosition, sectionContents: data.sectionContents};
-        console.log(data);
+        //console.log(data);
 
         if (data.type && data.type === "section") {
-            console.log($rootScope.originalSection);
-            console.log(data);
+            //console.log($rootScope.originalSection);
+            //console.log(data);
 
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
-                console.log($rootScope.igdocument);
+                //console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
                  $scope.continue();
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
             });
         } else if (data.type && data.type === "messages") {
-            console.log($rootScope.originalSection);
-            console.log(data);
+            //console.log($rootScope.originalSection);
+            //console.log(data);
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
-                console.log($rootScope.igdocument);
+                //console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
                  $scope.continue();
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
             });
         } else if (data.type && data.type === "segments") {
-            console.log($rootScope.originalSection);
-            console.log(data);
+            //console.log($rootScope.originalSection);
+            //console.log(data);
 
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
-                console.log($rootScope.igdocument);
+                //console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
                  $scope.continue();
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
             });
         } else if (data.type && data.type === "datatypes") {
-            console.log($rootScope.originalSection);
-            console.log(data);
+            //console.log($rootScope.originalSection);
+            //console.log(data);
 
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
-                console.log($rootScope.igdocument);
+                //console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
                  $scope.continue();
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
             });
         } else if (data.type && data.type === "tables") {
-            console.log($rootScope.originalSection);
-            console.log(data);
+            //console.log($rootScope.originalSection);
+            //console.log(data);
 
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
-                console.log($rootScope.igdocument);
+                //console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
                  $scope.continue();
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
             });
         }
 
         else if (data.type && data.type === "message") {
             var message = $rootScope.message;
-            console.log($rootScope.message);
+            //console.log($rootScope.message);
             MessageService.save(message).then(function (result) {
                 var index = MessageService.findIndex(message.id);
                 if (index < 0) {
@@ -2227,6 +2400,10 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                   $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
                  $scope.continue();
 
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
             });
 
         } else if (data.type === "profile") {
@@ -2234,6 +2411,10 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
             if ($rootScope.igdocument != null && $rootScope.metaData != null) {
                 ProfileSvc.saveMetaData($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
                      $scope.continue();
+                }, function (error) {
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
                 });
             }
         }

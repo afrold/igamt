@@ -31,7 +31,9 @@ var app = angular
         'ngMockE2E'
         ,'ui.tree',
         'blockUI',
-        'nsPopover'
+        'nsPopover',
+        'uiSwitch',
+        'ngMaterial'
      ]);
 
 var
@@ -291,8 +293,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                 return $q.reject(response);
             }
         };
-
-
     });
 
 

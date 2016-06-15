@@ -79,7 +79,7 @@ function ($filter, $document, $compile, $parse) {
                 scrollable: false,
                 scrollableHeight: '300px',
                 closeOnBlur: true,
-                displayProp: 'label',
+                displayProp: 'name',
                 idProp: 'id',
                 externalIdProp: 'id',
                 enableSearch: true,
@@ -175,47 +175,45 @@ function ($filter, $document, $compile, $parse) {
                 return groupValue;
             };
 
-            $scope.getButtonText = function () {
-                if ($scope.settings.dynamicTitle && ($scope.selectedModel.length > 0 || (angular.isObject($scope.selectedModel) && _.keys($scope.selectedModel).length > 0))) {
-                    if ($scope.settings.smartButtonMaxItems > 0) {
-                        var itemsText = [];
-
-                        angular.forEach($scope.options, function (optionItem) {
-                            if ($scope.isChecked($scope.getPropertyForObject(optionItem, $scope.settings.idProp))) {
-                                var displayText = $scope.getPropertyForObject(optionItem, $scope.settings.displayProp);
-                                var converterResponse = $scope.settings.smartButtonTextConverter(displayText, optionItem);
-
-                                itemsText.push(converterResponse ? converterResponse : displayText);
-                            }
-                        });
-
-                        if ($scope.selectedModel.length > $scope.settings.smartButtonMaxItems) {
-                            itemsText = itemsText.slice(0, $scope.settings.smartButtonMaxItems);
-                            itemsText.push('...');
-                        }
-
-                        return itemsText.join(', ');
-                    } else {
-                        var totalSelected;
-
-                        if ($scope.singleSelection) {
-                            totalSelected = ($scope.selectedModel !== null && angular.isDefined($scope.selectedModel[$scope.settings.idProp])) ? 1 : 0;
-                        } else {
-                            totalSelected = angular.isDefined($scope.selectedModel) ? $scope.selectedModel.length : 0;
-                        }
-
-                        if (totalSelected === 0) {
-                            return $scope.texts.buttonDefaultText;
-                        } else if (totalSelected === $scope.options.length) {
-                            return 'All selected';
-                        } else {
-                            return totalSelected + ' ' + $scope.texts.dynamicButtonTextSuffix;
-                        }
-                    }
-                } else {
-                    return $scope.texts.buttonDefaultText;
-                }
-            };
+//            $scope.getButtonText = function () {
+//                if ($scope.settings.dynamicTitle && ($scope.selectedModel.length > 0 || (angular.isObject($scope.selectedModel) && _.keys($scope.selectedModel).length > 0))) {
+//                    if ($scope.settings.smartButtonMaxItems > 0) {
+//                        var itemsText = [];
+//
+//                        angular.forEach($scope.options, function (optionItem) {
+//                            if ($scope.isChecked($scope.getPropertyForObject(optionItem, $scope.settings.idProp))) {
+//                                var displayText = $scope.getPropertyForObject(optionItem, $scope.settings.displayProp);
+//                                var converterResponse = $scope.settings.smartButtonTextConverter(displayText, optionItem);
+//
+//                                itemsText.push(converterResponse ? converterResponse : displayText);
+//                            }
+//                        });
+//
+//                        if ($scope.selectedModel.length > $scope.settings.smartButtonMaxItems) {
+//                            itemsText = itemsText.slice(0, $scope.settings.smartButtonMaxItems);
+//                            itemsText.push('...');
+//                        }
+//
+//                        return itemsText.join(', ');
+//                    } else {
+//                        var totalSelected;
+//
+//                        if ($scope.singleSelection) {
+//                            totalSelected = ($scope.selectedModel !== null && angular.isDefined($scope.selectedModel[$scope.settings.idProp])) ? 1 : 0;
+//                        } else {
+//                            totalSelected = angular.isDefined($scope.selectedModel) ? $scope.selectedModel.length : 0;
+//                        }
+//
+//                        if (totalSelected === 0) {
+//                            return $scope.texts.buttonDefaultText;
+//                        }  else {
+//                            return totalSelected + ' ' + $scope.texts.dynamicButtonTextSuffix;
+//                        }
+//                    }
+//                } else {
+//                    return $scope.texts.buttonDefaultText;
+//                }
+//            };
 
             $scope.getPropertyForObject = function (object, property) {
                 if (angular.isDefined(object) && object.hasOwnProperty(property)) {
