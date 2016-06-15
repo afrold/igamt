@@ -3,9 +3,9 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    function ($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc) {
+    function($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc) {
         var DatatypeService = {
-            getNodes: function (parent, root) {
+            getNodes: function(parent, root) {
                 var children = [];
                 if (parent && parent != null) {
                     if (parent.datatype) {
@@ -23,11 +23,11 @@ angular.module('igl').factory('DatatypeService',
                 }
                 return children;
             },
-            getParent: function (child) {
+            getParent: function(child) {
                 var template = $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
                 return template;
             },
-            getTemplate: function (node, root) {
+            getTemplate: function(node, root) {
                 if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
                     return DatatypeService.getReadTemplate(node, root);
                 } else {
@@ -35,15 +35,15 @@ angular.module('igl').factory('DatatypeService',
                 }
             },
 
-            getReadTemplate: function (node, root) {
+            getReadTemplate: function(node, root) {
                 return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentReadTree.html' : '';
             },
 
-            getEditTemplate: function (node, root) {
+            getEditTemplate: function(node, root) {
                 return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentEditTree.html' : '';
             },
 
-            isDatatypeSubDT: function (component, root) {
+            isDatatypeSubDT: function(component, root) {
                 if (root != null) {
                     for (var i = 0, len = root.components.length; i < len; i++) {
                         if (root.components[i].id === component.id)
@@ -52,16 +52,16 @@ angular.module('igl').factory('DatatypeService',
                 }
                 return true;
             },
-            isBranch: function (node) {
+            isBranch: function(node) {
                 var children = DatatypeService.getNodes(node);
                 return children != null && children.length > 0;
             },
-            isVisible: function (node) {
-//                return FilteringSvc.show(node);
+            isVisible: function(node) {
+                //                return FilteringSvc.show(node);
                 return true;
-//                return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
+                //                return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
             },
-            isRelevant: function (node) {
+            isRelevant: function(node) {
                 if (node === undefined || !ViewSettings.tableRelevance)
                     return true;
                 if (node.hide == undefined || !node.hide || node.hide === false) {
@@ -71,7 +71,7 @@ angular.module('igl').factory('DatatypeService',
                     return false;
                 }
             },
-            getDatatypeLevelConfStatements: function (element) {
+            getDatatypeLevelConfStatements: function(element) {
                 var datatype = DatatypeService.getParent(element);
                 var confStatements = [];
                 if (datatype && datatype != null && datatype.conformanceStatements.length > 0) {
@@ -80,7 +80,7 @@ angular.module('igl').factory('DatatypeService',
                 return confStatements;
             },
 
-            getDatatypeLevelPredicates: function (element) {
+            getDatatypeLevelPredicates: function(element) {
                 var datatype = DatatypeService.getParent(element);
                 var predicates = [];
                 if (datatype && datatype != null && datatype.predicates.length > 0) {
@@ -88,42 +88,42 @@ angular.module('igl').factory('DatatypeService',
                 }
                 return predicates;
             },
-            save: function (datatype) {
+            save: function(datatype) {
                 var delay = $q.defer();
                 datatype.accountId = userInfoService.getAccountID();
-                $http.post('api/datatypes/save', datatype).then(function (response) {
+                $http.post('api/datatypes/save', datatype).then(function(response) {
                     var saveResponse = angular.fromJson(response.data);
                     datatype.date = saveResponse.date;
                     datatype.version = saveResponse.version;
                     datatype.id = saveResponse.id;
                     delay.resolve(datatype);
-                }, function (error) {
+                }, function(error) {
                     console.log("DatatypeService.save error=" + error);
                     delay.reject(error);
                 });
                 return delay.promise;
             },
-            saveAll: function (datatypes) {
+            saveAll: function(datatypes) {
                 var delay = $q.defer();
-                $http.post('api/datatypes/saveAll', datatypes).then(function (response) {
-//                    var saveResponse = angular.fromJson(response.data);
-//                    datatype.date = saveResponse.date;
-//                    datatype.version = saveResponse.version;
-//                    datatype.id = saveResponse.id;
-//                    delay.resolve(datatypes);
-                }, function (error) {
+                $http.post('api/datatypes/saveAll', datatypes).then(function(response) {
+                    //                    var saveResponse = angular.fromJson(response.data);
+                    //                    datatype.date = saveResponse.date;
+                    //                    datatype.version = saveResponse.version;
+                    //                    datatype.id = saveResponse.id;
+                    //                    delay.resolve(datatypes);
+                }, function(error) {
                     console.log("DatatypeService.save error=" + error);
                     delay.reject(error);
                 });
                 return delay.promise;
             },
-            getOne: function (id) {
+            getOne: function(id) {
                 var delay = $q.defer();
                 if ($rootScope.datatypesMap[id] === undefined || $rootScope.datatypesMap[id] === null) {
-                    $http.get('api/datatypes/' + id).then(function (response) {
+                    $http.get('api/datatypes/' + id).then(function(response) {
                         var datatype = angular.fromJson(response.data);
                         delay.resolve(datatype);
-                    }, function (error) {
+                    }, function(error) {
                         delay.reject(error);
                     });
                 } else {
@@ -131,17 +131,30 @@ angular.module('igl').factory('DatatypeService',
                 }
                 return delay.promise;
             },
-            get: function (ids) {
+            get: function(ids) {
                 var delay = $q.defer();
-                $http.post('api/datatypes/findByIds', ids).then(function (response) {
+                $http.post('api/datatypes/findByIds', ids).then(function(response) {
                     var datatypes = angular.fromJson(response.data);
                     delay.resolve(datatypes);
-                }, function (error) {
+                }, function(error) {
                     delay.reject(error);
                 });
                 return delay.promise;
             },
-            merge: function (to, from) {
+            getDataTypesByScopesAndVersion : function(scopes, hl7Version) {
+                console.log("datatypes/findByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
+                var scopesAndVersion = {
+                    "scopes": scopes,
+                    "hl7Version": hl7Version
+                };
+                return $http.post(
+                        'api/datatypes/findByScopesAndVersion', angular.toJson(scopesAndVersion))
+                    .then(function(response) {
+                        console.log("getDataTypesByScopesAndVersion response size=" + response.data.length);
+                        return angular.fromJson(response.data);
+                    });
+            },
+            merge: function(to, from) {
                 to.name = from.name;
                 to.ext = from.ext;
                 to.label = from.label;
@@ -163,65 +176,65 @@ angular.module('igl').factory('DatatypeService',
                 to.purposeAndUse = from.purposeAndUse;
                 return to;
             },
-            findFlavors: function (name, scope, hl7Version) {
+            findFlavors: function(name, scope, hl7Version) {
                 var delay = $q.defer();
-                $http.get('api/datatypes/findFlavors', {params: {"name": name, "scope": scope, "hl7Version": hl7Version}}).then(function (response) {
+                $http.get('api/datatypes/findFlavors', { params: { "name": name, "scope": scope, "hl7Version": hl7Version } }).then(function(response) {
                     var datatypes = angular.fromJson(response.data);
                     delay.resolve(datatypes);
-                }, function (error) {
+                }, function(error) {
                     delay.reject(error);
                 });
                 return delay.promise;
             },
 
-            delete: function (datatype) {
+            delete: function(datatype) {
                 return $http.get('api/datatypes/' + datatype.id + '/delete');
             },
 
-            getDatatypeLink: function (datatype) {
-                return {id: datatype.id, ext: datatype.ext, name: datatype.name};
+            getDatatypeLink: function(datatype) {
+                return { id: datatype.id, ext: datatype.ext, name: datatype.name };
             },
-            collectDatatypes: function (id) {
+            collectDatatypes: function(id) {
                 var delay = $q.defer();
-                $http.get('api/datatypes/' + id + '/datatypes').then(function (response) {
+                $http.get('api/datatypes/' + id + '/datatypes').then(function(response) {
                     delay.resolve(angular.fromJson(response.data));
-                }, function (error) {
+                }, function(error) {
                     delay.reject(error);
                 });
                 return delay.promise;
             },
 
 
-            saveNewElements: function () {
+            saveNewElements: function() {
                 var delay = $q.defer();
                 var datatypeLinks = ElementUtils.getNewDatatypeLinks();
                 if (datatypeLinks.length > 0) {
-                    DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, datatypeLinks).then(function () {
+                    DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, datatypeLinks).then(function() {
                         $rootScope.igdocument.profile.datatypeLibrary.children = $rootScope.igdocument.profile.datatypeLibrary.children.concat(datatypeLinks);
-                        _.each($rootScope.addedDatatypes, function (datatype) {
+                        _.each($rootScope.addedDatatypes, function(datatype) {
                             if (ElementUtils.indexIn(datatype.id, $rootScope.datatypes) < 0) {
                                 $rootScope.datatypes.push(datatype);
                             }
                         });
                         var tableLinks = ElementUtils.getNewTableLinks();
                         if (tableLinks.length > 0) {
-                            TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, tableLinks).then(function () {
+                            TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, tableLinks).then(function() {
                                 $rootScope.igdocument.profile.tableLibrary.children = $rootScope.igdocument.profile.tableLibrary.children.concat(tableLinks);
-                                _.each($rootScope.addedTables, function (table) {
+                                _.each($rootScope.addedTables, function(table) {
                                     if (ElementUtils.indexIn(table.id, $rootScope.tables) < 0) {
                                         $rootScope.tables.push(table);
                                     }
                                 });
                                 DatatypeService.completeSave();
                                 delay.resolve(true);
-                            }, function (error) {
+                            }, function(error) {
                                 delay.reject(error);
                             });
                         } else {
                             DatatypeService.completeSave();
                             delay.resolve(true);
                         }
-                    }, function (error) {
+                    }, function(error) {
                         delay.reject(error);
                     });
                 } else {
@@ -231,7 +244,7 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
 
-            completeSave: function () {
+            completeSave: function() {
                 $rootScope.addedDatatypes = [];
                 $rootScope.addedTables = [];
                 $rootScope.clearChanges();
@@ -240,14 +253,14 @@ angular.module('igl').factory('DatatypeService',
                 $rootScope.msg().show = true;
             },
 
-            reset: function () {
+            reset: function() {
                 if ($rootScope.addedDatatypes != null && $rootScope.addedDatatypes.length > 0) {
-                    _.each($rootScope.addedDatatypes, function (id) {
+                    _.each($rootScope.addedDatatypes, function(id) {
                         delete $rootScope.datatypesMap[id];
                     });
                 }
                 if ($rootScope.addedTables != null && $rootScope.addedTables.length > 0) {
-                    _.each($rootScope.addedTables, function (id) {
+                    _.each($rootScope.addedTables, function(id) {
                         delete $rootScope.tablesMap[id];
                     });
                 }
@@ -255,5 +268,4 @@ angular.module('igl').factory('DatatypeService',
             }
         };
         return DatatypeService;
-    })
-;
+    });

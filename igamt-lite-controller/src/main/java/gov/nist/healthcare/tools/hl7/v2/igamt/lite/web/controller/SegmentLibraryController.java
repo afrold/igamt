@@ -84,6 +84,9 @@ public class SegmentLibraryController extends CommonController {
 	public List<Segment> getSegmentByLibrary(
 			@PathVariable("segLibId") String segLibId) {
 		log.info("Fetching segmentByLibrary..." + segLibId);
+		
+		
+		
 		List<Segment> result = segmentService.findByLibIds(segLibId);
 		return result;
 	}

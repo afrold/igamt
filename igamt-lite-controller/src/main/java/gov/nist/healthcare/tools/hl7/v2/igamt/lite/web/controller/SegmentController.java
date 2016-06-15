@@ -10,6 +10,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -20,8 +21,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationExc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +34,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +71,29 @@ public class SegmentController extends CommonController {
 		log.info("Fetching segmentById..." + id);
 		Segment result = segmentService.findById(id);
 		return result;
+	}
+	
+	@RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST, produces = "application/json")
+	public List<Segment> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
+		log.info("Fetching the segment. scope=" + scopesAndVersion.getScopes() + " hl7Version="
+				+ scopesAndVersion.getHl7Version());
+		List<Segment> semgents = new ArrayList<Segment>();
+		try {
+			User u = userService.getCurrentUser();
+			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+			if (account == null) {
+				throw new UserAccountNotFoundException();
+			}
+			
+			semgents.addAll(segmentService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+					scopesAndVersion.getHl7Version()));
+			if (semgents.isEmpty()) {
+				throw new NotFoundException("Segment not found for scopesAndVersion=" + scopesAndVersion);
+			}
+		} catch (Exception e) {
+			log.error("", e);
+		}
+		return semgents;
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

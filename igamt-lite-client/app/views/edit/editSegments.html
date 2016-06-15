@@ -528,7 +528,7 @@ if (self === top) {
                     <span><i class="fa fa-pencil fa-fw "></i></span>
             </a>
                 <a ng-show="editableVS!==node.id " ng-click="deleteTable(node) " class="point ">
-                    <span><i class="fa fa-times fa-fw "></i></span>
+                    <span><i class="glyphicon glyphicon-trash "></i></span>
                 </a>
             </div>
 
@@ -561,7 +561,7 @@ if (self === top) {
 
 
             <div ng-show="(node.table==undefined || node.table===null) && isAvailableDTForTable(datatypesMap[node.datatype.id]) ">
-                <a ng-click="editVS(node) " class="point ">
+                <a ng-click="mapTable(node) " class="point ">
                     <span><i class="fa fa-plus fa-fw "></i></span>
                 </a>
             </div>
@@ -675,11 +675,11 @@ if (self === top) {
         </td>
 
         <td class="col-xs-1 col-fixed-100 " ng-show="viewSettings.isVisibleColumn( 'datatype') ">
-            <span>{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            <span ng-click="redirectDT(node.datatype) ">{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </span>
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
-            <a ng-click="goToTable(tablesMap[node.table.id]) " class="point "
+            <a ng-click="redirectVS(node.table) " class="point "
                ng-show="node.table !=undefined && node.table !==null ">
                 {{::getTableLabel(tablesMap[node.table.id])}}
             </a>
@@ -854,11 +854,11 @@ if (self === top) {
         </td>
 
         <td class="col-xs-1 col-fixed-100 " ng-show="viewSettings.isVisibleColumn( 'datatype') ">
-            <span>{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            <span ng-click="redirectDT(node.datatype) ">{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </span>
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
-            <a type="button " ng-click="goToTable(tablesMap[node.table.id]) "
+            <a type="button " ng-click="redirectVS(node.table) "
                ng-show="node.table !=undefined && node.table !=null "
                class="point ">
                 {{::getTableLabel(tablesMap[node.table.id])}}

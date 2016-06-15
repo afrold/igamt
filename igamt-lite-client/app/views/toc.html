@@ -121,7 +121,7 @@
 
                     <ol ui-tree-nodes="" ng-model="segments"
                         ng-show="!profilecollapsed" data-type="segments">
-                        <div ui-tree-handle class="messageContent" style="margin-left:15px;">
+                        <div ui-tree-handle class="messageContent" style="margin-left:15px;" context-menu="addSegment">
                             <i data-nodrag ng-click="switcherseg()" class="fa fa-caret-down"
                                ng-class="{'fa-caret-down': !collapsesegment, 'fa-caret-right': collapsesegment}"></i>
 
@@ -154,7 +154,7 @@
                     </ol>
 
                     <ol ui-tree-nodes="" ng-model="datatypes" ng-show="!profilecollapsed" data-type="datatypes" >
-                        <div ui-tree-handle  style="margin-left:15px;">
+                        <div ui-tree-handle  style="margin-left:15px;" context-menu="addDatatype">
                             <i data-nodrag ng-click="switcherdata()"
                                class="fa fa-caret-down" 
                                ng-class="{'fa-caret-down': !collapsedata, 'fa-caret-right': collapsedata}"></i>

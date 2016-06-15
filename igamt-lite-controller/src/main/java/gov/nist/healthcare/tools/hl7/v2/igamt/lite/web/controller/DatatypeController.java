@@ -10,6 +10,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +26,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -64,6 +72,28 @@ public class DatatypeController extends CommonController {
 		log.info("Fetching datatypeById..." + id);
 		Datatype result = datatypeService.findById(id);
 		return result;
+	}
+	@RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST, produces = "application/json")
+	public List<Datatype> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
+		log.info("Fetching the datatype. scope=" + scopesAndVersion.getScopes() + " hl7Version="
+				+ scopesAndVersion.getHl7Version());
+		List<Datatype> datatypes = new ArrayList<Datatype>();
+		try {
+			User u = userService.getCurrentUser();
+			Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+			if (account == null) {
+				throw new UserAccountNotFoundException();
+			}
+			
+			datatypes.addAll(datatypeService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+					scopesAndVersion.getHl7Version()));
+			if (datatypes.isEmpty()) {
+				throw new NotFoundException("Datatype not found for scopesAndVersion=" + scopesAndVersion);
+			}
+		} catch (Exception e) {
+			log.error("", e);
+		}
+		return datatypes;
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

@@ -47,9 +47,9 @@ angular.module('igl').factory('SegmentLibrarySvc', function($http, userInfoServi
             });
 	};
 
-  svc.getSegmentsByLibrary = function(dtLibId) {
+  svc.getSegmentsByLibrary = function(segLibId) {
         return $http.get(
-            'api/segment-library/' + dtLibId + '/segments')
+            'api/segment-library/' + segLibId + '/segments')
             .then(function(response) {
     //					console.log("response" + JSON.stringify(response));
               return angular.fromJson(response.data);

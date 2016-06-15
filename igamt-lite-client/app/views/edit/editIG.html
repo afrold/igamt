@@ -49,26 +49,27 @@
 
                     <button ng-show="viewSettings.tableReadonly && igDocumentConfig.selectedType === 'USER'"
                             title="Edit"
-                            type="button" class="btn btn-md btn-primary"
+                            type="button" class="btn btn-sm btn-primary"
                             ng-click="edit(igdocument)">
                                         <span><i
                                                 class="fa fa-pencil fa-fw"></i>Edit</span>
                     </button>
                      <div class="btn-group">
-                    <label class="btn btn-info btn-md" ng-class="{active:$root.usageF===false}" ng-click="$root.usageF=false">
-                        All Usage
+                    <label class="btn btn-info btn-sm" ng-class="{active:$root.usageF===false}" ng-click="$root.usageF=false">
+                        All Usages
                     </label>
-                    <label class=" btn btn-info btn-md" ng-class="{active:$root.usageF===true}" ng-click="$root.usageF=true">
-                        R|RE|C
+                    <label class=" btn btn-info btn-sm" ng-class="{active:$root.usageF===true}" ng-click="$root.usageF=true">
+                        
+                        Only R,RE,C
                     </label>
                 </div>
                     <div class="btn-group">
                         <button type="button"
-                                class="btn btn-info btn-md"><span><i
+                                class="btn btn-info btn-sm"><span><i
                                 class="fa fa-download fa-fw"></i> Export</span>
                         </button>
                         <button type="button"
-                                class="btn btn-info btn-md dropdown-toggle"
+                                class="btn btn-info btn-sm dropdown-toggle"
                                 data-toggle="dropdown" aria-expanded="false">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
@@ -81,12 +82,12 @@
                         </ul>
                     </div>
 
-                    <button title="Close the IG Document" type="button" class="btn btn-md btn-warning"
+                    <button title="Close the IG Document" type="button" class="btn btn-sm btn-warning"
                             ng-click="close()">
                         <span><i class="fa fa-close fa-fw"></i>Close</span>
                        </button>
 
-                       <button title="Delete permanently" type="button" class="btn btn-md btn-danger"
+                       <button title="Delete permanently" type="button" class="btn btn-sm btn-danger"
                                ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"
                                ng-click="confirmDelete(igdocument)">
                          <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
