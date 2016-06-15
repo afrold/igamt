@@ -46,12 +46,12 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $scope.login = function () {
-// console.log("in login");
+// //console.log("in login");
             $scope.$emit('event:loginRequest', $scope.username, $scope.password);
         };
 
         $scope.loginReq = function () {
-// console.log("in loginReq");
+// //console.log("in loginReq");
             if ($rootScope.loginMessage()) {
                 $rootScope.loginMessage().text = "";
                 $rootScope.loginMessage().show = false;
@@ -546,7 +546,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 // $rootScope.changes[type][object.id][changeType] = object[changeType];
 // }
 
-// console.log("Change is " + $rootScope.changes[type][object.id][changeType]);
+// //console.log("Change is " + $rootScope.changes[type][object.id][changeType]);
             $rootScope.recordChanged();
         };
 
@@ -842,8 +842,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                             s.children = [];
                             parent = s;
                         }
+
                         $rootScope.filteredSegmentsList.push(element);
                         $rootScope.filteredSegmentsList=_.uniq($rootScope.filteredSegmentsList);
+
                         angular.forEach(element.fields, function (field) {
                             $rootScope.processMessageTree(field, parent);
                         });
@@ -892,7 +894,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.processSegmentsTree= function (element, parent) {
-
+            console.log(element);
 
             try {
                 if (element.type === "segment") {
@@ -937,8 +939,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                     }
                     $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
-                    console.log($rootScope.filteredTablesList);
-                    console.log($rootScope.filteredTablesList);
+                    //console.log($rootScope.filteredTablesList);
+                    //console.log($rootScope.filteredTablesList);
 
                     $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], c);
                 } else if (element.type === "datatype") {
@@ -971,7 +973,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.processDatatypeTree= function (element, parent) {
 
-            console.log(element);
+            //console.log(element);
 
             try {
                 if (element.type === "datatype") {
@@ -982,7 +984,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         d.children = [];
                         parent = d;
                     }
-                    console.log("IN Data TYPE ")
+                    //console.log("IN Data TYPE ")
 
                     angular.forEach(element.components, function (component) {
                         $rootScope.processDatatypeTree(component, parent);
@@ -996,8 +998,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
                     $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
                     if(element.table!= null){
-                        console.log("added table");
-                        console.log($rootScope.tablesMap[element.table.id])
+                        //console.log("added table");
+                        //console.log($rootScope.tablesMap[element.table.id])
                         $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                     }
                     $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
@@ -2047,7 +2049,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getExtensionInLibrary = function (id, library, propertyType) {
-// console.log("main Here id=" + id);
+// //console.log("main Here id=" + id);
             if (propertyType && library.children) {
                 for (var i = 0; i < library.children.length; i++) {
                     if (library.children[i].id === id) {
@@ -2131,7 +2133,7 @@ angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user
     };
 
     $scope.login = function () {
-// console.log("logging in...");
+// //console.log("logging in...");
         $modalInstance.close($scope.user);
     };
 }]);
@@ -2204,14 +2206,14 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
     $scope.save = function () {
         var data = $rootScope.currentData;
         var section = {id: data.id, sectionTitle: data.sectionTitle, sectionDescription: data.sectionDescription, sectionPosition: data.sectionPosition, sectionContents: data.sectionContents};
-        console.log(data);
+        //console.log(data);
 
         if (data.type && data.type === "section") {
-            console.log($rootScope.originalSection);
-            console.log(data);
+            //console.log($rootScope.originalSection);
+            //console.log(data);
 
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
-                console.log($rootScope.igdocument);
+                //console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
                  $scope.continue();
             }, function (error) {
@@ -2220,10 +2222,10 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 $rootScope.msg().show = true;
             });
         } else if (data.type && data.type === "messages") {
-            console.log($rootScope.originalSection);
-            console.log(data);
+            //console.log($rootScope.originalSection);
+            //console.log(data);
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
-                console.log($rootScope.igdocument);
+                //console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
                  $scope.continue();
             }, function (error) {
@@ -2232,11 +2234,11 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 $rootScope.msg().show = true;
             });
         } else if (data.type && data.type === "segments") {
-            console.log($rootScope.originalSection);
-            console.log(data);
+            //console.log($rootScope.originalSection);
+            //console.log(data);
 
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
-                console.log($rootScope.igdocument);
+                //console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
                  $scope.continue();
             }, function (error) {
@@ -2245,11 +2247,11 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 $rootScope.msg().show = true;
             });
         } else if (data.type && data.type === "datatypes") {
-            console.log($rootScope.originalSection);
-            console.log(data);
+            //console.log($rootScope.originalSection);
+            //console.log(data);
 
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
-                console.log($rootScope.igdocument);
+                //console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
                  $scope.continue();
             }, function (error) {
@@ -2258,11 +2260,11 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 $rootScope.msg().show = true;
             });
         } else if (data.type && data.type === "tables") {
-            console.log($rootScope.originalSection);
-            console.log(data);
+            //console.log($rootScope.originalSection);
+            //console.log(data);
 
             SectionSvc.update($rootScope.igdocument.id, section).then(function (result) {
-                console.log($rootScope.igdocument);
+                //console.log($rootScope.igdocument);
                 SectionSvc.merge($rootScope.originalSection, section);
                  $scope.continue();
             }, function (error) {
@@ -2274,7 +2276,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
 
         else if (data.type && data.type === "message") {
             var message = $rootScope.message;
-            console.log($rootScope.message);
+            //console.log($rootScope.message);
             MessageService.save(message).then(function (result) {
                 var index = MessageService.findIndex(message.id);
                 if (index < 0) {

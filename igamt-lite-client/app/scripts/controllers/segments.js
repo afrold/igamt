@@ -295,8 +295,77 @@ angular.module('igl')
             });
         };
 
+        $scope.addColumnCoConstraints = function (newColumnField, newColumnConstraintType){
+            var newColumn = {
+                field: newColumnField,
+                constraintType: newColumnConstraintType,
+                columnPosition: $rootScope.segment.coConstraints.columnList.length
+            };
 
-        $scope.reset = function() {
+            for (var i = 0, len1 = $rootScope.segment.coConstraints.constraints.length; i < len1; i++) {
+                var v = {};
+                v.value = '';
+                $rootScope.segment.coConstraints.constraints[i].values.push(v);
+            };
+
+            $scope.recordChange();
+
+            $rootScope.segment.coConstraints.columnList.push(newColumn);
+        };
+
+        $scope.addCoConstraint = function (){
+            var valueList = [];
+
+            for (var i = 0, len1 = $rootScope.segment.coConstraints.columnList.length; i < len1; i++) {
+                var v = {};
+                v.value = '';
+                valueList.push(v);
+            };
+
+            var cc = {
+                description : "",
+                comments : "",
+                values : valueList
+            };
+            $scope.recordChange();
+            $rootScope.segment.coConstraints.constraints.push(cc);
+        };
+
+        $scope.deleteColumn = function (column) {
+            var index = $rootScope.segment.coConstraints.columnList.indexOf(column);
+
+            for (var i = 0, len1 = $rootScope.segment.coConstraints.constraints.length; i < len1; i++) {
+                $rootScope.segment.coConstraints.constraints[i].values.splice(index, 1);
+            };
+
+            if (index > -1) {
+                $rootScope.segment.coConstraints.columnList.splice(index, 1);
+            };
+
+            $scope.recordChange();
+        };
+
+        $scope.deleteCoConstraint = function (cc){
+            var index = $rootScope.segment.coConstraints.constraints.indexOf(cc);
+
+            if (index > -1) {
+                $rootScope.segment.coConstraints.constraints.splice(index, 1);
+            };
+            $scope.recordChange();
+        };
+
+        $scope.deleteCoConstraints = function () {
+            $rootScope.segment.coConstraints.columnList = [];
+            $rootScope.segment.coConstraints.constraints = [];
+            $scope.recordChange();
+        };
+
+        $scope.getConstraintType = function (data, cc) {
+            var index = cc.values.indexOf(data);
+            return $rootScope.segment.coConstraints.columnList[index].constraintType;
+        };
+
+        $scope.reset = function () {
             SegmentService.reset();
             if ($scope.editForm) {
                 $scope.editForm.$dirty = false;
@@ -610,8 +679,13 @@ angular.module('igl')
             if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1) {
                 segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
             }
+            SegmentService.save($rootScope.segment).then(function (result) {
 
-            SegmentService.save($rootScope.segment).then(function(result) {
+                //FIXME and check for Abdel
+                // if($rootScope.segment.id===$rootScope.selectedSegment.id){
+                //     $rootScope.processSegmentsTree($rootScope.segment,null);
+                // }
+
                 var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
                 var newLink = SegmentService.getSegmentLink(result);
                 SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {

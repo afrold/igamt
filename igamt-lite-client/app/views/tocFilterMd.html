@@ -32,10 +32,16 @@
 
 
 </style>
+
 <div ng-controller="IGDocumentListCtrl" class="uitree">
+
+
+
+
 <div ng-controller="HL7VersionsDlgCtrl">
     <div ng-controller="TreeCtrl">
-        <div ui-tree="treeOptions" style= "margin-left:8px;">
+
+      <div ui-tree="treeOptions" style= "margin-left:8px;">
             <ol ui-tree-nodes="" ng-model="TreeIgs">
            
                 <li ng-repeat="ig in TreeIgs" ui-tree-node >
@@ -94,7 +100,7 @@
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
 
-                    <div ng-if="!collapsemessage" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="label label-default" ng-click="selectedMessage=null; resetMessages()" ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
+                    <div ng-if="!collapsemessage" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="label label-default" ng-click="selectedMessage=null; resetMessages(); selectedSegment=null;resetSegments()" ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
 
                         <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
 
@@ -102,7 +108,7 @@
                             ng-if="!collapsemessage" data-type="message">
                             <div ui-tree-handle 
                                  context-menu="MessagesOption" style ="margin-left:30px;">
-                                <input data-nodrag type="radio" name="messagesRadio" value="msg" title="filter by this conformance profile" ng-model="msg.checked" ng-click="processMessageTree(msg, null)"/>
+                                <input data-nodrag type="radio" name="messagesRadio" value="msg" title="filter by this conformance profile" ng-model="msg.checked" ng-click="selectedSegment=null;resetSegments();processMessageTree(msg, null)"/>
 
                                 <span class="glyphicon glyphicon-move"></span> 
                                 

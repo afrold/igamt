@@ -23,6 +23,9 @@ angular
                 $rootScope.activeModel = "";
                 $scope.segmentsChecked = false;
                 $rootScope.filteringMode = false;
+                $rootScope.loadingSegments=false;
+                $rootScope.loadingDataTypes=false;
+                $rootScope.loadingTables=false;
                 $scope.Activate = function(param) {
                     $rootScope.activeModel = param;
                 }
@@ -154,11 +157,6 @@ angular
                             }
 
                         }
-
-
-
-
-
                     }
                 };
 
@@ -434,15 +432,12 @@ angular
 
                         }
                     ]
-
-
                 ];
 
                 $scope.ValueSetOptions = [
 
                     ['copy',
                         function($itemScope) {
-
                             if ($rootScope.hasChanges()) {
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
                                     CloneDeleteSvc.copyTable($itemScope.table);
@@ -475,28 +470,14 @@ angular
                             } else {
                                 CloneDeleteSvc.copyMessage($itemScope.msg);
                             }
-
-
                         }
                     ],
                     null, [
                         'delete',
                         function($itemScope) {
                             CloneDeleteSvc.deleteMessage($itemScope.msg);
-
-
                         }
                     ]
-
-                ];
-
-
-                $scope.MessagesRootOption = [
-
-                    ['export', function($itemScope) {
-                        $scope.selectMessagesForExport($rootScope.igdocument);
-                    }]
-
                 ];
 
 
@@ -510,15 +491,13 @@ angular
                     }]
                 ];
 
-
                 $scope.ValueSetRootOptions = [
                     ['add Table', function($itemScope) {
                         $scope.addTable($rootScope.igdocument);
                     }]
-
                 ];
+                
                 $scope.DataTypeOptionsInLib = [
-
                     ['create a copy',
                         function($itemScope) {
                             console.log("create a copy=" + $itemScope);
@@ -558,6 +537,21 @@ angular
                         }
                     ]
                 ];
+                
+                $scope.DataTypeLibraryOptions = [
+                    ['add datatypes',
+                        function($itemScope) {
+                            $scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
+                        }
+                    ]
+                ];
+                $scope.addValueSets = [
+                    ['Add Value Sets',
+                        function($itemScope) {
+                            $scope.addTable($rootScope.igdocument);
+                        }
+                    ]
+                ];
 
 
                 function processEditSeg(seg) {
@@ -565,8 +559,7 @@ angular
                     $scope.$emit('event:openSegment', seg);
                 };
 
-                $rootScope.editSeg = function(seg) {
-                    console.log(seg);
+                $scope.editSeg = function(seg) {
 
                     if ($rootScope.hasChanges()) {
 
@@ -635,11 +628,9 @@ angular
                         $rootScope.section.sectionContents = "";
                     }
                     $scope.$emit('event:openSection', $rootScope.section);
-
                 };
 
                 $scope.editRoutSection = function(param) {
-
                     if ($rootScope.hasChanges()) {
 
                         $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -667,17 +658,16 @@ angular
                     if ($rootScope.currentData.sectionContents === null || $rootScope.currentData.sectionContents === undefined) {
                         $rootScope.currentData.sectionContents = "";
                     }
-
                     return $rootScope.currentData;
                 };
-
+                
                 function processEditDataType(data) {
                     console.log("dialog not opened");
                     $scope.Activate(data.id);
                     $rootScope.datatype = data;
                     $scope.$emit('event:openDatatype', $rootScope.datatype);
                 };
-
+                
                 $rootScope.editDataType = function(data) {
 
                     console.log("editDataType");
@@ -701,9 +691,8 @@ angular
                     $rootScope.table = table;
                     $scope.$emit('event:openTable', $rootScope.table);
                 };
-
+                
                 $rootScope.editTable = function(table) {
-
                     if ($rootScope.hasChanges()) {
 
                         $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -766,8 +755,7 @@ angular
                         },
                         data: childSections
                     }
-
-
+                    
                     var promise = $http(req)
                         .success(function(data, status, headers, config) {
                             // //console.log(data);
@@ -783,10 +771,25 @@ angular
                     return promise;
                 }
 
-
                 $scope.reOrderChildSections = function() {
-
-
+                    var childSections = $rootScope.igdocument.childSections;
+                    var sections = [];
+                    for (var i = 0; i <= childSections.length - 1; i++) {
+                        var sectionMap = {};
+                        sectionMap.id = childSections[i].id;
+                        sectionMap.position = childSections[i].position;
+                        sections.push(sectionMap);
+                    }
+                    var id = $rootScope.igdocument.id;
+                    var req = {
+                        method: 'POST',
+                        url: "api/igdocuments/" + id + "/reorderChildSections",
+                        headers: {
+                            'Content-Type': "application/json"
+                        },
+                        data: sections
+                    }
+                    
                     var childSections = $rootScope.igdocument.childSections;
                     var sections = [];
                     for (var i = 0; i <= childSections.length - 1; i++) {
@@ -880,7 +883,6 @@ angular
 
                     } else if (leaf.scope === 'MASTER') {
                         return 'MAS';
-
                     } else {
                         return "";
 
@@ -901,12 +903,8 @@ angular
                     }
                     return label;
                 };
-
-
-
-
+                
                 $scope.getSegmentsFromgroup = function(group) {
-
                     //_.union($rootScope.selectedSegments,temp);
                     for (var i = 0; i < group.children.length; i++) {
                         if (group.children[i].type === "segmentRef") {
@@ -980,11 +978,10 @@ angular
                         temp.push(datatype);
                         temp = _.union(temp, $scope.getDatatypeFromDatatype(datatype));
                         data = _.union(data, temp);
-
                     }
                     return data;
                 }
-
+                
                 $scope.getTablesFromSegment = function(seg) {
                     var tables = [];
                     for (var i = 0; i < seg.fields.length; i++) {
@@ -996,7 +993,6 @@ angular
                             tables = _.union(tables, temp);
                             $rootScope.filtererTables = _.union($rootScope.selectedTables, tables);
                         }
-
                     }
 
                 }
@@ -1005,16 +1001,12 @@ angular
                     console.log("called");
                     $rootScope.filteredDatatypesList = angular.copy($rootScope.datatypes);
                     $rootScope.filteredTablesList = angular.copy($rootScope.tables);
-                    //                $rootScope.filteredTablesList=[];
-                    //                $rootScope.filteredDatatypesList=[];
                     if ($rootScope.selectedMessage != null) {
                         $rootScope.processMessageTree($rootScope.selectedMessage, null);
                     }
                     $rootScope.filteredSegmentsList.forEach(function(segment, i) {
                         segment.checked = false;
                     });
-
-
                 }
                 $scope.resetDatatypes = function() {
                     console.log("called");
@@ -1023,13 +1015,9 @@ angular
                     } else if ($rootScope.selectedMessage != null) {
                         $rootScope.processMessageTree($rootScope.selectedMessage, null);
                     }
-
-
                     $rootScope.filteredDatatypesList.forEach(function(data, i) {
                         data.checked = false;
                     });
-
-
                 }
 
 
@@ -1043,41 +1031,5 @@ angular
                         msg.checked = false;
                     });
                 }
-
-                $scope.checkSegment = function(segment) {
-
-                    for (var i = $rootScope.filteredSegmentsList.length - 1; i >= 0; i--) {
-
-                        if (segment.checked && $rootScope.filteredSegmentsList[i].id != segment.id) {
-                            $rootScope.filteredSegmentsList[i].checked = false;
-                            $rootScope.filteredSegmentsList[i].anotherIsChecked = true;
-                        } else if (!segment.checked && $rootScope.filteredSegmentsList[i].id != segment.id) {
-
-                            $rootScope.filteredSegmentsList[i].checked = false;
-                            $rootScope.filteredSegmentsList[i].anotherIsChecked = false;
-                        }
-                    }
-                }
-
-                $scope.checkDatatype = function(datatype) {
-
-
-
-
-                    for (var i = $rootScope.filteredDatatypesList.length - 1; i >= 0; i--) {
-
-                        if (segment.checked && $rootScope.filteredDatatypesList[i].id != segment.id) {
-                            $rootScope.filteredDatatypesList[i].checked = false;
-                            $rootScope.filteredDatatypesList[i].anotherIsChecked = true;
-                        } else if (!segment.checked && $rootScope.filteredDatatypesList[i].id != segment.id) {
-
-                            $rootScope.filteredDatatypesList[i].checked = false;
-                            $rootScope.filteredDatatypesList[i].anotherIsChecked = false;
-                        }
-                    }
-                }
-
-
-
             }
         ]);

@@ -10,10 +10,12 @@ angular.module('igl')
         $rootScope.currentData = null;
         $scope.tmpIgs = [].concat($rootScope.igs);
         $scope.error = null;
+        $scope.loadingTree = false;
+        $scope.filtering = false;
         $scope.print = function(param) {
             console.log(param);
         }
-        $scope.loading = false;
+        $scope.loading = true;
         $scope.viewSettings = ViewSettings;
         $scope.igDocumentMsg = {};
         $scope.igDocumentConfig = {
@@ -298,23 +300,56 @@ angular.module('igl')
             }
         };
         $scope.displayFilteredTree = function() {
+            console.log("IN Filterd");
+            //$rootScope.loadingTree =! $rootScope.loadingTree;
+            $scope.ready = false;
             $scope.tocView = 'views/tocFilterMd.html';
         }
 
+        $scope.ready = false;
+
+        $scope.ready = function() {
+            return $scope.ready;
+        }
+
+        $scope.finishLoading = function() {
+
+            $scope.loadingTree =false;
+
+            $scope.setReady(true);
+        }
+
+        $scope.setReady = function(b) {
+
+            $scope.ready =b;
+        }
+
+        $scope.setFilter = function(b) {
+
+            $scope.filtering =b;
+        }
+        $scope.getFilter = function() {
+
+            return $scope.filtering;
+        }
+
+
+
+        $scope.toggleLoading=function() {
+            $scope.loadingTree =true;
+        }
+
+        $scope.showLoading=function() {
+            return $scope.loadingTree;
+        }
+
         $scope.displayRegularTree = function() {
+            console.log("IN REGULAR")
+            //$rootScope.loadingTree =! $rootScope.loadingTree;
+            $scope.ready = false;
             $scope.tocView = 'views/toc.html';
 
         }
-        $scope.filtering = false;
-        $scope.goToFilter = function() {
-            $scope.filtering = true;
-        }
-        $scope.goToRegular = function() {
-            $scope.filtering = false;
-
-        }
-
-
 
         $scope.edit = function(igdocument) {
             console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
@@ -329,7 +364,7 @@ angular.module('igl')
             $scope.show(igdocument);
         };
 
-        $rootScope.displayNullView = function() {
+        $scope.displayNullView = function() {
             console.log("before");
             console.log($rootScope.subview);
             $rootScope.subview = 'Blank.html';
@@ -373,17 +408,13 @@ angular.module('igl')
                     $rootScope.TreeIgs = [];
                     $rootScope.TreeIgs.push(igdocument);
                     $rootScope.selectedMessagesIDS = [];
-
-                    //$rootScope.getMessagesFromIDS($rootScope.selectedMessagesIDS,igdocument);
                     $rootScope.selectedMessages = angular.copy(igdocument.profile.messages.children);
-
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
                     if (igdocument.profile.metaData.hl7Version != undefined || igdocument.profile.metaData.hl7Version != null) {
                         $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     }
-                    //StorageService.setIgDocument($rootScope.igdocument);
                     $rootScope.initMaps();
                     $scope.loadSegments().then(function() {
                         $rootScope.filteredSegmentsList = angular.copy($rootScope.segments);
@@ -391,19 +422,13 @@ angular.module('igl')
                         $scope.loadDatatypes().then(function() {
 
                             $rootScope.filteredDatatypesList = angular.copy($rootScope.datatypes);
-                            //$rootScope.filteredDatatypesList=[];
                             $scope.loadTables().then(function() {
                                 $scope.collectMessages();
-                                //$scope.sortByLabels();
-                                //                                $scope.loadMastermap();
-                                //                                $scope.loadFilter();
 
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();
 
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);
-                                //$rootScope.filteredTablesList=[];
-
                             }, function() {});
                         }, function() {});
                     }, function() {});
@@ -672,7 +697,6 @@ angular.module('igl')
 
         };
 
-
         $scope.addTables = function(igdocument) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddTableOpenCtrl.html',
@@ -686,13 +710,13 @@ angular.module('igl')
             });
             modalInstance.result.then(function() {}, function() {});
         };
+
         $scope.addDatatypes = function(hl7Version) {
             var scopes = ['HL7STANDARD'];
 
             DatatypeService.getDataTypesByScopesAndVersion(scopes, $scope.hl7Version).then(function(result) {
                 console.log("result");
                 console.log(result);
-
 
                 console.log("addDatatype scopes=" + scopes.length);
                 var addDatatypeInstance = $modal.open({
@@ -715,12 +739,8 @@ angular.module('igl')
                     angular.forEach(results, function(result) {
                         ids.push(result.id);
                     });
-
-
                 });
-
             });
-
         };
 
         $scope.exportAsMessages = function(id, mids) {
@@ -887,7 +907,6 @@ angular.module('igl')
         };
 
         $scope.selectSegment = function(segment) {
-            console.log(segment);
             $rootScope.subview = "EditSegments.html";
             if (segment && segment != null) {
                 $scope.loadingSelection = true;
