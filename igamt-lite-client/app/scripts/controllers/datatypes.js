@@ -550,16 +550,20 @@ angular.module('igl')
             $rootScope.datatypesMap[root.id] = root;
             if (indexIn(root.id, $rootScope.addedDatatypes) < 0) {
                 $rootScope.addedDatatypes.push(root);
+                console.log(child);
             }
             var tmpTables = [];
             angular.forEach(datatypes, function (child) {
                 $rootScope.datatypesMap[child.id] = child;
                 if (indexIn(child.id, $rootScope.addedDatatypes) < 0) {
                     $rootScope.addedDatatypes.push(child);
+                    console.log(child);
+                    $rootScope.filteredDatatypesList.push(child);
                 }
 
                 if (indexIn(child.table.id, $rootScope.addedTables) < 0) {
                     tmpTables.push(child.table.id);
+
                 }
             });
 
@@ -589,10 +593,12 @@ angular.module('igl')
             if (indexFromLibrary < 0 | indexFromCollection < 0 | indexFromMap < 0) {
                 DatatypeService.getOne($scope.selection.datatype.id).then(function (full) {
                     DatatypeService.collectDatatypes(full.id).then(function (datatypes) {
+                        $rootScope.processSegmentsTree($rootScope.segment,null);
                         $scope.ext = full.ext;
                         $scope.selection.datatype = full;
                         $scope.selection.datatype["type"] = "datatype";
                         collectNewDatatypesAndTables($scope.selection.datatype, datatypes);
+
                     }, function (error) {
                         $scope.loadingSelection = false;
                         $rootScope.msg().text = "Sorry could not load the data type";

@@ -26,16 +26,22 @@
 
     <div class="col-md-12 igl-page-header">
       <span class="header4 pull-left">
-        <span class=""><strong>Filtering mode:</strong></span>
-          <div class="btn-group">
-          <label class="btn btn-primary "  ng-class ="{'btn-success' :filtering===true ,'Active' :filtering===true}"  ng-click="goToFilter();displayFilteredTree()">
-             <stong>ON</stong>
-          </label>
-          <label class="btn btn-primary " ng-class ="{'btn-success' :filtering===false}"  ng-click="goToRegular();displayRegularTree()">
-             <strong>OFF</strong>
-          </label>
-          </div>
-          <span class="nav-header ng-hide" ng-show="showSpinner()" aria-hidden="true"><i class="fa fa-spinner fa-pulse fa-align-center"></i></span>
+
+
+<div class="btn-group btn-group-sm" data-toggle="buttons" style="margin-right: 10px;">
+  <label class="btn btn-primary btn-sm" ng-click="setFilter(true);displayFilteredTree()"
+  ng-class="{'active': getFilter()}">
+  <input type="radio" ng-model="getFilter()" autocomplete="off" ng-disabled="true">Filter ON
+  </label>
+  
+<label class="btn btn-primary btn-sm
+" ng-click="setFilter(false);displayRegularTree()"
+  ng-class="{'active': !getFilter()}" ng-disabled="!getFilter()">
+  <input type="radio" ng-model="!getFilter()" autocomplete="off" >Filter OFF
+  </label>
+
+</div>
+  <span class="nav-header ng-hide" ng-show="showSpinner()" aria-hidden="true"><i class="fa fa-spinner fa-pulse fa-align-center"></i></span>
  </span>
       <span class="pull-right">
          <!--<button title="Save Changes" type="button" class="btn btn-xs btn-success"-->
@@ -102,7 +108,7 @@
         <div class="panel panel-primary">
             <!-- Default panel contents -->
             <div class="panel-heading panel-heading-collapsable row">
-                <i class="glyphicon glyphicon-list col-md-1"></i><span class="col-md-5"> Table of Contents</span>
+                <i class="glyphicon glyphicon-list col-md-1"></i><span class="col-md-5"> Table of Contents </span>
 <!-- 		 		<md-switch  ng-model="filteringMode" aria-label="filteringmode" ng-click="switchview()"> -->
 <!--   				</md-switch> -->
 <!-- 				<span class="col-md-2"><strong>Filter:</strong></span>
@@ -112,7 +118,9 @@
   				</label>
   				<label class="btn btn-primary col-md-1" ng-class ="{active:filtering===false}"  style="margin-top:0px;  padding:0px;" ng-click="goToRegular();displayRegularTree()">
     				 <strong>OFF</strong>
-  				</label> -->
+  				</label> 
+          ng-show="showLoading()||showSpinner()"
+          -->
                 <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
                         style="margin:0px"
                         ng-click="hideToc = !hideToc">
@@ -122,7 +130,7 @@
             </div>
 
             <div class="panel-body toc-container">
-                    <div  ng-include="tocView"></div>
+                    <div ng-include="tocView"></div>
             </div>
             
         </div>

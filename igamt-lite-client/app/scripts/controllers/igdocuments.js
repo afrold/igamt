@@ -10,7 +10,9 @@ angular.module('igl')
         $rootScope.currentData = null;
         $scope.tmpIgs = [].concat($rootScope.igs);
         $scope.error = null;
-        $rootScope.loadingTree = false;
+        $scope.loadingTree = false;
+
+        $scope.filtering = false;
         $scope.print = function(param) {
             console.log(param);
         }
@@ -300,45 +302,53 @@ angular.module('igl')
         };
         $scope.displayFilteredTree = function() {
             console.log("IN Filterd");
-            //var delay = $q.defer();
-            $rootScope.loadingTree =! $rootScope.loadingTree;
+            //$rootScope.loadingTree =! $rootScope.loadingTree;
+            $scope.ready = false;
             $scope.tocView = 'views/tocFilterMd.html';
-            //delay.resolve(true);
-            //return delay.promise;
+        }
+
+        $scope.ready = false;
+
+        $scope.ready = function() {
+            return $scope.ready;
+        }
+
+        $scope.finishLoading = function() {
+
+            $scope.loadingTree =false;
+
+            $scope.setReady(true);
+        }
+
+        $scope.setReady = function(b) {
+
+            $scope.ready =b;
+        }
+
+        $scope.setFilter = function(b) {
+
+            $scope.filtering =b;
+        }
+        $scope.getFilter = function() {
+
+            return $scope.filtering;
         }
 
 
-        // $scope.displayFilteredTree = function() {
-        //     $rootScope.loadingTree = true
-        //     $scope.switchtoFilter().then(function() {
-        //         //$rootScope.loadingToc= false;
-        //     });
 
-        // }
-        $rootScope.finishLoading = function() {
-            console.log("INCLUDING");
-
-            $rootScope.loadingTree =false;
-            console.log("finished");
+        $scope.toggleLoading=function() {
+            $scope.loadingTree =true;
         }
 
-
+        $scope.showLoading=function() {
+            return $scope.loadingTree;
+        }
 
         $scope.displayRegularTree = function() {
             console.log("IN REGULAR")
-            $rootScope.loadingTree =! $rootScope.loadingTree;
+            //$rootScope.loadingTree =! $rootScope.loadingTree;
+            $scope.ready = false;
             $scope.tocView = 'views/toc.html';
-
-        }
-
-
-        $scope.filtering = false;
-
-        $scope.goToFilter = function() {
-            $scope.filtering = true;
-        }
-        $scope.goToRegular = function() {
-            $scope.filtering = false;
 
         }
 

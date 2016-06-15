@@ -995,8 +995,6 @@ angular
                     console.log("called");
                     $rootScope.filteredDatatypesList = angular.copy($rootScope.datatypes);
                     $rootScope.filteredTablesList = angular.copy($rootScope.tables);
-                    //                $rootScope.filteredTablesList=[];
-                    //                $rootScope.filteredDatatypesList=[];
                     if ($rootScope.selectedMessage != null) {
                         $rootScope.processMessageTree($rootScope.selectedMessage, null);
                     }
@@ -1013,13 +1011,9 @@ angular
                     } else if ($rootScope.selectedMessage != null) {
                         $rootScope.processMessageTree($rootScope.selectedMessage, null);
                     }
-
-
                     $rootScope.filteredDatatypesList.forEach(function(data, i) {
                         data.checked = false;
                     });
-
-
                 }
 
 
@@ -1034,39 +1028,8 @@ angular
                     });
                 }
 
-                $scope.checkSegment = function(segment) {
-
-                    for (var i = $rootScope.filteredSegmentsList.length - 1; i >= 0; i--) {
-
-                        if (segment.checked && $rootScope.filteredSegmentsList[i].id != segment.id) {
-                            $rootScope.filteredSegmentsList[i].checked = false;
-                            $rootScope.filteredSegmentsList[i].anotherIsChecked = true;
-                        } else if (!segment.checked && $rootScope.filteredSegmentsList[i].id != segment.id) {
-
-                            $rootScope.filteredSegmentsList[i].checked = false;
-                            $rootScope.filteredSegmentsList[i].anotherIsChecked = false;
-                        }
-                    }
-                }
-
-                $scope.checkDatatype = function(datatype) {
-
-
-
-
-                    for (var i = $rootScope.filteredDatatypesList.length - 1; i >= 0; i--) {
-
-                        if (segment.checked && $rootScope.filteredDatatypesList[i].id != segment.id) {
-                            $rootScope.filteredDatatypesList[i].checked = false;
-                            $rootScope.filteredDatatypesList[i].anotherIsChecked = true;
-                        } else if (!segment.checked && $rootScope.filteredDatatypesList[i].id != segment.id) {
-
-                            $rootScope.filteredDatatypesList[i].checked = false;
-                            $rootScope.filteredDatatypesList[i].anotherIsChecked = false;
-                        }
-                    }
-                }
-
+                
+                    
 
 
             }
