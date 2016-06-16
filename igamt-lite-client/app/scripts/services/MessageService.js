@@ -198,7 +198,6 @@ angular.module('igl').factory('MessageService',
                 children.splice(new_index, 0, children.splice(old_index, 1)[0]);
 
                 angular.forEach(children, function(child) {
-                    console.log(child);
                     child.position = children.indexOf(child) + 1;
 
                 });

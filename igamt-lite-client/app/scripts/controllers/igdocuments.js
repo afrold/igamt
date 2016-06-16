@@ -40,6 +40,14 @@ angular.module('igl')
         //        AutoSaveService.stop();
         $rootScope.saved = false;
 
+        $scope.usageFilter = function() {
+            $rootScope.usageF = true;
+
+            $('#treeTable').treetable('collapseAll');
+            return false;
+
+        };
+
 
 
         $scope.selectIgTab = function(value) {
@@ -314,19 +322,19 @@ angular.module('igl')
 
         $scope.finishLoading = function() {
 
-            $scope.loadingTree =false;
+            $scope.loadingTree = false;
 
             $scope.setReady(true);
         }
 
         $scope.setReady = function(b) {
 
-            $scope.ready =b;
+            $scope.ready = b;
         }
 
         $scope.setFilter = function(b) {
 
-            $scope.filtering =b;
+            $scope.filtering = b;
         }
         $scope.getFilter = function() {
 
@@ -335,17 +343,17 @@ angular.module('igl')
 
 
 
-        $scope.toggleLoading=function() {
-            $scope.loadingTree =true;
+        $scope.toggleLoading = function() {
+            $scope.loadingTree = true;
         }
 
-        $scope.showLoading=function() {
+        $scope.showLoading = function() {
             return $scope.loadingTree;
         }
 
         $scope.displayRegularTree = function() {
             console.log("IN REGULAR")
-            //$rootScope.loadingTree =! $rootScope.loadingTree;
+                //$rootScope.loadingTree =! $rootScope.loadingTree;
             $scope.ready = false;
             $scope.tocView = 'views/toc.html';
 
@@ -1491,35 +1499,35 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             });
 
             $scope.newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
-            DatatypeService.save($scope.newDatatype).then(function (result){
-               
-                DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
+            DatatypeService.save($scope.newDatatype).then(function(result) {
+
+                DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function(link) {
                     $rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
                     $rootScope.datatypes.splice(0, 0, $scope.newDatatype);
                     $rootScope.datatype = $scope.newDatatype;
                     $rootScope.datatypesMap[$scope.newDatatype.id] = $scope.newDatatype;
-                    
+
                     //TODO MasterMap need to add Datatype
-                    
+
                     $rootScope.processElement($scope.newDatatype);
-//                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
+                    //                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
                     $rootScope.filteredDatatypesList.push($scope.newDatatype);
-                    $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+                    $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
                     $rootScope.$broadcast('event:openDatatype', $scope.newDatatype);
-                 }, function (error) {
+                }, function(error) {
                     $rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
-                 });
-            }, function (error) {
+                });
+            }, function(error) {
                 $rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
-             });
+            });
 
-         
+
 
 
 
@@ -1594,7 +1602,7 @@ angular.module('igl').controller('AddSegmentDlgCtl',
 
 
 
-                    
+
                     $rootScope.clearChanges();
                     $rootScope.msg().text = "segmentSaved";
                     $rootScope.msg().type = "success";

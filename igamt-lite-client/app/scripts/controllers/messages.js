@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc,TableService,DatatypeService) {
+    .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService) {
 
 
 
@@ -15,20 +15,20 @@ angular.module('igl')
                     controller: 'redirectCtrl',
                     windowClass: 'flavor-modal-window',
                     resolve: {
-                        destination:function(){
+                        destination: function() {
                             return segment;
                         }
                     }
 
 
-                    
+
                 });
                 modalInstance.result.then(function() {
                     $rootScope.editSeg(segment);
                 });
 
 
-                
+
             });
         };
         $scope.redirectDT = function(datatype) {
@@ -38,43 +38,43 @@ angular.module('igl')
                     controller: 'redirectCtrl',
                     windowClass: 'flavor-modal-window',
                     resolve: {
-                        destination:function(){
+                        destination: function() {
                             return datatype;
                         }
                     }
 
 
-                    
+
                 });
                 modalInstance.result.then(function() {
                     $rootScope.editDataType(datatype);
                 });
 
 
-                
+
             });
         };
-         $scope.redirectVS = function(valueSet) {
+        $scope.redirectVS = function(valueSet) {
             TableService.getOne(valueSet.id).then(function(valueSet) {
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
                     windowClass: 'flavor-modal-window',
                     resolve: {
-                        destination:function(){
+                        destination: function() {
                             return valueSet;
                         }
                     }
 
 
-                    
+
                 });
                 modalInstance.result.then(function() {
                     $rootScope.editTable(valueSet);
                 });
 
 
-                
+
             });
         };
         $scope.OtoX = function(message) {
@@ -609,6 +609,14 @@ angular.module('igl')
             } else {
                 return true;
             }
+        };
+
+        $scope.isUsagefiltered = function(node, nodeParent) {
+            if ($rootScope.usageF){
+                console.log(nodeParent);
+            }
+            return true;
+
         };
 
         //        $scope.$watch(function(){
@@ -1552,6 +1560,32 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
         }
 
     }, true);
+    $scope.selectUsage = function(usage) {
+        console.log(usage);
+        if (usage === 'X' || usage === 'W') {
+            $scope.newSegment.max = 0;
+            $scope.newSegment.min = 0;
+            $scope.disableMin = true;
+            $scope.disableMax = true;
+
+        } else if (usage === 'R') {
+            $scope.newSegment.min = 1;
+
+            $scope.disableMin = true;
+            $scope.disableMax = false;
+        } else if (usage === 'RE' || usage === 'O') {
+            $scope.newSegment.min = 0;
+
+            $scope.disableMin = true;
+            $scope.disableMax = false;
+
+        } else {
+            $scope.disableMin = false;
+            $scope.disableMax = false;
+
+        }
+
+    };
     $scope.selectSeg = function(segment) {
         $scope.newSeg = segment;
     };
@@ -1633,6 +1667,32 @@ angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance
         type: "group",
         usage: "",
         version: null,
+
+    };
+    $scope.selectUsage = function(usage) {
+        console.log(usage);
+        if (usage === 'X' || usage === 'W') {
+            $scope.newGroup.max = 0;
+            $scope.newGroup.min = 0;
+            $scope.disableMin = true;
+            $scope.disableMax = true;
+
+        } else if (usage === 'R') {
+            $scope.newGroup.min = 1;
+
+            $scope.disableMin = true;
+            $scope.disableMax = false;
+        } else if (usage === 'RE' || usage === 'O') {
+            $scope.newGroup.min = 0;
+
+            $scope.disableMin = true;
+            $scope.disableMax = false;
+
+        } else {
+            $scope.disableMin = false;
+            $scope.disableMax = false;
+
+        }
 
     };
 
@@ -1821,10 +1881,10 @@ angular.module('igl').controller('redirectCtrl', function($scope, $modalInstance
     $scope.loading = false;
 
     $scope.confirm = function() {
-        
-      
+
+
         $modalInstance.close($scope.destination);
-        
+
 
 
     };

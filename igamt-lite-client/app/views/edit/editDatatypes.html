@@ -98,12 +98,12 @@ if (self === top) {
                             </span>
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    <table tt-table tt-params="datatypesParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                                    <table id="treeTable" tt-table tt-params="datatypesParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                         <thead>
                                             <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                                                 <th class="col-xs-2 col-fixed-250">Name</th>
                                                 <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                                                    <button class="btn-info" ng-show="(segment.scope === 'USER' || segment.scope === 'MASTER')"> <span ng-click="OtoX(datatype)">(O to X)</span></button>
+                                                    <button class="btn-info" ng-show="(datatype.scope === 'USER' || datatype.scope === 'MASTER')&& !viewSettings.tableReadonly"> <span ng-click="OtoX(datatype)">(O to X)</span></button>
                                                 </th>
                                                 <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">Length
                                                 </th>
@@ -127,7 +127,7 @@ if (self === top) {
                                     </table>
                                     <span class="pull-right">
                                      <div class="btn-group">
-                        <button ng-show="datatype.scope!=='HL7STANDARD'" ng-click="addComponentModal(datatype)" type="button" class="btn btn-info btn-md">
+                        <button ng-show="datatype.scope!=='HL7STANDARD' &&  !viewSettings.tableReadonly" ng-click="addComponentModal(datatype)" type="button" class="btn btn-info btn-md">
                         <span><i class="glyphicon glyphicon-plus"></i> Add component</span>
                                     </button>
                                 </div>
@@ -249,7 +249,7 @@ if (self === top) {
     </div>
 </script>
 <script type="text/ng-template" id="DatatypeEditTree.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node) ">
         <td class="col-xs-2 col-fixed-250">{{$index}}
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
@@ -276,7 +276,7 @@ if (self === top) {
     </tr>
 </script>
 <script type="text/ng-template" id="DatatypeReadTree.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
+    <tr  tt-node is-branch="hasChildren(node)"  ng-show="isVisible(node) ">
         <td class="col-xs-2 col-fixed-250">
             <span style="width:60%" type="text" name="name" ng-bind="::node.name"></span>
             <span ng-bind="::node.description"></span>
@@ -433,7 +433,7 @@ if (self === top) {
             </div>
             <input class="form-control col-md-4 " type="text" ng-model="searchVS.name" ng-hide="editableVS!==node.id || VSselected" />
             <li class="form-control col-md-4 " ng-show="editableVS===node.id && VSselected">
-                {{selectedValueSet.name}}
+                {{selectedValueSet.bindingIdentifier}}
                 <button type="button" class="close" aria-label="Close" ng-click="unselectVS()">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -451,8 +451,8 @@ if (self === top) {
                 <span><i class="glyphicon glyphicon-remove "></i></span>
             </a>
             </div>
-            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTable(datatypesMap[node.datatype.id])">
-                <a ng-click="mapTable(node)" class="point">
+            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTable(datatypesMap[node.datatype.id]) &&  editableVS!==node.id ">
+                <a ng-click="editVS(node)" class="point">
                     <span><i class="fa fa-plus fa-fw"></i></span>
                 </a>
             </div>
@@ -508,7 +508,7 @@ if (self === top) {
     </tr>
 </script>
 <script type="text/ng-template" id="DatatypeComponentReadTree.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF) " >
         <td class="col-xs-2 col-fixed-250">
             <span class="label label-component label-icon">C</span>
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
@@ -567,7 +567,7 @@ if (self === top) {
     </tr>
 </script>
 <script type="text/ng-template" id="DatatypeSubComponentEditTree.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)" >
         <td class="col-xs-2 col-fixed-250">
             <span>
                                             <span class="label label-sub-component label-icon">S</span>
@@ -627,7 +627,7 @@ if (self === top) {
     </tr>
 </script>
 <script type="text/ng-template" id="DatatypeSubComponentReadTree.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)" >
         <td class="col-xs-2 col-fixed-250">
             <span>
                                             <span class="label label-sub-component label-icon">S</span>
@@ -1494,7 +1494,7 @@ if (self === top) {
             <div class="form-group control-group">
                 <label class="col-md-3 control-label col-md-offset-3">Usage*</label>
                 <div class="controls ">
-                    <select style="width:30% " class="form-control input-sm " name="usage " required ng-model="newComponent.usage " ng-options="usage for usage in config.usages " required />
+                    <select style="width:30% " class="form-control input-sm " name="usage " ng-change="selectUsage(newComponent.usage) " ng-model="newComponent.usage " ng-options="usage for usage in config.usages " required />
                 </div>
             </div>
         </div>
@@ -1508,22 +1508,22 @@ if (self === top) {
                                                        name="min "
                                                        
                                                        ng-pattern="/^\d+$/ "
-                                                       ng-model="newComponent.minLength " required ng-minlength="0 ">
+                                                       ng-model="newComponent.minLength " ng-disabled="disableMin" required >
                                                 <input  style="width:15% " class="form-control col-md-2 " type="text "
                                                     placeholder="Max Length"
                                                        name="max "
                                                        
                                                        
                                                        ng-pattern="/^\d+$|^\*?$/ "
-                                                       ng-model="newComponent.maxLength " required>
+                                                       ng-model="newComponent.maxLength " ng-disabled="disableMax" required>
                                             </span>
                 </div>
             </div>
         </div>
         <div class="row" style="margin-bottom: 20px">
             <div class="form-group control-group">
-                <label class="col-md-3 control-label col-md-offset-3">Conf Length*</label>
-                <input style="width:30% " class="form-control col-md-4 " name="confLength " ng-pattern="/^\d+$/ " ng-model="newComponent.confLength " required ng-minlength="0 ">
+                <label class="col-md-3 control-label col-md-offset-3">Conf Length</label>
+                <input style="width:30% " class="form-control col-md-4 " name="confLength " ng-pattern="/^\d+$/ " ng-model="newComponent.confLength " >
             </div>
         </div>
         <div class="row" style="margin-bottom: 20px">

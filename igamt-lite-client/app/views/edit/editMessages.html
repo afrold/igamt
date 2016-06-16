@@ -107,7 +107,7 @@ if (self === top) {
                                           events="viewSettings.events" extra-settings="viewSettings.extra"
                                           translation-texts="viewSettings.translations"></div>
                                      </span>
-                            <table id="messageTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                            <table id="treeTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                 <!--
                                 <caption>
                                     <a href="#" onclick="jQuery('#messageTable').treetable('expandAll');  return false;">Expand all</a>
@@ -131,7 +131,7 @@ if (self === top) {
                                         </th>
                                         <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
                                             Usage
-                                            <button class="btn-info"> <span ng-click="OtoX(message)">(O to X)</span></button>
+                                            <button ng-hide="viewSettings.tableReadonly" class="btn-info"> <span  ng-click="OtoX(message)">(O to X)</span></button>
                                         </th>
                                         <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
                                         </th>
@@ -155,7 +155,7 @@ if (self === top) {
                                 </thead>
                                 <tbody></tbody>
                             </table>
-                            <span class="pull-right">
+                            <span class="pull-right" ng-show="!viewSettings.tableReadonly">
                                      <div class="btn-group">
                                          <button type="button" class="btn btn-sm btn-primary">
                                              <span><i class="glyphicon glyphicon-plus"></i> Add</span>
@@ -579,7 +579,7 @@ if (self === top) {
 </script>
 
 <script type="text/ng-template " id="MessageFieldViewTree.html ">
-    <tr tt-node is-branch="hasChildren(node.obj) " ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id]) ">
+    <tr tt-node is-branch="hasChildren(node.obj) " ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
         <td class="col-xs-2 col-fixed-250 ">
             <span class="label label-field label-icon " ng-show="node.obj.type==='field' ">F</span>
             <span class="label label-sub-component label-icon " ng-show="node.obj.type==='subcomponent' ">S</span>
@@ -708,7 +708,7 @@ if (self === top) {
 </script>
 
 <script type="text/ng-template " id="MessageComponentViewTree.html ">
-    <tr tt-node is-branch="hasChildren(node.obj) " ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id]) ">
+    <tr tt-node is-branch="hasChildren(node.obj) " ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
         <td class="col-xs-2 col-fixed-250 ">
             <span>
                 <span class="label label-field label-icon " ng-show="node.obj.type==='field' ">F</span>
@@ -1362,7 +1362,7 @@ if (self === top) {
     </div>
 </script>
 <script type="text/ng-template" id="MessageReadTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" >
         <td class="col-xs-2 col-fixed-250">
             <span>{{::node.obj.event}}^{{::node.obj.structID}}:{{::node.obj.description}}</span>
         </td>
@@ -1399,7 +1399,7 @@ if (self === top) {
     </tr>
 </script>
 <script type="text/ng-template" id="MessageSegmentRefReadTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF) ">
         <td class="col-xs-2 col-fixed-250">
             <span class="label label-segment label-icon">S</span>
             <!--<a-->
@@ -1455,7 +1455,7 @@ if (self === top) {
     </tr>
 </script>
 <script type="text/ng-template" id="MessageGroupReadTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF) ">
         <td class="col-xs-2 col-fixed-250">
             <span>
 
@@ -1551,7 +1551,7 @@ if (self === top) {
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">Usage*</label>
                     <div class="controls ">
-                        <select style="width:30% " class="form-control input-sm " name="usage " ng-change="setDirty() " required ng-model="newSegment.usage " ng-options="usage for usage in config.usages " required />
+                        <select style="width:30% " class="form-control input-sm " name="usage " ng-change="selectUsage(newSegment.usage) " required ng-model="newSegment.usage " ng-options="usage for usage in config.usages " required />
                     </div>
                 </div>
             </div>
@@ -1562,19 +1562,22 @@ if (self === top) {
                         <span ng-form name="{{formName}} " class="form-inline ">
                                                 <input  style="width:15% " class="form-control col-md-2 "
                                                     placeholder="Min"
+                                                        
 
-                                                       name="min "
+                                                       name="min"
                                                        ng-change="setDirty() "
                                                        ng-pattern="/^\d+$/ "
-                                                       ng-model="newSegment.min " required ng-minlength="1 ">
+                                                       ng-model="newSegment.min " required  ng-disabled="disableMin">
                                                 <input  style="width:15% " class="form-control col-md-2 "type="text "
                                                     placeholder="Max"
+
+
 
                                                        name="max "
                                                        ng-change="setDirty() "
                                                        
                                                        ng-pattern="/^\d+$|^\*?$/ "
-                                                       ng-model="newSegment.max " required>
+                                                       ng-model="newSegment.max " ng-disabled="disableMax" required>
                                             </span>
                     </div>
                 </div>
@@ -1589,7 +1592,7 @@ if (self === top) {
         </form>
         <hr/>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-sm" ng-click="addSegment()" ng-disabled="addSegForm.$invalid || !selected()"><span><i
+            <button class="btn btn-primary btn-sm" type="submit" ng-click="addSegment()" ng-disabled="addSegForm.$invalid || !selected()"><span><i
                     class="fa fa-play fa-fw">
                 &nbsp; </i>Add</span>
             </button>
@@ -1632,7 +1635,7 @@ if (self === top) {
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">Usage*</label>
                     <div class="controls ">
-                        <select style="width:30% " class="form-control input-sm " name="usage " ng-change="setDirty() " ng-model="newGroup.usage " ng-options="usage for usage in config.usages " required />
+                        <select style="width:30% " class="form-control input-sm " name="usage " ng-change="selectUsage(newGroup.usage) " ng-model="newGroup.usage " ng-options="usage for usage in config.usages " required />
                     </div>
                 </div>
             </div>
@@ -1646,14 +1649,14 @@ if (self === top) {
                                                        name="min "
                                                        ng-change="setDirty() "
                                                        ng-pattern="/^\d+$/ "
-                                                       ng-model="newGroup.min " required ng-minlength="1 ">
+                                                       ng-model="newGroup.min " ng-disabled="disableMin" required >
                                                 <input  style="width:15% " class="form-control col-md-2 " type="text "
                                                     placeholder="Max"
                                                        name="max "
                                                        ng-change="setDirty() "
                                                        
                                                        ng-pattern="/^\d+$|^\*?$/ "
-                                                       ng-model="newGroup.max " required>
+                                                       ng-model="newGroup.max " ng-disabled="disableMax" required>
                                             </span>
                     </div>
                 </div>

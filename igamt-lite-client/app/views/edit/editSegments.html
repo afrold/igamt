@@ -136,12 +136,12 @@ if (self === top) {
         <tab heading="Segment Definition">
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table tt-table tt-params="segmentsParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                    <table id="treeTable" tt-table tt-params="segmentsParams" class="table table-bordered table-fix-header table-condensed profile-table">
                         <thead>
                         <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                             <th class="col-xs-2 col-fixed-250">Name</th>
                             <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                                <button ng-show="(segment.scope === 'USER' || segment.scope === 'MASTER')" class="btn-info"> <span ng-click="OtoX(segment)">(O to X)</span></button>
+                                <button ng-show="(segment.scope === 'USER' || segment.scope === 'MASTER') && !viewSettings.tableReadonly" class="btn-info"> <span ng-click="OtoX(segment)">(O to X)</span></button>
                             </th>
                             <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
                             </th>
@@ -168,7 +168,7 @@ if (self === top) {
 
                     <span class="pull-right">
                         <div class="btn-group">
-                            <button ng-show="segment.scope!=='HL7STANDARD'" ng-click="addFieldModal(segment)" type="button" class="btn btn-info btn-md">
+                            <button ng-show="segment.scope!=='HL7STANDARD' && !viewSettings.tableReadonly" ng-click="addFieldModal(segment)" type="button" class="btn btn-info btn-md">
                                 <span><i class="glyphicon glyphicon-plus"></i> Add Field</span>
                             </button>
                         </div>
@@ -634,7 +634,7 @@ if (self === top) {
 
             <input  class="form-control col-md-4 "  type="text " ng-model="searchVS.name " ng-hide="editableVS!==node.id || VSselected " />
             <li   class="form-control col-md-4 " ng-show="editableVS===node.id && VSselected ">
-                {{selectedValueSet.name}}
+                {{selectedValueSet.bindingIdentifier}}
                 <button type="button " class="close " aria-label="Close " ng-click="unselectVS() ">
                     <span aria-hidden="true ">&times;</span>
                 </button>
@@ -660,8 +660,8 @@ if (self === top) {
 
 
 
-            <div ng-show="(node.table==undefined || node.table===null) && isAvailableDTForTable(datatypesMap[node.datatype.id]) ">
-                <a ng-click="mapTable(node) " class="point ">
+            <div ng-show="(node.table==undefined || node.table===null) && isAvailableDTForTable(datatypesMap[node.datatype.id]) &&  editableVS!==node.id ">
+                <a ng-click="editVS(node) " class="point ">
                     <span><i class="fa fa-plus fa-fw "></i></span>
                 </a>
             </div>
@@ -738,7 +738,7 @@ if (self === top) {
 </script>
 
 <script type="text/ng-template " id="SegmentFieldReadTree.html ">
-    <tr tt-node is-branch="hasChildren(node) " ng-show="isVisible(node) ">
+    <tr tt-node is-branch="hasChildren(node) " ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF) ">
 
         <td class="col-xs-2 col-fixed-250 ">
             <span ng-if="node.type==='field' " class="label label-field label-icon ">F</span>
@@ -821,7 +821,7 @@ if (self === top) {
 </script>
 
 <script type="text/ng-template " id="SegmentComponentEditTree.html ">
-    <tr tt-node is-branch="hasChildren(node) " ng-show="isVisible(node) ">
+    <tr tt-node is-branch="hasChildren(node) " ng-show="isVisible(node)">
         <td class="col-xs-2 col-fixed-250 ">
                              <span>
                                  <span ng-if="node.type==='field' " class="label label-field label-icon ">F</span>
@@ -1790,7 +1790,7 @@ if (self === top) {
             <div class="form-group control-group">
                 <label class="col-md-3 control-label col-md-offset-3">Usage*</label>
                 <div class="controls ">
-                    <select style="width:30% " class="form-control input-sm " name="usage " ng-change="setDirty() " required ng-model="newField.usage " ng-options="usage for usage in config.usages " required />
+                    <select style="width:30% " class="form-control input-sm " name="usage " ng-change="selectUsage(newField.usage)  " required ng-model="newField.usage " ng-options="usage for usage in config.usages " required />
                 </div>
             </div>
         </div>
@@ -1804,14 +1804,14 @@ if (self === top) {
                                                        name="min "
                                                        ng-change="setDirty() "
                                                        ng-pattern="/^\d+$/ "
-                                                       ng-model="newField.min " required ng-minlength="1 ">
+                                                       ng-model="newField.min " ng-disabled="disableMin"  required >
                                                 <input  style="width:15% " class="form-control col-md-2 " type="text "
                                                     placeholder="Max"
                                                        name="max "
                                                        ng-change="setDirty() "
                                                        
                                                        ng-pattern="/^\d+$|^\*?$/ "
-                                                       ng-model="newField.max " required>
+                                                       ng-model="newField.max " ng-disabled="disableMax"  required>
                                             </span>
                 </div>
             </div>
@@ -1840,8 +1840,8 @@ if (self === top) {
         </div>
         <div class="row" style="margin-bottom: 20px">
             <div class="form-group control-group">
-                <label class="col-md-3 control-label col-md-offset-3">Conf Length*</label>
-                <input style="width:30% " class="form-control col-md-4 " name="confLength " ng-change="setDirty() " ng-pattern="/^\d+$/ " ng-model="newField.confLength " required ng-minlength="0 ">
+                <label class="col-md-3 control-label col-md-offset-3">Conf Length</label>
+                <input style="width:30% " class="form-control col-md-4 " name="confLength " ng-change="setDirty() " ng-pattern="/^\d+$/ " ng-model="newField.confLength " >
             </div>
         </div>
         <div class="row" style="margin-bottom: 20px">
