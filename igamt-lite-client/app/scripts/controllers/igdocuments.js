@@ -21,7 +21,7 @@ angular.module('igl')
         $scope.igDocumentConfig = {
             selectedType: null
         }
-
+        $rootScope.usageF = false;
         $scope.nodeReady = true;
         $scope.igDocumentTypes = [{
             name: "Browse Existing Preloaded Implementation Guides",

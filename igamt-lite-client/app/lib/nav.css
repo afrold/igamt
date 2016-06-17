@@ -24,16 +24,16 @@
 
 .nav-tabs > li.active {
     color: white;
-    background-color: #3276b1;
-    border-color: #285e8e;
+    background-color: #00a1b5;
+    /*border-color: #285e8e;*/
 }
 
 
 
 .nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
     color: white;
-    background-color: #3276b1;
-    border-color: #285e8e;
+    background-color: #00a1b5;
+    /*border-color: #285e8e;*/
 }
 
 
@@ -91,6 +91,6 @@
 
 .nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
     color: white;
-    background-color: #3276b1;
-    border-color: #285e8e;
+    background-color: #00a1b5;
+    /*border-color: #285e8e;*/
 }

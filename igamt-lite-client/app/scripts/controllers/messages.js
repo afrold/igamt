@@ -13,7 +13,7 @@ angular.module('igl')
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
-                    windowClass: 'flavor-modal-window',
+                    size: 'md',
                     resolve: {
                         destination: function() {
                             return segment;
@@ -36,7 +36,7 @@ angular.module('igl')
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
-                    windowClass: 'flavor-modal-window',
+                    size: 'md',
                     resolve: {
                         destination: function() {
                             return datatype;
@@ -59,7 +59,7 @@ angular.module('igl')
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
-                    windowClass: 'flavor-modal-window',
+                    size: 'md',
                     resolve: {
                         destination: function() {
                             return valueSet;
@@ -81,7 +81,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
-                windowClass: 'flavor-modal-window',
+                size: 'md',
                 resolve: {
                     message: function() {
                         return message;

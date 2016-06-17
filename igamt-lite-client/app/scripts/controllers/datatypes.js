@@ -17,7 +17,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'DeleteComponent.html',
                 controller: 'DeleteComponentCtrl',
-                windowClass: 'flavor-modal-window',
+                size: 'md',
                 resolve: {
                     componentToDelete: function() {
                         return componentToDelete;
@@ -42,13 +42,11 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
-                windowClass: 'flavor-modal-window',
+                size: 'md',
                 resolve: {
                     message: function() {
                         return message;
-                    },
-
-
+                    }
                 }
             });
             modalInstance.result.then(function() {
@@ -121,7 +119,7 @@ angular.module('igl')
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
-                    windowClass: 'flavor-modal-window',
+                    size: 'md',
                     resolve: {
                         destination: function() {
                             return datatype;
@@ -253,7 +251,7 @@ angular.module('igl')
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
-                    windowClass: 'flavor-modal-window',
+                    size: 'md',
                     resolve: {
                         destination: function() {
                             return valueSet;
