@@ -22,7 +22,7 @@ if (self === top) {
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
-         <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
+         <button title="Save Changes" type="button" class="btn btn-sm btn-success"
                  ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                  ng-click="save()">
@@ -42,7 +42,7 @@ if (self === top) {
                                         <input type="text" disabled name="name" class="form-control" ng-model="datatype.name" required>
                                     </div>
                                 </div>
-                                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}">
+                                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}" ng-hide="datatype.scope === 'HL7STANDARD'">
                                     <label class="col-md-2 control-label">Extension</label>
                                     <div class="controls col-md-10">
                                         <input type="text" ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly || (datatype.scope !== 'USER' || datatype.scope === 'MASTER')" name="ext" id="ext" class="form-control" ng-model="datatype.ext" required aria-describedby="helpBlock2">
@@ -89,21 +89,21 @@ if (self === top) {
                             </div>
                         </tab>
                         <tab heading="Data Type Definition">
-                            <span class="pull-right">
-                                     <div style="margin-right: 20px" ng-dropdown-multiselect=""
+                            <span class="pull-left">
+                                     <div ng-dropdown-multiselect=""
                                           options="viewSettings.columnOptions"
                                           selected-model="viewSettings.visibleColumns"
                                           events="viewSettings.events" extra-settings="viewSettings.extra"
                                           translation-texts="viewSettings.translations"></div>
                             </span>
-                            <div class="col-md-12">
+                            <div class="">
                                 <div class="table-responsive">
                                     <table tt-table tt-params="datatypesParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                         <thead>
                                             <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                                                 <th class="col-xs-2 col-fixed-250">Name</th>
                                                 <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                                                    <button class="btn-info" ng-show="(segment.scope === 'USER' || segment.scope === 'MASTER')"> <span ng-click="OtoX(datatype)">(O to X)</span></button>
+                                                    <button class="btn btn-info btn-xs" ng-show="(segment.scope === 'USER')" ng-click="OtoX(datatype)">O to X</button>
                                                 </th>
                                                 <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">Length
                                                 </th>
@@ -125,13 +125,13 @@ if (self === top) {
                                         </thead>
                                         <tbody></tbody>
                                     </table>
-                                    <span class="pull-right">
-                                     <div class="btn-group">
-                        <button ng-show="datatype.scope!=='HL7STANDARD'" ng-click="addComponentModal(datatype)" type="button" class="btn btn-info btn-md">
-                        <span><i class="glyphicon glyphicon-plus"></i> Add component</span>
-                                    </button>
-                                </div>
-                                </span>
+                                    <!--<span class="pull-right">-->
+                                     <!--<div class="btn-group">-->
+                        <!--<button ng-show="datatype.scope!=='HL7STANDARD'" ng-click="addComponentModal(datatype)" type="button" class="btn btn-primary btn-sm">-->
+                        <!--<span><i class="glyphicon glyphicon-plus"></i> Add component</span>-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                                <!--</span>-->
                                 <div class="row" style="margin-top:20px">
                                     <div class="col-md-12 igl-page-header">
                                         <span class="pull-left">
@@ -557,7 +557,7 @@ if (self === top) {
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-show="node.text !== '' && node.text !== null" ng-click="openRichTextDlg(node, 'text','Definition Text', true)" class="point">
-                <i class="fa fa-eye fa-fw"></i>
+                <i class="fa fa-search fa-fw"></i>
             </a>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
@@ -616,7 +616,7 @@ if (self === top) {
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
             <div>
                 <a ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="point">
-                    <i class="fa fa-eye fa-fw"></i>
+                    <i class="fa fa-search fa-fw"></i>
                 </a>
             </div>
         </td>
@@ -673,7 +673,7 @@ if (self === top) {
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="point">
-                <i class="fa fa-eye fa-fw"></i>
+                <i class="fa fa-search fa-fw"></i>
             </a>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
@@ -777,11 +777,11 @@ if (self === top) {
                 </span>
                 <span class="pull-right">
         <div class="btn-group btn-group-sm" data-toggle="buttons">
-            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'"
+            <label class="btn btn-info btn-xs" ng-click="constraintType = 'Plain'"
                    ng-class="{'active':constraintType === 'Plain'}">
                 <input type="radio" ng-value="constraintType">Add plain predicate
             </label>
-            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Complex'"
+            <label class="btn btn-info btn-xs" ng-click="constraintType = 'Complex'"
                    ng-class="{'active':constraintType === 'Complex'}">
                 <input type="radio" ng-value="constraintType">Add complex predicate
             </label>

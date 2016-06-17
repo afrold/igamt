@@ -2189,7 +2189,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
         }
         else if (data.type && data.type === "segment") {
             SegmentService.reset();
-        } else if (data.type && data.type === "datataype") {
+        } else if (data.type && data.type === "datatype") {
             DatatypeService.reset();
         }
         $rootScope.addedSegments = [];
@@ -2310,8 +2310,10 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
                     SegmentService.saveNewElements().then(function () {
                         SegmentService.merge($rootScope.segmentsMap[result.id], result);
-                        oldLink.ext = newLink.ext;
-                        oldLink.name = newLink.name;
+                        if(oldLink && oldLink != null) {
+                            oldLink.ext = newLink.ext;
+                            oldLink.name = newLink.name;
+                        }
                         $scope.continue();
                     }, function (error) {
                          $rootScope.msg().text = "Sorry an error occured. Please try again";
@@ -2330,7 +2332,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
             });
 
         }
-        else if (data.type && data.type === "datataype") {
+        else if (data.type && data.type === "datatype") {
             var datatype = $rootScope.datatype;
             var ext = datatype.ext;
             if (datatype.libIds == undefined) datatype.libIds = [];
@@ -2344,9 +2346,11 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
                     DatatypeService.saveNewElements().then(function () {
                         DatatypeService.merge($rootScope.datatypesMap[result.id], result);
-                        oldLink.ext = newLink.ext;
-                        oldLink.name = newLink.name;
-                         $scope.continue();
+                        if(oldLink && oldLink != null) {
+                            oldLink.ext = newLink.ext;
+                            oldLink.name = newLink.name;
+                        }
+                        $scope.continue();
                     }, function (error) {
                          $rootScope.msg().text = "Sorry an error occured. Please try again";
                         $rootScope.msg().type = "danger";
@@ -2378,7 +2382,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 var newLink = TableService.getTableLink(result);
                 newLink.bindingIdentifier = bindingIdentifier;
                 TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                    oldLink.bindingIdentifier = link.bindingIdentifier;
+                    if(oldLink && oldLink != null) oldLink.bindingIdentifier = link.bindingIdentifier;
                     $rootScope.msg().text = "tableSaved";
                     $rootScope.msg().type = "success";
                     $rootScope.msg().show = true;

@@ -20,11 +20,11 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
-                windowClass: 'app-modal-window',
+                size: 'lg',
                 resolve: {
                     message: function() {
                         return message;
-                    },
+                    }
 
 
                 }
@@ -691,8 +691,10 @@ angular.module('igl')
                 SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {
                     SegmentService.saveNewElements().then(function() {
                         SegmentService.merge($rootScope.segmentsMap[result.id], result);
-                        oldLink.ext = newLink.ext;
-                        oldLink.name = newLink.name;
+                        if(oldLink && oldLink != null) {
+                            oldLink.ext = newLink.ext;
+                            oldLink.name = newLink.name;
+                        }
                         cleanState();
                     }, function(error) {
                         $scope.saving = false;

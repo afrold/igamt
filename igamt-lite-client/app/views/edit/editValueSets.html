@@ -20,7 +20,7 @@
 					<div class="page-header" style="margin-bottom: 20px">
     					<span class="header4">Table: {{table.bindingIdentifier}}</span>
             				<span class="pull-right">
-         					<button title="Save Changes" type="button" class="btn btn-sm btn-primary"
+         					<button title="Save Changes" type="button" class="btn btn-sm btn-success"
                  				ng-disabled="editForm.$invalid || !editForm.$dirty"
                  				ng-hide="viewSettings.tableReadonly || table.scope !== 'USER'"
                 	 			ng-click="save()">
@@ -139,7 +139,7 @@
 						</tab>
 						
 						<tab heading="Table Definition">
-							<div class="col-md-12">
+							<div class="">
 								<span class="pull-right">
 									<button title="Add new Value" type="button" ng-hide="viewSettings.tableReadonly" class="btn btn-sm btn-info" ng-click="addValue(); searchValue.value = ''; searchValue.label = '';">
 										<span><i class="fa fa-plus fa-fw"></i>&nbsp; Add Value</span>
@@ -147,7 +147,7 @@
 								</span>
 							</div>
 							
-							<div class="col-md-12">
+							<div class="">
 								<div class="table-responsive">
 									<table class="table table-striped table-bordered">
 										<thead>

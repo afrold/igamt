@@ -22,7 +22,7 @@ if (self === top) {
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Conformance Profile: {{message.name}} </span>
                         <span class="pull-right">
-                            <button title="Save Changes" type="button" class="btn btn-sm btn-primary"
+                            <button title="Save Changes" type="button" class="btn btn-sm btn-success"
                                     ng-disabled="editForm.$invalid ||!editForm.$dirty"
                                     ng-hide="viewSettings.tableReadonly" ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
@@ -100,13 +100,28 @@ if (self === top) {
                             </div>
                         </tab>
                         <tab heading="Conformance Profile Definition">
-                            <span class="pull-right">
-                                     <div style="margin-right: 20px" ng-dropdown-multiselect=""
+                            <span class="pull-left">
+                                     <div style="" ng-dropdown-multiselect=""
                                           options="viewSettings.columnOptions"
                                           selected-model="viewSettings.visibleColumns"
                                           events="viewSettings.events" extra-settings="viewSettings.extra"
                                           translation-texts="viewSettings.translations"></div>
                                      </span>
+                               <span class="pull-right">
+                                     <div class="btn-group">
+                                         <button type="button" class="btn btn-sm btn-info">
+                                             <span><i class="fa fa-plus"></i> Add</span>
+                                         </button>
+                                         <button type="button" class="btn btn-sm btn-info" data-toggle="dropdown" aria-expanded="false">
+                                             <span class="caret"></span>
+                                             <span class="sr-only">Toggle Dropdown</span>
+                                         </button>
+                                         <ul class="dropdown-menu igl-menu" role="menu">
+                                             <li><a class="point" ng-click="addSegmentModal(message)"><i class="fa fa-plus fa-fw"></i> Add Segment</a></li>
+                                             <li><a class="point" ng-click="addGroupModal(message)"><i class="fa fa-plus fa-fw"></i> Add Group</a></li>
+                                         </ul>
+                                     </div>
+                </span>
                             <table id="messageTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                 <!--
                                 <caption>
@@ -131,7 +146,7 @@ if (self === top) {
                                         </th>
                                         <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
                                             Usage
-                                            <button class="btn-info"> <span ng-click="OtoX(message)">(O to X)</span></button>
+                                            <button class="btn btn-info btn-xs" ng-click="OtoX(message)">O to X</button>
                                         </th>
                                         <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
                                         </th>
@@ -155,21 +170,7 @@ if (self === top) {
                                 </thead>
                                 <tbody></tbody>
                             </table>
-                            <span class="pull-right">
-                                     <div class="btn-group">
-                                         <button type="button" class="btn btn-sm btn-primary">
-                                             <span><i class="glyphicon glyphicon-plus"></i> Add</span>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-primary" data-toggle="dropdown" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu igl-menu" role="menu">
-                                <li><a class="point" ng-click="addSegmentModal(message)">Segment</a></li>
-                                <li><a class="point" ng-click="addGroupModal(message)">Group</a></li>
-                            </ul>
-                </div>
-                </span>
+
                 <div class="row" style="margin-top:20px">
                     <div class="col-md-12 igl-page-header">
                         <span class="pull-left">
@@ -892,19 +893,19 @@ if (self === top) {
 
 
 <span class="pull-left ">
-        <span class="header5 " ng-show="constraintType==='Plain' ">Add new plain predicate</span>
-        <span class="header5 " ng-show="constraintType==='Complex' ">Add new complex predicate</span>
+        <span class="header5 " ng-show="constraintType==='Plain' ">Add New plain predicate</span>
+        <span class="header5 " ng-show="constraintType==='Complex' ">Add New complex predicate</span>
     </span>
 
     <span class="pull-right ">
         <div class="btn-group btn-group-sm " data-toggle="buttons ">
-            <label class="btn btn-primary btn-xs " ng-click="constraintType='Plain' "
+            <label class="btn btn-info btn-xs " ng-click="constraintType='Plain' "
                    ng-class="{ 'active':constraintType==='Plain' } ">
-                <input type="radio " ng-value="constraintType ">Add plain predicate
+                <input type="radio " ng-value="constraintType ">Add Plain Predicate
             </label>
-            <label class="btn btn-primary btn-xs " ng-click="constraintType='Complex' "
+            <label class="btn btn-info btn-xs " ng-click="constraintType='Complex' "
                    ng-class="{ 'active':constraintType==='Complex' } ">
-                <input type="radio " ng-value="constraintType ">Add complex predicate
+                <input type="radio " ng-value="constraintType ">Add Complex Predicate
             </label>
         </div>
     </span>
@@ -1093,7 +1094,7 @@ if (self === top) {
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
+                    <button class="btn btn-success btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
         &nbsp; </i>Save</span></button>
                     <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
@@ -1160,12 +1161,12 @@ if (self === top) {
                 <label class="btn btn-primary btn-xs"
                        ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID();"
                        ng-class="{'active':constraintType === 'Plain'}">
-                    <input type="radio" ng-value="constraintType">Add new plain Conf.Statement
+                    <input type="radio" ng-value="constraintType">Add New Plain Conf.Statement
                 </label>
                 <label class="btn btn-primary btn-xs"
                        ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID();"
                        ng-class="{'active':constraintType === 'Complex'}">
-                    <input type="radio" ng-value="constraintType">Add new complex Conf.Statement
+                    <input type="radio" ng-value="constraintType">Add New Complex Conf.Statement
                 </label>
             </div>
         </span>
@@ -1285,7 +1286,7 @@ if (self === top) {
                                     </span>
                                 </td>
                                 <td class="col-md-1" align="center">
-                                    <button class="btn btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'segment')"><span><i
+                                    <button class="btn btn-info btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'segment')"><span><i
                     class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                 </td>
                             </tr>
@@ -1509,9 +1510,8 @@ if (self === top) {
 </script>
 <script type="text/ng-template" id="AddSegmentModal.html">
     <div class="modal-header modal-wide">
-        <div class="form-inline">
-            <span class="header4 ">Add Segment</span>
-        </div>
+        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-plus" aria-hidden="true"></i>Add Segment
+        </p>
     </div>
     <hr/>
     <div class="modal-body">
@@ -1601,9 +1601,8 @@ if (self === top) {
 </script>
 <script type="text/ng-template" id="AddGroupModal.html">
     <div class="modal-header modal-wide">
-        <div class="form-inline">
-            <span class="header4 pull-left">Add Group</span>
-        </div>
+        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-plus" aria-hidden="true"></i>Add Group
+        </p>
     </div>
     <hr/>
     <div class="modal-body">
@@ -1739,10 +1738,13 @@ if (self === top) {
                 </div>
             </div>
         </div>
+        </div>
 </script>
+
 <script type="text/ng-template" id="ConfirmMessageDeleteCtrl.html">
     <div class="modal-header modal-wide">
-        <h3 class="modal-title">Delete Confirmation</h3>
+         <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Delete Confirmation
+        </p>
     </div>
     <div class="modal-body">
         <p>Are you sure you want to delete Message {{messageToDelete.name}} ? </p>
@@ -1757,7 +1759,8 @@ if (self === top) {
 </script>
 <script type="text/ng-template" id="DeleteSegmentRefOrGrp.html">
     <div class="modal-header">
-        <h3 class="modal-title">Delete Confirmation</h3>
+        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Delete Confirmation
+        </p>
     </div>
     <div class="modal-body">
         <p ng-show="segOrGrpToDelete.obj.type==='segmentRef'">Are you sure you want to delete Segment Ref: {{segOrGrpToDelete.obj.ref.name}} ? </p>
@@ -1774,7 +1777,8 @@ if (self === top) {
 
 <script type="text/ng-template" id="OtoX.html">
     <div class="modal-header">
-        <h3 class="modal-title">Change Usage O to X Confirmation</h3>
+        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Change Usage O to X Confirmation
+        </p>
     </div>
     <div class="modal-body">
         <p>Are you sure you want to change Usage from O to X and Cardinality form 0..1(*) to 0..0 ? </p>
@@ -1783,14 +1787,15 @@ if (self === top) {
     <div class="modal-footer">
         <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-primary btn-sm" ng-click="confirm(message)"><span><i class="fa fa-play fa-fw">&nbsp; </i>Confirm</span>
+        <button class="btn btn-primary btn-sm" ng-click="confirm(message)"><span><i class="fa fa-check fa-fw">&nbsp; </i>OK</span>
         </button>
     </div>
 </script>
 
 <script type="text/ng-template" id="redirectCtrl.html">
     <div class="modal-header">
-        <h3 class="modal-title">Confirmation</h3>
+        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Confirmation
+        </p>
     </div>
     <div class="modal-body">
         <p>Are you sure you want to leave this page and go to {{destination.type}} : {{destination.name}} </p>
@@ -1799,7 +1804,7 @@ if (self === top) {
     <div class="modal-footer">
         <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-primary btn-sm" ng-click="confirm()"><span><i class="fa fa-play fa-fw">&nbsp; </i>Confirm</span>
+        <button class="btn btn-primary btn-sm" ng-click="confirm()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Leave</span>
         </button>
     </div>
 </script>

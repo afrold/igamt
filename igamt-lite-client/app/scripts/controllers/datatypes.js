@@ -42,7 +42,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
-                windowClass: 'flavor-modal-window',
+                size: 'lg',
                 resolve: {
                     message: function() {
                         return message;

@@ -19,7 +19,7 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Document Metadata</span>
             <span class="pull-right">
-         <button title="Save Changes" class="btn btn-sm btn-primary"
+         <button title="Save Changes" class="btn btn-sm btn-success"
                  ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="viewSettings.tableReadonly"
                  ng-click="save()">
@@ -69,17 +69,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group control-group"
-                         ng-class="{'igl-has-error has-feedback' : editForm.identifier.$invalid}">
-                        <label class="col-md-2 control-label">Project Identifier</label>
-
-                        <div class="controls col-md-10">
-                            <input type="text" name="identifier" disabled
-                                   ng-change="setDirty()"
-                                   class="form-control" ng-model="metaData.identifier"
-                                    >
-                        </div>
-                    </div>
 
                     <div class="form-group control-group"
                          ng-class="{'igl-has-error has-feedback' : editForm.orgName.$invalid}">
