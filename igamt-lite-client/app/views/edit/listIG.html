@@ -44,10 +44,10 @@
                 <!--<div class="">-->
                 <!--<h5><b>{{igContext.igType.name}}</b>, Total#: {{igs.length}}</h5>-->
                 <table st-table="tmpIgs" st-safe-src="igs"
-                       class="table table-striped table-bordered table-fix-header table-condensed igl-list-table">
+                       class="table table-striped table-bordered table-condensed igl-list-table">
                     <thead>
                     <tr>
-                        <th st-ratio="100">
+                        <th colspan="5">
                             <input st-search placeholder="Search" class="input-sm form-control" type="search"/>
                         </th>
                     </tr>
@@ -98,7 +98,7 @@
                     </tbody>
                     <tfoot ng-show="igs.length >= 7">
                     <tr style="text-align:center">
-                        <td colspan="7">
+                        <td colspan="5">
                             <div st-pagination="" st-items-by-page="7" st-displayed-pages="7"></div>
                         </td>
                     </tr>
