@@ -545,14 +545,6 @@ angular
                         }
                     ]
                 ];
-                $scope.addValueSets = [
-                    ['Add Value Sets',
-                        function($itemScope) {
-                            $scope.addTable($rootScope.igdocument);
-                        }
-                    ]
-                ];
-
 
                 function processEditSeg(seg) {
                     $scope.Activate(seg.id);

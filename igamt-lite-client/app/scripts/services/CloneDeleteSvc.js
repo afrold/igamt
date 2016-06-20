@@ -360,8 +360,7 @@ angular.module('igl').factory(
                 if ($rootScope.table === table) {
                     $rootScope.table = null;
                 }
-                $rootScope.recordDelete("table", "edit", table.id);
-                $rootScope.msg().text = "tableDeleteSuccess";
+                 $rootScope.msg().text = "tableDeleteSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 //TODO MasterMap Need to delete Table
@@ -395,7 +394,6 @@ angular.module('igl').factory(
                 if ($rootScope.segment === segment) {
                     $rootScope.segment = null;
                 }
-                $rootScope.recordDelete("segment", "edit", segment.id);
                 $rootScope.msg().text = "segDeleteSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
@@ -431,8 +429,7 @@ angular.module('igl').factory(
                 if ($rootScope.datatype === datatype) {
                     $rootScope.datatype = null;
                 }
-                $rootScope.recordDelete("datatype", "edit", datatype.id);
-                $rootScope.msg().text = "DatatypeDeleteSuccess";
+                 $rootScope.msg().text = "DatatypeDeleteSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 //TODO MasterMap need to delete datatype

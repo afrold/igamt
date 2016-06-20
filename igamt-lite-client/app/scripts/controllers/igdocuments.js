@@ -558,6 +558,7 @@ angular.module('igl')
 
         $scope.collectMessages = function() {
             $rootScope.messagesMap = {};
+            $rootScope.messages = $rootScope.igdocument.profile.messages;
             angular.forEach($rootScope.igdocument.profile.messages.children, function(child) {
                 if (child != null) {
                     this[child.id] = child;

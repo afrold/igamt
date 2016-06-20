@@ -608,10 +608,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.recordDelete = function (type, command, id) {
-            if (id < 0) { // new object
-                $rootScope.removeObjectFromChanges(type, "add", id);
-            } else {
-                $rootScope.removeObjectFromChanges(type, "edit", id);
+//            if (id < 0) { // new object
+//                $rootScope.removeObjectFromChanges(type, "add", id);
+//            } else {
+//                $rootScope.removeObjectFromChanges(type, "edit", id);
 // if ($rootScope.changes[type] === undefined) {
 // $rootScope.changes[type] = {};
 // }
@@ -624,8 +624,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 // }
 
 // $rootScope.changes[type]["delete"].push({id:id});
-                $rootScope.recordChanged();
-            }
+                //$rootScope.recordChanged();
+            //}
 
 // if($rootScope.changes[type]) { //clean the changes object
 // if ($rootScope.changes[type]["add"] && $rootScope.changes[type]["add"].length

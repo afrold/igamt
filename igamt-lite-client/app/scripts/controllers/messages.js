@@ -1455,9 +1455,11 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function($scope, $m
             MessagesSvc.delete($scope.messageToDelete).then(function(result) {
                 // We must delete from two collections.
                 //CloneDeleteSvc.execDeleteMessage($scope.messageToDelete);
-                var index = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.messages.children);
-                if (index >= 0) {
-                    $rootScope.messages.children.splice(index, 1);
+                if($rootScope.messages.children) {
+                    var index = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.messages.children);
+                    if (index >= 0) {
+                        $rootScope.messages.children.splice(index, 1);
+                    }
                 }
 
                 var tmp = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.igdocument.profile.messages.children);
