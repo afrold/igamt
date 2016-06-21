@@ -548,7 +548,7 @@ angular
                 $scope.addValueSets = [
                     ['Add Value Sets',
                         function($itemScope) {
-                            $scope.addTable($rootScope.igdocument);
+                            $scope.addTables($rootScope.igdocument);
                         }
                     ]
                 ];
