@@ -372,13 +372,7 @@ angular.module('igl')
             $scope.show(igdocument);
         };
 
-        $scope.displayNullView = function() {
-            console.log("before");
-            console.log($rootScope.subview);
-            $rootScope.subview = 'Blank.html';
-            console.log("after");
-            console.log($rootScope.subview);
-        }
+
 
         // switcher
 
@@ -916,6 +910,7 @@ angular.module('igl')
         };
 
         $scope.selectSegment = function(segment) {
+            $rootScope.Activate(segment.id);
             $rootScope.subview = "EditSegments.html";
             if (segment && segment != null) {
                 $scope.loadingSelection = true;
@@ -970,6 +965,7 @@ angular.module('igl')
         };
 
         $scope.selectDatatype = function(datatype) {
+            $rootScope.Activate(datatype.id);
             $rootScope.subview = "EditDatatypes.html";
             if (datatype && datatype != null) {
                 $scope.loadingSelection = true;
@@ -999,6 +995,7 @@ angular.module('igl')
         };
 
         $scope.selectMessage = function(message) {
+            $rootScope.Activate(message.id);
             $rootScope.subview = "EditMessages.html";
             $scope.loadingSelection = true;
             $rootScope.originalMessage = message;
@@ -1020,6 +1017,7 @@ angular.module('igl')
         };
 
         $scope.selectTable = function(t) {
+            $rootScope.Activate(t.id);
             var table = angular.copy(t);
             $rootScope.subview = "EditValueSets.html";
             $scope.loadingSelection = true;

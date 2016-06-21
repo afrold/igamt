@@ -155,25 +155,26 @@ angular.module('igl').factory('DatatypeService',
                     });
             },
             merge: function(to, from) {
-                to.name = from.name;
-                to.ext = from.ext;
-                to.label = from.label;
-                to.description = from.description;
-                to.status = from.status;
-                to.comment = from.comment;
-                to.usageNote = from.usageNote;
-                to.scope = from.scope;
-                to.hl7Version = from.hl7Version;
-                to.accountId = from.accountId;
-                to.participants = from.participants;
-                to.libId = from.libId;
-                to.predicates = from.predicates;
-                to.conformanceStatements = from.conformanceStatements;
-                to.sectionPosition = from.sectionPosition;
-                to.components = from.components;
-                to.version = from.version;
-                to.date = from.date;
-                to.purposeAndUse = from.purposeAndUse;
+                to = angular.extend(to, from);
+//                to.name = from.name;
+//                to.ext = from.ext;
+//                to.label = from.label;
+//                to.description = from.description;
+//                to.status = from.status;
+//                to.comment = from.comment;
+//                to.usageNote = from.usageNote;
+//                to.scope = from.scope;
+//                to.hl7Version = from.hl7Version;
+//                to.accountId = from.accountId;
+//                to.participants = from.participants;
+//                to.libId = from.libId;
+//                to.predicates = from.predicates;
+//                to.conformanceStatements = from.conformanceStatements;
+//                to.sectionPosition = from.sectionPosition;
+//                to.components = from.components;
+//                to.version = from.version;
+//                to.date = from.date;
+//                to.purposeAndUse = from.purposeAndUse;
                 return to;
             },
             findFlavors: function(name, scope, hl7Version) {

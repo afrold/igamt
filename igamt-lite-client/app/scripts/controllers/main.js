@@ -2123,6 +2123,18 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             return $rootScope.modalInstance;
         };
 
+        $rootScope.displayNullView = function() {
+            console.log("before");
+            console.log($rootScope.subview);
+            $rootScope.subview = 'Blank.html';
+            console.log("after");
+            console.log($rootScope.subview);
+        }
+
+        $rootScope.Activate = function(param) {
+            $rootScope.activeModel = param;
+        }
+
     }]);
 
 angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user', function ($scope, $modalInstance, user) {
@@ -2305,7 +2317,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
             }
             SegmentService.save($rootScope.segment).then(function (result) {
-                var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
+                var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary.children);
                 var newLink = SegmentService.getSegmentLink(result);
                 SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
                     SegmentService.saveNewElements().then(function () {
@@ -2340,7 +2352,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 datatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
             }
             DatatypeService.save(datatype).then(function (result) {
-                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary);
+                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary.children);
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
                 DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
@@ -2377,7 +2389,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function ($scope, $modal
                 table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
             }
             TableService.save(table).then(function (result) {
-                var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary);
+                var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary.children);
                 TableService.merge($rootScope.tablesMap[result.id], result);
                 var newLink = TableService.getTableLink(result);
                 newLink.bindingIdentifier = bindingIdentifier;

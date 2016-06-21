@@ -100,7 +100,7 @@
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
 
-                    <div ng-if="!collapsemessage" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="label label-default" ng-click="selectedMessage=null; resetMessages(); selectedSegment=null;resetSegments()" ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
+                    <div ng-if="!collapsemessage" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="badge label-default" ng-click="selectedMessage=null; resetMessages(); selectedSegment=null;resetSegments()" ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
 
                         <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
 
@@ -148,7 +148,7 @@
 
                 {{ig.childSections.length+1}}.2.Segments and field descriptions:{{filteredSegmentsList.length}}/{{segments.length}}</span>
                         </div>
-                        <div ng-if="!collapsesegment" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="label label-default" ng-click="selectedSegment=null ;resetSegments() " ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
+                        <div ng-if="!collapsesegment" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="badge label-default" ng-click="selectedSegment=null ;resetSegments() " ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
                         <li ng-repeat="segment in filteredSegmentsList"
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle  data-nodrag 
@@ -170,7 +170,7 @@
 
 <!-- <input type="checkbox" ng-model="segment.checked" ng-click="uncheckAndDisableOthers(segment)" ng-disabled="segment.anotherIsChecked"/> -->
 
-  <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
+  <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
   'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }"  ns-popover ns-popover-template="segmentPopover"
   ns-popover-trigger="mouseenter"
   ns-popover-placement="bottom"
@@ -205,7 +205,7 @@
 <!--                 <input type="radio" -->
 <!--                 ng-model="data.checked" -->
 <!--                 name="dataTypesRadio" ng-click="rebuildTreeFromDatatype(data)"/>   -->
-                                     <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                     <span class="badge " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                    'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}" >  {{getScopeLabel(data)}}</span> 
                                       
           
@@ -239,7 +239,7 @@
                                       ng-class="{selected : table.id===activeModel}"
                                       confirm-click
                                       ng-click="editTable(table)">
-                                     <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                     <span class="badge " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> 
                                       
                                       {{table.bindingIdentifier}}-{{table.description}}</span>

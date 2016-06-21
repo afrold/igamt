@@ -28,13 +28,14 @@ angular.module('igl').factory(
             newSegment.libIds = [];
             newSegment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
             newSegment.ext = $rootScope.createNewExtension(newSegment.ext);
-            
+
             if (newSegment.fields != undefined && newSegment.fields != null && newSegment.fields.length != 0) {
                 for (var i = 0; i < newSegment.fields.length; i++) {
                     newSegment.fields[i].id = new ObjectId().toString();
                 }
             }
-            
+
+
             var dynamicMappings = newSegment['dynamicMappings'];
             if (dynamicMappings != undefined && dynamicMappings != null && dynamicMappings.length != 0) {
                 angular.forEach(dynamicMappings, function (dynamicMapping) {
@@ -44,36 +45,36 @@ angular.module('igl').factory(
                     });
                 });
             }
-            
-            SegmentService.save(newSegment).then(function (result){
-            	newSegment = result;
-            	var newLink = angular.copy(SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary));
+
+            SegmentService.save(newSegment).then(function (result) {
+                newSegment = result;
+                var newLink = angular.copy(SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary.children));
                 newLink.ext = newSegment.ext;
-            	newLink.id = newSegment.id;
-                
+                newLink.id = newSegment.id;
+
                 SegmentLibrarySvc.addChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function (link) {
-                	$rootScope.igdocument.profile.segmentLibrary.children.splice(0, 0, newLink);
-                	$rootScope.segments.splice(0, 0, newSegment);
-                	$rootScope.segment = newSegment;
-                	$rootScope.segmentsMap[newSegment.id] = newSegment;
-                	//TODO MasterMap need to add Segment
-                	$rootScope.processElement(newSegment);
+                    $rootScope.igdocument.profile.segmentLibrary.children.splice(0, 0, newLink);
+                    $rootScope.segments.splice(0, 0, newSegment);
+                    $rootScope.segment = newSegment;
+                    $rootScope.segmentsMap[newSegment.id] = newSegment;
+                    //TODO MasterMap need to add Segment
+                    $rootScope.processElement(newSegment);
 //                	MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-    				$rootScope.filteredSegmentsList.push(newSegment);
-    				$rootScope.filteredSegmentsList=_.uniq($rootScope.filteredSegmentsList);
+                    $rootScope.filteredSegmentsList.push(newSegment);
+                    $rootScope.filteredSegmentsList = _.uniq($rootScope.filteredSegmentsList);
                     $rootScope.$broadcast('event:openSegment', newSegment);
-                 }, function (error) {
-                	$rootScope.saving = false;
+                }, function (error) {
+                    $rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
-                 });
+                });
             }, function (error) {
-            	$rootScope.saving = false;
+                $rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
-             });
+            });
         };
 
         svc.copyDatatype = function (datatype) {
@@ -84,59 +85,59 @@ angular.module('igl').factory(
             newDatatype.id = null;
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
-            
-            
+
+
             if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
                 for (var i = 0; i < newDatatype.components.length; i++) {
                     newDatatype.components[i].id = new ObjectId().toString();
                 }
             }
-            
+
             var predicates = newDatatype['predicates'];
             if (predicates != undefined && predicates != null && predicates.length != 0) {
                 angular.forEach(predicates, function (predicate) {
                     predicate.id = new ObjectId().toString();
                 });
             }
-            
+
             var conformanceStatements = newDatatype['conformanceStatements'];
             if (conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0) {
                 angular.forEach(conformanceStatements, function (conformanceStatement) {
                     conformanceStatement.id = new ObjectId().toString();
                 });
             }
-            
-            DatatypeService.save(newDatatype).then(function (result){
-            	newDatatype = result;
-            	var newLink = angular.copy(DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.igdocument.profile.datatypeLibrary));
+
+            DatatypeService.save(newDatatype).then(function (result) {
+                newDatatype = result;
+                var newLink = angular.copy(DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.igdocument.profile.datatypeLibrary.children));
                 newLink.id = newDatatype.id;
                 newLink.ext = newDatatype.ext;
                 DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
-                	$rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
+                    $rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
                     $rootScope.datatypes.splice(0, 0, newDatatype);
                     $rootScope.datatype = newDatatype;
                     $rootScope.datatypesMap[newDatatype.id] = newDatatype;
-                    
+
                     //TODO MasterMap need to add Datatype
-                    
+
                     $rootScope.processElement(newDatatype);
 //                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
-    				$rootScope.filteredDatatypesList.push(newDatatype);
-    				$rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
+                    $rootScope.filteredDatatypesList.push(newDatatype);
+                    $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
                     $rootScope.$broadcast('event:openDatatype', newDatatype);
-                 }, function (error) {
-                	$rootScope.saving = false;
+                }, function (error) {
+                    $rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
-                 });
+                });
             }, function (error) {
-            	$rootScope.saving = false;
+                $rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
-             });
-            
+            });
+
         };
 
         svc.copyTable = function (table) {
@@ -147,25 +148,25 @@ angular.module('igl').factory(
             newTable.libIds = [];
             newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
             newTable.bindingIdentifier = $rootScope.createNewExtension(newTable.bindingIdentifier);
-            
+
             if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
-            	for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
-            		newTable.codes[i].id = new ObjectId().toString();
-            	}
+                for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
+                    newTable.codes[i].id = new ObjectId().toString();
+                }
             }
-            
-            TableService.save(newTable).then(function (result){
-            	newTable = result;
-            	var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary));
-            	newLink.bindingIdentifier = newTable.bindingIdentifier;
+
+            TableService.save(newTable).then(function (result) {
+                newTable = result;
+                var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary.children));
+                newLink.bindingIdentifier = newTable.bindingIdentifier;
                 newLink.id = newTable.id;
-                
+
                 TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                	$rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newLink);
-                	$rootScope.tables.splice(0, 0, newTable);
-                	$rootScope.table = newTable;
+                    $rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newLink);
+                    $rootScope.tables.splice(0, 0, newTable);
+                    $rootScope.table = newTable;
                     $rootScope.tablesMap[newTable.id] = newTable;
-                    
+
                     $rootScope.codeSystems = [];
 
                     for (var i = 0; i < $rootScope.table.codes.length; i++) {
@@ -175,29 +176,28 @@ angular.module('igl').factory(
                             }
                         }
                     }
-                    //TODO MasterMap need to add table
-//                    MastermapSvc.addValueSetObject(newTable, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-                    
-                    $rootScope.filteredTablesList.push(newTable);
-                    $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
+                    if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+                        $rootScope.filteredTablesList.push(newTable);
+                        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+                    }
                     $rootScope.$broadcast('event:openTable', newTable);
 
                 }, function (error) {
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
-                 });
-                
-                
+                });
+
+
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
-             });
+            });
         };
 
         svc.copyMessage = function (message) {
-             var newMessage = angular.copy(message);
+            var newMessage = angular.copy(message);
             newMessage.id = null;
             newMessage.name = $rootScope.createNewFlavorName(message.name);
             var groups = ProfileAccessSvc.Messages().getGroups(newMessage);
@@ -210,39 +210,39 @@ angular.module('igl').factory(
                 segRef.id = new ObjectId().toString();
             });
 
-            MessageService.save(newMessage).then(function (result){
-            	newMessage = result;
-            	$rootScope.igdocument.profile.messages.children.splice(0, 0, newMessage);
-                IgDocumentService.save($rootScope.igdocument).then(function (igd){
-                	$rootScope.messages = $rootScope.igdocument.profile.messages;
+            MessageService.save(newMessage).then(function (result) {
+                newMessage = result;
+                $rootScope.igdocument.profile.messages.children.splice(0, 0, newMessage);
+                IgDocumentService.save($rootScope.igdocument).then(function (igd) {
+                    $rootScope.messages = $rootScope.igdocument.profile.messages;
                     $rootScope.message = newMessage;
-                    
+
                     $rootScope.processElement(newMessage);
                     //TODO Mastermap need to add Message
 //                    MastermapSvc.addMessageObject(newMessage, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
 //                    FilteringSvc.addMsgInFilter(newMessage.name, newMessage.id);
                     $rootScope.$broadcast('event:openMessage', newMessage);
-                     return newMessage;
+                    return newMessage;
                 }, function (error) {
-                     $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
-                 });
+                });
             }, function (error) {
-                 $rootScope.msg().text = error.data.text;
+                $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
-             });
-            
+            });
+
         };
 
         svc.deleteValueSet = function (table) {
-        	$rootScope.references = [];
+            $rootScope.references = [];
             angular.forEach($rootScope.segments, function (segment) {
                 $rootScope.findTableRefs(table, segment, $rootScope.getSegmentLabel(segment));
             });
             angular.forEach($rootScope.datatypes, function (dt) {
-            	$rootScope.findTableRefs(table, dt, $rootScope.getDatatypeLabel(dt));
+                $rootScope.findTableRefs(table, dt, $rootScope.getDatatypeLabel(dt));
             });
 
             if ($rootScope.references != null && $rootScope.references.length > 0) {
@@ -277,7 +277,7 @@ angular.module('igl').factory(
                 }
             });
             modalInstance.result.then(function (table) {
-               // $rootScope.tableToDelete = table;
+                // $rootScope.tableToDelete = table;
             }, function () {
             });
         };
@@ -293,13 +293,16 @@ angular.module('igl').factory(
                 }
             });
             modalInstance.result.then(function (table) {
-                tableToDelete = table;
-            	if(table.id===$rootScope.activeModel){
+//                tableToDelete = table;
+                if (table.id === $rootScope.activeModel) {
                     $rootScope.displayNullView();
-                    }
-                var index = $rootScope.filteredTablesList.indexOf(table);
-                $rootScope.filteredTablesList.splice(index, 1);
-                
+                }
+                if($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+                    var index = $rootScope.filteredTablesList.indexOf(table);
+                    if(index >= 0)
+                    $rootScope.filteredTablesList.splice(index, 1);
+                }
+
             }, function () {
             });
         };
@@ -315,7 +318,7 @@ angular.module('igl').factory(
                 }
             });
             modalInstance.result.then(function (message) {
-             }, function () {
+            }, function () {
             });
         };
 
@@ -326,10 +329,12 @@ angular.module('igl').factory(
         svc.deleteDatatype = function (datatype) {
             $rootScope.references = [];
             angular.forEach($rootScope.segments, function (segment) {
-                $rootScope.findDatatypeRefs(datatype, segment, $rootScope.getSegmentLabel(segment));
+                if(segment && segment != null) {
+                    $rootScope.findDatatypeRefs(datatype, segment, $rootScope.getSegmentLabel(segment));
+                }
             });
             angular.forEach($rootScope.datatypes, function (dt) {
-            	if(dt.id !== datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt));
+                if (dt && dt != null && dt.id !== datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt));
             });
             if ($rootScope.references != null && $rootScope.references.length > 0) {
                 abortDatatypeDelete(datatype);
@@ -337,22 +342,22 @@ angular.module('igl').factory(
                 confirmDatatypeDelete(datatype);
             }
         }
-        
-        svc.deleteTableAndSegmentLink = function (table) {
-        	TableService.delete(table).then(function (result) {
-        		svc.deleteTableLink(table);
-        	}, function (error) {
+
+        svc.deleteTableAndTableLink = function (table) {
+            TableService.delete(table).then(function (result) {
+                svc.deleteTableLink(table);
+            }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
             });
         };
-        
+
         svc.deleteTableLink = function (table) {
-        	TableLibrarySvc.deleteChild($rootScope.igdocument.profile.tableLibrary.id, table.id).then(function (res) {
+            TableLibrarySvc.deleteChild($rootScope.igdocument.profile.tableLibrary.id, table.id).then(function (res) {
                 var index = $rootScope.tables.indexOf(table);
                 $rootScope.tables.splice(index, 1);
-                var tmp = TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary);
+                var tmp = TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary.children);
                 index = $rootScope.igdocument.profile.tableLibrary.children.indexOf(tmp);
                 $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
                 $rootScope.tablesMap[table.id] = null;
@@ -360,7 +365,7 @@ angular.module('igl').factory(
                 if ($rootScope.table === table) {
                     $rootScope.table = null;
                 }
-                 $rootScope.msg().text = "tableDeleteSuccess";
+                $rootScope.msg().text = "tableDeleteSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 //TODO MasterMap Need to delete Table
@@ -371,57 +376,61 @@ angular.module('igl').factory(
                 $rootScope.msg().show = true;
             });
         };
-        
+
         svc.deleteSegmentAndSegmentLink = function (segment) {
-        	SegmentService.delete(segment).then(function (result) {
-        		svc.deleteSegmentLink(segment);
-        	}, function (error) {
+            SegmentService.delete(segment).then(function (result) {
+                svc.deleteSegmentLink(segment);
+            }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
             });
         };
-        
-        svc.deleteSegmentLink = function (segment){
-        	SegmentLibrarySvc.deleteChild($rootScope.igdocument.profile.segmentLibrary.id, segment.id).then(function (res) {
+
+        svc.deleteSegmentLink = function (segment) {
+            SegmentLibrarySvc.deleteChild($rootScope.igdocument.profile.segmentLibrary.id, segment.id).then(function (res) {
                 // We must delete from two collections.
-            	
-                var tmp = SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary);
-                index = $rootScope.igdocument.profile.segmentLibrary.children.indexOf(tmp);
+
+                var tmp = SegmentLibrarySvc.findOneChild(segment.id, $rootScope.igdocument.profile.segmentLibrary.children);
+                var index = $rootScope.igdocument.profile.segmentLibrary.children.indexOf(tmp);
                 $rootScope.igdocument.profile.segmentLibrary.children.splice(index, 1);
+
+                tmp = SegmentLibrarySvc.findOneChild(segment.id, $rootScope.segments);
+                index = $rootScope.segments.indexOf(tmp);
+                $rootScope.segments.splice(index, 1);
                 $rootScope.segmentsMap[segment.id] = null;
                 $rootScope.references = [];
                 if ($rootScope.segment === segment) {
                     $rootScope.segment = null;
                 }
+
                 $rootScope.msg().text = "segDeleteSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
-                //TODO MasterMap need to delete segment
-//                MastermapSvc.deleteSegment($scope.segment.id);
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
             });
         };
-        
-        
+
+
         svc.deleteDatatypeAndDatatypeLink = function (datatype) {
-        	DatatypeService.delete(datatype).then(function (result) {
-        		svc.deleteDatatypeLink(datatype);
+            DatatypeService.delete(datatype).then(function (result) {
+                svc.deleteDatatypeLink(datatype);
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
             });
         };
-        
+
         svc.deleteDatatypeLink = function (datatype) {
             DatatypeLibrarySvc.deleteChild($rootScope.igdocument.profile.datatypeLibrary.id, datatype.id).then(function (res) {
                 var index = $rootScope.datatypes.indexOf(datatype);
                 $rootScope.datatypes.splice(index, 1);
-                var tmp = DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.igdocument.profile.datatypeLibrary);
+
+                var tmp = DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.igdocument.profile.datatypeLibrary.children);
                 index = $rootScope.igdocument.profile.datatypeLibrary.children.indexOf(tmp);
                 $rootScope.igdocument.profile.datatypeLibrary.children.splice(index, 1);
                 $rootScope.datatypesMap[datatype.id] = null;
@@ -429,7 +438,8 @@ angular.module('igl').factory(
                 if ($rootScope.datatype === datatype) {
                     $rootScope.datatype = null;
                 }
-                 $rootScope.msg().text = "DatatypeDeleteSuccess";
+
+                $rootScope.msg().text = "DatatypeDeleteSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 //TODO MasterMap need to delete datatype
@@ -471,11 +481,14 @@ angular.module('igl').factory(
                 }
             });
             modalInstance.result.then(function (datatype) {
-                var index = $rootScope.filteredDatatypesList.indexOf(datatype);
-            	if(datatype.id===$rootScope.activeModel){
+                if (datatype.id === $rootScope.activeModel) {
                     $rootScope.displayNullView();
-                    }
-                $rootScope.filteredDatatypesList.splice(index, 1);
+                }
+                if ($rootScope.filteredDatatypesList && $rootScope.filteredDatatypesList != null) {
+                    var index = $rootScope.filteredDatatypesList.indexOf(datatype);
+                    if (index >= 0)
+                        $rootScope.filteredDatatypesList.splice(index, 1);
+                }
                 dtToDelete = datatype;
             }, function () {
             });
@@ -501,15 +514,15 @@ angular.module('igl').factory(
         }
 
         svc.deleteSegment = function (segment) {
-        	$rootScope.references = [];
-        	angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
-        		$rootScope.findSegmentRefs(segment, message, message.name);
-        	});
-            
+            $rootScope.references = [];
+            angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
+                $rootScope.findSegmentRefs(segment, message, message.name);
+            });
+
             if ($rootScope.references != null && $rootScope.references.length > 0) {
                 abortSegmentDelete(segment);
             } else {
-          
+
                 confirmSegmentDelete(segment);
             }
         }
@@ -544,12 +557,15 @@ angular.module('igl').factory(
             });
             modalInstance.result.then(function (segment) {
                 segToDelete = segment;
-            	if(segment.id===$rootScope.activeModel){
+                if (segment.id === $rootScope.activeModel) {
                     $rootScope.displayNullView();
-                    }
-                var index = $rootScope.filteredSegmentsList.indexOf(segment);
-                $rootScope.filteredSegmentsList.splice(index, 1);
-                
+                }
+                if ($rootScope.filteredSegmentsList && $rootScope.filteredSegmentsList != null) {
+                    var index = $rootScope.filteredSegmentsList.indexOf(segment);
+                    if (index >= 0)
+                        $rootScope.filteredSegmentsList.splice(index, 1);
+                }
+
             }, function () {
             });
         };
@@ -619,7 +635,7 @@ angular.module('igl').factory(
         }
 
         svc.deleteSection = function (section) {
-            SectionSvc.delete($rootScope.igdocument.id,section.reference).then(function(result){
+            SectionSvc.delete($rootScope.igdocument.id, section.reference).then(function (result) {
                 var secLive = section.parent.childSections;
 
                 var idxP = _.findIndex(secLive, function (child) {
@@ -627,7 +643,7 @@ angular.module('igl').factory(
                 });
                 section.parent.childSections.splice(idxP, 1);
 
-            }, function(error){
+            }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
@@ -650,7 +666,7 @@ angular.module('igl').factory(
             });
             return sorted;
         }
-        
+
         function sortElementsByAlphabetically(chidren) {
             return _.sortBy(chidren, "name");
         }
