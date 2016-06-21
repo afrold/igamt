@@ -708,7 +708,7 @@ angular.module('igl')
                     $rootScope.processSegmentsTree($rootScope.segment, null);
                 }
 
-                var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary);
+                var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary.children);
                 var newLink = SegmentService.getSegmentLink(result);
                 SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {
                     SegmentService.saveNewElements().then(function() {

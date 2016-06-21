@@ -313,14 +313,14 @@
                                         ng-click="addColumnCoConstraints(newColumnField, newColumnConstraintType); newColumnField = null; newColumnConstraintType = ''; "
                                         ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                                     <span><i class="fa fa-plus fa-fw">
-                                        &nbsp; </i>Add Column for CoConstraints Table</span></button>
+                                        &nbsp; </i>Add Column</span></button>
                             </span>
             </div>
             <!--<span ng-hide="segment.coConstraints.columnList.length > 0">No Co-Constraint</span>-->
             <div class="pull-right">
                 <button class="btn btn-danger btn-xs" ng-click="deleteCoConstraints();"
                         ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') || segment.coConstraints.constraints.length === 0">
-                    <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete CoConstraints</span></button>
+                    <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete Co-Constraints</span></button>
             </div>
                 </div>
             <table class="table table-striped table-bordered" ng-show="segment.coConstraints.columnList.length > 0">
