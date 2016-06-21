@@ -26,9 +26,7 @@ angular
                 $rootScope.loadingSegments=false;
                 $rootScope.loadingDataTypes=false;
                 $rootScope.loadingTables=false;
-                $scope.Activate = function(param) {
-                    $rootScope.activeModel = param;
-                }
+
 
                 $rootScope.switcherDatatypeLibrary = function() {
 
@@ -359,7 +357,7 @@ angular
 
                     newSection.sectionPosition = $rootScope.igdocument.childSections.length;
                     $scope.updateChildeSections($rootScope.igdocument.childSections);
-                    $scope.Activate(newSection.id);
+                    $rootScope.Activate(newSection.id);
                 };
 
                 $scope.igOptions = [
@@ -545,21 +543,13 @@ angular
                         }
                     ]
                 ];
-                $scope.addValueSets = [
-                    ['Add Value Sets',
-                        function($itemScope) {
-                            $scope.addTables($rootScope.igdocument);
-                        }
-                    ]
-                ];
-
 
                 function processEditSeg(seg) {
-                    $scope.Activate(seg.id);
+                    $rootScope.Activate(seg.id);
                     $scope.$emit('event:openSegment', seg);
                 };
 
-                $scope.editSeg = function(seg) {
+                $rootScope.editSeg = function(seg) {
 
                     if ($rootScope.hasChanges()) {
 
@@ -575,7 +565,7 @@ angular
                 };
 
                 function processEditIg(ig) {
-                    $scope.Activate(ig.id);
+                    $rootScope.Activate(ig.id);
                     $rootScope.igdocument = ig;
                     $scope.$emit('event:openDocumentMetadata',
                         $rootScope.igdocument);
@@ -597,7 +587,7 @@ angular
                 };
 
                 function processEditSection(section) {
-                    $scope.Activate(section.id);
+                    $rootScope.Activate(section.id);
                     $rootScope.section = section;
                     $scope.$emit('event:openSection', $rootScope.section);
                 };
@@ -620,7 +610,7 @@ angular
 
                 function processEditRoutSection(param) {
 
-                    $scope.Activate(param.id);
+                    $rootScope.Activate(param.id);
                     $rootScope.section = $scope.getRoutSectionByname(param);
                     //$rootScope.currentData=section;
 
@@ -643,7 +633,7 @@ angular
 
                 $scope.getRoutSectionByname = function(name) {
                     $rootScope.currentData = {};
-                    $scope.Activate(name);
+                    $rootScope.Activate(name);
                     if (name.toLowerCase() === 'conformance profiles') {
                         $rootScope.currentData = $rootScope.igdocument.profile.messages;
 
@@ -663,7 +653,7 @@ angular
                 
                 function processEditDataType(data) {
                     console.log("dialog not opened");
-                    $scope.Activate(data.id);
+                    $rootScope.Activate(data.id);
                     $rootScope.datatype = data;
                     $scope.$emit('event:openDatatype', $rootScope.datatype);
                 };
@@ -687,7 +677,7 @@ angular
 
 
                 function processEditTable(table) {
-                    $scope.Activate(table.id);
+                    $rootScope.Activate(table.id);
                     $rootScope.table = table;
                     $scope.$emit('event:openTable', $rootScope.table);
                 };
@@ -705,7 +695,7 @@ angular
                 };
 
                 function processEditMessage(message) {
-                    $scope.Activate(message.id);
+                    $rootScope.Activate(message.id);
                     $rootScope.message = message;
                     console.log("three");
                     console.log(message);
@@ -726,7 +716,7 @@ angular
                 };
 
                 function processEditProfile() {
-                    $scope.Activate("Message Infrastructure");
+                    $rootScope.Activate("Message Infrastructure");
                     $scope.$emit('event:openProfileMetadata',
                         $rootScope.igdocument);
                 };

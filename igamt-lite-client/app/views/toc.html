@@ -104,7 +104,7 @@ color:white;
                                 <div ui-tree-handle data-nodrag confirm-click style="margin-left:30px;" context-menu="SegmentOptions">
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : segment.id===activeModel}" confirm-click ng-click="editSeg(segment);">
 
-                                       <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
+                                       <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
                                    'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }">  {{getScopeLabel(segment)}} </span> {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                                 </div>
                             </li>
@@ -118,7 +118,7 @@ color:white;
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptions" style="margin-left:30px;">
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDataType(data)">
 
-                                     <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                     <span class="badge " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                    'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}" >  {{getScopeLabel(data)}}</span> {{getDatatypeLabel(data)}}-{{data.description}}
                                     </span>
                                 </div>
@@ -133,7 +133,7 @@ color:white;
                             <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node ng-if="!collapsevalueSet" data-type="table">
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="ValueSetOptions" style="margin-left:30px;">
                                     <span data-nodrag style="font-weight:normal;" ng-class="{selected : table.id===activeModel}" confirm-click ng-click="editTable(table)">
-                                     <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                     <span class="badge " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
                                     </span>
                                 </div>

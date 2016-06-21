@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService,TableService) {
+    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService) {
         $scope.editableDT = '';
         $scope.editableVS = '';
         $scope.readonly = false;
@@ -17,7 +17,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'DeleteComponent.html',
                 controller: 'DeleteComponentCtrl',
-                windowClass: 'flavor-modal-window',
+                size: 'md',
                 resolve: {
                     componentToDelete: function() {
                         return componentToDelete;
@@ -42,13 +42,11 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
-                size: 'lg',
+                size: 'md',
                 resolve: {
                     message: function() {
                         return message;
-                    },
-
-
+                    }
                 }
             });
             modalInstance.result.then(function() {
@@ -116,27 +114,27 @@ angular.module('igl')
             $scope.DTselected = false;
 
         };
-         $scope.redirectDT = function(datatype) {
+        $scope.redirectDT = function(datatype) {
             DatatypeService.getOne(datatype.id).then(function(datatype) {
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
-                    windowClass: 'flavor-modal-window',
+                    size: 'md',
                     resolve: {
-                        destination:function(){
+                        destination: function() {
                             return datatype;
                         }
                     }
 
 
-                    
+
                 });
                 modalInstance.result.then(function() {
                     $rootScope.editDataType(datatype);
                 });
 
 
-                
+
             });
         };
 
@@ -208,6 +206,15 @@ angular.module('igl')
 
         $scope.editVS = function(field) {
             $scope.editableVS = field.id;
+            if (field.table !== null) {
+                $scope.VSselected = true;
+                $scope.selectedValueSet = field.table;
+                console.log($scope.selectedValueSet);
+
+            } else {
+                $scope.VSselected = false;
+
+            }
         };
         $scope.backVS = function() {
             $scope.editableVS = '';
@@ -222,6 +229,15 @@ angular.module('igl')
         };
         $scope.applyVS = function(field) {
             $scope.editableVS = '';
+            if (field.table === null) {
+                field.table = {
+                    id: '',
+                    bindingIdentifier: ''
+
+                };
+                console.log(field);
+
+            }
 
             field.table.id = $scope.selectedValueSet.id;
             field.table.bindingIdentifier = $scope.selectedValueSet.bindingIdentifier;
@@ -230,27 +246,27 @@ angular.module('igl')
 
         };
 
-         $scope.redirectVS = function(valueSet) {
+        $scope.redirectVS = function(valueSet) {
             TableService.getOne(valueSet.id).then(function(valueSet) {
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
-                    windowClass: 'flavor-modal-window',
+                    size: 'md',
                     resolve: {
-                        destination:function(){
+                        destination: function() {
                             return valueSet;
                         }
                     }
 
 
-                    
+
                 });
                 modalInstance.result.then(function() {
                     $rootScope.editTable(valueSet);
                 });
 
 
-                
+
             });
         };
 
@@ -589,7 +605,7 @@ angular.module('igl')
                 datatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
             }
             DatatypeService.save(datatype).then(function(result) {
-                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary);
+                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary.children);
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
                 DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function(link) {
@@ -662,7 +678,7 @@ angular.module('igl')
                         return $rootScope.datatypesMap[component.datatype.id];
                     },
 
-                    hl7Version: function () {
+                    hl7Version: function() {
                         return $rootScope.igdocument.profile.metaData.hl7Version;
                     },
                     datatypeLibrary: function() {
@@ -884,14 +900,14 @@ angular.module('igl')
             var indexFromMap = $rootScope.datatypesMap[$scope.selection.datatype.id] != undefined && $rootScope.datatypesMap[$scope.selection.datatype.id] != null ? 100 : -1;
 
             if (indexFromLibrary < 0 | indexFromCollection < 0 | indexFromMap < 0) {
-                DatatypeService.getOne($scope.selection.datatype.id).then(function (full) {
-                    DatatypeService.collectDatatypes(full.id).then(function (datatypes) {
-                        $rootScope.processSegmentsTree($rootScope.segment,null);
+                DatatypeService.getOne($scope.selection.datatype.id).then(function(full) {
+                    DatatypeService.collectDatatypes(full.id).then(function(datatypes) {
+                        $rootScope.processSegmentsTree($rootScope.segment, null);
                         $scope.ext = full.ext;
                         $scope.selection.datatype = full;
                         $scope.selection.datatype["type"] = "datatype";
                         collectNewDatatypesAndTables($scope.selection.datatype, datatypes);
-                    }, function (error) {
+                    }, function(error) {
                         $scope.loadingSelection = false;
                         $rootScope.msg().text = "Sorry could not load the data type";
                         $rootScope.msg().type = "danger";
@@ -986,8 +1002,8 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
     };
 
 
-    $scope.mappingTable = function () {
-        if($scope.selectedNode.table == null || $scope.selectedNode.table == undefined) $scope.selectedNode.table = {};
+    $scope.mappingTable = function() {
+        if ($scope.selectedNode.table == null || $scope.selectedNode.table == undefined) $scope.selectedNode.table = {};
 
         $scope.selectedNode.table.id = $scope.selectedTable.id;
         $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
@@ -1294,23 +1310,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
     };
 });
 
-angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInstance, datatypes, datatype, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc,MessageService) {
-    /*    $scope.getDTs = function() {
-            DatatypeLibrarySvc.getDataTypeLibraryByScopesAndVersion(["USER","HL7STANDARD","MASTER"], datatype.hl7Version).then(function(data) {
-                console.log(data);
-
-                if (data !== undefined) {
-                    //FOR TESTING IN THE CLIENT $scope.allDatatypes = data.children;
-                    $scope.allDatatypes = data[0].children;
-                    console.log("$scope.datatypes");
-                    console.log($scope.allDatatypes);
-
-                }
-            });
-        }
-
-
-    */
+angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInstance, datatypes, datatype, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService) {
 
     $scope.valueSets = valueSets;
     $scope.datatypes = datatypes;
@@ -1382,6 +1382,32 @@ angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInst
             return $scope.DT.id === id;
         } else {
             return false;
+        }
+
+    };
+    $scope.selectUsage = function(usage) {
+        console.log(usage);
+        if (usage === 'X' || usage === 'W') {
+            $scope.newComponent.max = 0;
+            $scope.newComponent.min = 0;
+            $scope.disableMin = true;
+            $scope.disableMax = true;
+
+        } else if (usage === 'R') {
+            $scope.newComponent.min = 1;
+
+            $scope.disableMin = true;
+            $scope.disableMax = false;
+        } else if (usage === 'RE' || usage === 'O') {
+            $scope.newComponent.min = 0;
+
+            $scope.disableMin = true;
+            $scope.disableMax = false;
+
+        } else {
+            $scope.disableMin = false;
+            $scope.disableMax = false;
+
         }
 
     };

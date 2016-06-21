@@ -256,7 +256,9 @@
             _results = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                 node = _ref[_i];
-                _results.push(node.collapse());
+                if(node!==undefined){
+                    _results.push(node.collapse());
+                }
             }
             return _results;
         };
