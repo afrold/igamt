@@ -158,3 +158,14 @@ input.igl-has-error,select.igl-has-error {
     background-color: #efefef;
     cursor: pointer;
 }
+
+.form-control {
+    color: #2e3d49;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #dbe2e8;
+    border-radius: 2px;
+    box-shadow: 0 0.25em 0.5em 0 rgba(46, 61, 73, 0.12);
+    transition: box-shadow 0.3s ease, border 0.3s ease;
+}
+

@@ -914,30 +914,31 @@ angular.module('igl')
             $rootScope.subview = "EditSegments.html";
             if (segment && segment != null) {
                 $scope.loadingSelection = true;
-                SegmentService.get(segment.id).then(function(result) {
-                    $rootScope.segment = angular.copy(segment);
-                    $rootScope.currentData = $rootScope.segment;
-                    $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
-                    $rootScope.segment["type"] = "segment";
-                    $rootScope.tableWidth = null;
-                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                    $scope.loadingSelection = false;
-                    if ($scope.segmentsParams)
-                        $scope.segmentsParams.refresh();
-                    $scope.loadingSelection = false;
-                    $rootScope.$emit("event:initEditArea");
-                }, function(error) {
-                    $scope.loadingSelection = false;
-                    $rootScope.msg().text = error.data.text;
-                    $rootScope.msg().type = error.data.type;
-                    $rootScope.msg().show = true;
-                });
+                $timeout(
+                    function() {
+                        SegmentService.get(segment.id).then(function (result) {
+                            $rootScope.segment = angular.copy(segment);
+                            $rootScope.currentData = $rootScope.segment;
+                            $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
+                            $rootScope.segment["type"] = "segment";
+                            $rootScope.tableWidth = null;
+                            $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                            $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                            $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                            $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                            $scope.loadingSelection = false;
+                            if ($scope.segmentsParams)
+                                $scope.segmentsParams.refresh();
+                            $scope.loadingSelection = false;
+                            $rootScope.$emit("event:initEditArea");
+                        }, function (error) {
+                            $scope.loadingSelection = false;
+                            $rootScope.msg().text = error.data.text;
+                            $rootScope.msg().type = error.data.type;
+                            $rootScope.msg().show = true;
+                        });
+                    }, 100);
             }
-
-
         };
 
         $scope.selectDocumentMetaData = function() {
@@ -969,6 +970,8 @@ angular.module('igl')
             $rootScope.subview = "EditDatatypes.html";
             if (datatype && datatype != null) {
                 $scope.loadingSelection = true;
+                $timeout(
+                    function() {
                 DatatypeService.getOne(datatype.id).then(function(result) {
                     $rootScope.datatype = angular.copy(result);
                     $rootScope.currentData = datatype;
@@ -991,6 +994,7 @@ angular.module('igl')
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
                 });
+                    }, 100);
             }
         };
 
@@ -998,12 +1002,12 @@ angular.module('igl')
             $rootScope.Activate(message.id);
             $rootScope.subview = "EditMessages.html";
             $scope.loadingSelection = true;
-            $rootScope.originalMessage = message;
-            $rootScope.message = angular.copy(message);
-            $rootScope.currentData = $rootScope.message;
-            $rootScope.processMessageTree($rootScope.message);
             $timeout(
                 function() {
+                    $rootScope.originalMessage = message;
+                    $rootScope.message = angular.copy(message);
+                    $rootScope.currentData = $rootScope.message;
+                    $rootScope.processMessageTree($rootScope.message);
                     $rootScope.tableWidth = null;
                     $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
                     $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 630);
