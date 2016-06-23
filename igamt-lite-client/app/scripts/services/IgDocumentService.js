@@ -2,8 +2,7 @@
  * Created by haffo on 3/9/16.
  */
 'use strict';
-angular.module('igl').factory('IgDocumentService',
-    ['$rootScope', 'ViewSettings', '$q', 'userInfoService', '$http', 'StorageService', '$cookies', function ($rootScope, ViewSettings, $q, userInfoService, $http, StorageService, $cookies) {
+angular.module('igl').factory('IgDocumentService', function ($rootScope, ViewSettings, $q, userInfoService, $http, StorageService, $cookies,blockUI) {
         var IgDocumentService = {
             save: function (igDocument) {
                 $rootScope.saved = false;
@@ -24,6 +23,7 @@ angular.module('igl').factory('IgDocumentService',
                 return delay.promise;
             },
             exportAs: function (igDocument, format) {
+                blockUI.start();
                 var form = document.createElement("form");
                 form.action = $rootScope.api('api/igdocuments/' + igDocument.id + '/export/' + format);
                 form.method = "POST";
@@ -35,6 +35,7 @@ angular.module('igl').factory('IgDocumentService',
                 form.style.display = 'none';
                 document.body.appendChild(form);
                 form.submit();
+                blockUI.stop();
             },
 
             addMessage: function (igId, child) {
@@ -69,5 +70,4 @@ angular.module('igl').factory('IgDocumentService',
             }
     };
 return IgDocumentService;
-}])
-;
+});

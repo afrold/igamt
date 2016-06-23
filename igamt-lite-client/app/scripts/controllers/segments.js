@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService) {
+    .controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService,blockUI) {
         //        $scope.loading = false;
         $scope.editableDT = '';
         $scope.editableVS = '';
@@ -72,6 +72,7 @@ angular.module('igl')
             $scope.editableField = '';
         };
         $scope.applyField = function(segment, field, name, position) {
+            blockUI.start();
             $scope.editableField = '';
             if (field) {
                 field.name = name;
@@ -86,7 +87,7 @@ angular.module('igl')
             if ($scope.segmentsParams)
                 $scope.segmentsParams.refresh();
             $scope.Posselected = false;
-
+            blockUI.stop();
 
         };
 
@@ -99,6 +100,7 @@ angular.module('igl')
 
         };
         $scope.applyDT = function(field, datatype) {
+            blockUI.start();
             $scope.editableDT = '';
 
             field.datatype.ext = JSON.parse(datatype).ext;
@@ -111,6 +113,7 @@ angular.module('igl')
             if ($scope.segmentsParams)
                 $scope.segmentsParams.refresh();
             $scope.DTselected = false;
+            blockUI.stop();
 
         };
 
@@ -289,7 +292,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'AddFieldModal.html',
                 controller: 'AddFieldCtrl',
-                windowClass: 'app-modal-window',
+                windowClass: 'creation-modal-window',
                 resolve: {
 
                     valueSets: function() {
@@ -387,6 +390,7 @@ angular.module('igl')
         };
 
         $scope.reset = function() {
+            blockUI.start();
             SegmentService.reset();
             if ($scope.editForm) {
                 $scope.editForm.$dirty = false;
@@ -399,6 +403,7 @@ angular.module('igl')
             if ($scope.segmentsParams) {
                 $scope.segmentsParams.refresh();
             }
+            blockUI.stop();
         };
 
         $scope.close = function() {
@@ -1260,7 +1265,7 @@ angular.module('igl').controller('SegmentReferencesCtrl', function($scope, $moda
 });
 
 
-angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance, datatypes, segment, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService) {;
+angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance, datatypes, segment, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService, blockUI) {;
 
 
     $scope.valueSets = valueSets;
@@ -1279,7 +1284,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
             ext: null,
             id: "",
             label: "",
-            name: "",
+            name: ""
         },
         hide: false,
         id: "",
@@ -1294,11 +1299,11 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
             bindingIdentifier: "",
             bindingLocation: null,
             bindingStrength: null,
-            id: "",
+            id: ""
         },
         text: "",
         type: "field",
-        usage: "",
+        usage: ""
 
 
     };
@@ -1400,6 +1405,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
 
 
     $scope.addField = function() {
+        blockUI.start();
         if ($rootScope.segment.fields.length !== 0) {
             $scope.newField.position = $rootScope.segment.fields[$rootScope.segment.fields.length - 1].position + 1;
 
@@ -1421,6 +1427,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
             }
 
         }
+        blockUI.stop();
         $modalInstance.close();
 
     };
@@ -1434,7 +1441,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
 });
 
 
-angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInstance, fieldToDelete, segment, $rootScope, SegmentService) {
+angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInstance, fieldToDelete, segment, $rootScope, SegmentService,blockUI) {
     $scope.fieldToDelete = fieldToDelete;
     $scope.loading = false;
     console.log(segment);
@@ -1447,6 +1454,7 @@ angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInsta
 
     };
     $scope.delete = function() {
+        blockUI.start();
         $scope.loading = true;
         segment.fields.splice(fieldToDelete.position - 1, 1);
 
@@ -1457,10 +1465,9 @@ angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInsta
         $rootScope.msg().show = true;
         $rootScope.manualHandle = true;
         $scope.loading = false;
-        $modalInstance.close($scope.fieldToDelete);
         $scope.updatePosition(segment);
-
-
+        blockUI.stop();
+        $modalInstance.close($scope.fieldToDelete);
     };
 
 

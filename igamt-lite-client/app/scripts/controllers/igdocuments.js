@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc) {
+    .controller('IGDocumentListCtrl', function($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc,blockUI) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -41,9 +41,10 @@ angular.module('igl')
         $rootScope.saved = false;
 
         $scope.usageFilter = function() {
+            blockUI.start();
             $rootScope.usageF = true;
-
             $('#treeTable').treetable('collapseAll');
+            blockUI.stop();
             return false;
 
         };
@@ -352,10 +353,12 @@ angular.module('igl')
         }
 
         $scope.displayRegularTree = function() {
+            blockUI.start();
             console.log("IN REGULAR")
                 //$rootScope.loadingTree =! $rootScope.loadingTree;
             $scope.ready = false;
             $scope.tocView = 'views/toc.html';
+            blockUI.stop();
 
         }
 
@@ -747,6 +750,7 @@ angular.module('igl')
         };
 
         $scope.exportAsMessages = function(id, mids) {
+            blockUI.start();
             var form = document.createElement("form");
             form.action = $rootScope.api('api/igdocuments/' + id + '/export/pdf/' + mids);
             form.method = "POST";
@@ -758,6 +762,7 @@ angular.module('igl')
             form.style.display = 'none';
             document.body.appendChild(form);
             form.submit();
+            blockUI.stop();
         };
 
         $scope.exportAs = function(format) {
@@ -779,6 +784,7 @@ angular.module('igl')
         };
 
         $scope.exportDelta = function(id, format) {
+            blockUI.start();
             var form = document.createElement("form");
             form.action = $rootScope.api('api/igdocuments/' + id + '/delta/' + format);
             form.method = "POST";
@@ -790,6 +796,7 @@ angular.module('igl')
             form.style.display = 'none';
             document.body.appendChild(form);
             form.submit();
+            blockUI.stop();
         };
 
         $scope.close = function() {
@@ -840,6 +847,7 @@ angular.module('igl')
 
 
         $scope.exportChanges = function() {
+            blockUI.start();
             var form = document.createElement("form");
             form.action = 'api/igdocuments/export/changes';
             form.method = "POST";
@@ -855,6 +863,7 @@ angular.module('igl')
             form.style.display = 'none';
             document.body.appendChild(form);
             form.submit();
+            blockUI.stop();
         };
 
         $scope.viewChanges = function(changes) {
@@ -914,6 +923,7 @@ angular.module('igl')
             $rootScope.subview = "EditSegments.html";
             if (segment && segment != null) {
                 $scope.loadingSelection = true;
+                blockUI.start();
                 $timeout(
                     function() {
                         SegmentService.get(segment.id).then(function (result) {
@@ -927,15 +937,21 @@ angular.module('igl')
                             $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
                             $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
                             $scope.loadingSelection = false;
+                            try{
                             if ($scope.segmentsParams)
                                 $scope.segmentsParams.refresh();
+                            }catch(e){
+
+                            }
                             $scope.loadingSelection = false;
                             $rootScope.$emit("event:initEditArea");
+                            blockUI.stop();
                         }, function (error) {
                             $scope.loadingSelection = false;
                             $rootScope.msg().text = error.data.text;
                             $rootScope.msg().type = error.data.type;
                             $rootScope.msg().show = true;
+                            blockUI.stop();
                         });
                     }, 100);
             }
@@ -944,12 +960,14 @@ angular.module('igl')
         $scope.selectDocumentMetaData = function() {
             $rootScope.subview = "EditDocumentMetadata.html";
             $scope.loadingSelection = true;
+            blockUI.start();
             $rootScope.metaData = angular.copy($rootScope.igdocument.metaData);
             $rootScope.currentData = $rootScope.igdocument;
             $timeout(
                 function() {
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
+                    blockUI.stop();
                 }, 100);
         };
 
@@ -958,10 +976,12 @@ angular.module('igl')
             $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
             $rootScope.currentData = $rootScope.igdocument.profile;
             $scope.loadingSelection = true;
+            blockUI.start();
             $timeout(
                 function() {
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
+                    blockUI.stop();
                 }, 100);
         };
 
@@ -970,6 +990,7 @@ angular.module('igl')
             $rootScope.subview = "EditDatatypes.html";
             if (datatype && datatype != null) {
                 $scope.loadingSelection = true;
+                blockUI.start();
                 $timeout(
                     function() {
                 DatatypeService.getOne(datatype.id).then(function(result) {
@@ -985,14 +1006,20 @@ angular.module('igl')
                     $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 890);
                     $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 890);
                     $scope.loadingSelection = false;
+                    try {
                     if ($scope.datatypesParams)
                         $scope.datatypesParams.refresh();
+                    }catch(e){
+
+                    }
                     $rootScope.$emit("event:initEditArea");
+                    blockUI.stop();
                 }, function(error) {
                     $scope.loadingSelection = false;
                     $rootScope.msg().text = error.data.text;
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
+                    blockUI.stop();
                 });
                     }, 100);
             }
@@ -1002,6 +1029,7 @@ angular.module('igl')
             $rootScope.Activate(message.id);
             $rootScope.subview = "EditMessages.html";
             $scope.loadingSelection = true;
+            blockUI.start();
             $timeout(
                 function() {
                     $rootScope.originalMessage = message;
@@ -1014,9 +1042,14 @@ angular.module('igl')
                     $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
                     $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
                     $scope.loadingSelection = false;
-                    if ($scope.messagesParams)
-                        $scope.messagesParams.refresh();
+                    try {
+                        if ($scope.messagesParams)
+                            $scope.messagesParams.refresh();
+                    }catch(e){
+
+                    }
                     $rootScope.$emit("event:initEditArea");
+                    blockUI.stop();
                 }, 100);
         };
 
@@ -1025,6 +1058,7 @@ angular.module('igl')
             var table = angular.copy(t);
             $rootScope.subview = "EditValueSets.html";
             $scope.loadingSelection = true;
+            blockUI.start();
             $timeout(
                 function() {
                     $rootScope.table = table;
@@ -1040,6 +1074,7 @@ angular.module('igl')
                     }
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
+                    blockUI.stop();
                 }, 100);
         };
 
@@ -1050,6 +1085,8 @@ angular.module('igl')
             }
             $rootScope.subview = "EditSections.html";
             $scope.loadingSelection = true;
+            blockUI.start();
+
             $timeout(
                 function() {
                     $rootScope.section = angular.copy(section);
@@ -1057,6 +1094,7 @@ angular.module('igl')
                     $rootScope.originalSection = section;
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
+                    blockUI.stop();
                 }, 100);
         };
 
@@ -1223,7 +1261,7 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $
     };
 });
 
-angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootScope, $http, IgDocumentService) {
+angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootScope, $http, IgDocumentService,blockUI) {
     $scope.saving = false;
     $scope.saved = false;
 
@@ -1255,14 +1293,16 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootS
         }
     };
     $scope.reset = function() {
+        blockUI.start();
         $scope.editForm.$dirty = false;
         $scope.editForm.$setPristine();
         $rootScope.clearChanges();
         $rootScope.metaData = angular.copy($rootScope.igdocument.metaData);
+        blockUI.stop();
     };
 });
 
-angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootScope, $http, ProfileSvc) {
+angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootScope, $http, ProfileSvc,blockUI) {
     $scope.saving = false;
     $scope.saved = false;
     $scope.save = function() {
@@ -1290,10 +1330,12 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootSc
         }
     };
     $scope.reset = function() {
+        blockUI.start();
         $scope.editForm.$dirty = false;
         $scope.editForm.$setPristine();
         $rootScope.clearChanges();
         $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
+        blockUI.stop();
 
     };
 });
@@ -1498,7 +1540,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
         $scope.ok = function() {
             var newLink = angular.fromJson({
                 id: $scope.newDatatype.id,
-                name: $scope.newDatatype.name,
+                name: $scope.newDatatype.name
             });
 
             $scope.newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);

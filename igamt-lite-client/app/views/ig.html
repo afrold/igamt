@@ -469,17 +469,17 @@ if (self === top) {
     <div>
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Add Segment</h3>
+                <h3 class="modal-title">Create Segment</h3>
             </div>
             <form name="addSeg" id="addSeg">
                 <div class="modal-body">
                     <div class="container">
                         <div class="row" style="margin-bottom: 20px">
+                            <p>HL7 Version:{{hl7Version}}</p>
                             <div class="form-group control-group">
-                                <label class="col-md-3 control-label">HL7 Version:{{hl7Version}}</label>
                                 <div class="controls ">
-                                    <input style="width:30% " class="form-control col-md-4" type="text" ng-model="search.name" ng-hide="selected()" required/>
-                                    <li style="width:30% " class="form-control col-md-4 col-md-offset-3" ng-show="selected()">
+                                    <input style="width:90% " class="form-control col-md-8" type="text" ng-model="search.name" ng-hide="selected()" required/>
+                                    <li style="width:90% " class="form-control col-md-8" ng-show="selected()">
                                         {{newSegment.name}}
                                         <button type="button" class="close" aria-label="Close" ng-click="unselect()">
                                             <span aria-hidden="true">&times;</span>
@@ -487,7 +487,7 @@ if (self === top) {
                                     </li>
                                 </div>
                                 <div ng-if="search.name && !selected()">
-                                    <li style="width:30% " class="form-control col-md-4 col-md-offset-3" ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in hl7Segments | filter:search " value="{{segment}}">
+                                    <li style="width:90% " class="form-control col-md-8" ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in hl7Segments | filter:search " value="{{segment}}">
                                         {{segment.name}}
                                     </li>
                                 </div>

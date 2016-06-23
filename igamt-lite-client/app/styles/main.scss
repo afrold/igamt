@@ -2314,3 +2314,17 @@ table.conformance-profiles-table td {
 
 
 }
+
+.creation-modal-window .modal-dialog {
+  width: 60%;
+  height: 90%;
+  overflow-y: auto;
+}
+
+.creation-modal-content{
+  max-width: 100% !important;
+  max-height: 100% !important;
+  overflow: auto;
+}
+
+

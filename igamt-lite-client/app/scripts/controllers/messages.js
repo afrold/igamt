@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService) {
+    .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService,blockUI) {
 
 
 
@@ -85,9 +85,7 @@ angular.module('igl')
                 resolve: {
                     message: function() {
                         return message;
-                    },
-
-
+                    }
                 }
             });
             modalInstance.result.then(function() {
@@ -119,9 +117,11 @@ angular.module('igl')
 
 
         $scope.reset = function() {
+            blockUI.start();
             MessageService.reset();
             $rootScope.processMessageTree($rootScope.message);
             cleanState();
+            blockUI.stop();
         };
 
         var findIndex = function(id) {
@@ -197,7 +197,7 @@ angular.module('igl')
                 resolve: {
                     segOrGrpToDelete: function() {
                         return segmentRefOrGrp;
-                    },
+                    }
 
 
                 }
@@ -226,6 +226,7 @@ angular.module('igl')
             $scope.editableGrp = '';
         };
         $scope.applyGrp = function(group, name, position) {
+            blockUI.start();
             $scope.editableGrp = '';
             if (group) {
                 group.obj.name = name;
@@ -242,7 +243,7 @@ angular.module('igl')
                 $scope.messagesParams.refresh();
             $scope.Posselected = false;
 
-
+            blockUI.stop();
         };
 
 
@@ -311,9 +312,10 @@ angular.module('igl')
         };
 
         $scope.backSeg = function() {
+            blockUI.start();
             $scope.editableSeg = '';
             // segmentRef.obj.position=$scope.initialPosition;
-
+            blockUI.stop();
         };
 
 
@@ -321,6 +323,7 @@ angular.module('igl')
 
 
         $scope.applySeg = function(segmentRef, segment, position) {
+            blockUI.start();
             $scope.editableSeg = '';
             console.log(segment);
 
@@ -347,7 +350,7 @@ angular.module('igl')
                 $scope.messagesParams.refresh();
             $scope.Segselected = false;
             $scope.Posselected = false;
-
+            blockUI.stop();
 
         };
 
@@ -421,7 +424,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'AddSegmentModal.html',
                 controller: 'AddSegmentCtrl',
-                windowClass: 'app-modal-window',
+                windowClass: 'creation-modal-window',
                 resolve: {
                     segments: function() {
                         return $rootScope.segments;
@@ -448,7 +451,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'AddGroupModal.html',
                 controller: 'AddGroupCtrl',
-                windowClass: 'app-modal-window',
+                windowClass: 'creation-modal-window',
                 resolve: {
                     segments: function() {
                         return $rootScope.segments;
@@ -1505,7 +1508,7 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function($scope, $m
 
 });
 
-angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService) {
+angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService,blockUI) {
     $scope.segmentParent = place;
     //console.log(place);
 
@@ -1529,13 +1532,13 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
             ext: null,
             id: "",
             label: "",
-            name: "",
+            name: ""
         },
         scope: null,
         status: null,
         type: "segmentRef",
         usage: "",
-        version: null,
+        version: null
 
     };
     $scope.$watch('newSeg', function() {
@@ -1607,7 +1610,7 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
 
 
     $scope.addSegment = function() {
-
+        blockUI.start();
         if (place.type === "message") {
 
 
@@ -1632,7 +1635,7 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
         if ($scope.messagesParams) {
             $scope.messagesParams.refresh();
         }
-
+        blockUI.stop();
         $modalInstance.close();
 
     };
@@ -1646,7 +1649,7 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
 });
 
 
-angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService) {
+angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService,blockUI) {
     $scope.groupParent = place;
 
     $scope.newGroup = {
@@ -1668,7 +1671,7 @@ angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance
         status: null,
         type: "group",
         usage: "",
-        version: null,
+        version: null
 
     };
     $scope.selectUsage = function(usage) {
@@ -1700,7 +1703,7 @@ angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance
 
 
     $scope.addGroup = function() {
-
+        blockUI.start();
 
         $scope.newGroup.id = new ObjectId().toString();
         $scope.newGroup.name = $scope.grpName;
@@ -1740,7 +1743,7 @@ angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance
         if ($scope.messagesParams) {
             $scope.messagesParams.refresh();
         }
-
+        blockUI.stop();
         $modalInstance.close();
 
 
@@ -1758,7 +1761,7 @@ angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance
 
 
 
-angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $modalInstance, segOrGrpToDelete, $rootScope, MessageService) {
+angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $modalInstance, segOrGrpToDelete, $rootScope, MessageService,blockUI) {
     $scope.segOrGrpToDelete = segOrGrpToDelete;
     $scope.loading = false;
     $scope.updatePosition = function(node) {
@@ -1770,6 +1773,7 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
     };
     $scope.delete = function() {
         $scope.loading = true;
+        blockUI.start();
         $scope.path = segOrGrpToDelete.path.replace(/\[[0-9]+\]/g, '');
         $scope.path = $scope.path.split(".");
         MessageService.deleteSegFromPath($scope.path, $rootScope.message).then(function() {
@@ -1784,18 +1788,20 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
             $rootScope.msg().show = true;
             $rootScope.manualHandle = true;
             $scope.loading = false;
+            $scope.updatePosition($rootScope.parentGroup);
+            $rootScope.messageTree = null;
+            $rootScope.processMessageTree($rootScope.message);
+            blockUI.stop();
             $modalInstance.close($scope.segOrGrpToDelete);
-
         }, function(error) {
             $rootScope.msg().text = error.data.text;
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
             $rootScope.manualHandle = true;
             $scope.loading = false;
+            blockUI.stop();
         });
-        $scope.updatePosition($rootScope.parentGroup);
-        $rootScope.messageTree = null;
-        $rootScope.processMessageTree($rootScope.message);
+
 
     };
 
@@ -1808,13 +1814,14 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
 });
 
 
-angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, message, $rootScope) {
+angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, message, $rootScope,blockUI) {
     console.log(message);
     $scope.message = message;
     $scope.loading = false;
 
     $scope.confirm = function(message) {
         $scope.loading = true;
+        blockUI.start();
         if ($scope.message.type === 'message') {
             for (var node = 0; node < message.children.length; node++) {
                 if (message.children[node].usage === "O") {
@@ -1862,11 +1869,10 @@ angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, me
         $rootScope.msg().show = true;
         $rootScope.manualHandle = true;
         $scope.loading = false;
-        $modalInstance.close($scope.message);
         $rootScope.messageTree = null;
         $rootScope.processMessageTree($rootScope.message);
-
-
+        blockUI.stop();
+        $modalInstance.close($scope.message);
     };
 
 

@@ -383,15 +383,6 @@ if (self === top) {
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
                 <div ng-show="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
-                    <!--<select class="form-control input-sm"-->
-                    <!--name="datatype"-->
-                    <!--ng-model="node.datatype"-->
-                    <!--ng-change="onDatatypeChange(node)"-->
-                    <!--required-->
-                    <!--ng-selected="dt.id === node.datatype"-->
-                    <!--ng-class="{ 'igl-has-error has-feedback' : innerForm.datatype.$invalid}"-->
-                    <!--ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name">-->
-                    <!--</select>-->
                     <a  class="point" ng-show="editableDT!==node.id " ng-click="redirectDT(node.datatype)">
                         {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                     </a>
@@ -412,11 +403,6 @@ if (self === top) {
                     </a>
                     </div>
                 </div>
-                <!--<div ng-show="node.datatype === null || datatypesMap[node.datatype.id] === null || !datatypesMap[node.datatype.id]">-->
-                <!--<a ng-click="showSelectDatatypeDlg(node)">-->
-                <!--<i class="fa fa-plus fa-fw"></i>-->
-                <!--</a>-->
-                <!--</div>-->
             </ng-form>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
@@ -552,7 +538,7 @@ if (self === top) {
         </td>
         <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <p ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
-                <span tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
+                <span tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </p>
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
@@ -610,7 +596,7 @@ if (self === top) {
             </p>
         </td>
         <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+            <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
@@ -668,7 +654,7 @@ if (self === top) {
             </p>
         </td>
         <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+            <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">

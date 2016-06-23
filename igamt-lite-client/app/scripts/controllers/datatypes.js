@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService) {
+    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService,blockUI) {
         $scope.editableDT = '';
         $scope.editableVS = '';
         $scope.readonly = false;
@@ -30,10 +30,14 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function() {
-                $scope.setDirty();
 
-                if ($scope.datatypesParams)
-                    $scope.datatypesParams.refresh();
+                $scope.setDirty();
+                try {
+                    if ($scope.datatypesParams)
+                        $scope.datatypesParams.refresh();
+                }catch(e){
+
+                }
             });
         };
 
@@ -51,9 +55,12 @@ angular.module('igl')
             });
             modalInstance.result.then(function() {
                 $scope.setDirty();
+                try {
+                    if ($scope.datatypesParams)
+                        $scope.datatypesParams.refresh();
+                }catch(e){
 
-                if ($scope.datatypesParams)
-                    $scope.datatypesParams.refresh();
+                }
             });
         };
 
@@ -68,6 +75,7 @@ angular.module('igl')
             $scope.editableComp = '';
         };
         $scope.applyComp = function(datatype, component, name, position) {
+            blockUI.start();
             $scope.editableComp = '';
             if (component) {
                 component.name = name;
@@ -82,7 +90,7 @@ angular.module('igl')
             if ($scope.datatypesParams)
                 $scope.datatypesParams.refresh();
             $scope.Posselected = false;
-
+            blockUI.stop();
 
         };
         $scope.selectPos = function() {
@@ -100,6 +108,7 @@ angular.module('igl')
 
         };
         $scope.applyDT = function(field, datatype) {
+            blockUI.start();
             field.datatype.ext = JSON.parse(datatype).ext;
             field.datatype.id = JSON.parse(datatype).id;
             field.datatype.label = JSON.parse(datatype).label;
@@ -112,6 +121,7 @@ angular.module('igl')
                 $scope.datatypesParams.refresh();
             $scope.editableDT = '';
             $scope.DTselected = false;
+            blockUI.stop();
 
         };
         $scope.redirectDT = function(datatype) {
@@ -142,7 +152,6 @@ angular.module('igl')
         $scope.editDT = function(field) {
             $scope.editableDT = field.id;
             $scope.loadLibrariesByFlavorName = function() {
-                console.log($rootScope.igdocument);
                 var delay = $q.defer();
                 $scope.ext = null;
                 $scope.results = [];
@@ -329,8 +338,10 @@ angular.module('igl')
         };
 
         $scope.reset = function() {
+            blockUI.start();
             DatatypeService.reset();
             cleanState();
+            blockUI.stop();
         };
 
         $scope.recordDatatypeChange = function(type, command, id, valueType, value) {
@@ -348,7 +359,6 @@ angular.module('igl')
 
         $scope.delete = function(datatype) {
             CloneDeleteSvc.deleteDatatype(datatype);
-            $rootScope.$broadcast('event:SetToC');
         };
 
         $scope.hasChildren = function(node) {
@@ -1310,7 +1320,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
     };
 });
 
-angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInstance, datatypes, datatype, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService) {
+angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInstance, datatypes, datatype, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService,blockUI) {
 
     $scope.valueSets = valueSets;
     $scope.datatypes = datatypes;
@@ -1335,11 +1345,11 @@ angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInst
             bindingIdentifier: "",
             bindingLocation: null,
             bindingStrength: null,
-            id: "",
+            id: ""
         },
         text: "",
         type: "component",
-        usage: "",
+        usage: ""
 
 
     };
@@ -1433,6 +1443,7 @@ angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInst
 
 
     $scope.addComponent = function() {
+        blockUI.start();
         if ($rootScope.datatype.components.length !== 0) {
             $scope.newComponent.position = $rootScope.datatype.components[$rootScope.datatype.components.length - 1].position + 1;
 
@@ -1453,6 +1464,7 @@ angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInst
 
 
         }
+        blockUI.stop();
         $modalInstance.close();
 
     };
@@ -1468,7 +1480,7 @@ angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInst
 
 
 
-angular.module('igl').controller('DeleteComponentCtrl', function($scope, $modalInstance, componentToDelete, datatype, $rootScope, SegmentService) {
+angular.module('igl').controller('DeleteComponentCtrl', function($scope, $modalInstance, componentToDelete, datatype, $rootScope, SegmentService,blockUI) {
     $scope.componentToDelete = componentToDelete;
     $scope.loading = false;
     console.log(datatype);
@@ -1481,6 +1493,7 @@ angular.module('igl').controller('DeleteComponentCtrl', function($scope, $modalI
 
     };
     $scope.delete = function() {
+        blockUI.start();
         $scope.loading = true;
         datatype.components.splice(componentToDelete.position - 1, 1);
 
@@ -1491,9 +1504,9 @@ angular.module('igl').controller('DeleteComponentCtrl', function($scope, $modalI
         $rootScope.msg().show = true;
         $rootScope.manualHandle = true;
         $scope.loading = false;
-        $modalInstance.close($scope.componentToDelete);
         $scope.updatePosition(datatype);
-
+        $modalInstance.close($scope.componentToDelete);
+        blockUI.stop();
 
     };
 

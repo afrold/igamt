@@ -1964,6 +1964,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.getConformanceStatementAsString = function (constraint) {
             return "[" + constraint.constraintId + "]" + constraint.description;
         };
+        $rootScope.getConstraintAsId = function (constraint) {
+            return "[" + constraint.constraintId + "]";
+        };
 
         $rootScope.getPredicateAsString = function (constraint) {
             return constraint.description;

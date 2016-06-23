@@ -2,7 +2,7 @@
  * Created by Jungyub on 4/01/15.
  */
 
-angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc) {
+angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc,blockUI) {
     $scope.readonly = false;
     $scope.codeSysEditMode = false;
     $scope.codeSysForm = {};
@@ -19,8 +19,10 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     };
 
     $scope.reset = function () {
+        blockUI.start();
         cleanState();
         $rootScope.table = angular.copy($rootScope.tablesMap[$rootScope.table.id]);
+        blockUI.stop();
     };
 
     var cleanState = function () {
@@ -288,7 +290,7 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
 //                    // We must delete from two collections.
 //                    var index = $rootScope.tables.indexOf($scope.tableToDelete);
 //                    $rootScope.tables.splice(index, 1);
-//                    var tmp = TableLibrarySvc.findOneChild($scope.tableToDelete.id, $rootScope.igdocument.profile.tableLibrary.children);
+//                    var tmp = TableLibrarySvc.findOneChiletd($scope.tableToDelete.id, $rootScope.igdocument.profile.tableLibrary.children);
 //                    index = $rootScope.igdocument.profile.tableLibrary.children.indexOf(tmp);
 //                    $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
 //                    $rootScope.tablesMap[$scope.tableToDelete.id] = null;
