@@ -422,7 +422,7 @@ if (self === top) {
                 <div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) ">
                     <a ng-click="manageConformanceStatement(node, message) "
                        tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
-                       tooltip-class="constraints-tooltip " ng-bind-html="getConformanceStatementAsString(constraint) "
+                       tooltip-class="constraints-tooltip " ng-bind-html="getConstraintAsId(constraint) "
                        tooltip-trigger
                        tooltip-animation="false " tooltip-placement="left "></a>
                 </div>
@@ -548,6 +548,7 @@ if (self === top) {
                     <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) ">
                         <a ng-click="managePredicate(node, message) "
                            tooltip-html="getPredicateAsString(constraint) " tooltip-append-to-body="true "
+                           class="point"
                            tooltip-class="constraints-tooltip " ng-bind-html="getPredicateAsString(constraint) "
                            tooltip-trigger
                            tooltip-animation="false " tooltip-placement="left "></a>
@@ -560,8 +561,9 @@ if (self === top) {
             <div>
                 <div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) ">
                     <a ng-click="manageConformanceStatement(node, message) "
+                       class="point"
                        tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
-                       tooltip-class="constraints-tooltip " ng-bind-html="getConformanceStatementAsString(constraint) "
+                       tooltip-class="constraints-tooltip " ng-bind-html="getConstraintAsId(constraint) "
                        tooltip-trigger
                        tooltip-animation="false " tooltip-placement="left "></a>
                 </div>

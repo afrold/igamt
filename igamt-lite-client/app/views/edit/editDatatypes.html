@@ -466,7 +466,7 @@ if (self === top) {
                     </a>
                 </div>
                 <p ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
-                    <a ng-click="manageConformanceStatement(node)" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
+                    <a ng-click="manageConformanceStatement(node)" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
                 </p>
             </div>
         </td>
