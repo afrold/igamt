@@ -16,7 +16,7 @@
 	</div>
 	<div ng-show="!loadingSelection">
 		<div ng-show="table !== null" id="executionPanel">
-				<div class="row" style="margin-left:0px; margin-right: 20px">
+				<div class="row" style="margin-left:0px; margin-right: 10px">
 					<div class="page-header" style="margin-bottom: 20px">
     					<span class="header4">Table: {{table.bindingIdentifier}}</span>
             				<span class="pull-right">
@@ -34,9 +34,12 @@
                 	        </button>
 						</span>
 					</div>
-	
-					<tabset>
-						<tab heading="Table MetaData">
+                    <div class="">
+                    <tabset>
+						<tab>
+                            <tab-heading>
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Table MetaData
+                            </tab-heading>
                             <div style="margin-top: 20px">
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIndentifier.$invalid}">
         						<label class="col-md-2 control-label">Mapping Indentifier</label>
@@ -138,7 +141,11 @@
                                 </div>
 						</tab>
 						
-						<tab heading="Table Definition">
+						<tab>
+                            <tab-heading>
+                                <i class="fa fa-table fa-fw" aria-hidden="true"></i> Table Definition
+                            </tab-heading>
+                            <div class="el-def">
 							<div class="">
 								<span class="pull-right">
 									<button title="Add new Value" type="button" ng-hide="viewSettings.tableReadonly" class="btn btn-sm btn-info" ng-click="addValue(); searchValue.value = ''; searchValue.label = '';">
@@ -277,8 +284,10 @@
                     				</table>
                 				</div>
 							</div>
+                                </div>
 						</tab>
 					</tabset>
+                    </div>
 				</div>
 		</div>
 	</div>

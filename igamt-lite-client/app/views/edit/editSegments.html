@@ -19,7 +19,7 @@
 </div>
 <div ng-show="!loadingSelection">
 <div ng-show="segment !== null" id="executionPanel">
-<div class="row" style="margin-left:0px; margin-right: 20px">
+<div class="row" style="margin-left:0px; margin-right: 10px">
 <div class="page-header" style="margin-bottom: 20px">
     <span class="header4">Segment: {{getSegmentLabel(segment)}}</span>
                         <span class="pull-right">
@@ -38,8 +38,12 @@
                          </button>
     </span>
 </div>
+<div class="">
 <tabset>
-<tab heading="Segment MetaData">
+<tab>
+    <tab-heading>
+        <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Segment MetaData
+    </tab-heading>
     <div style="margin-top: 20px">
         <div class="form-group control-group"
              ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
@@ -138,7 +142,11 @@
     </div>
 </tab>
 
-<tab heading="Segment Definition">
+<tab>
+<tab-heading>
+    <i class="fa fa-table fa-fw" aria-hidden="true"></i> Segment Definition
+</tab-heading>
+<div class="el-def">
 <span class="pull-left">
                                      <div ng-dropdown-multiselect=""
                                           options="viewSettings.columnOptions"
@@ -372,8 +380,10 @@
         </table>
     </div>
 </div>
+</div>
 </tab>
 </tabset>
+</div>
 </div>
 </div>
 </div>

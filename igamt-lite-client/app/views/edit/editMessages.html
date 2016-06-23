@@ -18,7 +18,7 @@ if (self === top) {
         </div>
         <div ng-if="!loadingSelection">
             <div ng-show="message !== null" id="executionPanel">
-                <div class="row" style="margin-left:0px; margin-right: 20px">
+                <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Conformance Profile: {{message.name}} </span>
                         <span class="pull-right">
@@ -32,8 +32,12 @@ if (self === top) {
                         </button>
                         </span>
                     </div>
+                    <div class="col-md-12">
                     <tabset>
-                        <tab heading="Conformance Profile MetaData">
+                        <tab>
+                            <tab-heading>
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Conformance Profile MetaData
+                            </tab-heading>
                             <div style="margin-top: 20px">
                                 <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.name.$invalid}">
                                     <label class="col-md-2 control-label">Name</label>
@@ -100,6 +104,10 @@ if (self === top) {
                             </div>
                         </tab>
                         <tab heading="Conformance Profile Definition">
+                            <tab-heading>
+                                <i class="fa fa-table fa-fw" aria-hidden="true"></i> Conformance Profile Definition
+                            </tab-heading>
+                            <div class="el-def">
                             <span class="pull-left">
                                      <div style="" ng-dropdown-multiselect=""
                                           options="viewSettings.columnOptions"
@@ -263,8 +271,10 @@ if (self === top) {
             </div>
         </div>
     </div>
+                                </div>
 </tab>
 </tabset>
+                    </div>
 </div>
 </form>
 </div>

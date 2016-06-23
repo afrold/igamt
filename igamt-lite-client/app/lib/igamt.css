@@ -177,3 +177,17 @@ input.igl-has-error,select.igl-has-error {
     background-color: #f8f8f8;
 }
 
+.panel{
+    margin: 0px;
+    padding: 0px;
+}
+.panel-body{
+    margin: 0px;
+    padding: 0px;
+}
+
+.panel-header{
+    margin: 0px;
+    padding: 0px;
+}
+

@@ -35,7 +35,7 @@ angular.module('igl')
         $scope.verificationResult = null;
         $scope.verificationError = null;
         $scope.loadingSelection = false;
-        $scope.accordi = { metaData: false, definition: true, igList: true, igDetails: false };
+        $scope.accordi = { metaData: false, definition: true, igList: true, igDetails: false, active:{list:true, edit:false} };
         $rootScope.autoSaving = false;
         //        AutoSaveService.stop();
         $rootScope.saved = false;
@@ -48,8 +48,6 @@ angular.module('igl')
             return false;
 
         };
-
-
 
         $scope.selectIgTab = function(value) {
             if (value === 1) {
@@ -258,6 +256,7 @@ angular.module('igl')
                     $scope.igDocumentConfig.selectedType = 'USER';
                     $scope.loadIGDocuments();
                 }
+                $scope.selectIgTab(0);
                 $rootScope.msg().text = "igClonedSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
@@ -408,8 +407,8 @@ angular.module('igl')
 
         $scope.openIGDocument = function(igdocument) {
             if (igdocument != null) {
-                $scope.selectIgTab(1);
                 $timeout(function() {
+                    $scope.selectIgTab(1);
                     $rootScope.TreeIgs = [];
                     $rootScope.TreeIgs.push(igdocument);
                     $rootScope.selectedMessagesIDS = [];

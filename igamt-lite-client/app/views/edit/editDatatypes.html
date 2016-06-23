@@ -18,7 +18,7 @@ if (self === top) {
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="datatype !== null" id="executionPanel">
-                <div class="row" style="margin-left:0px; margin-right: 20px">
+                <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
@@ -33,8 +33,12 @@ if (self === top) {
                         </button>
                         </span>
                     </div>
+                    <div class="">
                     <tabset>
-                        <tab heading="Data Type MetaData">
+                        <tab>
+                            <tab-heading>
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Data Type MetaData
+                            </tab-heading>
                             <div style="margin-top: 20px">
                                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
                                     <label class="col-md-2 control-label">Name</label>
@@ -88,7 +92,11 @@ if (self === top) {
                                 </div>
                             </div>
                         </tab>
-                        <tab heading="Data Type Definition">
+                        <tab>
+                            <tab-heading>
+                                <i class="fa fa-table" aria-hidden="true"></i> Data Type Definition
+                            </tab-heading>
+                             <div class="el-def">
                             <span class="pull-left">
                                      <div ng-dropdown-multiselect=""
                                           options="viewSettings.columnOptions"
@@ -225,9 +233,11 @@ if (self === top) {
                                 </div>
                             </div>
                 </div>
+                                 </div>
                 </tab>
-                </tabset>
+                 </tabset>
             </div>
+                </div>
         </div>
     </div>
     </div>
