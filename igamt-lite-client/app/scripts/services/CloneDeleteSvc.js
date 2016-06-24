@@ -237,20 +237,20 @@ angular.module('igl').factory(
         };
 
         svc.deleteValueSet = function (table) {
-            $rootScope.references = [];
-            angular.forEach($rootScope.segments, function (segment) {
-                $rootScope.findTableRefs(table, segment, $rootScope.getSegmentLabel(segment));
-            });
-            angular.forEach($rootScope.datatypes, function (dt) {
-                $rootScope.findTableRefs(table, dt, $rootScope.getDatatypeLabel(dt));
-            });
+                 $rootScope.references = [];
+                angular.forEach($rootScope.segments, function (segment) {
+                    $rootScope.findTableRefs(table, segment, $rootScope.getSegmentLabel(segment));
+                });
+                angular.forEach($rootScope.datatypes, function (dt) {
+                    $rootScope.findTableRefs(table, dt, $rootScope.getDatatypeLabel(dt));
+                });
 
-            if ($rootScope.references != null && $rootScope.references.length > 0) {
-                abortValueSetDelete(table);
-            } else {
-                confirmValueSetDelete(table);
-            }
-        }
+                if ($rootScope.references != null && $rootScope.references.length > 0) {
+                    abortValueSetDelete(table);
+                } else {
+                    confirmValueSetDelete(table);
+                }
+         }
 
         svc.exportDisplayXML = function (messageID) {
             var form = document.createElement("form");

@@ -37,39 +37,42 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
 
     $scope.save = function () {
-        $scope.saving = true;
-        var table = $rootScope.table;
-        var bindingIdentifier = table.bindingIdentifier;
+
+        if($rootScope.table.scope === 'USER') {
+            $scope.saving = true;
+            var table = $rootScope.table;
+            var bindingIdentifier = table.bindingIdentifier;
 
 
-        if (table.libIds == undefined) table.libIds = [];
-        if (table.libIds.indexOf($rootScope.igdocument.profile.tableLibrary.id) == -1) {
-            table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
-        }
+            if (table.libIds == undefined) table.libIds = [];
+            if (table.libIds.indexOf($rootScope.igdocument.profile.tableLibrary.id) == -1) {
+                table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+            }
 
-        TableService.save(table).then(function (result) {
-            var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary.children);
-            TableService.merge($rootScope.tablesMap[result.id], result);
-            var newLink = TableService.getTableLink(result);
-            newLink.bindingIdentifier = bindingIdentifier;
-            TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                oldLink.bindingIdentifier = link.bindingIdentifier;
-                cleanState();
-                $rootScope.msg().text = "tableSaved";
-                $rootScope.msg().type = "success";
-                $rootScope.msg().show = true;
+            TableService.save(table).then(function (result) {
+                var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary.children);
+                TableService.merge($rootScope.tablesMap[result.id], result);
+                var newLink = TableService.getTableLink(result);
+                newLink.bindingIdentifier = bindingIdentifier;
+                TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
+                    oldLink.bindingIdentifier = link.bindingIdentifier;
+                    cleanState();
+                    $rootScope.msg().text = "tableSaved";
+                    $rootScope.msg().type = "success";
+                    $rootScope.msg().show = true;
+                }, function (error) {
+                    $scope.saving = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
             }, function (error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
             });
-        }, function (error) {
-            $scope.saving = false;
-            $rootScope.msg().text = error.data.text;
-            $rootScope.msg().type = error.data.type;
-            $rootScope.msg().show = true;
-        });
+        }
     };
 
 
