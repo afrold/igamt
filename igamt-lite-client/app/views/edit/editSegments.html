@@ -1161,12 +1161,12 @@
         <td class="col-md-2 ">
             <input class="form-control form-control-short80 "
                    ng-class="{ 'form-control-invalid': isEmptyConstraintID(newConstraint) || isDuplicatedConstraintID(newConstraint, targetPlainId)} "
-                   ng-model="newConstraint.constraintId " ng-change="targetPlainId=n ewConstraint.constraintId; "
-                   type="text " ng-readonly="targetPlainId !==n ewConstraint.constraintId "/>
-            <i class="fa fa-pencil " ng-hide="targetPlainId==n ewConstraint.constraintId "
-               ng-click="targetPlainId=n ewConstraint.constraintId; "></i>
-            <i class="fa fa-paper-plane "
-               ng-hide="targetPlainId !=n ewConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) !=- 1 "
+                   ng-model="newConstraint.constraintId " ng-change="targetPlainId=newConstraint.constraintId; "
+                   type="text " ng-readonly="targetPlainId !==newConstraint.constraintId "/>
+            <i class="fa fa-pencil " ng-hide="targetPlainId==newConstraint.constraintId "
+               ng-click="targetPlainId=newConstraint.constraintId; "></i>
+            <i class="fa fa-paper-plane"
+               ng-hide="targetPlainId !=newConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) !=- 1 "
                ng-click="conformanceStatementIdList.push(newConstraint.constraintId); targetPlainId='' "></i>
             <span style="color:red; " ng-show="isEmptyConstraintID(newConstraint) ">ID Empty</span>
             <span style="color:red; "
