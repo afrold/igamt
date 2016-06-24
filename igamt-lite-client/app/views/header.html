@@ -1,28 +1,37 @@
-<style id="antiClickjack">body{display:none !important;}</style>
+<style id="antiClickjack">
+body {
+    display: none !important;
+}
+</style>
 <script type="text/javascript">
-    if (self === top) {
-        var antiClickjack = document.getElementById("antiClickjack");
-        antiClickjack.parentNode.removeChild(antiClickjack);
-    } else {
-        top.location = self.location;
-    }
+if (self === top) {
+    var antiClickjack = document.getElementById("antiClickjack");
+    antiClickjack.parentNode.removeChild(antiClickjack);
+} else {
+    top.location = self.location;
+}
 </script>
 <!-- <!-- Fixed navbar -->
 <div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="brand" id="appheader">
         <a style="display: inline-block; text-shadow:none" href="#">
-            <div id="apptitle"><div><span msg key="app.title"></span><span style='color:red; font-size:12px'> <span style='color:red; font-size:12px'> {{appInfo.version}}</span></span></div></div>
-            <div id="appsubtitle"><div msg key="app.subtitle"></div></div>
+            <div id="apptitle">
+                <div><span msg key="app.title"></span><span style='color:red; font-size:12px'> <span style='color:red; font-size:12px'> {{appInfo.version}}</span></span>
+                </div>
+            </div>
+            <div id="appsubtitle">
+                <div msg key="app.subtitle"></div>
+            </div>
         </a>
         <!--<div id="userInfo" ng-show="isAuthenticated()">-->
-            <!--<div>-->
-                <!--<span>Welcome, </span>-->
-                <!--<span class="userInfoValue" ng-bind="getFullName()"></span>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;<div>&ndash;&gt;-->
-            <!--&lt;!&ndash;<span>Role: </span>&ndash;&gt;-->
-            <!--&lt;!&ndash;<span class="userInfoValue" ng-bind="getRoleAsString()"></span>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--<div>-->
+        <!--<span>Welcome, </span>-->
+        <!--<span class="userInfoValue" ng-bind="getFullName()"></span>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<span>Role: </span>&ndash;&gt;-->
+        <!--&lt;!&ndash;<span class="userInfoValue" ng-bind="getRoleAsString()"></span>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
         <!--</div>-->
     </div>
     <div class="navbar-collapse collapse">
@@ -33,45 +42,39 @@
             </li>
             <li class="nav-header" ng-class="activeWhen(path()=='/ig')"><a class="point" href="#/ig"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.igs"></span></a></li>
             <li class="nav-header" ng-show="isAdmin()" ng-class="activeWhen(path()=='/datatypeLibrary')"><a class="point" href="#/datatypeLibrary"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.datatypeLibrary"></span></a></li>
+            <li class="nav-header" ng-class="activeWhen(path()=='/compare')"><a class="point" href="#/compare"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.compare"></span></a></li>
             <li class="nav-header" ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
             <li class="nav-header" ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
-            <li class="nav-header" ng-show='showSpinner()' ><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
+            <li class="nav-header" ng-show='showSpinner()'><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
         </ul>
-
         <ul class="nav navbar-nav navbar-right" style="margin-right: 15px">
-            <li class="dropdown clear-fix" ng-show="isAuthenticated()"
-                ng-class="isActive('/useraccount') || isActive('/transport-settings')">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false"><i
+            <li class="dropdown clear-fix" ng-show="isAuthenticated()" ng-class="isActive('/useraccount') || isActive('/transport-settings')">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i
                         class="fa fa-user"></i>&nbsp;Hello, {{getFullName()}} <span class="caret"></span></a>
-                <ul class="dropdown-menu" >
+                <ul class="dropdown-menu">
                     <li ng-class="isActive('/useraccount')"><a class="point" href="#/useraccount"><i
                             class="fa fa-user"></i>&nbsp;My Profile</a></li>
-                     <li class="">
+                    <li class="">
                         <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span class="msg">Logout</span></a>
                     </li>
                 </ul>
             </li>
-
-            <li class="dropdown clear-fix" ng-show="!isAuthenticated()"
-                ng-class="isActive('/useraccount') || isActive('/registration') || isActive('/forgotten')">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false"><i
+            <li class="dropdown clear-fix" ng-show="!isAuthenticated()" ng-class="isActive('/useraccount') || isActive('/registration') || isActive('/forgotten')">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i
                         class="fa fa-user"></i>&nbsp;Hello Guest <span class="caret"></span></a>
-                <ul class="dropdown-menu" >
+                <ul class="dropdown-menu">
                     <li class="">
-                        <a class="point" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp; <span class="msg">Login</span></a>                    </li>
-                     <li ng-class="isActive('/registration')">
+                        <a class="point" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp; <span class="msg">Login</span></a> </li>
+                    <li ng-class="isActive('/registration')">
                         <a href="#/registration">
                             <i class="fa fa-user-plus"></i>&nbsp;<span msg key="navbar.registration"></span>
                         </a>
                     </li>
-                     <li ng-class="isActive('/forgotten')">
+                    <li ng-class="isActive('/forgotten')">
                         <a href="#/forgotten">
                             <i class="fa fa-repeat"></i>&nbsp;<span msg key="navbar.forgotten"></span>
                         </a>
                     </li>
-
                 </ul>
             </li>
         </ul>

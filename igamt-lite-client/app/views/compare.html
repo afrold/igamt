@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+</head>
+
+<body>
+    <div ng-controller="compareCtrl">
+        <div align="center">
+            <select ng-model="ig1" class="selectpicker " class="point " ng-change="setIG1(ig1)">
+                <option ng-repeat="ig in igList " value='{{ig}}'> {{ig.title}}</option>
+            </select>
+            <select ng-model="ig2" class="selectpicker " class="point " ng-change="setIG2(ig2)">
+                <option ng-repeat="ig in igList " value='{{ig}}'> {{ig.title}}</option>
+            </select>
+        </div>
+        <div align="center">
+            <select ng-model="msg1" class="selectpicker " class="point " ng-change="setMsg1(msg1)">
+                <option ng-repeat="message in messages1.children " value='{{message}}'> {{message.name}}</option>
+            </select>
+            <select ng-model="msg2" class="selectpicker " class="point " ng-change="setMsg2(msg2)">
+                <option ng-repeat="message in messages2.children " value='{{message}}'> {{message.name}}</option>
+            </select>
+            <button ng-click="compare()">Delta</button>
+        </div>
+        <div ui-grid="gridOptions" ui-grid-tree-view class="uiGridStyle"></div>
+        <!-- <pre ng-bind-html="diffValue"></pre> -->
+        <pre ng-bind-html="diffValueChanges"></pre>
+        <!-- <pre ng-bind-html="yourObjectOneJsonView"></pre>
+        <pre ng-bind-html="yourObjectTwoJsonView"></pre> -->
+    </div>
+</body>
+
+</html>
+//
+<script type="text/ng-template" id="expandableRowTemplate.html">
+    //
+    <div ng-controller="compareCtrl" ui-grid="row.entity.subGridOptions" style="height:150px;"></div>
+    // </script>

@@ -30,7 +30,11 @@ var app = angular
         'ui-notification',
         'ngDragDrop',
         'ui.tree',
-        'blockUI'
+        'blockUI',
+        'ds.objectDiff',
+        'ui.grid',
+        'ui.grid.treeView',
+        'ui.grid.expandable'
 
      ]);
 
@@ -62,6 +66,9 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         })
         .when('/ig', {
             templateUrl: 'views/ig.html'
+        })
+        .when('/compare', {
+            templateUrl: 'views/compare.html'
         })
         .when('/datatypeLibrary', {
             templateUrl: 'views/datatypeLibrary.html',

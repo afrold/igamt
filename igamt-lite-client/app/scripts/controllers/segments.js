@@ -202,6 +202,8 @@ angular.module('igl')
             $scope.editableVS = field.id;
             if (field.table !== null) {
                 $scope.VSselected = true;
+                console.log("her");
+                console.log(field);
                 $scope.selectedValueSet = field.table;
                 console.log($scope.selectedValueSet);
 
