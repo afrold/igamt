@@ -32,8 +32,7 @@ angular.module('igl')
 
         $scope.delete = function (datatype) {
             CloneDeleteSvc.deleteDatatype(datatype);
-            $rootScope.$broadcast('event:SetToC');
-        };
+         };
 
         $scope.hasChildren = function (node) {
             return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype) != undefined && $rootScope.getDatatype(node.datatype).components != null && $rootScope.getDatatype(node.datatype).components.length > 0;

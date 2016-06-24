@@ -17,6 +17,7 @@ import java.io.InputStream;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePreLib;
 import nu.xom.Document;
 
 public interface ProfileSerialization {
@@ -46,4 +47,6 @@ public interface ProfileSerialization {
   String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary);
 
   Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary);
+  
+  ProfilePreLib convertIGAMT2TCAMT(Profile p, String igName);
 }

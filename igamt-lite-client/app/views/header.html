@@ -45,8 +45,9 @@ if (self === top) {
             <li class="nav-header" ng-class="activeWhen(path()=='/compare')"><a class="point" href="#/compare"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.compare"></span></a></li>
             <li class="nav-header" ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
             <li class="nav-header" ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
-            <li class="nav-header" ng-show='showSpinner()'><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
-        </ul>
+
+         </ul>
+
         <ul class="nav navbar-nav navbar-right" style="margin-right: 15px">
             <li class="dropdown clear-fix" ng-show="isAuthenticated()" ng-class="isActive('/useraccount') || isActive('/transport-settings')">
                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i

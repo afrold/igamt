@@ -56,7 +56,6 @@ var msg = {};
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, NotificationProvider,blockUIConfig) {
 
-
     $routeProvider
         .when('/', {
             templateUrl: 'views/home.html'

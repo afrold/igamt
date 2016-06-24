@@ -18,7 +18,7 @@ if (self === top) {
         </div>
         <div ng-if="!loadingSelection">
             <div ng-show="message !== null" id="executionPanel">
-                <div class="row" style="margin-left:0px; margin-right: 20px">
+                <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Conformance Profile: {{message.name}} </span>
                         <span class="pull-right">
@@ -32,8 +32,12 @@ if (self === top) {
                         </button>
                         </span>
                     </div>
+                    <div class="col-md-12">
                     <tabset>
-                        <tab heading="Conformance Profile MetaData">
+                        <tab>
+                            <tab-heading>
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Conformance Profile MetaData
+                            </tab-heading>
                             <div style="margin-top: 20px">
                                 <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.name.$invalid}">
                                     <label class="col-md-2 control-label">Name</label>
@@ -100,6 +104,10 @@ if (self === top) {
                             </div>
                         </tab>
                         <tab heading="Conformance Profile Definition">
+                            <tab-heading>
+                                <i class="fa fa-table fa-fw" aria-hidden="true"></i> Conformance Profile Definition
+                            </tab-heading>
+                            <div class="el-def">
                             <span class="pull-left">
                                      <div style="" ng-dropdown-multiselect=""
                                           options="viewSettings.columnOptions"
@@ -263,8 +271,10 @@ if (self === top) {
             </div>
         </div>
     </div>
+                                </div>
 </tab>
 </tabset>
+                    </div>
 </div>
 </form>
 </div>
@@ -422,7 +432,7 @@ if (self === top) {
                 <div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) ">
                     <a ng-click="manageConformanceStatement(node, message) "
                        tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
-                       tooltip-class="constraints-tooltip " ng-bind-html="getConformanceStatementAsString(constraint) "
+                       tooltip-class="constraints-tooltip " ng-bind-html="getConstraintAsId(constraint) "
                        tooltip-trigger
                        tooltip-animation="false " tooltip-placement="left "></a>
                 </div>
@@ -437,8 +447,17 @@ if (self === top) {
             <div>-</div>
         </td>
         <td class="col-xs-1 " ng-style="commentWidth " ng-show="viewSettings.isVisibleColumn( 'comment') ">
-            <textarea class="form-control " style="width:100%;height:100% " ng-model="node.obj.comment ">
+            <a ng-show="node.obj.comment === null || node.obj.comment == undefined || node.obj.comment == ''" ng-click="node.obj.comment = ' '" class="point">
+                <i class="fa fa-plus fa-fw"></i>
+            </a>
+            <textarea style="width:100%;height:100%" class="form-control" ng-model="node.obj.comment" ng-change="setDirty()" ng-show="node.obj.comment !== null && node.obj.comment != undefined && node.obj.comment != ''">
             </textarea>
+            <a ng-show="node.obj.comment !== null && node.obj.comment !== undefined && node.obj.comment != ''" ng-click="node.obj.comment = null" class="point">
+                <i class="fa fa-times fa-fw"></i>
+            </a>
+
+
+
         </td>
     </tr>
 </script>
@@ -539,6 +558,7 @@ if (self === top) {
                     <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) ">
                         <a ng-click="managePredicate(node, message) "
                            tooltip-html="getPredicateAsString(constraint) " tooltip-append-to-body="true "
+                           class="point"
                            tooltip-class="constraints-tooltip " ng-bind-html="getPredicateAsString(constraint) "
                            tooltip-trigger
                            tooltip-animation="false " tooltip-placement="left "></a>
@@ -551,8 +571,9 @@ if (self === top) {
             <div>
                 <div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) ">
                     <a ng-click="manageConformanceStatement(node, message) "
+                       class="point"
                        tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
-                       tooltip-class="constraints-tooltip " ng-bind-html="getConformanceStatementAsString(constraint) "
+                       tooltip-class="constraints-tooltip " ng-bind-html="getConstraintAsId(constraint) "
                        tooltip-trigger
                        tooltip-animation="false " tooltip-placement="left "></a>
                 </div>
@@ -569,8 +590,14 @@ if (self === top) {
         </td>
 
         <td class="col-xs-1 " ng-style="commentWidth " ng-show="viewSettings.isVisibleColumn( 'comment') ">
-            <textarea class="form-control " style="width:100%;height:100% " ng-model="node.obj.comment ">
+            <a ng-show="node.obj.comment === null || node.obj.comment == undefined || node.obj.comment == ''" ng-click="node.obj.comment = ' '" class="point">
+                <i class="fa fa-plus fa-fw"></i>
+            </a>
+            <textarea style="width:100%;height:100%" class="form-control" ng-model="node.obj.comment" ng-change="setDirty()" ng-show="node.obj.comment !== null && node.obj.comment != undefined && node.obj.comment != ''">
             </textarea>
+            <a ng-show="node.obj.comment !== null && node.obj.comment !== undefined && node.obj.comment != ''" ng-click="node.obj.comment = null" class="point">
+                <i class="fa fa-times fa-fw"></i>
+            </a>
         </td>
     </tr>
 </script>
@@ -663,7 +690,7 @@ if (self === top) {
                 <div ng-show="viewSettings.tableReadonly ">
                     <p ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) "
                        tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
-                       tooltip-class="constraints-tooltip " ng-bind-html="getConformanceStatementAsString(constraint) "
+                       tooltip-class="constraints-tooltip " ng-bind-html="getConstraintAsId(constraint) "
                        tooltip-trigger
                        tooltip-animation="false " tooltip-placement="left ">
                     </p>
@@ -674,7 +701,7 @@ if (self === top) {
                         <a ng-click="manageConformanceStatement(node, message) "
                            tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
                            tooltip-class="constraints-tooltip "
-                           ng-bind-html="getConformanceStatementAsString(constraint) " tooltip-trigger
+                           ng-bind-html="getConstraintAsId(constraint) " tooltip-trigger
                            tooltip-animation="false " tooltip-placement="left "></a>
                     </div>
                     <div ng-hide="filteredConstraints.length || viewSettings.tableReadonly ">
@@ -686,7 +713,7 @@ if (self === top) {
 
                 <p ng-repeat="constraint in parentsMap[node.obj.id].conformanceStatements | filter:{constraintTarget:node.obj.position + '[1]'}:true "
                    tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
-                   tooltip-class="constraints-tooltip " ng-bind-html="getConformanceStatementAsString(constraint) "
+                   tooltip-class="constraints-tooltip " ng-bind-html="getConstraintAsId(constraint) "
                    tooltip-trigger
                    tooltip-animation="false " tooltip-placement="left ">
                 </p>
@@ -792,7 +819,7 @@ if (self === top) {
                 <div ng-show="viewSettings.tableReadonly ">
                     <p ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) "
                        tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
-                       tooltip-class="constraints-tooltip " ng-bind-html="getConformanceStatementAsString(constraint) "
+                       tooltip-class="constraints-tooltip " ng-bind-html="getConstraintAsId(constraint) "
                        tooltip-trigger
                        tooltip-animation="false " tooltip-placement="left ">
                     </p>
@@ -803,7 +830,7 @@ if (self === top) {
                         <a ng-click="manageConformanceStatement(node, message) "
                            tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
                            tooltip-class="constraints-tooltip "
-                           ng-bind-html="getConformanceStatementAsString(constraint) " tooltip-trigger
+                           ng-bind-html="getConstraintAsId(constraint) " tooltip-trigger
                            tooltip-animation="false " tooltip-placement="left "></a>
                     </div>
                     <div ng-hide="filteredConstraints.length || viewSettings.tableReadonly ">
@@ -815,7 +842,7 @@ if (self === top) {
 
                 <p ng-repeat="constraint in parentsMap[node.obj.id].conformanceStatements | filter:{constraintTarget:node.obj.position + '[1]'}:true "
                    tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
-                   tooltip-class="constraints-tooltip " ng-bind-html="getConformanceStatementAsString(constraint) "
+                   tooltip-class="constraints-tooltip " ng-bind-html="getConstraintAsId(constraint) "
                    tooltip-trigger
                    tooltip-animation="false " tooltip-placement="left ">
                 </p>
@@ -1438,7 +1465,7 @@ if (self === top) {
         </td>
         <td class="col-xs-3" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
@@ -1491,7 +1518,7 @@ if (self === top) {
         </td>
         <td class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
@@ -1506,70 +1533,67 @@ if (self === top) {
 </script>
 <script type="text/ng-template" id="AddSegmentModal.html">
     <div class="modal-header modal-wide">
-        <p class="modal-title" style="font-size:20px; font-weight:bold">Add Segment
-        </p>
+        <div class="form-inline">
+            <span class="header4 ">Create Segment</span>
+        </div>
     </div>
-    <hr/>
-    <div class="modal-body">
-        <form name="addSegForm">
-            <div class="row" style="margin-bottom: 20px">
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label col-md-offset-3">Existing Segment*</label>
-                    <div class="controls ">
-                        <input style="width:30% " class="form-control col-md-4 " type="text" ng-model="search.name" ng-hide="selected()" required/>
-                        <li style="width:30% " class="form-control col-md-4 col-md-offset-6" ng-show="selected()">
+     <div class="modal-body">
+        <div class="creation-modal-content">
+        <form name="addSegForm" class="form-horizontal" novalidate>
+                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !selected()}">
+                    <label class="col-md-3 control-label ">Existing Segment*</label>
+                    <div class="controls col-md-9 ">
+                        <input  class="form-control  " type="text" ng-model="search.name" ng-hide="selected()" required/>
+                        <li  class="form-control  " ng-show="selected()">
                             {{newSeg.name}} <span ng-show="newSeg.ext">_{{newSeg.ext}}</span>
                             <button type="button" class="close" aria-label="Close" ng-click="unselect()">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </li>
-                    </div>
-                    <div ng-if="search.name && !selected()">
-                        <li style="width:30% " class="form-control col-md-4 col-md-offset-6" ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments | filter:search ">
+                     <div ng-if="search.name && !selected()">
+                        <li class="form-control  " ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments | filter:search ">
                             {{segment.name}} <span ng-show="segment.ext">_{{segment.ext}}</span>
                         </li>
                     </div>
+                        </div>
                 </div>
-            </div>
-            <div class="row" style="margin-bottom: 20px">
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label col-md-offset-3">Position*</label>
-                    <div class="controls ">
-                        <select ng-model="position " ng-change="selectPos() " style="width:30% " class="form-control input-sm " required>
+
+                <div class="form-group control-group"  ng-class="{'igl-has-error has-feedback': !addSegForm.inputPosition.$valid}">
+                    <label class="col-md-3 control-label ">Position*</label>
+                    <div class="controls col-md-9 ">
+                        <select ng-model="position " ng-change="selectPos() "  class="form-control input-sm " required id="inputPosition" name="inputPosition">
                             <option ng-show="segmentParent.type==='message'" ng-repeat="child in segmentParent.children "> {{child.position}}
                                 <option ng-show="segmentParent.obj && segmentParent.obj.type==='group'" ng-repeat="child in segmentParent.children "> {{child.obj.position}}
                                     <option value="{{segmentParent.children.length+1}}">{{segmentParent.children.length+1}}
                         </select>
                     </div>
                 </div>
-            </div>
-            <div class="row" style="margin-bottom: 20px">
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label col-md-offset-3">Usage*</label>
-                    <div class="controls ">
-                        <select style="width:30% " class="form-control input-sm " name="usage " ng-change="selectUsage(newSegment.usage) " required ng-model="newSegment.usage " ng-options="usage for usage in config.usages " required />
+                 <div class="form-group control-group"  ng-class="{'igl-has-error has-feedback': !addSegForm.usage.$valid}">
+                    <label class="col-md-3 control-label ">Usage*</label>
+                    <div class="controls col-md-9 ">
+                        <select  class="form-control input-sm " name="usage" id="usage" ng-change="selectUsage(newSegment.usage) " required ng-model="newSegment.usage " ng-options="usage for usage in config.usages " required />
                     </div>
                 </div>
-            </div>
-            <div class="row" style="margin-bottom: 20px">
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label col-md-offset-3">Cardinality*</label>
-                    <div class="controls " ng-controller="MessageRowCtrl ">
-                        <span ng-form name="{{formName}} " class="form-inline ">
-                                                <input  style="width:15% " class="form-control col-md-2 "
+                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addSegForm.min.$valid ||!addSegForm.max.$valid }">
+                    <label class="col-md-3 control-label ">Cardinality*</label>
+                    <div class="controls col-md-9 ">
+                        <span class="form-inline ">
+                                                <input  style="width:49%;margin-right: 1px" class="form-control "
                                                     placeholder="Min"
                                                         
 
                                                        name="min"
+                                                       id="min"
                                                        ng-change="setDirty() "
                                                        ng-pattern="/^\d+$/ "
                                                        ng-model="newSegment.min " required  ng-disabled="disableMin">
-                                                <input  style="width:15% " class="form-control col-md-2 "type="text "
+                                                <input  style="width:50% " class="form-control "type="text "
                                                     placeholder="Max"
 
 
 
-                                                       name="max "
+                                                       name="max"
+                                                       id="max"
                                                        ng-change="setDirty() "
                                                        
                                                        ng-pattern="/^\d+$|^\*?$/ "
@@ -1577,22 +1601,21 @@ if (self === top) {
                                             </span>
                     </div>
                 </div>
-            </div>
-            <div class="row" style="margin-bottom: 20px">
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label col-md-offset-3">Comment</label>
-                    <textarea style="width:30% " class="form-control col-md-4 " ng-model="newSegment.comment ">
+                 <div class="form-group control-group">
+                    <label class="col-md-3 control-label ">Comment</label>
+                     <div class="controls col-md-9 ">
+                    <textarea  class="form-control  " ng-model="newSegment.comment ">
                     </textarea>
-                </div>
-            </div>
+                         </div>
+             </div>
         </form>
-        <hr/>
+        </div>
         <div class="modal-footer">
-            <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
+            <button class="btn btn-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
                 &nbsp; </i>Cancel</span>
             </button>
-            <button class="btn btn-primary btn-sm" type="submit" ng-click="addSegment()" ng-disabled="addSegForm.$invalid || !selected()"><span><i
-                    class="fa fa-check fa-fw">
+            <button class="btn btn-info btn-md" type="submit" ng-click="addSegment()" ng-disabled="addSegForm.$invalid || !selected()"><span><i
+                    class="fa fa-plus fa-fw">
                 &nbsp; </i>Add</span>
             </button>
         </div>
@@ -1600,54 +1623,50 @@ if (self === top) {
 </script>
 <script type="text/ng-template" id="AddGroupModal.html">
     <div class="modal-header modal-wide">
-        <p class="modal-title" style="font-size:20px; font-weight:bold">Add Group
-        </p>
+        <div class="form-inline">
+            <span class="header4 ">Create Group</span>
+        </div>
     </div>
-    <hr/>
     <div class="modal-body">
-        <form name="addGrpForm">
-            <div class="row" style="margin-bottom: 20px">
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label col-md-offset-3">Group Name*</label>
-                    <div class="controls ">
-                        <input style="width:30% " class="form-control col-md-4 " type="text" ng-model="grpName" required/>
+        <div class="creation-modal-content">
+        <form name="addGrpForm" class="form-horizontal" novalidate>
+                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.inputGroupName.$valid}">
+                    <label class="col-md-3 control-label ">Group Name*</label>
+                    <div class="controls col-md-9 ">
+                        <input  class="form-control  " type="text" ng-model="grpName" name="inputGroupName" id="inputGroupName"  required/>
                     </div>
                 </div>
-            </div>
-            <div class="row" style="margin-bottom: 20px">
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label col-md-offset-3">Position*</label>
-                    <div class="controls ">
-                        <select ng-model="position " style="width:30% " class="form-control input-sm " ng-change="selectPos() " class="point " required>
+                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grPosition.$valid}">
+                    <label class="col-md-3 control-label ">Position*</label>
+                    <div class="controls col-md-9 ">
+                        <select ng-model="position "  class="form-control input-sm " ng-change="selectPos() " class="point " required id="grPosition" name="grPosition">
                             <option ng-show="groupParent.type==='message'" ng-repeat="child in groupParent.children "> {{child.position}}
                                 <option ng-show="groupParent.obj && groupParent.obj.type==='group'" ng-repeat="child in groupParent.children "> {{child.obj.position}}
                                     <option value="{{groupParent.children.length+1}}">{{groupParent.children.length+1}}
                         </select>
                     </div>
                 </div>
-            </div>
-            <div class="row" style="margin-bottom: 20px">
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label col-md-offset-3">Usage*</label>
-                    <div class="controls ">
-                        <select style="width:30% " class="form-control input-sm " name="usage " ng-change="selectUsage(newGroup.usage) " ng-model="newGroup.usage " ng-options="usage for usage in config.usages " required />
+                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grUsage.$valid}">
+                    <label class="col-md-3 control-label ">Usage*</label>
+                    <div class="controls col-md-9 ">
+                        <select  class="form-control input-sm " name="grUsage" id="grUsage" ng-change="selectUsage(newGroup.usage) " ng-model="newGroup.usage " ng-options="usage for usage in config.usages " required />
                     </div>
                 </div>
-            </div>
-            <div class="row" style="margin-bottom: 20px">
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label col-md-offset-3">Cardinality*</label>
-                    <div class="controls " ng-controller="MessageRowCtrl ">
-                        <span ng-form name="{{formName}} " class="form-inline ">
-                                                <input  style="width:15% " class="form-control col-md-2 "
+                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
+                    <label class="col-md-3 control-label ">Cardinality*</label>
+                    <div class="controls col-md-9 ">
+                        <span  class="form-inline ">
+                                                <input  style="width:49%;margin-right: 1px " class="form-control "
                                                     placeholder="Min"
-                                                       name="min "
+                                                       name="grCardMin"
+                                                       id="grCardMin"
                                                        ng-change="setDirty() "
                                                        ng-pattern="/^\d+$/ "
                                                        ng-model="newGroup.min " ng-disabled="disableMin" required >
-                                                <input  style="width:15% " class="form-control col-md-2 " type="text "
+                                                <input  style="width:50%" class="form-control " type="text "
                                                     placeholder="Max"
-                                                       name="max "
+                                                       name="grCardMax"
+                                                       id="grCardMax"
                                                        ng-change="setDirty() "
                                                        
                                                        ng-pattern="/^\d+$|^\*?$/ "
@@ -1655,23 +1674,21 @@ if (self === top) {
                                             </span>
                     </div>
                 </div>
-            </div>
-            <div class="row" style="margin-bottom: 20px">
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label col-md-offset-3">Comment</label>
-                    <textarea style="width:30% " class="form-control col-md-4 " ng-model="newGroup.comment ">
+                  <div class="form-group control-group">
+                    <label class="col-md-3 control-label ">Comment</label>
+                      <div class="controls col-md-9 ">
+                    <textarea  class="form-control  " ng-model="newGroup.comment ">
                     </textarea>
-                </div>
-            </div>
+                          </div>
+             </div>
         </form>
-        <hr/>
+        </div>
         <div class="modal-footer">
-
-            <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
+            <button class="btn btn-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
                 &nbsp; </i>Cancel</span>
             </button>
-            <button class="btn btn-primary btn-sm" ng-click="addGroup()" ng-disabled="addGrpForm.$invalid"><span><i
-                    class="fa fa-check fa-fw">
+            <button class="btn btn-info btn-md" ng-click="addGroup()" ng-disabled="addGrpForm.$invalid"><span><i
+                    class="fa fa-plus fa-fw">
                 &nbsp; </i>Add</span>
             </button>
         </div>

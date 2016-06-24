@@ -25,7 +25,9 @@
                     <div msg key-expr="igDocumentMsg.text"></div>
                 </div>
             </div>
-            <div class="col-md-12 igl-page-header">
+           </div>
+        <div class="row">
+            <div class="col-md-12">
                 <span class="header4 pull-left">
 <div class="btn-group btn-group-sm" data-toggle="buttons" style="margin-right: 10px;">
     <label class="btn btn-primary btn-sm" ng-click="filtering=true;displayFilteredTree()"
@@ -38,8 +40,6 @@
         <input type="radio"> Filter OFF </input>
     </label>
 </div>
-  <span class="nav-header ng-hide" ng-show="showSpinner()" aria-hidden="true"><i
-          class="fa fa-spinner fa-pulse fa-align-center"></i></span>
                 </span>
                 <span class="pull-right">
 
@@ -92,18 +92,19 @@
                 <!--</span>-->
                 <!--</div>-->
             </div>
-            <div class="row">
-                <div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">
-                    <button title="Show Table of Contents" class="btn btn-xs btn-primary" ng-click="hideToc = !hideToc">
-                        <i class="fa fa-caret-right"></i>
-                    </button>
-                </div>
+            </div>
+                 <div class="row">
+                <!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
+                    <!--<button title="Show Table of Contents" class="btn btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
+                        <!--<i class="fa fa-caret-right"></i>-->
+                    <!--</button>-->
+                <!--</div>-->
                 <div ng-show="!hideToc" class="col-md-3">
                     <div class="panel panel-primary">
                         <!-- Default panel contents -->
-                        <div class="panel-heading panel-heading-collapsable row">
-                            <i class="glyphicon glyphicon-list col-md-1"></i><span
-                                class="col-md-5"> Table of Contents </span>
+                        <div class="panel-heading panel-heading-collapsable">
+                            <i class="glyphicon glyphicon-list"></i><span
+                                > Table of Contents </span>
                             <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
                                     style="margin:0px" ng-click="hideToc = !hideToc">
                                 <i class="fa fa-caret-left"></i>
@@ -114,9 +115,14 @@
                         </div>
                     </div>
                 </div>
-                <div ng-class="{'col-md-9': !hideToc, 'col-md-11 col-98-5-percent':hideToc}">
+                <div ng-class="{'col-md-9': !hideToc,'col-md-12': hideToc}">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">Edit Area</div>
+                        <div class="panel-heading">
+                            <button title="Show Table of Contents" class="btn btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc">
+                                <i class="fa fa-caret-right"></i>
+                            </button>
+                            <i class="fa fa-pencil" aria-hidden="true"></i> Edit Area
+                        </div>
                         <div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl"
                              ng-init="init">
                             <form name="editForm" id="editForm" class="form-horizontal" novalidate confirm-on-leave
@@ -129,7 +135,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+         </div>
     </div>
     <div ng-show="loadingIGDocument" style="text-align: center;">
         <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>

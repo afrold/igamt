@@ -1,28 +1,20 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -30,15 +22,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.DocumentM
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.IGDocumentPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfileMetaDataPreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePreLib;
-
-import java.util.Date;
-import java.util.Set;
-
-import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 
 public class IGDocumentConverterFromNewToOld {
   @Autowired

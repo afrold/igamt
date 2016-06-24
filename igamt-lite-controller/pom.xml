@@ -77,13 +77,6 @@
 			<version>${project.version}</version>
 		</dependency>
 		
-
-		<dependency>
-			<groupId>gov.nist.healthcare.tools.hl7.v2.igamt.lite</groupId>
-			<artifactId>igamt-lite-resource</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
