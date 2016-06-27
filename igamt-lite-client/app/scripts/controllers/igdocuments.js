@@ -1055,6 +1055,12 @@ angular.module('igl')
         $scope.selectTable = function(t) {
             $rootScope.Activate(t.id);
             var table = angular.copy(t);
+            if($scope.viewSettings.tableReadonly || table.scope !== 'USER'){
+                $rootScope.subview = "ReadValueSets.html";
+            }else {
+                $rootScope.subview = "EditValueSets.html";
+            }
+
             $rootScope.subview = "EditValueSets.html";
             $scope.loadingSelection = true;
             blockUI.start();
