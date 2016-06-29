@@ -23,20 +23,21 @@
 
             <div class="col-md-12" style="margin-bottom: 20px">
                 <div clas="page-header">
-                    <div class="header5">Welcome to the Implementation Guide Authoring and
+                    <div class="header5">
+                        <span class="pull-left">
+                        Welcome to the Implementation Guide Authoring and
                         Management Tool (IGAMT)
-                    </div>
-                                <span class="pull-right">
-                                <button title="Login" type="button" class="btn btn-md btn-success"
-                                       ng-click="loginReq()">
+                        </span>
+                        <span class="pull-right">
+                                <button title="Login" ng-show="!isAuthenticated()" type="button" class="btn btn-md btn-success"
+                                        ng-click="loginReq()">
                                     <span><i
                                             class="fa fa-user"></i> Login</span>
                                 </button>
                                 </span>
-
+                    </div>
                 </div>
-                <hr/>
-            </div>
+             </div>
 
             <div class="col-md-6">
                 <div class="panel panel-primary home-page-panel">
