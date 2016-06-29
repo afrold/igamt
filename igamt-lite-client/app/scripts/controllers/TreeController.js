@@ -26,7 +26,9 @@ angular
                 $rootScope.loadingSegments=false;
                 $rootScope.loadingDataTypes=false;
                 $rootScope.loadingTables=false;
-
+                $scope.Activate = function(param) {
+                    $rootScope.activeModel = param;
+                }
 
                 $rootScope.switcherDatatypeLibrary = function() {
 
@@ -71,6 +73,38 @@ angular
                     $scope.collapsedata = !$scope.collapsedata;
 
                 };
+                $scope.DatattypeTreeOption={
+                    accept: function(sourceNodeScope, destNodesScope, destIndex) {
+                        var dataTypeSource = sourceNodeScope.$element
+                            .attr('data-type');
+                        var dataTypeDest = destNodesScope.$element
+                            .attr('data-type');
+
+                         return true;   
+
+  
+                    },
+
+
+                    dropped: function(event) {
+
+                        var sourceNode = event.source.nodeScope;
+                        var destNodes = event.dest.nodesScope;
+                        var sortBefore = event.source.index;
+                        var sortAfter = event.dest.index;
+                        var source = sourceNode.$parentNodeScope.$modelValue;
+                        var dest = destNodes.$parent.$modelValue;
+                        var dataTypeDest = destNodes.$element.attr('data-type');
+                        var dataTypeSource = sourceNode.$element.attr('data-type');
+                        event.source.nodeScope.$modelValue.sectionPosition = sortAfter + 1;
+
+                        var parentSource = sourceNode.$parentNodeScope.$modelValue;
+                        var parentDest = event.dest.nodesScope.$nodeScope.$modelValue;
+ 
+                        
+                    }
+                };
+
 
                 $scope.treeOptions = {
 
@@ -288,7 +322,7 @@ angular
                     null,
 
 
-                    ['copy',
+                    ['Copy',
                         function($itemScope) {
 
                             function process() {
@@ -317,7 +351,7 @@ angular
                         }
                     ],
                     null, [
-                        'delete',
+                        'Delete',
                         function($itemScope) {
 
                             var section = $itemScope.section;
@@ -357,7 +391,7 @@ angular
 
                     newSection.sectionPosition = $rootScope.igdocument.childSections.length;
                     $scope.updateChildeSections($rootScope.igdocument.childSections);
-                    $rootScope.Activate(newSection.id);
+                    $scope.Activate(newSection.id);
                 };
 
                 $scope.igOptions = [
@@ -384,7 +418,7 @@ angular
 
                 $scope.SegmentOptions = [
 
-                    ['copy',
+                    ['Copy',
                         function($itemScope) {
 
 
@@ -400,7 +434,7 @@ angular
 
                         }
                     ],
-                    null, ['delete',
+                    null, ['Delete',
                         function($itemScope) {
                             CloneDeleteSvc.deleteSegment($itemScope.segment);
                         }
@@ -410,7 +444,7 @@ angular
 
                 $scope.DataTypeOptions = [
 
-                    ['copy',
+                    ['Copy',
                         function($itemScope) {
 
 
@@ -424,7 +458,7 @@ angular
                             }
                         }
                     ],
-                    null, ['delete',
+                    null, ['Delete',
                         function($itemScope) {
                             CloneDeleteSvc.deleteDatatype($itemScope.data);
 
@@ -434,7 +468,7 @@ angular
 
                 $scope.ValueSetOptions = [
 
-                    ['copy',
+                    ['Copy',
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -445,7 +479,7 @@ angular
                             }
                         }
                     ],
-                    null, ['delete',
+                    null, ['Delete',
                         function($itemScope) {
                             CloneDeleteSvc.deleteValueSet($itemScope.table);
 
@@ -453,11 +487,33 @@ angular
                     ]
 
                 ];
+                
+                $scope.ValueSetOptionsINLIB = [
+
+                                          ['Copy',
+                                              function($itemScope) {
+                                                  if ($rootScope.hasChanges()) {
+                                                      $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                          CloneDeleteSvc.copyTable($itemScope.table);
+                                                      });
+                                                  } else {
+                                                      CloneDeleteSvc.copyTable($itemScope.table);
+                                                  }
+                                              }
+                                          ],
+                                          null, ['Delete',
+                                              function($itemScope) {
+                                                  CloneDeleteSvc.deleteValueSet($itemScope.table);
+
+                                              }
+                                          ]
+
+                                      ];
 
                 $scope.MessagesOption = [
 
                     [
-                        'copy',
+                        'Copy',
                         function($itemScope) {
 
                             if ($rootScope.hasChanges()) {
@@ -471,7 +527,7 @@ angular
                         }
                     ],
                     null, [
-                        'delete',
+                        'Delete',
                         function($itemScope) {
                             CloneDeleteSvc.deleteMessage($itemScope.msg);
                         }
@@ -481,22 +537,22 @@ angular
 
                 $scope.MessagesRootOption = [
 
-                    ['add', function($itemScope) {
+                    ['Add', function($itemScope) {
                         $scope.hl7Versions('ctx');
                     }],
-                    null, ['export', function($itemScope) {
+                    null, ['Export', function($itemScope) {
                         $scope.selectMessages($rootScope.igdocument);
                     }]
                 ];
 
                 $scope.ValueSetRootOptions = [
-                    ['add Table', function($itemScope) {
+                    ['Add Table', function($itemScope) {
                         $scope.addTable($rootScope.igdocument);
                     }]
                 ];
                 
                 $scope.DataTypeOptionsInLib = [
-                    ['create a copy',
+                    ['Create a Copy',
                         function($itemScope) {
                             console.log("create a copy=" + $itemScope);
                             console.log($itemScope.data);
@@ -504,7 +560,7 @@ angular
 
                         }
                     ],
-                    null, ['delete',
+                    null, ['Delete',
                         function($itemScope) {
                             console.log("delete=" + $itemScope);
                             console.log($itemScope.data);
@@ -514,7 +570,7 @@ angular
                 ];
 
                 $scope.addSegment = [
-                    ['add segment',
+                    ['Add Segment',
                         function($itemScope) {
                             $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);
                         }
@@ -522,34 +578,48 @@ angular
                 ];
 
                 $scope.addDatatype = [
-                    ['add datatype',
+                    ['Add Datatype',
                         function($itemScope) {
                             $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
                         }
                     ]
                 ];
+
+                $scope.DataTypeLibraryOptions = [
+                    ['Add Datatypes',
+                        function($itemScope) {
+                            $scope.addDatatypesFromTree();
+                            //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
+                        }
+                    ]
+                ];
+                
+                
+                
+                $scope.ValueSetOptionsINLIB = [
+                                                 ['Add Table ',
+                                                     function($itemScope) {
+                                                         //$scope.addDatatypesFromTree();
+                                                         //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
+                                                     }
+                                                 ]
+                                             ];
+                
                 $scope.addValueSets = [
-                    ['Add Value Sets',
+                    ['Add Tables',
                         function($itemScope) {
                             $scope.addTables($rootScope.igdocument);
                         }
                     ]
                 ];
-                
-                $scope.DataTypeLibraryOptions = [
-                    ['add datatypes',
-                        function($itemScope) {
-                            $scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
-                        }
-                    ]
-                ];
+
 
                 function processEditSeg(seg) {
-                    $rootScope.Activate(seg.id);
+                    $scope.Activate(seg.id);
                     $scope.$emit('event:openSegment', seg);
                 };
 
-                $rootScope.editSeg = function(seg) {
+                $scope.editSeg = function(seg) {
 
                     if ($rootScope.hasChanges()) {
 
@@ -565,7 +635,7 @@ angular
                 };
 
                 function processEditIg(ig) {
-                    $rootScope.Activate(ig.id);
+                    $scope.Activate(ig.id);
                     $rootScope.igdocument = ig;
                     $scope.$emit('event:openDocumentMetadata',
                         $rootScope.igdocument);
@@ -587,7 +657,7 @@ angular
                 };
 
                 function processEditSection(section) {
-                    $rootScope.Activate(section.id);
+                    $scope.Activate(section.id);
                     $rootScope.section = section;
                     $scope.$emit('event:openSection', $rootScope.section);
                 };
@@ -610,7 +680,7 @@ angular
 
                 function processEditRoutSection(param) {
 
-                    $rootScope.Activate(param.id);
+                    $scope.Activate(param.id);
                     $rootScope.section = $scope.getRoutSectionByname(param);
                     //$rootScope.currentData=section;
 
@@ -633,7 +703,7 @@ angular
 
                 $scope.getRoutSectionByname = function(name) {
                     $rootScope.currentData = {};
-                    $rootScope.Activate(name);
+                    $scope.Activate(name);
                     if (name.toLowerCase() === 'conformance profiles') {
                         $rootScope.currentData = $rootScope.igdocument.profile.messages;
 
@@ -653,7 +723,7 @@ angular
                 
                 function processEditDataType(data) {
                     console.log("dialog not opened");
-                    $rootScope.Activate(data.id);
+                    $scope.Activate(data.id);
                     $rootScope.datatype = data;
                     $scope.$emit('event:openDatatype', $rootScope.datatype);
                 };
@@ -677,7 +747,7 @@ angular
 
 
                 function processEditTable(table) {
-                    $rootScope.Activate(table.id);
+                    $scope.Activate(table.id);
                     $rootScope.table = table;
                     $scope.$emit('event:openTable', $rootScope.table);
                 };
@@ -695,7 +765,7 @@ angular
                 };
 
                 function processEditMessage(message) {
-                    $rootScope.Activate(message.id);
+                    $scope.Activate(message.id);
                     $rootScope.message = message;
                     console.log("three");
                     console.log(message);
@@ -716,7 +786,7 @@ angular
                 };
 
                 function processEditProfile() {
-                    $rootScope.Activate("Message Infrastructure");
+                    $scope.Activate("Message Infrastructure");
                     $scope.$emit('event:openProfileMetadata',
                         $rootScope.igdocument);
                 };

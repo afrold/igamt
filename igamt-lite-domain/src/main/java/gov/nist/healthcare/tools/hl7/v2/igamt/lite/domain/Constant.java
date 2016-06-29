@@ -54,6 +54,7 @@ public class Constant {
   };
 
   public final static String ORG_NAME = "NIST";
+public static final String DATATYPE_LIBRARY_DOCUMENT = "datatypeLibraryDocument";
 
   public static enum STATUS {
     PUBLISHED, UNPUBLISHED
