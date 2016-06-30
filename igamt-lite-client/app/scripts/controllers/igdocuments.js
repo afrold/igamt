@@ -1221,6 +1221,12 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function($scope, 
 });
 
 
+angular.module('igl').controller('CreateNewIGAlertCtrl', function($scope ,$rootScope, $http,$modalInstance) {
+    $scope.close = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
 angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $modalInstance, igdocumentToOpen, $rootScope, $http) {
     $scope.igdocumentToOpen = igdocumentToOpen;
     $scope.loading = false;

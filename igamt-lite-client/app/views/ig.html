@@ -65,36 +65,49 @@
         <div msg key='account.pendingSection'></div>
     </div>
 </div>
-<div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center">
+<div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto">
     <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can
         also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
 </div>
 <script type="text/ng-template" id="hl7VersionsDlg.html">
-    <div class="modal-header">
-        <div class="page-header">
-            <h2 class="modal-title">HL7 Message Events</h2>
+    <div class="modal-header modal-wide">
+        <div class="form-inline">
+            <span class="header4">Select Message Events</span>
         </div>
     </div>
-    <div class="modal-body" style="margin-top:0px">
-        <form class="form-horizontal" novalidate>
+    <div class="modal-body">
+        <form id="hl7VersionsDlgForm" name="hl7VersionsDlgForm" class="form-horizontal" novalidate>
             <div class="row">
                 <div class="col-md-12">
-                    <h4 class="modal-title">Select HL7 Version</h4>
-                </div>
-                <div class="col-md-12">
-                    <div ng-show="!igdocument" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                        <label class="btn btn-primary btn-xs"
-                               ng-click="$parent.hl7Version = vr; loadIGDocumentsByVersion()"
-                               ng-class="{'active':vr === hl7Version}" ng-repeat="vr in hl7Versions">
-                            <input ng-disabled="loading" type="radio" ng-value="vr" ng-model="$parent.hl7Version">{{vr}}
-                        </label>
+                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : hl7VersionsDlgForm.hl7Version.$invalid}">
+                    <label class="col-md-2 control-label " style="text-align: left">HL7 Version*:</label>
+                    <div class="controls col-md-1">
+                        <select class="form-control input-sm" name="hl7Version" id="hl7Version"
+                                ng-change="loadIGDocumentsByVersion()"
+                                ng-disabled="loading || igdocument"
+                                required ng-model="hl7Version" ng-options="vr for vr in hl7Versions"/>
                     </div>
                 </div>
-                <span ng-show="igdocument" class="col-md-12" name="versionSelect">{{igdocument.profile.metaData.hl7Version}}</span>
 
+                <!--<div class="col-md-12">-->
+                    <!--<h4 class="modal-title">Select HL7 Version</h4>-->
+                <!--</div>-->
+                <!--<div class="col-md-12">-->
+                    <!--<div ng-show="!igdocument" class="btn-group btn-group-sm pull-left" data-toggle="buttons">-->
+                        <!--<label class="btn btn-primary btn-xs"-->
+                               <!--ng-click="$parent.hl7Version = vr; loadIGDocumentsByVersion()"-->
+                               <!--ng-class="{'active':vr === hl7Version}" ng-repeat="vr in hl7Versions">-->
+                            <!--<input ng-disabled="loading" type="radio" ng-value="vr" ng-model="$parent.hl7Version">{{vr}}-->
+                        <!--</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+                </div>
                 <div class="col-md-12">
-                    <h4 class="modal-title">List of Events</h4>
-
+                <div class="form-group control-group">
+                    <label class="col-md-2 control-label" style="text-align: left">List of Events*</label>
+                </div>
+                </div>
+                 <div class="col-md-12">
                     <div ng-show="loading" style="text-align:center">
                         <i class="fa fa-spinner fa-pulse fa-2x"></i>
                     </div>
@@ -119,10 +132,11 @@
     <div class="modal-footer">
         <div class="row">
             <div class="col-md-12">
+
+                <button class="btn btn-default" type="button" ng-click="cancel()"><i class="fa fa-times"></i>Cancel
+                </button>
                 <button class="btn btn-info" type="button" ng-click="ok()" ng-disabled="okDisabled"><i
                         class="fa fa-check"></i>Submit
-                </button>
-                <button class="btn btn-warning" type="button" ng-click="cancel()"><i class="fa fa-times"></i>Cancel
                 </button>
             </div>
         </div>

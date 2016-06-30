@@ -8,7 +8,7 @@
  * controllers of the Create IG Dialog.
  */
 
-angular.module('igl').factory('MessageEventsSvc', function($http, ngTreetableParams) {
+angular.module('igl').factory('MessageEventsSvc', function($http) {
 	
 	var svc = this;
 	
@@ -24,30 +24,32 @@ angular.module('igl').factory('MessageEventsSvc', function($http, ngTreetablePar
 //		svc.state = state; 
 //	}
 	
-	svc.getMessageEvents = function(hl7Version) {
-		return new ngTreetableParams( {
-			getNodes: function(parent) {
-				return parent ? parent.children : mes(hl7Version)
-			},
-	        getTemplate: function(node) {
-	            return 'MessageEventsNode.html';
-	        },
-	        options: {
-	            onNodeExpand: function() {
-	                console.log('A node was expanded!');
-	            }
-	        }
-		});
-	};
-	
-function mes(hl7Version) {
-	console.log("hl7Version=" + JSON.stringify(hl7Version));
-	return $http.post(
-			'api/igdocuments/messageListByVersion', hl7Version).then(function(response) {
-				var messageEvents = angular.fromJson(response.data);
-				return _.sortBy(messageEvents, function(messageEvent) { return messageEvent.name; });
-			});
-		};
+//	svc.getMessageEvents = function(hl7Version) {
+//		return new ngTreetableParams( {
+//			getNodes: function(parent) {
+//				return parent ? parent.children : mes(hl7Version)
+//			},
+//	        getTemplate: function(node) {
+//	            return 'MessageEventsNode.html';
+//	        },
+//	        options: {
+//	            onNodeExpand: function() {
+//	                console.log('A node was expanded!');
+//	            }
+//	        }
+//		});
+//	};
 
-	return svc;
-});
+
+    svc.getMessageEvents = function(hl7Version) {
+         return $http.post(
+            'api/igdocuments/messageListByVersion', hl7Version).then(function(response) {
+                var messageEvents = angular.fromJson(response.data);
+                return _.sortBy(messageEvents, function(messageEvent) { return messageEvent.name; });
+            });
+    };
+
+    return svc;
+    });
+
+	
