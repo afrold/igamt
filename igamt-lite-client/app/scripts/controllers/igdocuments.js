@@ -1055,7 +1055,13 @@ angular.module('igl')
         $scope.selectTable = function(t) {
             $rootScope.Activate(t.id);
             var table = angular.copy(t);
-            $rootScope.subview = "EditValueSets.html";
+
+            if($scope.viewSettings.tableReadonly || table.scope !== 'USER'){
+                $rootScope.subview = "ReadValueSets.html";
+            }else {
+                $rootScope.subview = "EditValueSets.html";
+            }
+
             $scope.loadingSelection = true;
             blockUI.start();
             $timeout(
@@ -1214,6 +1220,12 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function($scope, 
     };
 });
 
+
+angular.module('igl').controller('CreateNewIGAlertCtrl', function($scope ,$rootScope, $http,$modalInstance) {
+    $scope.close = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
 
 angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $modalInstance, igdocumentToOpen, $rootScope, $http) {
     $scope.igdocumentToOpen = igdocumentToOpen;

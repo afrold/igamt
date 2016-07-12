@@ -94,6 +94,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.tablesMap[newTable.id] = newTable;
         $rootScope.table = newTable;
         $rootScope.recordChangeForEdit2('table', "add", newTable.id, 'table', newTable);
+        $scope.setDirty();
     };
 
 
@@ -140,13 +141,15 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         if (!$scope.isNewObject('table', 'add', $rootScope.table.id)) {
             $rootScope.recordChangeForEdit2('value', "add", null, 'value', newValueBlock);
         }
-    };
+        $scope.setDirty();
+     };
 
     $scope.deleteValue = function (value) {
         if (!$scope.isNewValueThenDelete(value.id)) {
             $rootScope.recordChangeForEdit2('value', "delete", value.id, 'id', value.id);
         }
         $rootScope.table.codes.splice($rootScope.table.codes.indexOf(value), 1);
+        $scope.setDirty();
     };
 
     $scope.isNewValueThenDelete = function (id) {
@@ -203,8 +206,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
     $scope.copyTable = function (table) {
         CloneDeleteSvc.copyTable(table);
-        $rootScope.$broadcast('event:SetToC');
-    };
+     };
 
     $scope.recordChangeValue = function (value, valueType, tableId) {
         if (!$scope.isNewTable(tableId)) {
@@ -212,12 +214,14 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                 $rootScope.recordChangeForEdit2('value', 'edit', value.id, valueType, value);
             }
         }
+        $scope.setDirty();
     };
 
     $scope.recordChangeTable = function (table, valueType, value) {
         if (!$scope.isNewTable(table.id)) {
             $rootScope.recordChangeForEdit2('table', 'edit', table.id, valueType, value);
         }
+        $scope.setDirty();
     };
 
     $scope.setAllCodeUsage = function (table, usage) {
@@ -229,6 +233,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                 }
             }
         }
+        $scope.setDirty();
     };
 
     $scope.delete = function (table) {
