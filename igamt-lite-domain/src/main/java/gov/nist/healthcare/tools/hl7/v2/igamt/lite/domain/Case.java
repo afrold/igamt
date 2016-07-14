@@ -14,63 +14,67 @@ import org.bson.types.ObjectId;
 
 public class Case implements Serializable, Cloneable {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  public Case() {
-    super();
-    this.id = ObjectId.get().toString();
-  }
+	public Case() {
+		super();
+		this.id = ObjectId.get().toString();
+		this.type = "case";
+	}
 
-  private String id;
+	private String type;
 
-  protected String value;
+	private String id;
 
-  protected String datatype;
+	protected String value;
 
-  public String getValue() {
-    return value;
-  }
+	protected String datatype;
 
-  public void setValue(String value) {
-    this.value = value;
-  }
+	public String getValue() {
+		return value;
+	}
 
-  public boolean isSetValue() {
-    return (this.value != null);
-  }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-  public String getId() {
-    return id;
-  }
+	public boolean isSetValue() {
+		return (this.value != null);
+	}
 
-  public void setId(String id) {
-    this.id = id;
-  }
+	public String getId() {
+		return id;
+	}
 
-  public String getDatatype() {
-    return datatype;
-  }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-  public void setDatatype(String datatype) {
-    this.datatype = datatype;
-  }
+	public String getDatatype() {
+		return datatype;
+	}
 
+	public void setDatatype(String datatype) {
+		this.datatype = datatype;
+	}
 
-  @Override
-  public Case clone() throws CloneNotSupportedException {
-    Case clonedCase = new Case();
-    clonedCase.setId(null);
-    clonedCase.setValue(value);
-    clonedCase.setDatatype(datatype);
+	@Override
+	public Case clone() throws CloneNotSupportedException {
+		Case clonedCase = new Case();
+		clonedCase.setId(null);
+		clonedCase.setValue(value);
+		clonedCase.setDatatype(datatype);
+		clonedCase.setType(this.type);
 
-    // if (dtRecords.containsKey(datatype.getId())) {
-    // } else {
-    // Datatype dt = datatype.clone();
-    // clonedCase.setDatatype(dt);
-    // dtRecords.put(datatype.getId(), dt);
-    // }
+		return clonedCase;
+	}
 
-    return clonedCase;
-  }
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 }

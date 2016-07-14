@@ -21,6 +21,7 @@ var app = angular
         'ngIdle',
         'ui.bootstrap',
         'smart-table',
+        'lrDragNDrop',
         'ngTreetable',
         'restangular',
         'ui.bootstrap.contextMenu',
@@ -31,7 +32,7 @@ var app = angular
         'ngDragDrop',
         'ui.tree',
         'blockUI'
-        
+
      ]);
 
 var
@@ -51,7 +52,6 @@ var
 var msg = {};
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, NotificationProvider,blockUIConfig) {
-
 
     $routeProvider
         .when('/', {

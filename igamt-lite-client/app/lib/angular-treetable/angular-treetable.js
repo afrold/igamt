@@ -51,6 +51,7 @@ angular.module('ngTreetable', [])
 
         var params = $scope.ttParams;
         var table = $element;
+        console.log("inside tt Table");
 
         $scope.compileElement = function(node, parentId, parentNode) {
             var tpl = params.getTemplate(node);
@@ -192,7 +193,8 @@ angular.module('ngTreetable', [])
             restrict: 'AC',
             scope: {
                 isBranch: '=',
-                parent: '='
+                parent: '=',
+                id: '='
             },
             link: function(scope, element, attrs) {
                 var branch = angular.isDefined(scope.isBranch) ? scope.isBranch : true;
@@ -203,7 +205,8 @@ angular.module('ngTreetable', [])
                 element.attr('data-tt-id', ttNodeCounter++);
                 element.attr('data-tt-branch', branch);
                 element.attr('data-tt-parent-id', parent);
-            }
+                element.attr('data-node-id',scope.id);
+             }
         }
 
     }]);

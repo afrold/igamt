@@ -137,7 +137,6 @@ public class SegmentLibraryRepositoryImpl implements SegmentLibraryOperations {
       }
     }
     return libraries;
-
   }
 
   public List<SegmentLibrary> findLibrariesByIds(Set<String> ids) {

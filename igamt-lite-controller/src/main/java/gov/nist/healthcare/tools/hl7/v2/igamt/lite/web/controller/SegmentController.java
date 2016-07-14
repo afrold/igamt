@@ -11,8 +11,10 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
@@ -21,8 +23,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationExc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +37,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,30 +70,63 @@ public class SegmentController extends CommonController {
   private DatatypeService datatypeService;
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-  public Segment getSegmentById(@PathVariable("id") String id) {
+  public Segment getSegmentById(@PathVariable("id") String id) throws DataNotFoundException {
     log.info("Fetching segmentById..." + id);
-    Segment result = segmentService.findById(id);
-    return result;
+    return findById(id);
+  }
+
+  @RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST,
+      produces = "application/json")
+  public List<Segment> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
+    log.info("Fetching the segment. scope=" + scopesAndVersion.getScopes() + " hl7Version="
+        + scopesAndVersion.getHl7Version());
+    List<Segment> semgents = new ArrayList<Segment>();
+    try {
+      User u = userService.getCurrentUser();
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (account == null) {
+        throw new UserAccountNotFoundException();
+      }
+
+      semgents.addAll(segmentService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+          scopesAndVersion.getHl7Version()));
+      if (semgents.isEmpty()) {
+        throw new NotFoundException("Segment not found for scopesAndVersion=" + scopesAndVersion);
+      }
+    } catch (Exception e) {
+      log.error("", e);
+    }
+    return semgents;
   }
 
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public Segment save(@RequestBody Segment segment) throws SegmentSaveException,
       ForbiddenOperationException {
-    log.debug("segment=" + segment);
-    log.debug("segment.getId()=" + segment.getId());
-    log.info("Saving the " + segment.getScope() + " segment.");
-    segment.setDate(DateUtils.getCurrentTime());
-    Segment saved = segmentService.save(segment);
-    log.debug("saved.getId()=" + saved.getId());
-    log.debug("saved.getScope()=" + saved.getScope());
-    return segment;
+    if (!SCOPE.HL7STANDARD.equals(segment.getScope())) {
+      log.debug("segment=" + segment);
+      log.debug("segment.getId()=" + segment.getId());
+      log.info("Saving the " + segment.getScope() + " segment.");
+      segment.setDate(DateUtils.getCurrentTime());
+      Segment saved = segmentService.save(segment);
+      log.debug("saved.getId()=" + saved.getId());
+      log.debug("saved.getScope()=" + saved.getScope());
+      return segment;
+    } else {
+      throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");
+    }
 
   }
 
   @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
-  public boolean delete(@PathVariable("id") String segId) {
-    log.info("Deleting segment " + segId);
-    segmentService.delete(segId);
+  public boolean delete(@PathVariable("id") String segId) throws ForbiddenOperationException,
+      DataNotFoundException {
+    Segment segment = findById(segId);
+    if (!SCOPE.HL7STANDARD.equals(segment.getScope())) {
+      log.info("Deleting segment " + segId);
+      segmentService.delete(segId);
+    } else {
+      throw new ForbiddenOperationException("FORBIDDEN_DELETE_SEGMENT");
+    }
     return true;
   }
 
@@ -98,8 +139,8 @@ public class SegmentController extends CommonController {
 
   @RequestMapping(value = "/{id}/datatypes", method = RequestMethod.GET,
       produces = "application/json")
-  public Set<Datatype> collectDatatypes(@PathVariable("id") String id) {
-    Segment segment = segmentService.findById(id);
+  public Set<Datatype> collectDatatypes(@PathVariable("id") String id) throws DataNotFoundException {
+    Segment segment = findById(id);
     Set<Datatype> datatypes = new HashSet<Datatype>();
     if (segment != null) {
       List<Field> fields = segment.getFields();
@@ -109,5 +150,12 @@ public class SegmentController extends CommonController {
       }
     }
     return datatypes;
+  }
+
+  public Segment findById(String id) throws DataNotFoundException {
+    Segment result = segmentService.findById(id);
+    if (result == null)
+      throw new DataNotFoundException("segmentNotFound");
+    return result;
   }
 }

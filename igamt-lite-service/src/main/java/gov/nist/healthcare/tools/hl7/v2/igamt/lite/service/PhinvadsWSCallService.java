@@ -29,7 +29,7 @@ public class PhinvadsWSCallService {
 
   public PhinvadsWSCallService() {
 
-    String serviceUrl = "http://phinvads.cdc.gov/vocabService/v2";
+    String serviceUrl = "https://phinvads.cdc.gov/vocabService/v2";
 
     HessianProxyFactory factory = new HessianProxyFactory();
     try {

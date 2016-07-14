@@ -120,11 +120,11 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
     };
 
 
-    svc.findOneChild = function (id, datatypeLibary) {
-        if (datatypeLibary.children) {
-            for (var i = 0; i < datatypeLibary.children.length; i++) {
-                if (datatypeLibary.children[i].id === id) {
-                    return datatypeLibary.children[i];
+    svc.findOneChild = function (id, list) {
+        if (list) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].id === id) {
+                    return list[i];
                 }
             }
         }

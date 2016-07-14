@@ -472,7 +472,7 @@ public class UserController {
       return new ResponseMessage(ResponseMessage.Type.danger, "invalidUsername", null);
     }
 
-    userService.changePasswordForUser(acc.getUsername(), acc.getNewPassword());
+    userService.changePasswordForUser(acc.getNewPassword(), acc.getUsername());
 
     // send email notification
     this.sendChangeAccountPasswordNotification(onRecordAccount, newPassword);

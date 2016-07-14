@@ -21,6 +21,7 @@ var app = angular
         'ngIdle',
         'ui.bootstrap',
         'smart-table',
+        'lrDragNDrop',
         'ngTreetable',
         'restangular',
         'ui.bootstrap.contextMenu',
@@ -32,7 +33,7 @@ var app = angular
         ,'ui.tree',
         'blockUI',
         'nsPopover'
-     ]);
+       ]);
 
 var
 //the HTTP headers to be used by all requests
@@ -291,8 +292,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                 return $q.reject(response);
             }
         };
-
-
     });
 
 

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/session")
 public class SessionController {
-  @RequestMapping(method = RequestMethod.GET, value = "/keepAlive")
-  public boolean keepAlive(HttpServletRequest request) {
-    return true;
-  }
+	@RequestMapping(method = RequestMethod.GET, value = "/keepAlive")
+	public boolean keepAlive(HttpServletRequest request) {
+		return true;
+	}
 }

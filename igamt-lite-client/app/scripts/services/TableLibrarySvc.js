@@ -84,11 +84,11 @@ angular.module('igl').factory('TableLibrarySvc', function($http, $httpBackend, $
 			return angular.fromJson(response.data)});
 	};
 
-    svc.findOneChild = function (id, library) {
-        if (library.children) {
-            for (var i = 0; i < library.children.length; i++) {
-                if (library.children[i].id === id) {
-                    return library.children[i];
+    svc.findOneChild = function (id, list) {
+        if (list) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].id === id) {
+                    return list[i];
                 }
             }
         }

@@ -2,13 +2,16 @@
  * Created by Jungyub on 4/01/15.
  */
 
-angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc) {
+angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc,blockUI) {
     $scope.readonly = false;
     $scope.codeSysEditMode = false;
     $scope.codeSysForm = {};
     $scope.saved = false;
     $scope.message = false;
     $scope.params = null;
+    $scope.predicate = 'value';
+    $scope.reverse = false;
+
     $scope.init = function () {
         $rootScope.$on('event:cloneTableFlavor', function (event, table) {
             $scope.copyTable(table);
@@ -16,8 +19,10 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     };
 
     $scope.reset = function () {
+        blockUI.start();
         cleanState();
         $rootScope.table = angular.copy($rootScope.tablesMap[$rootScope.table.id]);
+        blockUI.stop();
     };
 
     var cleanState = function () {
@@ -32,39 +37,42 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
 
     $scope.save = function () {
-        $scope.saving = true;
-        var table = $rootScope.table;
-        var bindingIdentifier = table.bindingIdentifier;
+
+        if($rootScope.table.scope === 'USER') {
+            $scope.saving = true;
+            var table = $rootScope.table;
+            var bindingIdentifier = table.bindingIdentifier;
 
 
-        if (table.libIds == undefined) table.libIds = [];
-        if (table.libIds.indexOf($rootScope.igdocument.profile.tableLibrary.id) == -1) {
-            table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
-        }
+            if (table.libIds == undefined) table.libIds = [];
+            if (table.libIds.indexOf($rootScope.igdocument.profile.tableLibrary.id) == -1) {
+                table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+            }
 
-        TableService.save(table).then(function (result) {
-            var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary);
-            TableService.merge($rootScope.tablesMap[result.id], result);
-            var newLink = TableService.getTableLink(result);
-            newLink.bindingIdentifier = bindingIdentifier;
-            TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                oldLink.bindingIdentifier = link.bindingIdentifier;
-                cleanState();
-                $rootScope.msg().text = "tableSaved";
-                $rootScope.msg().type = "success";
-                $rootScope.msg().show = true;
+            TableService.save(table).then(function (result) {
+                var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary.children);
+                TableService.merge($rootScope.tablesMap[result.id], result);
+                var newLink = TableService.getTableLink(result);
+                newLink.bindingIdentifier = bindingIdentifier;
+                TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
+                    oldLink.bindingIdentifier = link.bindingIdentifier;
+                    cleanState();
+                    $rootScope.msg().text = "tableSaved";
+                    $rootScope.msg().type = "success";
+                    $rootScope.msg().show = true;
+                }, function (error) {
+                    $scope.saving = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
             }, function (error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
             });
-        }, function (error) {
-            $scope.saving = false;
-            $rootScope.msg().text = error.data.text;
-            $rootScope.msg().type = error.data.type;
-            $rootScope.msg().show = true;
-        });
+        }
     };
 
 
@@ -86,6 +94,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.tablesMap[newTable.id] = newTable;
         $rootScope.table = newTable;
         $rootScope.recordChangeForEdit2('table', "add", newTable.id, 'table', newTable);
+        $scope.setDirty();
     };
 
 
@@ -132,13 +141,15 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         if (!$scope.isNewObject('table', 'add', $rootScope.table.id)) {
             $rootScope.recordChangeForEdit2('value', "add", null, 'value', newValueBlock);
         }
-    };
+        $scope.setDirty();
+     };
 
     $scope.deleteValue = function (value) {
         if (!$scope.isNewValueThenDelete(value.id)) {
             $rootScope.recordChangeForEdit2('value', "delete", value.id, 'id', value.id);
         }
         $rootScope.table.codes.splice($rootScope.table.codes.indexOf(value), 1);
+        $scope.setDirty();
     };
 
     $scope.isNewValueThenDelete = function (id) {
@@ -195,8 +206,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
     $scope.copyTable = function (table) {
         CloneDeleteSvc.copyTable(table);
-        $rootScope.$broadcast('event:SetToC');
-    };
+     };
 
     $scope.recordChangeValue = function (value, valueType, tableId) {
         if (!$scope.isNewTable(tableId)) {
@@ -204,12 +214,14 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                 $rootScope.recordChangeForEdit2('value', 'edit', value.id, valueType, value);
             }
         }
+        $scope.setDirty();
     };
 
     $scope.recordChangeTable = function (table, valueType, value) {
         if (!$scope.isNewTable(table.id)) {
             $rootScope.recordChangeForEdit2('table', 'edit', table.id, valueType, value);
         }
+        $scope.setDirty();
     };
 
     $scope.setAllCodeUsage = function (table, usage) {
@@ -221,6 +233,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                 }
             }
         }
+        $scope.setDirty();
     };
 
     $scope.delete = function (table) {
@@ -243,7 +256,7 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
     $scope.delete = function () {
         $scope.loading = true;
         if ($scope.tableToDelete.scope === 'USER') {
-            CloneDeleteSvc.deleteTableAndSegmentLink($scope.tableToDelete);
+            CloneDeleteSvc.deleteTableAndTableLink($scope.tableToDelete);
         } else {
             CloneDeleteSvc.deleteTableLink($scope.tableToDelete);
         }
@@ -277,46 +290,46 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
 //        $modalInstance.close($scope.tableToDelete);
 //    };
 
-    $scope.delete = function () {
-        $scope.loading = true;
-
-        TableService.delete($scope.tableToDelete).then(function (result) {
-                TableLibrarySvc.deleteChild($scope.tableToDelete.id).then(function (res) {
-                    // We must delete from two collections.
-                    var index = $rootScope.tables.indexOf($scope.tableToDelete);
-                    $rootScope.tables.splice(index, 1);
-                    var tmp = TableLibrarySvc.findOneChild($scope.tableToDelete.id, $rootScope.igdocument.profile.tableLibrary);
-                    index = $rootScope.igdocument.profile.tableLibrary.children.indexOf(tmp);
-                    $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
-                    $rootScope.tablesMap[$scope.tableToDelete.id] = null;
-                    $rootScope.references = [];
-                    if ($rootScope.table === $scope.tableToDelete) {
-                        $rootScope.table = null;
-                    }
-                    $rootScope.recordDelete("table", "edit", $scope.tableToDelete.id);
-                    $rootScope.msg().text = "tableDeleteSuccess";
-                    $rootScope.msg().type = "success";
-                    $rootScope.msg().show = true;
-                    $rootScope.manualHandle = true;
-                    $scope.loading = false;
-                    $rootScope.$broadcast('event:SetToC');
-                    $modalInstance.close($scope.tableToDelete);
-                }, function (error) {
-                    $rootScope.msg().text = error.data.text;
-                    $rootScope.msg().type = "danger";
-                    $rootScope.msg().show = true;
-                    $rootScope.manualHandle = true;
-                    $scope.loading = false;
-                });
-            }, function (error) {
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = "danger";
-                $rootScope.msg().show = true;
-                $rootScope.manualHandle = true;
-                $scope.loading = false;
-            }
-        );
-    };
+//    $scope.delete = function () {
+//        $scope.loading = true;
+//
+//        TableService.delete($scope.tableToDelete).then(function (result) {
+//                TableLibrarySvc.deleteChild($scope.tableToDelete.id).then(function (res) {
+//                    // We must delete from two collections.
+//                    var index = $rootScope.tables.indexOf($scope.tableToDelete);
+//                    $rootScope.tables.splice(index, 1);
+//                    var tmp = TableLibrarySvc.findOneChiletd($scope.tableToDelete.id, $rootScope.igdocument.profile.tableLibrary.children);
+//                    index = $rootScope.igdocument.profile.tableLibrary.children.indexOf(tmp);
+//                    $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
+//                    $rootScope.tablesMap[$scope.tableToDelete.id] = null;
+//                    $rootScope.references = [];
+//                    if ($rootScope.table === $scope.tableToDelete) {
+//                        $rootScope.table = null;
+//                    }
+//                    $rootScope.recordDelete("table", "edit", $scope.tableToDelete.id);
+//                    $rootScope.msg().text = "tableDeleteSuccess";
+//                    $rootScope.msg().type = "success";
+//                    $rootScope.msg().show = true;
+//                    $rootScope.manualHandle = true;
+//                    $scope.loading = false;
+//                    $rootScope.$broadcast('event:SetToC');
+//                    $modalInstance.close($scope.tableToDelete);
+//                }, function (error) {
+//                    $rootScope.msg().text = error.data.text;
+//                    $rootScope.msg().type = "danger";
+//                    $rootScope.msg().show = true;
+//                    $rootScope.manualHandle = true;
+//                    $scope.loading = false;
+//                });
+//            }, function (error) {
+//                $rootScope.msg().text = error.data.text;
+//                $rootScope.msg().type = "danger";
+//                $rootScope.msg().show = true;
+//                $rootScope.manualHandle = true;
+//                $scope.loading = false;
+//            }
+//        );
+//    };
 
 
     $scope.cancel = function () {

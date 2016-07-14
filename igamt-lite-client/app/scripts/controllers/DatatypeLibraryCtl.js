@@ -8,8 +8,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $scope.toShow==="";
       $scope.datatypeLibStruct = null;
       $scope.datatypeLibMetaDataCopy = null;
-			$scope.datatypeStruct = null;
-			$scope.datatypeCopy = null;
+      $scope.datatypeStruct = null;
+      $scope.datatypeCopy = null;
 			$scope.loadingSelection = true;
 			$scope.publishSelections = [];
 			$scope.datatypeDisplay	= [];
@@ -45,8 +45,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
       $scope.datatypeLibraryTypes = [
                                 { name: "Browse Master data type libraries", type: 'MASTER', visible :  $scope.admin,
-                                },
-                                { name: "Access My data type libraries", type: 'USER', visible :  true
                                 }
                             ];
 
@@ -89,7 +87,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
 			function getDataTypeLibraryByScope(scope) {
 				DatatypeLibrarySvc.getDataTypeLibraryByScope(scope).then(function(data) {
-		 $scope.datatypeLibsStruct = [];
+					$scope.datatypeLibsStruct = [];
           angular.forEach(data, function(lib){
 						$scope.datatypeLibsStruct.push(lib);
           });
@@ -132,7 +130,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			};			
 			
 			$scope.editMetadata= function(){		
-				$scope.datatypeLibMetaDataCopy = $scope.DataTypeTree[0].metaData;
+				$scope.datatypeLibMetaDataCopy = angular.copy($scope.DataTypeTree[0].metaData);
 	            $scope.editView = "LibraryMetaData.html";			
 			}
 		
@@ -140,7 +138,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 		        $scope.datatypeListView = "DatatypeList.html";
 					$scope.loadingSelection = true;
 			        $scope.datatypeLibStruct = datatypeLibrary;    
-				   DatatypeLibrarySvc.getDatatypesByLibrary(datatypeLibrary.id).then(function(datatypes){
+			        DatatypeLibrarySvc.getDatatypesByLibrary(datatypeLibrary.id).then(function(datatypes){
 					console.log("datatypes=" + datatypes.length);
 						$rootScope.isEditing = true;
 						$scope.accordi.dtDetails = true;

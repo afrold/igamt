@@ -16,38 +16,40 @@
 	</div>
 	<div ng-show="!loadingSelection">
 		<div ng-show="table !== null" id="executionPanel">
-				<div class="row" style="margin-left:0px; margin-right: 20px">
-					<div class="page-header" style="margin-bottom: 20px">
-    					<span class="header4">Table: {{table.bindingIdentifier}}</span>
-            				<span class="pull-right">
-         					<button title="Save Changes" type="button" class="btn btn-sm btn-primary"
-                 				ng-disabled="editForm.$invalid || !editForm.$dirty"
-                 				ng-hide="viewSettings.tableReadonly || table.scope !== 'USER'"
+			<div class="row" style="margin-left:0px; margin-right: 20px">
+				<div class="page-header" style="margin-bottom: 20px">
+					<span class="header4">Table: {{table.bindingIdentifier}}</span>
+					<span class="pull-right">
+						<button title="Save Changes" type="button" class="btn btn-sm btn-success"
+								ng-disabled="editForm.$invalid || !editForm.$dirty"
                 	 			ng-click="save()">
-             					<span><i class="fa fa-check fa-fw"></i> Save</span>
-         					</button>
-							<button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
+							<span><i class="fa fa-check fa-fw"></i> Save</span>
+						</button>
+						<button title="Reset Changes" type="button" class="btn btn-sm btn-warning"
 								ng-disabled="!editForm.$dirty"
-                	       		ng-hide="viewSettings.tableReadonly || table.scope !== 'USER'"
                 	        	ng-click="reset()">
-                	        	<span><i class="fa fa-times fa-fw"></i> Reset</span>
-                	        </button>
-						</span>
-					</div>
-	
-					<tabset>
-						<tab heading="Table MetaData">
+							<span><i class="fa fa-times fa-fw"></i> Reset</span>
+						</button>
+					</span>
+				</div>
+
+				<div class="">
+                    <tabset>
+						<tab>
+                            <tab-heading>
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Table MetaData
+                            </tab-heading>
                             <div style="margin-top: 20px">
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIndentifier.$invalid}">
-        						<label class="col-md-2 control-label">Mapping Indentifier</label>
+        						<label class="col-md-2 control-label">Mapping Indentifier*</label>
 
         						<div class="controls col-md-10">
-            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="tableIndentifier" class="form-control" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
+            						<input type="text" name="tableIndentifier" class="form-control" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
         						</div>
     						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
-        						<label class="col-md-2 control-label">Name</label>
+        						<label class="col-md-2 control-label">Name*</label>
 
         						<div class="controls col-md-10">
             						<input type="text" disabled name="name" class="form-control" ng-model="table.name" required ng-change="setDirty()">
@@ -55,26 +57,19 @@
     						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.decription.$invalid}">
-        						<label class="col-md-2 control-label">Decription</label>
+        						<label class="col-md-2 control-label">Description</label>
 
         						<div class="controls col-md-10">
-            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="description" class="form-control" ng-model="table.description" ng-change="setDirty()">
+            						<input type="text" name="description" class="form-control" ng-model="table.description" ng-change="setDirty()">
         						</div>
     						</div>
 
-							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.decription.$invalid}">
-        						<label class="col-md-2 control-label">Decription</label>
-
-        						<div class="controls col-md-10">
-            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="description" class="form-control" ng-model="table.description" ng-change="setDirty()">
-        						</div>
-    						</div>
 
 							<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.oid.$invalid}">
         						<label class="col-md-2 control-label">OID</label>
 
         						<div class="controls col-md-10">
-            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="oid" class="form-control" ng-model="table.oid" ng-change="setDirty()">
+            						<input type="text" name="oid" class="form-control" ng-model="table.oid" ng-change="setDirty()">
         						</div>
     						</div>
 
@@ -82,7 +77,7 @@
         						<label class="col-md-2 control-label">Version</label>
 
         						<div class="controls col-md-10">
-            						<input type="text" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="version" class="form-control" ng-model="table.version" ng-change="setDirty()">
+            						<input type="text" name="version" class="form-control" ng-model="table.version" ng-change="setDirty()">
         						</div>
     						</div>
 
@@ -90,7 +85,7 @@
         						<label class="col-md-2 control-label">Extensibility</label>
 
         						<div class="controls col-md-10">
-									<select class="form-control" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="extensibility" ng-model="table.extensibility" ng-options="extensibility for extensibility in config.tableExtensibilities" ng-change="setDirty()"/>
+									<select class="form-control" name="extensibility" ng-model="table.extensibility" ng-options="extensibility for extensibility in config.tableExtensibilities" ng-change="setDirty()"/>
         						</div>
     						</div>
 
@@ -98,7 +93,7 @@
         						<label class="col-md-2 control-label">Stability</label>
 
         						<div class="controls col-md-10">
-									<select class="form-control" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="stability" ng-model="table.stability" ng-options="stability for stability in config.tableStabilities" ng-change="setDirty()"/>
+									<select class="form-control" name="stability" ng-model="table.stability" ng-options="stability for stability in config.tableStabilities" ng-change="setDirty()"/>
         						</div>
     						</div>
 
@@ -106,23 +101,24 @@
         						<label class="col-md-2 control-label">Content Definition</label>
 
         						<div class="controls col-md-10">
-									<select class="form-control" ng-disabled="viewSettings.tableReadonly || table.scope !== 'USER'" name="contentDefinition" ng-model="table.contentDefinition" ng-options="contentDefinition for contentDefinition in config.tableContentDefinitions" ng-change="setDirty()"/>
+									<select class="form-control" name="contentDefinition" ng-model="table.contentDefinition" ng-options="contentDefinition for contentDefinition in config.tableContentDefinitions" ng-change="setDirty()"/>
         						</div>
     						</div>
 
 							<div class="form-group control-group">
-        						<label class="col-md-2 control-label">Code Systems</label>
+        						<label class="col-md-2 control-label">Code Systems*</label>
 
 								<div class="controls col-md-10">
 								 	<div class="form-control">
 										<span ng-repeat="cs in codeSystems">
-											{{cs}}
+											<span ng-hide="codeSysEditMode">{{cs}}</span>
+											<input ng-model="cs"  type="text" ng-show="codeSysEditMode"/>
 											<a ng-click="delCodeSystem(cs)" ng-show="codeSysEditMode" class="point">
                                         		<span><i class="fa fa-times-circle fa-fw"></i></span>
                                         	</a>
 											<span ng-hide="$last">,</span>
 										</span>
-										<div class="pull-right" ng-hide="viewSettings.tableReadonly || table.scope !== 'USER'">
+										<div class="pull-right">
 											<a ng-click="makeCodeSystemEditable()" ng-hide="codeSysEditMode" class="point">
                         						<span><i class="fa fa-pencil fa-fw"></i></span>
                     						</a>
@@ -137,34 +133,40 @@
                                 </div>
 						</tab>
 						
-						<tab heading="Table Definition">
-							<div class="col-md-12">
-								<span class="pull-right">
-									<button title="Add new Value" type="button" ng-hide="viewSettings.tableReadonly" class="btn btn-sm btn-info" ng-click="addValue(); searchValue.value = ''; searchValue.label = '';">
-										<span><i class="fa fa-plus fa-fw"></i>&nbsp; Add Value</span>
-									</button>
-								</span>
-							</div>
-							
-							<div class="col-md-12">
-								<div class="table-responsive">
-									<table class="table table-striped table-bordered">
-										<thead>
+						<tab>
+                            <tab-heading>
+                                <i class="fa fa-table fa-fw" aria-hidden="true"></i> Table Definition
+                            </tab-heading>
+
+							<div class="el-def" style="margin-top: 20px">
+								<div>
+									<span class="pull-right">
+										<button title="Add new Value" type="button" class="btn btn-sm btn-info" ng-click="addValue(); searchValue.value = ''; searchValue.label = '';">
+											<span><i class="fa fa-plus fa-fw"></i>&nbsp; Add Value</span>
+										</button>
+									</span>
+								</div>
+
+								<div class="">
+									<div class="table-responsive">
+										<table class="table table-striped table-bordered">
+											<thead>
 											<tr class="tbl-header">
-												<th data-ng-click="predicate = 'value'; reverse=!reverse">Value 
+												<th data-ng-click="predicate = 'value'; reverse=!reverse">Value
 													<i ng-show="reverse && predicate==='value'" class="fa fa-sort-desc"></i>
 													<i ng-show="!reverse && predicate==='value'" class="fa fa-sort-asc"></i>
 													<i ng-show="predicate!=='value'" class="fa fa-sort"></i>
 												</th>
-												<th data-ng-click="predicate = 'label'; reverse=!reverse">Description 
+												<th data-ng-click="predicate = 'label'; reverse=!reverse">Description
 													<i ng-show="reverse && predicate==='label'" class="fa fa-sort-desc"></i>
 													<i ng-show="!reverse && predicate==='label'" class="fa fa-sort-asc"></i>
 													<i ng-show="predicate!=='label'" class="fa fa-sort"></i>
 												</th>
-                            					<th class="col-md-2">CodeSystem</th>
-                            					<th class="col-md-2">Usage</th>
-                            					<th class="col-md-1">Action</th>
-                        					</tr>
+												<th>CodeSystem</th>
+												<th>Usage</th>
+												<th>Action</th>
+											</tr>
+
 											<tr>
 												<th>
 													<input type="text" class="form-control" placeholder="Search Value by code" ng-model="searchValue.value"/>
@@ -173,116 +175,291 @@
 													<input type="text" class="form-control" placeholder="Search Value by description" ng-model="searchValue.label"/>
 												</th>
 												<th>
-													<select class="form-control" ng-hide="viewSettings.tableReadonly"
-                                        				name="setALLCodeSystem"
-                                        				ng-change="updateCodeSystem(table,codeSystem)"
-                                        				ng-model="codeSystem"
-                                        				ng-options="cs for cs in codeSystems">
-                                					</select>
+													<select class="form-control"
+															name="setALLCodeSystem"
+															ng-change="updateCodeSystem(table,codeSystem)"
+															ng-model="codeSystem"
+															ng-options="cs for cs in codeSystems">
+													</select>
 												</th>
 												<th>
-													<div class="btn-group btn-group-xs btn-info" role="group" ng-hide="viewSettings.tableReadonly" aria-label="...">
-                                    					<button type="button" ng-click="setAllCodeUsage(table, 'R')" ng-disabled="viewSettings.tableReadonly" class="btn btn-default btn-info">R</button>
-                                    					<button type="button" ng-click="setAllCodeUsage(table, 'P')" ng-disabled="viewSettings.tableReadonly" class="btn btn-default btn-info">P</button>
-                                    					<button type="button" ng-click="setAllCodeUsage(table, 'E')" ng-disabled="viewSettings.tableReadonly" class="btn btn-default btn-info">E</button>
-                                					</div>
+													<div class="btn-group btn-group-xs btn-info" role="group" aria-label="...">
+														<button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-default btn-info">R</button>
+														<button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-default btn-info">P</button>
+														<button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-default btn-info">E</button>
+													</div>
 												</th>
 												<th>
 													<button title="Reset Search" type="button" class="btn btn-xs btn-info" ng-click="searchValue.value = ''; searchValue.label = '';">
-                                    					<i class="fa fa-refresh fa-fw"></i>
-                                					</button>
+														<i class="fa fa-refresh fa-fw"></i>
+													</button>
 												</th>
 											</tr>
-                        				</thead>
-                        				
-										<tbody>
-                        					<tr ng-repeat="c in table.codes|filter:searchValue|orderBy:predicate:reverse">
-                            					<td class="col-md-3">
-                                					<span ng-show="viewSettings.tableReadonly">{{c.value}}</span>
+											</thead>
+
+											<tbody>
+											<tr ng-repeat="c in table.codes|filter:searchValue|orderBy:predicate:reverse">
+												<td class="col-md-3">
 													<div ng-show="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">
 														<input type="text" style="width: 100%" name="Value"
-                                       						ng-hide="viewSettings.tableReadonly"
-                                                            ng-change="setDirty()"
-									   						class="form-control-warning"
-                                       						ng-model="c.value"/>
+															   ng-change="setDirty()"
+															   class="form-control-warning"
+															   ng-model="c.value"/>
 														<span style="color:red">Duplicated</span>
 													</div>
 													<div ng-hide="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">
 														<input type="text" style="width: 100%" name="Value"
-                                                               ng-change="setDirty()"
-                                       						ng-hide="viewSettings.tableReadonly"
-									   						class="form-control"
-                                       						ng-model="c.value"/>
+															   ng-change="setDirty()"
+															   class="form-control"
+															   ng-model="c.value"/>
 													</div>
-                            					</td>
+												</td>
 
-                            					<td class="col-md-4">
-                                					<span ng-show="viewSettings.tableReadonly">{{c.label}}</span>
+												<td class="col-md-4">
 													<div ng-show="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)">
 														<input type="text" style="width: 100%" name="Label"
-                                       						ng-hide="viewSettings.tableReadonly"
-                                                            ng-change="setDirty()"
-									   						class="form-control-warning"
-                                       						ng-model="c.label"/>
+															   ng-change="setDirty()"
+															   class="form-control-warning"
+															   ng-model="c.label"/>
 														<span style="color:red">Duplicated</span>
 													</div>
+
 													<div ng-hide="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)">
 														<input type="text" style="width: 100%" name="Label"
-                                       						ng-hide="viewSettings.tableReadonly"
-                                                            ng-change="setDirty()"
-									   						class="form-control"
-                                       						ng-model="c.label"/>
+															   ng-change="setDirty()"
+															   class="form-control"
+															   ng-model="c.label"/>
 													</div>
-                            					</td>
+												</td>
 
-                            					<td class="col-md-2">
-                                					<span ng-show="viewSettings.tableReadonly">{{c.codeSystem}}</span>
+												<td class="col-md-2">
 													<div ng-show="!c.codeSystem || c.codeSystem === ''">
 														<select class="form-control-warning"
-															ng-hide="viewSettings.tableReadonly"
-                                                            ng-change="setDirty()"
-                                        					ng-model="c.codeSystem"
-                                        					ng-options="cs for cs in codeSystems">
-                                						</select>
+																ng-change="setDirty()"
+																ng-model="c.codeSystem"
+																ng-options="cs for cs in codeSystems">
+														</select>
 														<span style="color:red">Missing CodeSystem</span>
 													</div>
 													<div ng-hide="!c.codeSystem || c.codeSystem === ''">
 														<select class="form-control"
-															ng-hide="viewSettings.tableReadonly"
-                                                            ng-change="setDirty()"
-                                       	 					ng-model="c.codeSystem"
-                                        					ng-options="cs for cs in codeSystems">
-                                						</select>
+																ng-change="setDirty()"
+																ng-model="c.codeSystem"
+																ng-options="cs for cs in codeSystems">
+														</select>
 													</div>
-                            					</td>
-	
-                            					<td class="col-md-2">
-                                					<span ng-show="viewSettings.tableReadonly">{{c.codeUsage}}</span>
-                                					<select class="form-control" name="Usage"
-                                        				ng-hide="viewSettings.tableReadonly"
-                                                        ng-change="setDirty()"
-                                        				ng-model="c.codeUsage"
-                                        				ng-options="codeUsage for codeUsage in config.codeUsages">
-                                					</select>
-                            					</td>
-                            
+												</td>
+												<td class="col-md-2">
+													<select class="form-control" name="Usage"
+															ng-change="setDirty()"
+															ng-model="c.codeUsage"
+															ng-options="codeUsage for codeUsage in config.codeUsages">
+													</select>
+												</td>
+
 												<td class="col-md-1">
-                                					<button title="Delete" type="button" class="btn btn-xs btn-danger" ng-hide="viewSettings.tableReadonly" ng-click="deleteValue(c)">
-                                    					<i class="fa fa-trash-o fa-fw"></i>
-                                					</button>
-                            					</td>
-                        					</tr>
-                        				</tbody>
-                    				</table>
-                				</div>
+													<button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="deleteValue(c)">
+														<i class="fa fa-trash-o fa-fw"></i>
+													</button>
+												</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
 							</div>
 						</tab>
 					</tabset>
 				</div>
+			</div>
 		</div>
 	</div>
 </div>
 </script>
+
+<script type="text/ng-template" id="ReadValueSets.html">
+	<div ng-controller="TableListCtrl" ng-init="init()" class="container">
+		<div ng-show="loadingSelection" style="text-align: center; padding-top:20px">
+			<i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+		</div>
+		<div ng-show="!loadingSelection">
+			<div ng-show="table !== null" id="executionPanel">
+				<div class="row" style="margin-left:0px; margin-right: 20px">
+					<div class="page-header" style="margin-bottom: 20px">
+						<span class="header4">Table: {{table.bindingIdentifier}}</span>
+					</div>
+
+					<div class="">
+						<tabset>
+							<tab>
+								<tab-heading>
+									<i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Table MetaData
+								</tab-heading>
+								<div style="margin-top: 20px">
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIndentifier.$invalid}">
+										<label class="col-md-2 control-label">Mapping Indentifier</label>
+
+										<div class="controls col-md-10">
+											<input type="text" disabled name="tableIndentifier" class="form-control" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
+										</div>
+									</div>
+
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
+										<label class="col-md-2 control-label">Name</label>
+
+										<div class="controls col-md-10">
+											<input type="text" disabled name="name" class="form-control" ng-model="table.name" required ng-change="setDirty()">
+										</div>
+									</div>
+
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.decription.$invalid}">
+										<label class="col-md-2 control-label">Description</label>
+
+										<div class="controls col-md-10">
+											<input type="text" disabled name="description" class="form-control" ng-model="table.description" ng-change="setDirty()">
+										</div>
+									</div>
+
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.decription.$invalid}">
+										<label class="col-md-2 control-label">Description</label>
+
+										<div class="controls col-md-10">
+											<input type="text" disabled name="description" class="form-control" ng-model="table.description" ng-change="setDirty()">
+										</div>
+									</div>
+
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.oid.$invalid}">
+										<label class="col-md-2 control-label">OID</label>
+
+										<div class="controls col-md-10">
+											<input type="text" disabled name="oid" class="form-control" ng-model="table.oid" ng-change="setDirty()">
+										</div>
+									</div>
+
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.version.$invalid}">
+										<label class="col-md-2 control-label">Version</label>
+
+										<div class="controls col-md-10">
+											<input type="text" disabled name="version" class="form-control" ng-model="table.version" ng-change="setDirty()">
+										</div>
+									</div>
+
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.extensibility.$invalid}">
+										<label class="col-md-2 control-label">Extensibility</label>
+
+										<div class="controls col-md-10">
+											<select class="form-control" disabled name="extensibility" ng-model="table.extensibility" ng-options="extensibility for extensibility in config.tableExtensibilities" ng-change="setDirty()"/>
+										</div>
+									</div>
+
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.stability.$invalid}">
+										<label class="col-md-2 control-label">Stability</label>
+
+										<div class="controls col-md-10">
+											<select class="form-control" disabled name="stability" ng-model="table.stability" ng-options="stability for stability in config.tableStabilities" ng-change="setDirty()"/>
+										</div>
+									</div>
+
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.contentDefinition.$invalid}">
+										<label class="col-md-2 control-label">Content Definition</label>
+
+										<div class="controls col-md-10">
+											<select class="form-control" disabled name="contentDefinition" ng-model="table.contentDefinition" ng-options="contentDefinition for contentDefinition in config.tableContentDefinitions" ng-change="setDirty()"/>
+										</div>
+									</div>
+
+									<div class="form-group control-group">
+										<label class="col-md-2 control-label">Code Systems</label>
+
+										<div class="controls col-md-10">
+											<div class="form-control">
+												<span ng-repeat="cs in codeSystems">
+													<span ng-hide="codeSysEditMode">{{cs}}</span>
+													<span ng-hide="$last">,</span>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</tab>
+
+							<tab>
+								<tab-heading>
+									<i class="fa fa-table fa-fw" aria-hidden="true"></i> Table Definition
+								</tab-heading>
+
+								<div class="el-def">
+									<div class="">
+										<div class="table-responsive">
+											<table class="table table-striped table-bordered">
+												<thead>
+												<tr class="tbl-header">
+													<th data-ng-click="predicate = 'value'; reverse=!reverse">Value
+														<i ng-show="reverse && predicate==='value'" class="fa fa-sort-desc"></i>
+														<i ng-show="!reverse && predicate==='value'" class="fa fa-sort-asc"></i>
+														<i ng-show="predicate!=='value'" class="fa fa-sort"></i>
+													</th>
+													<th data-ng-click="predicate = 'label'; reverse=!reverse">Description
+														<i ng-show="reverse && predicate==='label'" class="fa fa-sort-desc"></i>
+														<i ng-show="!reverse && predicate==='label'" class="fa fa-sort-asc"></i>
+														<i ng-show="predicate!=='label'" class="fa fa-sort"></i>
+													</th>
+													<th>CodeSystem</th>
+													<th>Usage</th>
+													<th>Action</th>
+												</tr>
+
+												<tr>
+													<th>
+														<input type="text" class="form-control" placeholder="Search Value by code" ng-model="searchValue.value"/>
+													</th>
+													<th>
+														<input type="text" class="form-control" placeholder="Search Value by description" ng-model="searchValue.label"/>
+													</th>
+													<th></th>
+													<th></th>
+													<th>
+														<button title="Reset Search" type="button" class="btn btn-xs btn-info" ng-click="searchValue.value = ''; searchValue.label = '';">
+															<i class="fa fa-refresh fa-fw"></i>
+														</button>
+													</th>
+												</tr>
+												</thead>
+
+												<tbody>
+												<tr ng-repeat="c in table.codes|filter:searchValue|orderBy:predicate:reverse">
+													<td class="col-md-3">
+														<span>{{c.value}}</span>
+													</td>
+
+													<td class="col-md-4">
+														<span>{{c.label}}</span>
+													</td>
+
+													<td class="col-md-2">
+														<span>{{c.codeSystem}}</span>
+													</td>
+													<td class="col-md-2">
+														<span>{{c.codeUsage}}</span>
+													</td>
+
+													<td class="col-md-1">
+													</td>
+												</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</tab>
+						</tabset>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
 
 <script type="text/ng-template" id="ConfirmValueSetDeleteCtrl.html">
     <div class="modal-header">
@@ -303,7 +480,7 @@
 <script type="text/ng-template" id="ValueSetReferencesCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Table References Found
-            <button class="btn btn-primary pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
+            <button class="btn btn-primary btn-xs pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
             </button>
         </h3>
     </div>
@@ -339,8 +516,10 @@
             </table>
         </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
-        </button>
-    </div>
+    <!--<div class="modal-footer">-->
+        <!--<button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>-->
+        <!--</button>-->
+    <!--</div>-->
 </script>
+
+

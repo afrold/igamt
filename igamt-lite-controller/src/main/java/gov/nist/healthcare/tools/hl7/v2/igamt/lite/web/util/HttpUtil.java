@@ -9,7 +9,12 @@ public class HttpUtil {
   public static String getAppUrl(HttpServletRequest request) {
     String scheme = request.getScheme();
     String host = request.getHeader("Host");
+    if (host.contains("hl7v2.igamt.nist.gov:")) {
+      host = host.substring(0, host.indexOf(":"));
+    }
     String url = scheme + "://" + host + request.getContextPath();
+    System.out.println(url);
+
     return url;
   }
 

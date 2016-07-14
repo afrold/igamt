@@ -47,9 +47,9 @@ angular.module('igl').factory('SegmentLibrarySvc', function($http, userInfoServi
             });
 	};
 
-  svc.getSegmentsByLibrary = function(dtLibId) {
+  svc.getSegmentsByLibrary = function(segLibId) {
         return $http.get(
-            'api/segment-library/' + dtLibId + '/segments')
+            'api/segment-library/' + segLibId + '/segments')
             .then(function(response) {
     //					console.log("response" + JSON.stringify(response));
               return angular.fromJson(response.data);
@@ -95,11 +95,11 @@ angular.module('igl').factory('SegmentLibrarySvc', function($http, userInfoServi
                 return angular.fromJson(response.data)});
     };
 
-    svc.findOneChild = function (id, library) {
-        if (library.children) {
-            for (var i = 0; i < library.children.length; i++) {
-                if (library.children[i].id === id) {
-                    return library.children[i];
+    svc.findOneChild = function (id, list) {
+        if (list) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].id === id) {
+                    return list[i];
                 }
             }
         }

@@ -119,6 +119,10 @@ input.igl-has-error,select.igl-has-error {
     background-color: #f2c60d;
 }
 
+.label-dynamicCase {
+    background-color: #ff43d8;
+}
+
 .label-sub-component {
     background-color: rgba(0, 0, 0, 0.91);
 }
@@ -154,3 +158,36 @@ input.igl-has-error,select.igl-has-error {
     background-color: #efefef;
     cursor: pointer;
 }
+
+.form-control {
+    color: #2e3d49;
+    border-radius: 1px;
+ }
+
+
+.modal-header {
+     background-color: #e6e6e6;
+}
+
+.modal-dialog {
+    border-color: #ddd;
+}
+
+.modal-content {
+    background-color: #f8f8f8;
+}
+
+.panel{
+    margin: 0px;
+    padding: 0px;
+}
+.panel-body{
+    margin: 0px;
+    padding: 0px;
+}
+
+.panel-header{
+    margin: 0px;
+    padding: 0px;
+}
+

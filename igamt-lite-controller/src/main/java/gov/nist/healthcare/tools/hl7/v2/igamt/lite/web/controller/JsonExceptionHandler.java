@@ -18,6 +18,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentDeleteException;
@@ -121,6 +122,11 @@ public class JsonExceptionHandler implements HandlerExceptionResolver {
       } else if (ex instanceof SegmentDeleteException) {
         logger.error("ERROR: Failed to delete a segment", ex);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        mapper.writeValue(response.getWriter(),
+            new ResponseMessage(ResponseMessage.Type.danger, ex.getMessage()));
+      } else if (ex instanceof DataNotFoundException) {
+        logger.error("ERROR: Failed to retrieve a data", ex);
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         mapper.writeValue(response.getWriter(),
             new ResponseMessage(ResponseMessage.Type.danger, ex.getMessage()));
       } else {

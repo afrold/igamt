@@ -8,46 +8,46 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageE
 
 public class IntegrationIGDocumentRequestWrapper implements Serializable {
 
-  public IntegrationIGDocumentRequestWrapper() {
-    super();
-  }
+	public IntegrationIGDocumentRequestWrapper() {
+		super();
+	}
 
-  private static final long serialVersionUID = -8337269625916897011L;
+	private static final long serialVersionUID = -8337269625916897011L;
 
-  String hl7Version;
-  List<MessageEvents> msgEvts;
-  IGDocument igdocument;
-  Long accountId;
+	String hl7Version;
+	List<MessageEvents> msgEvts;
+	IGDocument igdocument;
+	Long accountId;
 
-  public String getHl7Version() {
-    return hl7Version;
-  }
+	public String getHl7Version() {
+		return hl7Version;
+	}
 
-  public void setHl7Version(String hl7Version) {
-    this.hl7Version = hl7Version;
-  }
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
 
-  public List<MessageEvents> getMsgEvts() {
-    return msgEvts;
-  }
+	public List<MessageEvents> getMsgEvts() {
+		return msgEvts;
+	}
 
-  public void setMsgEvts(List<MessageEvents> msgEvts) {
-    this.msgEvts = msgEvts;
-  }
+	public void setMsgEvts(List<MessageEvents> msgEvts) {
+		this.msgEvts = msgEvts;
+	}
 
-  public IGDocument getIgdocument() {
-    return igdocument;
-  }
+	public IGDocument getIgdocument() {
+		return igdocument;
+	}
 
-  public void setIgdocument(IGDocument igdocument) {
-    this.igdocument = igdocument;
-  }
+	public void setIgdocument(IGDocument igdocument) {
+		this.igdocument = igdocument;
+	}
 
-  public Long getAccountId() {
-    return accountId;
-  }
+	public Long getAccountId() {
+		return accountId;
+	}
 
-  public void setAccountId(Long accountId) {
-    this.accountId = accountId;
-  }
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
 }
