@@ -721,9 +721,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             if ($rootScope.igdocument.metaData.ext != null) {
                 var maxIDNum = Number(0);
                 angular.forEach($rootScope.conformanceStatementIdList, function (id) {
-                    var tempID = parseInt(id.replace($rootScope.igdocument.metaData.ext + "-", ""));
+                    if(id != null) {
+                        var tempID = parseInt(id.replace($rootScope.igdocument.metaData.ext + "-", ""));
 
-                    if (tempID > maxIDNum) maxIDNum = tempID;
+                        if (tempID > maxIDNum) maxIDNum = tempID;
+                    }
                 });
 
                 return $rootScope.igdocument.metaData.ext + "-" + (maxIDNum + 1);

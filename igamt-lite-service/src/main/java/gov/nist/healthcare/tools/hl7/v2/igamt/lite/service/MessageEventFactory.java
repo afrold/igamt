@@ -38,6 +38,8 @@ public class MessageEventFactory {
   private static Logger log = LoggerFactory.getLogger(MessageEventFactory.class);
 
   private TableRepository tableRepository;
+  
+  private Table table0354;
 
   public MessageEventFactory(TableRepository tableRepository) {
     this.tableRepository = tableRepository;
@@ -59,7 +61,7 @@ public class MessageEventFactory {
   public Set<String> findEvents(String structID) {
     Set<String> events = new HashSet<String>();
     String structID1 = fixUnderscore(structID);
-    Code code = (Code) get0354Table().findOneCodeByValue(structID1);
+    Code code = (Code) getTable0354().findOneCodeByValue(structID1);
     if (code != null) {
       String label = code.getLabel();
       String[] ss = label.split(",");
@@ -79,7 +81,10 @@ public class MessageEventFactory {
     }
   }
 
-  public Table get0354Table() {
-    return tableRepository.findByBindingIdentifier("0354");
+  public Table getTable0354() {
+	  if (table0354 == null) {
+		  table0354 = tableRepository.findByBindingIdentifier("0354");
+	  }
+    return table0354;
   }
 }
