@@ -1152,19 +1152,19 @@
                             <span>{{newConstraint.segment}}-</span>
                             <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'segment')}" ng-change="updateField_1()" ng-model="newConstraint.field_1" placeholder="Field" ng-options="field as field.position for field in segment.fields"/>
 
-        				<span ng-show="datatypesMap[newConstraint.field_1.datatype].components.length > 0">.
+        				<span ng-show="datatypesMap[newConstraint.field_1.datatype.id].components.length > 0">.
         					<select class="form-control form-control-short"
                                     placeholder="Component"
                                     ng-change="updateComponent_1()"
                                     ng-model="newConstraint.component_1"
-                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype].components">
+                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype.id].components">
                         	</select>
     					</span>
-    					<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
+    					<span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
         					<select class="form-control form-control-short"
                                     placeholder="SubComponent"
                                     ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
+                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components">
                         	</select>
     					</span>
                             <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'segment')">Empty node</span>
@@ -1216,17 +1216,17 @@
                                     ng-model="newConstraint.field_2"
                                     ng-options="field as field.position for field in segment.fields">
                         	</select>
-        					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.field_2.datatype.id].components.length > 0">.
         						<select class="form-control form-control-short"
                                         ng-change="updateComponent_2()"
                                         ng-model="newConstraint.component_2"
-                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
+                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype.id].components">
                             	</select>
     						</span>
-    						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
+    						<span ng-show="datatypesMap[newConstraint.component_2.datatype.id].components.length > 0">.
         						<select class="form-control form-control-short"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype.id].components">
                             	</select>
     						</span>
 							<span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'segment')">Empty another node</span>
@@ -1414,19 +1414,19 @@
                         <td class="col-md-2">
                             <span>{{newConstraint.segment}}-</span>
                             <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'segment')}" ng-change="updateField_1()" ng-model="newConstraint.field_1" placeholder="Field" ng-options="field as field.position for field in segment.fields"/>
-        			<span ng-show="datatypesMap[newConstraint.field_1.datatype].components.length > 0">.
+        			<span ng-show="datatypesMap[newConstraint.field_1.datatype.id].components.length > 0">.
         				<select class="form-control form-control-short"
                                 placeholder="Component"
                                 ng-change="updateComponent_1()"
                                 ng-model="newConstraint.component_1"
-                                ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype].components">
+                                ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype.id].components">
                         </select>
     				</span>
-    				<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
+    				<span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
         				<select class="form-control form-control-short"
                                 placeholder="SubComponent"
                                 ng-model="newConstraint.subComponent_1"
-                                ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
+                                ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components">
                         </select>
     				</span>
                             <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'segment')">Empty node</span>
@@ -1480,17 +1480,17 @@
                                 ng-model="newConstraint.field_2"
                                 ng-options="field as field.position for field in segment.fields">
                         </select>
-        				<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
+        				<span ng-show="datatypesMap[newConstraint.field_2.datatype.id].components.length > 0">.
         					<select class="form-control form-control-short"
                                     ng-change="updateComponent_2()"
                                     ng-model="newConstraint.component_2"
-                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
+                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype.id].components">
                             </select>
     					</span>
-    					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
+    					<span ng-show="datatypesMap[newConstraint.component_2.datatype.id].components.length > 0">.
         					<select class="form-control form-control-short"
                                     ng-model="newConstraint.subComponent_2"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
+                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype.id].components">
                             </select>
     					</span>
 						<span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'segment')">Empty another node</span>
