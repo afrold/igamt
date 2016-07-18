@@ -18,6 +18,35 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerializationDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -43,9 +72,9 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
@@ -56,6 +85,12 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import nu.xom.Builder;
+import nu.xom.Nodes;
+import nu.xom.ParsingException;
+import nu.xom.xslt.XSLException;
+import nu.xom.xslt.XSLTransform;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -161,40 +196,6 @@ import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerializationDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import nu.xom.Builder;
-import nu.xom.Nodes;
-import nu.xom.ParsingException;
-import nu.xom.xslt.XSLException;
-import nu.xom.xslt.XSLTransform;
 
 @Service
 public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocumentExportService {
@@ -802,7 +803,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
   private InputStream exportAsXslxWithApachePOI(Profile p) {
     logger.debug("Export profile id: " + p.getId() + " as xslx");
     try {
-      File tmpXlsxFile = File.createTempFile("ProfileTmp", ".xslx");
+      File tmpXlsxFile = File.createTempFile("ProfileTmp" + UUID.randomUUID().toString(), ".xslx");
 
       XSSFWorkbook workbook = new XSSFWorkbook();
       XSSFSheet sheet;
@@ -1050,11 +1051,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     // Note: inlineConstraint can be true or false
 
     try {
-      File tmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
+      File tmpHtmlFile = File.createTempFile("IGDocTemp" + UUID.randomUUID().toString(), ".html");
 
       // Generate xml file containing profile
-      File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
-      // File tmpXmlFile = new File("IGDocTemp.xml");
+//      File tmpXmlFile = File.createTempFile("IGDocTemp" + UUID.randomUUID().toString(), ".xml");
+       File tmpXmlFile = new File("IGDocTemp"+ UUID.randomUUID().toString()+".xml");
       String stringIgDoc = profileSerializationDocumentService.serializeIGDocumentToXML(igdoc);
       FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc, Charset.forName("UTF-8"));
 
@@ -1113,11 +1114,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     // Note: inlineConstraint can be true or false
 
     try {
-      File tmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
+      File tmpHtmlFile = File.createTempFile("IGDocTemp" + UUID.randomUUID().toString(), ".html");
 
       // Generate xml file containing profile
-      File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
-      // File tmpXmlFile = new File("IGDocTemp.xml");
+      File tmpXmlFile = File.createTempFile("IGDocTemp" + UUID.randomUUID().toString(), ".xml");
+      // File tmpXmlFile = new File("IGDocTemp + UUID.randomUUID().toString().xml");
       String stringIgDoc = profileSerializationDocumentService.serializeIGDocumentToXML(igdoc);
       FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc, Charset.forName("UTF-8"));
 
@@ -1146,10 +1147,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     // Note: inlineConstraint can be true or false
 
     try {
-      File tmpHtmlFile = File.createTempFile("DTTemp", ".html");
+      File tmpHtmlFile = File.createTempFile("DTTemp" + UUID.randomUUID().toString(), ".html");
 
       // Generate xml file containing profile
-      File tmpXmlFile = File.createTempFile("DTTemp", ".xml");
+      File tmpXmlFile = File.createTempFile("DTTemp" + UUID.randomUUID().toString(), ".xml");
       String stringIgDoc = profileSerializationDocumentService.serializeDatatypesToXML(igdoc);
       FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc, Charset.forName("UTF-8"));
 
@@ -1184,15 +1185,15 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
     try {
       // Generate xml file containing profile
-      // File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-      File tmpXmlFile = new File("IGDocTemp.xml");
+       File tmpXmlFile = File.createTempFile("ProfileTemp" + UUID.randomUUID().toString(), ".xml");
+//      File tmpXmlFile = new File("IGDocTemp" + UUID.randomUUID().toString()+".xml");
       String stringProfile =
           profileSerializationDocumentService.serializeProfileToXML(d.getProfile());
       FileUtils.writeStringToFile(tmpXmlFile, stringProfile, Charset.forName("UTF-8"));
 
       // Apply XSL transformation on xml file to generate html
-      File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
-      // File tmpHtmlFile = new File("ProfileTemp.html");
+      File tmpHtmlFile = File.createTempFile("ProfileTemp" + UUID.randomUUID().toString(), ".html");
+      // File tmpHtmlFile = new File("ProfileTemp" + UUID.randomUUID().toString()+".html");
       Builder builder = new Builder();
       // nu.xom.Document input = builder.build(tmpXmlFile);
 
@@ -1216,7 +1217,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
       // Convert html document to pdf
       Document document = new Document();
-      File tmpPdfFile = File.createTempFile("Profile", ".pdf");
+      File tmpPdfFile = File.createTempFile("Profile" + UUID.randomUUID().toString(), ".pdf");
       PdfWriter writer = PdfWriter.getInstance(document, FileUtils.openOutputStream(tmpPdfFile));
       document.open();
       XMLWorkerHelper.getInstance().parseXHtml(writer, document,
@@ -2067,10 +2068,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     // Note: inlineConstraint can be true or false
 
     try {
-      File tmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
+      File tmpHtmlFile = File.createTempFile("IGDocTemp" + UUID.randomUUID().toString(), ".html");
 
       // Generate xml file containing profile
-      File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
+      File tmpXmlFile = File.createTempFile("IGDocTemp" + UUID.randomUUID().toString(), ".xml");
       String stringIgDoc = profileSerializationDocumentService.serializeIGDocumentToXML(igdoc);
       FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc, Charset.forName("UTF-8"));
       File testxml = new File("tst.xml");
@@ -2151,7 +2152,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       loadTemplateForDocx4j(wordMLPackage); // Repeats the lines above but necessary; don't delete
 
       File tmpFile;
-      tmpFile = File.createTempFile("IgDocument", ".docx");
+      tmpFile = File.createTempFile("IgDocument" + UUID.randomUUID().toString(), ".docx");
       wordMLPackage.save(tmpFile);
 
 
@@ -2259,7 +2260,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       loadTemplateForDocx4j(wordMLPackage); // Repeats the lines above but necessary; don't delete
 
       File tmpFile;
-      tmpFile = File.createTempFile("IgDocument", ".docx");
+      tmpFile = File.createTempFile("IgDocument" + UUID.randomUUID().toString(), ".docx");
       wordMLPackage.save(tmpFile);
       wordMLPackage =
           WordprocessingMLPackage.load(tmpFile);
@@ -2356,10 +2357,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     // Note: inlineConstraint can be true or false
 
     try {
-      File tmpHtmlFile = File.createTempFile("DTTemp", ".html");
+      File tmpHtmlFile = File.createTempFile("DTTemp" + UUID.randomUUID().toString(), ".html");
 
       // Generate xml file containing profile
-      File tmpXmlFile = File.createTempFile("DTTemp", ".xml");
+      File tmpXmlFile = File.createTempFile("DTTemp" + UUID.randomUUID().toString(), ".xml");
       String stringIgDoc = profileSerializationDocumentService.serializeDatatypesToXML(igdoc);
       FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc, Charset.forName("UTF-8"));
 
@@ -2410,7 +2411,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       loadTemplateForDocx4j(wordMLPackage); // Repeats the lines above but necessary; don't delete
 
       File tmpFile;
-      tmpFile = File.createTempFile("DTDocument", ".docx");
+      tmpFile = File.createTempFile("DTDocument" + UUID.randomUUID().toString(), ".docx");
       wordMLPackage.save(tmpFile);
 
 
@@ -3152,7 +3153,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
     File tmpFile;
     try {
-      tmpFile = File.createTempFile("Profile", ".docx");
+      tmpFile = File.createTempFile("Profile" + UUID.randomUUID().toString(), ".docx");
       wordMLPackage.save(tmpFile);
 
       return FileUtils.openInputStream(tmpFile);
@@ -3629,8 +3630,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
     try {
       // Generate xml file containing profile
-      // File tmpXmlFile = File.createTempFile("temp", ".xml");
-      File tmpXmlFile = new File("temp.xml");
+       File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
+//      File tmpXmlFile = new File("temp" + UUID.randomUUID().toString()+".xml");
       FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
 
       return FileUtils.openInputStream(tmpXmlFile);
@@ -3645,11 +3646,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     // Note: inlineConstraint can be true or false
 
     try {
-      File tmpHtmlFile = File.createTempFile("temp", ".html");
+      File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
 
       // Generate xml file containing profile
-      // File tmpXmlFile = File.createTempFile("temp", ".xml");
-      File tmpXmlFile = new File("temp.xml");
+       File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
+//      File tmpXmlFile = new File("temp + UUID.randomUUID().toString().xml");
       FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
 
       TransformerFactory factoryTf = TransformerFactory.newInstance();
@@ -3671,10 +3672,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
   public InputStream exportAsDocxFromXml(String xmlString , String xmlPath, Boolean includeToc) {
     // Note: inlineConstraint can be true or false
     try {
-      File tmpHtmlFile = File.createTempFile("temp", ".html");
+      File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
 
       // Generate xml file containing profile
-      File tmpXmlFile = File.createTempFile("temp", ".xml");
+      File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
       FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
 
       TransformerFactory factoryTf = TransformerFactory.newInstance();
@@ -3742,7 +3743,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       loadTemplateForDocx4j(wordMLPackage); // Repeats the lines above but necessary; don't delete
 
       File tmpFile;
-      tmpFile = File.createTempFile("IgDocument", ".docx");
+      tmpFile = File.createTempFile("IgDocument" + UUID.randomUUID().toString(), ".docx");
       wordMLPackage.save(tmpFile);
 
 
