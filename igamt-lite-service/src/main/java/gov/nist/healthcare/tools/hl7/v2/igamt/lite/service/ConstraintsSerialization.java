@@ -13,6 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 
@@ -21,9 +22,9 @@ public interface ConstraintsSerialization {
 
   Constraints deserializeXMLToPredicates(String xmlConstraints);
 
-  String serializeConstraintsToXML(Profile profile);
+  String serializeConstraintsToXML(Profile profile, DocumentMetaData metadata);
 
   String serializeConstraintsToXML(DatatypeLibrary datatypeLibrary);
 
-  nu.xom.Document serializeConstraintsToDoc(Profile profile);
+  nu.xom.Document serializeConstraintsToDoc(Profile profile, DocumentMetaData metadata);
 }
