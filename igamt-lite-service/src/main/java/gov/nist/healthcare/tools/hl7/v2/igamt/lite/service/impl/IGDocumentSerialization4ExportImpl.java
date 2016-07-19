@@ -1398,9 +1398,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
     this.generateProfileIS(out, this.serializeProfileToXML(profile));
     this.generateValueSetIS(out,
-        new TableSerializationImpl().serializeTableLibraryToXML(profile.getTableLibrary()));
+        new TableSerializationImpl().serializeTableLibraryToXML(profile.getTableLibrary(), new DocumentMetaData()));
     this.generateConstraintsIS(out,
-        new ConstraintsSerializationImpl().serializeConstraintsToXML(profile));
+        new ConstraintsSerializationImpl().serializeConstraintsToXML(profile, new DocumentMetaData()));
 
     out.close();
     bytes = outputStream.toByteArray();

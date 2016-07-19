@@ -223,8 +223,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
   @Override
   public InputStream exportAsXml(IGDocument d) {
     if (d != null) {
-      return IOUtils
-          .toInputStream(profileSerializationService.serializeProfileToXML(d.getProfile()));
+    	
+    
+    	
+      return IOUtils.toInputStream(profileSerializationService.serializeProfileToXML(d.getProfile(), d.getMetaData()));
     } else {
       return new NullInputStream(1L);
     }
@@ -232,7 +234,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
   public InputStream exportAsZip(IGDocument d) throws IOException {
     if (d != null) {
-      return profileSerializationService.serializeProfileToZip(d.getProfile());
+      return profileSerializationService.serializeProfileToZip(d.getProfile(), d.getMetaData());
     } else {
       return new NullInputStream(1L);
     }
@@ -250,7 +252,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
   public InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids)
       throws IOException, CloneNotSupportedException {
     if (d != null) {
-      return profileSerializationService.serializeProfileToZip(d.getProfile(), mids);
+      return profileSerializationService.serializeProfileToZip(d.getProfile(), mids, d.getMetaData());
     } else {
       return new NullInputStream(1L);
     }
@@ -270,7 +272,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
   public InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids)
       throws IOException, CloneNotSupportedException {
     if (d != null) {
-      return profileSerializationService.serializeProfileDisplayToZip(d.getProfile(), mids);
+      return profileSerializationService.serializeProfileDisplayToZip(d.getProfile(), mids, d.getMetaData());
     } else {
       return new NullInputStream(1L);
     }

@@ -21,6 +21,7 @@ var app = angular
         'ngIdle',
         'ui.bootstrap',
         'smart-table',
+        'lrDragNDrop',
         'ngTreetable',
         'restangular',
         'ui.bootstrap.contextMenu',

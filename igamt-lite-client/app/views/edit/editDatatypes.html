@@ -805,9 +805,9 @@ if (self === top) {
                             <td class="col-md-2">
                                 <span>{{newConstraint.datatype}}.</span>
                                 <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'datatype')}" ng-model="newConstraint.component_1" ng-options="component as component.position for component in datatype.components" />
-                                <span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
+                                <span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
                         <select class="form-control form-control-short" ng-model="newConstraint.subComponent_1"
-                                ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components"/>
+                                ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components"/>
                     </span>
                                 <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'datatype')">Empty node</span>
                             </td>
@@ -861,9 +861,9 @@ if (self === top) {
                                    newConstraint.contraintType == 'equal to or less than another node'">
                         <span>{{newConstraint.datatype}}.</span>
                                 <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintAnotherNode(newConstraint, 'datatype')}" ng-change="updateComponent_2()" ng-model="newConstraint.component_2" ng-options="component as component.position for component in datatype.components" />
-                                <span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
+                                <span ng-show="datatypesMap[newConstraint.component_2.datatype.id].components.length > 0">.
                             <select class="form-control form-control-short" ng-model="newConstraint.subComponent_2"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components"/>
+                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype.id].components"/>
                         </span>
                                 <span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'datatype')">Empty another node</span>
                                 </span>
@@ -1071,9 +1071,9 @@ if (self === top) {
                             <td class="col-md-2">
                                 <span>{{newConstraint.datatype}}.</span>
                                 <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'datatype')}" ng-model="newConstraint.component_1" ng-options="component as component.position for component in datatype.components" />
-                                <span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
+                                <span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
                             <select class="form-control form-control-short" ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components"/>
+                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components"/>
                         </span>
                                 <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'datatype')">Empty node</span>
                             </td>
@@ -1128,9 +1128,9 @@ if (self === top) {
                                        newConstraint.contraintType == 'equal to or less than another node'">
                             <span>{{newConstraint.datatype}}.</span>
                                 <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintAnotherNode(newConstraint, 'datatype')}" ng-change="updateComponent_2()" ng-model="newConstraint.component_2" ng-options="component as component.position for component in datatype.components" />
-                                <span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
+                                <span ng-show="datatypesMap[newConstraint.component_2.datatype.id].components.length > 0">.
                                 <select class="form-control form-control-short" ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components"/>
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype.id].components"/>
                             </span>
                                 <span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'datatype')">Empty another node</span>
                                 </span>

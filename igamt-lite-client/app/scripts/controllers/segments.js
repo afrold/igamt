@@ -2,8 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 
-angular.module('igl')
-    .controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService,blockUI) {
+angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService,blockUI) {
         //        $scope.loading = false;
         $scope.editableDT = '';
         $scope.editableVS = '';
@@ -334,7 +333,7 @@ angular.module('igl')
                 $rootScope.segment.coConstraints.constraints[i].values.push(v);
             };
 
-            $scope.recordChange();
+            $scope.setDirty();
 
             $rootScope.segment.coConstraints.columnList.push(newColumn);
         };
@@ -353,7 +352,7 @@ angular.module('igl')
                 comments: "",
                 values: valueList
             };
-            $scope.recordChange();
+            $scope.setDirty();
             $rootScope.segment.coConstraints.constraints.push(cc);
         };
 
@@ -368,7 +367,7 @@ angular.module('igl')
                 $rootScope.segment.coConstraints.columnList.splice(index, 1);
             };
 
-            $scope.recordChange();
+            $scope.setDirty();
         };
 
         $scope.deleteCoConstraint = function(cc) {
@@ -377,19 +376,23 @@ angular.module('igl')
             if (index > -1) {
                 $rootScope.segment.coConstraints.constraints.splice(index, 1);
             };
-            $scope.recordChange();
+            $scope.setDirty();
         };
 
         $scope.deleteCoConstraints = function() {
             $rootScope.segment.coConstraints.columnList = [];
             $rootScope.segment.coConstraints.constraints = [];
-            $scope.recordChange();
+            $scope.setDirty();
         };
 
         $scope.getConstraintType = function(data, cc) {
             var index = cc.values.indexOf(data);
             return $rootScope.segment.coConstraints.columnList[index].constraintType;
         };
+
+        $scope.headerChanged = function (){
+            console.log("WWWWWW");
+        }
 
         $scope.reset = function() {
             blockUI.start();
@@ -827,8 +830,7 @@ angular.module('igl')
 
     });
 
-angular.module('igl')
-    .controller('SegmentRowCtrl', function($scope, $filter) {
+angular.module('igl').controller('SegmentRowCtrl', function($scope, $filter) {
         $scope.formName = "form_" + new Date().getTime();
     });
 
@@ -865,6 +867,7 @@ angular.module('igl').controller('DynamicMappingCtrl', function($scope, $modalIn
 
     $scope.recordChange = function() {
         $scope.changed = true;
+        $scope.editForm.$dirty = true;
     };
 
 
