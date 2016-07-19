@@ -24,17 +24,32 @@
             </select>
             <button ng-click="compare()">Delta</button>
         </div>
-        <div ui-grid="gridOptions" ui-grid-tree-view class="uiGridStyle"></div>
-        <!-- <pre ng-bind-html="diffValue"></pre> -->
-        <pre ng-bind-html="diffValueChanges"></pre>
-        <!-- <pre ng-bind-html="yourObjectOneJsonView"></pre>
-        <pre ng-bind-html="yourObjectTwoJsonView"></pre> -->
+        <table tt-table tt-params="params" class="table table-bordered table-fix-header table-condensed profile-table">
+            <thead>
+                <tr class="tbl-header">
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <!--         <div ui-grid="gridOptions " ui-grid-tree-view class="uiGridStyle "></div>
+ -->
+        <!-- <pre ng-bind-html="diffValue "></pre> -->
+        <!-- <pre ng-bind-html="diffValueChanges "></pre> -->
+        <!-- <pre ng-bind-html="yourObjectOneJsonView "></pre>
+        <pre ng-bind-html="yourObjectTwoJsonView "></pre> -->
     </div>
 </body>
 
 </html>
-//
-<script type="text/ng-template" id="expandableRowTemplate.html">
-    //
-    <div ng-controller="compareCtrl" ui-grid="row.entity.subGridOptions" style="height:150px;"></div>
-    // </script>
+<script type="text/ng-template" id="TreeNode.html">
+    <tr tt-node is-branch="node.name == 'foo'">
+        <td><span ng-bind="node.name"></span></td>
+        <td ng-bind="node.type"></td>
+    </tr>
+</script>
+<!--<script type="text/ng-template " id="expandableRowTemplate.html ">
+    <div ng-controller="compareCtrl " ui-grid="row.entity.subGridOptions " style="height:150px; "></div>
+</script>
+-->
