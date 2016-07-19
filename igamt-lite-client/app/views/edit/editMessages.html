@@ -337,17 +337,14 @@ if (self === top) {
                 {{getSegmentRefNodeName(node.obj)}}
             </a>
 
-                 <select ng-show="editableSeg===node.obj.id " ng-model="position " ng-change="selectPos() "  style="width:15% " class="form-control input-sm ">
+                 <select ng-show="editableSeg===node.obj.id " ng-model="position " ng-change="selectPos(node,position) "  style="width:15% " class="form-control input-sm ">
                     <option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position "> {{child.position}}
                 </select>
-                <select ng-show="editableSeg===node.obj.id " ng-model="segmentRef " ng-change="selectSeg() "  style="width:40% " class="form-control input-sm ">
-                    <option ng-repeat="segmentRef in tmpResults " value="{{segmentRef}}"  ng-selected="node.obj.ref.name===segmentRef.name "> {{getSegmentLabel(segmentRef)}}
+                <select ng-show="editableSeg===node.obj.id " ng-model="segmentRef " ng-change="selectSeg(node,segmentRef) "  style="width:40% " class="form-control input-sm ">
+                    <option ng-repeat="segmentRef in tmpResults " value="{{segmentRef}}"  ng-selected="node.obj.ref.ext===segmentRef.ext "> {{getSegmentLabel(segmentRef)}}
                 </select>
             <div align="center">
 
-               <a  ng-show="editableSeg===node.obj.id && (Segselected ||Posselected) " ng-click="applySeg(node,segmentRef,position) " >
-                    <span><i  align="center" class="glyphicon glyphicon-ok "></i></span>
-            </a>
             <a  ng-show="editableSeg===node.obj.id "ng-click="backSeg() " >
                     <span ><i align="center" class="glyphicon glyphicon-remove "></i></span>
             </a>

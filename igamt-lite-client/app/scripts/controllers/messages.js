@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService,blockUI) {
+    .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI) {
 
 
 
@@ -322,24 +322,22 @@ angular.module('igl')
 
 
 
-        $scope.applySeg = function(segmentRef, segment, position) {
-            blockUI.start();
+        $scope.selectSeg = function(segmentRef, segment) {
+            $scope.Segselected = true;
             $scope.editableSeg = '';
+
+            blockUI.start();
             console.log(segment);
-
-            if (segment) {
-                segmentRef.obj.ref.id = JSON.parse(segment).id;
-                segmentRef.obj.ref.ext = JSON.parse(segment).ext;
-                segmentRef.obj.ref.label = JSON.parse(segment).label;
-                segmentRef.obj.ref.name = JSON.parse(segment).name;
-
-            }
-            if (position) {
+            console.log(segmentRef);
 
 
-                MessageService.updatePosition($rootScope.segParent.children, segmentRef.obj.position - 1, position - 1);
+            segmentRef.obj.ref.id = JSON.parse(segment).id;
+            segmentRef.obj.ref.ext = JSON.parse(segment).ext;
+            segmentRef.obj.ref.label = JSON.parse(segment).label;
+            segmentRef.obj.ref.name = JSON.parse(segment).name;
 
-            }
+
+
             console.log(segmentRef);
             $scope.setDirty();
             var ref = $rootScope.segmentsMap[segmentRef.obj.ref.id];
@@ -354,9 +352,19 @@ angular.module('igl')
 
         };
 
-        $scope.selectPos = function() {
+        $scope.selectPos = function(segmentRef, position) {
 
-            $scope.Posselected = true;
+            // $scope.Posselected = true;
+            $scope.editableSeg = '';
+
+            MessageService.updatePosition($rootScope.segParent.children, segmentRef.obj.position - 1, position - 1);
+            $scope.setDirty();
+
+            $rootScope.processMessageTree($rootScope.message);
+
+
+            if ($scope.messagesParams)
+                $scope.messagesParams.refresh();
 
 
 
@@ -364,14 +372,14 @@ angular.module('igl')
         };
 
 
-        $scope.selectSeg = function() {
+        // $scope.selectSeg = function() {
 
-            $scope.Segselected = true;
-
-
+        //     $scope.Segselected = true;
 
 
-        };
+
+
+        // };
 
         $scope.selectedSeg = function() {
             return ($scope.tempSeg !== undefined);
@@ -615,7 +623,7 @@ angular.module('igl')
         };
 
         $scope.isUsagefiltered = function(node, nodeParent) {
-            if ($rootScope.usageF){
+            if ($rootScope.usageF) {
                 console.log(nodeParent);
             }
             return true;
@@ -1458,7 +1466,7 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function($scope, $m
             MessagesSvc.delete($scope.messageToDelete).then(function(result) {
                 // We must delete from two collections.
                 //CloneDeleteSvc.execDeleteMessage($scope.messageToDelete);
-                if($rootScope.messages.children) {
+                if ($rootScope.messages.children) {
                     var index = MessagesSvc.findOneChild($scope.messageToDelete.id, $rootScope.messages.children);
                     if (index >= 0) {
                         $rootScope.messages.children.splice(index, 1);
@@ -1508,7 +1516,7 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function($scope, $m
 
 });
 
-angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService,blockUI) {
+angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService, blockUI) {
     $scope.segmentParent = place;
     //console.log(place);
 
@@ -1649,7 +1657,7 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
 });
 
 
-angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService,blockUI) {
+angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService, blockUI) {
     $scope.groupParent = place;
 
     $scope.newGroup = {
@@ -1761,7 +1769,7 @@ angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance
 
 
 
-angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $modalInstance, segOrGrpToDelete, $rootScope, MessageService,blockUI) {
+angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $modalInstance, segOrGrpToDelete, $rootScope, MessageService, blockUI) {
     $scope.segOrGrpToDelete = segOrGrpToDelete;
     $scope.loading = false;
     $scope.updatePosition = function(node) {
@@ -1814,7 +1822,7 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
 });
 
 
-angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, message, $rootScope,blockUI) {
+angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, message, $rootScope, blockUI) {
     console.log(message);
     $scope.message = message;
     $scope.loading = false;
