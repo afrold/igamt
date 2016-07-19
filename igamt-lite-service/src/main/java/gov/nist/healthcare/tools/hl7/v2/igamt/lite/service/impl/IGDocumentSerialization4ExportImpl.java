@@ -377,10 +377,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     }
 
     // profile.getMessages().setPositionsOrder();
-    List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
-    Collections.sort(msgList);
-
-    for (Message m : msgList) {
+//    List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
+//    Collections.sort(msgList);
+//
+//    for (Message m : msgList) {
+      for (Message m : profile.getMessages().getChildren()) {
       msd.appendChild(this.serializeMessageDisplay(m, profile.getSegmentLibrary(), prefix));
     }
     xsect.appendChild(msd);
@@ -1084,7 +1085,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(m.getPosition())));
     sect.addAttribute(new Attribute("position", String.valueOf(m.getPosition() + 1)));
     sect.addAttribute(new Attribute("h", String.valueOf(3)));
-    sect.addAttribute(new Attribute("title", m.getDescription()));
+    String title = m.getName() != null ? m.getName() : m.getMessageType()+ "^"+m.getEvent()+"^" + m.getStructID();
+    sect.addAttribute(new Attribute("title", title + " - " + m.getIdentifier() + " - " + m.getDescription()));
 
     nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
     elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
@@ -1207,7 +1209,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     sect.addAttribute(new Attribute("id", m.getId()));
     sect.addAttribute(new Attribute("position", String.valueOf(m.getPosition() + 1)));
     sect.addAttribute(new Attribute("h", String.valueOf(3)));
-    sect.addAttribute(new Attribute("title", m.getDescription()));
+    String title = m.getName() != null ? m.getName() : m.getMessageType()+ "^"+m.getEvent()+"^" + m.getStructID();
+    sect.addAttribute(new Attribute("title", title + " - " + m.getIdentifier() + " - " + m.getDescription()));
 
     nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
     elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));

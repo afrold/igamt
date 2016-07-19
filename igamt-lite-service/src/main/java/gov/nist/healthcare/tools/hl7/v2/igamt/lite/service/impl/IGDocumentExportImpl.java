@@ -162,7 +162,6 @@ import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 import org.docx4j.wml.U;
 import org.docx4j.wml.UnderlineEnumeration;
-import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.slf4j.Logger;
@@ -2264,12 +2263,12 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       wordMLPackage.save(tmpFile);
       wordMLPackage =
           WordprocessingMLPackage.load(tmpFile);
-      //      updater = new FieldUpdater(wordMLPackage);
-      //      try {
-      //        updater.update(true);
-      //      } catch (Docx4JException e1) {
-      //        e1.printStackTrace();
-      //      }
+      updater = new FieldUpdater(wordMLPackage);
+      try {
+        updater.update(true);
+      } catch (Docx4JException e1) {
+        e1.printStackTrace();
+      }
       wordMLPackage.save(tmpFile);
 
 
@@ -2323,7 +2322,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
   public String inlineCss(String html) {
     final String style = "style";
-    org.jsoup.nodes.Document doc = Jsoup.parse(html);
+    org.jsoup.nodes.Document doc = org.jsoup.Jsoup.parse(html);
     Elements els = doc.select(style);// to get all the style elements
     for (org.jsoup.nodes.Element e : els) {
       String styleRules = e.getAllElements().get(0).data().replaceAll("\n", "").trim();
@@ -2497,7 +2496,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     }
 
     wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title",
-        igdoc.getMetaData().getTitle()+"\n"+igdoc.getId());
+        igdoc.getMetaData().getTitle());
     addLineBreak(wordMLPackage, factory);
     wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle",
         "Subtitle " + igdoc.getMetaData().getSubTitle());
