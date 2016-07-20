@@ -36,6 +36,8 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -246,7 +248,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
       if (s.getSectionContents() != null && !s.getSectionContents().isEmpty()) {
         nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
-        sectCont.appendChild("<div class=\"fr-view\">" + s.getSectionContents() + "</div>");
+        sectCont.appendChild(cleanRichtext(s.getSectionContents()));
         xsect.appendChild(sectCont);
       }
 
@@ -377,11 +379,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     }
 
     // profile.getMessages().setPositionsOrder();
-//    List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
-//    Collections.sort(msgList);
-//
-//    for (Message m : msgList) {
-      for (Message m : profile.getMessages().getChildren()) {
+    //    List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
+    //    Collections.sort(msgList);
+    //
+    //    for (Message m : msgList) {
+    for (Message m : profile.getMessages().getChildren()) {
       msd.appendChild(this.serializeMessageDisplay(m, profile.getSegmentLibrary(), prefix));
     }
     xsect.appendChild(msd);
@@ -1309,8 +1311,22 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
   private nu.xom.Element serializeRichtext(String attribute, String richtext) {
     nu.xom.Element elmText1 = new nu.xom.Element("Text");
     elmText1.addAttribute(new Attribute("Type", attribute));
-    elmText1.appendChild("<div class=\"fr-view\">" + richtext + "</div>");
+    elmText1.appendChild(cleanRichtext(richtext));
     return elmText1;
+  }
+
+  private String cleanRichtext(String richtext){
+    org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
+    Elements elements = doc.select("h1");
+    elements.tagName("p").attr("style", "display: block;font-size: 250%;margin-top: 0.67em;margin-bottom: 0.67em;margin-left: 0;margin-right: 0;font-weight: bold;");
+//    elements.tagName("p").attr("style", "display: block;font-size: 250%;margin-top: 0.67em;margin-bottom: 0.67em;margin-left: 0;margin-right: 0;font-weight: bold;");
+    elements = doc.select("h2");
+    elements.tagName("p").attr("style", "display: block;font-size: 200%;margin-left: 0;margin-right: 0;font-weight: bold;");
+    elements = doc.select("h3");
+    elements.tagName("p").attr("style", "display: block;font-size: 100;margin-left: 0;margin-right: 0;font-weight: bold;");
+    elements = doc.select("h4");
+    elements.tagName("p").attr("style", "display: block;font-size: 75;margin-left: 0;margin-right: 0;font-weight: bold;");
+    return "<div class=\"fr-view\">" + doc.html() + "</div>";
   }
 
 
@@ -1403,7 +1419,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
           elmField.addAttribute(new Attribute("Comment", f.getComment()));
         elmField.addAttribute(new Attribute("Position", String.valueOf(f.getPosition())));
 
-        if (f.getText() != null && !f.getText().equals("")) {
+        if (f.getText() != null && !f.getText().isEmpty()) {
           elmField.appendChild(this.serializeRichtext("Text", f.getText()));
         }
 
@@ -1511,7 +1527,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         if (c.getComment() != null && !c.getComment().equals(""))
           elmComponent.addAttribute(new Attribute("Comment", c.getComment()));
         elmComponent.addAttribute(new Attribute("Position", c.getPosition().toString()));
-        if (c.getText() != null) {
+        if (c.getText() != null & !c.getText().isEmpty()) {
           elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
         }
 
