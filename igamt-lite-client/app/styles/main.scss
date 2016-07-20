@@ -1459,8 +1459,14 @@ input.account-input {
 
 .flavor-modal-window .modal-dialog {
   width: 50%;
-  height: 50%;
+  height: 70%;
   overflow-y: auto;
+}
+
+.flavor-seach-box {
+  display: block;
+  margin: auto;
+  width: 95%;
 }
 
 
@@ -2328,3 +2334,6 @@ table.conformance-profiles-table td {
 }
 
 
+ul.search-result > li > a:hover {
+  background-color: cornflowerblue;
+}

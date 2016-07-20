@@ -665,7 +665,7 @@
     </a>
 
     <div ng-show="editableDT===node.id ">
-        <select ng-model="datatype" ng-change="selectDT() " class="form-control input-sm ">
+        <select ng-model="datatype" ng-change="selectDT(node,datatype) " class="form-control input-sm ">
             <option ng-repeat="datatype in results " value="{{datatype}} "
                     ng-selected="node.datatype.ext===datatype.ext "> {{getDatatypeLabel(datatype)}}
             </option>
@@ -673,9 +673,7 @@
     </div>
 
     <div align="center ">
-        <a ng-show="editableDT===node.id && DTselected " ng-click="applyDT(node,datatype) ">
-            <span><i class="glyphicon glyphicon-ok "></i></span>
-        </a>
+        
         <a ng-show="editableDT===node.id " ng-click="backDT() " class="point ">
             <span><i class="glyphicon glyphicon-remove "></i></span>
         </a>
@@ -697,24 +695,23 @@
         </a>
     </div>
 
-    <input class="form-control col-md-4 " type="text " ng-model="searchVS.name "
-           ng-hide="editableVS!==node.id || VSselected "/>
-    <li class="form-control col-md-4 " ng-show="editableVS===node.id && VSselected ">
-        {{selectedValueSet.bindingIdentifier}}
-        <button type="button " class="close " aria-label="Close " ng-click="unselectVS() ">
-            <span aria-hidden="true ">&times;</span>
-        </button>
-    </li>
-    <div ng-if="searchVS.name && !VSselected && editableVS===node.id ">
-        <li class="form-control col-md-4 " ng-class="{ 'active':isActive(valueSet.id)} " ng-click="selectVS(valueSet) "
+    <div class="input-group input-group-xs" ng-hide="editableVS!==node.id ">
+    <span class="input-group-addon glyphicon glyphicon-search" ></span>
+    <input class="form-control " type="text " ng-model="searchVS.name "/> 
+
+
+     </div>
+
+
+    
+    <div ng-if="searchVS.name  && editableVS===node.id ">
+        <li class="form-control col-md-3 " ng-class="{ 'active':isActive(valueSet.id)} " ng-click="selectVS(node,valueSet) "
             ng-repeat="valueSet in tables | filter:searchVS ">
-            {{valueSet.name}}
+            {{valueSet.bindingIdentifier}}
         </li>
     </div>
     <div align="center ">
-        <a ng-show="editableVS===node.id && VSselected " ng-click="applyVS(node,valueSet) ">
-            <span><i class="glyphicon glyphicon-ok "></i></span>
-        </a>
+       
 
         <a ng-show="editableVS===node.id " ng-click="backVS() " class="point ">
             <span><i class="glyphicon glyphicon-remove "></i></span>
