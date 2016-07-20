@@ -36,29 +36,29 @@
         </tabset>
 
         <!--<accordion close-others="false">-->
-            <!--<accordion-group is-open="accordi.igList" panel-class="panel-primary">-->
-                <!--<accordion-heading>-->
-                    <!--<i class="fa" ng-class="{'fa-caret-down': accordi.igList, 'fa-caret-right': !accordi.igList}"></i>-->
-                    <!--<i class="fa fa-file-text-o fa-fw"></i> IG Documents List-->
-                <!--</accordion-heading>-->
-                <!--&lt;!&ndash;<div class="panel panel-info">&ndash;&gt;-->
-                <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
-                <!--<div ng-include="'views/edit/listIG.html'"></div>-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--</accordion-group>-->
-            <!--<accordion-group is-open="accordi.igDetails" panel-class="panel-primary">-->
-                <!--<accordion-heading>-->
-                    <!--<i class="fa"-->
-                       <!--ng-class="{'fa-caret-down': accordi.igDetails, 'fa-caret-right': !accordi.igDetails}"></i>-->
-                    <!--<i class="fa fa-pencil fa-fw"></i>Edit IG Document : {{igdocument.metaData.title}}-->
-                <!--</accordion-heading>-->
-                <!--&lt;!&ndash;<div class="panel panel-info">&ndash;&gt;-->
-                <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
-                <!--<div ng-include="'views/edit/editIG.html'"></div>-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--</accordion-group>-->
+        <!--<accordion-group is-open="accordi.igList" panel-class="panel-primary">-->
+        <!--<accordion-heading>-->
+        <!--<i class="fa" ng-class="{'fa-caret-down': accordi.igList, 'fa-caret-right': !accordi.igList}"></i>-->
+        <!--<i class="fa fa-file-text-o fa-fw"></i> IG Documents List-->
+        <!--</accordion-heading>-->
+        <!--&lt;!&ndash;<div class="panel panel-info">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
+        <!--<div ng-include="'views/edit/listIG.html'"></div>-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</accordion-group>-->
+        <!--<accordion-group is-open="accordi.igDetails" panel-class="panel-primary">-->
+        <!--<accordion-heading>-->
+        <!--<i class="fa"-->
+        <!--ng-class="{'fa-caret-down': accordi.igDetails, 'fa-caret-right': !accordi.igDetails}"></i>-->
+        <!--<i class="fa fa-pencil fa-fw"></i>Edit IG Document : {{igdocument.metaData.title}}-->
+        <!--</accordion-heading>-->
+        <!--&lt;!&ndash;<div class="panel panel-info">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
+        <!--<div ng-include="'views/edit/editIG.html'"></div>-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</accordion-group>-->
         <!--</accordion>-->
     </div>
     <div style="font-size: 18px;text-align: center" ng-show="isPending()">
@@ -79,35 +79,37 @@
         <form id="hl7VersionsDlgForm" name="hl7VersionsDlgForm" class="form-horizontal" novalidate>
             <div class="row">
                 <div class="col-md-12">
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : hl7VersionsDlgForm.hl7Version.$invalid}">
-                    <label class="col-md-2 control-label " style="text-align: left">HL7 Version*:</label>
-                    <div class="controls col-md-1">
-                        <select class="form-control input-sm" name="hl7Version" id="hl7Version"
-                                ng-change="loadIGDocumentsByVersion()"
-                                ng-disabled="loading || igdocument"
-                                required ng-model="hl7Version" ng-options="vr for vr in hl7Versions"/>
-                    </div>
-                </div>
+                    <div class="form-group control-group"
+                         ng-class="{'igl-has-error has-feedback' : hl7VersionsDlgForm.hl7Version.$invalid}">
+                        <label class="col-md-2 control-label " style="text-align: left">HL7 Version*:</label>
 
-                <!--<div class="col-md-12">-->
+                        <div class="controls col-md-1">
+                            <select class="form-control input-sm" name="hl7Version" id="hl7Version"
+                                    ng-change="loadIGDocumentsByVersion()"
+                                    ng-disabled="loading || igdocument"
+                                    required ng-model="hl7Version" ng-options="vr for vr in hl7Versions"/>
+                        </div>
+                    </div>
+
+                    <!--<div class="col-md-12">-->
                     <!--<h4 class="modal-title">Select HL7 Version</h4>-->
-                <!--</div>-->
-                <!--<div class="col-md-12">-->
-                    <!--<div ng-show="!igdocument" class="btn-group btn-group-sm pull-left" data-toggle="buttons">-->
-                        <!--<label class="btn btn-primary btn-xs"-->
-                               <!--ng-click="$parent.hl7Version = vr; loadIGDocumentsByVersion()"-->
-                               <!--ng-class="{'active':vr === hl7Version}" ng-repeat="vr in hl7Versions">-->
-                            <!--<input ng-disabled="loading" type="radio" ng-value="vr" ng-model="$parent.hl7Version">{{vr}}-->
-                        <!--</label>-->
                     <!--</div>-->
-                <!--</div>-->
+                    <!--<div class="col-md-12">-->
+                    <!--<div ng-show="!igdocument" class="btn-group btn-group-sm pull-left" data-toggle="buttons">-->
+                    <!--<label class="btn btn-primary btn-xs"-->
+                    <!--ng-click="$parent.hl7Version = vr; loadIGDocumentsByVersion()"-->
+                    <!--ng-class="{'active':vr === hl7Version}" ng-repeat="vr in hl7Versions">-->
+                    <!--<input ng-disabled="loading" type="radio" ng-value="vr" ng-model="$parent.hl7Version">{{vr}}-->
+                    <!--</label>-->
+                    <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <div class="col-md-12">
-                <div class="form-group control-group">
-                    <label class="col-md-2 control-label" style="text-align: left">List of Events*</label>
+                    <div class="form-group control-group">
+                        <label class="col-md-2 control-label" style="text-align: left">List of Events*</label>
+                    </div>
                 </div>
-                </div>
-                 <div class="col-md-12">
+                <div class="col-md-12">
                     <div ng-show="loading" style="text-align:center">
                         <i class="fa fa-spinner fa-pulse fa-2x"></i>
                     </div>
@@ -348,7 +350,7 @@
 </script>
 <script type="text/ng-template" id="AddTableOpenCtrl.html">
     <div class="page-header">
-        <h2 class="modal-title">Add ValueSet</h2>
+        <h2 class="modal-title">Import ValueSet</h2>
     </div>
     <div class="modal-body">
         <form class="form-horizontal" novalidate>
@@ -502,36 +504,22 @@
     <div>
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Add Data Type</h3>
+                <h3 class="modal-title">Import Data Type</h3>
             </div>
             <form name="addDT">
                 <div class="modal-body">
-                    <div class="container">
-                        <div class="row" style="margin-bottom: 20px">
-                            <div class="form-group control-group">
-                                <label class="col-md-3 control-label col-md-offset-3">HL7 Version:{{hl7Version}}</label>
-
-                                <div class="controls ">
-                                    <input style="width:30% " class="form-control col-md-4 " type="text"
-                                           ng-model="search.name" ng-hide="selected()" required/>
-                                    <li style="width:30% " class="form-control col-md-4 col-md-offset-6"
-                                        ng-show="selected()">
-                                        {{newDatatype.name}}
-                                        <button type="button" class="close" aria-label="Close" ng-click="unselect()">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </li>
-                                </div>
-                                <div ng-if="search.name && !selected()">
-                                    <li style="width:30% " class="form-control col-md-4 col-md-offset-6"
-                                        ng-class="{'active':isActive(datatype.id)}" ng-click="selectDT(datatype)"
-                                        ng-repeat="datatype in hl7Datatypes | filter:search " value="{{datatype}}">
-                                        {{datatype.name}}
-                                    </li>
-                                </div>
+                    <div class="container"  style="margin-bottom: 20px;margin-top: 20px">
+                        <div class="row flavor-seach-box">
+                            <!--<p>HL7 Version:{{hl7Version}}</p>-->
+                            <div class="input-group">
+                                <span class="input-group-addon" id="datatype-basic-addon1"><i class="fa fa-search"></i> Search</span>
+                                <input type="text" class="form-control input-lg" ng-model="newDatatype" data-limit="15"
+                                       data-animation="am-flip-x"
+                                       data-auto-select="true"
+                                       bs-options="datatype as datatype.name for datatype in hl7Datatypes"
+                                       placeholder="Search By Name" bs-typeahead>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -549,32 +537,20 @@
     <div>
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Create Segment</h3>
+                <h3 class="modal-title">Import Segment</h3>
             </div>
             <form name="addSeg" id="addSeg">
                 <div class="modal-body">
-                    <div class="container">
-                        <div class="row" style="margin-bottom: 20px">
-                            <p>HL7 Version:{{hl7Version}}</p>
-
-                            <div class="form-group control-group">
-                                <div class="controls ">
-                                    <input style="width:90% " class="form-control col-md-8" type="text"
-                                           ng-model="search.name" ng-hide="selected()" required/>
-                                    <li style="width:90% " class="form-control col-md-8" ng-show="selected()">
-                                        {{newSegment.name}}
-                                        <button type="button" class="close" aria-label="Close" ng-click="unselect()">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </li>
-                                </div>
-                                <div ng-if="search.name && !selected()">
-                                    <li style="width:90% " class="form-control col-md-8"
-                                        ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)"
-                                        ng-repeat="segment in hl7Segments | filter:search " value="{{segment}}">
-                                        {{segment.name}}
-                                    </li>
-                                </div>
+                    <div class="container" style="margin-bottom: 20px;margin-top: 20px">
+                        <div class="row flavor-seach-box">
+                            <!--<p>HL7 Version:{{hl7Version}}</p>-->
+                            <div class="input-group">
+                                <span class="input-group-addon" id="segment-basic-addon1"><i class="fa fa-search"></i> Search</span>
+                                <input type="text" class="form-control input-lg" ng-model="newSegment" data-limit="15"
+                                       data-animation="am-flip-x"
+                                       data-auto-select="true"
+                                       bs-options="segment as segment.name for segment in hl7Segments"
+                                       placeholder="Search By Name" bs-typeahead>
                             </div>
                         </div>
                     </div>

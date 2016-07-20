@@ -31,8 +31,8 @@ var app = angular
         'ui-notification',
         'ngDragDrop',
         'ui.tree',
-        'blockUI'
-
+        'blockUI',
+        'mgcrea.ngStrap.typeahead'
      ]);
 
 var
@@ -331,7 +331,9 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
                     $rootScope.msg().show= true;
                 }
             },
-            key: 'Rg1Wb2KYd1Td1WIh1CVc2F=='
+            key: 'Rg1Wb2KYd1Td1WIh1CVc2F==',
+            imageResize: false,
+            imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageAlt']
         };
         httpHeaders.common['appVersion'] = appInfo.version;
         var prevVersion = StorageService.getAppVersion(StorageService.APP_VERSION);
