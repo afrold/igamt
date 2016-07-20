@@ -296,6 +296,10 @@
                         <span class="header5">Co-Constraints Table</span>
                     </span>
 
+
+
+        {{segment.coConstraints}}
+
     </div>
 
     <div class="col-md-12">
@@ -333,51 +337,55 @@
                     <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete Co-Constraints</span></button>
             </div>
         </div>
-        <table class="table table-striped table-bordered" st-table="rowCollection" ng-show="segment.coConstraints.columnList.length > 0">
-            <thead>
-            <tr class="tbl-header">
-                <th class="col-md-1" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="column in segment.coConstraints.columnList">
-                    {{segment.name}}-{{column.field.position}}
-                    <a ng-click="deleteColumn(column)" class="point">
-                        <span style="color:red"><i class="fa fa-times fa-fw"></i></span>
-                    </a>
-                </th>
-                <th class="col-md-2">Description</th>
-                <th class="col-md-2">Comments</th>
-                <th class="col-md-1">
-                    <button class="btn btn-info btn-xs" ng-click="addCoConstraint();"
-                            ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
-                        <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="cc in segment.coConstraints.constraints">
-                <td class="col-md-1" ng-repeat="data in cc.values">
-                    <input ng-show="getConstraintType(data, cc) === 'v'" class="form-control" ng-model="data.value"
-                           ng-change="recordChange()" type="text"
-                           ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
-                    <select ng-show="getConstraintType(data, cc) === 'vs'" ng-model="data.value"
-                            class="form-control" ng-change="recordChange()"
-                            ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
-                            ng-options="link.id as tablesMap[link.id].bindingIdentifier for link in igdocument.profile.tableLibrary.children"/>
-                </td>
-                <td class="col-md-2">
-                    <input class="form-control" ng-model="cc.description" ng-change="recordChange()" type="text"
-                           ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
-                </td>
-                <td class="col-md-2">
-                    <input class="form-control" ng-model="cc.comments" ng-change="recordChange()" type="text"
-                           ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
-                </td>
-                <td class="col-md-1">
-                    <button class="btn btn-danger btn-xs" ng-click="deleteCoConstraint(cc);"
-                            ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
-                        <span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+
+
+        <div class="table-container">
+            <table st-table="rowCollection" class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="col-md-1" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="col in segment.coConstraints.columnList" st-sort="{{col}}">
+                        {{segment.name}}-{{col.field.position}}
+                        <a ng-click="deleteColumn(col)" class="point">
+                            <span style="color:red"><i class="fa fa-times fa-fw"></i></span>
+                        </a>
+                    </th>
+                    <th class="col-md-2">Description</th>
+                    <th class="col-md-2">Comments</th>
+                    <th class="col-md-1">
+                        <button class="btn btn-info btn-xs" ng-click="addCoConstraint();"
+                                ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                            <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="cc in segment.coConstraints.constraints">
+                    <td class="col-md-1" ng-repeat="col in segment.coConstraints.columnList">
+                        <input ng-show="col.constraintType === 'v'" class="form-control" ng-model="cc.values[col.columnPosition].value"
+                               ng-change="recordChange()" type="text"
+                               ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
+                        <select ng-show="col.constraintType === 'vs'" ng-model="cc.values[col.columnPosition].value"
+                                class="form-control" ng-change="recordChange()"
+                                ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
+                                ng-options="link.id as tablesMap[link.id].bindingIdentifier for link in igdocument.profile.tableLibrary.children"/>
+                    </td>
+                    <td class="col-md-2">
+                        <input class="form-control" ng-model="cc.description" ng-change="recordChange()" type="text"
+                               ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
+                    </td>
+                    <td class="col-md-2">
+                        <input class="form-control" ng-model="cc.comments" ng-change="recordChange()" type="text"
+                               ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
+                    </td>
+                    <td class="col-md-1">
+                        <button class="btn btn-danger btn-xs" ng-click="deleteCoConstraint(cc);"
+                                ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                            <span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </div>
