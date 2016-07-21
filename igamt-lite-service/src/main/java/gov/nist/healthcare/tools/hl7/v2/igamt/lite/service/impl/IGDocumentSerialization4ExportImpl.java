@@ -64,6 +64,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsColumn;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -73,6 +77,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import nu.xom.Attribute;
 import nu.xom.Document;
+import nu.xom.Element;
 import nu.xom.Serializer;
 
 @Service
@@ -1207,12 +1212,12 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
   }
 
   private nu.xom.Element serializeOneMessage(Message m) {
-//    nu.xom.Element sect = new nu.xom.Element("Section");
-//    sect.addAttribute(new Attribute("id", m.getId()));
-//    sect.addAttribute(new Attribute("position", String.valueOf(m.getPosition() + 1)));
-//    sect.addAttribute(new Attribute("h", String.valueOf(3)));
-//    String title = m.getName() != null ? m.getName() : m.getMessageType()+ "^"+m.getEvent()+"^" + m.getStructID();
-//    sect.addAttribute(new Attribute("title", title + " - " + m.getIdentifier() + " - " + m.getDescription()));
+    //    nu.xom.Element sect = new nu.xom.Element("Section");
+    //    sect.addAttribute(new Attribute("id", m.getId()));
+    //    sect.addAttribute(new Attribute("position", String.valueOf(m.getPosition() + 1)));
+    //    sect.addAttribute(new Attribute("h", String.valueOf(3)));
+    //    String title = m.getName() != null ? m.getName() : m.getMessageType()+ "^"+m.getEvent()+"^" + m.getStructID();
+    //    sect.addAttribute(new Attribute("title", title + " - " + m.getIdentifier() + " - " + m.getDescription()));
 
     nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
     elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
@@ -1241,11 +1246,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         this.serializeOneGroup(elmMessage, (Group) srog, 0);
       }
     }
-    
+
     return elmMessage;
 
-//    sect.appendChild(elmMessage);
-//    return sect;
+    //    sect.appendChild(elmMessage);
+    //    return sect;
   }
 
   private void serializeOneGroup(nu.xom.Element elmDisplay, Group group, Integer depth) {
@@ -1435,7 +1440,61 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
             elmField.appendChild(elmConstraint);
           }
         }
+
         elmSegment.appendChild(elmField);
+      }
+
+      CoConstraints coconstraints = s.getCoConstraints();
+      if (coconstraints.getConstraints().size() != 0){
+        nu.xom.Element ccts = new Element("coconstraints");
+        nu.xom.Element htmlTable = new nu.xom.Element("table");
+        htmlTable.addAttribute(new Attribute("cellpadding", "1"));
+        htmlTable.addAttribute(new Attribute("cellspacing", "0"));
+        htmlTable.addAttribute(new Attribute("border", "1"));
+        htmlTable.addAttribute(new Attribute("width", "100%"));
+
+        nu.xom.Element thead = new nu.xom.Element("thead");
+        thead.addAttribute(new Attribute("style", "background:#F0F0F0; color:#B21A1C; align:center"));
+        nu.xom.Element tr = new nu.xom.Element("tr");
+        for (CoConstraintsColumn ccc : coconstraints.getColumnList()){
+          nu.xom.Element th = new nu.xom.Element("th");
+          th.appendChild(sl.getName()+ "-" + ccc.getField().getPosition());
+          tr.appendChild(th);
+        }
+        nu.xom.Element th = new nu.xom.Element("th");
+        th.appendChild("Description");
+        tr.appendChild(th);
+        th = new nu.xom.Element("th");
+        th.appendChild("Comments");
+        tr.appendChild(th);
+        thead.appendChild(tr);
+        htmlTable.appendChild(thead);
+
+        nu.xom.Element tbody = new nu.xom.Element("tbody");
+        tbody.addAttribute(new Attribute("style", "background-color:white;text-decoration:normal"));
+        for (CoConstraint cct : coconstraints.getConstraints()){
+
+          tr = new nu.xom.Element("tr");
+          for (CCValue ccv : cct.getValues()){
+            nu.xom.Element td = new nu.xom.Element("td");
+            if(coconstraints.getColumnList().get(cct.getValues().indexOf(ccv)).getConstraintType().equals("v")){
+              td.appendChild(ccv.getValue());
+            } else {
+              td.appendChild(tableService.findById(ccv.getValue()).getBindingIdentifier());
+            }
+            tr.appendChild(td);
+          }
+          nu.xom.Element td = new nu.xom.Element("td");
+          td.appendChild(cct.getDescription());
+          tr.appendChild(td);
+          td = new nu.xom.Element("td");
+          td.appendChild(cct.getComments());
+          tr.appendChild(td);
+          tbody.appendChild(tr);
+        }
+        htmlTable.appendChild(tbody);
+        ccts.appendChild(htmlTable);
+        elmSegment.appendChild(ccts);
       }
     }
     return elmSegment;

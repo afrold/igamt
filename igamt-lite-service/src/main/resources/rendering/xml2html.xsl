@@ -230,6 +230,7 @@
 		<br></br>
 
 		<xsl:value-of select="@Comment"></xsl:value-of>
+		<br></br>
 		<xsl:if test="count(./Text[@Type='Text1']) &gt; 0">
 			<p>
 				<xsl:value-of disable-output-escaping="yes"
@@ -348,6 +349,11 @@
 			</xsl:if>
 		</xsl:for-each>
 		<br></br>
+	<p>
+		<xsl:copy-of
+			select="coconstraints/table" />
+	</p>
+	<br></br>
 	</xsl:template>
 
 	<xsl:template name="field">
