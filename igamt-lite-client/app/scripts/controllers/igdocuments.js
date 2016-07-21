@@ -406,6 +406,24 @@ angular.module('igl')
         //        }
 
 
+
+
+        $scope.orderSectionsByPosition = function(sections){
+            sections = $filter('orderBy')(sections, 'sectionPosition');
+            angular.forEach(sections, function (section) {
+                if( section.childSections &&  section.childSections != null &&  section.childSections.length > 0) {
+                    section.childSections = $scope.orderSectionsByPosition(section.childSections);
+                }
+            });
+            return sections;
+        };
+
+        $scope.orderMesagesByPositon = function(messages){
+            return $filter('orderBy')(messages, 'position');
+        };
+
+
+
         $scope.openIGDocument = function (igdocument) {
             if (igdocument != null) {
                 $timeout(function () {
@@ -413,6 +431,8 @@ angular.module('igl')
                     $rootScope.TreeIgs = [];
                     $rootScope.TreeIgs.push(igdocument);
                     $rootScope.selectedMessagesIDS = [];
+                    igdocument.childSections = $scope.orderSectionsByPosition(igdocument.childSections);
+                    igdocument.profile.messages.children = $scope.orderMesagesByPositon(igdocument.profile.messages.children);
                     $rootScope.selectedMessages = angular.copy(igdocument.profile.messages.children);
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
