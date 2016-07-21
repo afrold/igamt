@@ -1380,14 +1380,12 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
       if ((s.getText1() != null && !s.getText1().isEmpty()) ||
           (s.getText2() != null && !s.getText2().isEmpty()) ){
-        nu.xom.Element elmText = new nu.xom.Element("Text");
         if (s.getText1() != null && !s.getText1().isEmpty()) {
-          elmText.appendChild(this.serializeRichtext("Text1", s.getText1()));
+          elmSegment.appendChild(this.serializeRichtext("Text1", s.getText1()));
         }
         if (s.getText2() != null && !s.getText2().isEmpty()) {
-          elmText.appendChild(this.serializeRichtext("Text2", s.getText2()));
+          elmSegment.appendChild(this.serializeRichtext("Text2", s.getText2()));
         }
-        elmSegment.appendChild(elmText);
       }
 
       Map<Integer, Field> fields = new HashMap<Integer, Field>();
