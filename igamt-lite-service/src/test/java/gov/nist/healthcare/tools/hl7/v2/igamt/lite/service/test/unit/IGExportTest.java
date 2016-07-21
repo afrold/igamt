@@ -84,7 +84,6 @@ public class IGExportTest {
     dl = (DatatypeLink) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
     tl = (TableLink) ig.getProfile().getTableLibrary().getChildren().toArray()[0];
     
-    sl = ig.getProfile().getSegmentLibrary().findOneSegmentById("5790ba418de2b29eed3d4402");
   }
 
   @After
