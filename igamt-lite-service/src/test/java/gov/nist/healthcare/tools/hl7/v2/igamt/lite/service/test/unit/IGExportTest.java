@@ -67,6 +67,7 @@ public class IGExportTest {
   List<IGDocument> igs;
   IGDocument ig;
   Profile p;
+  SegmentLink sl;
   DatatypeLink dl;
   TableLink tl;
   InputStream content = null;
@@ -78,12 +79,12 @@ public class IGExportTest {
   public void setUp() throws Exception {
     igs = igService.findAll();
     ig = igs.get(0);
-    // ig = igService.findOne("573245a43004dc332131d418");
-    // ig = igService.findOne("56b4b811d4c6f591953e7b7a");
-    // ig = igService.findOne("578d322a45664a09a002348c");
 
+    sl = (SegmentLink) ig.getProfile().getSegmentLibrary().getChildren().toArray()[0];
     dl = (DatatypeLink) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
     tl = (TableLink) ig.getProfile().getTableLibrary().getChildren().toArray()[0];
+    
+    sl = ig.getProfile().getSegmentLibrary().findOneSegmentById("5790ba418de2b29eed3d4402");
   }
 
   @After
@@ -176,7 +177,7 @@ public class IGExportTest {
   @Test
   public void testCallSgtExportXml() {
     try {
-      content = igExport.exportAsXmlSegment((SegmentLink) ig.getProfile().getSegmentLibrary().getChildren().toArray()[0]);
+      content = igExport.exportAsXmlSegment(sl);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
       tmpFile = new File("SGT_" + timeStamp + ".xml");
@@ -192,7 +193,7 @@ public class IGExportTest {
   @Test
   public void testCallSgtExportHtml() {
     try {
-      content = igExport.exportAsHtmlSegment((SegmentLink) ig.getProfile().getSegmentLibrary().getChildren().toArray()[0]);
+      content = igExport.exportAsHtmlSegment(sl);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
       tmpFile = new File("SGT_" + timeStamp + ".html");
@@ -207,7 +208,7 @@ public class IGExportTest {
   @Test
   public void testCallSgtExportDocx() {
     try {
-      content = igExport.exportAsDocxSegment((SegmentLink) ig.getProfile().getSegmentLibrary().getChildren().toArray()[0]);
+      content = igExport.exportAsDocxSegment(sl);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
       tmpFile = new File("SGT_" + timeStamp + ".docx");
