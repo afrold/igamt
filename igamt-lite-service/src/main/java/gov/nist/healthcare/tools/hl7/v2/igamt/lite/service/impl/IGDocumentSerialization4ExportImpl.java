@@ -152,7 +152,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     nu.xom.Document doc = new nu.xom.Document(e);
     e.appendChild(metadata);
     e.appendChild(rootSections);
-    e.appendChild(profileSections);
+//    e.appendChild(profileSections);
     return doc;
   }
 
@@ -1318,14 +1318,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
   private String cleanRichtext(String richtext){
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
     Elements elements = doc.select("h1");
-    elements.tagName("p").attr("style", "display: block;font-size: 250%;margin-top: 0.67em;margin-bottom: 0.67em;margin-left: 0;margin-right: 0;font-weight: bold;");
+    elements.tagName("p").attr("style", "display: block;font-size: 250%;margin-left: 0;margin-right: 0;font-weight: bold;");
 //    elements.tagName("p").attr("style", "display: block;font-size: 250%;margin-top: 0.67em;margin-bottom: 0.67em;margin-left: 0;margin-right: 0;font-weight: bold;");
-    elements = doc.select("h2");
-    elements.tagName("p").attr("style", "display: block;font-size: 200%;margin-left: 0;margin-right: 0;font-weight: bold;");
-    elements = doc.select("h3");
-    elements.tagName("p").attr("style", "display: block;font-size: 100;margin-left: 0;margin-right: 0;font-weight: bold;");
-    elements = doc.select("h4");
-    elements.tagName("p").attr("style", "display: block;font-size: 75;margin-left: 0;margin-right: 0;font-weight: bold;");
+    Elements elements2 = doc.select("h2");
+    elements2.tagName("p").attr("style", "display: block;font-size: 200%;margin-left: 0;margin-right: 0;font-weight: bold;");
+    Elements elements3 = doc.select("h3");
+    elements3.tagName("p").attr("style", "display: block;font-size: 100;margin-left: 0;margin-right: 0;font-weight: bold;");
+    Elements elements4 = doc.select("h4");
+    elements4.tagName("p").attr("style", "display: block;font-size: 75;margin-left: 0;margin-right: 0;font-weight: bold;");
     return "<div class=\"fr-view\">" + doc.html() + "</div>";
   }
 
