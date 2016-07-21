@@ -137,6 +137,13 @@
 	</xsl:template>
 
 	<xsl:template match="MessageDisplay">
+		<br></br>
+		<h3>
+			<xsl:value-of select="@Label" />
+			-
+			<xsl:value-of select="@Description" />
+		</h3>
+		<br></br>
 		<xsl:value-of select="@Comment" />
 		<p>
 			<table width="100%" border="1" cellspacing="0" cellpadding="1">

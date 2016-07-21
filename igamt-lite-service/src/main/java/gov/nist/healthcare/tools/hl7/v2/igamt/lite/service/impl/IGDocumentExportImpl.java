@@ -230,9 +230,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
   @Override
   public InputStream exportAsXml(IGDocument d) {
     if (d != null) {
-    	
-    
-    	
+
+
+
       return IOUtils.toInputStream(profileSerializationService.serializeProfileToXML(d.getProfile(), d.getMetaData()));
     } else {
       return new NullInputStream(1L);
@@ -371,7 +371,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
   public InputStream exportAsDocxSections(IGDocument ig) {
     if (ig != null) {
-      return exportAsDocxFromXml(profileSerializationDocumentService.serializeSectionsToXML(ig), "/rendering/xml2html.xsl", false);
+      return exportAsDocxFromXml(profileSerializationDocumentService.serializeSectionsToXML(ig), "/rendering/xml2html.xsl", true);
     } else {
       return new NullInputStream(1L);
     }
@@ -1053,8 +1053,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       File tmpHtmlFile = File.createTempFile("IGDocTemp" + UUID.randomUUID().toString(), ".html");
 
       // Generate xml file containing profile
-//      File tmpXmlFile = File.createTempFile("IGDocTemp" + UUID.randomUUID().toString(), ".xml");
-       File tmpXmlFile = new File("IGDocTemp"+ UUID.randomUUID().toString()+".xml");
+      File tmpXmlFile = File.createTempFile("IGDocTemp" + UUID.randomUUID().toString(), ".xml");
+      //      File tmpXmlFile = new File("IGDocTemp"+ UUID.randomUUID().toString()+".xml");
       String stringIgDoc = profileSerializationDocumentService.serializeIGDocumentToXML(igdoc);
       FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc, Charset.forName("UTF-8"));
 
@@ -1184,8 +1184,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
     try {
       // Generate xml file containing profile
-       File tmpXmlFile = File.createTempFile("ProfileTemp" + UUID.randomUUID().toString(), ".xml");
-//      File tmpXmlFile = new File("IGDocTemp" + UUID.randomUUID().toString()+".xml");
+      File tmpXmlFile = File.createTempFile("ProfileTemp" + UUID.randomUUID().toString(), ".xml");
+      //      File tmpXmlFile = new File("IGDocTemp" + UUID.randomUUID().toString()+".xml");
       String stringProfile =
           profileSerializationDocumentService.serializeProfileToXML(d.getProfile());
       FileUtils.writeStringToFile(tmpXmlFile, stringProfile, Charset.forName("UTF-8"));
@@ -2175,18 +2175,26 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
       createCoverPageForDocx4j(igdoc, wordMLPackage, factory);
 
+      addPageBreak(wordMLPackage, factory);
+
       createTableOfContentForDocx4j(wordMLPackage, factory);
 
-      FieldUpdater updater = new FieldUpdater(wordMLPackage);
-      try {
-        updater.update(true);
-      } catch (Docx4JException e1) {
-        e1.printStackTrace();
-      }
+      //      FieldUpdater updater = new FieldUpdater(wordMLPackage);
+      //      try {
+      //        updater.update(true);
+      //      } catch (Docx4JException e1) {
+      //        e1.printStackTrace();
+      //      }
+
+      addPageBreak(wordMLPackage, factory);
 
       //Add sections
       this.addXhtmlChunk(this.exportAsHtmlSections(igdoc), wordMLPackage);
       addPageBreak(wordMLPackage, factory);
+
+      //      addContents4Docx(
+      //          (Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>) igdoc.getChildSections(), "",
+      //          1, wordMLPackage);
 
       Profile profile = igdoc.getProfile();
 
@@ -2263,6 +2271,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       wordMLPackage.save(tmpFile);
       wordMLPackage =
           WordprocessingMLPackage.load(tmpFile);
+      FieldUpdater updater = new FieldUpdater(wordMLPackage);
       updater = new FieldUpdater(wordMLPackage);
       try {
         updater.update(true);
@@ -3456,6 +3465,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
   }
 
   private void addRichTextToDocx(WordprocessingMLPackage wordMLPackage, String htmlString) {
+    //    this.addHtmlChunk(IOUtils.toInputStream(htmlString), wordMLPackage);
+
+    //    StringBuilder rst = new StringBuilder("<html><head></head><body></body>");
+    //    this.addXhtmlChunk(IOUtils.toInputStream(rst.insert(25, htmlString.toString()).toString()), wordMLPackage);
+
     try {
       wordMLPackage.getMainDocumentPart().addAltChunk(AltChunkType.Xhtml,
           wrapRichText(htmlString).getBytes());
@@ -3629,8 +3643,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
     try {
       // Generate xml file containing profile
-       File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
-//      File tmpXmlFile = new File("temp" + UUID.randomUUID().toString()+".xml");
+      File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
+      //      File tmpXmlFile = new File("temp" + UUID.randomUUID().toString()+".xml");
       FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
 
       return FileUtils.openInputStream(tmpXmlFile);
@@ -3648,8 +3662,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
 
       // Generate xml file containing profile
-       File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
-//      File tmpXmlFile = new File("temp + UUID.randomUUID().toString().xml");
+      File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
+      //      File tmpXmlFile = new File("temp + UUID.randomUUID().toString().xml");
       FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
 
       TransformerFactory factoryTf = TransformerFactory.newInstance();
@@ -3660,7 +3674,16 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       // Apply XSL transformation on xml file to generate html
       transformer = factoryTf.newTransformer(xslt);
       transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
-      return FileUtils.openInputStream(tmpHtmlFile);
+
+      Tidy tidy = new Tidy();
+      tidy.setWraplen(Integer.MAX_VALUE);
+      tidy.setXHTML(true);
+      tidy.setShowWarnings(false); //to hide errors
+      tidy.setQuiet(true); //to hide warning
+      tidy.setMakeClean(true);
+      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      tidy.parseDOM(FileUtils.openInputStream(tmpHtmlFile), outputStream);
+      return new ByteArrayInputStream(outputStream.toByteArray());
 
     } catch (TransformerException | IOException e) {
       e.printStackTrace();
@@ -3744,7 +3767,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       File tmpFile;
       tmpFile = File.createTempFile("IgDocument" + UUID.randomUUID().toString(), ".docx");
       wordMLPackage.save(tmpFile);
-
 
       return FileUtils.openInputStream(tmpFile);
 

@@ -152,7 +152,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     nu.xom.Document doc = new nu.xom.Document(e);
     e.appendChild(metadata);
     e.appendChild(rootSections);
-//    e.appendChild(profileSections);
+    e.appendChild(profileSections);
     return doc;
   }
 
@@ -1207,12 +1207,12 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
   }
 
   private nu.xom.Element serializeOneMessage(Message m) {
-    nu.xom.Element sect = new nu.xom.Element("Section");
-    sect.addAttribute(new Attribute("id", m.getId()));
-    sect.addAttribute(new Attribute("position", String.valueOf(m.getPosition() + 1)));
-    sect.addAttribute(new Attribute("h", String.valueOf(3)));
-    String title = m.getName() != null ? m.getName() : m.getMessageType()+ "^"+m.getEvent()+"^" + m.getStructID();
-    sect.addAttribute(new Attribute("title", title + " - " + m.getIdentifier() + " - " + m.getDescription()));
+//    nu.xom.Element sect = new nu.xom.Element("Section");
+//    sect.addAttribute(new Attribute("id", m.getId()));
+//    sect.addAttribute(new Attribute("position", String.valueOf(m.getPosition() + 1)));
+//    sect.addAttribute(new Attribute("h", String.valueOf(3)));
+//    String title = m.getName() != null ? m.getName() : m.getMessageType()+ "^"+m.getEvent()+"^" + m.getStructID();
+//    sect.addAttribute(new Attribute("title", title + " - " + m.getIdentifier() + " - " + m.getDescription()));
 
     nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
     elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
@@ -1220,6 +1220,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     elmMessage.addAttribute(new Attribute("Type", m.getMessageType()));
     elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
     elmMessage.addAttribute(new Attribute("StructID", m.getStructID()));
+    String title = m.getName() != null ? m.getName() : m.getMessageType()+ "^"+m.getEvent()+"^" + m.getStructID();
+    elmMessage.addAttribute(new Attribute("Label", title + " - " + m.getIdentifier() + ""));
+
 
     if (m.getDescription() != null && !m.getDescription().equals(""))
       elmMessage.addAttribute(new Attribute("Description", m.getDescription()));
@@ -1238,9 +1241,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         this.serializeOneGroup(elmMessage, (Group) srog, 0);
       }
     }
+    
+    return elmMessage;
 
-    sect.appendChild(elmMessage);
-    return sect;
+//    sect.appendChild(elmMessage);
+//    return sect;
   }
 
   private void serializeOneGroup(nu.xom.Element elmDisplay, Group group, Integer depth) {
@@ -1317,15 +1322,15 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
   private String cleanRichtext(String richtext){
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
-    Elements elements = doc.select("h1");
-    elements.tagName("p").attr("style", "display: block;font-size: 250%;margin-left: 0;margin-right: 0;font-weight: bold;");
-//    elements.tagName("p").attr("style", "display: block;font-size: 250%;margin-top: 0.67em;margin-bottom: 0.67em;margin-left: 0;margin-right: 0;font-weight: bold;");
+    Elements elements1 = doc.select("h1");
+    elements1.tagName("p").attr("style", "display: block;font-size: 16.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
+    elements1.after("<hr />");
     Elements elements2 = doc.select("h2");
-    elements2.tagName("p").attr("style", "display: block;font-size: 200%;margin-left: 0;margin-right: 0;font-weight: bold;");
+    elements2.tagName("p").attr("style", "display: block;font-size: 14.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
     Elements elements3 = doc.select("h3");
-    elements3.tagName("p").attr("style", "display: block;font-size: 100;margin-left: 0;margin-right: 0;font-weight: bold;");
+    elements3.tagName("p").attr("style", "display: block;font-size: 12.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
     Elements elements4 = doc.select("h4");
-    elements4.tagName("p").attr("style", "display: block;font-size: 75;margin-left: 0;margin-right: 0;font-weight: bold;");
+    elements4.tagName("p").attr("style", "display: block;font-size: 10.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
     return "<div class=\"fr-view\">" + doc.html() + "</div>";
   }
 
