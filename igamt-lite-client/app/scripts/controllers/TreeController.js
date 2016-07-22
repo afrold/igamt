@@ -122,16 +122,16 @@ angular
 
                         var parentSource = sourceNode.$parentNodeScope.$modelValue;
                         var parentDest = event.dest.nodesScope.$nodeScope.$modelValue;
-                        //$scope.updatePositions($rootScope.igdocument.childSections);
                         if (dataTypeDest === "messages") {
                             console.log("========ordering messages");
                             $scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
-
                             $scope.reOrderMessages();
                             return "";
                         } else if (parentSource.type === "document" && parentDest.type === "section") {
-                            $scope.updatePositions(parentDest.childSections);
-                            $scope.updateChildeSections($rootScope.igdocument.childSections);
+                        	console.log("putting root into child");
+                        	 $scope.updatePositions($rootScope.igdocument.childSections);
+                        	 $scope.updatePositions(parentDest.childSections);
+                        	 $scope.updateChildeSections($rootScope.igdocument.childSections);
                             return "";
                         } else if (parentSource.type === "document" && parentDest.type === "document") {
                             console.log("========updating childSection of ig");
@@ -140,43 +140,52 @@ angular
                             return "";
 
                         } else if (parentSource.type === "section" && parentDest.type === "document") {
-                            $scope.updatePositions(parentSource.childSections);
-                            $scope.updatePositions($rootScope.igdocument.childSections);
+                        	console.log($rootScope.igdocument.childSections);
+                        	$scope.updatePositions($rootScope.igdocument.childSections);
+                       	 	$scope.updatePositions(parentSource.childSections);
                             $scope.updateChildeSections($rootScope.igdocument.childSections);
 
                             return "";
+                            
                         } else if (dataTypeDest && dataTypeDest === "sections" && dataTypeSource === "sections") {
 
                             if (parentDest.id === parentSource.id) {
-                                console.log("=========ordering the same section");
                                 $scope.updatePositions(parentSource.childSections);
-                                SectionSvc.update($rootScope.igdocument.id, parentSource);
-
-                                return "";
+                                console.log("=========ordering the same section");
+                            	console.log(parentSource);
+                                SectionSvc.update($rootScope.igdocument.id, parentSource).then(function(){
+                                    return "";
+                                });
                             } else {
                                 console.log(" ordering 2 sections ");
                                 $scope.updatePositions(parentSource.childSections);
                                 $scope.updatePositions(parentDest.childSections);
-                                SectionSvc.update($rootScope.igdocument.id, parentSource);
-                                SectionSvc.update($rootScope.igdocument.id, parentDest);
+                                SectionSvc.update($rootScope.igdocument.id, parentSource).then(function(){
+                                    return "";
+                                });
+                                SectionSvc.update($rootScope.igdocument.id, parentDest).then(function(){
+                                    return "";
+                                });
                                 return "";
                             }
 
                         }
                     }
+                    
                 };
 
                 $scope.updatePositions = function(arr) {
                     if (arr !== undefined) {
                         for (var i = 0; i <= arr.length - 1; i++) {
-                            arr[i].sectionPosition = i +1;
+                            arr[i].sectionPosition = i+1;
+
                         }
                     }
                     return "";
                 };
 
 
-                $scope.updateMessagePositions = function(arr) {
+                $scope.updateMessagePositions= function(arr) {
 
 
                     if (arr !== undefined && arr != null) {
@@ -775,7 +784,7 @@ angular
                     for (var i = 0; i <= childSections.length - 1; i++) {
                         var sectionMap = {};
                         sectionMap.id = childSections[i].id;
-                        sectionMap.position = childSections[i].position;
+                        sectionMap.sectionPosition = childSections[i].sectionPosition;
                         sections.push(sectionMap);
                     }
                     var id = $rootScope.igdocument.id;
@@ -793,7 +802,7 @@ angular
                     for (var i = 0; i <= childSections.length - 1; i++) {
                         var sectionMap = {};
                         sectionMap.id = childSections[i].id;
-                        sectionMap.position = childSections[i].position;
+                        sectionMap.sectionPosition = childSections[i].sectionPosition;
                         sections.push(sectionMap);
                     }
                     var id = $rootScope.igdocument.id;
