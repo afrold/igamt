@@ -178,6 +178,7 @@ angular
                     if (arr !== undefined) {
                         for (var i = 0; i <= arr.length - 1; i++) {
                             arr[i].sectionPosition = i+1;
+
                         }
                     }
                     return "";

@@ -352,24 +352,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
     };
 
-    $scope.addColumnCoConstraints = function(newColumnField, newColumnConstraintType) {
-        var newColumn = {
-            field: newColumnField,
-            constraintType: newColumnConstraintType,
-            columnPosition: $rootScope.segment.coConstraints.columnList.length
-        };
-
-        for (var i = 0, len1 = $rootScope.segment.coConstraints.constraints.length; i < len1; i++) {
-            var v = {};
-            v.value = '';
-            $rootScope.segment.coConstraints.constraints[i].values.push(v);
-        };
-
-        $scope.setDirty();
-
-        $rootScope.segment.coConstraints.columnList.push(newColumn);
-    };
-
     $scope.addCoConstraint = function() {
         var valueList = [];
 
@@ -388,16 +370,40 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         $rootScope.segment.coConstraints.constraints.push(cc);
     };
 
+    $scope.manageCoConstaintsTableModal = function(segment) {
+        var modalInstance = $modal.open({
+            templateUrl: 'ManageCoConstraintsTableModal.html',
+            controller: 'ManageCoConstraintsTableCtrl',
+            windowClass: 'creation-modal-window',
+            resolve: {
+                segment: function() {
+                    return segment;
+                }
+            }
+        });
+        modalInstance.result.then(function() {
+            $scope.setDirty();
+        });
+    };
+
+
     $scope.deleteColumn = function(column) {
         var index = $rootScope.segment.coConstraints.columnList.indexOf(column);
 
-        for (var i = 0, len1 = $rootScope.segment.coConstraints.constraints.length; i < len1; i++) {
-            $rootScope.segment.coConstraints.constraints[i].values.splice(index, 1);
-        };
-
         if (index > -1) {
+            var columnPosition = $rootScope.segment.coConstraints.columnList[index].columnPosition;
             $rootScope.segment.coConstraints.columnList.splice(index, 1);
-        };
+
+            for (var i = 0, len1 = $rootScope.segment.coConstraints.columnList.length; i < len1; i++) {
+                if($rootScope.segment.coConstraints.columnList[i].columnPosition > columnPosition){
+                    $rootScope.segment.coConstraints.columnList[i].columnPosition = $rootScope.segment.coConstraints.columnList[i].columnPosition - 1;
+                }
+            }
+
+            for (var i = 0, len1 = $rootScope.segment.coConstraints.constraints.length; i < len1; i++) {
+                $rootScope.segment.coConstraints.constraints[i].values.splice(columnPosition, 1);
+            };
+        }
 
         $scope.setDirty();
     };
@@ -947,6 +953,57 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mo
     };
 
 });
+
+
+angular.module('igl').controller('ManageCoConstraintsTableCtrl', function($scope, $modalInstance, segment, $rootScope) {
+    $scope.selectedSegment = angular.copy(segment);
+    $scope.addColumnCoConstraints = function(newColumnField, newColumnConstraintType) {
+        var newColumn = {
+            field: newColumnField,
+            constraintType: newColumnConstraintType,
+            columnPosition: $scope.selectedSegment.coConstraints.columnList.length
+        };
+
+        for (var i = 0, len1 = $scope.selectedSegment.coConstraints.constraints.length; i < len1; i++) {
+            var v = {};
+            v.value = '';
+            $scope.selectedSegment.coConstraints.constraints[i].values.push(v);
+        };
+        $scope.selectedSegment.coConstraints.columnList.push(newColumn);
+    };
+
+    $scope.deleteColumn = function(column) {
+        var index = $scope.selectedSegment.coConstraints.columnList.indexOf(column);
+
+        if (index > -1) {
+            var columnPosition = $scope.selectedSegment.coConstraints.columnList[index].columnPosition;
+            $scope.selectedSegment.coConstraints.columnList.splice(index, 1);
+
+            for (var i = 0, len1 = $scope.selectedSegment.coConstraints.columnList.length; i < len1; i++) {
+                if($scope.selectedSegment.coConstraints.columnList[i].columnPosition > columnPosition){
+                    $scope.selectedSegment.coConstraints.columnList[i].columnPosition = $rootScope.segment.coConstraints.columnList[i].columnPosition - 1;
+                }
+            }
+
+            for (var i = 0, len1 = $scope.selectedSegment.coConstraints.constraints.length; i < len1; i++) {
+                $scope.selectedSegment.coConstraints.constraints[i].values.splice(columnPosition, 1);
+            };
+        }
+
+    };
+
+    $scope.saveAndClose = function() {
+        $rootScope.segment.coConstraints = $scope.selectedSegment.coConstraints;
+        $modalInstance.close();
+    };
+
+    $scope.close = function() {
+        $modalInstance.close();
+    };
+
+});
+
+
 
 
 angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
