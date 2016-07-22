@@ -15,14 +15,20 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -34,93 +40,129 @@ import org.springframework.stereotype.Service;
 @Service
 public class Bootstrap implements InitializingBean {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	ProfileService profileService;
+  @Autowired
+  ProfileService profileService;
 
-	@Autowired
-	IGDocumentService documentService;
+  @Autowired
+  IGDocumentService documentService;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-	 */
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		// Carefully use this. It will delete all of existing IGDocuments and
-		// make new ones converted from the "igdocumentPreLibHL7",
-		// "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
-//		 new IGDocumentConverterFromOldToNew().convert();
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+   */
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    // Carefully use this. It will delete all of existing IGDocuments and
+    // make new ones converted from the "igdocumentPreLibHL7",
+    // "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
+    //		 new IGDocumentConverterFromOldToNew().convert();
 
 
-//		 new DataCorrection().updateSegment();
-//		 new DataCorrection().updateDatatype();
-//		 new DataCorrection().updateSegmentLibrary();
-//		 new DataCorrection().updateDatatypeLibrary();
-//		 new DataCorrection().updateTableLibrary();
-//		 new DataCorrection().updateMessage();
+    //		 new DataCorrection().updateSegment();
+    //		 new DataCorrection().updateDatatype();
+    //		 new DataCorrection().updateSegmentLibrary();
+    //		 new DataCorrection().updateDatatypeLibrary();
+    //		 new DataCorrection().updateTableLibrary();
+    //		 new DataCorrection().updateMessage();
 
-	}
+  }
 
-	private void loadPreloadedIGDocuments() throws Exception {
-		IGDocument d = new IGDocument();
+  private void loadPreloadedIGDocuments() throws Exception {
+    IGDocument d = new IGDocument();
 
-		String p = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/IZ_Profile.xml"));
-		String v = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/IZ_ValueSetLibrary.xml"));
-		String c = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/IZ_Constraints.xml"));
-		Profile profile = new ProfileSerializationImpl()
-				.deserializeXMLToProfile(p, v, c);
+    String p = IOUtils.toString(this.getClass().getResourceAsStream(
+        "/profiles/IZ_Profile.xml"));
+    String v = IOUtils.toString(this.getClass().getResourceAsStream(
+        "/profiles/IZ_ValueSetLibrary.xml"));
+    String c = IOUtils.toString(this.getClass().getResourceAsStream(
+        "/profiles/IZ_Constraints.xml"));
+    Profile profile = new ProfileSerializationImpl()
+    .deserializeXMLToProfile(p, v, c);
 
-		profile.setScope(IGDocumentScope.PRELOADED);
+    profile.setScope(IGDocumentScope.PRELOADED);
 
-		d.addProfile(profile);
+    d.addProfile(profile);
 
-		boolean existPreloadedDocument = false;
+    boolean existPreloadedDocument = false;
 
-		String documentID = d.getMetaData().getIdentifier();
-		String documentVersion = d.getMetaData().getVersion();
+    String documentID = d.getMetaData().getIdentifier();
+    String documentVersion = d.getMetaData().getVersion();
 
-		List<IGDocument> igDocuments = documentService.findAll();
+    List<IGDocument> igDocuments = documentService.findAll();
 
-		for (IGDocument igd : igDocuments) {
-			if (igd.getScope().equals(IGDocumentScope.PRELOADED)
-					&& documentID.equals(igd.getMetaData().getIdentifier())
-					&& documentVersion.equals(igd.getMetaData().getVersion())) {
-				existPreloadedDocument = true;
-			}
-		}
-		if (!existPreloadedDocument)
-			documentService.save(d);
-	}
+    for (IGDocument igd : igDocuments) {
+      if (igd.getScope().equals(IGDocumentScope.PRELOADED)
+          && documentID.equals(igd.getMetaData().getIdentifier())
+          && documentVersion.equals(igd.getMetaData().getVersion())) {
+        existPreloadedDocument = true;
+      }
+    }
+    if (!existPreloadedDocument)
+      documentService.save(d);
+  }
 
-	private void checkTableNameForAllIGDocuments()
-			throws IGDocumentSaveException {
+  private void checkTableNameForAllIGDocuments()
+      throws IGDocumentSaveException {
 
-		List<IGDocument> igDocuments = documentService.findAll();
+    List<IGDocument> igDocuments = documentService.findAll();
 
-		for (IGDocument igd : igDocuments) {
-			boolean ischanged = false;
-			TableLibrary tables = igd.getProfile().getTableLibrary();
+    for (IGDocument igd : igDocuments) {
+      boolean ischanged = false;
+      TableLibrary tables = igd.getProfile().getTableLibrary();
 
-			for (TableLink tl : tables.getChildren()) {
-				// if (t.getName() == null || t.getName().equals("")) {
-				// if (t.getDescription() != null) {
-				// t.setName(t.getDescription());
-				// ischanged = true;
-				// } else
-				// t.setName("NONAME");
-				// }
-			}
+      for (TableLink tl : tables.getChildren()) {
+        // if (t.getName() == null || t.getName().equals("")) {
+        // if (t.getDescription() != null) {
+        // t.setName(t.getDescription());
+        // ischanged = true;
+        // } else
+        // t.setName("NONAME");
+        // }
+      }
 
-			if (ischanged)
-				documentService.apply(igd);
-		}
-	}
+      if (ischanged)
+        documentService.apply(igd);
+    }
+  }
 
+  private void resetSectionPositions()
+      throws IGDocumentSaveException {
+
+    List<IGDocument> igDocuments = documentService.findAll();
+    for (IGDocument igdoc : igDocuments) {
+      checkAndChange(igdoc.getChildSections());
+      try {
+        documentService.save(igdoc);
+      } catch (IGDocumentException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  private void checkAndChange(Set<Section> s){
+    if (needChanges(s)) {
+      setCorrectSectionPosition(s);
+      for (Section child: s){
+        checkAndChange(child.getChildSections());
+      }
+    }    
+  }
+
+  private boolean needChanges(Set<Section> s){
+    boolean rst = false;
+    for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section child : s) { 
+      rst = rst | (child.getPosition() == 0); 
+    } 
+    return rst;
+  }
+
+  private void setCorrectSectionPosition(Set<Section> s){
+    for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section child : s) { 
+      child.setPosition(child.getPosition() + 1);
+    }
+  }
 }
