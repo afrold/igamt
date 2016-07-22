@@ -292,69 +292,44 @@
 </div>
 <div class="row" style="margin-top:20px">
     <div class="col-md-12 igl-page-header">
-                    <span class="pull-left">
-                        <span class="header5">Co-Constraints Table</span>
-                    </span>
-
-
-
-        {{segment.coConstraints}}
-
+        <span class="pull-left">
+            <span class="header5">Co-Constraints</span>
+        </span>
+        <span class="pull-right">
+            <button ng-hide="segment.coConstraints.columnList.length == 0" class="btn btn-danger btn-sm" ng-click="deleteCoConstraints();">
+                <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete Co-Constraint</span>
+            </button>
+            <button class="btn btn-info btn-sm" ng-show="segment.coConstraints.columnList.length == 0"
+                    ng-click="manageCoConstaintsTableModal(segment); newColumnField = null; newColumnConstraintType = ''; "
+                    ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Co-Constraint</span>
+            </button>
+            <button class="btn btn-info btn-sm" ng-show="segment.coConstraints.columnList.length > 0"
+                    ng-click="manageCoConstaintsTableModal(segment); newColumnField = null; newColumnConstraintType = ''; "
+                    ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                <span><i class="fa fa-pencil fa-fw">&nbsp; </i>Edit Co-Constraint</span>
+            </button>
+        </span>
+        <hr />
     </div>
-
     <div class="col-md-12">
-        <div ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
-            <div class="row">
-
-                        <span class="pull-left">
-                             <div class="btn-group">
-                                 <select class="form-control" name="newColumnField" style="with:30%"
-                                         ng-model="newColumnField"
-                                         ng-options="field as segment.name + '-' + field.position + ' : ' + field.name for field in segment.fields">
-                                     <option value="">Select Field</option>
-                                 </select>
-                                 <select class="form-control" name="newColumnConstraintType" style="with:30%"
-                                         ng-model="newColumnConstraintType">
-                                     <option value="">Select Constraint Type</option>
-                                     <option value="v">Value</option>
-                                     <option value="vs">Value Set</option>
-                                 </select>
-                             </div>
-                            </span>
-                            <span class="pull-right">
-                                <button ng-disabled="newColumnField === null || newColumnConstraintType ===null || newColumnField === '' || newColumnConstraintType ===''"
-                                        class="btn btn-info btn-sm"
-                                        ng-click="addColumnCoConstraints(newColumnField, newColumnConstraintType); newColumnField = null; newColumnConstraintType = ''; "
-                                        ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
-                                    <span><i class="fa fa-plus fa-fw">
-                                        &nbsp; </i>Add Column</span></button>
-                            </span>
-            </div>
-            <!--<span ng-hide="segment.coConstraints.columnList.length > 0">No Co-Constraint</span>-->
-            <div class="pull-right">
-                <button class="btn btn-danger btn-xs" ng-click="deleteCoConstraints();"
-                        ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') || segment.coConstraints.constraints.length === 0">
-                    <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete Co-Constraints</span></button>
-            </div>
-        </div>
-
-
-        <div class="table-container">
+        <div ng-hide="segment.coConstraints.columnList.length == 0" class="table-container">
             <table st-table="rowCollection" class="table table-striped">
                 <thead>
                 <tr>
                     <th class="col-md-1" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="col in segment.coConstraints.columnList" st-sort="{{col}}">
-                        {{segment.name}}-{{col.field.position}}
+                        <span class="glyphicon glyphicon-move"></span> {{segment.name}}-{{col.field.position}}
                         <a ng-click="deleteColumn(col)" class="point">
                             <span style="color:red"><i class="fa fa-times fa-fw"></i></span>
                         </a>
                     </th>
                     <th class="col-md-2">Description</th>
                     <th class="col-md-2">Comments</th>
-                    <th class="col-md-1">
+                    <th class="col-md-1"  align="right">
                         <button class="btn btn-info btn-xs" ng-click="addCoConstraint();"
                                 ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
-                            <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                            <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span>
+                        </button>
                     </th>
                 </tr>
                 </thead>
@@ -444,6 +419,89 @@
 </div>
 </div>
 </div>
+</script>
+
+
+<script type="text/ng-template" id="ManageCoConstraintsTableModal.html">
+    <div class="modal-header">
+        <h3 class="header4">Co-Constraints Table</h3>
+    </div>
+    <div class="modal-body">
+        <span class="header4">Create Table Column</span>
+        <hr />
+        <div class="form-group control-group">
+            <label class="col-md-2 control-label">Field</label>
+
+            <div class="controls col-md-4">
+                <select class="form-control" name="newColumnField" style="with:99%"
+                        ng-model="newColumnField"
+                        ng-options="field as segment.name + '-' + field.position + ' : ' + field.name for field in selectedSegment.fields">
+                    <option value="">Select Field</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group control-group">
+            <label class="col-md-2 control-label">Constraint Type</label>
+
+            <div class="controls col-md-4">
+                <select class="form-control" name="newColumnConstraintType" style="with:99%"
+                        ng-model="newColumnConstraintType">
+                    <option value="">Select Constraint Type</option>
+                    <option value="v">Value</option>
+                    <option value="vs">Value Set</option>
+                </select>
+            </div>
+        </div>
+
+        <span class="pull-right" style="margin-right:5px">
+            <button ng-disabled="newColumnField === null || newColumnConstraintType ===null || newColumnField === '' || newColumnConstraintType ===''"
+                class="btn btn-info btn-sm"
+                ng-click="addColumnCoConstraints(newColumnField, newColumnConstraintType); newColumnField = null; newColumnConstraintType = ''; "
+                ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Column</span>
+            </button>
+        </span>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <div class="table-container">
+            <span class="header4">Co-Constraints Table Structure</span>
+            <hr />
+            <table st-table="rowCollection" class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="col-md-1" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="col in selectedSegment.coConstraints.columnList" st-sort="{{col}}">
+                        <span class="glyphicon glyphicon-move"></span> {{selectedSegment.name}}-{{col.field.position}}
+                        <a ng-click="deleteColumn(col)" class="point">
+                            <span style="color:red"><i class="fa fa-times fa-fw"></i></span>
+                        </a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="col-md-1" ng-repeat="col in selectedSegment.coConstraints.columnList">
+                        <select class="form-control" style="with:30%" ng-model="col.constraintType">
+                            <option value="v">Value</option>
+                            <option value="vs">Value Set</option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-click="close()"><span><i class="fa fa-times fa-fw">
+        &nbsp; </i>Cancel</span></button>
+        <button class="btn btn-success btn-sm" ng-click="saveAndClose()"><span><i class="fa fa-check fa-fw">
+        &nbsp; </i>Save</span></button>
+    </div>
 </script>
 
 <script type="text/ng-template " id="SegmentEditTree.html ">
