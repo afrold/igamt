@@ -64,7 +64,6 @@ color:white;
                             </ol>
                             {{updatePositions(section.childSections)}}
                         </script>
-                        {{updatePositions(ig.childSections)}}
                         <ol ui-tree-nodes="" ng-model="ig.childSections" data-type="sections" style="margin-left:0px;">
                             <li ng-repeat="section in ig.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:0px;"></li>
                         </ol>
