@@ -406,6 +406,24 @@ angular.module('igl')
         //        }
 
 
+
+
+        $scope.orderSectionsByPosition = function(sections){
+            sections = $filter('orderBy')(sections, 'sectionPosition');
+            angular.forEach(sections, function (section) {
+                if( section.childSections &&  section.childSections != null &&  section.childSections.length > 0) {
+                    section.childSections = $scope.orderSectionsByPosition(section.childSections);
+                }
+            });
+            return sections;
+        };
+
+        $scope.orderMesagesByPositon = function(messages){
+            return $filter('orderBy')(messages, 'position');
+        };
+
+
+
         $scope.openIGDocument = function (igdocument) {
             if (igdocument != null) {
                 $timeout(function () {
@@ -413,6 +431,8 @@ angular.module('igl')
                     $rootScope.TreeIgs = [];
                     $rootScope.TreeIgs.push(igdocument);
                     $rootScope.selectedMessagesIDS = [];
+                    igdocument.childSections = $scope.orderSectionsByPosition(igdocument.childSections);
+                    igdocument.profile.messages.children = $scope.orderMesagesByPositon(igdocument.profile.messages.children);
                     $rootScope.selectedMessages = angular.copy(igdocument.profile.messages.children);
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
@@ -955,6 +975,13 @@ angular.module('igl')
                             } catch (e) {
 
                             }
+
+                            $rootScope.references = [];
+                            angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
+                                $rootScope.findSegmentRefs($rootScope.segment, message, message.name);
+                            });
+                            $rootScope.tmpReferences = [].concat( $rootScope.references);
+
                             $scope.loadingSelection = false;
                             $rootScope.$emit("event:initEditArea");
                             blockUI.stop();
@@ -1024,6 +1051,19 @@ angular.module('igl')
                             } catch (e) {
 
                             }
+                            $rootScope.references = [];
+                            $rootScope.tmpReferences = [].concat( $rootScope.references);
+                            angular.forEach($rootScope.segments, function (segment) {
+                                if(segment && segment != null) {
+                                    $rootScope.findDatatypeRefs($rootScope.datatype, segment, $rootScope.getSegmentLabel(segment));
+                                }
+                            });
+                            angular.forEach($rootScope.datatypes, function (dt) {
+                                if (dt && dt != null && dt.id !== $rootScope.datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt));
+                            });
+
+                            $rootScope.tmpReferences = [].concat( $rootScope.references);
+
                             $rootScope.$emit("event:initEditArea");
                             blockUI.stop();
                         }, function (error) {
@@ -1082,7 +1122,6 @@ angular.module('igl')
                     $rootScope.table = table;
                     $rootScope.currentData = $rootScope.table;
                     $rootScope.codeSystems = [];
-
                     for (var i = 0; i < $rootScope.table.codes.length; i++) {
                         if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
                             if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
@@ -1090,6 +1129,14 @@ angular.module('igl')
                             }
                         }
                     }
+                    $rootScope.references = [];
+                    angular.forEach($rootScope.segments, function (segment) {
+                        $rootScope.findTableRefs( $rootScope.table, segment, $rootScope.getSegmentLabel(segment));
+                    });
+                    angular.forEach($rootScope.datatypes, function (dt) {
+                        $rootScope.findTableRefs( $rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
+                    });
+                    $rootScope.tmpReferences = [].concat( $rootScope.references);
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
                     blockUI.stop();
