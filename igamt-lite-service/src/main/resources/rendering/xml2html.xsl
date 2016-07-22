@@ -349,11 +349,15 @@
 			</xsl:if>
 		</xsl:for-each>
 		<br></br>
-	<p>
-		<xsl:copy-of
-			select="coconstraints/table" />
-	</p>
-	<br></br>
+		<xsl:if test="count(coconstraints/table) &gt; 0">
+			<p>
+				<strong>
+					<u>Co-constraints</u>
+				</strong>
+				<xsl:copy-of select="coconstraints/table" />
+			</p>
+		</xsl:if>
+		<br></br>
 	</xsl:template>
 
 	<xsl:template name="field">
