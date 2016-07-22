@@ -1477,10 +1477,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
           tr = new nu.xom.Element("tr");
           for (CCValue ccv : cct.getValues()){
             nu.xom.Element td = new nu.xom.Element("td");
-            if(coconstraints.getColumnList().get(cct.getValues().indexOf(ccv)).getConstraintType().equals("v")){
-              td.appendChild(ccv.getValue());
+            if (ccv != null){
+              if(coconstraints.getColumnList().get(cct.getValues().indexOf(ccv)).getConstraintType().equals("v")){
+                td.appendChild(ccv.getValue());
+              } else {
+                td.appendChild(tableService.findById(ccv.getValue()).getBindingIdentifier());
+              }
             } else {
-              td.appendChild(tableService.findById(ccv.getValue()).getBindingIdentifier());
+              td.appendChild("");
             }
             tr.appendChild(td);
           }
