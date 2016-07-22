@@ -1450,6 +1450,7 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
         var newTable = angular.copy(table);
         newTable.participants = [];
         newTable.bindingIdentifier = $rootScope.createNewExtension(table.bindingIdentifier);
+        newTable.scope = 'USER';
 
         if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
             for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
