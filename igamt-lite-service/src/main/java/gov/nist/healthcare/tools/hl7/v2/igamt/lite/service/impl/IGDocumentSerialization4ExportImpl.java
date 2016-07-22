@@ -1503,17 +1503,22 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
   private List<Constraint> findConstraints(Integer target, List<Predicate> predicates,
       List<ConformanceStatement> conformanceStatements) {
+    //TODO Add case for root level constraints
     List<Constraint> constraints = new ArrayList<>();
     for (Predicate pre : predicates) {
-      if (target == Integer.parseInt(pre.getConstraintTarget().substring(0,
-          pre.getConstraintTarget().indexOf('[')))) {
-        constraints.add(pre);
+      if (pre.getConstraintTarget().indexOf('[') != -1){
+        if (target == Integer.parseInt(pre.getConstraintTarget().substring(0,
+            pre.getConstraintTarget().indexOf('[')))) {
+          constraints.add(pre);
+        }
       }
     }
     for (ConformanceStatement conformanceStatement : conformanceStatements) {
-      if (target == Integer.parseInt(conformanceStatement.getConstraintTarget().substring(0,
-          conformanceStatement.getConstraintTarget().indexOf('[')))) {
-        constraints.add(conformanceStatement);
+      if (conformanceStatement.getConstraintTarget().indexOf('[') != -1){
+        if (target == Integer.parseInt(conformanceStatement.getConstraintTarget().substring(0,
+            conformanceStatement.getConstraintTarget().indexOf('[')))) {
+          constraints.add(conformanceStatement);
+        }
       }
     }
     return constraints;
