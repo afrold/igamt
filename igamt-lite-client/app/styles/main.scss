@@ -2337,3 +2337,11 @@ table.conformance-profiles-table td {
 ul.search-result > li > a:hover {
   background-color: cornflowerblue;
 }
+
+.st-sort-ascent:before{
+  content: '\25B2';
+}
+
+.st-sort-descent:before{
+  content: '\25BC';
+}
