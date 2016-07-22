@@ -1481,7 +1481,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
               if(coconstraints.getColumnList().get(cct.getValues().indexOf(ccv)).getConstraintType().equals("v")){
                 td.appendChild(ccv.getValue());
               } else {
-                td.appendChild(tableService.findById(ccv.getValue()).getBindingIdentifier());
+                if (tableService.findById(ccv.getValue()) != null) {
+                  td.appendChild(tableService.findById(ccv.getValue()).getBindingIdentifier());
+                } else {
+                  td.appendChild("");
+                }
               }
             } else {
               td.appendChild("");
