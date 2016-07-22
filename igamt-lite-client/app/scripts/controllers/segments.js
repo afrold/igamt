@@ -992,12 +992,6 @@ angular.module('igl').controller('ManageCoConstraintsTableCtrl', function($scope
 
     };
 
-    $scope.deleteCoConstraints = function() {
-        $rootScope.segment.coConstraints.columnList = [];
-        $rootScope.segment.coConstraints.constraints = [];
-        $modalInstance.close();
-    };
-
     $scope.saveAndClose = function() {
         $rootScope.segment.coConstraints = $scope.selectedSegment.coConstraints;
         $modalInstance.close();
