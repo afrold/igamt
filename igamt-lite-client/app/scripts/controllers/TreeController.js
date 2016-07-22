@@ -118,11 +118,11 @@ angular
                         var dest = destNodes.$parent.$modelValue;
                         var dataTypeDest = destNodes.$element.attr('data-type');
                         var dataTypeSource = sourceNode.$element.attr('data-type');
-                        event.source.nodeScope.$modelValue.sectionPosition = sortAfter + 1;
+                        //event.source.nodeScope.$modelValue.sectionPosition = sortAfter + 1;
 
                         var parentSource = sourceNode.$parentNodeScope.$modelValue;
                         var parentDest = event.dest.nodesScope.$nodeScope.$modelValue;
-                        $scope.updatePositions($rootScope.igdocument.childSections);
+                        //$scope.updatePositions($rootScope.igdocument.childSections);
                         if (dataTypeDest === "messages") {
                             console.log("========ordering messages");
                             $scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
@@ -130,14 +130,18 @@ angular
                             $scope.reOrderMessages();
                             return "";
                         } else if (parentSource.type === "document" && parentDest.type === "section") {
+                            $scope.updatePositions(parentDest.childSections);
                             $scope.updateChildeSections($rootScope.igdocument.childSections);
                             return "";
                         } else if (parentSource.type === "document" && parentDest.type === "document") {
                             console.log("========updating childSection of ig");
+                            $scope.updatePositions($rootScope.igdocument.childSections);
                             $scope.reOrderChildSections();
                             return "";
 
                         } else if (parentSource.type === "section" && parentDest.type === "document") {
+                            $scope.updatePositions(parentSource.childSections);
+                            $scope.updatePositions($rootScope.igdocument.childSections);
                             $scope.updateChildeSections($rootScope.igdocument.childSections);
 
                             return "";
@@ -145,10 +149,14 @@ angular
 
                             if (parentDest.id === parentSource.id) {
                                 console.log("=========ordering the same section");
+                                $scope.updatePositions(parentSource.childSections);
                                 SectionSvc.update($rootScope.igdocument.id, parentSource);
+
                                 return "";
                             } else {
                                 console.log(" ordering 2 sections ");
+                                $scope.updatePositions(parentSource.childSections);
+                                $scope.updatePositions(parentDest.childSections);
                                 SectionSvc.update($rootScope.igdocument.id, parentSource);
                                 SectionSvc.update($rootScope.igdocument.id, parentDest);
                                 return "";

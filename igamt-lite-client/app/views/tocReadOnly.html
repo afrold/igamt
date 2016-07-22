@@ -63,9 +63,8 @@
                             <li ng-repeat="section in section.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections"  ng-if="section.childSections&&!collapsed">
                             </li>
                         </ol>
-                        {{updatePositions(section.childSections)}}
-                    </script>
-                     {{updatePositions(ig.childSections)}}
+                     </script>
+
                     
                     <ol  ui-tree-nodes="" ng-model="ig.childSections" data-type="sections"  style="margin-left:0px;">
                         <li ng-repeat="section in ig.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:0px;"></li>

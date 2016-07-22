@@ -7,7 +7,7 @@ public class PositionComparator implements Comparator<Section> {
   @Override
   public int compare(Section o1, Section o2) {
     // TODO Auto-generated method stub
-    return o1.getPosition() - o2.getPosition();
+    return o1.getSectionPosition() - o2.getSectionPosition();
   }
 
 }
