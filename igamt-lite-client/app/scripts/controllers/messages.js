@@ -8,6 +8,7 @@ angular.module('igl')
 
 
         $scope.init = function() {};
+        console.log($rootScope.igdocument);
         $scope.redirectSeg = function(segmentRef) {
             SegmentService.get(segmentRef.id).then(function(segment) {
                 var modalInstance = $modal.open({
