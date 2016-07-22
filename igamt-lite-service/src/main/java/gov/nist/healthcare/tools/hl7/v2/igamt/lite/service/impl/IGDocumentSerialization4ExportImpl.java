@@ -258,9 +258,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
       }
 
       if (depth == 1) {
-        xsect.addAttribute(new Attribute("prefix", String.valueOf(s.getSectionPosition() + 1)));
+        xsect.addAttribute(new Attribute("prefix", String.valueOf(s.getSectionPosition())));
         addContents4Html((Set<Section>) s.getChildSections(),
-            String.valueOf(s.getSectionPosition() + 1), depth + 1, xsect);
+            String.valueOf(s.getSectionPosition()), depth + 1, xsect);
       } else {
         xsect.addAttribute(new Attribute("prefix", prefix + "."
             + String.valueOf(s.getSectionPosition())));
