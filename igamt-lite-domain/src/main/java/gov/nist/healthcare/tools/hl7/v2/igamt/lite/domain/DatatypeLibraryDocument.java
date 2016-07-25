@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "datatype-library-document")
@@ -26,8 +27,9 @@ public class DatatypeLibraryDocument extends TextbasedSectionModel implements ja
 		super();
 		type = Constant.DATATYPE_LIBRARY_DOCUMENT;
 	}
-
+	@DBRef
 	private DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
+	@DBRef
 	private TableLibrary tableLibrary = new TableLibrary();
 
 	public String getId() {

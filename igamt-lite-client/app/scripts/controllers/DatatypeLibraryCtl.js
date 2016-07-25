@@ -2,10 +2,9 @@
  * http://usejsdoc.org/
  */
 angular.module('igl').controller('DatatypeLibraryCtl',
-    function($scope, $rootScope, $q, $modal, $timeout, TableService, ngTreetableParams, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc, FormsSelectSvc, IGDocumentSvc, TableService, ViewSettings, userInfoService) {
+    function($scope, $rootScope, $q, $modal, $timeout, TableService, ngTreetableParams,DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc, FormsSelectSvc, IGDocumentSvc, TableService, ViewSettings, userInfoService) {
 
-        $scope.datatypeLibsStruct = [];
-
+		$scope.datatypeLibsStruct = [];
         $scope.editableDTInLib = '';
         $scope.editableVS = '';
         $scope.derivedDatatypes = [];
@@ -110,11 +109,14 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         function getDataTypeLibraryByScope(scope) {
-            DatatypeLibrarySvc.getDataTypeLibraryByScope(scope).then(function(data) {
-                $scope.datatypeLibsStruct = [];
-                angular.forEach(data, function(lib) {
-                    $scope.datatypeLibsStruct.push(lib);
-                });
+        	$scope.datatypeLibsStruct=[];
+            DatatypeLibraryDocumentSvc.getDataTypeLibraryDocumentByScope(scope).then(function(data) {
+            	$scope.datatypeLibsStruct=[];
+            	angular.forEach(data.data, function(lib) {
+                 $scope.datatypeLibsStruct.push(lib);
+            });
+                //$scope.datatypeLibsStruct=data.data;
+                console.log($scope.datatypeLibsStruct);
                 $scope.accordi.dtDetails = false;
                 $rootScope.isEditing = false;
                 $scope.DataTypeTree = [];
@@ -126,7 +128,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         function getDataTypeLibraryByScopesAndVersion(scopes, hl7Version) {
-            DatatypeLibrarySvc.getDataTypeLibraryByScopesAndVersion(scopes, hl7Version).then(function(data) {
+            DatatypeLibraryDocumentSvc.getDataTypeLibraryDocumentByScopesAndVersion(scopes, hl7Version).then(function(data) {
                 $scope.datatypeStruct = data;
                 if (!$scope.datatypeStruct.scope) {
                     $scope.datatypeStruct.scope = scope;
@@ -159,22 +161,24 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.editView = "LibraryMetaData.html";
         }
 
-        $scope.editLibrary = function(datatypeLibrary) {
+        $scope.editLibrary = function(datatypeLibraryDocument) {
+        	var datatypeLibrary=datatypeLibraryDocument.datatypeLibrary;
+        	console.log("========================datatype========================");
+
+        	console.log(datatypeLibrary);
             $scope.editView = "LibraryMetaData.html";
             $scope.addedDatatypes = [];
             $scope.datataypestoAdd = [];
-            $scope.hl7Version = datatypeLibrary.metaData.hl7Version;
+            $scope.hl7Version = datatypeLibraryDocument.metaData.hl7Version;
             var scopes = ['HL7STANDARD'];
-
+            
             DatatypeService.getDataTypesByScopesAndVersion(scopes, $scope.hl7Version).then(function(result) {
                 $scope.datataypestoAdd = result;
             });
-
-
             $scope.datatypeListView = "DatatypeList.html";
             $scope.loadingSelection = true;
             $scope.datatypeLibStruct = datatypeLibrary;
-            DatatypeLibrarySvc.getDatatypesByLibrary(datatypeLibrary.id).then(function(datatypes) {
+            DatatypeLibrarySvc.getDatatypesByLibrary(datatypeLibraryDocument.datatypeLibrary.id).then(function(datatypes) {
 
                 $scope.datatypes=datatypes;
                 $rootScope.isEditing = true;
@@ -275,11 +279,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         	$scope.addAllTables();
         	
         }
-
-
-
-
-
 
 
         $scope.addDatatypetoLibrary= function(datatype){
@@ -573,8 +572,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     }
                 }
             });
-            modalInstance.result.then(function(datatypeLibrary) {
-                DatatypeLibrarySvc.delete(datatypeLibrary.id).then(function(result) {
+            modalInstance.result.then(function(datatypeLibraryDocument) {
+                DatatypeLibraryDocumentSvc.delete(datatypeLibraryDocument.id).then(function(result) {
                     var idxP = _.findIndex($scope.datatypeLibsStruct, function(child) {
                         return child.id === datatypeLibrary.id;
                     });
@@ -834,7 +833,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }).result.then(function(standard) {
                 //console.log("hl7Version=" + standard.hl7Version + " name=" + standard.name + " ext=" + standard.ext);
                 $scope.hl7Version = standard.hl7Version;
-                DatatypeLibrarySvc.create(standard.hl7Version, scope, standard.name, standard.ext).then(function(result) {
+                DatatypeLibraryDocumentSvc.create(standard.hl7Version, scope, standard.name, standard.ext).then(function(result) {
                     getDataTypeLibraryByScope(scope);
                     angular.forEach($scope.datatypeLibrariesConfig, function(lib) {
                         if (lib.type === scope) {
