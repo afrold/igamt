@@ -300,17 +300,17 @@
                 <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete Co-Constraint</span>
             </button>
             <button class="btn btn-info btn-sm" ng-show="segment.coConstraints.columnList.length == 0"
-                    ng-click="manageCoConstaintsTableModal(segment); newColumnField = null; newColumnConstraintType = ''; "
+                    ng-click="manageCoConstaintsTableModal(segment);"
                     ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                 <span><i class="fa fa-plus fa-fw">&nbsp; </i>Create Co-Constraint</span>
             </button>
             <button class="btn btn-info btn-sm" ng-show="segment.coConstraints.columnList.length > 0"
-                    ng-click="manageCoConstaintsTableModal(segment); newColumnField = null; newColumnConstraintType = ''; "
+                    ng-click="manageCoConstaintsTableModal(segment);"
                     ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                 <span><i class="fa fa-pencil fa-fw">&nbsp; </i>Edit Co-Constraint</span>
             </button>
         </span>
-     </div>
+</div>
     <div class="col-md-12">
         <div ng-hide="segment.coConstraints.columnList.length == 0" class="table-container">
             <table st-table="rowCollection" class="table table-striped">
@@ -363,7 +363,7 @@
     </div>
 </div>
 </div>
-</tab>
+ </tab>
 
 <tab>
     <tab-heading>
@@ -435,11 +435,11 @@
             <form class="form-inline">
          <div class="form-group ">
             <label class="">Field</label>
-
                  <select class="form-control" name="newColumnField" style="width:300px"
                         ng-model="newColumnField"
                         ng-options="field as segment.name + '-' + field.position + ' : ' + field.name for field in selectedSegment.fields">
                     <option value="">Select Field</option>
+                    <option ng-repeat="field in selectedSegment.fields" value="{{field}}" ng-disabled="checkFieldExisting(field)" >{{segment.name + '-' + field.position + ' : ' + field.name}}</option>
                 </select>
          </div>
          <div class="form-group">
@@ -453,14 +453,14 @@
          </div>
               <button ng-disabled="newColumnField === null || newColumnConstraintType ===null || newColumnField === '' || newColumnConstraintType ===''"
                 class="btn btn-info btn-sm"
-                ng-click="addColumnCoConstraints(newColumnField, newColumnConstraintType); newColumnField = null; newColumnConstraintType = ''; "
+                ng-click="addColumnCoConstraints();"
                 ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                 <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Column</span>
             </button>
                  </form>
             </div>
             </div>
-            <div class="row">
+             <div class="row">
                 <div class="col-md-12">
         <div class="table-container" style="margin-top: 40px">
             <span class="header5">Table Structure</span>
