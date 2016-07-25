@@ -218,7 +218,7 @@
 
     <div class="col-md-12">
         <!--<span ng-hide="segment.conformanceStatements.length > 0">No conformance statement</span>-->
-        <table class="table table-striped table-bordered" ng-show="segment.conformanceStatements.length > 0">
+        <table class="table table-striped table-bordered table-condensed" ng-show="segment.conformanceStatements.length > 0">
             <thead>
             <tr class="tbl-header">
                 <th class="col-md-1">ID</th>
@@ -261,7 +261,7 @@
     <div class="col-md-12">
         <!--<span ng-hide="segment.predicates.length > 0">No Conditional Predicate</span>-->
 
-        <table class="table table-striped table-bordered" ng-show="segment.predicates.length > 0">
+        <table class="table table-striped table-bordered table-condensed" ng-show="segment.predicates.length > 0">
             <thead>
             <tr class="tbl-header">
                 <th class="col-md-2">Location</th>
@@ -313,13 +313,13 @@
 </div>
     <div class="col-md-12">
         <div ng-hide="segment.coConstraints.columnList.length == 0" class="table-container">
-            <table st-table="rowCollection" class="table table-striped">
+            <table st-table="rowCollection" class="table table-striped table-bordered table-condensed">
                 <thead>
-                <tr>
+                <tr class="tbl-header">
                     <th class="col-md-1" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="col in segment.coConstraints.columnList" st-sort="{{col}}">
                         <span class="glyphicon glyphicon-move"></span> {{segment.name}}-{{col.field.position}}
-                        <a ng-click="deleteColumn(col)" class="point">
-                            <span style="color:red"><i class="fa fa-times fa-fw"></i></span>
+                        <a ng-click="deleteColumn(col)" class="point" class="btn btn-xs btn-danger">
+                           <i class="fa fa-times fa-fw"></i>
                         </a>
                     </th>
                     <th class="col-md-2">Description</th>
@@ -385,11 +385,11 @@
 
             <tbody>
             <tr ng-repeat="ref in tmpReferences">
-                <td st-ratio="5">{{$index + 1}}  <span ng-show="ref.type === 'group'"
-                                                       class="label label-success label-icon">G</span>
-                    <span ng-show="ref.type === 'segmentRef'" class="label label-segment label-icon">S</span></td>
+                <td st-ratio="5">{{$index + 1}}  </td>
                 <td st-ratio="40">
-
+<span ng-show="ref.type === 'group'"
+      class="label label-success label-icon">G</span>
+                    <span ng-show="ref.type === 'segmentRef'" class="label label-segment label-icon">S</span>
                     {{ref.path}}
                 </td>
                 <td st-ratio="55">
@@ -437,7 +437,7 @@
             <label class="">Field</label>
                  <select class="form-control" name="newColumnField" style="width:300px"
                         ng-model="newColumnField"
-                        ng-options="field as segment.name + '-' + field.position + ' : ' + field.name for field in selectedSegment.fields">
+                       >
                     <option value="">Select Field</option>
                     <option ng-repeat="field in selectedSegment.fields" value="{{field}}" ng-disabled="checkFieldExisting(field)" >{{segment.name + '-' + field.position + ' : ' + field.name}}</option>
                 </select>
@@ -465,9 +465,9 @@
         <div class="table-container" style="margin-top: 40px">
             <span class="header5">Table Structure</span>
             <hr />
-            <table st-table="rowCollection" class="table table-striped">
+            <table st-table="rowCollection" class="table table-striped table-bordered table-condensed">
                 <thead>
-                <tr class="">
+                <tr class="tbl-header">
                     <th class="col-md-1" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="col in selectedSegment.coConstraints.columnList" st-sort="{{col}}">
                         <span class="glyphicon glyphicon-move"></span> {{selectedSegment.name}}-{{col.field.position}}
                         <a class="btn btn-xs btn-danger" ng-click="deleteColumn(col)">
