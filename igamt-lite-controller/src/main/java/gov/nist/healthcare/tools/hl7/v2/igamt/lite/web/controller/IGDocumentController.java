@@ -1027,7 +1027,7 @@ public class IGDocumentController extends CommonController {
     for (Section s : d.getChildSections()) {
       for (SectionMap x : sections) {
         if (s.getId().equals(x.getId())) {
-          s.setPosition(x.getPosition());
+          s.setSectionPosition(x.getPosition());
         }
       }
     }

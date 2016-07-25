@@ -56,14 +56,14 @@ public class DataCorrectionSectionPosition {
   private boolean needChanges(Set<Section> s){
     boolean rst = false;
     for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section child : s) { 
-      rst = rst | (child.getPosition() == 0); 
+      rst = rst | (child.getSectionPosition() == 0); 
     } 
     return rst;
   }
 
   private void setCorrectSectionPosition(Set<Section> s){
     for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section child : s) { 
-      child.setPosition(child.getPosition() + 1);
+      child.setSectionPosition(child.getSectionPosition() + 1);
     }
   }
   
