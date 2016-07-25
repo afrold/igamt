@@ -232,10 +232,10 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
     messages.setSectionTitle(pSource.getMessages().getSectionTitle());
     messages.setSectionPosition(pSource.getMessages().getSectionPosition());
     messages.setType(pSource.getMessages().getType());
-    try {
+    int maxPos = findMaxPosition(pTarget.getMessages());
+   try {
       for (MessageEvents msgEvt : msgEvts) {
         Message m = pSource.getMessages().findOne(msgEvt.getId());
-        int maxPos = findMaxPosition(pSource.getMessages());
         Message m1 = null;
         m1 = m.clone();
         m1.setId(null);
@@ -254,7 +254,9 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
         m1.setName(name);
         m1.setPosition(++maxPos);
         messageRepository.save(m1);
+        log.info("a pos=" + m1.getPosition());
         messages.addMessage(m1);
+        log.info("p pos=" + m1.getPosition());
         for (SegmentRefOrGroup sg : m.getChildren()) {
           if (sg instanceof SegmentRef) {
             addSegment((SegmentRef) sg, pSource, pTarget);
@@ -270,7 +272,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
   }
 
   int findMaxPosition(Messages msgs) {
-    int maxPos = 1;
+    int maxPos = 0;
     for (Message msg : msgs.getChildren()) {
       maxPos = Math.max(maxPos, msg.getPosition());
     }
