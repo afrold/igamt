@@ -12,15 +12,16 @@ angular.module('igl')
         $scope.error = null;
         $scope.loadingTree = false;
         $scope.filtering = false;
+        $scope.tocView = 'views/toc.html';
         $scope.print = function (param) {
-            console.log(param);
+            //console.log(param);
         }
         $scope.loading = true;
         $scope.viewSettings = ViewSettings;
         $scope.igDocumentMsg = {};
         $scope.igDocumentConfig = {
             selectedType: null
-        }
+        };
         $rootScope.usageF = false;
         $scope.nodeReady = true;
         $scope.igDocumentTypes = [
