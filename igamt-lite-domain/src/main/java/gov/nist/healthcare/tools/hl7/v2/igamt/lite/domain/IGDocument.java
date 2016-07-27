@@ -37,7 +37,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 
 
 	private void addSection(Section s) {
-		s.setSectionPosition(this.childSections.size());
+		s.setSectionPosition(this.childSections.size() + 1);
 		this.childSections.add(s);
 		
 	}
