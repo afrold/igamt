@@ -956,20 +956,24 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mo
 
 
 angular.module('igl').controller('ManageCoConstraintsTableCtrl', function($scope, $modalInstance, segment, $rootScope) {
+    $scope.newColumnField = '';
+    $scope.newColumnConstraintType = '';
     $scope.selectedSegment = angular.copy(segment);
-    $scope.addColumnCoConstraints = function(newColumnField, newColumnConstraintType) {
+    $scope.addColumnCoConstraints = function() {
         var newColumn = {
-            field: newColumnField,
-            constraintType: newColumnConstraintType,
+            field : JSON.parse($scope.newColumnField),
+            constraintType: $scope.newColumnConstraintType,
             columnPosition: $scope.selectedSegment.coConstraints.columnList.length
         };
-
         for (var i = 0, len1 = $scope.selectedSegment.coConstraints.constraints.length; i < len1; i++) {
             var v = {};
             v.value = '';
             $scope.selectedSegment.coConstraints.constraints[i].values.push(v);
         };
         $scope.selectedSegment.coConstraints.columnList.push(newColumn);
+
+        $scope.newColumnField = '';
+        $scope.newColumnConstraintType = '';
     };
 
     $scope.deleteColumn = function(column) {
@@ -990,6 +994,15 @@ angular.module('igl').controller('ManageCoConstraintsTableCtrl', function($scope
             };
         }
 
+    };
+
+    $scope.checkFieldExisting = function(field) {
+        for (var i = 0, len1 = $scope.selectedSegment.coConstraints.columnList.length; i < len1; i++) {
+            if($scope.selectedSegment.coConstraints.columnList[i].field.position == field.position){
+                return true;
+            }
+        }
+        return false;
     };
 
     $scope.saveAndClose = function() {

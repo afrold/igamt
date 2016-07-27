@@ -2,7 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 public class SectionMap {
   private String id;
-  private Integer position;
+  private Integer sectionPosition;
 
   public String getId() {
     return id;
@@ -12,12 +12,13 @@ public class SectionMap {
     this.id = id;
   }
 
-  public Integer getPosition() {
-    return position;
+  public Integer getSectionPosition() {
+    return sectionPosition;
   }
 
   public void setPosition(Integer position) {
-    this.position = position;
+    this.sectionPosition = position;
   }
+
 
 }
