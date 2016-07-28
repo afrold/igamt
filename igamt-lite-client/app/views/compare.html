@@ -1,8 +1,8 @@
-
+<div ng-show="isAuthenticated()">
+<!--<div class="row">-->
+<div ng-show="!isPending()">
     <div ng-controller="compareCtrl" style="padding-top:10px">
-        <div ng-show="loadingSelection" style="text-align: center;">
-            <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
-        </div>
+
         <div style="margin:5px">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -104,7 +104,10 @@
                 </div>
             </div>
         </div>
-        <div class="" style="margin:5px" ng-show="showDelta">
+        <div ng-show="loadingSelection" style="text-align: center;">
+            <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+        </div>
+        <div class="" style="margin:5px" ng-show="showDelta && !loadingSelection">
             <div class="panel panel-primary">
                 <!-- Default panel contents -->
                 <div class="panel-heading" align="center">
@@ -142,7 +145,12 @@
         <!-- <pre ng-bind-html="yourObjectOneJsonView "></pre>
         <pre ng-bind-html="yourObjectTwoJsonView "></pre> -->
     </div>
-
+</div>
+</div>
+<div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto">
+    <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can
+        also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
+</div>
 <script type="text/ng-template" id="tree_node">
     <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined || node.components!==undefined">
         <td class="col-xs-1 " style="width:14% ">

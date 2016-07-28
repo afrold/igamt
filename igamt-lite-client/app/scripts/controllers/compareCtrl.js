@@ -7,7 +7,6 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
 
 
-
     // $scope.loadIGDocuments = function() {
     //     var delay = $q.defer();
     //     $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType() : 'USER';
@@ -88,21 +87,19 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
 
 
+
+
     $scope.msgSelected = false;
     $scope.igDisabled1 = false;
     $scope.igDisabled2 = false;
 
     $scope.scopes = ["USER", "HL7STANDARD"];
     $scope.showDelta = false;
-    $scope.listHL7Versions = function() {
+    var listHL7Versions = function() {
         return $http.get('api/igdocuments/findVersions', {
             timeout: 60000
         }).then(function(response) {
             var hl7Versions = [];
-            if ($rootScope.clickSource !== "ctx") {
-                $rootScope.hl7Version = $scope.hl7Version = false;
-                $rootScope.igdocument = null;
-            }
             var length = response.data.length;
             for (var i = 0; i < length; i++) {
                 hl7Versions.push(response.data[i]);
@@ -110,9 +107,18 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             return hl7Versions;
         });
     };
-    $scope.listHL7Versions().then(function(versions) {
-        $scope.versions = versions;
+
+    var init = function(){
+        listHL7Versions().then(function(versions) {
+            $scope.versions = versions;
+        });
+    };
+
+    $scope.$on('event:loginConfirmed', function (event) {
+        init();
     });
+
+    init();
 
 
     $scope.setVersion1 = function(vr) {
@@ -162,7 +168,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                         for (var i = 0; i < result.length; i++) {
                             $scope.igList1.push({
                                 id: result[i].id,
-                                title: result[i].metaData.title,
+                                title: result[i].metaData.title
                             });
                         }
 

@@ -396,7 +396,11 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         }
         $rootScope.requests401 = [];
 //console.log("event:loginConfirmed 1");
-        $location.url('/ig');
+        if($location.path() === '/compare'){
+            $location.url('/compare');
+        }else {
+            $location.url('/ig');
+        }
     });
 
     /*jshint sub: true */

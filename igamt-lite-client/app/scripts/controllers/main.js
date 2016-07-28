@@ -14,6 +14,13 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.commentWidth = null;
         $scope.viewSettings = ViewSettings;
         $rootScope.addedSegments = [];
+
+        $scope.state = false;
+
+        $scope.toggleState = function() {
+            $scope.state = !$scope.state;
+        };
+
         $scope.language = function () {
             return i18n.language;
         };
@@ -82,7 +89,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.initMaps();
             $rootScope.igdocument = null;
             AutoSaveService.stop();
-            $location.url('/ig');
+            if($location.path() === '/compare'){
+                $location.url('/compare');
+            }else {
+                $location.url('/ig');
+            }
         };
 
         $scope.cancel = function () {
