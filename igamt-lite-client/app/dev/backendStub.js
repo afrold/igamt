@@ -259,6 +259,20 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
   return [200, response, {}];
 });
   
+$httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        console.log('api/findByIds begin=' + data);
+            request.open('GET', '../../resources/datatypes/datatype-WVI-HL7STANDARD-2.3.1.json', false);
+        
+      request.send(null);
+        var datatypeLib = [angular.fromJson(request.response)];
+        return [200, datatypeLib[0], {}];
+    });
+
+
+
+
+
     $httpBackend.whenGET(/^api\/segments\/.*/).respond(function (method, url, data, headers) {
         var id = url.split('/')[2];
         return [200, findSegment(id), {}];

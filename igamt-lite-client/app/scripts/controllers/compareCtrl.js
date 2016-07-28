@@ -1,472 +1,221 @@
-angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectDiff, $rootScope, $q, $interval, uiGridTreeViewConstants, ngTreetableParams, $http, StorageService, userInfoService, SegmentService) {
-
+angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectDiff, $rootScope, $q, $interval, uiGridTreeViewConstants, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService) {
     $scope.igDocumentConfig = {
         selectedType: null
     };
-    $scope.igList = [];
 
 
-    // $scope.gridOptions = {
-    //     enableSorting: true,
-    //     enableFiltering: true,
-    //     showTreeExpandNoChildren: true,
-    //     columnDefs: [
-    //         { name: 'position', width: '30%' },
-    //         { name: 'key', width: '30%' },
-    //         { name: 'msg1', field: 'removed', width: '30%' },
-    //         { name: 'msg2', field: 'added', width: '30%' },
-
-    //     ],
-    //     onRegisterApi: function(gridApi) {
-    //         $scope.gridApi = gridApi;
-    //         $scope.loadIGDocuments().then(function() {
-
-    //             getPage();
-
-    //             $scope.gridApi.treeBase.on.rowExpanded($scope, function(row) {
-    //                 console.log(row);
-    //                 // if (row.entity.$$hashKey === $scope.gridOptions.data[1].$$hashKey && !$scope.nodeLoaded) {
-    //                 //     $interval(function() {
-    //                 //         $scope.gridOptions.data.splice(51, 0, { name: 'description', gender: 'female', age: 53, company: 'Griddable grids', balance: 38000, $$treeLevel: 1 }, { name: 'Dynamic 2', gender: 'male', age: 18, company: 'Griddable grids', balance: 29000, $$treeLevel: 1 });
-    //                 //         $scope.nodeLoaded = true;
-    //                 //     }, 2000, 1);
-    //                 // }
 
 
-    //             });
 
-    //             // for (i = 0; i < $rootScope.igs[0].profile.messages.children.length; i++) {
-    //             //     $rootScope.igs[0].profile.messages.children[i].subGridOptions = {
-    //             //         columnDefs: [{ name: "id", field: "id" }, { name: "name", field: "name" }],
-    //             //         data: $rootScope.igs[0].profile.messages.children[i]
-    //             //     }
-    //             // }
-    //             // $scope.gridOptions.data = $rootScope.igs;
+
+    // $scope.loadIGDocuments = function() {
+    //     var delay = $q.defer();
+    //     $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType() : 'USER';
+    //     $scope.error = null;
+    //     $rootScope.igs = [];
+    //     $scope.tmpIgs = [].concat($rootScope.igs);
+    //     if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
+    //         $scope.loading = true;
+    //         StorageService.setSelectedIgDocumentType($scope.igDocumentConfig.selectedType);
+    //         $http.get('api/igdocuments', { params: { "type": $scope.igDocumentConfig.selectedType } }).then(function(response) {
+    //             $rootScope.igs = angular.fromJson(response.data);
+    //             $scope.tmpIgs = [].concat($rootScope.igs);
+    //             $scope.loading = false;
+    //             delay.resolve(true);
+    //         }, function(error) {
+    //             $scope.loading = false;
+    //             $scope.error = error.data;
+    //             delay.reject(false);
     //         });
-
-    //     }
-    // };
-
-
-
-    // var getPage = function() {
-    //     var objToArray = function(object) {
-    //         var result = [];
-    //         $.map(object, function(value, index) {
-
-    //             result.push(value);
-    //         });
-    //         return result;
-
-    //     };
-    //     var getSegName = function(diffItem) {
-
-
-    //     };
-    //     // var formatChange = function(key, diffItem) {
-
-    //     //     var property;
-    //     //     switch (diffItem.changed) {
-    //     //         case 'equal':
-
-    //     //             property = {
-    //     //                 key: diffItem.value.label
-    //     //                     //removed: diffItem.value,
-    //     //                     //value:formatChangesToXMLString(diffItem),
-    //     //             };
-
-    //     //             break;
-
-    //     //         case 'removed':
-
-    //     //             property = {
-    //     //                 key: key,
-    //     //                 removed: diffItem.value,
-    //     //                 //value:formatChangesToXMLString(diffItem),
-    //     //             };
-    //     //             break;
-
-    //     //         case 'added':
-    //     //             // console.log(diffItem);
-    //     //             property = {
-    //     //                 key: key,
-    //     //                 added: diffItem.value,
-    //     //                 //value:formatChangesToXMLString(diffItem),
-    //     //             };
-    //     //             break;
-
-    //     //         case 'primitive change':
-    //     //             property = {
-    //     //                 key: key,
-    //     //                 added: diffItem.added,
-    //     //                 removed: diffItem.removed
-    //     //             };
-
-    //     //             break;
-
-    //     //         case 'object change':
-
-    //     //             var objChanges = [];
-    //     //             if (diffItem.value.label) {
-    //     //                 key = diffItem.value.label;
-    //     //                 added = diffItem.value.label.added;
-    //     //                 removed = diffItem.value.label.removed;
-    //     //             } else if (diffItem.value[0]) {
-    //     //                 key = '';
-    //     //                 added = '';
-    //     //                 removed = '';
-    //     //             }
-
-    //     //             // for (var i = 0; i < objToArray(diffItem.value).length; i++) {
-    //     //             //     //console.log(objToArray(diffItem.value)[i]);
-    //     //             //   //  objChanges.push(formatChangesToXMLString(objToArray(diffItem.value)[i]));
-
-
-    //     //             // }
-
-
-    //     //             property = {
-    //     //                 //key: key,
-    //     //                 value: formatChangesToXMLString(diffItem),
-    //     //                 added: added,
-    //     //                 removed: removed
-    //     //             };
-
-
-    //     //             break;
-
-    //     //     };
-    //     //     //console.log(property);
-
-    //     //     return property;
-    //     // };
-
-    //     // var formatChangesToXMLString = function(changes) {
-
-    //     //     var properties = [];
-    //     //     // if (changes[0] === 'equal') {
-    //     //     //     $scope.gridOptions.data = [];
-    //     //     // } else {
-
-
-    //     //     // }
-    //     //     //console.log(changes);
-
-
-
-
-    //     //     if (changes[0] === 'equal') {
-    //     //         $scope.gridOptions.data = [];
-    //     //     } else {
-    //     //         if ($.isArray(changes)) {
-    //     //             for (var key in changes[1]) {
-
-    //     //                 var changed = changes[1][key].changed;
-    //     //                 if (changed !== 'equal') {
-    //     //                     properties.push(formatChange(key, changes[1][key]));
-    //     //                 }
-    //     //             }
-    //     //         } else {
-    //     //             for (var key in changes.value) {
-
-
-    //     //                 var changed = changes.value[key].changed;
-    //     //                 if (changed !== 'equal') {
-    //     //                     properties.push(formatChange(key, changes.value[key]));
-    //     //                 }
-    //     //             }
-    //     //         }
-    //     //     }
-    //     //     return properties;
-    //     // };
-
-
-    //     // var writeoutNode = function(childArray, currentLevel, dataArray) {
-    //     //     childArray.forEach(function(childNode) {
-    //     //         // console.log("currentLevel");
-
-    //     //         // console.log(currentLevel);
-    //     //         // console.log(childNode);
-    //     //         if (childNode.value) {
-    //     //             childNode.$$treeLevel = currentLevel;
-    //     //             dataArray.push(childNode);
-    //     //             writeoutNode(childNode.value, currentLevel + 1, dataArray);
-    //     //         } else {
-    //     //             dataArray.push(childNode);
-    //     //         }
-
-    //     //         // 
-    //     //         //  writeoutNode(childNode.value, currentLevel + 1, dataArray);
-    //     //     });
-    //     // };
-
-    //     var writeTable = function(childArray, currentLevel, dataArray) {
-    //         if (childArray.changed === "object change") {
-
-    //             if (childArray.value.name === undefined) {
-
-    //                 objToArray(childArray.value).forEach(function(childNode) {
-    //                     if (childNode.changed === "object change") {
-    //                         if (childNode.value.label && childNode.value.label.changed === "primitive change") {
-    //                             console.log(childNode);
-
-    //                             dataArray.push({
-    //                                 position: childNode.value.position.value,
-    //                                 //key: childNode.value.position.value,
-    //                                 added: childNode.value.label.added,
-    //                                 removed: childNode.value.label.removed,
-    //                                 $$treeLevel: currentLevel
-    //                             });
-    //                             writeTable(childNode, currentLevel + 1, dataArray);
-
-
-    //                         } else if (childNode.value.type.value === "field" && childNode.value.name && childNode.value.name.changed === "primitive change") {
-    //                             console.log(childNode);
-
-    //                             dataArray.push({
-    //                                 position: childNode.value.position.value,
-    //                                 added: childNode.value.name.added,
-    //                                 removed: childNode.value.name.removed,
-    //                                 $$treeLevel: currentLevel
-    //                             });
-    //                             writeTable(childNode, currentLevel + 1, dataArray);
-
-
-
-    //                         } else if (childNode.value.type.changed === "equal" && childNode.value.type.value === "field" && childNode.value.name.changed === "equal") {
-
-    //                             dataArray.push({
-    //                                 position: childNode.value.position.value,
-    //                                 added: childNode.value.name.value,
-    //                                 removed: childNode.value.name.value,
-
-    //                                 //key: childNode.value.position.value + "." + childNode.value.name.value,
-    //                                 $$treeLevel: currentLevel
-    //                             });
-    //                             writeTable(childNode, currentLevel + 1, dataArray);
-
-
-
-    //                         } else if (childNode.value.type.value === "group" && childNode.value.name && childNode.value.name.changed === "primitive change") {
-
-    //                             dataArray.push({
-    //                                 position: childNode.value.position.value,
-    //                                 //key: childNode.value.position.value,
-    //                                 added: childNode.value.name.added,
-    //                                 removed: childNode.value.name.removed,
-    //                                 $$treeLevel: currentLevel
-    //                             });
-    //                             writeTable(childNode, currentLevel + 1, dataArray);
-
-    //                         } else if (childNode.value.label && childNode.value.label.changed === "equal") {
-
-    //                             dataArray.push({
-    //                                 position: childNode.value.position.value,
-    //                                 added: childNode.value.label.value,
-    //                                 removed: childNode.value.label.value,
-    //                                 //key: childNode.value.position.value + "." + childNode.value.label.value,
-    //                                 $$treeLevel: currentLevel
-    //                             });
-    //                             writeTable(childNode, currentLevel + 1, dataArray);
-
-    //                         } else if (childNode.value.type.changed === "equal" && childNode.value.type.value === "group" && childNode.value.name.changed === "equal") {
-    //                             dataArray.push({
-    //                                 position: childNode.value.position.value,
-    //                                 added: childNode.value.name.value,
-    //                                 removed: childNode.value.name.value,
-    //                                 //key: childNode.value.position.value + "." + childNode.value.name.value,
-    //                                 $$treeLevel: currentLevel
-    //                             });
-    //                             writeTable(childNode, currentLevel + 1, dataArray);
-
-
-    //                             console.log("group's here");
-
-    //                         } else if (childNode.value.type.changed !== "equal") {
-
-    //                             console.log("Error can't compare msgs with different structures");
-    //                             dataArray.push({
-    //                                 position: childNode.value.position.value,
-    //                                 //key: childNode.value.position.value,
-    //                                 added: childNode.value.name.added,
-    //                                 removed: childNode.value.name.removed,
-    //                                 $$treeLevel: currentLevel
-
-
-    //                             });
-    //                         }
-
-
-    //                     }
-
-    //                 });
-    //             } else {
-
-    //                 if (childArray.value.type.changed === "equal") {
-
-    //                     //childArray.$$treeLevel = currentLevel;
-    //                     if (childArray.value.usage.changed === "primitive change") {
-    //                         dataArray.push({
-    //                             key: "Usage",
-    //                             added: childArray.value.usage.added,
-    //                             removed: childArray.value.usage.removed,
-
-
-    //                         });
-    //                     }
-    //                     if (childArray.value.type.value === "segmentRef" && childArray.value.minCard.changed === "primitive change") {
-    //                         dataArray.push({
-    //                             key: "Min Card",
-    //                             added: childArray.value.minCard.added,
-    //                             removed: childArray.value.minCard.removed,
-
-
-    //                         });
-    //                     }
-    //                     if (childArray.value.type.value === "segmentRef" && childArray.value.maxCard.changed === "primitive change") {
-    //                         dataArray.push({
-    //                             key: "Max Card",
-    //                             added: childArray.value.maxCard.added,
-    //                             removed: childArray.value.maxCard.removed,
-
-
-    //                         });
-    //                     }
-    //                     if (childArray.value.type.value === "field" && childArray.value.min.changed === "primitive change") {
-    //                         console.log(childArray);
-    //                         dataArray.push({
-    //                             key: "Min",
-    //                             added: childArray.value.min.added,
-    //                             removed: childArray.value.min.removed,
-
-
-    //                         });
-    //                     }
-    //                     if (childArray.value.type.value === "field" && childArray.value.max.changed === "primitive change") {
-    //                         dataArray.push({
-    //                             key: "Max",
-    //                             added: childArray.value.max.added,
-    //                             removed: childArray.value.max.removed,
-
-
-    //                         });
-    //                     }
-    //                     if (childArray.value.type.value === "field" && childArray.value.maxLength.changed === "primitive change") {
-    //                         dataArray.push({
-    //                             key: "Max Length",
-    //                             added: childArray.value.maxLength.added,
-    //                             removed: childArray.value.maxLength.removed,
-
-
-    //                         });
-    //                     }
-    //                     if (childArray.value.type.value === "field" && childArray.value.minLength.changed === "primitive change") {
-    //                         dataArray.push({
-    //                             key: "min Length",
-    //                             added: childArray.value.minLength.added,
-    //                             removed: childArray.value.minLength.removed,
-
-
-    //                         });
-    //                     }
-    //                     if (childArray.value.type.value === "group") {
-
-    //                         writeTable(childArray.value.segments, currentLevel, dataArray);
-
-    //                     }
-    //                     if (childArray.value.type.value === "segmentRef") {
-    //                         console.log("iam hreee");
-    //                         writeTable(childArray.value.fields, currentLevel, dataArray);
-    //                     }
-
-    //                 } else {
-    //                     dataArray.push({
-    //                         key: childArray.value.position.value,
-    //                         added: childArray.value.name.added,
-    //                         removed: childArray.value.name.removed,
-    //                         $$treeLevel: currentLevel
-
-
-    //                     });
-    //                     console.log("Error can't compare msgs with different structures(inside group)");
-
-    //                 }
-
-    //                 // } else if (childArray.value.type.changed !== "equal") {
-    //                 //     console.log(childArray);
-    //                 //     console.log("Error can't compare msgs with different structures");
-    //                 //     dataArray.push({
-    //                 //         key: childArray.value.position.value,
-    //                 //         added: childArray.value.name.added,
-    //                 //         removed: childArray.value.name.removed,
-
-
-    //                 //     });
-    //                 // } else if (childArray.value.type.changed === "equal" && childArray.value.type.value === "group") {
-    //                 //     console.log("group's here");
-
-    //                 // }
-    //             }
-    //         }
-
-    //     };
-
-
-
-    //     if ($scope.diff) {
-    //         var array = objToArray($scope.diff);
-    //         //console.log(array);
-    //         //formatChangesToXMLString(array);
-    //         $scope.gridOptions.data = [];
-    //         writeTable(array[1].segments, 0, $scope.gridOptions.data);
-
-    //         //writeoutNode(formatChangesToXMLString(array[1].segments), 0, $scope.gridOptions.data);
-
     //     } else {
-    //         $scope.gridOptions.data = [];
+    //         delay.reject(false);
     //     }
-
-
+    //     return delay.promise;
     // };
+    // $scope.loadIGDocuments().then(function() {
+    //     console.log($rootScope.igs);
+    //     $scope.msg1=$rootScope.igs[0].profile.messages.children[0];
+    //     $scope.msg2=$rootScope.igs[0].profile.messages.children[1];
+    //     $scope.formatMsg($scope.msg1).then(function(msg1) {
+    //         console.log("Here inside1");
 
-    $scope.loadIGDocuments = function() {
-        var delay = $q.defer();
-        $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType() : 'USER';
-        $scope.error = null;
-        $rootScope.igs = [];
-        $scope.tmpIgs = [].concat($rootScope.igs);
-        if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
-            $scope.loading = true;
-            StorageService.setSelectedIgDocumentType($scope.igDocumentConfig.selectedType);
-            $http.get('api/igdocuments', { params: { "type": $scope.igDocumentConfig.selectedType } }).then(function(response) {
-                $rootScope.igs = angular.fromJson(response.data);
-                $scope.tmpIgs = [].concat($rootScope.igs);
-                $scope.loading = false;
-                delay.resolve(true);
-            }, function(error) {
-                $scope.loading = false;
-                $scope.error = error.data;
-                delay.reject(false);
-            });
-        } else {
-            delay.reject(false);
-        }
-        return delay.promise;
-    };
-    $scope.loadIGDocuments().then(function() {
+    //         $scope.formatMsg($scope.msg2).then(function(msg2) {
+    //             $scope.diff = ObjectDiff.diffOwnProperties(msg1, msg2);
+    //             console.log($scope.diff);
 
-        angular.forEach($rootScope.igs, function(ig) {
+    //             var array = objToArray($scope.diff);
+    //             var arraySeg = objToArray(array[1].segments.value);
+
+    //             //writeTable(array[1].segments, 0, $scope.gridOptions.data);
+    //             $scope.dataList = [];
+    //             for (var i = 0; i < arraySeg.length; i++) {
+    //                 writettTable(arraySeg[i], $scope.dataList);
+    //             }
+    //             console.log($scope.dataList);
+
+    //             if ($scope.dynamic_params) {
+    //                 $scope.showDelta = true;
+    //                 $scope.dynamic_params.refresh();
+    //             }
+    //         });
+    //         console.log("Here outside");
+
+    //     });
 
 
-            var element = {
-                id: ig.id,
-                title: ig.metaData.title
-            };
-            $scope.igList.push(element);
+    //     // angular.forEach($rootScope.igs, function(ig) {
 
+
+    //     //     var element = {
+    //     //         id: ig.id,
+    //     //         title: ig.metaData.title
+    //     //     };
+    //     //     $scope.igList.push(element);
+
+    //     // });
+
+    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $scope.msgSelected = false;
+    $scope.igDisabled1 = false;
+    $scope.igDisabled2 = false;
+
+    $scope.scopes = ["USER", "HL7STANDARD"];
+    $scope.showDelta = false;
+    $scope.listHL7Versions = function() {
+        return $http.get('api/igdocuments/findVersions', {
+            timeout: 60000
+        }).then(function(response) {
+            var hl7Versions = [];
+            if ($rootScope.clickSource !== "ctx") {
+                $rootScope.hl7Version = $scope.hl7Version = false;
+                $rootScope.igdocument = null;
+            }
+            var length = response.data.length;
+            for (var i = 0; i < length; i++) {
+                hl7Versions.push(response.data[i]);
+            }
+            return hl7Versions;
         });
-
+    };
+    $scope.listHL7Versions().then(function(versions) {
+        $scope.versions = versions;
     });
+
+
+    $scope.setVersion1 = function(vr) {
+        $scope.version1 = vr;
+
+    };
+    $scope.setScope1 = function(scope) {
+        $scope.scope1 = scope;
+
+    }
+    $scope.setVersion2 = function(vr) {
+        $scope.version2 = vr;
+
+    };
+    $scope.setScope2 = function(scope) {
+        $scope.scope2 = scope;
+    };
+
+    $scope.$watchGroup(['version1', 'scope1'], function() {
+        $scope.igList1 = [];
+        $scope.messages1 = [];
+        $scope.ig1 = "";
+
+
+        if ($scope.scope1 && $scope.version1) {
+            IgDocumentService.getIgDocumentsByScopesAndVersion([$scope.scope1], $scope.version1).then(function(result) {
+                console.log(result);
+
+                if (result) {
+
+                    if ($scope.scope1 === "HL7STANDARD") {
+                        $scope.igDisabled1 = true;
+
+
+                        $scope.ig1 = {
+                            id: result[0].id,
+                            title: result[0].metaData.title
+                        };
+
+
+                        $scope.igList1.push($scope.ig1);
+                        $scope.setIG1($scope.ig1);
+
+                    } else {
+                        $scope.igDisabled1 = false;
+
+                        for (var i = 0; i < result.length; i++) {
+                            $scope.igList1.push({
+                                id: result[i].id,
+                                title: result[i].metaData.title,
+                            });
+                        }
+
+                    }
+
+
+
+
+
+                }
+            });
+        }
+
+    }, true);
+    $scope.$watchGroup(['version2', 'scope2'], function() {
+        $scope.igList2 = [];
+        $scope.messages2 = [];
+        $scope.ig2 = "";
+        if ($scope.scope2 && $scope.version2) {
+            console.log("hereee2");
+            IgDocumentService.getIgDocumentsByScopesAndVersion([$scope.scope2], $scope.version2).then(function(result) {
+
+                if (result) {
+                    if ($scope.scope2 === "HL7STANDARD") {
+                        $scope.igDisabled2 = true;
+                        $scope.ig2 = {
+                            id: result[0].id,
+                            title: result[0].metaData.title
+                        };
+                        $scope.igList2.push($scope.ig2);
+
+                        $scope.setIG2($scope.ig2);
+                    } else {
+                        $scope.igDisabled2 = false;
+                        for (var i = 0; i < result.length; i++) {
+                            $scope.igList2.push({
+                                id: result[i].id,
+                                title: result[i].metaData.title,
+                            });
+                        }
+
+                    }
+
+
+
+
+                }
+
+            });
+        }
+
+    }, true);
+
 
     $scope.findIGbyID = function(id) {
         var selectedIG = [];
@@ -483,26 +232,88 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     };
     $scope.setIG1 = function(ig) {
         if (ig) {
-            $scope.messages1 = ($scope.findIGbyID(JSON.parse(ig).id)).profile.messages
+            IgDocumentService.getOne(ig.id).then(function(result) {
+                $scope.messages1 = [];
+                $scope.msg1 = "";
+                if (result) {
+                    $scope.messages1 = result.profile.messages.children;
+                }
+
+            });
+
+            //$scope.messages1 = ($scope.findIGbyID(JSON.parse(ig).id)).profile.messages.children;
+
         }
-        //$scope.gridOptions.data = $scope.yourObjectOne;
 
 
     };
     $scope.setIG2 = function(ig) {
         if (ig) {
-            $scope.messages2 = ($scope.findIGbyID(JSON.parse(ig).id)).profile.messages
+            IgDocumentService.getOne(ig.id).then(function(result) {
+                $scope.messages2 = [];
+                $scope.msg2 = "";
+                if (result) {
+                    $scope.messages2 = result.profile.messages.children;
+                }
+
+            });
+
+            //$scope.messages2 = ($scope.findIGbyID(JSON.parse(ig).id)).profile.messages.children;
+
+        }
+
+    };
+    $scope.hideMsg = function(msg1, msg2) {
+
+        if (msg2) {
+            return !(msg1.structID === JSON.parse(msg2).structID);
+        } else {
+            return false;
         }
     };
+    $scope.disableMsg = function(msg1, msg2) {
+
+        if (msg2) {
+            return (msg1.id === JSON.parse(msg2).id);
+        } else {
+            return false;
+        }
+    };
+
     $scope.setMsg1 = function(msg) {
         $scope.msg1 = msg;
-
     };
     $scope.setMsg2 = function(msg) {
         $scope.msg2 = msg;
-
+    };
+    $scope.clearAll = function() {
+        $scope.msg1 = "";
+        $scope.msg2 = "";
+        $scope.ig1 = "";
+        $scope.ig2 = "";
+        $scope.version1 = "";
+        $scope.version2 = "";
+        $scope.scope1 = "";
+        $scope.scope2 = "";
 
     };
+    $scope.clearIG = function() {
+        $scope.ig1 = "";
+        $scope.ig2 = "";
+    }
+    $scope.clearVersion = function() {
+        $scope.version1 = "";
+        $scope.version2 = "";
+    }
+    $scope.clearMessage = function() {
+        $scope.msg1 = "";
+        $scope.msg2 = "";
+
+    }
+    $scope.clearScope = function() {
+        $scope.scope1 = "";
+        $scope.scope2 = "";
+    }
     $scope.formatGrp = function(grp) {
         var delay = $q.defer();
 
@@ -526,9 +337,91 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         //return group;
 
     };
-    $scope.formatSeg = function(segment) {
+
+    $scope.formatFields = function(ids, fields) {
+        var delay = $q.defer();
+        DatatypeService.get(ids).then(function(dts) {
+            for (var j = 0; j < dts.length; j++) {
+                for (var i = 0; i < dts[j].components.length; i++) {
+                    dts[j].components[i].id = "";
+
+                }
+            }
+            for (var j = 0; j < fields.length; j++) {
+                for (var i = 0; i < dts.length; i++) {
+                    if (fields[j].datatype.id === dts[i].id && dts[i].components.length > 0) {
+                        fields[j].components = dts[i].components;
+                    }
+                }
+            }
+            delay.resolve(fields);
+        });
+        return delay.promise;
+    };
+
+
+    $scope.formatComponent = function(ids, fields) {
         var delay = $q.defer();
 
+
+        DatatypeService.get(ids).then(function(dts) {
+            for (var j = 0; j < dts.length; j++) {
+                for (var i = 0; i < dts[j].components.length; i++) {
+                    dts[j].components[i].id = "";
+
+                }
+            }
+            for (var j = 0; j < fields.length; j++) {
+                for (var i = 0; i < dts.length; i++) {
+                    if (fields[j].datatype.id === dts[i].id) {
+                        fields[j].components = dts[i].components;
+                    }
+
+                }
+                fields[j].datatype.id = "";
+            }
+            delay.resolve(fields);
+        });
+
+
+
+
+
+
+        // DatatypeService.getOne(field.datatype.id).then(function(dt) {
+        //     for (var i = 0; i < dt.components.length; i++) {
+        //         dt.components[i].id = "";
+        //     }
+        //     field.components = dt.components;
+        //     delay.resolve(field);
+        // });
+        return delay.promise;
+
+
+
+    };
+
+    $scope.formatField = function(segment) {
+        var delay = $q.defer();
+        var promises = [];
+        var dtId = [];
+        for (var i = 0; i < segment.fields.length; i++) {
+            segment.fields[i].id = "";
+            //$scope.formatField(segs.fields[i]);
+            dtId.push(segment.fields[i].datatype.id);
+
+            //            promises.push($scope.formatComponent(segment.fields[i]));
+        }
+        promises.push($scope.formatComponent(dtId, segment.fields));
+
+        $q.all(promises).then(function(fields) {
+            delay.resolve(fields);
+        });
+        return delay.promise;
+    };
+
+    $scope.formatSeg = function(segment) {
+        var delay = $q.defer();
         if (segment.type === 'segmentRef') {
             var newSegment = {};
             newSegment = {
@@ -542,23 +435,28 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 usage: segment.usage,
                 position: segment.position
             };
-            SegmentService.get(segment.ref.id).then(function(segs) {
-                newSegment.fields = segs.fields;
 
-                delay.resolve(newSegment);
+            SegmentService.get(segment.ref.id).then(function(segs) {
+                newSegment.description = segs.description;
+                $scope.formatField(segs).then(function(fields) {
+                    newSegment.fields = segs.fields;
+                    delay.resolve(newSegment);
+
+                });
+
+
+
+
             });
+            // $scope.formatFields(dtIds, newSegment.fields);
+
 
         } else {
             $scope.formatGrp(segment).then(function(grp) {
                 delay.resolve(grp);
-
             });
-
         }
         return delay.promise;
-
-
-
     };
 
 
@@ -572,10 +470,14 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
                 promises.push($scope.formatGrp(segments[i]));
 
-            } else {
+            } else if (segments[i].type === "segmentRef") {
                 promises.push($scope.formatSeg(segments[i]));
 
             }
+            // else if (segments[i].type === "field") {
+            //     promises.push($scope.formatField(segments[i]));
+
+            // }
         };
         $q.all(promises).then(function(segs) {
             delay.resolve(segs);
@@ -599,9 +501,11 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         }
         $scope.formatSegments(msg.children).then(function(result) {
             message.segments = result;
+
             delay.resolve(message);
 
         });
+
 
         return delay.promise;
 
@@ -609,74 +513,284 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         // return message;
 
     };
+    var objToArray = function(object) {
+        var result = [];
+        $.map(object, function(value, index) {
 
+            result.push(value);
+        });
+        return result;
+
+    };
+    var writettTable = function(childArray, dataArray) {
+        var result = {};
+        // console.log(childArray);
+
+
+        if (childArray.changed === "object change") {
+            if (childArray.value.position.changed === "equal") {
+                result.position = {
+                    msg: childArray.value.position.value,
+
+                };
+            }
+
+            if (childArray.value.type.changed === "equal") {
+                result.type = {
+                    msg: childArray.value.type.value,
+                };
+
+                if (childArray.value.usage.changed === "primitive change") {
+                    result.usage = {
+                        msg1: childArray.value.usage.removed,
+                        msg2: childArray.value.usage.added
+
+                    };
+                }
+                if (childArray.value.type.value === "field" || childArray.value.type.value === "component") {
+                    if (childArray.value.name.changed === "primitive change") {
+                        result.label = {
+                            msg1: childArray.value.name.removed,
+                            msg2: childArray.value.name.added
+
+                        };
+
+                    }
+
+                    if (childArray.value.name.changed === "equal") {
+                        result.label = {
+                            msg: childArray.value.name.value,
+
+                        };
+                    }
+                    if (childArray.value.min && childArray.value.min.changed === "primitive change") {
+                        result.minCard = {
+                            msg1: childArray.value.min.removed,
+                            msg2: childArray.value.min.added
+
+                        };
+                    }
+                    if (childArray.value.max && childArray.value.max.changed === "primitive change") {
+                        result.maxCard = {
+                            msg1: childArray.value.max.removed,
+                            msg2: childArray.value.max.added
+
+                        };
+                    }
+                    if (childArray.value.minLength.changed === "primitive change") {
+                        result.minLength = {
+                            msg1: childArray.value.minLength.removed,
+                            msg2: childArray.value.minLength.added
+
+                        };
+                    }
+                    if (childArray.value.maxLength.changed === "primitive change") {
+                        result.maxLength = {
+                            msg1: childArray.value.maxLength.removed,
+                            msg2: childArray.value.maxLength.added
+
+                        };
+                    }
+                    if (childArray.value.confLength.changed === "primitive change") {
+                        result.confLength = {
+                            msg1: childArray.value.confLength.removed,
+                            msg2: childArray.value.confLength.added
+
+                        };
+                    }
+                    if (childArray.value.datatype.changed === "object change") {
+                        result.datatype = {
+                            msg1: childArray.value.datatype.value.label.removed,
+                            msg2: childArray.value.datatype.value.label.added
+
+                        };
+                    }
+                    if (childArray.value.components && childArray.value.type.value === "field" && childArray.value.components.changed === "object change") {
+                        result.components = [];
+                        objToArray(childArray.value.components.value).forEach(function(childNode) {
+                            writettTable(childNode, result.components);
+
+                        });
+
+                    }
+                    if (childArray.value.table.changed === "object change" && childArray.value.table.value.bindingIdentifier.changed === "primitive change") {
+                        result.valueset = {
+                            msg1: childArray.value.table.value.bindingIdentifier.removed,
+                            msg2: childArray.value.table.value.bindingIdentifier.added
+
+                        };
+
+                    }
+
+
+                } else {
+
+                    if (childArray.value.minCard.changed === "primitive change") {
+                        result.minCard = {
+                            msg1: childArray.value.minCard.removed,
+                            msg2: childArray.value.minCard.added
+
+                        };
+                    }
+                    if (childArray.value.maxCard.changed === "primitive change") {
+                        result.maxCard = {
+                            msg1: childArray.value.maxCard.removed,
+                            msg2: childArray.value.maxCard.added
+
+                        };
+                    }
+                }
+
+                if (childArray.value.type.value === "segmentRef") {
+                    if (childArray.value.label.changed === "primitive change") {
+                        result.label = {
+                            msg1: childArray.value.label.removed,
+                            msg2: childArray.value.label.added
+
+                        };
+
+                    }
+                    if (childArray.value.description.changed === "primitive change") {
+                        result.description = {
+                            msg1: childArray.value.description.removed,
+                            msg2: childArray.value.description.added
+
+                        };
+
+                    } else if (childArray.value.description.changed === "equal") {
+                        result.description = {
+                            msg: childArray.value.description.value,
+
+                        };
+                    }
+
+
+                    if (childArray.value.label.changed === "equal") {
+                        result.label = {
+                            msg: childArray.value.label.value,
+
+                        };
+                    }
+                    if (childArray.value.fields.changed === "object change") {
+                        result.fields = [];
+                        objToArray(childArray.value.fields.value).forEach(function(childNode) {
+                            writettTable(childNode, result.fields);
+
+                        });
+                    }
+
+                } else if (childArray.value.type.value === "group") {
+                    if (childArray.value.name.changed === "primitive change") {
+                        result.label = {
+                            msg1: childArray.value.name.removed,
+                            msg2: childArray.value.name.added
+
+                        };
+
+                    }
+
+                    if (childArray.value.name.changed === "equal") {
+                        result.label = {
+                            msg: childArray.value.name.value,
+
+                        };
+                    }
+                    if (childArray.value.segments.changed === "object change") {
+                        result.segments = [];
+                        objToArray(childArray.value.segments.value).forEach(function(childNode) {
+                            writettTable(childNode, result.segments);
+
+                        });
+
+
+                    }
+                }
+            } else if (childArray.value.type.changed === "primitive change") {
+                result.label = {
+                    msg1: childArray.value.name.removed,
+                    msg2: childArray.value.name.added
+
+                };
+                result.type = {
+                    msg1: childArray.value.type.removed,
+                    msg2: childArray.value.type.added
+                };
+            }
+            dataArray.push(result);
+
+
+
+
+        }
+
+    };
+    $scope.dynamic_params = new ngTreetableParams({
+        getNodes: function(parent) {
+            if ($scope.dataList !== undefined) {
+                //return parent ? parent.fields : $scope.test;
+                if (parent) {
+                    if (parent.fields) {
+                        return parent.fields;
+                    } else if (parent.components) {
+                        return parent.components;
+                    } else if (parent.segments) {
+                        return parent.segments;
+                    }
+
+                } else {
+                    return $scope.dataList;
+                }
+
+            }
+        },
+        getTemplate: function(node) {
+            return 'tree_node';
+
+
+        }
+    });
 
     $scope.compare = function() {
 
+        $scope.loadingSelection = true;
         $scope.formatMsg(JSON.parse($scope.msg1)).then(function(msg1) {
+
+
             $scope.formatMsg(JSON.parse($scope.msg2)).then(function(msg2) {
-                console.log("heree");
-                //$scope.compareParams = $scope.getParams();
+                console.log(JSON.parse($scope.msg1));
+                console.log(JSON.parse($scope.msg2));
+
                 $scope.diff = ObjectDiff.diffOwnProperties(msg1, msg2);
+                console.log($scope.diff);
+                $scope.dataList = [];
+                if ($scope.diff.changed === "object change") {
+                    var array = objToArray($scope.diff);
+                    var arraySeg = objToArray(array[1].segments.value);
 
-                $scope.params = new ngTreetableParams({
-                    getNodes: function(parent) {
-                        console.log($scope.diff);
-                        return [{ name: 'foo', value: 'bar' }];
-                    },
-                    getTemplate: function(node) {
-                        return 'TreeNode.html';
-                    },
-                    options: {
-                        onNodeExpand: function() {
-                            console.log('A node was expanded!');
-                        }
+                    //writeTable(array[1].segments, 0, $scope.gridOptions.data);
+                    for (var i = 0; i < arraySeg.length; i++) {
+                        writettTable(arraySeg[i], $scope.dataList);
                     }
-                });
+
+                }
+
+                console.log("Here outside");
+                $scope.loadingSelection = false;
 
 
-
-
-                // getPage();
-
-
+                if ($scope.dynamic_params) {
+                    console.log($scope.dataList);
+                    $scope.showDelta = true;
+                    $scope.dynamic_params.refresh();
+                }
             });
 
         });
 
-        //$scope.diff = ObjectDiff.diffOwnProperties($scope.formatMsg(JSON.parse($scope.msg1)), $scope.formatMsg(JSON.parse($scope.msg2)));
-
-        // you can directly diff your objects including prototype properties and inherited properties using `diff` method
-        //$scope.diffAll = ObjectDiff.diff(JSON.parse($scope.msg1), JSON.parse($scope.msg2));
-
-        // gives a full object view with Diff highlighted
-        //$scope.diffValue = ObjectDiff.toJsonView($scope.diffAll);
-
-        // gives object view with onlys Diff highlighted
-        //$scope.diffValueChanges = ObjectDiff.toJsonDiffView($scope.diff);
-
-        // console.log($scope.diff);
-        // console.log($scope.diffAll);
-
-
-
     };
 
 
-    // $scope.$watch('ig2', function() {
-    //     console.log("rgkdrfgkdfkdfodf");
-    //     console.log($scope.ig1);
-    //     if ($scope.ig2) {
-    //         $scope.yourObjectTwo = ($scope.findIGbyID(JSON.parse($scope.ig2).id)).profile.messages;
-    //     }
-    //     console.log("$scope.yourObjectOne");
-    //     console.log($scope.yourObjectOne);
-    //     console.log("$scope.yourObjectTwo");
-    //     console.log($scope.yourObjectTwo);
 
-    //     // This is required only if you want to show a JSON formatted view of your object without using a filter
-
-    // }, true);
 
 
 
