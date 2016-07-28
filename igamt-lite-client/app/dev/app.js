@@ -33,9 +33,7 @@ var app = angular
         'blockUI',
         'nsPopover',
         'ds.objectDiff',
-        'ui.grid',
-        'ui.grid.treeView',
-        'ui.grid.expandable'
+        
     ]);
 
 var
