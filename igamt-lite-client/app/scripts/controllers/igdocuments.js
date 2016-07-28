@@ -5,6 +5,7 @@
 angular.module('igl')
     .controller('IGDocumentListCtrl', function($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc,blockUI) {
         $scope.loading = false;
+        $scope.tocView = 'views/toc.html';
         $scope.uiGrid = {};
         $rootScope.igs = [];
         $rootScope.currentData = null;
@@ -58,7 +59,7 @@ angular.module('igl')
                 $scope.accordi.igDetails = false;
             }
         };
-
+        
         $scope.segmentsParams = new ngTreetableParams({
             getNodes: function(parent) {
                 return SegmentService.getNodes(parent, $rootScope.segment);

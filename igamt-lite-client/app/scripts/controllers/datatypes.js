@@ -783,6 +783,8 @@ angular.module('igl')
 
 
         $scope.hasChildren = function(node) {
+            console.log("hasChildren==============================================================");
+            console.log(node);
             return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype.id) != undefined && $rootScope.getDatatype(node.datatype.id).components != null && $rootScope.getDatatype(node.datatype.id).components.length > 0;
         };
 

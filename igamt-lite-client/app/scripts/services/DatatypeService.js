@@ -27,7 +27,7 @@ angular.module('igl').factory('DatatypeService',
                 var children = [];
                 if (parent && parent != null) {
                     if (parent.datatype) {
-                        var dt = $scope.datatypesMap[parent.datatype.id];
+                        var dt = $rootScope.datatypesMap[parent.datatype.id];
                         children = dt.components;
                     } else {
                         children = parent.components;

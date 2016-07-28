@@ -714,6 +714,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.getDatatype = function (id) {
+            console.log("WAAAAAAAAAAA HEREREEEEEEEEEEEE");
             return $rootScope.datatypesMap && $rootScope.datatypesMap[id];
         };
 
@@ -1097,6 +1098,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 }
             }
         };
+
+        
 
         $rootScope.genRegex = function (format) {
             if (format === 'YYYY') {

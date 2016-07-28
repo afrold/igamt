@@ -494,16 +494,16 @@ angular
                                               function($itemScope) {
                                                   if ($rootScope.hasChanges()) {
                                                       $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                          CloneDeleteSvc.copyTable($itemScope.table);
+                                                          $scope.copyTableINLIB($itemScope.table);
                                                       });
                                                   } else {
-                                                      CloneDeleteSvc.copyTable($itemScope.table);
+                                                      $scope.copyTableINLIB($itemScope.table,$scope.tableLibrary.id);
                                                   }
                                               }
                                           ],
                                           null, ['Delete',
                                               function($itemScope) {
-                                                  CloneDeleteSvc.deleteValueSet($itemScope.table);
+                                                 $scope.deleteValueSetINLIB($itemScope.table);
 
                                               }
                                           ]
@@ -596,7 +596,7 @@ angular
                 
                 
                 
-                $scope.ValueSetOptionsINLIB = [
+                $scope.ValueSetAddOptionsINLIB = [
                                                  ['Add Table ',
                                                      function($itemScope) {
                                                          //$scope.addDatatypesFromTree();
