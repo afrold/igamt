@@ -32,7 +32,8 @@ var app = angular
         'ngDragDrop',
         'ui.tree',
         'blockUI',
-        'mgcrea.ngStrap.typeahead'
+        'mgcrea.ngStrap.typeahead',
+        'ds.objectDiff',
      ]);
 
 var
@@ -62,6 +63,9 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         })
         .when('/ig', {
             templateUrl: 'views/ig.html'
+        })
+        .when('/compare', {
+            templateUrl: 'views/compare.html'
         })
         .when('/datatypeLibrary', {
             templateUrl: 'views/datatypeLibrary.html',

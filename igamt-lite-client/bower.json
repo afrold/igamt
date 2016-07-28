@@ -33,7 +33,8 @@
     "angular-unsavedChanges": "^0.1.1",
     "nsPopover": "0.6.8",
     "angular-ui-notification": "^0.2.0",
-    "angular-strap": "^2.3.9"
+    "angular-strap": "^2.3.9",
+    "angular-object-diff": "~1.0.3"
   },
   "devDependencies": {
     "angular-scenario": "1.3.15",

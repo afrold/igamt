@@ -1,4 +1,4 @@
-angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectDiff, $rootScope, $q, $interval, uiGridTreeViewConstants, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService) {
+angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectDiff, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService) {
     $scope.igDocumentConfig = {
         selectedType: null
     };
