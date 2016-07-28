@@ -16,11 +16,6 @@
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="IGAMT">
     <meta name="author" content="NIST">
-    <style>
-        [ng\: cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x- ng-cloak {
-                          display: none !important;
-                      }
-    </style>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -52,22 +47,22 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/dialog.css"/>
     <!-- endbuild -->
 
-    <link rel="stylesheet" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css"/>
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css"/>
     <link rel="stylesheet" href="lib/material-custom/material-custom.css"/>
-    <link rel="stylesheet" href="lib/igamt.css"/>
-    <link rel="stylesheet" href="lib/toc.css"/>
-    <link rel="stylesheet" href="lib/nav.css"/>
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/colors.css">
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/file.css">
+     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/colors.css">
+     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/file.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/fullscreen.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/image.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/line_breaker.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/table.css">
+    <link rel="stylesheet" href="lib/igamt.css"/>
+    <link rel="stylesheet" href="lib/toc.css"/>
+    <link rel="stylesheet" href="lib/nav.css"/>
+    <link rel="stylesheet" href="lib/sidebar-menu/simple-sidebar.css"/>
     <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
     <style>
         body {
@@ -78,17 +73,12 @@
             font-family: 'Cairo', sans-serif;
         }
     </style>
-    <script type="text/javascript">
-        if (self === top) {
-            var antiClickjack = document.getElementById("antiClickjack");
-            antiClickjack.parentNode.removeChild(antiClickjack);
-        } else {
-            top.location = self.location;
-        }
-    </script>
+
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit confirm-on-leave block-ui="main">
-<div id="wrapper">
+<!--<div ng-include="'views/sidebar_menu.html'"></div>-->
+
+<div id="appWrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
@@ -99,9 +89,9 @@
     <!-- Add your site or application content here -->
     <div id="appcontainer" class="">
 
-        <!--<div class="container" style="padding-top:20px">-->
+        <!--<div class="container">-->
             <!--<div class="row">-->
-                <!--<div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">-->
+                <!--<div ng-class="'alert alert-'+msg().type" ng-show="msg().show && !msg().skip" id="ehralert">-->
                     <!--<button type="button" class="close" ng-click="msg().show=false">×</button>-->
                     <!--<div msg key-expr="msg().text"></div>-->
                 <!--</div>-->
@@ -120,6 +110,7 @@
     <ng-include src="'views/edit/editMessages.html'"></ng-include>
     <ng-include src="'views/edit/editValueSets.html'"></ng-include>
     <ng-include src="'views/edit/editSections.html'"></ng-include>
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <!--<script>-->
     <!--(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){-->
@@ -198,136 +189,140 @@
     <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.js"></script>
     <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
     <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+    <script src="bower_components/angular-scenario/angular-scenario.js"></script>
+    <script src="bower_components/angular-mocks/angular-mocks.js"></script>
     <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:js scripts/modules.js -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="lib/Objectid.js"></script>
-    <script src="lib/angular-treetable/angular-treetable.js"></script>
-    <script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
-    <script src="lib/angular-treetable/js/jquery.treetable.js"></script>
-    <script src="lib/froala-plugins/js/plugins/align.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/char_counter.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/colors.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/draggable.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/emoticons.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/entities.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/file.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/font_family.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/font_size.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/fullscreen.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/image.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/inline_style.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/line_breaker.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/link.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/lists.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/paragraph_format.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/paragraph_style.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/quick_insert.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/quote.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/save.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/table.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/url.min.js"></script>
-    <script src="lib/jquery-file-download.js"></script>
-    <script src="lib/jquery.i18n.properties-1.0.9.js"></script>
-    <script src="lib/lrDragNDrop.js"></script>
-    <script src="lib/ng-grid-csv-export-custom.js"></script>
-    <script src="lib/utils.js"></script>
-    <script src="prod/app.js"></script>
-    <script src="prod/userInfoService.js"></script>
-    <script src="scripts/services/AccountLoader.js"></script>
-    <script src="scripts/services/AppInfo.js"></script>
-    <script src="scripts/services/AutoSaveService.js"></script>
-    <script src="scripts/services/CloneDeleteSvc.js"></script>
-    <script src="scripts/services/ComponentService.js"></script>
-    <script src="scripts/services/ContextMenuSvc.js"></script>
-    <script src="scripts/services/DatatypeLibrarySvc.js"></script>
-    <script src="scripts/services/DatatypeService.js"></script>
-    <script src="scripts/services/DragAndDropSvc.js"></script>
-    <script src="scripts/services/ElementUtils.js"></script>
-    <script src="scripts/services/ExportSvc.js"></script>
-    <script src="scripts/services/FieldService.js"></script>
-    <script src="scripts/services/FilteringSvc.js"></script>
-    <script src="scripts/services/FormSelectSvc.js"></script>
-    <script src="scripts/services/IdleService.js"></script>
-    <script src="scripts/services/IgDocumentMapping.js"></script>
-    <script src="scripts/services/IgDocumentService.js"></script>
-    <script src="scripts/services/MastermapSvc.js"></script>
-    <script src="scripts/services/MessageEventsSvc.js"></script>
-    <script src="scripts/services/MessageService.js"></script>
-    <script src="scripts/services/MessagesSvc.js"></script>
-    <script src="scripts/services/MultiAccountLoader.js"></script>
-    <script src="scripts/services/ProfileAccessSvc.js"></script>
-    <script src="scripts/services/ProfileSvc.js"></script>
-    <script src="scripts/services/SectionSvc.js"></script>
-    <script src="scripts/services/SegmentLibrarySvc.js"></script>
-    <script src="scripts/services/SegmentService.js"></script>
-    <script src="scripts/services/StorageService.js"></script>
-    <script src="scripts/services/TableLibrarySvc.js"></script>
-    <script src="scripts/services/TableService.js"></script>
-    <script src="scripts/services/ToCSvc.js"></script>
-    <script src="scripts/services/ViewSettings.js"></script>
-    <script src="scripts/services/about.js"></script>
-    <script src="scripts/services/base64.js"></script>
-    <script src="scripts/services/i18n.js"></script>
-    <script src="scripts/services/igdocuments.js"></script>
-    <script src="scripts/services/main.js"></script>
-    <script src="scripts/services/user.js"></script>
-    <script src="scripts/filters/bytes.js"></script>
-    <script src="scripts/filters/flavors.js"></script>
-    <script src="scripts/filters/propsFilter.js"></script>
-    <script src="scripts/filters/startsWith.js"></script>
-    <script src="scripts/filters/yesno.js"></script>
-    <script src="scripts/directives/FilteringDir.js"></script>
-    <script src="scripts/directives/PreventRighClickDir.js"></script>
-    <script src="scripts/directives/ToCDir.js"></script>
-    <script src="scripts/directives/clickGo.js"></script>
-    <script src="scripts/directives/compile.js"></script>
-    <script src="scripts/directives/confirmOnLeave.js"></script>
-    <script src="scripts/directives/csSelect.js"></script>
-    <script src="scripts/directives/exit.js"></script>
-    <script src="scripts/directives/focus.js"></script>
-    <script src="scripts/directives/igCheckEmail.js"></script>
-    <script src="scripts/directives/igCheckEmployer.js"></script>
-    <script src="scripts/directives/igCheckFullName.js"></script>
-    <script src="scripts/directives/igCheckPassword.js"></script>
-    <script src="scripts/directives/igCheckPhone.js"></script>
-    <script src="scripts/directives/igCheckPoaDate.js"></script>
-    <script src="scripts/directives/igCheckTimerange.js"></script>
-    <script src="scripts/directives/igCheckUsername.js"></script>
-    <script src="scripts/directives/igPasswordValidate.js"></script>
-    <script src="scripts/directives/igbold.js"></script>
-    <script src="scripts/directives/msg.js"></script>
-    <script src="scripts/directives/stRatio.js"></script>
-    <script src="scripts/directives/validLabel.js"></script>
-    <script src="scripts/directives/validTrustDocument.js"></script>
-    <script src="scripts/controllers/ContextMenuCtl.js"></script>
-    <script src="scripts/controllers/DatatypeLibraryCtl.js"></script>
-    <script src="scripts/controllers/EditAreaCtrl.js"></script>
-    <script src="scripts/controllers/EditSectionsCtl.js"></script>
-    <script src="scripts/controllers/ErrorsCtrl.js"></script>
-    <script src="scripts/controllers/FilteringCtl.js"></script>
-    <script src="scripts/controllers/MastermapCtl.js"></script>
-    <script src="scripts/controllers/ToCCtl.js"></script>
-    <script src="scripts/controllers/TreeController.js"></script>
-    <script src="scripts/controllers/about.js"></script>
-    <script src="scripts/controllers/account.js"></script>
-    <script src="scripts/controllers/constraints.js"></script>
-    <script src="scripts/controllers/datatypes.js"></script>
-    <script src="scripts/controllers/doc.js"></script>
-    <script src="scripts/controllers/forgotten.js"></script>
-    <script src="scripts/controllers/hl7VersionsMessages.js"></script>
-    <script src="scripts/controllers/idle.js"></script>
-    <script src="scripts/controllers/igdocuments.js"></script>
-    <script src="scripts/controllers/issue.js"></script>
-    <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/messages.js"></script>
-    <script src="scripts/controllers/registerResetPassword.js"></script>
-    <script src="scripts/controllers/registration.js"></script>
-    <script src="scripts/controllers/segments.js"></script>
-    <script src="scripts/controllers/tables.js"></script>
+	<script src="lib/Objectid.js"></script>
+	<script src="lib/angular-treetable/angular-treetable.js"></script>
+	<script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
+	<script src="lib/angular-treetable/js/jquery.treetable.js"></script>
+	<script src="lib/froala-plugins/js/plugins/align.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/char_counter.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/colors.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/draggable.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/emoticons.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/entities.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/file.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/font_family.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/font_size.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/fullscreen.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/image.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/inline_style.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/line_breaker.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/link.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/lists.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/paragraph_format.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/paragraph_style.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/quick_insert.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/quote.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/save.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/table.min.js"></script>
+	<script src="lib/froala-plugins/js/plugins/url.min.js"></script>
+	<script src="lib/jquery-file-download.js"></script>
+	<script src="lib/jquery.i18n.properties-1.0.9.js"></script>
+	<script src="lib/lrDragNDrop.js"></script>
+	<script src="lib/ng-grid-csv-export-custom.js"></script>
+	<script src="lib/utils.js"></script>
+	<script src="dev/app.js"></script>
+	<script src="dev/backendStub.js"></script>
+	<script src="dev/profileBackEndStub.js"></script>
+	<script src="dev/userInfoService.js"></script>
+	<script src="scripts/services/AccountLoader.js"></script>
+	<script src="scripts/services/AppInfo.js"></script>
+	<script src="scripts/services/AutoSaveService.js"></script>
+	<script src="scripts/services/CloneDeleteSvc.js"></script>
+	<script src="scripts/services/ComponentService.js"></script>
+	<script src="scripts/services/ContextMenuSvc.js"></script>
+	<script src="scripts/services/DatatypeLibrarySvc.js"></script>
+	<script src="scripts/services/DatatypeService.js"></script>
+	<script src="scripts/services/DragAndDropSvc.js"></script>
+	<script src="scripts/services/ElementUtils.js"></script>
+	<script src="scripts/services/ExportSvc.js"></script>
+	<script src="scripts/services/FieldService.js"></script>
+	<script src="scripts/services/FilteringSvc.js"></script>
+	<script src="scripts/services/FormSelectSvc.js"></script>
+	<script src="scripts/services/IdleService.js"></script>
+	<script src="scripts/services/IgDocumentMapping.js"></script>
+	<script src="scripts/services/IgDocumentService.js"></script>
+	<script src="scripts/services/MastermapSvc.js"></script>
+	<script src="scripts/services/MessageEventsSvc.js"></script>
+	<script src="scripts/services/MessageService.js"></script>
+	<script src="scripts/services/MessagesSvc.js"></script>
+	<script src="scripts/services/MultiAccountLoader.js"></script>
+	<script src="scripts/services/ProfileAccessSvc.js"></script>
+	<script src="scripts/services/ProfileSvc.js"></script>
+	<script src="scripts/services/SectionSvc.js"></script>
+	<script src="scripts/services/SegmentLibrarySvc.js"></script>
+	<script src="scripts/services/SegmentService.js"></script>
+	<script src="scripts/services/StorageService.js"></script>
+	<script src="scripts/services/TableLibrarySvc.js"></script>
+	<script src="scripts/services/TableService.js"></script>
+	<script src="scripts/services/ToCSvc.js"></script>
+	<script src="scripts/services/ViewSettings.js"></script>
+	<script src="scripts/services/about.js"></script>
+	<script src="scripts/services/base64.js"></script>
+	<script src="scripts/services/i18n.js"></script>
+	<script src="scripts/services/igdocuments.js"></script>
+	<script src="scripts/services/main.js"></script>
+	<script src="scripts/services/user.js"></script>
+	<script src="scripts/filters/bytes.js"></script>
+	<script src="scripts/filters/flavors.js"></script>
+	<script src="scripts/filters/propsFilter.js"></script>
+	<script src="scripts/filters/startsWith.js"></script>
+	<script src="scripts/filters/yesno.js"></script>
+	<script src="scripts/directives/FilteringDir.js"></script>
+	<script src="scripts/directives/PreventRighClickDir.js"></script>
+	<script src="scripts/directives/ToCDir.js"></script>
+	<script src="scripts/directives/clickGo.js"></script>
+	<script src="scripts/directives/compile.js"></script>
+	<script src="scripts/directives/confirmOnLeave.js"></script>
+	<script src="scripts/directives/csSelect.js"></script>
+	<script src="scripts/directives/exit.js"></script>
+	<script src="scripts/directives/focus.js"></script>
+	<script src="scripts/directives/igCheckEmail.js"></script>
+	<script src="scripts/directives/igCheckEmployer.js"></script>
+	<script src="scripts/directives/igCheckFullName.js"></script>
+	<script src="scripts/directives/igCheckPassword.js"></script>
+	<script src="scripts/directives/igCheckPhone.js"></script>
+	<script src="scripts/directives/igCheckPoaDate.js"></script>
+	<script src="scripts/directives/igCheckTimerange.js"></script>
+	<script src="scripts/directives/igCheckUsername.js"></script>
+	<script src="scripts/directives/igPasswordValidate.js"></script>
+	<script src="scripts/directives/igbold.js"></script>
+	<script src="scripts/directives/msg.js"></script>
+	<script src="scripts/directives/stRatio.js"></script>
+	<script src="scripts/directives/validLabel.js"></script>
+	<script src="scripts/directives/validTrustDocument.js"></script>
+	<script src="scripts/controllers/ContextMenuCtl.js"></script>
+	<script src="scripts/controllers/DatatypeLibraryCtl.js"></script>
+	<script src="scripts/controllers/EditAreaCtrl.js"></script>
+	<script src="scripts/controllers/EditSectionsCtl.js"></script>
+	<script src="scripts/controllers/ErrorsCtrl.js"></script>
+	<script src="scripts/controllers/FilteringCtl.js"></script>
+	<script src="scripts/controllers/MastermapCtl.js"></script>
+	<script src="scripts/controllers/ToCCtl.js"></script>
+	<script src="scripts/controllers/TreeController.js"></script>
+	<script src="scripts/controllers/about.js"></script>
+	<script src="scripts/controllers/account.js"></script>
+	<script src="scripts/controllers/constraints.js"></script>
+	<script src="scripts/controllers/datatypes.js"></script>
+	<script src="scripts/controllers/doc.js"></script>
+	<script src="scripts/controllers/forgotten.js"></script>
+	<script src="scripts/controllers/hl7VersionsMessages.js"></script>
+	<script src="scripts/controllers/idle.js"></script>
+	<script src="scripts/controllers/igdocuments.js"></script>
+	<script src="scripts/controllers/issue.js"></script>
+	<script src="scripts/controllers/main.js"></script>
+	<script src="scripts/controllers/messages.js"></script>
+	<script src="scripts/controllers/registerResetPassword.js"></script>
+	<script src="scripts/controllers/registration.js"></script>
+	<script src="scripts/controllers/segments.js"></script>
+	<script src="scripts/controllers/tables.js"></script>
+    <script src="lib/sidebar-menu/sidebar_menu.js"></script>
+
     <!-- endbuild -->
 
     <script>
