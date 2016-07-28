@@ -1459,8 +1459,14 @@ input.account-input {
 
 .flavor-modal-window .modal-dialog {
   width: 50%;
-  height: 50%;
+  height: 70%;
   overflow-y: auto;
+}
+
+.flavor-seach-box {
+  display: block;
+  margin: auto;
+  width: 95%;
 }
 
 
@@ -2340,4 +2346,15 @@ table.conformance-profiles-table td {
 }
 .table-marginless tbody tr td, .table-marginless tbody tr th, .table-marginless thead tr th {
     margin-bottom:0px  !important;
+    }
+ul.search-result > li > a:hover {
+  background-color: cornflowerblue;
+}
+
+.st-sort-ascent:before{
+  content: '\25B2';
+}
+
+.st-sort-descent:before{
+  content: '\25BC';
 }

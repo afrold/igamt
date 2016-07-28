@@ -12,13 +12,19 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import nu.xom.Document;
 
 public interface ProfileSerializationDocument {
@@ -34,13 +40,13 @@ public interface ProfileSerializationDocument {
   InputStream serializeProfileToZip(Profile profile) throws IOException;
 
   InputStream serializeProfileToZip(Profile profile, String[] ids) throws IOException,
-      CloneNotSupportedException;
+  CloneNotSupportedException;
 
   InputStream serializeProfileDisplayToZip(Profile profile, String[] ids) throws IOException,
-      CloneNotSupportedException;
+  CloneNotSupportedException;
 
   InputStream serializeProfileGazelleToZip(Profile profile, String[] ids) throws IOException,
-      CloneNotSupportedException;
+  CloneNotSupportedException;
 
 
   InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException;
@@ -49,11 +55,21 @@ public interface ProfileSerializationDocument {
 
   Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary);
 
-  String serializeDatatypeToXML(Datatype d, IGDocument igdoc);
+  String serializeDatatypeToXML(DatatypeLink dl);
 
   String serializeIGDocumentToXML(IGDocument igdoc);
 
+  String serializeMessageToXML(Message m);
+
   String serializeDatatypesToXML(IGDocument igdoc);
 
+  String serializeSegmentToXML(SegmentLink sl);
+
+  String serializeTableToXML(TableLink sl);
+
   Document serializeIGDocumentToDoc(IGDocument igdoc);
+
+  File serializeSectionsToFile(IGDocument igdoc) throws UnsupportedEncodingException;
+
+  String serializeSectionsToXML(IGDocument igdoc);
 }

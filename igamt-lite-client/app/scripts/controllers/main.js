@@ -408,6 +408,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.changes = {};
         $rootScope.generalInfo = {type: null, 'message': null};
         $rootScope.references = []; // collection of element referencing a datatype
+        $rootScope.tmpReferences = [];
         // to delete
         $rootScope.section = {};
         $rootScope.conformanceStatementIdList = [];

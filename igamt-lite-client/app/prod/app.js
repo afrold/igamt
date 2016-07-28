@@ -32,11 +32,7 @@ var app = angular
         'ngDragDrop',
         'ui.tree',
         'blockUI',
-        'ds.objectDiff',
-        'ui.grid',
-        'ui.grid.treeView',
-        'ui.grid.expandable'
-
+        'mgcrea.ngStrap.typeahead'
      ]);
 
 var
@@ -66,9 +62,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         })
         .when('/ig', {
             templateUrl: 'views/ig.html'
-        })
-        .when('/compare', {
-            templateUrl: 'views/compare.html'
         })
         .when('/datatypeLibrary', {
             templateUrl: 'views/datatypeLibrary.html',
@@ -338,7 +331,9 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
                     $rootScope.msg().show= true;
                 }
             },
-            key: 'Rg1Wb2KYd1Td1WIh1CVc2F=='
+            key: 'Rg1Wb2KYd1Td1WIh1CVc2F==',
+            imageResize: false,
+            imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageAlt']
         };
         httpHeaders.common['appVersion'] = appInfo.version;
         var prevVersion = StorageService.getAppVersion(StorageService.APP_VERSION);

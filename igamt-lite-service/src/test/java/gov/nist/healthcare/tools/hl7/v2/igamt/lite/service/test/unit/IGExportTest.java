@@ -11,10 +11,12 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
-import static org.junit.Assert.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import static org.junit.Assert.assertNotNull;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
@@ -27,10 +29,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.PropertyConfigurator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -67,12 +67,24 @@ public class IGExportTest {
   List<IGDocument> igs;
   IGDocument ig;
   Profile p;
+  SegmentLink sl;
+  DatatypeLink dl;
+  TableLink tl;
   InputStream content = null;
   File tmpFile = null;
   String timeStamp = null;
 
+
   @Before
-  public void setUp() throws Exception {}
+  public void setUp() throws Exception {
+    igs = igService.findAll();
+    ig = igs.get(0);
+
+    sl = (SegmentLink) ig.getProfile().getSegmentLibrary().getChildren().toArray()[0];
+    dl = (DatatypeLink) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
+    tl = (TableLink) ig.getProfile().getTableLibrary().getChildren().toArray()[0];
+    
+  }
 
   @After
   public void tearDown() throws Exception {}
@@ -99,13 +111,39 @@ public class IGExportTest {
   }
 
   @Test
+  public void testCallIGExportXml() {
+    try {
+      content = igExport.exportAsXmlDisplay(ig);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("IG_" + timeStamp + ".xml");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testCallIGExportHtml() {
+    try {
+      content = igExport.exportAsHtml(ig);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("IG_" + timeStamp + ".html");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
   public void testCallIGExportDocx() {
     try {
-      // igs = igService.findAll();
-      // ig = igs.get(0);
-      ig = igService.findOne("573245a43004dc332131d418");
-      // ig = igService.findOne("56b4b811d4c6f591953e7b7a");
-
       content = igExport.exportAsDocx(ig);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -117,17 +155,47 @@ public class IGExportTest {
       e.printStackTrace();
     }
   }
-
+  
   @Test
-  public void testCallDTLExportDocx() {
+  public void testCallIGExportPdf() {
     try {
-      igs = igService.findAll();
-      ig = igs.get(0);
-
-      content = igExport.exportAsDocxDatatypes(ig);
+      content = igExport.exportAsPdf(ig);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-      tmpFile = new File("DTL_" + timeStamp + ".docx");
+      tmpFile = new File("IG_" + timeStamp + ".pdf");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+
+  @Test
+  public void testCallSgtExportXml() {
+    try {
+      content = igExport.exportAsXmlSegment(sl);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("SGT_" + timeStamp + ".xml");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testCallSgtExportHtml() {
+    try {
+      content = igExport.exportAsHtmlSegment(sl);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("SGT_" + timeStamp + ".html");
       logger.debug("Writing to file");
       FileUtils.copyInputStreamToFile(content, tmpFile);
       logger.debug("Export done");
@@ -137,15 +205,27 @@ public class IGExportTest {
   }
 
   @Test
-  public void testCallDTLExportHtml() {
+  public void testCallSgtExportDocx() {
     try {
-      igs = igService.findAll();
-      ig = igs.get(0);
-
-      content = igExport.exportAsHtmlDatatypes(ig);
+      content = igExport.exportAsDocxSegment(sl);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-      tmpFile = new File("DTL_" + timeStamp + ".html");
+      tmpFile = new File("SGT_" + timeStamp + ".docx");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testCallDTExportXml() {
+    try {
+      content = igExport.exportAsXmlDatatype(dl);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("DT_" + timeStamp + ".xml");
       logger.debug("Writing to file");
       FileUtils.copyInputStreamToFile(content, tmpFile);
       logger.debug("Export done");
@@ -157,11 +237,7 @@ public class IGExportTest {
   @Test
   public void testCallDTExportHtml() {
     try {
-      igs = igService.findAll();
-      ig = igs.get(0);
-      Datatype d = (Datatype) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
-
-      content = igExport.exportAsHtmlDatatype(d, ig);
+      content = igExport.exportAsHtmlDatatype(dl);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
       tmpFile = new File("DT_" + timeStamp + ".html");
@@ -176,11 +252,7 @@ public class IGExportTest {
   @Test
   public void testCallDTExportDocx() {
     try {
-      igs = igService.findAll();
-      ig = igs.get(0);
-      Datatype d = (Datatype) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
-
-      content = igExport.exportAsDocxDatatype(d, ig);
+      content = igExport.exportAsDocxDatatype(dl);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
       tmpFile = new File("DT_" + timeStamp + ".docx");
@@ -192,46 +264,80 @@ public class IGExportTest {
     }
   }
 
-
   @Test
-  public void testCallIGExportPdf() {
+  public void testCallTblExportXml() {
     try {
-      igs = igService.findAll();
-      ig = igs.get(0);
-      // ig = igService.findOne("573245a43004dc332131d418");
-
-      content = igExport.exportAsPdf(ig);
+      content = igExport.exportAsXmlTable(tl);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-      tmpFile = new File("IG_" + timeStamp + ".pdf");
+      tmpFile = new File("TBL_" + timeStamp + ".xml");
       logger.debug("Writing to file");
       FileUtils.copyInputStreamToFile(content, tmpFile);
       logger.debug("Export done");
-
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  @Test
+  public void testCallTblExportHtml() {
+    try {
+      content = igExport.exportAsHtmlTable(tl);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("TBL_" + timeStamp + ".html");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  @Test
+  public void testCallTblExportDocx() {
+    try {
+      content = igExport.exportAsDocxTable(tl);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("TBL_" + timeStamp + ".docx");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   @Test
-  public void testCallIGExportHtml() {
-
+  public void testCallDTLExportDocx() {
     try {
-      igs = igService.findAll();
-      ig = igs.get(0);
-
-      // content = igExport.exportAsHtml(ig);
-      content = igExport.exportAsXml(ig);
+      content = igExport.exportAsDocxDatatypes(ig);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-      tmpFile = new File("IG_" + timeStamp + ".xml");
+      tmpFile = new File("DTL_" + timeStamp + ".docx");
       logger.debug("Writing to file");
       FileUtils.copyInputStreamToFile(content, tmpFile);
       logger.debug("Export done");
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
 
+  
+  @Test
+  public void testCallDTLExportHtml() {
+    try {
+      content = igExport.exportAsHtmlDatatypes(ig);
+      assertNotNull(content);
+      timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+      tmpFile = new File("DTL_" + timeStamp + ".html");
+      logger.debug("Writing to file");
+      FileUtils.copyInputStreamToFile(content, tmpFile);
+      logger.debug("Export done");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 }

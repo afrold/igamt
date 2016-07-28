@@ -18,8 +18,10 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,17 +45,41 @@ public interface IGDocumentExportService {
 
   InputStream exportAsXml(IGDocument d) throws IOException;
 
+  InputStream exportAsXmlDisplay(IGDocument d) throws IOException;
+
+  InputStream exportAsXmlSegment(SegmentLink sl) throws IOException;
+
+  InputStream exportAsXmlDatatype(DatatypeLink dl) throws IOException;
+
+  InputStream exportAsXmlTable(TableLink tl) throws IOException;
+
   InputStream exportAsZip(IGDocument d) throws IOException;
 
   InputStream exportAsDocx(IGDocument d) throws IOException;
 
+  InputStream exportAsDocxSegment(SegmentLink sl) throws IOException;
+
   InputStream exportAsDocxDatatypes(IGDocument d) throws IOException;
 
-  InputStream exportAsDocxDatatype(Datatype d, IGDocument igdoc) throws IOException;
+  InputStream exportAsDocxDatatype(DatatypeLink dl) throws IOException;
+
+  InputStream exportAsDocxTable(TableLink tl) throws IOException;
 
   InputStream exportAsHtml(IGDocument d) throws IOException;
+  
+  InputStream exportAsHtmlSegment(SegmentLink sl) throws IOException;
+
+  InputStream exportAsHtml4Pdf(IGDocument d) throws IOException;
 
   InputStream exportAsHtmlDatatypes(IGDocument d) throws IOException;
 
-  InputStream exportAsHtmlDatatype(Datatype d, IGDocument igdoc) throws IOException;
+  InputStream exportAsHtmlDatatype(DatatypeLink dl) throws IOException;
+  
+  InputStream exportAsHtmlTable(TableLink tl) throws IOException;
+  
+  InputStream exportAsHtmlSections(IGDocument ig);
+  
+  InputStream exportAsDocxSections(IGDocument ig); 
+
+
 }

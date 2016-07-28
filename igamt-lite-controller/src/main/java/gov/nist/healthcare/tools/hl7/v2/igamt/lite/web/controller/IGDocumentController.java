@@ -868,6 +868,12 @@ public class IGDocumentController extends CommonController {
       HttpServletRequest request, HttpServletResponse response) throws IOException,
       IGDocumentNotFoundException, IGDocumentException {
     IGDocument d = igDocumentService.findOne(id);
+    System.out.println("Section from front end ");
+
+    System.out.println("IN "+ section.getSectionTitle());
+    for(Section sect : section.getChildSections()){
+  	  System.out.println(sect.getSectionTitle()+"===========positrion"+sect.getSectionPosition());
+    }	
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
     }
@@ -907,11 +913,31 @@ public class IGDocumentController extends CommonController {
       igDocumentService.save(d);
       return true;
     } else {
+    	
+       
+    	
+   
+        System.out.println("===================BEFORE");
       Section s = findSection(d, idSect);
+      System.out.println("IN "+ s.getSectionTitle());
+      for(Section sect : s.getChildSections()){
+    	  System.out.println(sect.getSectionTitle()+"===========positrion"+sect.getSectionPosition());
+      }
+
+
+      System.out.println(s);
       if (s == null)
         throw new IGDocumentException("Unknown Section");
-
+      
       s.merge(section);
+      
+      System.out.println("two");
+      System.out.println("after============================");
+      System.out.println("IN "+ s.getSectionTitle());
+      for(Section sect : s.getChildSections()){
+  	  System.out.println(sect.getSectionTitle()+"===========position"+sect.getSectionPosition());
+      }
+
       igDocumentService.save(d);
       return true;
     }
@@ -1055,7 +1081,6 @@ public class IGDocumentController extends CommonController {
   public String reorderChildSections(@PathVariable("id") String id,
       @RequestBody Set<SectionMap> sections) throws IOException, IGDocumentNotFoundException,
       IGDocumentException {
-
     System.out.println(id);
     System.out.println();
     IGDocument d = igDocumentService.findOne(id);
@@ -1067,7 +1092,7 @@ public class IGDocumentController extends CommonController {
     for (Section s : d.getChildSections()) {
       for (SectionMap x : sections) {
         if (s.getId().equals(x.getId())) {
-          s.setPosition(x.getPosition());
+          s.setSectionPosition(x.getSectionPosition());
         }
       }
     }
@@ -1087,7 +1112,6 @@ public class IGDocumentController extends CommonController {
     System.out.println("=========sorted set=====================");
     System.out.println(sortedSet);
     d.setChildSections(sortedSet);
-
     System.out.println(d.getChildSections());
     igDocumentService.save(d);
     return null;
