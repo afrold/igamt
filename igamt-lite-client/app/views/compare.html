@@ -38,7 +38,7 @@
                             <div class="input-group col-md-2">
                                 <span class="input-group-addon" id="basic-addon1">Scope</span>
                                 <select ng-model="scope1" class="form-control " ng-change="setScope1(scope1)">
-                                    <option ng-repeat="scope in scopes " value='{{scope}}'> {{scope}}</option>
+                                    <option ng-repeat="scope in scopes " value='{{scope.name}}'> {{scope.alias}}</option>
                                 </select>
                             </div>
                             <div class="input-group col-md-3">
@@ -67,7 +67,7 @@
                             <div class="input-group col-md-2">
                                 <span class="input-group-addon" id="basic-addon1">Scope</span>
                                 <select ng-model="scope2" class="form-control " ng-change="setScope2(scope2)">
-                                    <option ng-repeat="scope in scopes " value='{{scope}}'> {{scope}}</option>
+                                    <option ng-repeat="scope in scopes " value='{{scope.name}}'> {{scope.alias}}</option>
                                 </select>
 <!--                                 <span ng-click="clearScope()"><i class="glyphicon glyphicon-remove "></i></span>
  -->                            </div>
@@ -92,7 +92,7 @@
                                 <button ng-click="clearAll()" class="btn btn-primary btn-sm">Clear Search</button>
                             </div> -->
 <!--                             <div class="col-md-1 col-md-offset-9">
- -->                                <button ng-click="compare()" ng-disabled="!msg1 || !msg2" class="btn btn-info btn-md">
+ -->                                <button ng-click="compare()" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-info btn-md">
                                     <i class="fa fa-check"></i> Compare</button>
 <!--                             </div>
  -->                            <!--  <div class="col-md-6" align="center">

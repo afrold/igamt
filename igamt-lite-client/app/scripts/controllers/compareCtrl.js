@@ -92,8 +92,17 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.msgSelected = false;
     $scope.igDisabled1 = false;
     $scope.igDisabled2 = false;
+    $scope.msgChanged=false;
 
-    $scope.scopes = ["USER", "HL7STANDARD"];
+    //$scope.scopes = ["USER", "HL7STANDARD"];
+    $scope.scopes = [{
+        name: "USER",
+        alias: "My IG"
+    }, {
+        name: "HL7STANDARD",
+        alias: "Base HL7"
+    }];
+
     $scope.showDelta = false;
     var listHL7Versions = function() {
         return $http.get('api/igdocuments/findVersions', {
@@ -108,13 +117,13 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         });
     };
 
-    var init = function(){
+    var init = function() {
         listHL7Versions().then(function(versions) {
             $scope.versions = versions;
         });
     };
 
-    $scope.$on('event:loginConfirmed', function (event) {
+    $scope.$on('event:loginConfirmed', function(event) {
         init();
     });
 
@@ -126,6 +135,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
     };
     $scope.setScope1 = function(scope) {
+
         $scope.scope1 = scope;
 
     }
@@ -134,6 +144,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
     };
     $scope.setScope2 = function(scope) {
+
         $scope.scope2 = scope;
     };
 
@@ -219,6 +230,11 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
             });
         }
+
+    }, true);
+    $scope.$watchGroup(['msg1', 'msg2'], function() {
+        $scope.msgChanged=true;
+
 
     }, true);
 
@@ -374,6 +390,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             for (var j = 0; j < dts.length; j++) {
                 for (var i = 0; i < dts[j].components.length; i++) {
                     dts[j].components[i].id = "";
+                    dts[j].components[i].datatype.id = "";
 
                 }
             }
@@ -759,6 +776,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.compare = function() {
 
         $scope.loadingSelection = true;
+        $scope.msgChanged=false;
         $scope.formatMsg(JSON.parse($scope.msg1)).then(function(msg1) {
 
 
