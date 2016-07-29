@@ -27,6 +27,8 @@ public class Case implements Serializable, Cloneable {
 	private String id;
 
 	protected String value;
+	
+	protected String secondValue;
 
 	protected String datatype;
 
@@ -57,6 +59,14 @@ public class Case implements Serializable, Cloneable {
 	public void setDatatype(String datatype) {
 		this.datatype = datatype;
 	}
+	
+	public String getSecondValue() {
+		return secondValue;
+	}
+
+	public void setSecondValue(String secondValue) {
+		this.secondValue = secondValue;
+	}
 
 	@Override
 	public Case clone() throws CloneNotSupportedException {
@@ -65,6 +75,7 @@ public class Case implements Serializable, Cloneable {
 		clonedCase.setValue(value);
 		clonedCase.setDatatype(datatype);
 		clonedCase.setType(this.type);
+		clonedCase.setSecondValue(secondValue);
 
 		return clonedCase;
 	}

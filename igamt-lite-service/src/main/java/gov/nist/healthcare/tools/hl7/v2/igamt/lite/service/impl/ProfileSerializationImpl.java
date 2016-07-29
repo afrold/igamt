@@ -1402,10 +1402,18 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				nu.xom.Element elmMapping = new nu.xom.Element("Mapping");
 				elmMapping.addAttribute(new Attribute("Position", String.valueOf(m.getPosition())));
 				elmMapping.addAttribute(new Attribute("Reference", String.valueOf(m.getReference())));
+				
+				if(m.getSecondReference() != null) {
+					elmMapping.addAttribute(new Attribute("SecondReference", String.valueOf(m.getSecondReference())));
+				}
+				
 
 				for (Case c : m.getCases()) {
 					nu.xom.Element elmCase = new nu.xom.Element("Case");
 					elmCase.addAttribute(new Attribute("Value", c.getValue()));
+					if(c.getSecondValue() != null && !c.getSecondValue().equals("")) {
+						elmCase.addAttribute(new Attribute("SecondValue", c.getSecondValue()));
+					}
 					elmCase.addAttribute(new Attribute("Datatype", datatypes.findOne(c.getDatatype()).getLabel()));
 					elmMapping.appendChild(elmCase);
 				}
