@@ -220,10 +220,8 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		    		  
 		    		  nu.xom.Element elmPlainCoConstraint = new nu.xom.Element("PlainCoConstraint");
 		    		  
-		    		  nu.xom.Element elmKey = new nu.xom.Element("Key");
-		    		  elmKey.addAttribute(new Attribute("Path", s.getCoConstraints().getColumnList().get(0).getField().getPosition() + "[1]"));
-		    		  elmKey.addAttribute(new Attribute("Value", cc.getValues().get(0).getValue()));
-		    		  elmPlainCoConstraint.appendChild(elmKey);
+		    		  elmPlainCoConstraint.addAttribute(new Attribute("KeuPath", s.getCoConstraints().getColumnList().get(0).getField().getPosition() + "[1]"));
+		    		  elmPlainCoConstraint.addAttribute(new Attribute("KeyValue", cc.getValues().get(0).getValue()));
 
 		    		  for(int i = 1; i < s.getCoConstraints().getColumnList().size(); i++){
 		    			  String path = s.getCoConstraints().getColumnList().get(i).getField().getPosition() + "[1]";
@@ -232,14 +230,14 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		    			  
 		    			  if(value != null && !value.equals("")){
 		    				  if(type.equals("vs")){
-			    				  nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSetCheck");
+			    				  nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSet");
 			    				  elmValueSetCheck.addAttribute(new Attribute("Path", path));
 			    				  elmValueSetCheck.addAttribute(new Attribute("ValueSetID", tableService.findById(value).getBindingIdentifier()));
 			    				  elmPlainCoConstraint.appendChild(elmValueSetCheck);
 			    			  }else{
-			    				  nu.xom.Element elmValueCheck = new nu.xom.Element("ValueCheck");
+			    				  nu.xom.Element elmValueCheck = new nu.xom.Element("PlainText");
 			    				  elmValueCheck.addAttribute(new Attribute("Path", path));
-			    				  elmValueCheck.addAttribute(new Attribute("Value", value));
+			    				  elmValueCheck.addAttribute(new Attribute("Text", value));
 			    				  elmPlainCoConstraint.appendChild(elmValueCheck);
 			    			  }
 			    			    
