@@ -12,15 +12,16 @@ angular.module('igl')
         $scope.error = null;
         $scope.loadingTree = false;
         $scope.filtering = false;
+        $scope.tocView = 'views/toc.html';
         $scope.print = function (param) {
-            console.log(param);
+            //console.log(param);
         }
         $scope.loading = true;
         $scope.viewSettings = ViewSettings;
         $scope.igDocumentMsg = {};
         $scope.igDocumentConfig = {
             selectedType: null
-        }
+        };
         $rootScope.usageF = false;
         $scope.nodeReady = true;
         $scope.igDocumentTypes = [
@@ -104,18 +105,7 @@ angular.module('igl')
          * init the controller
          */
         $scope.initIGDocuments = function () {
-            $scope.loadIGDocuments().then(function () {
-                //                $timeout(function () {
-                //                    var igdocument = StorageService.getIgDocument();
-                //                    if (igdocument != null) {
-                //                        var found = $scope.findOne(igdocument.id);
-                //                        if (found != null) {
-                //                            $scope.selectIGDocument(igdocument);
-                //                        }
-                //                    }
-                //                }, 1000);
-            });
-
+            $scope.loadIGDocuments();
             $scope.getScrollbarWidth();
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
@@ -167,19 +157,19 @@ angular.module('igl')
                     });
                     if (idx > -1) {
                         $timeout(function () {
-                            _.each($rootScope.igs, function (igd) {
-                                console.log("b msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
-                            });
+//                            _.each($rootScope.igs, function (igd) {
+//                                console.log("b msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
+//                            });
                             $rootScope.igs.splice(idx, 1);
                             $scope.tmpIgs = [].concat($rootScope.igs);
-                            _.each($scope.tmpIgs, function (igd) {
-                                console.log("a msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
-                                console.log("msgs=" + igd.metaData.title + " len=" + igd.profile.messages.children.length);
-                            });
+//                            _.each($scope.tmpIgs, function (igd) {
+//                                console.log("a msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
+//                                console.log("msgs=" + igd.metaData.title + " len=" + igd.profile.messages.children.length);
+//                            });
                         }, 100);
                         $rootScope.igs.push(igdocument);
                     } else {
-                        console.log("pushed=>");
+//                        console.log("pushed=>");
                         $rootScope.igs.push(igdocument);
                     }
                 } else {
@@ -210,14 +200,6 @@ angular.module('igl')
             $scope.loadIGDocuments();
         };
 
-        $rootScope.$on('event:loadFilter', function (event, igdocument) {
-            //            FilteringSvc.loadMessages(igdocument);
-            //            FilteringSvc.loadUsages();
-        });
-
-        //        $rootScope.$on('event:loadMastermap', function (event, igdocument) {
-        //            MastermapSvc.parseIg(igdocument);
-        //        });
 
         $scope.selectIGDocument = function (igdocument) {
             $rootScope.igdocument = igdocument;
@@ -378,34 +360,14 @@ angular.module('igl')
 
 
         // switcher
-
         $scope.enabled = true;
         $scope.onOff = true;
         $scope.yesNo = true;
         $scope.disabled = true;
 
-
         $scope.changeCallback = function () {
             console.log('This is the state of my model ' + $scope.enabled);
         };
-
-
-        //        
-        //        $scope.reproccess= function(igdocument){
-        //          
-        //          igdocument.profile.messages.children=$rootScope.selectedMessages;
-        //
-        //            for(var i =0; i<igdocument.profile.messages.children.length; i++){
-        //              if(igdocument.profile.messages.children[i].children){
-        //                  $rootScope.segments=_.union($rootScope.segments,igdocument.profile.messages.children[i].children);
-        //                  console.log($rootScope.segments);
-        //              }
-        //              console.log($rootScope.segments);
-        //            }
-        //
-        //        }
-
-
 
 
         $scope.orderSectionsByPosition = function(sections){
@@ -421,8 +383,6 @@ angular.module('igl')
         $scope.orderMesagesByPositon = function(messages){
             return $filter('orderBy')(messages, 'position');
         };
-
-
 
         $scope.openIGDocument = function (igdocument) {
             if (igdocument != null) {
