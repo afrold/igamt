@@ -13,6 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import nu.xom.Document;
@@ -23,20 +24,20 @@ public interface TableSerialization {
 
   TableLibrary deserializeXMLToTableLibrary(Document xmlDoc);
 
-  String serializeTableLibraryToXML(TableLibrary tableLibrary);
+  String serializeTableLibraryToXML(TableLibrary tableLibrary, DocumentMetaData metadata);
 
-  String serializeTableLibraryToXML(Profile profile);
+  String serializeTableLibraryToXML(Profile profile, DocumentMetaData metadata);
 
   String serializeTableLibraryToXML(DatatypeLibrary datatypeLibrary);
 
-  Document serializeTableLibraryToDoc(TableLibrary tableLibrary);
+  Document serializeTableLibraryToDoc(TableLibrary tableLibrary, DocumentMetaData metadata);
 
-  Document serializeTableLibraryToDoc(Profile profile);
+  Document serializeTableLibraryToDoc(Profile profile, DocumentMetaData metadata);
 
   String serializeTableLibraryToGazelleXML(Profile profile);
 
   Document serializeTableLibraryToGazelleDoc(Profile profile);
 
-  Element serializeTableLibraryToElement(Profile profile);
+  Element serializeTableLibraryToElement(Profile profile, DocumentMetaData metadata);
 
 }

@@ -18,8 +18,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -132,9 +130,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
     // Setting igDocument metaData
     DocumentMetaData metaData = new DocumentMetaData();
     dTarget.setMetaData(metaData);
-    DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
     Date date = new Date();
-    metaData.setDate(dateFormat.format(date));
+    metaData.setDate(Constant.mdy.format(date));
     metaData.setVersion("1.0");
     metaData.setIdentifier("Default Identifier");
     metaData.setSubTitle("Default Sub Title");
@@ -143,7 +140,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
     // Setting profile metaData
     ProfileMetaData profileMetaData = new ProfileMetaData();
     pTarget.setMetaData(profileMetaData);
-    profileMetaData.setDate(dateFormat.format(date));
+    profileMetaData.setDate(Constant.mdy.format(date));
     profileMetaData.setVersion("1.0");
     profileMetaData.setName("Default name");
     profileMetaData.setOrgName("Default org name");
@@ -172,7 +169,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
     msgsTarget.setSectionDescription(dSource.getProfile().getMessages().getSectionDescription());
     msgsTarget.setSectionPosition(dSource.getProfile().getMessages().getSectionPosition());
     SegmentLibrary sgtsTarget = new SegmentLibrary();
-    sgtsTarget.setMetaData(dSource.getProfile().getSegmentLibrary().getMetaData());
+   sgtsTarget.setMetaData(dSource.getProfile().getSegmentLibrary().getMetaData());
     sgtsTarget.setScope(Constant.SCOPE.USER);
     segmentLibraryRepository.save(sgtsTarget);
 
@@ -235,10 +232,10 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
     messages.setSectionTitle(pSource.getMessages().getSectionTitle());
     messages.setSectionPosition(pSource.getMessages().getSectionPosition());
     messages.setType(pSource.getMessages().getType());
-    try {
+    int maxPos = findMaxPosition(pTarget.getMessages());
+   try {
       for (MessageEvents msgEvt : msgEvts) {
         Message m = pSource.getMessages().findOne(msgEvt.getId());
-        int maxPos = findMaxPosition(pSource.getMessages());
         Message m1 = null;
         m1 = m.clone();
         m1.setId(null);
@@ -249,15 +246,17 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
           log.debug("msgEvt=" + msgEvt.getId() + " " + event);
           m1.setEvent(event);
         } else {
-          throw new EventNotSetException("MessageEvent id=" + msgEvt.getId() + " name="
-              + msgEvt.getName());
+        	log.error("MessageEvent contains no events id=" + msgEvt.getId() + " name="
+                    + msgEvt.getName());
         }
         String name = m1.getMessageType() + "^" + m1.getEvent() + "^" + m1.getStructID();
         log.debug("Message.name=" + name);
         m1.setName(name);
         m1.setPosition(++maxPos);
         messageRepository.save(m1);
+        log.info("a pos=" + m1.getPosition());
         messages.addMessage(m1);
+        log.info("p pos=" + m1.getPosition());
         for (SegmentRefOrGroup sg : m.getChildren()) {
           if (sg instanceof SegmentRef) {
             addSegment((SegmentRef) sg, pSource, pTarget);
@@ -273,7 +272,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
   }
 
   int findMaxPosition(Messages msgs) {
-    int maxPos = 1;
+    int maxPos = 0;
     for (Message msg : msgs.getChildren()) {
       maxPos = Math.max(maxPos, msg.getPosition());
     }
@@ -317,6 +316,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
     }
   }
 
+
   private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
     DatatypeLibrary dtsSource = pSource.getDatatypeLibrary();
     DatatypeLibrary dtsTarget = pTarget.getDatatypeLibrary();
@@ -324,6 +324,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
       dt.setId(null);
       dt.getLibIds().remove(dtsSource.getId());
     }
+
     dt.getLibIds().add(dtsTarget.getId());
     datatypeRepository.save(dt);
     DatatypeLink link = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());

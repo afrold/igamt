@@ -5292,10 +5292,10 @@ fieldset[disabled] .form-control.focus:disabled,
 .input-group .form-control-wrapper .form-control {
   float: none;
 }
-.input-group .input-group-addon {
-  border: 0;
-  background: transparent;
-}
+/*.input-group .input-group-addon {*/
+  /*border: 0;*/
+  /*background: transparent;*/
+/*}*/
 .input-group .input-group-btn .btn {
   border-radius: 4px;
   margin: 0;

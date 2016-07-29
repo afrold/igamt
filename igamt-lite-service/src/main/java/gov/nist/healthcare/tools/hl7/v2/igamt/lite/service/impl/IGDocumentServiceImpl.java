@@ -20,6 +20,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
@@ -97,6 +99,20 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     // }
     log.debug("User IG Document found=" + igDocuments.size());
     return igDocuments;
+  }
+  
+  @Override
+  public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+    List<IGDocument> igDocuments = documentRepository.findByScopesAndVersion(scopes, hl7Version);
+    log.info("IGDocumentServiceImpl.findByScopeAndVersion=" + igDocuments.size());
+    return igDocuments;
+  }
+  @Override
+  public IGDocument findById(String id) {
+    log.info("DataypeServiceImpl.findById=" + id);
+    IGDocument igDocument;
+    igDocument = documentRepository.findOne(id);
+    return igDocument;
   }
 
   @Override

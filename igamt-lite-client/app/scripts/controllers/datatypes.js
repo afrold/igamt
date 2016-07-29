@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService,blockUI) {
+    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI) {
         $scope.editableDT = '';
         $scope.editableVS = '';
         $scope.readonly = false;
@@ -35,7 +35,7 @@ angular.module('igl')
                 try {
                     if ($scope.datatypesParams)
                         $scope.datatypesParams.refresh();
-                }catch(e){
+                } catch (e) {
 
                 }
             });
@@ -58,7 +58,7 @@ angular.module('igl')
                 try {
                     if ($scope.datatypesParams)
                         $scope.datatypesParams.refresh();
-                }catch(e){
+                } catch (e) {
 
                 }
             });
@@ -102,12 +102,8 @@ angular.module('igl')
 
 
 
-        $scope.selectDT = function() {
+        $scope.selectDT = function(field, datatype) {
             $scope.DTselected = true;
-
-
-        };
-        $scope.applyDT = function(field, datatype) {
             blockUI.start();
             field.datatype.ext = JSON.parse(datatype).ext;
             field.datatype.id = JSON.parse(datatype).id;
@@ -123,7 +119,25 @@ angular.module('igl')
             $scope.DTselected = false;
             blockUI.stop();
 
+
         };
+        // $scope.applyDT = function(field, datatype) {
+        //     blockUI.start();
+        //     field.datatype.ext = JSON.parse(datatype).ext;
+        //     field.datatype.id = JSON.parse(datatype).id;
+        //     field.datatype.label = JSON.parse(datatype).label;
+        //     field.datatype.name = JSON.parse(datatype).name;
+        //     console.log(field);
+        //     $scope.setDirty();
+        //     // $rootScope.processElement(field);
+
+        //     if ($scope.datatypesParams)
+        //         $scope.datatypesParams.refresh();
+        //     $scope.editableDT = '';
+        //     $scope.DTselected = false;
+        //     blockUI.stop();
+
+        // };
         $scope.redirectDT = function(datatype) {
             DatatypeService.getOne(datatype.id).then(function(datatype) {
                 var modalInstance = $modal.open({
@@ -229,14 +243,9 @@ angular.module('igl')
             $scope.editableVS = '';
         };
 
-        $scope.selectVS = function(valueSet) {
+        $scope.selectVS = function(field,valueSet) {
             $scope.selectedValueSet = valueSet;
             $scope.VSselected = true;
-
-
-
-        };
-        $scope.applyVS = function(field) {
             $scope.editableVS = '';
             if (field.table === null) {
                 field.table = {
@@ -253,7 +262,27 @@ angular.module('igl')
             $scope.setDirty();
             $scope.VSselected = false;
 
+
+
         };
+        // $scope.applyVS = function(field) {
+        //     $scope.editableVS = '';
+        //     if (field.table === null) {
+        //         field.table = {
+        //             id: '',
+        //             bindingIdentifier: ''
+
+        //         };
+        //         console.log(field);
+
+        //     }
+
+        //     field.table.id = $scope.selectedValueSet.id;
+        //     field.table.bindingIdentifier = $scope.selectedValueSet.bindingIdentifier;
+        //     $scope.setDirty();
+        //     $scope.VSselected = false;
+
+        // };
 
         $scope.redirectVS = function(valueSet) {
             TableService.getOne(valueSet.id).then(function(valueSet) {
@@ -1322,7 +1351,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
     };
 });
 
-angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInstance, datatypes, datatype, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService,blockUI) {
+angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInstance, datatypes, datatype, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService, blockUI) {
 
     $scope.valueSets = valueSets;
     $scope.datatypes = datatypes;
@@ -1482,7 +1511,7 @@ angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInst
 
 
 
-angular.module('igl').controller('DeleteComponentCtrl', function($scope, $modalInstance, componentToDelete, datatype, $rootScope, SegmentService,blockUI) {
+angular.module('igl').controller('DeleteComponentCtrl', function($scope, $modalInstance, componentToDelete, datatype, $rootScope, SegmentService, blockUI) {
     $scope.componentToDelete = componentToDelete;
     $scope.loading = false;
     console.log(datatype);

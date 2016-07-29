@@ -14,6 +14,13 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.commentWidth = null;
         $scope.viewSettings = ViewSettings;
         $rootScope.addedSegments = [];
+
+        $scope.state = false;
+
+        $scope.toggleState = function() {
+            $scope.state = !$scope.state;
+        };
+
         $scope.language = function () {
             return i18n.language;
         };
@@ -82,7 +89,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.initMaps();
             $rootScope.igdocument = null;
             AutoSaveService.stop();
-            $location.url('/ig');
+            if($location.path() === '/compare'){
+                $location.url('/compare');
+            }else {
+                $location.url('/ig');
+            }
         };
 
         $scope.cancel = function () {
@@ -408,6 +419,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.changes = {};
         $rootScope.generalInfo = {type: null, 'message': null};
         $rootScope.references = []; // collection of element referencing a datatype
+        $rootScope.tmpReferences = [];
         // to delete
         $rootScope.section = {};
         $rootScope.conformanceStatementIdList = [];
@@ -722,9 +734,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             if ($rootScope.igdocument.metaData.ext != null) {
                 var maxIDNum = Number(0);
                 angular.forEach($rootScope.conformanceStatementIdList, function (id) {
-                    var tempID = parseInt(id.replace($rootScope.igdocument.metaData.ext + "-", ""));
+                    if(id != null) {
+                        var tempID = parseInt(id.replace($rootScope.igdocument.metaData.ext + "-", ""));
 
-                    if (tempID > maxIDNum) maxIDNum = tempID;
+                        if (tempID > maxIDNum) maxIDNum = tempID;
+                    }
                 });
 
                 return $rootScope.igdocument.metaData.ext + "-" + (maxIDNum + 1);

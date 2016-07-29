@@ -31,6 +31,8 @@ public class Mapping implements Serializable, Cloneable {
   // @NotNull
   // @Column(name = "REFERENCE")
   protected Integer reference;
+  
+  protected Integer secondReference;
 
   public String getId() {
     return id;
@@ -63,6 +65,14 @@ public class Mapping implements Serializable, Cloneable {
   public void setReference(Integer reference) {
     this.reference = reference;
   }
+  
+  public Integer getSecondReference() {
+	return secondReference;
+  }
+
+  public void setSecondReference(Integer secondReference) {
+	this.secondReference = secondReference;
+  }
 
   public void addCase(Case c) {
     cases.add(c);
@@ -79,6 +89,7 @@ public class Mapping implements Serializable, Cloneable {
 
     clonedMapping.setPosition(position);
     clonedMapping.setReference(reference);
+    clonedMapping.setSecondReference(secondReference);
 
     return clonedMapping;
   }

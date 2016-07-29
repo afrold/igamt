@@ -218,7 +218,7 @@
 
     <div class="col-md-12">
         <!--<span ng-hide="segment.conformanceStatements.length > 0">No conformance statement</span>-->
-        <table class="table table-striped table-bordered" ng-show="segment.conformanceStatements.length > 0">
+        <table class="table table-striped table-bordered table-condensed" ng-show="segment.conformanceStatements.length > 0">
             <thead>
             <tr class="tbl-header">
                 <th class="col-md-1">ID</th>
@@ -261,7 +261,7 @@
     <div class="col-md-12">
         <!--<span ng-hide="segment.predicates.length > 0">No Conditional Predicate</span>-->
 
-        <table class="table table-striped table-bordered" ng-show="segment.predicates.length > 0">
+        <table class="table table-striped table-bordered table-condensed" ng-show="segment.predicates.length > 0">
             <thead>
             <tr class="tbl-header">
                 <th class="col-md-2">Location</th>
@@ -292,102 +292,215 @@
 </div>
 <div class="row" style="margin-top:20px">
     <div class="col-md-12 igl-page-header">
-                    <span class="pull-left">
-                        <span class="header5">Co-Constraints Table</span>
-                    </span>
-
-    </div>
-
+        <span class="pull-left">
+            <span class="header5">Co-Constraints</span>
+        </span>
+        <span class="pull-right">
+            <button ng-hide="segment.coConstraints.columnList.length == 0" class="btn btn-danger btn-sm" ng-click="deleteCoConstraints();">
+                <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete Co-Constraint</span>
+            </button>
+            <button class="btn btn-info btn-sm" ng-show="segment.coConstraints.columnList.length == 0"
+                    ng-click="manageCoConstaintsTableModal(segment);"
+                    ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                <span><i class="fa fa-plus fa-fw">&nbsp; </i>Create Co-Constraint</span>
+            </button>
+            <button class="btn btn-info btn-sm" ng-show="segment.coConstraints.columnList.length > 0"
+                    ng-click="manageCoConstaintsTableModal(segment);"
+                    ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                <span><i class="fa fa-pencil fa-fw">&nbsp; </i>Edit Co-Constraint</span>
+            </button>
+        </span>
+</div>
     <div class="col-md-12">
-        <div ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
-            <div class="row">
-
-                        <span class="pull-left">
-                             <div class="btn-group">
-                                 <select class="form-control" name="newColumnField" style="with:30%"
-                                         ng-model="newColumnField"
-                                         ng-options="field as segment.name + '-' + field.position + ' : ' + field.name for field in segment.fields">
-                                     <option value="">Select Field</option>
-                                 </select>
-                                 <select class="form-control" name="newColumnConstraintType" style="with:30%"
-                                         ng-model="newColumnConstraintType">
-                                     <option value="">Select Constraint Type</option>
-                                     <option value="v">Value</option>
-                                     <option value="vs">Value Set</option>
-                                 </select>
-                             </div>
-                            </span>
-                            <span class="pull-right">
-                                <button ng-disabled="newColumnField === null || newColumnConstraintType ===null || newColumnField === '' || newColumnConstraintType ===''"
-                                        class="btn btn-info btn-sm"
-                                        ng-click="addColumnCoConstraints(newColumnField, newColumnConstraintType); newColumnField = null; newColumnConstraintType = ''; "
-                                        ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
-                                    <span><i class="fa fa-plus fa-fw">
-                                        &nbsp; </i>Add Column</span></button>
-                            </span>
-            </div>
-            <!--<span ng-hide="segment.coConstraints.columnList.length > 0">No Co-Constraint</span>-->
-            <div class="pull-right">
-                <button class="btn btn-danger btn-xs" ng-click="deleteCoConstraints();"
-                        ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER') || segment.coConstraints.constraints.length === 0">
-                    <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete Co-Constraints</span></button>
-            </div>
+        <div ng-hide="segment.coConstraints.columnList.length == 0" class="table-container">
+            <table st-table="rowCollection" class="table table-striped table-bordered table-condensed">
+                <thead>
+                <tr class="tbl-header">
+                    <th class="col-md-1" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="col in segment.coConstraints.columnList" st-sort="{{col}}">
+                        <span class="glyphicon glyphicon-move"></span> {{segment.name}}-{{col.field.position}}
+                        <a ng-click="deleteColumn(col)" class="point" class="btn btn-xs btn-danger">
+                           <i class="fa fa-times fa-fw"></i>
+                        </a>
+                    </th>
+                    <th class="col-md-2">Description</th>
+                    <th class="col-md-2">Comments</th>
+                    <th class="col-md-1"  align="right">
+                        <button class="btn btn-info btn-xs" ng-click="addCoConstraint();"
+                                ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                            <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Value</span>
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="cc in segment.coConstraints.constraints">
+                    <td class="col-md-1" ng-repeat="col in segment.coConstraints.columnList">
+                        <input ng-show="col.constraintType === 'v'" class="form-control" ng-model="cc.values[col.columnPosition].value"
+                               ng-change="recordChange()" type="text"
+                               ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
+                        <select ng-show="col.constraintType === 'vs'" ng-model="cc.values[col.columnPosition].value"
+                                class="form-control" ng-change="recordChange()"
+                                ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
+                                ng-options="link.id as tablesMap[link.id].bindingIdentifier for link in igdocument.profile.tableLibrary.children"/>
+                    </td>
+                    <td class="col-md-2">
+                        <input class="form-control" ng-model="cc.description" ng-change="recordChange()" type="text"
+                               ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
+                    </td>
+                    <td class="col-md-2">
+                        <input class="form-control" ng-model="cc.comments" ng-change="recordChange()" type="text"
+                               ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
+                    </td>
+                    <td class="col-md-1">
+                        <button class="btn btn-danger btn-xs" ng-click="deleteCoConstraint(cc);"
+                                ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                            <span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <table class="table table-striped table-bordered" ng-show="segment.coConstraints.columnList.length > 0">
+    </div>
+</div>
+</div>
+ </tab>
+
+<tab>
+    <tab-heading>
+        <i class="fa fa-link" aria-hidden="true"></i> Segment Cross-References <span class="badge">{{references.length}}</span>
+    </tab-heading>
+    <div class="el-def" style="margin-top:20px">
+        <div ng-show="references != null && references.length > 0">
+        <table st-table="tmpReferences" st-safe-src="references"
+               class="table table-striped table-bordered table-condensed">
             <thead>
+
             <tr class="tbl-header">
-                <th ng-repeat="column in segment.coConstraints.columnList">
-                    {{segment.name}}-{{column.field.position}}
-                    <a ng-click="deleteColumn(column)" class="point">
-                        <span style="color:red"><i class="fa fa-times fa-fw"></i></span>
-                    </a>
-                </th>
-                <th class="col-md-2">Description</th>
-                <th class="col-md-2">Comments</th>
-                <th class="col-md-1">
-                    <button class="btn btn-info btn-xs" ng-click="addCoConstraint();"
-                            ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
-                        <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
-                </th>
+                <td st-ratio="5">#</td>
+                <th st-ratio="40" st-sort="path">Reference Path</th>
+                <th st-ratio="55" st-sort="name">Reference Name</th>
             </tr>
+
             </thead>
+
             <tbody>
-            <tr ng-repeat="cc in segment.coConstraints.constraints">
-                <td ng-repeat="data in cc.values">
-                    <input ng-show="getConstraintType(data, cc) === 'v'" class="form-control" ng-model="data.value"
-                           ng-change="recordChange()" type="text"
-                           ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
-                    <select ng-show="getConstraintType(data, cc) === 'vs'" ng-model="data.value"
-                            class="form-control" ng-change="recordChange()"
-                            ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
-                            ng-options="link.id as tablesMap[link.id].bindingIdentifier for link in igdocument.profile.tableLibrary.children"/>
+            <tr ng-repeat="ref in tmpReferences">
+                <td st-ratio="5">{{$index + 1}}  </td>
+                <td st-ratio="40">
+<span ng-show="ref.type === 'group'"
+      class="label label-success label-icon">G</span>
+                    <span ng-show="ref.type === 'segmentRef'" class="label label-segment label-icon">S</span>
+                    {{ref.path}}
                 </td>
-                <td class="col-md-2">
-                    <input class="form-control" ng-model="cc.description" ng-change="recordChange()" type="text"
-                           ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
-                </td>
-                <td class="col-md-2">
-                    <input class="form-control" ng-model="cc.comments" ng-change="recordChange()" type="text"
-                           ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
-                </td>
-                <td class="col-md-1">
-                    <button class="btn btn-danger btn-xs" ng-click="deleteCoConstraint(cc);"
-                            ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
-                        <span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+                <td st-ratio="55">
+                     {{ref.name}}
                 </td>
             </tr>
             </tbody>
-        </table>
-    </div>
-</div>
-</div>
+            <tfoot ng-show="references.length >= 15">
+            <tr>
+                <td colspan="3" class="text-center">
+                    <div st-pagination="" st-items-by-page="15" st-displayed-pages="15"></div>
+                </td>
+            </tr>
+            </tfoot>
+            </table>
+            </div>
+        <div ng-hide="references != null && references.length > 0" style="text-align:center">
+            <p>This segment is not being used in this ig document</p>
+            </div>
+     </div>
 </tab>
+
 </tabset>
 </div>
 </div>
 </div>
 </div>
 </div>
+</script>
+
+
+<script type="text/ng-template" id="ManageCoConstraintsTableModal.html">
+    <div class="modal-header">
+        <div class="form-inline">
+            <span class="header4 ">Co-Constraints Table</span>
+        </div>
+     </div>
+    <div class="modal-body">
+        <span class="header5">Create Column</span>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+            <form class="form-inline">
+         <div class="form-group ">
+            <label class="">Field</label>
+                 <select class="form-control" name="newColumnField" style="width:300px"
+                        ng-model="newColumnField"
+                       >
+                    <option value="">Select Field</option>
+                    <option ng-repeat="field in selectedSegment.fields" value="{{field}}" ng-disabled="checkFieldExisting(field)" >{{segment.name + '-' + field.position + ' : ' + field.name}}</option>
+                </select>
+         </div>
+         <div class="form-group">
+            <label class="">Constraint Type</label>
+                 <select class="form-control" name="newColumnConstraintType" style="width:300px"
+                        ng-model="newColumnConstraintType">
+                    <option value="">Select Constraint Type</option>
+                    <option value="v">Value</option>
+                    <option value="vs">Value Set</option>
+                </select>
+         </div>
+              <button ng-disabled="newColumnField === null || newColumnConstraintType ===null || newColumnField === '' || newColumnConstraintType ===''"
+                class="btn btn-info btn-sm"
+                ng-click="addColumnCoConstraints();"
+                ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Column</span>
+            </button>
+                 </form>
+            </div>
+            </div>
+             <div class="row">
+                <div class="col-md-12">
+        <div class="table-container" style="margin-top: 40px">
+            <span class="header5">Table Structure</span>
+            <hr />
+            <table st-table="rowCollection" class="table table-striped table-bordered table-condensed">
+                <thead>
+                <tr class="tbl-header">
+                    <th class="col-md-1" lr-drag-src="headers" lr-drop-target="headers" ng-repeat="col in selectedSegment.coConstraints.columnList" st-sort="{{col}}">
+                        <span class="glyphicon glyphicon-move"></span> {{selectedSegment.name}}-{{col.field.position}}
+                        <a class="btn btn-xs btn-danger" ng-click="deleteColumn(col)">
+                             <i class="fa fa-times fa-fw"></i>
+                        </a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="col-md-1" ng-repeat="col in selectedSegment.coConstraints.columnList">
+                        <select class="form-control" style="width:30%" ng-model="col.constraintType">
+                            <option value="v">Value</option>
+                            <option value="vs">Value Set</option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+                    </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-md-12">
+        <button class="btn btn-default btn-sm" ng-click="close()"><span><i class="fa fa-times fa-fw">
+        &nbsp; </i>Cancel</span></button>
+        <button class="btn btn-success btn-sm" ng-click="saveAndClose()"><span><i class="fa fa-check fa-fw">
+        &nbsp; </i>Save</span></button>
+                </div>
+    </div>
 </script>
 
 <script type="text/ng-template " id="SegmentEditTree.html ">
@@ -657,7 +770,7 @@
     </a>
 
     <div ng-show="editableDT===node.id ">
-        <select ng-model="datatype" ng-change="selectDT() " class="form-control input-sm ">
+        <select ng-model="datatype" ng-change="selectDT(node,datatype) " class="form-control input-sm ">
             <option ng-repeat="datatype in results " value="{{datatype}} "
                     ng-selected="node.datatype.ext===datatype.ext "> {{getDatatypeLabel(datatype)}}
             </option>
@@ -665,9 +778,7 @@
     </div>
 
     <div align="center ">
-        <a ng-show="editableDT===node.id && DTselected " ng-click="applyDT(node,datatype) ">
-            <span><i class="glyphicon glyphicon-ok "></i></span>
-        </a>
+        
         <a ng-show="editableDT===node.id " ng-click="backDT() " class="point ">
             <span><i class="glyphicon glyphicon-remove "></i></span>
         </a>
@@ -679,7 +790,7 @@
 <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') " style="text-align:center ">
     <div ng-show="node.table !=undefined && node.table !==null ">
         <a ng-show="editableVS!==node.id " class="point " ng-click="redirectVS(node.table)">
-            <span>{{getTableLabel(tablesMap[node.table.id])}}</span>
+            <span>{{node.table.bindingIdentifier}}</span>
         </a>
         <a ng-show="editableVS!==node.id " ng-click="editVS(node) " class="point ">
             <span><i class="fa fa-pencil fa-fw "></i></span>
@@ -689,24 +800,23 @@
         </a>
     </div>
 
-    <input class="form-control col-md-4 " type="text " ng-model="searchVS.name "
-           ng-hide="editableVS!==node.id || VSselected "/>
-    <li class="form-control col-md-4 " ng-show="editableVS===node.id && VSselected ">
-        {{selectedValueSet.bindingIdentifier}}
-        <button type="button " class="close " aria-label="Close " ng-click="unselectVS() ">
-            <span aria-hidden="true ">&times;</span>
-        </button>
-    </li>
-    <div ng-if="searchVS.name && !VSselected && editableVS===node.id ">
-        <li class="form-control col-md-4 " ng-class="{ 'active':isActive(valueSet.id)} " ng-click="selectVS(valueSet) "
+    <div class="input-group input-group-xs" ng-hide="editableVS!==node.id ">
+    <span class="input-group-addon glyphicon glyphicon-search" ></span>
+    <input class="form-control " type="text " ng-model="searchVS.name "/> 
+
+
+     </div>
+
+
+    
+    <div ng-if="searchVS.name  && editableVS===node.id ">
+        <li class="form-control col-md-3 " ng-class="{ 'active':isActive(valueSet.id)} " ng-click="selectVS(node,valueSet) "
             ng-repeat="valueSet in tables | filter:searchVS ">
-            {{valueSet.name}}
+            {{valueSet.bindingIdentifier}}
         </li>
     </div>
     <div align="center ">
-        <a ng-show="editableVS===node.id && VSselected " ng-click="applyVS(node,valueSet) ">
-            <span><i class="glyphicon glyphicon-ok "></i></span>
-        </a>
+       
 
         <a ng-show="editableVS===node.id " ng-click="backVS() " class="point ">
             <span><i class="glyphicon glyphicon-remove "></i></span>
@@ -1152,19 +1262,19 @@
                             <span>{{newConstraint.segment}}-</span>
                             <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'segment')}" ng-change="updateField_1()" ng-model="newConstraint.field_1" placeholder="Field" ng-options="field as field.position for field in segment.fields"/>
 
-        				<span ng-show="datatypesMap[newConstraint.field_1.datatype].components.length > 0">.
+        				<span ng-show="datatypesMap[newConstraint.field_1.datatype.id].components.length > 0">.
         					<select class="form-control form-control-short"
                                     placeholder="Component"
                                     ng-change="updateComponent_1()"
                                     ng-model="newConstraint.component_1"
-                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype].components">
+                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype.id].components">
                         	</select>
     					</span>
-    					<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
+    					<span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
         					<select class="form-control form-control-short"
                                     placeholder="SubComponent"
                                     ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
+                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components">
                         	</select>
     					</span>
                             <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'segment')">Empty node</span>
@@ -1216,17 +1326,17 @@
                                     ng-model="newConstraint.field_2"
                                     ng-options="field as field.position for field in segment.fields">
                         	</select>
-        					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.field_2.datatype.id].components.length > 0">.
         						<select class="form-control form-control-short"
                                         ng-change="updateComponent_2()"
                                         ng-model="newConstraint.component_2"
-                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
+                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype.id].components">
                             	</select>
     						</span>
-    						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
+    						<span ng-show="datatypesMap[newConstraint.component_2.datatype.id].components.length > 0">.
         						<select class="form-control form-control-short"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype.id].components">
                             	</select>
     						</span>
 							<span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'segment')">Empty another node</span>
@@ -1414,19 +1524,19 @@
                         <td class="col-md-2">
                             <span>{{newConstraint.segment}}-</span>
                             <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'segment')}" ng-change="updateField_1()" ng-model="newConstraint.field_1" placeholder="Field" ng-options="field as field.position for field in segment.fields"/>
-        			<span ng-show="datatypesMap[newConstraint.field_1.datatype].components.length > 0">.
+        			<span ng-show="datatypesMap[newConstraint.field_1.datatype.id].components.length > 0">.
         				<select class="form-control form-control-short"
                                 placeholder="Component"
                                 ng-change="updateComponent_1()"
                                 ng-model="newConstraint.component_1"
-                                ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype].components">
+                                ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype.id].components">
                         </select>
     				</span>
-    				<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
+    				<span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
         				<select class="form-control form-control-short"
                                 placeholder="SubComponent"
                                 ng-model="newConstraint.subComponent_1"
-                                ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
+                                ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components">
                         </select>
     				</span>
                             <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'segment')">Empty node</span>
@@ -1480,17 +1590,17 @@
                                 ng-model="newConstraint.field_2"
                                 ng-options="field as field.position for field in segment.fields">
                         </select>
-        				<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
+        				<span ng-show="datatypesMap[newConstraint.field_2.datatype.id].components.length > 0">.
         					<select class="form-control form-control-short"
                                     ng-change="updateComponent_2()"
                                     ng-model="newConstraint.component_2"
-                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
+                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype.id].components">
                             </select>
     					</span>
-    					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
+    					<span ng-show="datatypesMap[newConstraint.component_2.datatype.id].components.length > 0">.
         					<select class="form-control form-control-short"
                                     ng-model="newConstraint.subComponent_2"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
+                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype.id].components">
                             </select>
     					</span>
 						<span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'segment')">Empty another node</span>
@@ -1609,10 +1719,8 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            <form role="form">
-
                 <div class="col-md-4">
-                    Reference:
+                    First Reference:
                 </div>
 
                 <div class="col-md-8">
@@ -1622,12 +1730,24 @@
                             ng-options="field.position as segment.name + '-' + field.position + ' : ' + field.name for field in segment.fields"/>
                 </div>
 
+                <div ng-show="selectedMapping.reference" class="col-md-4">
+                    Second Reference (Optional):
+                </div>
+
+                <div ng-show="selectedMapping.reference" class="col-md-8">
+                    <select class="form-control" name="secondReference"
+                            ng-change="recordChange()"
+                            ng-model="selectedMapping.secondReference"
+                            ng-options="field.position as segment.name + '-' + field.position + ' : ' + field.name for field in segment.fields"/>
+                </div>
+
                 <div ng-show="selectedMapping.reference" class="col-md-12">
                     <table class="table table-striped table-bordered">
                         <thead>
                         <tr class="tbl-header">
-                            <th class="col-md-4">Reference Value</th>
-                            <th class="col-md-7">Datatype</th>
+                            <th class="col-md-3">If {{segment.name}}-{{selectedMapping.reference}} is</th>
+                            <th ng-show="selectedMapping.secondReference" class="col-md-3">And if {{segment.name}}-{{selectedMapping.secondReference}} is</th>
+                            <th class="col-md-5">Then datatype of {{segment.name}}-{{selectedNode.position}} should be</th>
                             <th class="col-md-1">
                                 <button title="Add" type="button" class="btn btn-xs btn-info" ng-click="addCase()">
                                     <i class="fa fa-plus fa-fw"></i>
@@ -1637,11 +1757,15 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="case in selectedMapping.cases">
-                            <td class="col-md-4">
+                            <td class="col-md-3">
                                 <input type="text" class="form-control" ng-model="case.value"
                                        ng-change="recordChange()"/>
                             </td>
-                            <td class="col-md-7">
+                            <td class="col-md-3">
+                                <input type="text" class="form-control" ng-model="case.secondValue"
+                                       ng-change="recordChange()"/>
+                            </td>
+                            <td class="col-md-5">
                                 <select ng-model="case.datatype" class="form-control" ng-change="recordChange()"
                                         ng-options="link.id as getDatatypeLabel(datatypesMap[link.id]) for link in igdocument.profile.datatypeLibrary.children | filter: {name: case.value}"/>
                             </td>
@@ -1655,8 +1779,6 @@
                         </tbody>
                     </table>
                 </div>
-
-            </form>
         </div>
     </div>
 

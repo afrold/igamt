@@ -87,6 +87,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePr
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
@@ -171,6 +174,43 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentListException(e);
     }
   }
+  
+  @RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST,
+	      produces = "application/json")
+	  public List<IGDocument> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
+	    log.info("Fetching the IG Document. scope=" + scopesAndVersion.getScopes() + " hl7Version="
+	        + scopesAndVersion.getHl7Version());
+	    List<IGDocument> igDocuments = new ArrayList<IGDocument>();
+	    try {
+	      User u = userService.getCurrentUser();
+	      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+	      if (account == null) {
+	        throw new UserAccountNotFoundException();
+	      }
+
+	      igDocuments.addAll(igDocumentService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+	          scopesAndVersion.getHl7Version()));
+	      if (igDocuments.isEmpty()) {
+	        throw new NotFoundException("IG Document not found for scopesAndVersion=" + scopesAndVersion);
+	      }
+	    } catch (Exception e) {
+	      log.error("", e);
+	    }
+	   
+	    return igDocuments;
+	  }
+  
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+  public IGDocument getIgDocumentById(@PathVariable("id") String id) throws NotFoundException {
+    log.info("Fetching igDocumentById..." + id);
+    return findById(id);
+  }
+  public IGDocument findById(String id) throws NotFoundException {
+	  IGDocument result = igDocumentService.findById(id);
+	    if (result == null)
+	      throw new NotFoundException("igDocumentNotFound");
+	    return result;
+	  }
 
   /**
    * Return the list of pre-loaded profiles
@@ -828,6 +868,12 @@ public class IGDocumentController extends CommonController {
       HttpServletRequest request, HttpServletResponse response) throws IOException,
       IGDocumentNotFoundException, IGDocumentException {
     IGDocument d = igDocumentService.findOne(id);
+    System.out.println("Section from front end ");
+
+    System.out.println("IN "+ section.getSectionTitle());
+    for(Section sect : section.getChildSections()){
+  	  System.out.println(sect.getSectionTitle()+"===========positrion"+sect.getSectionPosition());
+    }	
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
     }
@@ -867,11 +913,31 @@ public class IGDocumentController extends CommonController {
       igDocumentService.save(d);
       return true;
     } else {
+    	
+       
+    	
+   
+        System.out.println("===================BEFORE");
       Section s = findSection(d, idSect);
+      System.out.println("IN "+ s.getSectionTitle());
+      for(Section sect : s.getChildSections()){
+    	  System.out.println(sect.getSectionTitle()+"===========positrion"+sect.getSectionPosition());
+      }
+
+
+      System.out.println(s);
       if (s == null)
         throw new IGDocumentException("Unknown Section");
-
+      
       s.merge(section);
+      
+      System.out.println("two");
+      System.out.println("after============================");
+      System.out.println("IN "+ s.getSectionTitle());
+      for(Section sect : s.getChildSections()){
+  	  System.out.println(sect.getSectionTitle()+"===========position"+sect.getSectionPosition());
+      }
+
       igDocumentService.save(d);
       return true;
     }
@@ -1015,7 +1081,6 @@ public class IGDocumentController extends CommonController {
   public String reorderChildSections(@PathVariable("id") String id,
       @RequestBody Set<SectionMap> sections) throws IOException, IGDocumentNotFoundException,
       IGDocumentException {
-
     System.out.println(id);
     System.out.println();
     IGDocument d = igDocumentService.findOne(id);
@@ -1027,7 +1092,7 @@ public class IGDocumentController extends CommonController {
     for (Section s : d.getChildSections()) {
       for (SectionMap x : sections) {
         if (s.getId().equals(x.getId())) {
-          s.setPosition(x.getPosition());
+          s.setSectionPosition(x.getSectionPosition());
         }
       }
     }
@@ -1047,7 +1112,6 @@ public class IGDocumentController extends CommonController {
     System.out.println("=========sorted set=====================");
     System.out.println(sortedSet);
     d.setChildSections(sortedSet);
-
     System.out.println(d.getChildSections());
     igDocumentService.save(d);
     return null;

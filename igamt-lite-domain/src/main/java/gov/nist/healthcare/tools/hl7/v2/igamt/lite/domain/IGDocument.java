@@ -37,7 +37,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 
 
 	private void addSection(Section s) {
-		s.setSectionPosition(this.childSections.size());
+		s.setSectionPosition(this.childSections.size() + 1);
 		this.childSections.add(s);
 		
 	}
@@ -117,7 +117,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 		p.getMessages().setType("messages");
 		p.getMessages().setSectionContents("");
 		
-		int messagePositionNum = 0;
+		int messagePositionNum = 1;
 		for(Message m:p.getMessages().getChildren()){
 			m.setPosition(messagePositionNum);
 			messagePositionNum = messagePositionNum + 1;
@@ -231,7 +231,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 		p.getMessages().setSectionTitle("Conformance Profiles");
 		p.getMessages().setType("messages");
 		
-		int messagePositionNum = 0;
+		int messagePositionNum = 1;
 		for(Message m:p.getMessages().getChildren()){
 			m.setPosition(messagePositionNum);
 			messagePositionNum = messagePositionNum + 1;

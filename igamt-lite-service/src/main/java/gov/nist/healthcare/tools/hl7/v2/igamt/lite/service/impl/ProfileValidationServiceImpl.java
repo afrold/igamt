@@ -18,10 +18,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileValidationException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileValidationService;
-
 import java.io.IOException;
 
 import javax.xml.XMLConstants;
@@ -43,6 +39,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileValidationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileValidationService;
+
 @Service
 public class ProfileValidationServiceImpl implements ProfileValidationService {
   Logger logger = LoggerFactory.getLogger(ProfileValidationServiceImpl.class);
@@ -51,18 +52,18 @@ public class ProfileValidationServiceImpl implements ProfileValidationService {
   public void validate(Profile p) throws ProfileValidationException {
 
     ProfileSerializationImpl profileSerializationImpl = new ProfileSerializationImpl();
-    String pS = profileSerializationImpl.serializeProfileToXML(p);
+    String pS = profileSerializationImpl.serializeProfileToXML(p ,new DocumentMetaData());
     String schemaPath = "validation/profilesSchema/Profile.xsd";
     validate(pS, schemaPath);
 
 
     TableSerializationImpl tableSerializationImpl = new TableSerializationImpl();
-    String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTableLibrary());
+    String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTableLibrary(), new DocumentMetaData());
     schemaPath = "validation/profilesSchema/ValueSets.xsd";
     validate(tS, schemaPath);
 
     ConstraintsSerializationImpl constraintsSerializationImpl = new ConstraintsSerializationImpl();
-    String cS = constraintsSerializationImpl.serializeConstraintsToXML(p);
+    String cS = constraintsSerializationImpl.serializeConstraintsToXML(p,  new DocumentMetaData());
     schemaPath = "validation/profilesSchema/ConformanceContext.xsd";
     validate(cS, schemaPath);
 

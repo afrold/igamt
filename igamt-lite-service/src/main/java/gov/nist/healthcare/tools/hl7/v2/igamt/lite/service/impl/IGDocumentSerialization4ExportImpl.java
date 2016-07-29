@@ -36,6 +36,8 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsColumn;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -71,6 +77,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import nu.xom.Attribute;
 import nu.xom.Document;
+import nu.xom.Element;
 import nu.xom.Serializer;
 
 @Service
@@ -128,6 +135,12 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     }
   }
 
+  public String serializeSectionsToXML(IGDocument igdoc) {
+    nu.xom.Element e = this.serializeIGDocumentSectionsToDoc(igdoc);
+    nu.xom.Document doc = new nu.xom.Document(e);
+    return doc.toXML();
+  }
+
   @Override
   public String serializeIGDocumentToXML(IGDocument igdoc) {
     return serializeIGDocumentToDoc(igdoc).toXML();
@@ -163,17 +176,30 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     return doc;
   }
 
-  @Override
-  public String serializeDatatypeToXML(Datatype d, IGDocument igdoc) {
-    return serializeDatatypeToDoc(d, igdoc).toXML();
+  public String serializeTableToXML(TableLink tl) {
+    nu.xom.Element e = serializeOneTable(tl);
+    nu.xom.Document doc = new nu.xom.Document(e);
+    return doc.toXML();
   }
 
-  public nu.xom.Document serializeDatatypeToDoc(Datatype d, IGDocument igdoc) {
-    nu.xom.Element e =
-        serializeDatatype(igdoc.getProfile().getDatatypeLibrary().findOne(d.getId()), igdoc
-            .getProfile().getTableLibrary(), igdoc.getProfile().getDatatypeLibrary(), "", 0);
+  public String serializeDatatypeToXML(DatatypeLink dl) {
+    nu.xom.Element e = serializeOneDatatype(dl);
     nu.xom.Document doc = new nu.xom.Document(e);
-    return doc;
+    return doc.toXML();
+  }
+
+  public String serializeSegmentToXML(SegmentLink sl) {
+    nu.xom.Element e =
+        serializeOneSegment(sl);
+    nu.xom.Document doc = new nu.xom.Document(e);
+    return doc.toXML();
+  }
+
+  public String serializeMessageToXML(Message m) {
+    nu.xom.Element e =
+        serializeOneMessage(m);
+    nu.xom.Document doc = new nu.xom.Document(e);
+    return doc.toXML();
   }
 
   public nu.xom.Element serializeIGDocumentMetadataToDoc(IGDocument igdoc) {
@@ -227,14 +253,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
       if (s.getSectionContents() != null && !s.getSectionContents().isEmpty()) {
         nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
-        sectCont.appendChild("<div class=\"fr-view\">" + s.getSectionContents() + "</div>");
+        sectCont.appendChild(cleanRichtext(s.getSectionContents()));
         xsect.appendChild(sectCont);
       }
 
       if (depth == 1) {
-        xsect.addAttribute(new Attribute("prefix", String.valueOf(s.getSectionPosition() + 1)));
+        xsect.addAttribute(new Attribute("prefix", String.valueOf(s.getSectionPosition())));
         addContents4Html((Set<Section>) s.getChildSections(),
-            String.valueOf(s.getSectionPosition() + 1), depth + 1, xsect);
+            String.valueOf(s.getSectionPosition()), depth + 1, xsect);
       } else {
         xsect.addAttribute(new Attribute("prefix", prefix + "."
             + String.valueOf(s.getSectionPosition())));
@@ -358,10 +384,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     }
 
     // profile.getMessages().setPositionsOrder();
-    List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
-    Collections.sort(msgList);
-
-    for (Message m : msgList) {
+    //    List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
+    //    Collections.sort(msgList);
+    //
+    //    for (Message m : msgList) {
+    for (Message m : profile.getMessages().getChildren()) {
       msd.appendChild(this.serializeMessageDisplay(m, profile.getSegmentLibrary(), prefix));
     }
     xsect.appendChild(msd);
@@ -770,14 +797,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         String locationName =
             segmentRefOrGroup instanceof Group ? ((Group) segmentRefOrGroup).getName()
                 : ((SegmentRef) segmentRefOrGroup).getRef().getName();
-        nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, locationName + "-");
-        if (constraint instanceof Predicate) {
-          cpinfo.addAttribute(new Attribute("prefix", prefixcp));
-          cpinfo.appendChild(elmConstraint);
-        } else if (constraint instanceof ConformanceStatement) {
-          csinfo.addAttribute(new Attribute("prefix", prefixcs));
-          csinfo.appendChild(elmConstraint);
-        }
+            nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, locationName + "-");
+            if (constraint instanceof Predicate) {
+              cpinfo.addAttribute(new Attribute("prefix", prefixcp));
+              cpinfo.appendChild(elmConstraint);
+            } else if (constraint instanceof ConformanceStatement) {
+              csinfo.addAttribute(new Attribute("prefix", prefixcs));
+              csinfo.appendChild(elmConstraint);
+            }
       }
     }
 
@@ -979,7 +1006,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
         (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
     elmTableDefinition
-        .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
+    .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
     elmTableDefinition.addAttribute(new Attribute("Description", (t.getDescription() == null) ? ""
         : t.getDescription()));
     elmTableDefinition.addAttribute(new Attribute("Version", (t.getVersion() == null) ? "" : ""
@@ -1016,13 +1043,57 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
   }
 
 
+  private nu.xom.Element serializeOneTable(TableLink tl) {
+    Table t = tableService.findById(tl.getId());
+
+    nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
+    elmTableDefinition.addAttribute(new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t
+        .getBindingIdentifier()));
+    elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+        (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+    elmTableDefinition
+    .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
+    elmTableDefinition.addAttribute(new Attribute("Description", (t.getDescription() == null) ? ""
+        : t.getDescription()));
+    elmTableDefinition.addAttribute(new Attribute("Version", (t.getVersion() == null) ? "" : ""
+        + t.getVersion()));
+    elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
+    elmTableDefinition.addAttribute(new Attribute("Stability", (t.getStability() == null) ? "" : t
+        .getStability().value()));
+    elmTableDefinition.addAttribute(new Attribute("Extensibility",
+        (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
+    elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
+        (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
+    elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
+
+    if (t.getCodes() != null) {
+      for (Code c : t.getCodes()) {
+        nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
+        elmTableElement.addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c
+            .getValue()));
+        elmTableElement.addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c
+            .getLabel()));
+        elmTableElement.addAttribute(new Attribute("CodeSystem", (c.getCodeSystem() == null) ? ""
+            : c.getCodeSystem()));
+        elmTableElement.addAttribute(new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c
+            .getCodeUsage()));
+        elmTableElement.addAttribute(new Attribute("Comments", (c.getComments() == null) ? "" : c
+            .getComments()));
+        elmTableDefinition.appendChild(elmTableElement);
+      }
+    }
+    return elmTableDefinition;
+  }
+
+
   private nu.xom.Element serializeMessageDisplay(Message m, SegmentLibrary segments, String prefix) {
     nu.xom.Element sect = new nu.xom.Element("Section");
     sect.addAttribute(new Attribute("id", m.getId()));
     sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(m.getPosition())));
     sect.addAttribute(new Attribute("position", String.valueOf(m.getPosition() + 1)));
     sect.addAttribute(new Attribute("h", String.valueOf(3)));
-    sect.addAttribute(new Attribute("title", m.getDescription()));
+    String title = m.getName() != null ? m.getName() : m.getMessageType()+ "^"+m.getEvent()+"^" + m.getStructID();
+    sect.addAttribute(new Attribute("title", title + " - " + m.getIdentifier() + " - " + m.getDescription()));
 
     nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
     elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
@@ -1125,9 +1196,115 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
       String label =
           (segmentRef.getRef().getExt() == null || segmentRef.getRef().getExt().isEmpty()) ? segmentRef
               .getRef().getName() : segmentRef.getRef().getLabel();
-      elmSegment.addAttribute(new Attribute("Label", label));
-      elmSegment.addAttribute(new Attribute("Description", segmentService.findById(
-          segmentRef.getRef().getId()).getDescription()));
+              elmSegment.addAttribute(new Attribute("Label", label));
+              elmSegment.addAttribute(new Attribute("Description", segmentService.findById(
+                  segmentRef.getRef().getId()).getDescription()));
+
+    }
+    elmSegment.addAttribute(new Attribute("Depth", String.valueOf(depth)));
+    elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage().value()));
+    elmSegment.addAttribute(new Attribute("Min", segmentRef.getMin() + ""));
+    elmSegment.addAttribute(new Attribute("Max", segmentRef.getMax() + ""));
+    if (segmentRef.getComment() != null)
+      elmSegment.addAttribute(new Attribute("Comment", segmentRef.getComment()));
+    elmSegment.addAttribute(new Attribute("Position", segmentRef.getPosition().toString()));
+    elmDisplay.appendChild(elmSegment);
+  }
+
+  private nu.xom.Element serializeOneMessage(Message m) {
+    //    nu.xom.Element sect = new nu.xom.Element("Section");
+    //    sect.addAttribute(new Attribute("id", m.getId()));
+    //    sect.addAttribute(new Attribute("position", String.valueOf(m.getPosition() + 1)));
+    //    sect.addAttribute(new Attribute("h", String.valueOf(3)));
+    //    String title = m.getName() != null ? m.getName() : m.getMessageType()+ "^"+m.getEvent()+"^" + m.getStructID();
+    //    sect.addAttribute(new Attribute("title", title + " - " + m.getIdentifier() + " - " + m.getDescription()));
+
+    nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
+    elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
+    elmMessage.addAttribute(new Attribute("Name", m.getName() + ""));
+    elmMessage.addAttribute(new Attribute("Type", m.getMessageType()));
+    elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
+    elmMessage.addAttribute(new Attribute("StructID", m.getStructID()));
+    String title = m.getName() != null ? m.getName() : m.getMessageType()+ "^"+m.getEvent()+"^" + m.getStructID();
+    elmMessage.addAttribute(new Attribute("Label", title + " - " + m.getIdentifier() + ""));
+
+
+    if (m.getDescription() != null && !m.getDescription().equals(""))
+      elmMessage.addAttribute(new Attribute("Description", m.getDescription()));
+    if (m.getComment() != null && !m.getComment().isEmpty()) {
+      elmMessage.addAttribute(new Attribute("Comment", m.getComment()));
+    }
+    if (m.getUsageNote() != null && !m.getUsageNote().isEmpty()) {
+      elmMessage.appendChild(this.serializeRichtext("UsageNote", m.getUsageNote()));
+    }
+
+    List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
+    for (SegmentRefOrGroup srog : segRefOrGroups) {
+      if (srog instanceof SegmentRef) {
+        this.serializeOneSegmentRef(elmMessage, (SegmentRef) srog, 0);
+      } else if (srog instanceof Group) {
+        this.serializeOneGroup(elmMessage, (Group) srog, 0);
+      }
+    }
+
+    return elmMessage;
+
+    //    sect.appendChild(elmMessage);
+    //    return sect;
+  }
+
+  private void serializeOneGroup(nu.xom.Element elmDisplay, Group group, Integer depth) {
+    nu.xom.Element elmGroup = new nu.xom.Element("Elt");
+    elmGroup.addAttribute(new Attribute("IdGpe", group.getId()));
+    elmGroup.addAttribute(new Attribute("Name", group.getName()));
+    elmGroup.addAttribute(new Attribute("Description", "BEGIN " + group.getName() + " GROUP"));
+    elmGroup.addAttribute(new Attribute("Usage", group.getUsage().value()));
+    elmGroup.addAttribute(new Attribute("Min", group.getMin() + ""));
+    elmGroup.addAttribute(new Attribute("Max", group.getMax()));
+    elmGroup.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "["));
+    elmGroup.addAttribute(new Attribute("Comment", group.getComment()));
+    elmGroup.addAttribute(new Attribute("Position", group.getPosition().toString()));
+    elmDisplay.appendChild(elmGroup);
+
+    for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
+      if (segmentRefOrGroup instanceof SegmentRef) {
+        this.serializeOneSegmentRef(elmDisplay, (SegmentRef) segmentRefOrGroup, 
+            depth + 1);
+      } else if (segmentRefOrGroup instanceof Group) {
+        this.serializeOneGroup(elmDisplay, (Group) segmentRefOrGroup, depth + 1);
+      }
+    }
+    nu.xom.Element elmGroup2 = new nu.xom.Element("Elt");
+    elmGroup2.addAttribute(new Attribute("IdGpe", group.getId()));
+    elmGroup2.addAttribute(new Attribute("Name", "END " + group.getName() + " GROUP"));
+    elmGroup2.addAttribute(new Attribute("Description", "END " + group.getName() + " GROUP"));
+    elmGroup2.addAttribute(new Attribute("Usage", group.getUsage().value()));
+    elmGroup2.addAttribute(new Attribute("Min", group.getMin() + ""));
+    elmGroup2.addAttribute(new Attribute("Max", group.getMax()));
+    elmGroup2.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "]"));
+    elmGroup2.addAttribute(new Attribute("Depth", String.valueOf(depth)));
+    elmGroup2.addAttribute(new Attribute("Position", group.getPosition().toString()));
+    elmDisplay.appendChild(elmGroup2);
+
+  }
+
+  private void serializeOneSegmentRef(nu.xom.Element elmDisplay, SegmentRef segmentRef,
+      Integer depth) {
+    nu.xom.Element elmSegment = new nu.xom.Element("Elt");
+    elmSegment.addAttribute(new Attribute("IDRef", segmentRef.getId()));
+    elmSegment.addAttribute(new Attribute("IDSeg", segmentRef.getRef().getId()));
+
+    if (segmentRef.getRef() != null
+        && segmentService.findById(segmentRef.getRef().getId()) != null
+        && segmentService.findById(segmentRef.getRef().getId()).getName() != null) {
+      elmSegment.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth)
+          + segmentService.findById(segmentRef.getRef().getId()).getName()));
+      String label =
+          (segmentRef.getRef().getExt() == null || segmentRef.getRef().getExt().isEmpty()) ? segmentRef
+              .getRef().getName() : segmentRef.getRef().getLabel();
+              elmSegment.addAttribute(new Attribute("Label", label));
+              elmSegment.addAttribute(new Attribute("Description", segmentService.findById(
+                  segmentRef.getRef().getId()).getDescription()));
 
     }
     elmSegment.addAttribute(new Attribute("Depth", String.valueOf(depth)));
@@ -1144,20 +1321,31 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
   private nu.xom.Element serializeRichtext(String attribute, String richtext) {
     nu.xom.Element elmText1 = new nu.xom.Element("Text");
     elmText1.addAttribute(new Attribute("Type", attribute));
-    elmText1.appendChild("<div class=\"fr-view\">" + richtext + "</div>");
+    elmText1.appendChild(cleanRichtext(richtext));
     return elmText1;
   }
 
+  private String cleanRichtext(String richtext){
+    org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
+    Elements elements1 = doc.select("h1");
+    elements1.tagName("p").attr("style", "display: block;font-size: 16.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
+    elements1.after("<hr />");
+    Elements elements2 = doc.select("h2");
+    elements2.tagName("p").attr("style", "display: block;font-size: 14.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
+    Elements elements3 = doc.select("h3");
+    elements3.tagName("p").attr("style", "display: block;font-size: 12.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
+    Elements elements4 = doc.select("h4");
+    elements4.tagName("p").attr("style", "display: block;font-size: 10.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
+    return "<div class=\"fr-view\">" + doc.html() + "</div>";
+  }
 
-  private void serializeSegment(nu.xom.Element ss, SegmentLink sl, TableLibrary tables,
+
+  private void serializeSegment(nu.xom.Element parentElement, SegmentLink sl, TableLibrary tables,
       DatatypeLibrary datatypes, String prefix, Integer position) {
     nu.xom.Element sect = new nu.xom.Element("Section");
     // if (sl.getId() != null && segmentService != null && segmentService.findById(sl.getId()) !=
     // null){
     if (sl.getId() != null) {
-      logger.debug("\n\n" + sl.toString() + "\n\n");
-      logger.debug("\n\n" + (segmentService == null) + "\n\n");
-
       Segment s = segmentService.findById(sl.getId());
 
       sect.addAttribute(new Attribute("id", s.getId()));
@@ -1166,7 +1354,23 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
       sect.addAttribute(new Attribute("h", String.valueOf(3)));
       sect.addAttribute(new Attribute("title", sl.getLabel() + " - " + s.getDescription()));
 
-      nu.xom.Element elmSegment = new nu.xom.Element("Segment");
+      nu.xom.Element elmSegment = serializeOneSegment(sl);
+
+      elmSegment.addAttribute(new Attribute("prefix", prefix));
+      elmSegment.addAttribute(new Attribute("position", ""));
+
+      sect.appendChild(elmSegment);
+      parentElement.appendChild(sect);
+    }
+  }
+
+
+  private nu.xom.Element serializeOneSegment(SegmentLink sl) {
+    nu.xom.Element elmSegment = new nu.xom.Element("Segment");
+
+    if (sl.getId() != null) {
+      Segment s = segmentService.findById(sl.getId());
+
       elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
       elmSegment.addAttribute(new Attribute("Name", sl.getName()));
       elmSegment.addAttribute(new Attribute("Label",
@@ -1178,17 +1382,16 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
       }
 
       elmSegment.addAttribute(new Attribute("id", s.getId()));
-      elmSegment.addAttribute(new Attribute("prefix", prefix));
-      elmSegment.addAttribute(new Attribute("position", ""));
 
-      // TODO if ( !s.getText1().equals("") | !s.getText2().equals("")){
-      if (s.getText1() != null && !s.getText1().isEmpty()) {
-        elmSegment.appendChild(this.serializeRichtext("Text1", s.getText1()));
+      if ((s.getText1() != null && !s.getText1().isEmpty()) ||
+          (s.getText2() != null && !s.getText2().isEmpty()) ){
+        if (s.getText1() != null && !s.getText1().isEmpty()) {
+          elmSegment.appendChild(this.serializeRichtext("Text1", s.getText1()));
+        }
+        if (s.getText2() != null && !s.getText2().isEmpty()) {
+          elmSegment.appendChild(this.serializeRichtext("Text2", s.getText2()));
+        }
       }
-      if (s.getText2() != null && !s.getText2().isEmpty()) {
-        elmSegment.appendChild(this.serializeRichtext("Text2", s.getText2()));
-      }
-      // }
 
       Map<Integer, Field> fields = new HashMap<Integer, Field>();
 
@@ -1201,13 +1404,12 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         nu.xom.Element elmField = new nu.xom.Element("Field");
         elmField.addAttribute(new Attribute("Name", f.getName()));
         elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
-        // elmField.addAttribute(new Attribute("Datatype", datatypes.findOne(
-        // f.getDatatype()).getLabel()));
+
         if (f.getDatatype() != null && f.getDatatype().getExt() != null) {
           String label =
               f.getDatatype().getExt().isEmpty() ? f.getDatatype().getName() : f.getDatatype()
                   .getLabel();
-          elmField.addAttribute(new Attribute("Datatype", label));
+              elmField.addAttribute(new Attribute("Datatype", label));
         }
         elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
         elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
@@ -1217,16 +1419,15 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         if (f.getConfLength() != null && !f.getConfLength().equals(""))
           elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
         if (f.getTable() != null && !f.getTable().getBindingIdentifier().equals(""))
-          elmField.addAttribute(new Attribute("Binding", tables.findOneTableById(
-              f.getTable().getId()).getBindingIdentifier()
-              + ""));
+          elmField.addAttribute(new Attribute("Binding", 
+              f.getTable().getBindingIdentifier()));
         if (f.getItemNo() != null && !f.getItemNo().equals(""))
           elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
         if (f.getComment() != null && !f.getComment().isEmpty())
           elmField.addAttribute(new Attribute("Comment", f.getComment()));
         elmField.addAttribute(new Attribute("Position", String.valueOf(f.getPosition())));
 
-        if (f.getText() != null && !f.getText().equals("")) {
+        if (f.getText() != null && !f.getText().isEmpty()) {
           elmField.appendChild(this.serializeRichtext("Text", f.getText()));
         }
 
@@ -1239,27 +1440,93 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
             elmField.appendChild(elmConstraint);
           }
         }
+
         elmSegment.appendChild(elmField);
       }
-      sect.appendChild(elmSegment);
-      ss.appendChild(sect);
+
+      CoConstraints coconstraints = s.getCoConstraints();
+      if (coconstraints.getConstraints().size() != 0){
+        nu.xom.Element ccts = new Element("coconstraints");
+        nu.xom.Element htmlTable = new nu.xom.Element("table");
+        htmlTable.addAttribute(new Attribute("cellpadding", "1"));
+        htmlTable.addAttribute(new Attribute("cellspacing", "0"));
+        htmlTable.addAttribute(new Attribute("border", "1"));
+        htmlTable.addAttribute(new Attribute("width", "100%"));
+
+        nu.xom.Element thead = new nu.xom.Element("thead");
+        thead.addAttribute(new Attribute("style", "background:#F0F0F0; color:#B21A1C; align:center"));
+        nu.xom.Element tr = new nu.xom.Element("tr");
+        for (CoConstraintsColumn ccc : coconstraints.getColumnList()){
+          nu.xom.Element th = new nu.xom.Element("th");
+          th.appendChild(sl.getName()+ "-" + ccc.getField().getPosition());
+          tr.appendChild(th);
+        }
+        nu.xom.Element th = new nu.xom.Element("th");
+        th.appendChild("Description");
+        tr.appendChild(th);
+        th = new nu.xom.Element("th");
+        th.appendChild("Comments");
+        tr.appendChild(th);
+        thead.appendChild(tr);
+        htmlTable.appendChild(thead);
+
+        nu.xom.Element tbody = new nu.xom.Element("tbody");
+        tbody.addAttribute(new Attribute("style", "background-color:white;text-decoration:normal"));
+        for (CoConstraint cct : coconstraints.getConstraints()){
+
+          tr = new nu.xom.Element("tr");
+          for (CCValue ccv : cct.getValues()){
+            nu.xom.Element td = new nu.xom.Element("td");
+            if (ccv != null){
+              if(coconstraints.getColumnList().get(cct.getValues().indexOf(ccv)).getConstraintType().equals("v")){
+                td.appendChild(ccv.getValue());
+              } else {
+                if (tableService.findById(ccv.getValue()) != null) {
+                  td.appendChild(tableService.findById(ccv.getValue()).getBindingIdentifier());
+                } else {
+                  td.appendChild("");
+                }
+              }
+            } else {
+              td.appendChild("");
+            }
+            tr.appendChild(td);
+          }
+          nu.xom.Element td = new nu.xom.Element("td");
+          td.appendChild(cct.getDescription());
+          tr.appendChild(td);
+          td = new nu.xom.Element("td");
+          td.appendChild(cct.getComments());
+          tr.appendChild(td);
+          tbody.appendChild(tr);
+        }
+        htmlTable.appendChild(tbody);
+        ccts.appendChild(htmlTable);
+        elmSegment.appendChild(ccts);
+      }
     }
+    return elmSegment;
   }
 
 
   private List<Constraint> findConstraints(Integer target, List<Predicate> predicates,
       List<ConformanceStatement> conformanceStatements) {
+    //TODO Add case for root level constraints
     List<Constraint> constraints = new ArrayList<>();
     for (Predicate pre : predicates) {
-      if (target == Integer.parseInt(pre.getConstraintTarget().substring(0,
-          pre.getConstraintTarget().indexOf('[')))) {
-        constraints.add(pre);
+      if (pre.getConstraintTarget().indexOf('[') != -1){
+        if (target == Integer.parseInt(pre.getConstraintTarget().substring(0,
+            pre.getConstraintTarget().indexOf('[')))) {
+          constraints.add(pre);
+        }
       }
     }
     for (ConformanceStatement conformanceStatement : conformanceStatements) {
-      if (target == Integer.parseInt(conformanceStatement.getConstraintTarget().substring(0,
-          conformanceStatement.getConstraintTarget().indexOf('[')))) {
-        constraints.add(conformanceStatement);
+      if (conformanceStatement.getConstraintTarget().indexOf('[') != -1){
+        if (target == Integer.parseInt(conformanceStatement.getConstraintTarget().substring(0,
+            conformanceStatement.getConstraintTarget().indexOf('[')))) {
+          constraints.add(conformanceStatement);
+        }
       }
     }
     return constraints;
@@ -1279,6 +1546,18 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     // sect.addAttribute(new Attribute("title", d.getExt() == null || d.getExt().isEmpty() ?
     // d.getName() + " - " + d.getDescription() : d.getLabel() + " - " + d.getDescription()));
 
+    nu.xom.Element elmDatatype = serializeOneDatatype(dl);
+    elmDatatype.addAttribute(new Attribute("prefix", prefix));
+    elmDatatype.addAttribute(new Attribute("position", ""));
+
+
+    sect.appendChild(elmDatatype);
+    return sect;
+  }
+
+  private nu.xom.Element serializeOneDatatype(DatatypeLink dl) {
+    Datatype d = datatypeService.findById(dl.getId());
+
     nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
     elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
     elmDatatype.addAttribute(new Attribute("Name", d.getName()));
@@ -1291,12 +1570,12 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
 
     elmDatatype.addAttribute(new Attribute("id", d.getId()));
-    elmDatatype.addAttribute(new Attribute("prefix", prefix));
-    elmDatatype.addAttribute(new Attribute("position", ""));
-    nu.xom.Element elmText = new nu.xom.Element("Text");
-    elmText.addAttribute(new Attribute("Type", "UsageNote"));
-    elmText.appendChild(d.getUsageNote());
-    elmDatatype.appendChild(elmText);
+    if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()){
+      nu.xom.Element elmText = new nu.xom.Element("Text");
+      elmText.addAttribute(new Attribute("Type", "UsageNote"));
+      elmText.appendChild(d.getUsageNote());
+      elmDatatype.appendChild(elmText);
+    }
 
     if (d.getComponents() != null) {
 
@@ -1311,10 +1590,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         nu.xom.Element elmComponent = new nu.xom.Element("Component");
         elmComponent.addAttribute(new Attribute("Name", c.getName()));
         elmComponent.addAttribute(new Attribute("Usage", c.getUsage().toString()));
-        if (c.getDatatype() != null && datatypes.findOne(c.getDatatype()) != null
-            && datatypes.findOne(c.getDatatype()).getLabel() != null) {
-          elmComponent.addAttribute(new Attribute("Datatype", datatypes.findOne(c.getDatatype())
-              .getLabel()));
+        if (c.getDatatype() != null && c.getDatatype().getLabel() != null) {
+          elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype().getLabel()));
         }
         elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
         if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
@@ -1325,20 +1602,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         if (c.getComment() != null && !c.getComment().equals(""))
           elmComponent.addAttribute(new Attribute("Comment", c.getComment()));
         elmComponent.addAttribute(new Attribute("Position", c.getPosition().toString()));
-        if (c.getText() != null) {
+        if (c.getText() != null & !c.getText().isEmpty()) {
           elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
         }
 
-        if (c.getTable() != null && c.getTable().getBindingIdentifier() != null)
-          if (tables.findOneTableById(c.getTable().getId()) != null) {
-            elmComponent.addAttribute(new Attribute("Binding", tables.findOneTableById(
-                c.getTable().getId()).getBindingIdentifier()
-                + ""));
-          } else {
-            logger.warn("Value set not found in library " + c.getTable());
-            elmComponent
-                .addAttribute(new Attribute("Binding", c.getTable().getBindingIdentifier()));
-          }
+        if (c.getTable() != null) {
+          elmComponent.addAttribute(new Attribute("Binding", 
+              c.getTable().getBindingIdentifier()));
+        } 
 
         List<Constraint> constraints =
             findConstraints(i, d.getPredicates(), d.getConformanceStatements());
@@ -1356,11 +1627,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         elmComponent.addAttribute(new Attribute("Name", d.getName()));
         elmComponent.addAttribute(new Attribute("Position", "1"));
         elmDatatype.appendChild(elmComponent);
-
       }
     }
-    sect.appendChild(elmDatatype);
-    return sect;
+    return elmDatatype;
   }
 
 
@@ -1398,9 +1667,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
     this.generateProfileIS(out, this.serializeProfileToXML(profile));
     this.generateValueSetIS(out,
-        new TableSerializationImpl().serializeTableLibraryToXML(profile.getTableLibrary()));
+        new TableSerializationImpl().serializeTableLibraryToXML(profile.getTableLibrary(), new DocumentMetaData()));
     this.generateConstraintsIS(out,
-        new ConstraintsSerializationImpl().serializeConstraintsToXML(profile));
+        new ConstraintsSerializationImpl().serializeConstraintsToXML(profile, new DocumentMetaData()));
 
     out.close();
     bytes = outputStream.toByteArray();
@@ -1465,7 +1734,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
   @Override
   public InputStream serializeProfileToZip(Profile profile, String[] ids) throws IOException,
-      CloneNotSupportedException {
+  CloneNotSupportedException {
     // TODO Auto-generated method stub
     return null;
   }

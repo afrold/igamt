@@ -15,13 +15,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,6 +50,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
@@ -182,12 +179,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	@Override
-	public String serializeProfileToXML(Profile profile) {
-		return this.serializeProfileToDoc(profile).toXML();
+	public String serializeProfileToXML(Profile profile, DocumentMetaData metadata) {
+		return this.serializeProfileToDoc(profile, metadata).toXML();
 	}
 
-	private String serializeProfileDisplayToXML(Profile profile) {
-		return this.serializeProfileDisplayToDoc(profile).toXML();
+	private String serializeProfileDisplayToXML(Profile profile, DocumentMetaData metadata) {
+		return this.serializeProfileDisplayToDoc(profile, metadata).toXML();
 	}
 
 	private String serializeProfileGazelleToXML(Profile profile) {
@@ -225,14 +222,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return doc;
 	}
 
-	private nu.xom.Document serializeProfileDisplayToDoc(Profile profile) {
+	private nu.xom.Document serializeProfileDisplayToDoc(Profile profile, DocumentMetaData metadata) {
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
-		this.serializeProfileMetaData(e, profile.getMetaData());
+		this.serializeProfileMetaData(e, profile.getMetaData(), metadata);
 
 		for (Message m : profile.getMessages().getChildren()) {
 			e.appendChild(this.serializeDisplayMessage(m, profile));
 		}
-		e.appendChild(tableSerializationService.serializeTableLibraryToElement(profile));
+		e.appendChild(tableSerializationService.serializeTableLibraryToElement(profile, metadata));
 		nu.xom.Document doc = new nu.xom.Document(e);
 		return doc;
 	}
@@ -311,9 +308,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	@Override
-	public nu.xom.Document serializeProfileToDoc(Profile profile) {
-		nu.xom.Element e = new nu.xom.Element("IntegrationProfile");
-		this.serializeProfileMetaData(e, profile.getMetaData());
+	public nu.xom.Document serializeProfileToDoc(Profile profile, DocumentMetaData metadata) {
+		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
+		this.serializeProfileMetaData(e, profile.getMetaData(), metadata);
 
 		nu.xom.Element ms = new nu.xom.Element("Messages");
 		for (Message m : profile.getMessages().getChildren()) {
@@ -341,7 +338,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return doc;
 	}
 
-	private void serializeProfileMetaData(nu.xom.Element e, ProfileMetaData metaData) {
+	private void serializeProfileMetaData(nu.xom.Element e, ProfileMetaData metaData, DocumentMetaData igMetaData) {
 		if (metaData.getProfileID() == null || metaData.getProfileID().equals("")) {
 			e.addAttribute(new Attribute("ID", UUID.randomUUID().toString()));
 		} else {
@@ -354,12 +351,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			e.addAttribute(new Attribute("HL7Version", ExportUtil.str(metaData.getHl7Version())));
 		if (metaData.getSchemaVersion() != null && !metaData.getSchemaVersion().equals(""))
 			e.addAttribute(new Attribute("SchemaVersion", ExportUtil.str(metaData.getSchemaVersion())));
-
+	
 		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
-		elmMetaData.addAttribute(new Attribute("Name", ExportUtil.str(metaData.getName())));
-		elmMetaData.addAttribute(new Attribute("OrgName", ExportUtil.str(metaData.getOrgName())));
-		elmMetaData.addAttribute(new Attribute("Version", ExportUtil.str(metaData.getVersion())));
-		elmMetaData.addAttribute(new Attribute("Date", ExportUtil.str(metaData.getDate())));
+		elmMetaData.addAttribute(new Attribute("Name", !ExportUtil.str(igMetaData.getTitle()).equals("") ? ExportUtil.str(igMetaData.getTitle()) : "No Title Info"));
+		elmMetaData.addAttribute(new Attribute("OrgName", !ExportUtil.str(igMetaData.getOrgName()).equals("") ? ExportUtil.str(igMetaData.getOrgName()) : "No Org Info"));
+		elmMetaData.addAttribute(new Attribute("Version", !ExportUtil.str(igMetaData.getVersion()).equals("") ? ExportUtil.str(igMetaData.getVersion()) : "No Version Info"));
+		elmMetaData.addAttribute(new Attribute("Date", !ExportUtil.str(igMetaData.getDate()).equals("") ? ExportUtil.str(igMetaData.getDate()) : "No Date Info"));
 
 		if (metaData.getSpecificationName() != null && !metaData.getSpecificationName().equals(""))
 			elmMetaData
@@ -1405,10 +1402,18 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				nu.xom.Element elmMapping = new nu.xom.Element("Mapping");
 				elmMapping.addAttribute(new Attribute("Position", String.valueOf(m.getPosition())));
 				elmMapping.addAttribute(new Attribute("Reference", String.valueOf(m.getReference())));
+				
+				if(m.getSecondReference() != null) {
+					elmMapping.addAttribute(new Attribute("SecondReference", String.valueOf(m.getSecondReference())));
+				}
+				
 
 				for (Case c : m.getCases()) {
 					nu.xom.Element elmCase = new nu.xom.Element("Case");
 					elmCase.addAttribute(new Attribute("Value", c.getValue()));
+					if(c.getSecondValue() != null && !c.getSecondValue().equals("")) {
+						elmCase.addAttribute(new Attribute("SecondValue", c.getSecondValue()));
+					}
 					elmCase.addAttribute(new Attribute("Datatype", datatypes.findOne(c.getDatatype()).getLabel()));
 					elmMapping.appendChild(elmCase);
 				}
@@ -1437,7 +1442,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			if (f.getConfLength() != null && !f.getConfLength().equals(""))
 				elmField.addAttribute(new Attribute("ConfLength", ExportUtil.str(f.getConfLength())));
 			if (f.getTable() != null) {
-				if (f.getTable().getBindingIdentifier() != null)
+				if (f.getTable().getBindingIdentifier() != null && !f.getTable().getBindingIdentifier().equals(""))
 					elmField.addAttribute(new Attribute("Binding", f.getTable().getBindingIdentifier()));
 				if (f.getTable().getBindingStrength() != null && !f.getTable().getBindingStrength().equals(""))
 					elmField.addAttribute(
@@ -1829,15 +1834,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	@Override
-	public InputStream serializeProfileToZip(Profile profile) throws IOException {
+	public InputStream serializeProfileToZip(Profile profile, DocumentMetaData metadata) throws IOException {
 		ByteArrayOutputStream outputStream = null;
 		byte[] bytes;
 		outputStream = new ByteArrayOutputStream();
 		ZipOutputStream out = new ZipOutputStream(outputStream);
 
-		this.generateProfileIS(out, this.serializeProfileToXML(profile));
-		this.generateValueSetIS(out, tableSerializationService.serializeTableLibraryToXML(profile));
-		this.generateConstraintsIS(out, constraintsSerializationService.serializeConstraintsToXML(profile));
+		this.generateProfileIS(out, this.serializeProfileToXML(profile, metadata));
+		this.generateValueSetIS(out, tableSerializationService.serializeTableLibraryToXML(profile, metadata));
+		this.generateConstraintsIS(out, constraintsSerializationService.serializeConstraintsToXML(profile, metadata));
 
 		out.close();
 		bytes = outputStream.toByteArray();
@@ -1858,7 +1863,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return new ByteArrayInputStream(bytes);
 	}
 
-	private InputStream serializeProfileDisplayToZip(List<Profile> profiles) throws IOException {
+	private InputStream serializeProfileDisplayToZip(List<Profile> profiles,  DocumentMetaData metadata) throws IOException {
 		ByteArrayOutputStream outputStream = null;
 		byte[] bytes;
 		outputStream = new ByteArrayOutputStream();
@@ -1867,7 +1872,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		for (Profile p : profiles) {
 			Message m = p.getMessages().getChildren().iterator().next();
 			String folderName = m.getIdentifier() + "(" + m.getName() + ")";
-			this.generateDisplayProfileIS(out, this.serializeProfileDisplayToXML(p), folderName);
+			this.generateDisplayProfileIS(out, this.serializeProfileDisplayToXML(p, metadata), folderName);
 		}
 
 		out.close();
@@ -2022,7 +2027,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	@Override
-	public InputStream serializeProfileToZip(Profile original, String[] ids)
+	public InputStream serializeProfileToZip(Profile original, String[] ids, DocumentMetaData metadata)
 			throws IOException, CloneNotSupportedException {
 		Profile filteredProfile = new Profile();
 
@@ -2067,8 +2072,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			datatypes.addDatatype(datatypesMap.get(key));
 		}
 
-		TableLibrary tables = new TableLibrary();
-
+		TableLibrary tables = new TableLibrary();		
 		for (String key : tablesMap.keySet()) {
 
 			if (tablesMap.get(key) != null)
@@ -2080,11 +2084,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		filteredProfile.setMessages(messages);
 		filteredProfile.setTableLibrary(tables);
 
-		return this.serializeProfileToZip(filteredProfile);
+		return this.serializeProfileToZip(filteredProfile, metadata);
 	}
 
 	@Override
-	public InputStream serializeProfileDisplayToZip(Profile original, String[] ids)
+	public InputStream serializeProfileDisplayToZip(Profile original, String[] ids, DocumentMetaData metadata)
 			throws IOException, CloneNotSupportedException {
 
 		List<Profile> filteredProfiles = new ArrayList<Profile>();
@@ -2146,7 +2150,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			filteredProfiles.add(filteredProfile);
 		}
 
-		return this.serializeProfileDisplayToZip(filteredProfiles);
+		return this.serializeProfileDisplayToZip(filteredProfiles, metadata);
 	}
 
 	private void visit(SegmentRefOrGroup seog, HashMap<String, SegmentLink> segmentsMap,
@@ -2187,63 +2191,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		} else {
 			log.error("datatypelink is missing!");
 		}
-	}
-
-	public static void main(String[] args) throws IOException, CloneNotSupportedException {
-		ProfileSerializationImpl test1 = new ProfileSerializationImpl();
-		Profile profile = test1.deserializeXMLToProfile(
-				new String(Files
-						.readAllBytes(Paths.get("src//main//resources//IZ_XML_Profiles//IZ Profiles//IZ_Profile.xml"))),
-				new String(Files.readAllBytes(
-						Paths.get("src//main//resources//IZ_XML_Profiles//IZ ValueSets//IZ_ValueSetLibrary.xml"))),
-				new String(Files.readAllBytes(
-						Paths.get("src//main//resources//IZ_XML_Profiles//IZ Constraints//IZ_Constraints.xml"))));
-		Set<String> idSet = new HashSet<String>();
-		// String mid = "";
-		// String messageID = "aa72383a-7b48-46e5-a74a-82e019591fe7";
-
-		for (Message m : profile.getMessages().getChildren()) {
-			idSet.add(m.getId());
-
-			// if(m.getMessageID().equals(messageID)){
-			// mid = m.getId();
-			// }
-		}
-
-		InputStream is = test1.serializeProfileToZip(profile, idSet.toArray(new String[0]));
-		OutputStream outputStream = new FileOutputStream(new File("src//main//resources//IZ_XML_Profiles//out.zip"));
-		int read = 0;
-		byte[] bytes = new byte[1024];
-
-		while ((read = is.read(bytes)) != -1) {
-			outputStream.write(bytes, 0, read);
-		}
-
-		outputStream.close();
-
-		// InputStream is2 = test1.serializeProfileDisplayToZip(profile, mid);
-		// OutputStream outputStream2 = new FileOutputStream(new
-		// File("src//main//resources//IZ_XML_Profiles//out2.zip"));
-		// int read2 = 0;
-		// byte[] bytes2 = new byte[1024];
-		//
-		// while ((read2 = is2.read(bytes2)) != -1) {
-		// outputStream2.write(bytes2, 0, read2);
-		// }
-		//
-		// outputStream2.close();
-
-		InputStream is3 = test1.serializeProfileGazelleToZip(profile, idSet.toArray(new String[0]));
-		OutputStream outputStream3 = new FileOutputStream(new File("src//main//resources//IZ_XML_Profiles//out3.zip"));
-		int read3 = 0;
-		byte[] bytes3 = new byte[1024];
-
-		while ((read3 = is3.read(bytes3)) != -1) {
-			outputStream3.write(bytes3, 0, read3);
-		}
-
-		outputStream3.close();
-
 	}
 
 	private String releaseConstraintId(String xmlConstraints) {
