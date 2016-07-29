@@ -2332,8 +2332,21 @@ table.conformance-profiles-table td {
 .el-def{
   margin-left:5px
 }
+.lb-sm {
+  font-size: 6px;
+}
 
 
+.table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
+    border: none;
+    margin-bottom:1px !important;
+
+
+
+}
+.table-marginless tbody tr td, .table-marginless tbody tr th, .table-marginless thead tr th {
+    margin-bottom:0px  !important;
+    }
 ul.search-result > li > a:hover {
   background-color: cornflowerblue;
 }
@@ -2344,4 +2357,8 @@ ul.search-result > li > a:hover {
 
 .st-sort-descent:before{
   content: '\25BC';
+}
+
+.label-diff{
+  border-radius:10px;
 }

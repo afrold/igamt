@@ -532,8 +532,9 @@
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.table != undefined && node.table !== null">
-                <a ng-show="editableVS!==node.id " class="point" ng-click="redirectVS(node.table)">
-                    <span>{{getTableLabel(tablesMap[node.table.id])}}</span>
+                <a ng-show="editableVS!==node.id "  class="point" ng-click="redirectVS(node.table)">
+                    <span>{{node.table.bindingIdentifier}}</span>
+
                 </a>
                 <a ng-show="editableVS!==node.id " ng-click="editVS(node) " class="point ">
                     <span><i class="fa fa-pencil fa-fw "></i></span>
@@ -542,6 +543,7 @@
                     <span><i class="glyphicon glyphicon-trash "></i></span>
                 </a>
             </div>
+
             <div class="input-group input-group-xs" ng-hide="editableVS!==node.id ">
                 <span class="input-group-addon glyphicon glyphicon-search"></span>
                 <input class="form-control " type="text " ng-model="searchVS.name "/>

@@ -20,6 +20,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,7 +67,18 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     log.debug("findStandardByVersion list.size()=" + list.size());
     return list;
   }
-
+  
+  
+  @Override
+	public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		Criteria where = Criteria.where("profile.scope").in(scopes);
+		where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
+		Query qry = Query.query(where);
+		qry.fields().include("_id");
+		qry.fields().include("metaData.title");
+		return mongo.find(qry, IGDocument.class);
+	} 
+  
   /**
    * TODO: Refactor this to not load IG Doc in memory
    */

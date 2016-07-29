@@ -11,20 +11,26 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 
 import java.util.List;
 
 /**
- * @author Harold Affo (harold.affo@nist.gov)
- * Mar 30, 2015
+ * @author Harold Affo (harold.affo@nist.gov) Mar 30, 2015
  */
 public interface IGDocumentOperations {
-	
-	 public List<IGDocument> findPreloaded();
-	 
-	 public List<IGDocument> findStandard();
-	 
-	 public List<IGDocument> findStandardByVersion(String hl7version);
-	 
-	 public List<String> findHl7Versions();
+
+	public List<IGDocument> findPreloaded();
+
+	public List<IGDocument> findStandard();
+
+	public List<IGDocument> findStandardByVersion(String hl7version);
+
+	public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+
+	public List<String> findHl7Versions();
+
+
 }
