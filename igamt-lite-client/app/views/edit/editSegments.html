@@ -1720,7 +1720,7 @@
     <div class="modal-body">
         <div class="row">
                 <div class="col-md-4">
-                    Reference:
+                    First Reference:
                 </div>
 
                 <div class="col-md-8">
@@ -1731,7 +1731,7 @@
                 </div>
 
                 <div ng-show="selectedMapping.reference" class="col-md-4">
-                    Second Reference:
+                    Second Reference (Optional):
                 </div>
 
                 <div ng-show="selectedMapping.reference" class="col-md-8">
@@ -1745,9 +1745,9 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                         <tr class="tbl-header">
-                            <th class="col-md-3">Reference Value</th>
-                            <th class="col-md-3">Second Reference Value</th>
-                            <th class="col-md-5">Datatype</th>
+                            <th class="col-md-3">If {{segment.name}}-{{selectedMapping.reference}} is</th>
+                            <th ng-show="selectedMapping.secondReference" class="col-md-3">And if {{segment.name}}-{{selectedMapping.secondReference}} is</th>
+                            <th class="col-md-5">Then datatype of {{segment.name}}-{{selectedNode.position}} should be</th>
                             <th class="col-md-1">
                                 <button title="Add" type="button" class="btn btn-xs btn-info" ng-click="addCase()">
                                     <i class="fa fa-plus fa-fw"></i>

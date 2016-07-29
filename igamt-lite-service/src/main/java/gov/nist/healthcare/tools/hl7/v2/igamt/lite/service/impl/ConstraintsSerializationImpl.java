@@ -50,6 +50,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
@@ -187,11 +188,79 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
     e.appendChild(elmMetaData);
 
     this.serializeMain(e, predicates, conformanceStatements);
+    
+    this.serializeCoConstaint(e, profile);
 
     return new nu.xom.Document(e);
   }
 
-  private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrary) {
+  private void serializeCoConstaint(nu.xom.Element e, Profile profile) {
+	  nu.xom.Element coConstraints_Elm = new nu.xom.Element("CoConstraints");
+	  
+      nu.xom.Element coConstraints_segment_Elm = new nu.xom.Element("Segment");
+	  for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
+	      Segment s = segmentService.findById(sl.getId());
+	      if(s.getCoConstraints() != null){
+	    	  if(s.getCoConstraints().getColumnList() != null && s.getCoConstraints().getColumnList().size() > 1){
+	    		  nu.xom.Element byID_Elm = new nu.xom.Element("ByID");
+	    		  byID_Elm.addAttribute(new Attribute("ID", s.getLabel()));
+	    		  
+	    		  for(CoConstraint cc : s.getCoConstraints().getConstraints()){
+	    			  nu.xom.Element coConstraint_Elm = new nu.xom.Element("CoConstraint");
+		    		  
+		    		  nu.xom.Element elmDescription = new nu.xom.Element("Description");
+		    		  elmDescription.appendChild(cc.getDescription());
+		    		  coConstraint_Elm.appendChild(elmDescription);  
+		    		  
+		    		  nu.xom.Element elmCommnets = new nu.xom.Element("Comments");
+		    		  elmCommnets.appendChild(cc.getComments());
+		    		  coConstraint_Elm.appendChild(elmCommnets); 
+		    		  
+		    		  nu.xom.Element elmAssertion = new nu.xom.Element("Assertion");
+		    		  
+		    		  nu.xom.Element elmPlainCoConstraint = new nu.xom.Element("PlainCoConstraint");
+		    		  
+		    		  nu.xom.Element elmKey = new nu.xom.Element("Key");
+		    		  elmKey.addAttribute(new Attribute("Path", s.getCoConstraints().getColumnList().get(0).getField().getPosition() + "[1]"));
+		    		  elmKey.addAttribute(new Attribute("Value", cc.getValues().get(0).getValue()));
+		    		  elmPlainCoConstraint.appendChild(elmKey);
+
+		    		  for(int i = 1; i < s.getCoConstraints().getColumnList().size(); i++){
+		    			  String path = s.getCoConstraints().getColumnList().get(i).getField().getPosition() + "[1]";
+		    			  String type = s.getCoConstraints().getColumnList().get(i).getConstraintType();
+		    			  String value = cc.getValues().get(s.getCoConstraints().getColumnList().get(i).getColumnPosition()).getValue();
+		    			  
+		    			  if(value != null && !value.equals("")){
+		    				  if(type.equals("vs")){
+			    				  nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSetCheck");
+			    				  elmValueSetCheck.addAttribute(new Attribute("Path", path));
+			    				  elmValueSetCheck.addAttribute(new Attribute("ValueSetID", tableService.findById(value).getBindingIdentifier()));
+			    				  elmPlainCoConstraint.appendChild(elmValueSetCheck);
+			    			  }else{
+			    				  nu.xom.Element elmValueCheck = new nu.xom.Element("ValueCheck");
+			    				  elmValueCheck.addAttribute(new Attribute("Path", path));
+			    				  elmValueCheck.addAttribute(new Attribute("Value", value));
+			    				  elmPlainCoConstraint.appendChild(elmValueCheck);
+			    			  }
+			    			    
+		    			  }
+		    			  
+		    			  
+		    		  }
+		    		  elmAssertion.appendChild(elmPlainCoConstraint);
+		    		  coConstraint_Elm.appendChild(elmAssertion); 
+		    		  byID_Elm.appendChild(coConstraint_Elm);
+	    		  }
+	    		  coConstraints_segment_Elm.appendChild(byID_Elm);
+	    	  }
+	      }
+	  }
+	  
+	  if(coConstraints_segment_Elm.getChildCount() > 0) coConstraints_Elm.appendChild(coConstraints_segment_Elm);
+	  if(coConstraints_Elm.getChildCount() > 0) e.appendChild(coConstraints_Elm);
+}
+
+private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrary) {
     Constraints predicates = findAllPredicates(datatypeLibrary);
     Constraints conformanceStatements = findAllConformanceStatement(datatypeLibrary);
 
