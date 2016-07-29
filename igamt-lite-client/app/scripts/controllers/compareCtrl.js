@@ -1,4 +1,4 @@
-angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectDiff, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService) {
+angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectDiff, orderByFilter, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService) {
     $scope.igDocumentConfig = {
         selectedType: null
     };
@@ -92,7 +92,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.msgSelected = false;
     $scope.igDisabled1 = false;
     $scope.igDisabled2 = false;
-    $scope.msgChanged=false;
+    $scope.msgChanged = false;
 
     //$scope.scopes = ["USER", "HL7STANDARD"];
     $scope.scopes = [{
@@ -233,7 +233,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
     }, true);
     $scope.$watchGroup(['msg1', 'msg2'], function() {
-        $scope.msgChanged=true;
+        $scope.msgChanged = true;
 
 
     }, true);
@@ -350,7 +350,20 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             //segments: $scope.formatSeg(grp.children)
         };
         $scope.formatSegments(grp.children).then(function(result) {
-            group.segments = result;
+            //group.segments = result;
+            var resultList = _.flatten(result);
+            var SortedRes = [];
+            SortedRes = orderByFilter(resultList, 'position');
+            // for(var i=0;i<result.length;i++){
+            //     if(angular.isArray(result[i])){
+            //         for (var j = 0; i < result[i].length; j++) {
+            //             resultList.push(result[i][j])
+            //         };
+
+            //     } 
+            // }
+
+            group.segments = SortedRes;
             delay.resolve(group);
 
 
@@ -443,7 +456,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         return delay.promise;
     };
 
-    $scope.formatSeg = function(segment) {
+    $scope.formatSeg = function(segment, segs) {
         var delay = $q.defer();
         if (segment.type === 'segmentRef') {
             var newSegment = {};
@@ -456,21 +469,31 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 minCard: segment.min,
                 maxCard: segment.max,
                 usage: segment.usage,
-                position: segment.position
+                position: segment.position,
+                description: segs.description,
+
+
+
             };
-
-            SegmentService.get(segment.ref.id).then(function(segs) {
-                newSegment.description = segs.description;
-                $scope.formatField(segs).then(function(fields) {
-                    newSegment.fields = segs.fields;
-                    delay.resolve(newSegment);
-
-                });
-
-
-
+            $scope.formatField(segs).then(function(fields) {
+                newSegment.fields = segs.fields;
+                delay.resolve(newSegment);
 
             });
+
+            // SegmentService.get(segment.ref.id).then(function(segs) {
+            //     newSegment.description = segs.description;
+            //     $scope.formatField(segs).then(function(fields) {
+            //         newSegment.fields = segs.fields;
+            //         delay.resolve(newSegment);
+
+            //     });
+
+
+
+
+            // });
+
             // $scope.formatFields(dtIds, newSegment.fields);
 
 
@@ -482,19 +505,47 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         return delay.promise;
     };
 
+    $scope.segRefsFormating = function(idList, segmentRefs) {
+        var delay = $q.defer();
+        var promises = [];
+        SegmentService.findByIds(idList).then(function(segments) {
+            for (var i = 0; i < segmentRefs.length; i++) {
+                for (var j = 0; j < segments.length; j++) {
+                    if (segmentRefs[i].ref.id === segments[j].id) {
+                        promises.push($scope.formatSeg(segmentRefs[i], segments[j]));
+                    }
+
+                }
+            }
+            $q.all(promises).then(function(segs) {
+                delay.resolve(segs);
+            });
+
+        });
+
+        return delay.promise;
+
+    };
+
 
 
 
     $scope.formatSegments = function(segments) {
+
         var delay = $q.defer();
         var promises = [];
+        var segRefList = [];
+        var idList = [];
         for (var i = 0; i < segments.length; i++) {
             if (segments[i].type === "group") {
 
                 promises.push($scope.formatGrp(segments[i]));
 
             } else if (segments[i].type === "segmentRef") {
-                promises.push($scope.formatSeg(segments[i]));
+                idList.push(segments[i].ref.id);
+                segRefList.push(segments[i]);
+
+                //                promises.push($scope.formatSeg(segments[i]));
 
             }
             // else if (segments[i].type === "field") {
@@ -502,6 +553,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
             // }
         };
+        promises.push($scope.segRefsFormating(idList, segRefList));
         $q.all(promises).then(function(segs) {
             delay.resolve(segs);
         });
@@ -523,7 +575,20 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             //segments: $scope.formatSeg(msg.children)
         }
         $scope.formatSegments(msg.children).then(function(result) {
-            message.segments = result;
+            var resultList = _.flatten(result);
+            var SortedRes = [];
+            SortedRes = orderByFilter(resultList, 'position');
+
+            // for(var i=0;i<result.length;i++){
+            //     if(angular.isArray(result[i])){
+            //         for (var j = 0; i < result[i].length; j++) {
+            //             resultList.push(result[i][j])
+            //         };
+
+            //     } 
+            // }
+
+            message.segments = SortedRes;
 
             delay.resolve(message);
 
@@ -776,7 +841,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.compare = function() {
 
         $scope.loadingSelection = true;
-        $scope.msgChanged=false;
+        $scope.msgChanged = false;
         $scope.formatMsg(JSON.parse($scope.msg1)).then(function(msg1) {
 
 
