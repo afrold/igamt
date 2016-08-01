@@ -905,7 +905,7 @@ angular.module('igl').controller('DynamicMappingCtrl', function($scope, $modalIn
 
     $scope.recordChange = function() {
         $scope.changed = true;
-        $scope.editForm.$dirty = true;
+        // $scope.editForm.$dirty = true;
     };
 
 
