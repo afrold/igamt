@@ -2,6 +2,14 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.igDocumentConfig = {
         selectedType: null
     };
+    $scope.getLabel = function(element) {
+        console.log(element);
+        if (element.ext !== null) {
+            return element.name + "_" + element.ext;
+        } else {
+            return element.name;
+        }
+    };
 
 
 
@@ -265,12 +273,11 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                             $scope.messages1 = [];
                             $scope.msg1 = "";
                             if (igDoc) {
-                                console.log(segments);
-                                console.log(datatypes);
-                                console.log(tables);
+                                
                                 $scope.messages1 = igDoc.profile.messages.children;
                                 $scope.segments1 = segments;
-                                $scope.tables1=tables;
+                                $scope.datatypes1=datatypes;
+                                $scope.tables1 = tables;
                             }
                         });
                     });
@@ -286,13 +293,21 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     };
     $scope.setIG2 = function(ig) {
         if (ig) {
-            IgDocumentService.getOne(ig.id).then(function(result) {
-                $scope.messages2 = [];
-                $scope.msg2 = "";
-                if (result) {
-                    $scope.messages2 = result.profile.messages.children;
-                }
-
+            IgDocumentService.getOne(ig.id).then(function(igDoc) {
+                SegmentLibrarySvc.getSegmentsByLibrary(igDoc.profile.segmentLibrary.id).then(function(segments) {
+                    DatatypeLibrarySvc.getDatatypesByLibrary(igDoc.profile.datatypeLibrary.id).then(function(datatypes) {
+                        TableLibrarySvc.getTablesByLibrary(igDoc.profile.tableLibrary.id).then(function(tables) {
+                            $scope.messages2 = [];
+                            $scope.msg2 = "";
+                            if (igDoc) {
+                                $scope.messages2 = igDoc.profile.messages.children;
+                                $scope.segments2 = segments;
+                                $scope.datatypes2=datatypes;
+                                $scope.tables2 = tables;
+                            }
+                        });
+                    });
+                });
 
             });
 
@@ -326,8 +341,23 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.setMsg2 = function(msg) {
         $scope.msg2 = msg;
     };
-    $scope.setSegment1 =function(segment){
-        console.log(segment);
+    $scope.setSegment1 = function(segment) {
+        console.log(JSON.parse(segment));
+    };
+    $scope.setDatatype1 = function(datatype) {
+        console.log(JSON.parse(datatype));
+    };
+    $scope.setTable1 = function(table) {
+        console.log(table);
+    };
+    $scope.setSegment2 = function(segment) {
+        console.log(JSON.parse(segment));
+    };
+    $scope.setDatatype2 = function(datatype) {
+        console.log(JSON.parse(datatype));
+    };
+    $scope.setTable2 = function(table) {
+        console.log(table);
     };
     $scope.clearAll = function() {
         $scope.msg1 = "";
