@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class DataElement extends DataModel implements java.io.Serializable, Cloneable,
     Comparable<DataElement> {
 
@@ -38,6 +41,8 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
   // CascadeType.PERSIST, CascadeType.MERGE })
   // //@JoinColumn(name = "TABLE_ID")
   protected TableLink table;
+  
+  protected List<TableLink> tables = new ArrayList<TableLink>();
 
 
   // //@JsonIgnore
@@ -166,7 +171,15 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
     this.hide = hide;
   }
 
-  @Override
+  public List<TableLink> getTables() {
+	return tables;
+  }
+
+  public void setTables(List<TableLink> tables) {
+	this.tables = tables;
+  }
+
+@Override
   protected DataElement clone() throws CloneNotSupportedException {
     DataElement de = (DataElement) super.clone();
     de.setTable(this.table.clone());
