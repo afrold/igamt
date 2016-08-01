@@ -1,4 +1,4 @@
-angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectDiff, orderByFilter, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService) {
+angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectDiff, orderByFilter, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc) {
     $scope.igDocumentConfig = {
         selectedType: null
     };
@@ -229,6 +229,10 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 }
 
             });
+            SegmentService.getSegmentsByScopesAndVersion([$scope.scope2], $scope.version2).then(function(result) {
+                console.log(result);
+
+            });
         }
 
     }, true);
@@ -254,12 +258,23 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     };
     $scope.setIG1 = function(ig) {
         if (ig) {
-            IgDocumentService.getOne(ig.id).then(function(result) {
-                $scope.messages1 = [];
-                $scope.msg1 = "";
-                if (result) {
-                    $scope.messages1 = result.profile.messages.children;
-                }
+            IgDocumentService.getOne(ig.id).then(function(igDoc) {
+                SegmentLibrarySvc.getSegmentsByLibrary(igDoc.profile.segmentLibrary.id).then(function(segments) {
+                    DatatypeLibrarySvc.getDatatypesByLibrary(igDoc.profile.datatypeLibrary.id).then(function(datatypes) {
+                        TableLibrarySvc.getTablesByLibrary(igDoc.profile.tableLibrary.id).then(function(tables) {
+                            $scope.messages1 = [];
+                            $scope.msg1 = "";
+                            if (igDoc) {
+                                console.log(segments);
+                                console.log(datatypes);
+                                console.log(tables);
+                                $scope.messages1 = igDoc.profile.messages.children;
+                                $scope.segments1 = segments;
+                                $scope.tables1=tables;
+                            }
+                        });
+                    });
+                });
 
             });
 
@@ -277,6 +292,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 if (result) {
                     $scope.messages2 = result.profile.messages.children;
                 }
+
 
             });
 
@@ -303,10 +319,15 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     };
 
     $scope.setMsg1 = function(msg) {
+        console.log(JSON.parse(msg));
         $scope.msg1 = msg;
+        $scope.segmentList1 = JSON.parse(msg);
     };
     $scope.setMsg2 = function(msg) {
         $scope.msg2 = msg;
+    };
+    $scope.setSegment1 =function(segment){
+        console.log(segment);
     };
     $scope.clearAll = function() {
         $scope.msg1 = "";
@@ -471,6 +492,9 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 usage: segment.usage,
                 position: segment.position,
                 description: segs.description,
+                conformanceStatements: segs.conformanceStatements,
+                coConstraints: segs.coConstraints,
+                predicates: segs.predicates
 
 
 
@@ -565,6 +589,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
     };
     $scope.formatMsg = function(msg) {
+        console.log(msg);
         var delay = $q.defer();
 
         var message = {
@@ -657,6 +682,10 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                             msg2: childArray.value.min.added
 
                         };
+                    } else if (childArray.value.min && childArray.value.min.changed === "removed") {
+                        console.log(childArray.value.min);
+                    } else if (childArray.value.min && childArray.value.min.changed === "added") {
+                        console.log(childArray.value.min);
                     }
                     if (childArray.value.max && childArray.value.max.changed === "primitive change") {
                         result.maxCard = {
