@@ -12,6 +12,15 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+import java.util.List;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -21,16 +30,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
-
-import java.util.List;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.IGDocumentConverterFromOldToNew;
 
 @Service
 public class Bootstrap implements InitializingBean {
@@ -57,18 +59,17 @@ public class Bootstrap implements InitializingBean {
     // Carefully use this. It will delete all of existing IGDocuments and
     // make new ones converted from the "igdocumentPreLibHL7",
     // "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
-    //		 new IGDocumentConverterFromOldToNew().convert();
-
-
-//    		 new DataCorrection().updateSegment();
-    //		 new DataCorrection().updateDatatype();
-    //		 new DataCorrection().updateSegmentLibrary();
-    //		 new DataCorrection().updateDatatypeLibrary();
-    //		 new DataCorrection().updateTableLibrary();
-    //		 new DataCorrection().updateMessage();
-    
-    dataCorrectionSectionPosition.resetSectionPositions();
-
+//    		 new IGDocumentConverterFromOldToNew().convert();
+//	    	 new DataCorrection().updateSegment();
+//    		 new DataCorrection().updateDatatype();
+//    		 new DataCorrection().updateSegmentLibrary();
+//    		 new DataCorrection().updateDatatypeLibrary();
+//    		 new DataCorrection().updateTableLibrary();
+//    		 new DataCorrection().updateMessage();
+//    
+//    dataCorrectionSectionPosition.resetSectionPositions();
+	  new DataCorrection().updateValueSetForSegment();
+	  new DataCorrection().updateValueSetsForDT();
   }
 
   private void loadPreloadedIGDocuments() throws Exception {

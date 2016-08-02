@@ -19,10 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 
@@ -38,16 +36,20 @@ public class SegmentServiceImpl implements SegmentService {
   @Autowired
   private SegmentRepository segmentRepository;
 
+  @Override
   public List<Segment> findAll() {
     return segmentRepository.findAll();
   }
 
+  @Deprecated
   @Override
   public List<Segment> findByLibIds(String segLibId) {
     List<Segment> datatypes = segmentRepository.findByLibIds(segLibId);
     log.info("DataypeServiceImpl.findAll=" + datatypes.size());
     return datatypes;
   }
+
+
 
   @Override
   public Segment findById(String id) {

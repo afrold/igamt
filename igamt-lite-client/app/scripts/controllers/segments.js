@@ -213,8 +213,44 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
     };
 
+    $scope.loadVS = function($query) {
+
+
+        return $rootScope.tables.filter(function(table) {
+            return table.bindingIdentifier.toLowerCase().indexOf($query.toLowerCase()) != -1;
+        });
+
+    };
+
+    $scope.editVSModal = function(field) {
+        var modalInstance = $modal.open({
+            templateUrl: 'editVSModal.html',
+            controller: 'EditVSCtrl',
+            windowClass: 'edit-VS-modal',
+            resolve: {
+
+                valueSets: function() {
+                    return $rootScope.tables;
+                },
+
+                field: function() {
+                    return field;
+                }
+
+            }
+        });
+        modalInstance.result.then(function(field) {
+            $scope.setDirty();
+            if ($scope.segmentsParams) {
+                $scope.segmentsParams.refresh();
+            }
+        });
+
+    };
+
 
     $scope.editVS = function(field) {
+        console.log(field);
         $scope.editableVS = field.id;
         if (field.table !== null) {
             $scope.VSselected = true;
@@ -395,7 +431,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             $rootScope.segment.coConstraints.columnList.splice(index, 1);
 
             for (var i = 0, len1 = $rootScope.segment.coConstraints.columnList.length; i < len1; i++) {
-                if($rootScope.segment.coConstraints.columnList[i].columnPosition > columnPosition){
+                if ($rootScope.segment.coConstraints.columnList[i].columnPosition > columnPosition) {
                     $rootScope.segment.coConstraints.columnList[i].columnPosition = $rootScope.segment.coConstraints.columnList[i].columnPosition - 1;
                 }
             }
@@ -961,7 +997,7 @@ angular.module('igl').controller('ManageCoConstraintsTableCtrl', function($scope
     $scope.selectedSegment = angular.copy(segment);
     $scope.addColumnCoConstraints = function() {
         var newColumn = {
-            field : JSON.parse($scope.newColumnField),
+            field: JSON.parse($scope.newColumnField),
             constraintType: $scope.newColumnConstraintType,
             columnPosition: $scope.selectedSegment.coConstraints.columnList.length
         };
@@ -984,7 +1020,7 @@ angular.module('igl').controller('ManageCoConstraintsTableCtrl', function($scope
             $scope.selectedSegment.coConstraints.columnList.splice(index, 1);
 
             for (var i = 0, len1 = $scope.selectedSegment.coConstraints.columnList.length; i < len1; i++) {
-                if($scope.selectedSegment.coConstraints.columnList[i].columnPosition > columnPosition){
+                if ($scope.selectedSegment.coConstraints.columnList[i].columnPosition > columnPosition) {
                     $scope.selectedSegment.coConstraints.columnList[i].columnPosition = $rootScope.segment.coConstraints.columnList[i].columnPosition - 1;
                 }
             }
@@ -998,7 +1034,7 @@ angular.module('igl').controller('ManageCoConstraintsTableCtrl', function($scope
 
     $scope.checkFieldExisting = function(field) {
         for (var i = 0, len1 = $scope.selectedSegment.coConstraints.columnList.length; i < len1; i++) {
-            if($scope.selectedSegment.coConstraints.columnList[i].field.position == field.position){
+            if ($scope.selectedSegment.coConstraints.columnList[i].field.position == field.position) {
                 return true;
             }
         }
@@ -1575,6 +1611,69 @@ angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInsta
         $scope.updatePosition(segment);
         blockUI.stop();
         $modalInstance.close($scope.fieldToDelete);
+    };
+
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+});
+
+
+
+
+angular.module('igl').controller('EditVSCtrl', function($scope, $modalInstance, valueSets, field, $rootScope, SegmentService, blockUI) {
+    
+    $scope.vsChanged = false;
+    $scope.field = field;
+    $scope.vs = angular.copy(field.tables);
+    $scope.tableList = angular.copy(field.tables);;
+    $scope.loadVS = function($query) {
+
+
+        return valueSets.filter(function(table) {
+            return table.bindingIdentifier.toLowerCase().indexOf($query.toLowerCase()) != -1;
+        });
+
+    };
+    $scope.tagAdded = function(tag) {
+        $scope.vsChanged = true;
+        $scope.tableList.push({
+            id: tag.id,
+            bindingIdentifier: tag.bindingIdentifier,
+            bindingLocation: null,
+            bindingStrength: null
+        });
+
+
+        //$scope.log.push('Added: ' + tag.text);
+    };
+
+    $scope.tagRemoved = function(tag) {
+        $scope.vsChanged = true;
+
+        for (var i = 0; i < $scope.tableList.length; i++) {
+            if ($scope.tableList[i].id === tag.id) {
+                $scope.tableList.splice(i, 1);
+            }
+        };
+
+
+    };
+
+    $scope.addVS = function() {
+        blockUI.start();
+
+        $scope.vsChanged = false;
+        field.tables = $scope.tableList;
+
+        blockUI.stop();
+
+        $modalInstance.close();
+
+
     };
 
 

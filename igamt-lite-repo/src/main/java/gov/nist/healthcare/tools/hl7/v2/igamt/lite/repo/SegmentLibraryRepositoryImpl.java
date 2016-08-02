@@ -11,11 +11,6 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +23,11 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 
 public class SegmentLibraryRepositoryImpl implements SegmentLibraryOperations {
 
@@ -61,10 +61,9 @@ public class SegmentLibraryRepositoryImpl implements SegmentLibraryOperations {
   @Override
   public List<SegmentLibrary> findByAccountId(Long accountId, String hl7Version) {
     log.debug("SegmentLibraryRespositoryImpl.findStandardByVersion=" + hl7Version);
-    Criteria where =
-        Criteria.where("accountId").is(accountId)
-            .andOperator(Criteria.where("scope").is(SCOPE.USER))
-            .andOperator(Criteria.where("metaData.hl7Version").is(hl7Version));
+    Criteria where = Criteria.where("accountId").is(accountId)
+        .andOperator(Criteria.where("scope").is(SCOPE.USER))
+        .andOperator(Criteria.where("metaData.hl7Version").is(hl7Version));
     Query qry = Query.query(where);
     List<SegmentLibrary> list = mongo.find(qry, SegmentLibrary.class);
     log.debug("SegmentLibraryRespositoryImpl.findStandardByVersion list.size()=" + list.size());
@@ -97,15 +96,11 @@ public class SegmentLibraryRepositoryImpl implements SegmentLibraryOperations {
   }
 
   @Override
-  public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version, String name, Long accountId) {
-    Criteria libCriteria =
-        Criteria
-            .where("scope")
-            .is(scope)
-            .andOperator(Criteria.where("metaData.hl7Version").is(hl7Version))
-            .andOperator(
-                Criteria.where("accountId").is(accountId)
-                    .orOperator(Criteria.where("accountId").is(null)));
+  public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version, String name,
+      Long accountId) {
+    Criteria libCriteria = Criteria.where("scope").is(scope)
+        .andOperator(Criteria.where("metaData.hl7Version").is(hl7Version)).andOperator(Criteria
+            .where("accountId").is(accountId).orOperator(Criteria.where("accountId").is(null)));
     Criteria linksCriteria = Criteria.where("children").elemMatch(Criteria.where("name").is(name));
     BasicQuery query =
         new BasicQuery(libCriteria.getCriteriaObject(), linksCriteria.getCriteriaObject());
@@ -115,14 +110,13 @@ public class SegmentLibraryRepositoryImpl implements SegmentLibraryOperations {
   }
 
   @Override
-  public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version,
-      String name, Long accountId) {
+  public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version, String name,
+      Long accountId) {
     List<SegmentLibrary> libraries = null;
     Criteria libCriteria = null;
     if (scope.equals(SCOPE.HL7STANDARD) || scope.equals(SCOPE.MASTER)) {
-      libCriteria =
-          Criteria.where("scope").is(scope)
-              .andOperator(Criteria.where("metaData.hl7Version").is(hl7Version));
+      libCriteria = Criteria.where("scope").is(scope)
+          .andOperator(Criteria.where("metaData.hl7Version").is(hl7Version));
       Criteria linksCriteria =
           Criteria.where("children").elemMatch(Criteria.where("name").is(name));
       BasicQuery query =
@@ -156,5 +150,11 @@ public class SegmentLibraryRepositoryImpl implements SegmentLibraryOperations {
     return segments;
   }
 
+  @Override
+  public Set<SegmentLink> findChildrenById(String id) {
+    log.debug("SegmentLibraryRespositoryImpl.findChildrenById=" + id);
+    SegmentLibrary lib = findById(id);
+    return lib != null ? lib.getChildren() : new HashSet<SegmentLink>(0);
+  }
 
 }

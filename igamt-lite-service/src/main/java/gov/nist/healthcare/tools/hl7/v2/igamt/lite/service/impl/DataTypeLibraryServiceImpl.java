@@ -11,16 +11,6 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -34,6 +24,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 
 /**
  * @author gcr1
@@ -101,7 +101,8 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
   }
 
   @Override
-  public DatatypeLibrary saveMetaData(String libId, DatatypeLibraryMetaData datatypeLibraryMetaData) {
+  public DatatypeLibrary saveMetaData(String libId,
+      DatatypeLibraryMetaData datatypeLibraryMetaData) {
     log.info("DataypeServiceImpl.save=" + datatypeLibraryMetaData.getName());
     DatatypeLibrary dataTypeLibrary = datatypeLibraryRepository.findOne(libId);
     dataTypeLibrary.setMetaData(datatypeLibraryMetaData);
@@ -211,7 +212,8 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
   }
 
   @Override
-  public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name, Long accountId) {
+  public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name,
+      Long accountId) {
     return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
   }
 
@@ -244,6 +246,19 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
       if (library.getId() != null)
         datatypeLibraryRepository.delete(library);
     }
+  }
+
+  @Override
+  public List<Datatype> findDatatypesById(String libId) {
+    Set<DatatypeLink> datatypeLinks = datatypeLibraryRepository.findChildrenById(libId);
+    if (datatypeLinks != null && !datatypeLinks.isEmpty()) {
+      Set<String> ids = new HashSet<String>();
+      for (DatatypeLink link : datatypeLinks) {
+        ids.add(link.getId());
+      }
+      return datatypeRepository.findByIds(ids);
+    }
+    return new ArrayList<Datatype>(0);
   }
 
 }

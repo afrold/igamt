@@ -69,8 +69,9 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4" align="right">
-                                    <button ng-click="cmp()" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-info btn-md">
-                                        <i class="fa fa-check"></i> Compare</button>
+                                    
+                                        <button ng-click="cmp()" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-info btn-md">
+                                    <i class="fa fa-check"></i> Delta</button>
                                 </div>
                             </div>
                         </div>
@@ -131,6 +132,7 @@
                                         <option ng-repeat="table in tables2 " value='{{table}}'> {{table.bindingIdentifier}}</option>
                                     </select>
                                 </div>
+
                             </div>
                         </div>
                     </div>

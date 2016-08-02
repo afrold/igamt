@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.ArrayList;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
@@ -55,6 +57,11 @@ public class Component extends DataElement implements Cloneable {
     clonedObj.setName(name);
     clonedObj.setPosition(position);
     clonedObj.setTable(table.clone());
+    
+    clonedObj.setTables(new ArrayList<TableLink>());
+    for(TableLink tl:this.tables){
+    	clonedObj.getTables().add(tl.clone());
+    }
     // if (table != null) {
     // if (tableRecords.containsKey(table.getId())) {
     // clonedObj.setTable(tableRecords.get(table.getId()));

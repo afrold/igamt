@@ -33,6 +33,7 @@ var app = angular
         'blockUI',
         'nsPopover',
         'ds.objectDiff',
+        'ngTagsInput',
         
     ]);
 

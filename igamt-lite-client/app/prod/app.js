@@ -34,6 +34,7 @@ var app = angular
         'blockUI',
         'mgcrea.ngStrap.typeahead',
         'ds.objectDiff',
+        'ngTagsInput',
      ]);
 
 var
