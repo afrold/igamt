@@ -193,10 +193,10 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 }
 
             });
-            SegmentService.getSegmentsByScopesAndVersion([$scope.scope2], $scope.version2).then(function(result) {
-                console.log(result);
+            // SegmentService.getSegmentsByScopesAndVersion([$scope.scope2], $scope.version2).then(function(result) {
+            //     console.log(result);
 
-            });
+            // });
         }
 
     }, true);
@@ -233,15 +233,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                                 $scope.segList1 = angular.copy(segments);
                                 $scope.dtList1 = angular.copy(datatypes);
                                 $scope.tableList1 = angular.copy(tables);
-                                console.log(igDoc);
-                                for (var i = 0; i < igDoc.profile.messages.children.length; i++) {
-                                    if(igDoc.profile.messages.children[i].name==="ADT^A37^ADT_A37"){
-                                        console.log("===+++HEEERERE");
-                                        console.log(igDoc.profile.messages.children[i]);
-                                    }
-                                };
-
-                                $scope.messages1 = orderByFilter(igDoc.profile.messages.children,'name');
+                                $scope.messages1 = orderByFilter(igDoc.profile.messages.children, 'name');
                                 $scope.segments1 = segments;
                                 $scope.datatypes1 = datatypes;
                                 $scope.tables1 = tables;
@@ -654,7 +646,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 var segment = {};
 
                 segment = {
-                    id: elements[i].ref.id,
+                    //id: elements[i].ref.id,
                     name: elements[i].ref.name,
                     label: elements[i].ref.label,
                     type: elements[i].type,
@@ -665,7 +657,10 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 };
 
                 for (var j = 0; j < segmentList.length; j++) {
+                   
+
                     if (elements[i].ref.id === segmentList[j].id) {
+
                         segment.description = segmentList[j].description;
                         segment.conformanceStatements = segmentList[j].conformanceStatements;
                         segment.coConstraints = segmentList[j].coConstraints;
@@ -734,7 +729,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     };
     var writettTable = function(childArray, dataArray) {
         var result = {};
-        // console.log(childArray);
+        console.log(childArray);
 
 
         if (childArray.changed === "object change") {
@@ -864,14 +859,14 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                         };
 
                     }
-                    if (childArray.value.description.changed === "primitive change") {
+                    if (childArray.value.description && childArray.value.description.changed === "primitive change") {
                         result.description = {
                             msg1: childArray.value.description.removed,
                             msg2: childArray.value.description.added
 
                         };
 
-                    } else if (childArray.value.description.changed === "equal") {
+                    } else if (childArray.value.description && childArray.value.description.changed === "equal") {
                         result.description = {
                             msg: childArray.value.description.value,
 
@@ -885,7 +880,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
                         };
                     }
-                    if (childArray.value.fields.changed === "object change") {
+                    if (childArray.value.fields && childArray.value.fields.changed === "object change") {
                         result.fields = [];
                         objToArray(childArray.value.fields.value).forEach(function(childNode) {
                             writettTable(childNode, result.fields);
