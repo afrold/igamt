@@ -68,8 +68,8 @@ public class Bootstrap implements InitializingBean {
 //    		 new DataCorrection().updateMessage();
 //    
 //    dataCorrectionSectionPosition.resetSectionPositions();
-//	  new DataCorrection().updateValueSetForSegment();
-//	  new DataCorrection().updateValueSetsForDT();
+	  new DataCorrection().updateValueSetForSegment();
+	  new DataCorrection().updateValueSetsForDT();
   }
 
   private void loadPreloadedIGDocuments() throws Exception {
