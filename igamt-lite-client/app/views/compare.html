@@ -83,52 +83,9 @@
 
 
 
-                            <div class="row" align="center">
-                                <div class="col-md-1 "><span class="label " style="background-color:#B5F7EC;color:black;">1</span></div>
-                                <div class="input-group col-md-2">
-                                    <span class="input-group-addon" id="basic-addon1">Segment</span>
-                                    <select ng-model="segment1" class="form-control " ng-change="setSegment1(segment1)">
-                                        <option ng-repeat="segment in segments1 " value='{{segment}}'> {{getLabel(segment)}}</option>
-                                    </select>
-                                </div>
-                                <div class="input-group col-md-2">
-                                    <span class="input-group-addon" id="basic-addon1">Datatype</span>
-                                    <select ng-model="datatype1" class="form-control " ng-change="setDatatype1(datatype1)">
-                                        <option ng-repeat="datatype in datatypes1 " value='{{datatype}}'> {{getLable(datatype)}}</option>
-                                    </select>
-                                </div>
-                               
-                                <div class="input-group col-md-3">
-                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
-                                    <select ng-model="table1" class="form-control  col-md-1 input-sm" ng-change="setTable1(talbe1)">
-                                        <option ng-repeat="table in tables1 " value='{{table}}'> {{table.bindingIdentifier}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row" align="center">
-                                <div class="col-md-1 "><span class="label " style="background-color:#EDE1AF;color:black;">2</span></div>
-                                <div class="input-group col-md-2">
-                                    <span class="input-group-addon" id="basic-addon1">Segment</span>
-                                    <select ng-model="segment2" class="form-control " ng-change="setSegment2(segment2)">
-                                        <option ng-repeat="segment in segments2 " value='{{segment}}'> {{getLabel(segment)}}</option>
-                                    </select>
-                                </div>
-                                <div class="input-group col-md-2">
-                                    <span class="input-group-addon" id="basic-addon1">Datatype</span>
-                                    <select ng-model="datatype2" class="form-control " ng-change="setDatatype2(datatype2)">
-                                        <option ng-repeat="datatype in datatypes2 " value='{{datatype}}'> {{getLabel(datatype)}}</option>
-                                    </select>
-                                </div>
-                               
-                                <div class="input-group col-md-3">
-                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
-                                    <select ng-model="table2" class="form-control  col-md-1 input-sm" ng-change="setTable2(talbe2)">
-                                        <option ng-repeat="table in tables2 " value='{{table}}'> {{table.bindingIdentifier}}</option>
-                                    </select>
-                                </div>
-                            </div>
+                            
                             <div class="row" align="center" style="padding-top:20px">
-                                <button ng-click="compare()" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-info btn-md">
+                                <button ng-click="cmp()" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-info btn-md">
                                     <i class="fa fa-check"></i> Compare</button>
                             </div>
                         </div>
