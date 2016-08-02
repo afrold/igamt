@@ -32,6 +32,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.IGDocumentConverterFromOldToNew;
 
 @Service
 public class Bootstrap implements InitializingBean {
@@ -58,17 +59,17 @@ public class Bootstrap implements InitializingBean {
     // Carefully use this. It will delete all of existing IGDocuments and
     // make new ones converted from the "igdocumentPreLibHL7",
     // "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
-    //		 new IGDocumentConverterFromOldToNew().convert();
-	//    	 new DataCorrection().updateSegment();
-    //		 new DataCorrection().updateDatatype();
-    //		 new DataCorrection().updateSegmentLibrary();
-    //		 new DataCorrection().updateDatatypeLibrary();
-    //		 new DataCorrection().updateTableLibrary();
-    //		 new DataCorrection().updateMessage();
-    
+//    		 new IGDocumentConverterFromOldToNew().convert();
+//	    	 new DataCorrection().updateSegment();
+//    		 new DataCorrection().updateDatatype();
+//    		 new DataCorrection().updateSegmentLibrary();
+//    		 new DataCorrection().updateDatatypeLibrary();
+//    		 new DataCorrection().updateTableLibrary();
+//    		 new DataCorrection().updateMessage();
+//    
 //    dataCorrectionSectionPosition.resetSectionPositions();
-	  new DataCorrection().updateValueSetForSegment();
-	  new DataCorrection().updateValueSetsForDT();
+//	  new DataCorrection().updateValueSetForSegment();
+//	  new DataCorrection().updateValueSetsForDT();
   }
 
   private void loadPreloadedIGDocuments() throws Exception {
