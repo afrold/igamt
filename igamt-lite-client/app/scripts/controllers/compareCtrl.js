@@ -10,96 +10,14 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         }
     };
 
-
-
-
-
-    // $scope.loadIGDocuments = function() {
-    //     var delay = $q.defer();
-    //     $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType() : 'USER';
-    //     $scope.error = null;
-    //     $rootScope.igs = [];
-    //     $scope.tmpIgs = [].concat($rootScope.igs);
-    //     if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
-    //         $scope.loading = true;
-    //         StorageService.setSelectedIgDocumentType($scope.igDocumentConfig.selectedType);
-    //         $http.get('api/igdocuments', { params: { "type": $scope.igDocumentConfig.selectedType } }).then(function(response) {
-    //             $rootScope.igs = angular.fromJson(response.data);
-    //             $scope.tmpIgs = [].concat($rootScope.igs);
-    //             $scope.loading = false;
-    //             delay.resolve(true);
-    //         }, function(error) {
-    //             $scope.loading = false;
-    //             $scope.error = error.data;
-    //             delay.reject(false);
-    //         });
-    //     } else {
-    //         delay.reject(false);
-    //     }
-    //     return delay.promise;
-    // };
-    // $scope.loadIGDocuments().then(function() {
-    //     console.log($rootScope.igs);
-    //     $scope.msg1=$rootScope.igs[0].profile.messages.children[0];
-    //     $scope.msg2=$rootScope.igs[0].profile.messages.children[1];
-    //     $scope.formatMsg($scope.msg1).then(function(msg1) {
-    //         console.log("Here inside1");
-
-    //         $scope.formatMsg($scope.msg2).then(function(msg2) {
-    //             $scope.diff = ObjectDiff.diffOwnProperties(msg1, msg2);
-    //             console.log($scope.diff);
-
-    //             var array = objToArray($scope.diff);
-    //             var arraySeg = objToArray(array[1].segments.value);
-
-    //             //writeTable(array[1].segments, 0, $scope.gridOptions.data);
-    //             $scope.dataList = [];
-    //             for (var i = 0; i < arraySeg.length; i++) {
-    //                 writettTable(arraySeg[i], $scope.dataList);
-    //             }
-    //             console.log($scope.dataList);
-
-    //             if ($scope.dynamic_params) {
-    //                 $scope.showDelta = true;
-    //                 $scope.dynamic_params.refresh();
-    //             }
-    //         });
-    //         console.log("Here outside");
-
-    //     });
-
-
-    //     // angular.forEach($rootScope.igs, function(ig) {
-
-
-    //     //     var element = {
-    //     //         id: ig.id,
-    //     //         title: ig.metaData.title
-    //     //     };
-    //     //     $scope.igList.push(element);
-
-    //     // });
-
-    // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     $scope.msgSelected = false;
     $scope.igDisabled1 = false;
     $scope.igDisabled2 = false;
     $scope.msgChanged = false;
+    $scope.cmpMsg = false;
+    $scope.cmpSeg = false;
+    $scope.cmpDT = false;
+    $scope.cmpVS = false;
 
     //$scope.scopes = ["USER", "HL7STANDARD"];
     $scope.scopes = [{
@@ -108,6 +26,19 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     }, {
         name: "HL7STANDARD",
         alias: "Base HL7"
+    }];
+    $scope.toCompare = [{
+        name: "message",
+        alias: "Messages"
+    }, {
+        name: "datatype",
+        alias: "Datatypes"
+    }, {
+        name: "valueset",
+        alias: "Value Sets"
+    }, {
+        name: "segment",
+        alias: "Segments"
     }];
 
     $scope.showDelta = false;
@@ -135,6 +66,32 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     });
 
     init();
+
+
+
+    $scope.setCmpType = function(type) {
+        if (type === "message") {
+            $scope.cmpSeg = false;
+            $scope.cmpVS = false;
+            $scope.cmpDT = false;
+            $scope.cmpMsg = true;
+        } else if (type === "segment") {
+            $scope.cmpMsg = false;
+            $scope.cmpVS = false;
+            $scope.cmpDT = false;
+            $scope.cmpSeg = true;
+        } else if (type === "datatype") {
+            $scope.cmpSeg = false;
+            $scope.cmpVS = false;
+            $scope.cmpMsg = false;
+            $scope.cmpDT = true;
+        } else if (type === "valueset") {
+            $scope.cmpSeg = false;
+            $scope.cmpMsg = false;
+            $scope.cmpDT = false;
+            $scope.cmpVS = true;
+        }
+    }
 
 
     $scope.setVersion1 = function(vr) {
@@ -266,6 +223,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.setIG1 = function(ig) {
         if (ig) {
             IgDocumentService.getOne(ig.id).then(function(igDoc) {
+                console.log(ig.id);
                 SegmentLibrarySvc.getSegmentsByLibrary(igDoc.profile.segmentLibrary.id).then(function(segments) {
                     DatatypeLibrarySvc.getDatatypesByLibrary(igDoc.profile.datatypeLibrary.id).then(function(datatypes) {
                         TableLibrarySvc.getTablesByLibrary(igDoc.profile.tableLibrary.id).then(function(tables) {
@@ -275,8 +233,15 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                                 $scope.segList1 = angular.copy(segments);
                                 $scope.dtList1 = angular.copy(datatypes);
                                 $scope.tableList1 = angular.copy(tables);
+                                console.log(igDoc);
+                                for (var i = 0; i < igDoc.profile.messages.children.length; i++) {
+                                    if(igDoc.profile.messages.children[i].name==="ADT^A37^ADT_A37"){
+                                        console.log("===+++HEEERERE");
+                                        console.log(igDoc.profile.messages.children[i]);
+                                    }
+                                };
 
-                                $scope.messages1 = igDoc.profile.messages.children;
+                                $scope.messages1 = orderByFilter(igDoc.profile.messages.children,'name');
                                 $scope.segments1 = segments;
                                 $scope.datatypes1 = datatypes;
                                 $scope.tables1 = tables;
@@ -740,7 +705,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             }
         }
         for (var i = 0; i < fields.length; i++) {
-            fields[i].id="";
+            fields[i].id = "";
             for (var j = 0; j < datatypeList.length; j++) {
                 if (fields[i].datatype.id === datatypeList[j].id) {
                     fields[i].components = datatypeList[j].components;
@@ -1002,14 +967,14 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.cmp = function() {
         $scope.loadingSelection = true;
         $scope.msgChanged = false;
-        var msg1=$scope.fMsg(JSON.parse($scope.msg1), $scope.dtList1, $scope.segList1);
-        var msg2=$scope.fMsg(JSON.parse($scope.msg2), $scope.dtList2, $scope.segList2)
+        var msg1 = $scope.fMsg(JSON.parse($scope.msg1), $scope.dtList1, $scope.segList1);
+        var msg2 = $scope.fMsg(JSON.parse($scope.msg2), $scope.dtList2, $scope.segList2)
 
-         console.log(msg1);
-         console.log(msg2);
+        console.log(msg1);
+        console.log(msg2);
         // console.log($scope.dtList2);
         // console.log($scope.segList2);
-        $scope.diff = ObjectDiff.diffOwnProperties(msg1,msg2 );
+        $scope.diff = ObjectDiff.diffOwnProperties(msg1, msg2);
         $scope.dataList = [];
         console.log($scope.diff);
 
@@ -1033,6 +998,9 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             $scope.showDelta = true;
             $scope.dynamic_params.refresh();
         }
+
+    }
+    $scope.AdvencedCmp = function() {
 
     }
 
