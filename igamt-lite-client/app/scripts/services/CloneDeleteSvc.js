@@ -196,6 +196,63 @@ angular.module('igl').factory(
             });
         };
 
+        svc.copyTableINLIB = function (table, libId) {
+            var newTable = angular.copy(table);
+            newTable.participants = [];
+            newTable.scope = 'MASTER';
+            newTable.id = null;
+            newTable.libIds = [];
+            newTable.libIds.push(libId);
+            newTable.bindingIdentifier = $rootScope.createNewExtension(newTable.bindingIdentifier);
+
+            if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
+                for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
+                    newTable.codes[i].id = new ObjectId().toString();
+                }
+            }
+
+            TableService.save(newTable).then(function (result) {
+                newTable = result;
+                var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary.children));
+                newLink.bindingIdentifier = newTable.bindingIdentifier;
+                newLink.id = newTable.id;
+
+                TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
+                    $rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newLink);
+                    $rootScope.tables.splice(0, 0, newTable);
+                    $rootScope.table = newTable;
+                    $rootScope.tablesMap[newTable.id] = newTable;
+
+                    $rootScope.codeSystems = [];
+
+                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
+                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+                            }
+                        }
+                    }
+                    if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+                        $rootScope.filteredTablesList.push(newTable);
+                        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+                    }
+                    $rootScope.$broadcast('event:openTable', newTable);
+
+                }, function (error) {
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
+
+
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+        };
+        
+        
         svc.copyMessage = function (message) {
             var newMessage = angular.copy(message);
             newMessage.id = null;
@@ -251,6 +308,7 @@ angular.module('igl').factory(
                     confirmValueSetDelete(table);
                 }
          }
+
 
         svc.exportDisplayXML = function (messageID) {
             var form = document.createElement("form");
