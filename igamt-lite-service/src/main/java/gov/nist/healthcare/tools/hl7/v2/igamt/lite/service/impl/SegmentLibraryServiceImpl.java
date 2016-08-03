@@ -11,16 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibraryMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentLibraryRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
-
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
@@ -32,6 +23,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 
 /**
  * @author gcr1
@@ -62,6 +63,19 @@ public class SegmentLibraryServiceImpl implements SegmentLibraryService {
     List<SegmentLibrary> segmentLibrary = segmentLibraryRepository.findByScopes(scopes);
     log.debug("SegmentLibraryRepository.findByScopes segmentLibrary=" + segmentLibrary.size());
     return segmentLibrary;
+  }
+
+  @Override
+  public List<Segment> findSegmentsById(String libId) {
+    Set<SegmentLink> segmentLinks = segmentLibraryRepository.findChildrenById(libId);
+    if (segmentLinks != null && !segmentLinks.isEmpty()) {
+      Set<String> ids = new HashSet<String>();
+      for (SegmentLink link : segmentLinks) {
+        ids.add(link.getId());
+      }
+      return segmentRepository.findByIds(ids);
+    }
+    return new ArrayList<Segment>(0);
   }
 
   @Override
@@ -153,13 +167,14 @@ public class SegmentLibraryServiceImpl implements SegmentLibraryService {
   }
 
   @Override
-  public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version, String name, Long accountId) {
+  public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version, String name,
+      Long accountId) {
     return segmentLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
   }
 
   @Override
-  public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version,
-      String name, Long accountId) {
+  public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version, String name,
+      Long accountId) {
     return segmentLibraryRepository.findLibrariesByFlavorName(scope, hl7Version, name, accountId);
   }
 

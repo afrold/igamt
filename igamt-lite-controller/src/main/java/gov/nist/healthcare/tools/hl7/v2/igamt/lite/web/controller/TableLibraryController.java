@@ -11,6 +11,20 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
@@ -30,20 +44,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibrarySaveExce
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.TableSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -78,7 +78,7 @@ public class TableLibraryController extends CommonController {
       produces = "application/json")
   public List<Table> getTablesByLibrary(@PathVariable("tabLibId") String tabLibId) {
     log.info("Fetching tableByLibrary..." + tabLibId);
-    List<Table> result = tableService.findByLibIds(tabLibId);
+    List<Table> result = tableLibraryService.findTablesById(tabLibId);
     return result;
   }
 
@@ -108,9 +108,8 @@ public class TableLibraryController extends CommonController {
         + scopesAndVersion.getHl7Version());
     List<Table> tables = null;
     try {
-      tables =
-          tableService.findByScopesAndVersion(scopesAndVersion.getScopes(),
-              scopesAndVersion.getHl7Version());
+      tables = tableService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+          scopesAndVersion.getHl7Version());
       if (tables == null) {
         throw new NotFoundException("Table not found for scopesAndVersion=" + scopesAndVersion);
       }
@@ -130,8 +129,8 @@ public class TableLibraryController extends CommonController {
 
   @RequestMapping(value = "/{accountId}/{hl7Version}/findByAccountId", method = RequestMethod.GET)
   public List<TableLibrary> findByAccountId(@PathVariable("accountId") Long accountId,
-      @PathVariable("hl7Version") String hl7Version) throws LibraryNotFoundException,
-      UserAccountNotFoundException, LibraryException {
+      @PathVariable("hl7Version") String hl7Version)
+      throws LibraryNotFoundException, UserAccountNotFoundException, LibraryException {
     log.info("Fetching the table libraries...");
     List<TableLibrary> result = tableLibraryService.findByAccountId(accountId, hl7Version);
     return result;
@@ -141,8 +140,8 @@ public class TableLibraryController extends CommonController {
   public TableLibrary create(@RequestBody LibraryCreateWrapper dtlcw) {
     SCOPE scope = SCOPE.valueOf(dtlcw.getScope());
 
-    return tableLibraryService.create(dtlcw.getName(), dtlcw.getExt(), scope,
-        dtlcw.getHl7Version(), dtlcw.getAccountId());
+    return tableLibraryService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),
+        dtlcw.getAccountId());
   }
 
   @RequestMapping(value = "/save", method = RequestMethod.POST)
