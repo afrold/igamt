@@ -57,6 +57,13 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
             });
     };
     
+    svc.save = function (datatypeLibrary) {
+        
+        return $http.post(
+            'api/datatype-library-document/save', angular.toJson(datatypeLibrary)).then(function (response) {
+                return angular.fromJson(response.data)
+            });
+    };
     
     
     return svc;

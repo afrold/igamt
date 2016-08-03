@@ -630,6 +630,13 @@ angular
                     ]
                 ];
 
+                $scope.addValueSetsInTableLIB = [
+                    ['Add Tables',
+                        function($itemScope) {
+                            $scope.addTables($rootScope.igdocument);
+                        }
+                    ]
+                ];
 
                 function processEditSeg(seg) {
                     $scope.Activate(seg.id);
@@ -1085,6 +1092,18 @@ angular
                         segment.checked = false;
                     });
                 }
+
+                    $scope.resetLibFilter = function() {
+                    console.log("called");
+                    $scope.filteringModeON=false;
+
+                    $scope.datatypes.forEach(function(data, i) {
+
+                        data.checked = false;
+                    });
+                    $scope.loadTables().then(function(){});
+                    };
+
                 $scope.resetDatatypes = function() {
                     console.log("called");
                     if ($rootScope.selectedSegment != null) {

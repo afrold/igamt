@@ -67,7 +67,7 @@ public class Bootstrap implements InitializingBean {
     //		 new DataCorrection().updateTableLibrary();
     //		 new DataCorrection().updateMessage();
     
-    dataCorrectionSectionPosition.resetSectionPositions();
+   // dataCorrectionSectionPosition.resetSectionPositions();
 
   }
 

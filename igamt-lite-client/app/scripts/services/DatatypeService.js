@@ -52,9 +52,9 @@ angular.module('igl').factory('DatatypeService',
                 if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
                     return DatatypeService.getReadTemplate(node, root);
                 } else {
-                    console.log("INTO THE NODES ")
-                    console.log(node);
-                    console.log(root);
+                    //console.log("INTO THE NODES ")
+                    //console.log(node);
+                    //console.log(root);
                     return DatatypeService.getEditTemplate(node, root);
                 }
             },
@@ -72,9 +72,9 @@ angular.module('igl').factory('DatatypeService',
                 if (root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
                     return DatatypeService.getReadTemplateINLIB(node, root);
                 } else {
-                    console.log("INTO THE NODES ")
-                    console.log(node);
-                    console.log(root);
+                    //console.log("INTO THE NODES ")
+                    //console.log(node);
+                    //console.log(root);
                     return DatatypeService.getEditTemplateINLIB(node, root);
                 }
             },
@@ -144,7 +144,7 @@ angular.module('igl').factory('DatatypeService',
                     datatype.id = saveResponse.id;
                     delay.resolve(datatype);
                 }, function(error) {
-                    console.log("DatatypeService.save error=" + error);
+                    //console.log("DatatypeService.save error=" + error);
                     delay.reject(error);
                 });
                 return delay.promise;
@@ -158,7 +158,7 @@ angular.module('igl').factory('DatatypeService',
                     //                    datatype.id = saveResponse.id;
                     //                    delay.resolve(datatypes);
                 }, function(error) {
-                    console.log("DatatypeService.save error=" + error);
+                    //console.log("DatatypeService.save error=" + error);
                     delay.reject(error);
                 });
                 return delay.promise;
@@ -188,7 +188,7 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
             getDataTypesByScopesAndVersion : function(scopes, hl7Version) {
-                console.log("datatypes/findByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
+                //console.log("datatypes/findByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
                 var scopesAndVersion = {
                     "scopes": scopes,
                     "hl7Version": hl7Version
@@ -196,7 +196,7 @@ angular.module('igl').factory('DatatypeService',
                 return $http.post(
                         'api/datatypes/findByScopesAndVersion', angular.toJson(scopesAndVersion))
                     .then(function(response) {
-                        console.log("getDataTypesByScopesAndVersion response size=" + response.data.length);
+                        //console.log("getDataTypesByScopesAndVersion response size=" + response.data.length);
                         return angular.fromJson(response.data);
                     });
             },

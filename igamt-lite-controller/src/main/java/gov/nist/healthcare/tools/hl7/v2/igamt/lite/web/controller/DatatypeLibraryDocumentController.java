@@ -162,6 +162,12 @@ public class DatatypeLibraryDocumentController {
 		datatypeLibraryDocumentService.delete(id);
 		return new ResponseMessage(ResponseMessage.Type.success, "datatypeLibraryDocumentDeletedSuccess", null);
 	}
-
+	
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public LibrarySaveResponse save(@RequestBody DatatypeLibraryDocument datatypeLibrary) throws LibrarySaveException {
+		log.info("Saving the " + datatypeLibrary.getMetaData().getName() + " datatype library.");
+		DatatypeLibraryDocument saved = datatypeLibraryDocumentService.save(datatypeLibrary);
+		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
+	}
 
 }

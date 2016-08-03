@@ -309,6 +309,7 @@ angular.module('igl').factory(
                 }
          }
 
+
         svc.exportDisplayXML = function (messageID) {
             var form = document.createElement("form");
             form.action = $rootScope.api('api/igdocuments/' + $rootScope.igdocument.id + '/export/Display/' + messageID);
