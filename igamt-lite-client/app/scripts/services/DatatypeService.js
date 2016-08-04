@@ -69,7 +69,7 @@ angular.module('igl').factory('DatatypeService',
 
 
             getTemplateINLIB: function(node, root) {
-                if (root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
+                if (root != null && root.scope === 'HL7STANDARD' || root.scope === null ||root.status==='PUBLISHED') {
                     return DatatypeService.getReadTemplateINLIB(node, root);
                 } else {
                     //console.log("INTO THE NODES ")
