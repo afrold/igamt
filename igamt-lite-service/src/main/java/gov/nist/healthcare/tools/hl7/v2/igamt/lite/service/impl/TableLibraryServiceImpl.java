@@ -11,16 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibraryMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
-
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
@@ -32,6 +23,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 
 /**
  * @author gcr1
@@ -105,7 +106,8 @@ public class TableLibraryServiceImpl implements TableLibraryService {
   }
 
   @Override
-  public TableLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId) {
+  public TableLibrary create(String name, String ext, SCOPE scope, String hl7Version,
+      Long accountId) {
     TableLibraryMetaData metaData = defaultMetadata();
     metaData.setName(name);
     metaData.setHl7Version(hl7Version);
@@ -141,6 +143,18 @@ public class TableLibraryServiceImpl implements TableLibraryService {
     }
   }
 
+  @Override
+  public List<Table> findTablesById(String libId) {
+    Set<TableLink> datatypeLinks = tableLibraryRepository.findChildrenById(libId);
+    if (datatypeLinks != null && !datatypeLinks.isEmpty()) {
+      Set<String> ids = new HashSet<String>();
+      for (TableLink link : datatypeLinks) {
+        ids.add(link.getId());
+      }
+      return tableRepository.findUserTablesByIds(ids);
+    }
+    return new ArrayList<Table>(0);
+  }
 
   class TableByLabel implements Comparator<Table> {
 

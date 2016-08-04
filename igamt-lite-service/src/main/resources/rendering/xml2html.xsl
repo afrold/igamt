@@ -137,6 +137,13 @@
 	</xsl:template>
 
 	<xsl:template match="MessageDisplay">
+		<br></br>
+		<h3>
+			<xsl:value-of select="@Label" />
+			-
+			<xsl:value-of select="@Description" />
+		</h3>
+		<br></br>
 		<xsl:value-of select="@Comment" />
 		<p>
 			<table width="100%" border="1" cellspacing="0" cellpadding="1">
@@ -223,6 +230,7 @@
 		<br></br>
 
 		<xsl:value-of select="@Comment"></xsl:value-of>
+		<br></br>
 		<xsl:if test="count(./Text[@Type='Text1']) &gt; 0">
 			<p>
 				<xsl:value-of disable-output-escaping="yes"
@@ -340,6 +348,15 @@
 				</p>
 			</xsl:if>
 		</xsl:for-each>
+		<br></br>
+		<xsl:if test="count(coconstraints/table) &gt; 0">
+			<p>
+				<strong>
+					<u>Co-constraints</u>
+				</strong>
+				<xsl:copy-of select="coconstraints/table" />
+			</p>
+		</xsl:if>
 		<br></br>
 	</xsl:template>
 

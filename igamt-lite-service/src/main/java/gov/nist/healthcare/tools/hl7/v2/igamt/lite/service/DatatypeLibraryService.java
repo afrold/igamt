@@ -16,9 +16,8 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -57,5 +56,7 @@ public interface DatatypeLibraryService {
   DatatypeLibrary saveMetaData(String libId, DatatypeLibraryMetaData datatypeLibraryMetaData);
 
   void delete(DatatypeLibrary library);
+
+  List<Datatype> findDatatypesById(String libId);
 
 }

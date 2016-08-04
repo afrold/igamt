@@ -31,8 +31,10 @@ var app = angular
         'ui-notification',
         'ngDragDrop',
         'ui.tree',
-        'blockUI'
-
+        'blockUI',
+        'mgcrea.ngStrap.typeahead',
+        'ds.objectDiff',
+        'ngTagsInput',
      ]);
 
 var
@@ -62,6 +64,9 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         })
         .when('/ig', {
             templateUrl: 'views/ig.html'
+        })
+        .when('/compare', {
+            templateUrl: 'views/compare.html'
         })
         .when('/datatypeLibrary', {
             templateUrl: 'views/datatypeLibrary.html',
@@ -331,7 +336,9 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
                     $rootScope.msg().show= true;
                 }
             },
-            key: 'Rg1Wb2KYd1Td1WIh1CVc2F=='
+            key: 'Rg1Wb2KYd1Td1WIh1CVc2F==',
+            imageResize: false,
+            imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageAlt']
         };
         httpHeaders.common['appVersion'] = appInfo.version;
         var prevVersion = StorageService.getAppVersion(StorageService.APP_VERSION);
@@ -390,7 +397,11 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         }
         $rootScope.requests401 = [];
 //console.log("event:loginConfirmed 1");
-        $location.url('/ig');
+        if($location.path() === '/compare'){
+            $location.url('/compare');
+        }else {
+            $location.url('/ig');
+        }
     });
 
     /*jshint sub: true */

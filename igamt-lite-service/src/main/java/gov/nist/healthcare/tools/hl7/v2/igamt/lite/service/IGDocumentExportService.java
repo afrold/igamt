@@ -76,6 +76,10 @@ public interface IGDocumentExportService {
   InputStream exportAsHtmlDatatype(DatatypeLink dl) throws IOException;
   
   InputStream exportAsHtmlTable(TableLink tl) throws IOException;
+  
+  InputStream exportAsHtmlSections(IGDocument ig);
+  
+  InputStream exportAsDocxSections(IGDocument ig); 
 
 
 }

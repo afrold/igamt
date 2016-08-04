@@ -1459,8 +1459,14 @@ input.account-input {
 
 .flavor-modal-window .modal-dialog {
   width: 50%;
-  height: 50%;
+  height: 70%;
   overflow-y: auto;
+}
+
+.flavor-seach-box {
+  display: block;
+  margin: auto;
+  width: 95%;
 }
 
 
@@ -2326,5 +2332,39 @@ table.conformance-profiles-table td {
 .el-def{
   margin-left:5px
 }
+.lb-sm {
+  font-size: 6px;
+}
 
 
+.table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
+    border: none;
+    margin-bottom:1px !important;
+
+
+
+}
+.table-marginless tbody tr td, .table-marginless tbody tr th, .table-marginless thead tr th {
+    margin-bottom:0px  !important;
+    }
+ul.search-result > li > a:hover {
+  background-color: cornflowerblue;
+}
+
+.st-sort-ascent:before{
+  content: '\25B2';
+}
+
+.st-sort-descent:before{
+  content: '\25BC';
+}
+
+.label-diff{
+  border-radius:10px;
+}
+
+.edit-VS-modal .modal-dialog {
+  width: 600px;
+  height: 160px;
+
+}

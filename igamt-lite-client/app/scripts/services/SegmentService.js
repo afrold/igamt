@@ -152,9 +152,9 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
             return to;
         },
 
-        delete: function(segmentId) {
+        delete: function(segment) {
             var delay = $q.defer();
-            $http.post('api/segments/' + segmentId + '/delete').then(function(response) {
+            $http.post('api/segments/' + segment.id + '/delete').then(function(response) {
                 var saveResponse = angular.fromJson(response.data);
                 delay.resolve(saveResponse);
             }, function(error) {

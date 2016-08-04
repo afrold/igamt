@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -102,6 +103,12 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
     clonedField.setName(name);
     clonedField.setPosition(position);
     clonedField.setTable(table.clone());
+    
+    clonedField.setTables(new ArrayList<TableLink>());
+    for(TableLink tl:this.tables){
+    	clonedField.getTables().add(tl.clone());
+    }
+    
 
     // if (table != null) {
     // if (tableRecords.containsKey(table.getId())) {
