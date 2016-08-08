@@ -18,7 +18,7 @@ import java.io.InputStream;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePreLib;
+import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfilePreLib;
 import nu.xom.Document;
 
 public interface ProfileSerialization {

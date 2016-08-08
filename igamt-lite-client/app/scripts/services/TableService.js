@@ -77,7 +77,7 @@ angular.module('igl').factory('TableService',
             },
             findAllByIds: function (tableIds) {
                 var delay = $q.defer();
-                $http.get('api/tables/findAllByIds', tableIds).then(function (response) {
+                $http.post('api/tables/findAllByIds', tableIds).then(function (response) {
                     delay.resolve(angular.fromJson(response.data));
                 }, function (error) {
                     delay.reject(error);

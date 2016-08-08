@@ -83,7 +83,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.IGDocumentConverterFromNewToOld;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePreLib;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
@@ -92,6 +91,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundExc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfilePreLib;
 
 @RestController
 @RequestMapping("/igdocuments")
@@ -783,6 +783,9 @@ public class IGDocumentController extends CommonController {
         igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(), idrw.getHl7Version(),
             account.getId());
 
+    
+    System.out.println(igDocument.getProfile().getTableLibrary().getChildren().size());
+    
     assert (igDocument.getId() != null);
     assert (igDocument.getAccountId() != null);
     return igDocument;

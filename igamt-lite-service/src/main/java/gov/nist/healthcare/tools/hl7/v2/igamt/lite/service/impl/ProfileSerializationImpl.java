@@ -84,8 +84,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfileMetaDataPreLib;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.ProfilePreLib;
+import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfileMetaDataPreLib;
+import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfilePreLib;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.NodeFactory;
@@ -2165,6 +2165,21 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				this.addDatatype(f.getDatatype(), original, datatypesMap, tablesMap);
 				if (f.getTable() != null) {
 					tablesMap.put(f.getTable().getBindingIdentifier(), f.getTable());
+				}
+			}
+			
+			for(Mapping mapping:s.getDynamicMapping().getMappings()){
+				for(Case mappingCase:mapping.getCases()){
+					Datatype dt = datatypeService.findById(mappingCase.getDatatype());
+					
+					if(dt != null){
+						DatatypeLink dl = new DatatypeLink();
+						dl.setExt(dt.getExt());
+						dl.setId(dt.getId());
+						dl.setName(dt.getName());
+						
+						this.addDatatype(dl, original, datatypesMap, tablesMap);
+					}
 				}
 			}
 
