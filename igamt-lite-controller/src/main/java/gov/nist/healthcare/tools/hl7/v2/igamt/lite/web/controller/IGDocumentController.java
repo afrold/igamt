@@ -187,9 +187,17 @@ public class IGDocumentController extends CommonController {
 	      if (account == null) {
 	        throw new UserAccountNotFoundException();
 	      }
-
-	      igDocuments.addAll(igDocumentService.findByScopesAndVersion(scopesAndVersion.getScopes(),
-	          scopesAndVersion.getHl7Version()));
+	      
+	      if(scopesAndVersion.getScopes().get(0).toString() == "HL7STANDARD"){
+	    	  igDocuments.addAll(igDocumentService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+	    	          scopesAndVersion.getHl7Version()));
+	      }
+	      if(scopesAndVersion.getScopes().get(0).toString() == "USER"){
+	    	  System.out.println("==================");
+	    	  igDocuments.addAll(igDocumentService.findByAccountIdAndScopesAndVersion(account.getId(),scopesAndVersion.getScopes(),
+	    	          scopesAndVersion.getHl7Version()));
+	      }
+	     
 	      if (igDocuments.isEmpty()) {
 	        throw new NotFoundException("IG Document not found for scopesAndVersion=" + scopesAndVersion);
 	      }

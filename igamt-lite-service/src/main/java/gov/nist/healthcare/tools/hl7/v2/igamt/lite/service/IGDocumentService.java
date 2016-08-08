@@ -45,7 +45,9 @@ public interface IGDocumentService {
   
   public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-
+  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version);
+  
+  
   public IGDocument clone(IGDocument ig) throws CloneNotSupportedException;
 
   public IGDocument apply(IGDocument ig) throws IGDocumentSaveException;

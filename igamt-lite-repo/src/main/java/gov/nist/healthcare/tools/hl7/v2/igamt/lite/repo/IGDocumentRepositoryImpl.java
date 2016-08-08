@@ -79,6 +79,17 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
 		return mongo.find(qry, IGDocument.class);
 	} 
   
+  @Override
+  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version) {
+	  Criteria where = Criteria.where("profile.scope").in(scopes);
+		//where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
+		where.andOperator(Criteria.where("accountId").is(accountId).andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version)));
+		Query qry = Query.query(where);
+		qry.fields().include("_id");
+		qry.fields().include("metaData.title");
+		return mongo.find(qry, IGDocument.class);
+  }
+  
   /**
    * TODO: Refactor this to not load IG Doc in memory
    */
@@ -94,4 +105,5 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     Collections.sort(rval);
     return rval;
   }
+
 }

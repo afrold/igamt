@@ -14,6 +14,8 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.igDisabled1 = false;
     $scope.igDisabled2 = false;
     $scope.msgChanged = false;
+    $scope.segChanged = false
+    $scope.dtChanged = false;
     $scope.cmpMsg = false;
     $scope.cmpSeg = false;
     $scope.cmpDT = false;
@@ -115,6 +117,9 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.$watchGroup(['version1', 'scope1'], function() {
         $scope.igList1 = [];
         $scope.messages1 = [];
+        $scope.datatypes1=[];
+        $scope.tables1=[];
+        $scope.segments1=[];
         $scope.ig1 = "";
 
 
@@ -161,6 +166,9 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.$watchGroup(['version2', 'scope2'], function() {
         $scope.igList2 = [];
         $scope.messages2 = [];
+        $scope.datatypes2=[];
+        $scope.tables2=[];
+        $scope.segments2=[];
         $scope.ig2 = "";
         if ($scope.scope2 && $scope.version2) {
             console.log("hereee2");
@@ -202,6 +210,16 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     }, true);
     $scope.$watchGroup(['msg1', 'msg2'], function() {
         $scope.msgChanged = true;
+
+
+    }, true);
+    $scope.$watchGroup(['segment1', 'segment2'], function() {
+        $scope.segChanged = true;
+
+
+    }, true);
+    $scope.$watchGroup(['datatype1', 'datatype2'], function() {
+        $scope.dtChanged = true;
 
 
     }, true);
@@ -294,29 +312,44 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             return false;
         }
     };
+    $scope.hideSeg = function(seg1, seg2) {
+
+        if (seg2) {
+            return !(seg1.name === JSON.parse(seg2).name);
+        } else {
+            return false;
+        }
+    };
+    $scope.disableSeg = function(seg1, seg2) {
+
+        if (seg2) {
+            return (seg1.id === JSON.parse(seg2).id);
+        } else {
+            return false;
+        }
+    };
 
     $scope.setMsg1 = function(msg) {
         console.log(JSON.parse(msg));
         $scope.msg1 = msg;
-        $scope.segmentList1 = JSON.parse(msg);
     };
     $scope.setMsg2 = function(msg) {
         $scope.msg2 = msg;
     };
     $scope.setSegment1 = function(segment) {
-        console.log(JSON.parse(segment));
+        $scope.segment1 = segment;
+    };
+    $scope.setSegment2 = function(segment) {
+        $scope.segment2 = segment;
     };
     $scope.setDatatype1 = function(datatype) {
-        console.log(JSON.parse(datatype));
+        $scope.datatype1 = datatype
+    };
+    $scope.setDatatype2 = function(datatype) {
+        $scope.datatype2 = datatype
     };
     $scope.setTable1 = function(table) {
         console.log(table);
-    };
-    $scope.setSegment2 = function(segment) {
-        console.log(JSON.parse(segment));
-    };
-    $scope.setDatatype2 = function(datatype) {
-        console.log(JSON.parse(datatype));
     };
     $scope.setTable2 = function(table) {
         console.log(table);
@@ -330,6 +363,12 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         $scope.version2 = "";
         $scope.scope1 = "";
         $scope.scope2 = "";
+        $scope.segment1="";
+        $scope.segment2="";
+        $scope.datatype1="";
+        $scope.datatype2="";
+        $scope.table1="";
+        $scope.table2="";
 
     };
     $scope.clearIG = function() {
@@ -343,6 +382,12 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.clearMessage = function() {
         $scope.msg1 = "";
         $scope.msg2 = "";
+        $scope.segment1="";
+        $scope.segment2="";
+        $scope.datatype1="";
+        $scope.datatype2="";
+        $scope.table1="";
+        $scope.table2="";
 
     }
     $scope.clearScope = function() {
@@ -638,7 +683,29 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
         return message;
     };
+    $scope.fSegment = function(segment, datatypeList, segmentList) {
+        var elements = [];
+
+        if (segment.type === "segment") {
+            elements.push(segment);
+        }
+        console.log(elements);
+        return $scope.fElements(elements, datatypeList, segmentList);
+    };
+    $scope.fDatatype = function(datatype, datatypeList, segmentList) {
+        var elements = [];
+
+        if (datatype.type === "datatype") {
+            elements.push(datatype);
+        }
+        console.log("fDatatype");
+        console.log(elements)
+        return $scope.fElements(elements, datatypeList, segmentList);
+    };
+
     $scope.fElements = function(elements, datatypeList, segmentList) {
+        console.log(elements);
+        console.log("elements");
 
         var result = [];
         for (var i = 0; i < elements.length; i++) {
@@ -657,7 +724,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 };
 
                 for (var j = 0; j < segmentList.length; j++) {
-                   
+
 
                     if (elements[i].ref.id === segmentList[j].id) {
 
@@ -673,8 +740,17 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
                 result.push(segment);
 
-            } else {
+            } else if (elements[i].type === 'group') {
                 result.push($scope.fGrp(elements[i], datatypeList, segmentList));
+            } else if (elements[i].type === 'segment') {
+                elements[i].fields = $scope.fFields(elements[i].fields, datatypeList, segmentList);
+                result.push(elements[i]);
+            } else if (elements[i].type === 'datatype') {
+                elements[i].components = $scope.fFields(elements[i].components, datatypeList, segmentList);
+                result.push(elements[i]);
+            } else if (elements[i].type === 'component') {
+                //elements[i].fields = $scope.fFields(elements[i].fields, datatypeList, segmentList);
+
             }
         };
         return result;
@@ -692,24 +768,27 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         return group;
     };
     $scope.fFields = function(fields, datatypeList, segmentList) {
-        for (var j = 0; j < datatypeList.length; j++) {
-            for (var i = 0; i < datatypeList[j].components.length; i++) {
-                datatypeList[j].components[i].id = "";
-                datatypeList[j].components[i].datatype.id = "";
+        // for (var j = 0; j < datatypeList.length; j++) {
+        //     for (var i = 0; i < datatypeList[j].components.length; i++) {
+        //         datatypeList[j].components[i].id = "";
+        //         datatypeList[j].components[i].datatype.id = "";
 
-            }
-        }
+        //     }
+        // }
+
         for (var i = 0; i < fields.length; i++) {
             fields[i].id = "";
             for (var j = 0; j < datatypeList.length; j++) {
                 if (fields[i].datatype.id === datatypeList[j].id) {
-                    fields[i].components = datatypeList[j].components;
+
+                    fields[i].components = $scope.fFields(datatypeList[j].components, datatypeList, segmentList);
 
                 }
             };
             fields[i].datatype.id = "";
 
         };
+
         return fields;
 
 
@@ -729,49 +808,66 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     };
     var writettTable = function(childArray, dataArray) {
         var result = {};
-        console.log(childArray);
 
 
         if (childArray.changed === "object change") {
-            if (childArray.value.position.changed === "equal") {
+            if (childArray.value.position && childArray.value.position.changed === "equal") {
                 result.position = {
-                    msg: childArray.value.position.value,
+                    element: childArray.value.position.value,
 
                 };
             }
 
             if (childArray.value.type.changed === "equal") {
                 result.type = {
-                    msg: childArray.value.type.value,
+                    element: childArray.value.type.value,
                 };
 
-                if (childArray.value.usage.changed === "primitive change") {
+                if (childArray.value.usage && childArray.value.usage.changed === "primitive change") {
                     result.usage = {
-                        msg1: childArray.value.usage.removed,
-                        msg2: childArray.value.usage.added
+                        element1: childArray.value.usage.removed,
+                        element2: childArray.value.usage.added
 
                     };
                 }
-                if (childArray.value.type.value === "field" || childArray.value.type.value === "component") {
+                if (childArray.value.type.value === "field" || childArray.value.type.value === "component" || childArray.value.type.value === "datatype") {
+
                     if (childArray.value.name.changed === "primitive change") {
                         result.label = {
-                            msg1: childArray.value.name.removed,
-                            msg2: childArray.value.name.added
+                            element1: childArray.value.name.removed,
+                            element2: childArray.value.name.added
 
                         };
 
                     }
 
+
                     if (childArray.value.name.changed === "equal") {
                         result.label = {
-                            msg: childArray.value.name.value,
+                            element: childArray.value.name.value,
+
+                        };
+                    }
+                    if (childArray.value.ext && childArray.value.ext.changed === "primitive change") {
+                        result.ext = {
+                            element1: childArray.value.ext.removed,
+                            element2: childArray.value.name.added
+
+                        };
+
+                    }
+
+
+                    if (childArray.value.ext && childArray.value.ext.changed === "equal" && childArray.value.ext.value!==null) {
+                        result.ext = {
+                            element: childArray.value.ext.value,
 
                         };
                     }
                     if (childArray.value.min && childArray.value.min.changed === "primitive change") {
                         result.minCard = {
-                            msg1: childArray.value.min.removed,
-                            msg2: childArray.value.min.added
+                            element1: childArray.value.min.removed,
+                            element2: childArray.value.min.added
 
                         };
                     } else if (childArray.value.min && childArray.value.min.changed === "removed") {
@@ -781,51 +877,68 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                     }
                     if (childArray.value.max && childArray.value.max.changed === "primitive change") {
                         result.maxCard = {
-                            msg1: childArray.value.max.removed,
-                            msg2: childArray.value.max.added
+                            element1: childArray.value.max.removed,
+                            element2: childArray.value.max.added
 
                         };
                     }
-                    if (childArray.value.minLength.changed === "primitive change") {
+                    if (childArray.value.minLength && childArray.value.minLength.changed === "primitive change") {
                         result.minLength = {
-                            msg1: childArray.value.minLength.removed,
-                            msg2: childArray.value.minLength.added
+                            element1: childArray.value.minLength.removed,
+                            element2: childArray.value.minLength.added
 
                         };
                     }
-                    if (childArray.value.maxLength.changed === "primitive change") {
+                    if (childArray.value.maxLength && childArray.value.maxLength.changed === "primitive change") {
                         result.maxLength = {
-                            msg1: childArray.value.maxLength.removed,
-                            msg2: childArray.value.maxLength.added
+                            element1: childArray.value.maxLength.removed,
+                            element2: childArray.value.maxLength.added
 
                         };
                     }
-                    if (childArray.value.confLength.changed === "primitive change") {
+                    if (childArray.value.confLength && childArray.value.confLength.changed === "primitive change") {
                         result.confLength = {
-                            msg1: childArray.value.confLength.removed,
-                            msg2: childArray.value.confLength.added
+                            element1: childArray.value.confLength.removed,
+                            element2: childArray.value.confLength.added
 
                         };
                     }
-                    if (childArray.value.datatype.changed === "object change") {
+                    if (childArray.value.datatype && childArray.value.datatype.changed === "object change") {
                         result.datatype = {
-                            msg1: childArray.value.datatype.value.label.removed,
-                            msg2: childArray.value.datatype.value.label.added
+                            element1: childArray.value.datatype.value.label.removed,
+                            element2: childArray.value.datatype.value.label.added
 
                         };
                     }
-                    if (childArray.value.components && childArray.value.type.value === "field" && childArray.value.components.changed === "object change") {
+                    if (childArray.value.components && childArray.value.components.changed === "object change") {
                         result.components = [];
                         objToArray(childArray.value.components.value).forEach(function(childNode) {
                             writettTable(childNode, result.components);
 
                         });
+                        // objToArray(childArray.value.components.value).forEach(function(childNode) {
+                        //     if(childNode.changed==="added"){
+                        //         result.component.push({
+                        //             msg1:"";
+                        //             msg2:childNode
+                        //         })
+
+                        //     } else if(childNode.changed==="removed"){
+
+                        //     } else 
+                        //     if(childNode.changed==="object change"){
+                        //         writettTable(childNode, result.components);
+
+                        //     }
+
+
+                        // });
 
                     }
-                    if (childArray.value.table.changed === "object change" && childArray.value.table.value.bindingIdentifier.changed === "primitive change") {
+                    if (childArray.value.table && childArray.value.table.changed === "object change" && childArray.value.table.value.bindingIdentifier.changed === "primitive change") {
                         result.valueset = {
-                            msg1: childArray.value.table.value.bindingIdentifier.removed,
-                            msg2: childArray.value.table.value.bindingIdentifier.added
+                            element1: childArray.value.table.value.bindingIdentifier.removed,
+                            element2: childArray.value.table.value.bindingIdentifier.added
 
                         };
 
@@ -834,55 +947,62 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
                 } else {
 
-                    if (childArray.value.minCard.changed === "primitive change") {
+                    if (childArray.value.minCard && childArray.value.minCard.changed === "primitive change") {
                         result.minCard = {
-                            msg1: childArray.value.minCard.removed,
-                            msg2: childArray.value.minCard.added
+                            element1: childArray.value.minCard.removed,
+                            element2: childArray.value.minCard.added
 
                         };
                     }
-                    if (childArray.value.maxCard.changed === "primitive change") {
+                    if (childArray.value.maxCard && childArray.value.maxCard.changed === "primitive change") {
                         result.maxCard = {
-                            msg1: childArray.value.maxCard.removed,
-                            msg2: childArray.value.maxCard.added
+                            element1: childArray.value.maxCard.removed,
+                            element2: childArray.value.maxCard.added
 
                         };
                     }
                 }
 
-                if (childArray.value.type.value === "segmentRef") {
-                    if (childArray.value.label.changed === "primitive change") {
+                if (childArray.value.type.value === "segmentRef" || childArray.value.type.value === "segment") {
+                    if (childArray.value.name.changed === "primitive change") {
                         result.label = {
-                            msg1: childArray.value.label.removed,
-                            msg2: childArray.value.label.added
-
+                            element1: childArray.value.name.removed,
+                            element2: childArray.value.name.added
                         };
-
+                    }
+                    if (childArray.value.name.changed === "equal") {
+                        result.label = {
+                            element: childArray.value.name.value,
+                        };
+                    }
+                    if (childArray.value.ext && childArray.value.ext.changed === "primitive change") {
+                        result.ext = {
+                            element1: childArray.value.ext.removed,
+                            element2: childArray.value.ext.added
+                        };
+                    }
+                    if (childArray.value.ext && childArray.value.ext.changed === "equal") {
+                        result.ext = {
+                            element: childArray.value.ext.value,
+                        };
                     }
                     if (childArray.value.description && childArray.value.description.changed === "primitive change") {
                         result.description = {
-                            msg1: childArray.value.description.removed,
-                            msg2: childArray.value.description.added
-
+                            element1: childArray.value.description.removed,
+                            element2: childArray.value.description.added
                         };
-
                     } else if (childArray.value.description && childArray.value.description.changed === "equal") {
                         result.description = {
-                            msg: childArray.value.description.value,
+                            element: childArray.value.description.value,
 
                         };
                     }
 
 
-                    if (childArray.value.label.changed === "equal") {
-                        result.label = {
-                            msg: childArray.value.label.value,
-
-                        };
-                    }
                     if (childArray.value.fields && childArray.value.fields.changed === "object change") {
                         result.fields = [];
                         objToArray(childArray.value.fields.value).forEach(function(childNode) {
+                            console.log(childNode);
                             writettTable(childNode, result.fields);
 
                         });
@@ -891,8 +1011,8 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 } else if (childArray.value.type.value === "group") {
                     if (childArray.value.name.changed === "primitive change") {
                         result.label = {
-                            msg1: childArray.value.name.removed,
-                            msg2: childArray.value.name.added
+                            element1: childArray.value.name.removed,
+                            element2: childArray.value.name.added
 
                         };
 
@@ -900,7 +1020,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
                     if (childArray.value.name.changed === "equal") {
                         result.label = {
-                            msg: childArray.value.name.value,
+                            element: childArray.value.name.value,
 
                         };
                     }
@@ -916,13 +1036,13 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                 }
             } else if (childArray.value.type.changed === "primitive change") {
                 result.label = {
-                    msg1: childArray.value.name.removed,
-                    msg2: childArray.value.name.added
+                    element1: childArray.value.name.removed,
+                    element2: childArray.value.name.added
 
                 };
                 result.type = {
-                    msg1: childArray.value.type.removed,
-                    msg2: childArray.value.type.added
+                    element1: childArray.value.type.removed,
+                    element2: childArray.value.type.added
                 };
             }
             dataArray.push(result);
@@ -958,17 +1078,88 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
         }
     });
+    $scope.cmpDatatype = function(datatype1, datatype2) {
+        $scope.loadingSelection = true;
+        $scope.dtChanged = false;
+        var dt1 = $scope.fDatatype(JSON.parse(datatype1), $scope.dtList1, $scope.segList1);
+        var dt2 = $scope.fDatatype(JSON.parse(datatype2), $scope.dtList2, $scope.segList2);
+        console.log(JSON.parse($scope.datatype1));
+        console.log("dt1");
+        console.log(dt1);
 
-    $scope.cmp = function() {
+
+        $scope.diff = ObjectDiff.diffOwnProperties(dt1, dt2);
+        $scope.dataList = [];
+        console.log("$scope.diff");
+
+        console.log($scope.diff);
+
+
+        if ($scope.diff.changed === "object change") {
+            var array = objToArray($scope.diff);
+            console.log(array);
+            var arraySeg = objToArray(array[1]);
+
+            //writeTable(array[1].segments, 0, $scope.gridOptions.data);
+            // for (var i = 0; i < arraySeg.length; i++) {
+            writettTable(arraySeg[0], $scope.dataList);
+            // }
+
+        }
+
+        $scope.loadingSelection = false;
+
+
+        if ($scope.dynamic_params) {
+            console.log($scope.dataList);
+            $scope.showDelta = true;
+            $scope.dynamic_params.refresh();
+        }
+
+    };
+    $scope.cmpSegment = function(segment1, segment2) {
+
+        $scope.loadingSelection = true;
+        $scope.segChanged = false;
+        var seg1 = $scope.fSegment(JSON.parse(segment1), $scope.dtList1, $scope.segList1);
+        var seg2 = $scope.fSegment(JSON.parse(segment2), $scope.dtList2, $scope.segList2);
+
+
+        $scope.diff = ObjectDiff.diffOwnProperties(seg1, seg2);
+        $scope.dataList = [];
+
+
+        if ($scope.diff.changed === "object change") {
+            var array = objToArray($scope.diff);
+            console.log(array);
+            var arraySeg = objToArray(array[1]);
+
+            //writeTable(array[1].segments, 0, $scope.gridOptions.data);
+            // for (var i = 0; i < arraySeg.length; i++) {
+            writettTable(arraySeg[0], $scope.dataList);
+            // }
+
+        }
+
+        $scope.loadingSelection = false;
+
+
+        if ($scope.dynamic_params) {
+            console.log($scope.dataList);
+            $scope.showDelta = true;
+            $scope.dynamic_params.refresh();
+        }
+
+    };
+
+    $scope.cmpMessage = function(msg1, msg2) {
         $scope.loadingSelection = true;
         $scope.msgChanged = false;
-        var msg1 = $scope.fMsg(JSON.parse($scope.msg1), $scope.dtList1, $scope.segList1);
-        var msg2 = $scope.fMsg(JSON.parse($scope.msg2), $scope.dtList2, $scope.segList2)
+        var msg1 = $scope.fMsg(JSON.parse(msg1), $scope.dtList1, $scope.segList1);
+        var msg2 = $scope.fMsg(JSON.parse(msg2), $scope.dtList2, $scope.segList2)
 
         console.log(msg1);
         console.log(msg2);
-        // console.log($scope.dtList2);
-        // console.log($scope.segList2);
         $scope.diff = ObjectDiff.diffOwnProperties(msg1, msg2);
         $scope.dataList = [];
         console.log($scope.diff);
@@ -984,7 +1175,6 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
         }
 
-        console.log("Here outside");
         $scope.loadingSelection = false;
 
 
@@ -994,10 +1184,8 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             $scope.dynamic_params.refresh();
         }
 
-    }
-    $scope.AdvencedCmp = function() {
+    };
 
-    }
 
     $scope.compare = function() {
 
@@ -1024,7 +1212,6 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
                 }
 
-                console.log("Here outside");
                 $scope.loadingSelection = false;
 
 
