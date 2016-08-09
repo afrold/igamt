@@ -158,7 +158,10 @@ span {
                                 </div>
                                 <div class="pull-right" style="margin-right: 20px">
                                     <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('MASTER')" ng-show="admin">
-                                        <i class="fa fa-plus"></i> Create Master Data Type Library
+                                        <i class="fa fa-plus"></i> Create USER Data Type Library
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('MASTER')" ng-show="admin">
+                                        <i class="fa fa-plus"></i> Create A MASTER Datatype Library
                                     </button>
                                     <!--<button type="button" class="btn btn-primary btn-sm"-->
                                     <!--ng-click="openStandardDataypes('MASTER')">-->
@@ -367,7 +370,7 @@ span {
                     <option ng-repeat="lib in datatypeLibList" value='{{lib}}'>{{lib.metaData.name}} ({{lib.scope}})</option>
                 </select>
             </div>
-            <button title="submit" class="btn btn-sm btn-primary pull-right"  ng-disabled="addedDatatypes.length===0" ng-click="submit()">
+            <button title="submit" class="btn btn-sm btn-primary pull-right " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
                 <span><i class="fa fa-check fa-fw"></i> Submit</span>
             </button>
         </div>
@@ -376,7 +379,97 @@ span {
         <div class="col-md-4" style="margin-right:5px;">
             <div align="right">
                 <i class="icon-search"></i>
-                <input type="search" class="form-control" placeholder="Search Datatype from HL7Standard" ng-model="search.name" />
+                <input type="search" class="form-control" placeholder="Search Datatypes" ng-model="search.name" />
+            </div>
+            <div class="scrollit">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr class="tbl-header">
+                            <th class="col-md-1">As a flavor </th>
+                            <th class="col-md-1">As is</th>
+                            <th class="col-md-3">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in datataypestoAdd| filter:search">
+                            <!--                             <td class="col-md-1">
+                                <i class="fa fa-bullseye fa-lg" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{onStart:'startCallback(data, $index)',placeholder:'keep',animate:true}"></i>
+                            </td> -->
+                            <td class="col-md-1"> <i class="fa fa-plus fa-fw" ng-click="AddAsFlavor(data)"></i></td>
+                            <td class="col-md-1">
+                                <i ng-click="AddAsIs(data)" class="fa fa-plus fa-fw" ng-hide="miniDTMap[data.id]||datatypesMap[data.id]"></i>
+                                <p ng-show="miniDTMap[data.id]" style="color:red;">Added</p>
+                                <p ng-show="datatypesMap[data.id]" style="color:red;">Already exists in the Library</p>
+                            </td>
+                            <td class="col-md-3">
+                                <span>{{getLabelOfData(getLabelOfData(data.name, data.ext))}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-7" ng-hide="addedDatatypes.length===0">
+            <div style="right: 0px;margin-right:2px">
+                <i class="icon-search"></i>
+                <input type="search" class="form-control" placeholder="Search" ng-model="searchinselected.name" />
+            </div>
+            <table class="table table-striped table-bordered  toc-container" data-drop="true" ng-model="addedDatatypes " jqyoui-droppable="{onDrop:'dropCallback'}">
+                <thead>
+                    <tr class="tbl-header">
+                        <th class="col-md-1">Name</th>
+                        <th class="col-md-2">Extension</th>
+                        <th class="col-md-3">Description
+                        </th>
+                        <th class="col-md-1">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="data in addedDatatypes track by $index |filter:searchinselected">
+                        <td class="col-md-1">
+                            <span>{{data.name}}</span>
+                        </td>
+                        <td class="col-md-2">
+                            <input type="text" ng-model="data.ext" ng-show="data.status!=='PUBLISHED'"></input>
+                            <span ng-show="data.status==='PUBLISHED'">{{data.ext}}</span>
+                            <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(data, 'name', 'ext', datatypeLibCopy.children)|| isDuplicatedTwoContexts(data, 'name', 'ext', addedDatatypes)"> Extension already used</span>
+                        </td>
+                        <td class="col-md-3">
+                            <!--       <select name="multipleSelect" id="multipleSelect" ng-model="data.scope" >
+                            <option value="HL7STANDARD"> <span ng-click="data.ext=''">HL7<span></option>
+                            <option value="MASTER">MASTER</option>
+                            </select><br> -->
+                            {{data.description}}
+                        </td>
+                        <td class="col-md-1">
+                            <button class="btn btn-xs btn-danger" ng-click="addedDatatypes.splice($index,1);miniDTMap[data.id]=false">X</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="addingViewForMaster.html">
+    <div class="page-header" style="margin-bottom: 20px">
+        <div class="row">
+            <div class="input-group col-md-6">
+                <span class="input-group-addon header5" id="basic-addon1">Add Datatypes From</span>
+                <select class="form-control  col-md-5 input-sm" ng-model="lib" ng-change="setLibrary(lib)" class="col-md-4">
+                    <option ng-repeat="lib in datatypeLibList" value='{{lib}}'>{{lib.metaData.name}} ({{lib.scope}})</option>
+                </select>
+            </div>
+            <button title="submit" class="btn btn-sm btn-primary pull-right " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
+                <span><i class="fa fa-check fa-fw"></i> Submit</span>
+            </button>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-4" style="margin-right:5px;">
+            <div align="right">
+                <i class="icon-search"></i>
+                <input type="search" class="form-control" placeholder="Search Datatypes" ng-model="search.name" />
             </div>
             <div class="scrollit">
                 <table class="table table-striped table-bordered">
