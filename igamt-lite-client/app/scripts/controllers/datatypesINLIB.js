@@ -142,15 +142,15 @@ angular.module('igl')
         };
 
 
-        $scope.getLabelDT = function(datatype) {
-            if (datatype && datatype != null) {
-                if (datatype.ext && datatype.ext !== null && datatype.ext !== "") {
-                    datatype.label = datatype.label + "_" + datatype.ext;
-                }
-                return datatype.label;
-            }
-            return "";
-        };
+        // $scope.getLabelDT = function(datatype) {
+        //     if (datatype && datatype != null) {
+        //         if (datatype.ext && datatype.ext !== null && datatype.ext !== "") {
+        //             datatype.label = datatype.label + "_" + datatype.ext;
+        //         }
+        //         return datatype.label;
+        //     }
+        //     return "";
+        // };
 
         $scope.redirectDT = function(datatype) {
             DatatypeService.getOne(datatype.id).then(function(datatype) {
@@ -314,7 +314,7 @@ angular.module('igl')
 
                 });
                 modalInstance.result.then(function() {
-                    $scope.editTableINLIB(valueSet);
+                    $rootScope.editTable(valueSet);
                 });
 
 
@@ -448,7 +448,7 @@ angular.module('igl')
         $scope.managePredicate = function(node) {
             var modalInstance = $modal.open({
                 templateUrl: 'PredicateDatatypeCtrl.html',
-                controller: 'PredicateDatatypeCtrlINLIB',
+                controller: 'PredicateDatatypeLibCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
                     selectedNode: function() {
@@ -468,7 +468,7 @@ angular.module('igl')
         $scope.manageConformanceStatement = function(node) {
             var modalInstance = $modal.open({
                 templateUrl: 'ConformanceStatementDatatypeCtrl.html',
-                controller: 'ConformanceStatementDatatypeCtrl',
+                controller: 'ConformanceStatementDatatypeLibCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
                     selectedNode: function() {
@@ -1072,7 +1072,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
 
 });
 
-angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope, datatype) {
+angular.module('igl').controller('ConformanceStatementDatatypeLibCtrl', function($scope, $modalInstance, selectedNode, $rootScope, datatype) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
@@ -1213,7 +1213,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
 });
 
 
-angular.module('igl').controller('PredicateDatatypeCtrlINLIB', function($scope, $modalInstance, selectedNode, $rootScope, datatype) {
+angular.module('igl').controller('PredicateDatatypeLibCtrl', function($scope, $modalInstance, selectedNode, $rootScope, datatype) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.datatype = datatype;

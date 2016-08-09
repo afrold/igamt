@@ -222,7 +222,31 @@ angular.module('igl')
 
 
 
+        $scope.editVSModal = function(component) {
+        var modalInstance = $modal.open({
+            templateUrl: 'editVSModal.html',
+            controller: 'EditVSCtrl',
+            windowClass: 'edit-VS-modal',
+            resolve: {
 
+                valueSets: function() {
+                    return $rootScope.tables;
+                },
+
+                field: function() {
+                    return component;
+                }
+
+            }
+        });
+        modalInstance.result.then(function(datatype) {
+            $scope.setDirty();
+            if ($scope.segmentsParams) {
+                $scope.segmentsParams.refresh();
+            }
+        });
+
+    };
 
 
 

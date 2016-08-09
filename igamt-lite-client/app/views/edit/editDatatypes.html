@@ -531,42 +531,18 @@
             </ng-form>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <div ng-show="node.table != undefined && node.table !== null">
-                <a ng-show="editableVS!==node.id "  class="point" ng-click="redirectVS(node.table)">
-                    <span>{{node.table.bindingIdentifier}}</span>
-
+            <div ng-show="node.tables.length!==0">
+                <a class="point " ng-repeat="table in node.tables">
+                    <span ng-click="redirectVS(table)">{{table.bindingIdentifier}}</span>
                 </a>
-                <a ng-show="editableVS!==node.id " ng-click="editVS(node) " class="point ">
+                <a  ng-click="editVSModal(node) " class="point ">
                     <span><i class="fa fa-pencil fa-fw "></i></span>
                 </a>
-                <a ng-show="editableVS!==node.id " ng-click="deleteTable(node)" class="point">
-                    <span><i class="glyphicon glyphicon-trash "></i></span>
-                </a>
+                
             </div>
-
-            <div class="input-group input-group-xs" ng-hide="editableVS!==node.id ">
-                <span class="input-group-addon glyphicon glyphicon-search"></span>
-                <input class="form-control " type="text " ng-model="searchVS.name "/>
-
-
-            </div>
-
-
-            <div ng-if="searchVS.name  && editableVS===node.id">
-                <li class="form-control col-md-4 " ng-class="{'active':isActive(valueSet.id)}"
-                    ng-click="selectVS(node,valueSet)" ng-repeat="valueSet in tables | filter:searchVS ">
-                    {{valueSet.bindingIdentifier}}
-                </li>
-            </div>
-            <div align="center">
-
-                <a ng-show="editableVS===node.id " ng-click="backVS() " class="point ">
-                    <span><i class="glyphicon glyphicon-remove "></i></span>
-                </a>
-            </div>
-            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTable(datatypesMap[node.datatype.id]) &&  editableVS!==node.id ">
-                <a ng-click="editVS(node)" class="point">
-                    <span><i class="fa fa-plus fa-fw"></i></span>
+            <div ng-show="(node.tables.length===0) && isAvailableDTForTable(datatypesMap[node.datatype.id])">
+                <a ng-click="editVSModal(node) " class="point ">
+                    <span><i class="fa fa-plus fa-fw "></i></span>
                 </a>
             </div>
         </td>
@@ -666,9 +642,9 @@
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>
-                <div ng-show="node.table != undefined  && node.table !== null">
-                    <span ng-click="redirectVS(node.table)">
-                        {{::getTableLabel(tablesMap[node.table.id])}}
+                <div ng-show="node.tables != undefined  && node.tables !== null">
+                    <span ng-repeat="table in node.tables" ng-click="redirectVS(table)" >
+                        {{getTableLabel(table)}}
                     </span>
                 </div>
             </div>
@@ -738,9 +714,9 @@
             </div>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a ng-click="redirectVS(node.table) " class="point"
-               ng-show="node.table !== null && node.table !== undefined">
-                {{getTableLabel(tablesMap[node.table.id])}}
+            <a ng-repeat="table in node.tables" ng-click="redirectVS(table) " class="point"
+               ng-show="node.tables !== null && node.tables !== undefined">
+                {{getTableLabel(table)}}
             </a>
         </td>
         <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
@@ -806,8 +782,8 @@
             </a>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a ng-click="redirectVS(node.table)" ng-show="node.table !== null && node.table !== undefined">
-                {{::getTableLabel(tablesMap[node.table.id])}}
+            <a ng-repeat="table in node.tables" ng-click="redirectVS(table)" ng-show="node.tables !== null && node.tables !== undefined">
+                {{::getTableLabel(table)}}
             </a>
         </td>
         <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">

@@ -860,6 +860,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         if (parent.path) {
                             s.path = parent.path + "." + element.position + "[1]";
                         }
+                        s.obj.ref.ext = $rootScope.segmentsMap[s.obj.ref.id].ext;
+                        s.obj.ref.label=$rootScope.getLabel(s.obj.ref.name,s.obj.ref.ext);
                         parent.children.push(s);
 
                         var ref = $rootScope.segmentsMap[element.ref.id];
@@ -885,11 +887,23 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         f.obj = element;
                         f.path = parent.path + "." + element.position + "[1]";
                         f.children = [];
+                        f.obj.datatype.ext = $rootScope.datatypesMap[f.obj.datatype.id].ext;
+                        f.obj.datatype.label=$rootScope.getLabel(f.obj.datatype.name,f.obj.datatype.ext);
+                        // for (var i = 0; i < f.obj.tables.length; i++) {
+                        //     if($rootScope.tablesMap[f.obj.tables[i].id]){
+                        //         f.obj.tables[i].bindingIdentifier=$rootScope.tablesMap[f.obj.tables[i].id].bindingIdentifier;
+                        //     }
+                        // };
                         parent.children.push(f);
+                        console.log("parent==========");
+                        console.log(parent);
                         $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
                         $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
-                        if(element.table!= null){
-                            $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                        if(element.tables&&element.tables.length>0){
+                            angular.forEach(element.tables, function (table) {
+                                $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
+                            });
+                           // $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                         }
                         $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
                         $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], f);
@@ -898,11 +912,16 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         c.obj = element;
                         c.path = parent.path + "." + element.position + "[1]";
                         c.children = [];
+                        c.obj.datatype.ext = $rootScope.datatypesMap[c.obj.datatype.id].ext;
+                        c.obj.datatype.label=$rootScope.getLabel(c.obj.datatype.name,c.obj.datatype.ext);
                         parent.children.push(c);
                         $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
                         $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
-                        if(element.table!= null){
-                            $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                        if(element.tables&&element.tables.length>0){
+                        	angular.forEach(element.tables, function (table) {
+                                $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
+                            });
+                            //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                         }
                         $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
                         $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], c);
@@ -953,8 +972,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     parent.children.push(f);
                     $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
                     $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
-                    if(element.table!= null){
-                        $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                    if(element.tables&&element.tables.length>0){
+                    	angular.forEach(element.tables, function (table) {
+                            $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
+                        });
+                        //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                     }
                     $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
                     $rootScope.processSegmentsTree($rootScope.datatypesMap[element.datatype.id], f);
@@ -966,8 +988,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     parent.children.push(c);
                     $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
                     $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
-                    if(element.table!= null){
-                        $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                    if(element.tables&&element.tables.length>0){
+                    	angular.forEach(element.tables, function (table) {
+                            $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
+                        });
+                        //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                     }
                     $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
                     ////console.log($rootScope.filteredTablesList);
@@ -1028,10 +1053,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     parent.children.push(c);
                     $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
                     $rootScope.filteredDatatypesList=_.uniq($rootScope.filteredDatatypesList);
-                    if(element.table!= null){
-                        ////console.log("added table");
-                        ////console.log($rootScope.tablesMap[element.table.id])
-                        $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
+                    if(element.tables && element.tables != null && element.tables.length>0){
+                    	angular.forEach(element.tables, function (table) {
+                            $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
+                        });
+                        //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                     }
                     $rootScope.filteredTablesList=_.uniq($rootScope.filteredTablesList);
                     $rootScope.processDatatypeTree($rootScope.datatypesMap[element.datatype.id], c);

@@ -61,11 +61,14 @@ public class DatatypeServiceImpl implements DatatypeService {
   }
 
   @Override
+  @Deprecated
   public List<Datatype> findByLibIds(String dtLibId) {
     List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId);
     log.info("DataypeServiceImpl.findAll=" + datatypes.size());
     return datatypes;
   }
+
+
 
   @Override
   public List<Datatype> findByFullDTsLibIds(String dtLibId) {
@@ -103,6 +106,7 @@ public class DatatypeServiceImpl implements DatatypeService {
     datatypeRepository.save(datatypes);
   }
 
+  @Override
   public Set<Datatype> collectDatatypes(Datatype datatype) {
     Set<Datatype> datatypes = new HashSet<Datatype>();
     if (datatype != null) {
