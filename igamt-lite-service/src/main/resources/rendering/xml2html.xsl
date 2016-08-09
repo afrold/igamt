@@ -516,10 +516,13 @@
 
 		<xsl:for-each select="Component">
 			<xsl:sort select="@Position" data-type="number"></xsl:sort>
-			<p>
-				<xsl:value-of disable-output-escaping="yes"
-					select="./Text[@Type='Text']" />
-			</p>
+				<xsl:if test="count(./Text[@Type='Text']) &gt; 0">
+					<p>
+						<u><xsl:value-of select="./Text[@Type='Name']" />: </u>
+						<xsl:value-of disable-output-escaping="yes"
+							select="./Text[@Type='Text']" />
+					</p>
+				</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 

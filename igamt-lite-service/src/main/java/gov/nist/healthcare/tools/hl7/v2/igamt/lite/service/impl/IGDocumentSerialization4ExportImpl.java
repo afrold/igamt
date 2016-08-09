@@ -1608,8 +1608,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         if (c.getComment() != null && !c.getComment().equals(""))
           elmComponent.addAttribute(new Attribute("Comment", c.getComment()));
         elmComponent.addAttribute(new Attribute("Position", c.getPosition().toString()));
-        if (c.getText() != null & !c.getText().isEmpty()) {
-          elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
+        if (c.getText() != null && !c.getText().isEmpty()) {
+          nu.xom.Element elmText1 = new nu.xom.Element("Text");
+          elmText1.addAttribute(new Attribute("Type", "Text"));
+          elmText1.appendChild( "<div class=\"fr-view\">" + c.getText() + "</div>");
+          elmComponent.appendChild(elmText1);
         }
 
         if (c.getTable() != null) {
