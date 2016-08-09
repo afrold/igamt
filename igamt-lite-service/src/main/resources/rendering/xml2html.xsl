@@ -411,6 +411,12 @@
 			<xsl:value-of select="@Description" />
 		</h3>
 
+		<xsl:if test="count(Text[@Type='PurposeAndUse']) &gt; 0">
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="Text[@Type='PurposeAndUse']" />
+			</p>
+		</xsl:if>
 		<xsl:value-of select="@Comment"></xsl:value-of>
 		<xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
 			<p>

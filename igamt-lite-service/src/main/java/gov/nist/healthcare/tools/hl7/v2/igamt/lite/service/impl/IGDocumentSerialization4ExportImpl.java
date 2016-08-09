@@ -1576,6 +1576,12 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
       elmText.appendChild(d.getUsageNote());
       elmDatatype.appendChild(elmText);
     }
+    if (d.getPurposeAndUse() != null && !d.getPurposeAndUse().isEmpty()){
+      nu.xom.Element elmText = new nu.xom.Element("Text");
+      elmText.addAttribute(new Attribute("Type", "PurposeAndUse"));
+      elmText.appendChild(d.getPurposeAndUse());
+      elmDatatype.appendChild(elmText);
+    }
 
     if (d.getComponents() != null) {
 
