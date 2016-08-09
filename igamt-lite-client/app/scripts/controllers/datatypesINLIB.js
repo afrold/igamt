@@ -448,7 +448,7 @@ angular.module('igl')
         $scope.managePredicate = function(node) {
             var modalInstance = $modal.open({
                 templateUrl: 'PredicateDatatypeCtrl.html',
-                controller: 'PredicateDatatypeCtrl',
+                controller: 'PredicateDatatypeLibCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
                     selectedNode: function() {
@@ -468,7 +468,7 @@ angular.module('igl')
         $scope.manageConformanceStatement = function(node) {
             var modalInstance = $modal.open({
                 templateUrl: 'ConformanceStatementDatatypeCtrl.html',
-                controller: 'ConformanceStatementDatatypeCtrl',
+                controller: 'ConformanceStatementDatatypeLibCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
                     selectedNode: function() {
@@ -1072,7 +1072,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
 
 });
 
-angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope, datatype) {
+angular.module('igl').controller('ConformanceStatementDatatypeLibCtrl', function($scope, $modalInstance, selectedNode, $rootScope, datatype) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
@@ -1213,7 +1213,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
 });
 
 
-angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope, datatype) {
+angular.module('igl').controller('PredicateDatatypeLibCtrl', function($scope, $modalInstance, selectedNode, $rootScope, datatype) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.datatype = datatype;

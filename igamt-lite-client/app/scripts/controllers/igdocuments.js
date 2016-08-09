@@ -494,6 +494,10 @@ angular.module('igl')
         $scope.loadTables = function () {
             var delay = $q.defer();
             $rootScope.igdocument.profile.tableLibrary.type = "tables";
+            
+            
+            
+            
             TableLibrarySvc.getTablesByLibrary($rootScope.igdocument.profile.tableLibrary.id).then(function (children) {
                 $rootScope.tables = children;
                 $rootScope.tablesMap = {};

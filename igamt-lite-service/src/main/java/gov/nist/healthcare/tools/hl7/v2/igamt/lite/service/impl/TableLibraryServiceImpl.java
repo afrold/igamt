@@ -145,13 +145,13 @@ public class TableLibraryServiceImpl implements TableLibraryService {
 
   @Override
   public List<Table> findTablesById(String libId) {
-    Set<TableLink> datatypeLinks = tableLibraryRepository.findChildrenById(libId);
-    if (datatypeLinks != null && !datatypeLinks.isEmpty()) {
+    Set<TableLink> tableLinks = tableLibraryRepository.findChildrenById(libId);
+    if (tableLinks != null && !tableLinks.isEmpty()) {
       Set<String> ids = new HashSet<String>();
-      for (TableLink link : datatypeLinks) {
+      for (TableLink link : tableLinks) {
         ids.add(link.getId());
       }
-      return tableRepository.findUserTablesByIds(ids);
+      return tableRepository.findAllByIds(ids);
     }
     return new ArrayList<Table>(0);
   }

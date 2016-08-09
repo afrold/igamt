@@ -642,9 +642,9 @@ if (self === top) {
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
             <div>
-                <span ng-show="node.obj.table !=undefined && node.obj.table !=null ">
+                <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null ">
 
-                    <a class="point " ng-click="redirectVS(node.obj.table)">{{getTableLabel(tablesMap[node.obj.table.id])}}</a>
+                    <a class="point " ng-repeat="table in node.obj.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
                 </span>
             </div>
         </td>
@@ -769,15 +769,16 @@ if (self === top) {
         <td class="col-xs-1 col-fixed-100 " ng-show="viewSettings.isVisibleColumn( 'datatype') ">
             <span class="point " ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}</span>
         </td>
-        <td class="col-xs-1 col-fixed-130 ">
+        <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
             <div>
-                <span ng-show="node.obj.table !=undefined && node.obj.table !=null ">
+                <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null ">
 
-                    <a class="point " ng-click="redirectVS(node.obj.table) ">{{getTableLabel(tablesMap[node.obj.table.id])}}</a>
+                    <a class="point " ng-repeat="table in node.obj.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
                 </span>
             </div>
         </td>
-        <td class="col-xs-1 " ng-style="predWidth " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
+        
+        <td class="col-xs-1 " ng-style="predWidth " ng-show="viewSettings.isVisibleColumn( 'predicate') ">
             <div>
                 <div ng-show="viewSettings.tableReadonly ">
                     <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) "
