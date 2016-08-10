@@ -151,16 +151,20 @@ span {
                     <div class="col-md-12">
                         <form id="selectDtTypeForm" class="form-horizontal">
                             <div class="form-group">
-                                <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                                    <label class="btn  btn-primary btn-sm" ng-click="selectDTLibraryType(tt.type)" ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}" ng-repeat="tt in datatypeLibraryTypes | uppercase" ng-show="tt.visible">
-                                        <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> {{tt.name}}
+                                <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left">
+                                    <label class="btn  btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')" >
+                                        <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse User's Data Type Librariess
+                                    </label>
+
+                                    <label class="btn  btn-warning btn-sm" ng-click="getDataTypeLibraryByScope('MASTER')" ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}">
+                                        <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse Master Data Type Libraries
                                     </label>
                                 </div>
                                 <div class="pull-right" style="margin-right: 20px">
-                                    <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('MASTER')" ng-show="admin">
+                                    <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('USER')" >
                                         <i class="fa fa-plus"></i> Create USER Data Type Library
                                     </button>
-                                    <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('MASTER')" ng-show="admin">
+                                    <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('MASTER')">
                                         <i class="fa fa-plus"></i> Create A MASTER Datatype Library
                                     </button>
                                     <!--<button type="button" class="btn btn-primary btn-sm"-->
@@ -362,18 +366,17 @@ span {
     </div>
 </script>
 <script type="text/ng-template" id="addingView.html">
-    <div class="page-header" style="margin-bottom: 20px">
-        <div class="row">
-            <div class="input-group col-md-6">
-                <span class="input-group-addon header5" id="basic-addon1">Add Datatypes From</span>
-                <select class="form-control  col-md-5 input-sm" ng-model="lib" ng-change="setLibrary(lib)" class="col-md-4">
-                    <option ng-repeat="lib in datatypeLibList" value='{{lib}}'>{{lib.metaData.name}} ({{lib.scope}})</option>
-                </select>
-            </div>
-            <button title="submit" class="btn btn-sm btn-primary pull-right " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
-                <span><i class="fa fa-check fa-fw"></i> Submit</span>
-            </button>
-        </div>
+    <div class="page-header row">
+
+      
+        <span class="col-md-3" id="basic-addon1">Add Datatypes From</span>
+        <select class="col-md-6 pull-left" ng-model="lib" ng-change="setLibrary(lib)">
+        <option ng-repeat="lib in datatypeLibList" value='{{lib}}'>{{lib.metaData.name}} ({{lib.scope}})</option>
+        </select>
+            <button title="submit" class="col-md-3 pull-right" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
+             Submit
+        </button>
+
     </div>
     <div class="col-md-12">
         <div class="col-md-4" style="margin-right:5px;">
@@ -451,16 +454,15 @@ span {
     </div>
 </script>
 
+
 <script type="text/ng-template" id="addingViewForMaster.html">
     <div class="page-header" style="margin-bottom: 20px">
         <div class="row">
             <div class="input-group col-md-6">
-                <span class="input-group-addon header5" id="basic-addon1">Add Datatypes From</span>
-                <select class="form-control  col-md-5 input-sm" ng-model="lib" ng-change="setLibrary(lib)" class="col-md-4">
-                    <option ng-repeat="lib in datatypeLibList" value='{{lib}}'>{{lib.metaData.name}} ({{lib.scope}})</option>
-                </select>
+                <span class="input-group-addon header5" id="basic-addon1">Create a new HL7 datatype Flavor</span>
+
             </div>
-            <button title="submit" class="btn btn-sm btn-primary pull-right " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
+            <button title="submit" class="btn btn-sm btn-primary pull-right " style="margin-left:20px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
                 <span><i class="fa fa-check fa-fw"></i> Submit</span>
             </button>
         </div>
@@ -475,24 +477,21 @@ span {
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr class="tbl-header">
-                            <th class="col-md-1">As a flavor </th>
-                            <th class="col-md-1">As is</th>
-                            <th class="col-md-3">Name</th>
+
+                            <th class="col-md-3">Name</th> 
+                            <th class="col-md-1"></th>   
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="data in datataypestoAdd| filter:search">
-                            <!--                             <td class="col-md-1">
-                                <i class="fa fa-bullseye fa-lg" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{onStart:'startCallback(data, $index)',placeholder:'keep',animate:true}"></i>
-                            </td> -->
-                            <td class="col-md-1"> <i class="fa fa-plus fa-fw" ng-click="AddAsFlavor(data)"></i></td>
-                            <td class="col-md-1">
-                                <i ng-click="AddAsIs(data)" class="fa fa-plus fa-fw" ng-hide="miniDTMap[data.id]||datatypesMap[data.id]"></i>
-                                <p ng-show="miniDTMap[data.id]" style="color:red;">Added</p>
-                                <p ng-show="datatypesMap[data.id]" style="color:red;">Already exists in the Library</p>
-                            </td>
+
+
                             <td class="col-md-3">
                                 <span>{{getLabelOfData(getLabelOfData(data.name, data.ext))}}</span>
+                            </td>
+
+                            <td class="col-md-1">
+                                <i ng-click="AddDatatypeForMaster(data)" class="fa fa-plus fa-fw" style="color:blue;"></i>
                             </td>
                         </tr>
                     </tbody>
@@ -505,6 +504,7 @@ span {
                 <input type="search" class="form-control" placeholder="Search" ng-model="searchinselected.name" />
             </div>
             <table class="table table-striped table-bordered  toc-container" data-drop="true" ng-model="addedDatatypes " jqyoui-droppable="{onDrop:'dropCallback'}">
+            {{accountId}}
                 <thead>
                     <tr class="tbl-header">
                         <th class="col-md-1">Name</th>
@@ -520,15 +520,11 @@ span {
                             <span>{{data.name}}</span>
                         </td>
                         <td class="col-md-2">
-                            <input type="text" ng-model="data.ext" ng-show="data.status!=='PUBLISHED'"></input>
-                            <span ng-show="data.status==='PUBLISHED'">{{data.ext}}</span>
-                            <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(data, 'name', 'ext', datatypeLibCopy.children)|| isDuplicatedTwoContexts(data, 'name', 'ext', addedDatatypes)"> Extension already used</span>
+                            <input type="text" ng-model="data.ext" >{{getCurrentExtesionForMaster(data)}}</input>
+
                         </td>
                         <td class="col-md-3">
-                            <!--       <select name="multipleSelect" id="multipleSelect" ng-model="data.scope" >
-                            <option value="HL7STANDARD"> <span ng-click="data.ext=''">HL7<span></option>
-                            <option value="MASTER">MASTER</option>
-                            </select><br> -->
+
                             {{data.description}}
                         </td>
                         <td class="col-md-1">
@@ -540,6 +536,7 @@ span {
         </div>
     </div>
 </script>
+
 <script type="text/ng-template" id="standardDatatypeDlg.html">
     <div id="standard-datatypelibrary-dialog">
         <div class="modal-content" style="padding : 10px 10px 10px 10px;">
