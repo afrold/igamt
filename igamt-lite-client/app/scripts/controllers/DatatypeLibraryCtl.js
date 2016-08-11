@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').controller('DatatypeLibraryCtltemp',
+angular.module('igl').controller('DatatypeLibraryCtl',
     function($scope, $http, $rootScope, $q, $modal, $timeout, TableService, ngTreetableParams, DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc, FormsSelectSvc, IGDocumentSvc, TableService, ViewSettings, userInfoService) {
         $scope.filteringModeON = false;
 
@@ -9,7 +9,6 @@ angular.module('igl').controller('DatatypeLibraryCtltemp',
         $rootScope.igdocument = null; // current igdocument
         $rootScope.message = null; // current message
         $rootScope.datatype = null; // current datatype
-
         $rootScope.pages = ['list', 'edit', 'read'];
         $rootScope.context = { page: $rootScope.pages[0] };
         $rootScope.messagesMap = {}; // Map for Message;key:id, value:object
@@ -154,11 +153,11 @@ angular.module('igl').controller('DatatypeLibraryCtltemp',
 
         $scope.$watch(
             function() {
-                return $scope.forms.editForm != undefined && $scope.forms.editForm.$dirty;
+                return $scope.editForm != undefined && $scope.editForm.$dirty;
             },
             function handleFormState(newValue) {
                 if (newValue) {
-                    $rootScope.recordChanged();
+                    $rootScope.setDirty();
                 } else {
                     $rootScope.clearChanges();
                 }
@@ -173,6 +172,7 @@ angular.module('igl').controller('DatatypeLibraryCtltemp',
             $scope.datatypeLibrariesConfig.selectedType = selectedType;
             getDataTypeLibraryByScope(selectedType);
         };
+        
 
         $scope.getDatatypes = function(datatypeLibrary) {
             $scope.datatypeListView = "DatatypeList.html";
@@ -311,6 +311,14 @@ angular.module('igl').controller('DatatypeLibraryCtltemp',
             }
         });
         
+        $scope.getDatatypesToAddByScope=function(scopes){
+            DatatypeService.getDataTypesByScopesAndVersion(scopes, $scope.hl7Version).then(function(result) {
+                $scope.datataypestoAdd = result;
+            });
+        }
+        $scope.getLastExtensionForMaster= function(datatype,scope){
+        	
+        }
         
         $scope.startCallback = function(event, ui, title) {
             $scope.draged = title;

@@ -57,6 +57,8 @@ public interface DatatypeLibraryDocumentService {
 
   void delete(String dtLibId);
 
+List<DatatypeLibraryDocument> findByScope(SCOPE scope);
+
   
 
 }

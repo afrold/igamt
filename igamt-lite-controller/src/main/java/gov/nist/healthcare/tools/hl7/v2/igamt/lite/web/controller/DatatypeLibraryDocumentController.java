@@ -1,11 +1,14 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -93,6 +96,20 @@ public class DatatypeLibraryDocumentController {
 		return datatypeLibrariesDocument;
 	}
 	
+	
+	
+	@RequestMapping(value = "/findByScopeForAll", method = RequestMethod.POST, produces = "application/json")
+	public List<DatatypeLibraryDocument> findByScopeForAll(@RequestBody String scope_) {
+		log.info("Fetching datatype libraries...");
+		List<DatatypeLibraryDocument> datatypeLibrariesDocument = null;
+
+			SCOPE scope = SCOPE.valueOf(scope_);
+			
+			datatypeLibrariesDocument = datatypeLibraryDocumentService.findByScope(scope);
+
+		return datatypeLibrariesDocument;
+	}
+	
 	@RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST, produces = "application/json")
 	public List<DatatypeLibraryDocument> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
 		log.info("Fetching the datatype library document. scope=" + scopesAndVersion.getScopes() + " hl7Version="
@@ -131,23 +148,46 @@ public class DatatypeLibraryDocumentController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/{accountId}/{hl7Version}/findByAccountId", method = RequestMethod.GET)
-	public List<DatatypeLibraryDocument> findByAccountId(@PathVariable("accountId") Long accountId,
-			@PathVariable("hl7Version") String hl7Version)
-			throws LibraryNotFoundException, UserAccountNotFoundException, LibraryException {
-		log.info("Fetching the datatype libraries...");
-		List<DatatypeLibraryDocument> result = datatypeLibraryDocumentService.findByAccountId(accountId, hl7Version);
-		return result;
-	}
+	private boolean hasRole(String role) {
+		  @SuppressWarnings("unchecked")
+		  Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)
+		  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		  boolean hasRole = false;
+		  for (GrantedAuthority authority : authorities) {
+		     hasRole = authority.getAuthority().equals(role);
+		     if (hasRole) {
+			  break;
+		     }
+		  }
+		  return hasRole;
+		}
+		 
+	
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public DatatypeLibraryDocument create(@RequestBody LibraryCreateWrapper dtlcw) {
-		SCOPE scope = SCOPE.valueOf(dtlcw.getScope());
+	public DatatypeLibraryDocument create(@RequestBody LibraryCreateWrapper dtlcw) throws LibrarySaveException {
+		System.out.println(hasRole("ROLE_ADMIN"));
+		System.out.println(hasRole("ADMIN"));
+		System.out.println(hasRole("admin"));
 
+		SCOPE scope = SCOPE.valueOf(dtlcw.getScope());
+		User u = userService.getCurrentUser();
+		//String accountType=account.getAccountType();
+		//System.out.println(accountType);
+		if(scope.equals(scope.USER)){
+			return datatypeLibraryDocumentService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),
+					dtlcw.getAccountId());		
+			}
+		else if(hasRole("admin")&&scope.equals(scope.MASTER)){
 		return datatypeLibraryDocumentService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),
 				dtlcw.getAccountId());
-	}
+		}
+		else{
+			throw new LibrarySaveException();
+		}
 
+	}
+	
 	@RequestMapping(value = "/{libId}/saveMetaData", method = RequestMethod.POST)
 	public LibrarySaveResponse saveMetaData(@PathVariable("libId") String libId,
 			@RequestBody DatatypeLibraryMetaData datatypeLibraryMetaData) throws LibrarySaveException {

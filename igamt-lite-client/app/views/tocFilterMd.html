@@ -169,12 +169,7 @@
 <!-- <input type="checkbox" ng-model="segment.checked" ng-click="uncheckAndDisableOthers(segment)" ng-disabled="segment.anotherIsChecked"/> -->
 
   <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
-  'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }"  ns-popover ns-popover-template="segmentPopover"
-  ns-popover-trigger="mouseenter"
-  ns-popover-placement="bottom"
-  ns-popover-theme="ns-popover-custom-theme"
-  ns-popover-timeout="0"
-  >  {{getScopeLabel(segment)}}	</span>
+  'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }" >  {{getScopeLabel(segment)}}	</span>
                                         {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                             </div>
                         </li>

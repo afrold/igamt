@@ -77,6 +77,12 @@ public class DataTypeLibraryDocumentServiceImpl implements DatatypeLibraryDocume
     log.debug("DatatypeLibraryRepository.findByScope datatypeLibrary=" + datatypeLibrary.size());
     return datatypeLibrary;
   }
+  @Override
+  public List<DatatypeLibraryDocument> findByScope(SCOPE scope) {
+    List<DatatypeLibraryDocument> datatypeLibrary = datatypeLibraryDocumentRepository.findByScope(scope);
+    log.debug("DatatypeLibraryRepository.findByScope datatypeLibrary=" + datatypeLibrary.size());
+    return datatypeLibrary;
+  }
 
   @Override
   public List<String> findHl7Versions() {

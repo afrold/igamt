@@ -164,7 +164,7 @@ span {
                                     <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('USER')" >
                                         <i class="fa fa-plus"></i> Create USER Data Type Library
                                     </button>
-                                    <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('MASTER')">
+                                    <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('MASTER')" ng-if="isAdmin()">
                                         <i class="fa fa-plus"></i> Create A MASTER Datatype Library
                                     </button>
                                     <!--<button type="button" class="btn btn-primary btn-sm"-->
@@ -204,14 +204,20 @@ span {
                                                 <td st-ratio="20">{{dtLib.datatypeLibrary.metaData.ext}}</td>
                                                 <td st-ratio="25">{{dtLib.datatypeLibrary.metaData.date}}
                                                     <td st-ratio="10">{{dtLib.datatypeLibrary.metaData.hl7Version}}</td>
-                                                    <td st-ratio="30">
-                                                        <button title="Edit" type="button" class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib)">
-                                                            <span><i class="fa fa-pencil fa-fw"></i></span>
+                                                    <td st-ratio="30"> accountId : {{accountId}} dtacc: {{dtLib.accountId}}
+                                                        <button title="Edit" type="button" class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib,false)" ng-if="dtLib.accountId.toString()=== accountId">
+                                                            <span><i class="fa fa-pencil fa-fw"></i></span> 
+                                                        
+                                                        
                                                         </button>
+                                                        <button title="Edit" type="button" class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib,true)">
+                                                        <span><i class="fa fa-search fa-fw"></i></span>
+                                                        </button>
+
                                                         <button title="Create Copy" type="button" class="btn btn-xs btn-info" ng-click="copyLibrary(dtLib)">
                                                             <span><i class="fa fa-plus fa-fw"></i></span>
                                                         </button>
-                                                        <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="deleteLibrary(dtLib)">
+                                                        <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="deleteLibrary(dtLib)" ng-if="dtLib.accountId.toString()===accountId">
                                                             <span><i class="fa fa-trash-o fa-fw"></i></span>
                                                         </button>
                                                     </td>
@@ -284,9 +290,9 @@ span {
                 ng-disabled="!editForm.$dirty"
                 ng-click="saveMetaData()">
 
-           <span><i class="fa fa-check fa-fw"></i> Save</span>
+           <span><i class="fa fa-check fa-fw" ng-disabled="readOnly"></i> Save</span>
                 </button>
-                <button title="Discard changes" type="button" class="btn btn-sm btn-warning" ng-disabled="!editForm.$dirty" ng-click="resetMetaData()">
+                <button title="Discard changes" type="button" class="btn btn-sm btn-warning" ng-disabled="!editForm.$dirty ||readOnly" ng-click="resetMetaData()">
                     <span><i class="fa fa-times fa-fw"></i>Reset</span>
                 </button>
                 </span>
@@ -300,7 +306,7 @@ span {
             <div class="form-group" ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
                 <label class="col-md-2 control-label">Name</label>
                 <div class="col-md-10">
-                    <input class="form-control" type="text" ng-disabled="viewSettings.tableReadonly" name="name" ng-model="datatypeLibMetaDataCopy.name" ng-change="setDirty() " required id="name" required>
+                    <input class="form-control" type="text" ng-disabled="readOnly" name="name" ng-model="datatypeLibMetaDataCopy.name" ng-change="setDirty() " required id="name" required>
                 </div>
             </div>
             <div class="form-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
@@ -332,7 +338,7 @@ span {
 </script>
 <script type="text/ng-template" id="DatatypeList.html">
     <div ui-tree ng-controller="TreeCtrl">
-        <span style="font-size:18px;" data-nodrag ng-click="editMetadata()"><strong>{{datatypeLibrary.metaData.name}}</strong></span>
+        <span style="font-size:18px;" data-nodrag ng-click="editMetadata()"><strong>{{datatypeLibrary.metaData.name}}khkhkhkh</strong></span>
         <ol ui-tree-nodes="" ng-model="DataTypeTree">
             <li ng-repeat="dataLibrary in DataTypeTree" ui-tree-node>
                 <div ui-tree-handle data-nodrag context-menu="DataTypeLibraryOptions">
@@ -343,7 +349,7 @@ span {
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsInLib">
                             <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data)" title="Filter By This Datatype" /> <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USE','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}</span>
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}</span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}</span>
                         </div>
                     </li>
@@ -353,7 +359,7 @@ span {
                         <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Tables {{derivedTables.length}}
                     </div>
                     <li ng-repeat="table in derivedTables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed" context-menu="ValueSetOptionsINLIB">
-                        <div ui-tree-handle data-nodrag confirm-click ng-click="editTableINLIB(table); Activate(table.id)">
+                        <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)">
                             <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
                                      <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
@@ -365,18 +371,61 @@ span {
         </ol>
     </div>
 </script>
+
+<script type="text/ng-template" id="DatatypeListReadOnly.html">
+    <div ui-tree ng-controller="TreeCtrl">
+        <span style="font-size:18px;" data-nodrag ng-click="editMetadata()"><strong>{{datatypeLibrary.metaData.name}}</strong></span>
+        <ol ui-tree-nodes="" ng-model="DataTypeTree">
+            <li ng-repeat="dataLibrary in DataTypeTree" ui-tree-node>
+                <div ui-tree-handle data-nodrag>
+                    <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Datatypes
+                </div>
+                <div ng-if="!collapsed" data-nodrag ui-tree-handle style="margin-bottom:5px;"> <span class="badge label-default" ng-click="resetLibFilter()" ng-if="!collapsed"> <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
+                <ol ui-tree-nodes="" ng-model="datatypes">
+                    <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
+                        <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;">
+                            <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data)" title="Filter By This Datatype" /> <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}</span>
+                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}</span>
+                        </div>
+                    </li>
+                </ol>
+                <ol ui-tree-nodes="" ng-model="derivedTables" ng-show="!profilecollapsed" data-type="tables">
+                    <div ui-tree-handle data-nodrag ng-click="editMetadata()">
+                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Tables {{derivedTables.length}}
+                    </div>
+                    <li ng-repeat="table in derivedTables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed">
+                        <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)">
+                            <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
+                                     <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
+                            </span>
+                        </div>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+</script>
+
+
+
+
+
+
 <script type="text/ng-template" id="addingView.html">
-    <div class="page-header row">
-
-      
-        <span class="col-md-3" id="basic-addon1">Add Datatypes From</span>
-        <select class="col-md-6 pull-left" ng-model="lib" ng-change="setLibrary(lib)">
-        <option ng-repeat="lib in datatypeLibList" value='{{lib}}'>{{lib.metaData.name}} ({{lib.scope}})</option>
-        </select>
-            <button title="submit" class="col-md-3 pull-right" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
-             Submit
-        </button>
-
+    <div class="page-header" style="margin-bottom: 20px">
+        <div class="row">
+            <div class="input-group col-md-6">
+                <span class="input-group-addon header5" id="basic-addon1">Add Datatypes From</span>
+                <select class="form-control  col-md-5 input-sm" ng-model="lib" ng-change="setLibrary(lib)" class="col-md-4">
+                    <option ng-repeat="lib in datatypeLibList" value='{{lib}}'>{{lib.metaData.name}} ({{lib.scope}})</option>
+                </select>
+            </div>
+            <button title="submit" class="btn btn-sm btn-primary pull-right " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
+                <span><i class="fa fa-check fa-fw"></i> Submit</span>
+            </button>
+        </div>
     </div>
     <div class="col-md-12">
         <div class="col-md-4" style="margin-right:5px;">
@@ -667,14 +716,14 @@ span {
                         <div class="page-header" style="margin-bottom: 20px">
                             <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                             <span class="pull-right">
-        <label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-click="confirmPublish(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatype.status === 'PUBLISHED'" style="margin-right : 8px"/>Published</label>
+        <label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-click="confirmPublish(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatype.status === 'PUBLISHED'|| readOnly" style="margin-right : 8px"/>Published</label>
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                 ng-hide="datatype.scope === 'HL7STANDARD'"
-                 ng-disabled="editForm.$invalid ||!editForm.$dirty"
+                 ng-disabled="editForm.$invalid ||!editForm.$dirty ||readOnly"
                  ng-click="saveDatatype(datatype)">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </button>
-                            <button title="Reset the Data Type" type="button" class="btn btn-xs btn-warning" ng-hide="datatype.scope === 'HL7STANDARD'" ng-disabled="!editForm.$dirty" ng-click="resetDatatype(datatype)">
+                            <button title="Reset the Data Type" type="button" class="btn btn-xs btn-warning" ng-hide="datatype.status === 'PUBLISHED'||readOnly" ng-disabled="!editForm.$dirty" ng-click="resetDatatype()">
                                 <span><i class="fa fa-close fa-fw"></i>Reset</span>
                             </button>
                             </span>
@@ -695,7 +744,7 @@ span {
                                         <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}" ng-hide="datatype.scope === 'HL7STANDARD'">
                                             <label class="col-md-2 control-label">Extension</label>
                                             <div class="controls col-md-10">
-                                                <input type="text" ng-change="setDirty()" ng-disabled=" datatype.scope === 'HL7STANDARD'|| datatype.status==='PUBLISHED'" name="ext" id="ext" class="form-control" ng-model="datatype.ext" required aria-describedby="helpBlock2">
+                                                <input type="text" ng-change="setDirty()" ng-disabled=" datatype.scope === 'HL7STANDARD'|| datatype.status==='PUBLISHED'||readOnly" name="ext" id="ext" class="form-control" ng-model="datatype.ext" required aria-describedby="helpBlock2">
                                                 <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', datatypeLibrary.children)">Extension already used</span>
                                             </div>
                                         </div>
@@ -714,7 +763,7 @@ span {
                                         <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.purposeUse.$invalid}">
                                             <label class="col-md-2 control-label">Purpose and Use</label>
                                             <div class="controls col-md-10">
-                                                <textarea rows="3" cols="20" ng-disabled=" datatype.scope === 'HL7STANDARD'|| datatype.status==='PUBLISHED'" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeUse" />
+                                                <textarea rows="3" cols="20" ng-disabled=" datatype.scope === 'HL7STANDARD'|| datatype.status==='PUBLISHED'||readOnly" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeUse" />
                                             </div>
                                         </div>
                                         <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.comment.$invalid}">
@@ -726,7 +775,7 @@ span {
                                         <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.text.$invalid}">
                                             <label class="col-md-2 control-label">Definition Text</label>
                                             <div class="controls col-md-10">
-                                                <div ng-if="datatype.scope === 'MASTER'">
+                                                <div ng-if="datatype.status === 'UNPUBLISHED'||readOnly">
                                                     <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="text" id="text" ng-change="setDirty()"></textarea>
                                                 </div>
                                                 <div ng-if="datatype.scope === 'HL7STANDARD'">
@@ -757,7 +806,7 @@ span {
                                                         <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                                                             <th class="col-xs-2 col-fixed-250">Name</th>
                                                             <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                                                                <button class="btn btn-info btn-xs" ng-show="(datatype.scope === 'MASTER')&& !viewSettings.tableReadonly" ng-click="OtoX(datatype)">O to X</button>
+                                                                <button class="btn btn-info btn-xs" ng-show="(datatype.scope === 'MASTER')&& !readOnly" ng-click="OtoX(datatype)">O to X</button>
                                                             </th>
                                                             <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">Length
                                                             </th>
@@ -793,7 +842,7 @@ span {
                                                         </span>
                                                         <span class="pull-right">
                                 <button class="btn btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
-                                        ng-hide="datatype.scope === 'HL7STANDARD'"><span><i class="fa fa-plus fa-fw">
+                                        ng-hide="datatype.status === 'PUBLISHED'||readOnly"><span><i class="fa fa-plus fa-fw">
                                     &nbsp; </i>Add Conf.Statement</span></button>
                                                         </span>
                                                     </div>
@@ -820,7 +869,7 @@ span {
                                                                         {{c.description}}
                                                                     </td>
                                                                     <td class="col-md-1" align="center">
-                                                                        <button class="btn btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">
+                                                                        <button class="btn btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="readOnly"><span><i class="fa fa-trash fa-fw">
                                 &nbsp; </i>Del</span></button>
                                                                     </td>
                                                                 </tr>
@@ -835,7 +884,7 @@ span {
                                                                 </span>
                                                                 <span class="pull-right">
                                 <button class="btn btn-primary btn-xs" ng-click="managePredicate(null);"
-                                        ng-hide="datatype.scope === 'HL7STANDARD'"><span><i class="fa fa-plus fa-fw">
+                                        ng-hide="datatype.status === 'PUBLISHED'"><span><i class="fa fa-plus fa-fw">
                                     &nbsp; </i>Add Predicate</span></button>
                                                                 </span>
                                                             </div>
@@ -866,7 +915,7 @@ span {
                                                                                 {{p.falseUsage}}
                                                                             </td>
                                                                             <td class="col-md-1" align="center">
-                                                                                <button class="btn btn-danger btn-xxs" ng-click="datatype.predicates.splice(datatype.predicates.indexOf(p), 1);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">
+                                                                                <button class="btn btn-danger btn-xxs" ng-click="datatype.predicates.splice(datatype.predicates.indexOf(p), 1);" ng-disabled="readOnly"><span><i class="fa fa-trash fa-fw">
                                         &nbsp; </i>Del</span>
                                                                                 </button>
                                                                             </td>
@@ -887,7 +936,6 @@ span {
                 </div>
             </div>
         </div>
-        <pre>{{datatype}}</pre>
     </div>
     </div>
 </script>

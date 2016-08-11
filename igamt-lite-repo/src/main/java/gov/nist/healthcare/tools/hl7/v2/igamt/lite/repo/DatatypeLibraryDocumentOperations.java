@@ -29,5 +29,7 @@ public interface DatatypeLibraryDocumentOperations {
 			String hl7Version, String name, Long accountId);
 
 	List<DatatypeLibraryDocument> findByIds(Set<String> ids);
+
+	List<DatatypeLibraryDocument> findByScope(SCOPE scope);
 	
 }
