@@ -5,7 +5,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         function($scope, $http, $rootScope, $q, $modal, $timeout, TableService, ngTreetableParams, DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc, FormsSelectSvc, IGDocumentSvc, TableService, ViewSettings, userInfoService, blockUI) {
             //  $scope.initLibrary();
             $scope.filteringModeON = false;
-
+            $rootScope.config={"usages": ["R", "B", "RE", "C", "W", "X", "O"], "codeUsages": ["P", "R", "E"], "codeSources": ["HL7", "Local", "Redefined", "SDO"], "tableStabilities": ["Dynamic", "Static"], "tableExtensibilities": ["Close", "Open"], "constraintVerbs": ["SHALL be", "SHALL NOT be", "is", "is not"], "constraintTypes": ["valued", "one of list values", "formatted value", "a literal value", "identical to the another node"], "predefinedFormats": ["YYYYMMDDhhmmss.sss", "ISO-compliant OID", "YYYYMMDDhhmm+-ZZZZ", "YYYYMMDDhh", "YYYY+-ZZZZ", "YYYY", "YYYYMMDDhhmm", "YYYYMM", "YYYYMMDDhhmmss+-ZZZZ", "Alphanumeric", "YYYYMM+-ZZZZ", "YYYYMMDDhhmmss", "YYYYMMDD+-ZZZZ", "YYYYMMDDhh+-ZZZZ", "YYYYMMDDhhmmss.sss+-ZZZZ", "YYYYMMDD"], "statuses": ["Draft", "Active", "Withdrawn", "Superceded"], "domainVersions": ["2.0", "2.1", "2.2", "2.3", "2.4", "2.5", "2.5.1", "2.6", "2.7", "2.3.1", "2.8"], "schemaVersions": ["1.0", "2.0", "1.5", "2.5"]}
             $rootScope.igdocument = null; // current igdocument
             $rootScope.message = null; // current message
             $rootScope.datatype = null; // current datatype
@@ -226,7 +226,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 $scope.datatype = null;
                 $scope.filteringModeON = false;
                 $rootScope.initMaps();
-               
+                $scope.selectDTLibTab(1);
                 //DTLibDetails=true;
                 $scope.datatypes = [];
                 $rootScope.datatypesMap = {};
@@ -279,8 +279,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
 
                 $scope.DataTypeTree.push($scope.datatypeLibCopy);
-
-                 $scope.selectDTLibTab(1);
 
             };
 
