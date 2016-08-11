@@ -200,10 +200,10 @@ span {
                                         <tbody>
                                             <tr ng-class="{'new' : dtLib.new}" ng-repeat="dtLib in datatypeLibsStruct">
                                                 <td st-ratio="5">{{$index + 1}}</td>
-                                                <td st-ratio="10">{{dtLib.datatypeLibrary.metaData.name}}</td>
-                                                <td st-ratio="20">{{dtLib.datatypeLibrary.metaData.ext}}</td>
-                                                <td st-ratio="25">{{dtLib.datatypeLibrary.metaData.date}}
-                                                    <td st-ratio="10">{{dtLib.datatypeLibrary.metaData.hl7Version}}</td>
+                                                <td st-ratio="10">{{dtLib.metaData.name}}</td>
+                                                <td st-ratio="20">{{dtLib.metaData.ext}}</td>
+                                                <td st-ratio="25">{{dtLib.metaData.date}}
+                                                    <td st-ratio="10">{{dtLib.metaData.hl7Version}}</td>
                                                     <td st-ratio="30"> accountId : {{accountId}} dtacc: {{dtLib.accountId}}
                                                         <button title="Edit" type="button" class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib,false)" ng-if="dtLib.accountId.toString()=== accountId">
                                                             <span><i class="fa fa-pencil fa-fw"></i></span> 
@@ -231,9 +231,10 @@ span {
                 </div>
             </div>
         </tab>
-        <tab active="DTLibDetails" select="selectDTLibTab(1)">
-            <tab-heading>
-                <i class="fa fa-pencil fa-fw"></i>Edit Datatype Library
+        <tab active="DTLibDetails" select="selectDTLibTab(1)" ng-show="datatypeLibrary">
+            <tab-heading >
+            <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Datatype Library</span>
+             <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Datatype Library</span>
             </tab-heading>
             <div>
                 <div class="row">
@@ -256,7 +257,7 @@ span {
                                     </button>
                                 </div>
                                 <div class="panel-body toc-container">
-                                    <form confirmOnLeave name="forms.editForm">
+                                    <form  name="forms.editForm">
                                         <ng-include src="datatypeListView" />
                                     </form>
                                 </div>
@@ -334,7 +335,13 @@ span {
                 </div>
             </div>
         </div>
+
     </div>
+
+
+
+
+
 </script>
 <script type="text/ng-template" id="DatatypeList.html">
     <div ui-tree ng-controller="TreeCtrl">
@@ -342,7 +349,7 @@ span {
         <ol ui-tree-nodes="" ng-model="DataTypeTree">
             <li ng-repeat="dataLibrary in DataTypeTree" ui-tree-node>
                 <div ui-tree-handle data-nodrag context-menu="DataTypeLibraryOptions">
-                    <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Datatypes
+                    <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Datatypes: {{datatypes.length}}
                 </div>
                 <div ng-if="!collapsed" data-nodrag ui-tree-handle style="margin-bottom:5px;"> <span class="badge label-default" ng-click="resetLibFilter()" ng-if="!collapsed"> <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
                 <ol ui-tree-nodes="" ng-model="datatypes">
@@ -705,6 +712,7 @@ span {
     </div>
 </script>
 <script type="text/ng-template" id="EditDatatypeLibraryDatatype.html">
+
     <div ng-controller="EditAreaCtrl">
         <div ng-controller="DatatypeListCtrlINLIB">
             <div ng-show="loadingSelection" style="text-align: center;">
@@ -806,7 +814,7 @@ span {
                                                         <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                                                             <th class="col-xs-2 col-fixed-250">Name</th>
                                                             <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                                                                <button class="btn btn-info btn-xs" ng-show="(datatype.scope === 'MASTER')&& !readOnly" ng-click="OtoX(datatype)">O to X</button>
+                                                                <button class="btn btn-info btn-xs" ng-show="(datatype.status === 'UNPUBLISHED')&& !readOnly" ng-click="OtoX(datatype)">O to X</button>
                                                             </th>
                                                             <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">Length
                                                             </th>
