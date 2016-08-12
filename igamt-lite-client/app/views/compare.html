@@ -68,18 +68,6 @@
                                         <option ng-repeat="cmpType in toCompare " value='{{cmpType.name}}'> {{cmpType.alias}}</option>
                                     </select>
                                 </div>
-                                <div class="col-md-4" align="right" ng-show="cmpMsg">
-                                    <button ng-click="cmpMessage(msg1,msg2)" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-info btn-md">
-                                        <i class="fa fa-check"></i> Message Delta</button>
-                                </div>
-                                <div class="col-md-4" align="right" ng-show="cmpSeg">
-                                    <button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || !segment2||!segChanged" class="btn btn-info btn-md">
-                                        <i class="fa fa-check"></i> Segment Delta</button>
-                                </div>
-                                <div class="col-md-4" align="right" ng-show="cmpDT">
-                                    <button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="btn btn-info btn-md">
-                                        <i class="fa fa-check"></i> Datatype Delta</button>
-                                </div>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -104,13 +92,13 @@
                                 <div class="input-group col-md-9" ng-show="cmpDT">
                                     <span class="input-group-addon" id="basic-addon1">Datatype</span>
                                     <select ng-model="datatype1" class="form-control " ng-change="setDatatype1(datatype1)">
-                                        <option ng-repeat="datatype in datatypes1 " ng-disabled="disableSeg(datatype,datatyp2)" ng-hide="hideSeg(datatype,datatype2)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
+                                        <option ng-repeat="datatype in datatypes1 " ng-disabled="disableSeg(datatype,datatype2)" ng-hide="hideSeg(datatype,datatype2)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
                                     </select>
                                 </div>
                                 <div class="input-group col-md-9" ng-show="cmpVS">
                                     <span class="input-group-addon" id="basic-addon1">Value Set</span>
-                                    <select ng-model="table1" class="form-control  col-md-1 input-sm" ng-change="setTable1(talbe1)">
-                                        <option ng-repeat="table in tables1 " value='{{table}}'> {{table.bindingIdentifier}}</option>
+                                    <select ng-model="table1" class="form-control  col-md-1 input-sm" ng-change="setTable1(table1)">
+                                        <option ng-repeat="table in tables1 " ng-disabled="disableSeg(table,table2)" ng-hide="hideSeg(table,table2)" value='{{table}}'> {{table.bindingIdentifier}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -135,13 +123,12 @@
                                 </div>
                                 <div class="input-group col-md-9" ng-show="cmpVS">
                                     <span class="input-group-addon" id="basic-addon1">Value Set</span>
-                                    <select ng-model="table2" class="form-control  col-md-1 input-sm" ng-change="setTable2(talbe2)">
-                                        <option ng-repeat="table in tables2 " value='{{table}}'> {{table.bindingIdentifier}}</option>
+                                    <select ng-model="table2" class="form-control  col-md-1 input-sm" ng-change="setTable2(table2)">
+                                        <option ng-repeat="table in tables2 " ng-disabled="disableSeg(table,table1)" ng-hide="hideSeg(table,table1)" value='{{table}}'> {{table.bindingIdentifier}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row" style="padding-top:20px">
-                                
                                 <div class="col-md-4" align="right" ng-show="cmpMsg">
                                     <button ng-click="cmpMessage(msg1,msg2)" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-info btn-md">
                                         <i class="fa fa-check"></i> Message Delta</button>
@@ -153,6 +140,10 @@
                                 <div class="col-md-4" align="right" ng-show="cmpDT">
                                     <button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="btn btn-info btn-md">
                                         <i class="fa fa-check"></i> Datatype Delta</button>
+                                </div>
+                                <div class="col-md-4" align="right" ng-show="cmpVS">
+                                    <button ng-click="cmpValueSet(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-info btn-md">
+                                        <i class="fa fa-check"></i> Value Set Delta</button>
                                 </div>
                             </div>
                         </div>
@@ -168,7 +159,7 @@
                     <div class="panel-heading" align="center">
                         <h3 class="panel-title" style="width:12%; margin:0 auto;">Delta Result</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" ng-hide="vsTemplate">
                         <table tt-table tt-params="dynamic_params" class=" table-marginless table-bordered table-condensed ">
                             <thead>
                                 <tr>
@@ -186,6 +177,20 @@
                                     <th class="col-xs-1 col-fixed-10" style="width:2% ">max</th>
                                     <th class="col-xs-1 col-fixed-10" style="width:2% ">min</th>
                                     <th class="col-xs-1 col-fixed-10" style="width:2% ">max</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="panel-body" ng-show="vsTemplate">
+                        <table tt-table tt-params="valueSet_params" class=" table-marginless table-bordered table-condensed ">
+                            <thead>
+                                <tr>
+
+                                    <th class="col-xs-2">Name</th>
+                                    <th class="col-xs-1 ">Content Definition</th>
+                                    <th class="col-xs-1 ">Code System</th>
+                                    <th class="col-xs-1 ">Code Usage</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -407,6 +412,98 @@
         <td class="col-xs-1 " ng-show="!node.valueset" style="width:16% ">
             <div align="center"> - </div>
         </td>
+    </tr>
+</script>
+<script type="text/ng-template" id="valueSet_node">
+    <tr tt-node is-branch="node.codes!==undefined ">
+        <td class="col-xs-2 ">
+            <table class=" table-borderless" ng-show="node.label.element && node.description.element">
+                <tr>
+                    <td class="col-sm-1">
+                        
+                        <span ng-bind="node.label.element"></span><span ng-show="node.description.element">:<span ng-bind="node.description.element"></span></span>
+                    </td>
+                </tr>
+            </table>
+            <table class=" table-borderless" ng-show="(node.label.element1 && node.label.element2)|| (node.description.element1 && node.description.element2)">
+                <tr style="background-color:#B5F7EC">
+                    <td class="col-sm-1">
+                        <span ng-bind="node.label.element"></span>
+                        <span ng-bind="node.label.element1"></span>
+                        
+                        <span ng-show="node.description">:
+                        <span ng-show="node.description.element1" ng-bind="node.description.element1"></span>
+                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
+                        </span>
+                    </td>
+                </tr>
+                <tr style="background-color:#EDE1AF">
+                    <td class="col-sm-1">
+                        <span ng-bind="node.label.element"></span>
+                        <span ng-bind="node.label.element2"></span>
+                        
+                        <span ng-show="node.description">:
+                        <span ng-show="node.description.element2" ng-bind="node.description.element2"></span>
+                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 " ng-show="node.contentDefinition">
+            <div align="center">
+                <table class=" table-borderless">
+                    <tr>
+                        <td class="col-md-1" style="background-color:#B5F7EC">
+                            <div align="center"> <span ng-bind="node.contentDefinition.element1"></span></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-1" style="background-color:#EDE1AF">
+                            <div align="center"> <span ng-bind="node.contentDefinition.element2"></span></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td class="col-xs-1 " ng-show="!node.contentDefinition">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1 " ng-show="node.codeSystem">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.codeSystem.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.codeSystem.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 " ng-show="!node.codeSystem">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1 " ng-show="node.codeUsage" >
+            <table class="table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.codeUsage.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.codeUsage.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 " ng-show="!node.codeUsage">
+            <div align="center"> - </div>
+        </td>
+        
     </tr>
 </script>
 <!--<script type="text/ng-template " id="expandableRowTemplate.html ">

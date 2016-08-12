@@ -16,10 +16,12 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.msgChanged = false;
     $scope.segChanged = false
     $scope.dtChanged = false;
+    $scope.vsChanged = false;
     $scope.cmpMsg = false;
     $scope.cmpSeg = false;
     $scope.cmpDT = false;
     $scope.cmpVS = false;
+    $scope.vsTemplate = false;
 
     //$scope.scopes = ["USER", "HL7STANDARD"];
     $scope.scopes = [{
@@ -117,9 +119,9 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.$watchGroup(['version1', 'scope1'], function() {
         $scope.igList1 = [];
         $scope.messages1 = [];
-        $scope.datatypes1=[];
-        $scope.tables1=[];
-        $scope.segments1=[];
+        $scope.datatypes1 = [];
+        $scope.tables1 = [];
+        $scope.segments1 = [];
         $scope.ig1 = "";
 
 
@@ -166,9 +168,9 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.$watchGroup(['version2', 'scope2'], function() {
         $scope.igList2 = [];
         $scope.messages2 = [];
-        $scope.datatypes2=[];
-        $scope.tables2=[];
-        $scope.segments2=[];
+        $scope.datatypes2 = [];
+        $scope.tables2 = [];
+        $scope.segments2 = [];
         $scope.ig2 = "";
         if ($scope.scope2 && $scope.version2) {
             console.log("hereee2");
@@ -223,6 +225,11 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
 
     }, true);
+    $scope.$watchGroup(['table1', 'table2'], function() {
+        $scope.vsChanged = true;
+
+
+    }, true);
 
 
     $scope.findIGbyID = function(id) {
@@ -239,6 +246,8 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
     };
     $scope.setIG1 = function(ig) {
+        console.log("ig==============");
+        console.log(ig);
         if (ig) {
             IgDocumentService.getOne(ig.id).then(function(igDoc) {
                 console.log(ig.id);
@@ -250,11 +259,11 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                             if (igDoc) {
                                 $scope.segList1 = angular.copy(segments);
                                 $scope.dtList1 = angular.copy(datatypes);
-                                $scope.tableList1 = angular.copy(tables);
+                                $scope.tableList2 = angular.copy(tables);
                                 $scope.messages1 = orderByFilter(igDoc.profile.messages.children, 'name');
-                                $scope.segments1 = segments;
-                                $scope.datatypes1 = datatypes;
-                                $scope.tables1 = tables;
+                                $scope.segments1 = orderByFilter(segments, 'name');
+                                $scope.datatypes1 = orderByFilter(datatypes, 'name');
+                                $scope.tables1 = orderByFilter(tables, 'bindingIdentifier');
                             }
                         });
                     });
@@ -277,13 +286,14 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                             $scope.messages2 = [];
                             $scope.msg2 = "";
                             if (igDoc) {
-                                $scope.segList2 = angular.copy(segments);
+                                $scope.segList2=angular.copy(segments);
+                                //$scope.segList2 = orderByFilter($scope.segList2, 'name');
                                 $scope.dtList2 = angular.copy(datatypes);
                                 $scope.tableList2 = angular.copy(tables);
-                                $scope.messages2 = igDoc.profile.messages.children;
-                                $scope.segments2 = segments;
-                                $scope.datatypes2 = datatypes;
-                                $scope.tables2 = tables;
+                                $scope.messages2 = orderByFilter(igDoc.profile.messages.children, 'name');
+                                $scope.segments2 = orderByFilter(segments, 'name');
+                                $scope.datatypes2 = orderByFilter(datatypes, 'name');
+                                $scope.tables2 = orderByFilter(tables, 'bindingIdentifier');
                             }
                         });
                     });
@@ -337,22 +347,26 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         $scope.msg2 = msg;
     };
     $scope.setSegment1 = function(segment) {
+        console.log(JSON.parse(segment));
+
         $scope.segment1 = segment;
     };
     $scope.setSegment2 = function(segment) {
         $scope.segment2 = segment;
     };
     $scope.setDatatype1 = function(datatype) {
+        console.log(JSON.parse(datatype));
+
         $scope.datatype1 = datatype
     };
     $scope.setDatatype2 = function(datatype) {
         $scope.datatype2 = datatype
     };
     $scope.setTable1 = function(table) {
-        console.log(table);
+        console.log(JSON.parse(table));
     };
     $scope.setTable2 = function(table) {
-        console.log(table);
+        console.log(JSON.parse(table));
     };
     $scope.clearAll = function() {
         $scope.msg1 = "";
@@ -363,12 +377,12 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         $scope.version2 = "";
         $scope.scope1 = "";
         $scope.scope2 = "";
-        $scope.segment1="";
-        $scope.segment2="";
-        $scope.datatype1="";
-        $scope.datatype2="";
-        $scope.table1="";
-        $scope.table2="";
+        $scope.segment1 = "";
+        $scope.segment2 = "";
+        $scope.datatype1 = "";
+        $scope.datatype2 = "";
+        $scope.table1 = "";
+        $scope.table2 = "";
 
     };
     $scope.clearIG = function() {
@@ -382,12 +396,12 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.clearMessage = function() {
         $scope.msg1 = "";
         $scope.msg2 = "";
-        $scope.segment1="";
-        $scope.segment2="";
-        $scope.datatype1="";
-        $scope.datatype2="";
-        $scope.table1="";
-        $scope.table2="";
+        $scope.segment1 = "";
+        $scope.segment2 = "";
+        $scope.datatype1 = "";
+        $scope.datatype2 = "";
+        $scope.table1 = "";
+        $scope.table2 = "";
 
     }
     $scope.clearScope = function() {
@@ -702,6 +716,9 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         console.log(elements)
         return $scope.fElements(elements, datatypeList, segmentList);
     };
+    $scope.fTable = function(table) {
+
+    };
 
     $scope.fElements = function(elements, datatypeList, segmentList) {
         console.log(elements);
@@ -858,7 +875,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                     }
 
 
-                    if (childArray.value.ext && childArray.value.ext.changed === "equal" && childArray.value.ext.value!==null) {
+                    if (childArray.value.ext && childArray.value.ext.changed === "equal" && childArray.value.ext.value !== null) {
                         result.ext = {
                             element: childArray.value.ext.value,
 
@@ -1033,6 +1050,82 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
 
                     }
+                } else if (childArray.value.type.value === "table") {
+                    if (childArray.value.bindingIdentifier.changed === "primitive change") {
+                        result.label = {
+                            element1: childArray.value.bindingIdentifier.removed,
+                            element2: childArray.value.bindingIdentifier.added
+
+                        };
+
+                    }
+
+                    if (childArray.value.bindingIdentifier.changed === "equal") {
+                        result.label = {
+                            element: childArray.value.bindingIdentifier.value,
+
+                        };
+                    }
+                    if (childArray.value.description && childArray.value.description.changed === "primitive change") {
+                        result.description = {
+                            element1: childArray.value.description.removed,
+                            element2: childArray.value.description.added
+                        };
+                    } else if (childArray.value.description && childArray.value.description.changed === "equal") {
+                        result.description = {
+                            element: childArray.value.description.value,
+
+                        };
+                    }
+                    if (childArray.value.contentDefinition && childArray.value.contentDefinition.changed === "primitive change") {
+                        result.contentDefinition = {
+                            element1: childArray.value.contentDefinition.removed,
+                            element2: childArray.value.contentDefinition.added
+                        };
+                    }
+                    if (childArray.value.codes && childArray.value.codes.changed === "object change") {
+                        result.codes = [];
+                        objToArray(childArray.value.codes.value).forEach(function(childNode) {
+                            writettTable(childNode, result.codes);
+
+                        });
+                    }
+                } else if (childArray.value.type.value === "code") {
+                    if (childArray.value.codeSystem && childArray.value.codeSystem.changed === "primitive change") {
+                        result.codeSystem = {
+                            element1: childArray.value.codeSystem.removed,
+                            element2: childArray.value.codeSystem.added
+                        };
+                    }
+                    if (childArray.value.codeUsage && childArray.value.codeUsage.changed === "primitive change") {
+                        result.codeUsage = {
+                            element1: childArray.value.codeUsage.removed,
+                            element2: childArray.value.codeUsage.added
+                        };
+                    }
+                    if (childArray.value.label && childArray.value.label.changed === "primitive change") {
+                        result.description = {
+                            element1: childArray.value.label.removed,
+                            element2: childArray.value.label.added
+                        };
+                    } else if (childArray.value.label && childArray.value.label.changed === "equal") {
+                        result.description = {
+                            element: childArray.value.label.value,
+
+                        };
+                    }
+                    if (childArray.value.value && childArray.value.value.changed === "primitive change") {
+                        result.label = {
+                            element1: childArray.value.value.removed,
+                            element2: childArray.value.value.added
+                        };
+                    } else if (childArray.value.value && childArray.value.value.changed === "equal") {
+                        console.log(childArray);
+                        result.label = {
+                            element: childArray.value.value.value,
+
+                        };
+                    }
                 }
             } else if (childArray.value.type.changed === "primitive change") {
                 result.label = {
@@ -1053,17 +1146,14 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         }
 
     };
-    $scope.dynamic_params = new ngTreetableParams({
+    $scope.valueSet_params = new ngTreetableParams({
         getNodes: function(parent) {
             if ($scope.dataList !== undefined) {
+
                 //return parent ? parent.fields : $scope.test;
                 if (parent) {
-                    if (parent.fields) {
-                        return parent.fields;
-                    } else if (parent.components) {
-                        return parent.components;
-                    } else if (parent.segments) {
-                        return parent.segments;
+                    if (parent.codes) {
+                        return parent.codes;
                     }
 
                 } else {
@@ -1073,14 +1163,101 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             }
         },
         getTemplate: function(node) {
-            return 'tree_node';
+
+            // if (node.type.element === "table" || node.type.element === "code") {
+            $scope.vsTemplate = true;
+            return 'valueSet_node';
+            // } else if (node.type.element === "segment") {
+            // console.log("node===============");
+            // console.log(node);
+            // $scope.vsTemplate = false;
+            // return 'tree_node';
+            // }
+
+
 
 
         }
     });
+    $scope.dynamic_params = new ngTreetableParams({
+        getNodes: function(parent) {
+            if ($scope.dataList !== undefined) {
+
+                //return parent ? parent.fields : $scope.test;
+                if (parent) {
+                    if (parent.fields) {
+                        return parent.fields;
+                    } else if (parent.components) {
+                        return parent.components;
+                    } else if (parent.segments) {
+                        return parent.segments;
+                    } else if (parent.codes) {
+                        return parent.codes;
+                    }
+
+                } else {
+                    return $scope.dataList;
+                }
+
+            }
+        },
+        getTemplate: function(node) {
+
+            // if (node.type.element === "table" || node.type.element === "code") {
+            //     $scope.vsTemplate = true;
+            //     return 'valueSet_node';
+            // } else if (node.type.element === "segment") {
+            // console.log("node===============");
+            // console.log(node);
+
+            return 'tree_node';
+            // }
+
+
+
+
+        }
+    });
+    $scope.cmpValueSet = function(table1, table2) {
+        $scope.loadingSelection = true;
+        $scope.vsChanged = false;
+        $scope.vsTemplate = true;
+        var vs1 = JSON.parse(table1);
+        var vs2 = JSON.parse(table2);
+        $scope.diff = ObjectDiff.diffOwnProperties(vs1, vs2);
+        $scope.dataList = [];
+        console.log("$scope.diff");
+        console.log($scope.diff);
+
+
+        if ($scope.diff.changed === "object change") {
+            // var array = objToArray($scope.diff);
+            // console.log(array);
+            // var arraySeg = objToArray(array[1]);
+            // console.log(arraySeg);
+            //writeTable(array[1].segments, 0, $scope.gridOptions.data);
+            // for (var i = 0; i < arraySeg.length; i++) {
+            writettTable($scope.diff, $scope.dataList);
+            // }
+
+        }
+
+        $scope.loadingSelection = false;
+
+
+        if ($scope.valueSet_params) {
+            console.log($scope.dataList);
+            $scope.showDelta = true;
+            $scope.valueSet_params.refresh();
+        }
+
+
+    };
+
     $scope.cmpDatatype = function(datatype1, datatype2) {
         $scope.loadingSelection = true;
         $scope.dtChanged = false;
+        $scope.vsTemplate = false;
         var dt1 = $scope.fDatatype(JSON.parse(datatype1), $scope.dtList1, $scope.segList1);
         var dt2 = $scope.fDatatype(JSON.parse(datatype2), $scope.dtList2, $scope.segList2);
         console.log(JSON.parse($scope.datatype1));
@@ -1121,6 +1298,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
         $scope.loadingSelection = true;
         $scope.segChanged = false;
+        $scope.vsTemplate = false;
         var seg1 = $scope.fSegment(JSON.parse(segment1), $scope.dtList1, $scope.segList1);
         var seg2 = $scope.fSegment(JSON.parse(segment2), $scope.dtList2, $scope.segList2);
 
@@ -1155,6 +1333,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.cmpMessage = function(msg1, msg2) {
         $scope.loadingSelection = true;
         $scope.msgChanged = false;
+        $scope.vsTemplate = false;
         var msg1 = $scope.fMsg(JSON.parse(msg1), $scope.dtList1, $scope.segList1);
         var msg2 = $scope.fMsg(JSON.parse(msg2), $scope.dtList2, $scope.segList2)
 
