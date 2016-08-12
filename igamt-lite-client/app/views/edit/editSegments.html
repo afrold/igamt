@@ -764,9 +764,16 @@ if (self === top) {
             </span>
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
-            <a ng-click="redirectVS(node.table) " class="point " ng-show="node.table !=undefined && node.table !==null ">
-                {{::getTableLabel(tablesMap[node.table.id])}}
-            </a>
+            <div>
+                <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null ">
+
+                    <a class="point " ng-repeat="table in node.obj.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
+                </span>
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
+            
+            <a class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
         </td>
         <td class="col-xs-1 " ng-style="predWidth " ng-show="viewSettings.isVisibleColumn( 'predicate') ">
             <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true ">
@@ -834,8 +841,7 @@ if (self === top) {
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
             <div>
                 <span ng-show="node.table !=undefined && node.table !=null ">
-                    <a ng-click="redirectVS(node.table) " class="point ">
-                        <span>{{getTableLabel(tablesMap[node.table.id])}}</span>
+                    <a class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
                 </a>
                 </span>
             </div>
@@ -905,9 +911,8 @@ if (self === top) {
             </span>
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
-            <a type="button " ng-click="redirectVS(node.table) " ng-show="node.table !=undefined && node.table !=null " class="point ">
-                {{::getTableLabel(tablesMap[node.table.id])}}
-            </a>
+            
+            <a type="button " class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
         </td>
         <td class="col-xs-1 " ng-style="predWidth " ng-show="viewSettings.isVisibleColumn( 'predicate') ">
             <div>
