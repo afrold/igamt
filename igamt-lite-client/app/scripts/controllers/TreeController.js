@@ -509,13 +509,9 @@ angular
 
                                           ['Copy',
                                               function($itemScope) {
-                                                  if ($rootScope.hasChanges()) {
-                                                      $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                          $scope.copyTableINLIB($itemScope.table);
-                                                      });
-                                                  } else {
+                                  
                                                       $scope.copyTableINLIB($itemScope.table,$scope.tableLibrary.id);
-                                                  }
+                                                  
                                               }
                                           ],
                                           null, ['Delete',
