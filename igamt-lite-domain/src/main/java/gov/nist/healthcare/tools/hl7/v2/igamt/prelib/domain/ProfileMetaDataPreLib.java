@@ -39,6 +39,8 @@ public class ProfileMetaDataPreLib {
   private String status = ""; // ConformanceProfile/MetaData/@Status
 
   private String topics = ""; // ConformanceProfile/MetaData/@Topics
+  
+  private String XmlId;
 
   /* XSD Attributes END */
 
@@ -154,5 +156,13 @@ public class ProfileMetaDataPreLib {
   public void setProfileID(String profileID) {
     this.profileID = profileID;
   }
+
+public String getXmlId() {
+	return XmlId;
+}
+
+public void setXmlId(String xmlId) {
+	XmlId = xmlId;
+}
 
 }
