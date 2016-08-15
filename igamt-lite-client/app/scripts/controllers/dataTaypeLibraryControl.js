@@ -1311,6 +1311,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
                 $scope.editDatatype = function(datatype) {
                 	$rootScope.datatype=datatype;
+                	$scope.datatype=datatype;
                 	$rootScope.currentData=datatype;
                     if ($scope.datatype !== null) {
                         $scope.datatype = datatype;
@@ -2039,7 +2040,7 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
             };
 
             $scope.cancel = function() {
-                $scope.tableToPublish.status = "'UNPUBLISHED'";
+                $scope.datatypeToPublish.status = "'UNPUBLISHED'";
                 $modalInstance.dismiss('cancel');
             };
         });
