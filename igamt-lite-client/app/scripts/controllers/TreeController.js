@@ -626,10 +626,10 @@ angular
                     ]
                 ];
 
-                $scope.addValueSetsInTableLIB = [
+                $scope.addValueSetsInTableLibrary = [
                     ['Add Tables',
                         function($itemScope) {
-                            $scope.addTables($rootScope.igdocument);
+                            $scope.addTablesInLibrary();
                         }
                     ]
                 ];

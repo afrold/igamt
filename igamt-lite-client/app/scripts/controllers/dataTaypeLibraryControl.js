@@ -1133,7 +1133,22 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
 
 
+                $scope.addTablesInLibrary=function(){
+               	var modalInstance = $modal.open({
+                templateUrl: 'AddTableOpenCtrl.html',
+                controller: 'AddTableOpenCtrlLIB',
+                windowClass: 'conformance-profiles-modal',
+                resolve: {
+                    igdocumentToSelect: function () {
+                        return igdocument;
+                    }
+                }
+            });
+            modalInstance.result.then(function () {
+            }, function () {
+            });
 
+                }
 
 
                 $scope.editDTLIB = function(field) {
@@ -1738,6 +1753,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
 
                 };
+
+
+
+
 
 
                 $scope.setLibrary = function(library) {
