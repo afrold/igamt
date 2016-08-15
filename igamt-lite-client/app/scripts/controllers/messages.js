@@ -251,8 +251,8 @@ angular.module('igl')
 
         $scope.editableSeg = '';
 
-        $scope.editSeg = function(segmentRef, message) {
-
+        $scope.editSgmt = function(segmentRef, message) {
+            blockUI.start();
             $scope.path = segmentRef.path.replace(/\[[0-9]+\]/g, '');
             $scope.path = $scope.path.split(".");
             MessageService.findParentByPath($scope.path, message).then(function() {
@@ -290,7 +290,9 @@ angular.module('igl')
                     $rootScope.msg().show = true;
                     delay.reject(error);
                 });
+                blockUI.stop();
                 return delay.promise;
+                 
             };
 
             var filterFlavors = function(library, name) {

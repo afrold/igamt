@@ -643,7 +643,7 @@ angular
                     $scope.$emit('event:openSegment', seg);
                 };
 
-                $scope.editSeg = function(seg) {
+                $rootScope.editSeg = function(seg) {
 
                     if ($rootScope.hasChanges()) {
 

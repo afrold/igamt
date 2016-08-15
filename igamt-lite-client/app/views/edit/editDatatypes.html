@@ -136,8 +136,8 @@
                     <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                         <th class="col-xs-2 col-fixed-250">Name</th>
                         <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                            <button class="btn btn-info btn-xs"
-                                    ng-show="(datatype.scope === 'USER')&& !viewSettings.tableReadonly"
+                            <button type="button" class="btn btn-info btn-xs"
+                                    ng-show="(datatype.scope === 'USER')&& !viewSettings.tableReadonly && (datatype.components.length>0)"
                                     ng-click="OtoX(datatype)">O to X
                             </button>
                         </th>

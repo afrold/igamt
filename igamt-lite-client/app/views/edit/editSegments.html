@@ -119,7 +119,7 @@ if (self === top) {
                                                 <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                                                     <th class="col-xs-2 col-fixed-250">Name</th>
                                                     <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                                                        <button ng-show="(segment.scope === 'USER') && !viewSettings.tableReadonly" class="btn btn-info btn-xs" ng-click="OtoX(segment)">O to X
+                                                        <button type="button" ng-show="(segment.scope === 'USER') && !viewSettings.tableReadonly && (segment.fields.length>0)" class="btn btn-info btn-xs" ng-click="OtoX(segment)">O to X
                                                         </button>
                                                     </th>
                                                     <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality

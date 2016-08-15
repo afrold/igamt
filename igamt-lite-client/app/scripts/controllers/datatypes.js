@@ -43,6 +43,7 @@ angular.module('igl')
 
 
         $scope.OtoX = function(message) {
+            console.log(message);
             var modalInstance = $modal.open({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',

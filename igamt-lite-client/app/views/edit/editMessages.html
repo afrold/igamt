@@ -154,7 +154,8 @@ if (self === top) {
                                         </th>
                                         <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
                                             Usage
-                                            <button ng-hide="viewSettings.tableReadonly" class="btn btn-info btn-xs" ng-click="OtoX(message)">O to X</button>
+                                             <button type="button" ng-show="(message.scope === 'USER') && !viewSettings.tableReadonly && (message.children.length>0)" class="btn btn-info btn-xs" ng-click="OtoX(message)">O to X
+                                                        </button>
                                         </th>
                                         <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
                                         </th>
@@ -324,7 +325,7 @@ if (self === top) {
 
     <tr  tt-node is-branch="hasChildren(node.obj) " ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF) ">
         <td    class="col-xs-2 col-fixed-250 ">
-        <a ng-show="editableSeg!==node.obj.id " ng-click="editSeg(node,message) " class="point ">
+        <a ng-show="editableSeg!==node.obj.id " ng-click="editSgmt(node,message) " class="point ">
                     <span><i class="fa fa-pencil fa-fw "></i></span>
             </a>
             <a ng-show="editableSeg!==node.obj.id " ng-click="deleteSeg(node) " class="point ">
