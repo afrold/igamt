@@ -151,7 +151,7 @@ span {
                     <div class="col-md-12">
                         <form id="selectDtTypeForm" class="form-horizontal">
                             <div class="form-group">
-                                <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left">
+                                <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
                                     <label class="btn  btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')" >
                                         <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse User's Data Type Librariess
                                     </label>
@@ -160,6 +160,8 @@ span {
                                         <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse Master Data Type Libraries
                                     </label>
                                 </div>
+
+
                                 <div class="pull-right" style="margin-right: 20px">
                                     <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('USER')" >
                                         <i class="fa fa-plus"></i> Create USER Data Type Library
@@ -298,7 +300,8 @@ span {
                 </button>
                 </span>
             </div>
-            <div class="form-group" ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+            <div class= "container">
+            <div class="form-group " ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
                 <label class="col-md-2 control-label">HL7 Version</label>
                 <div class="col-md-10">
                     <input class="form-control" type="text" disabled name="title" ng-model="datatypeLibMetaDataCopy.hl7Version" required>
@@ -334,6 +337,7 @@ span {
                     <input type="text" name="date" disabled ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.date" required>
                 </div>
             </div>
+            </div>
         </div>
 
     </div>
@@ -362,7 +366,7 @@ span {
                     </li>
                 </ol>
                 <ol ui-tree-nodes="" ng-model="derivedTables" ng-show="!profilecollapsed" data-type="tables">
-                    <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="addValueSetsInTableLIB">
+                    <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="addValueSetsInTableLibrary">
                         <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Tables {{derivedTables.length}}
                     </div>
                     <li ng-repeat="table in derivedTables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed" context-menu="ValueSetOptionsINLIB">
@@ -716,18 +720,21 @@ span {
 </script>
 <script type="text/ng-template" id="EditDatatypeLibraryDatatype.html">
 
-    <div ng-controller="EditAreaCtrl">
+    <div ng-controller="EditAreaCtrl" class="container">
         <div ng-controller="DatatypeListCtrlINLIB">
             <div ng-show="loadingSelection" style="text-align: center;">
                 <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
             </div>
             <div ng-show="!loadingSelection">
                 <div ng-show="datatype !== null" id="executionPanel">
-                    <div class="row" style="margin-left:0px; margin-right: 10px">
-                        <div class="page-header" style="margin-bottom: 20px">
-                            <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
-                            <span class="pull-right">
+
+<div class="row" style="margin-left:0px; margin-right: 10px">
+        <div class="page-header" style="margin-bottom: 20px">
+                <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
+                <span class="pull-right">
+
         <label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-click="publishDatatype(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatype.status === 'PUBLISHED'|| readOnly" style="margin-right : 8px"/>Published</label>
+
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                 ng-hide="datatype.scope === 'HL7STANDARD'"
                  ng-disabled="editForm.$invalid ||!editForm.$dirty ||readOnly"
@@ -745,7 +752,7 @@ span {
                                     <tab-heading>
                                         <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Data Type MetaData
                                     </tab-heading>
-                                    <div style="margin-top: 20px">
+                                    <div style="margin-top: 20px" class="container">
                                         <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
                                             <label class="col-md-2 control-label">Name*</label>
                                             <div class="controls col-md-10">
@@ -1486,7 +1493,7 @@ span {
 
         </div>
 
-        <div ng-show="unpublishedDatatypes.length>0">
+        <div ng-show="unpublishedTables.length>0">
          <h4>Tables<h4>
 
 
@@ -1561,6 +1568,33 @@ span {
     </div>
     </div>
 </script>
+
+<script type="text/ng-template" id="ConfirmTablePublishCtl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Publish Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to publish this Table?</p>
+        <p>Data Type will no longer be editable.</p>
+        <p>This operation is irreversible.</p>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
+        </button>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
+        </div>
+    </div>
+    </div>
+</script>
+
+
 <script type="text/ng-template" id="ConfirmRedirect.html">
     <div class="modal-header">
         <h3 class="modal-title">Redirecting confirmation
@@ -1849,8 +1883,11 @@ span {
             <div ng-show="table !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 20px">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Table: {{table.bindingIdentifier}}</span>
+                        <span class="header4">Table:ss {{table.bindingIdentifier}}</span>
                         <span class="pull-right">
+                        <label for="publish" style="margin : 0 10px 0 0">
+                        <input type="checkbox" ng-click="confirmPublishTable(table)" ng-model="table.status" ng-true-value="'PUBLISHED'"  ng-disabled="table.status === 'PUBLISHED'|| readOnly||table.scope=='HL7STANDARD'" style="margin-right : 8px"/>Published</label>
+
                         <button title="Save Changes" type="button" class="btn btn-sm btn-success"
                                 ng-disabled="editForm.$invalid || !editForm.$dirty"
                                 ng-click="save()">
@@ -2063,6 +2100,8 @@ span {
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Table: {{table.bindingIdentifier}}</span>
                         <span class="pull-right">
+                        <label for="publish" style="margin : 0 10px 0 0">
+                        <input type="checkbox" ng-click="confirmPublishTable(table)" ng-model="table.status" ng-true-value="'PUBLISHED'"  ng-disabled="table.status === 'PUBLISHED'|| readOnly||table.scope=='HL7STANDARD'" style="margin-right : 8px"/>Published</label>
                         <button title="Save Changes" type="button" class="btn btn-sm btn-success"
                                 ng-disabled="editForm.$invalid || !editForm.$dirty"
                                 ng-click="save()">

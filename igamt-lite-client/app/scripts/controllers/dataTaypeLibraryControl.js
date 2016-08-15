@@ -1869,6 +1869,21 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     });
                 };
 
+                 $scope.confirmPublishTable = function(table) {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'ConfirmTablePublishCtl.html',
+                        controller: 'ConfirmTablePublishCtl',
+                        resolve: {
+                            tableToPublish: function() {
+                                return table;
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function(table) {
+                        TableService.save(table);
+                    });
+                };
+
 
 
 
@@ -2008,6 +2023,23 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 
             $scope.cancel = function() {
                 $scope.datatypeToPublish.status = "'UNPUBLISHED'";
+                $modalInstance.dismiss('cancel');
+            };
+        });
+
+
+
+          angular.module('igl').controller('ConfirmTablePublishCtl', function($scope, $rootScope, $http, $modalInstance, tableToPublish) {
+
+            $scope.tableToPublish = tableToPublish;
+            $scope.loading = false;
+
+            $scope.delete = function() {
+                $modalInstance.close($scope.tableToPublish);
+            };
+
+            $scope.cancel = function() {
+                $scope.tableToPublish.status = "'UNPUBLISHED'";
                 $modalInstance.dismiss('cancel');
             };
         });
