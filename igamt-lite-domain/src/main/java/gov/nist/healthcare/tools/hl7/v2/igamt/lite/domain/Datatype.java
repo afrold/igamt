@@ -31,13 +31,13 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
 
   private String ext;
 
-  private String purposeAndUse;
+  private String purposeAndUse = "";
 
   protected List<Component> components = new ArrayList<Component>();
 
-  private String name;
+  private String name = "";
 
-  private String description;
+  private String description = "";
 
   protected String comment = "";
 
