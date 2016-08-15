@@ -1,10 +1,27 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'ElementUtils', 'SectionSvc',
-    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, ElementUtils, SectionSvc) {
+angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'ElementUtils', 'SectionSvc',
+    function ($document,$scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, ElementUtils, SectionSvc) {
         // This line fetches the info from the server if the user is currently
         // logged in.
         // If success, the app is updated according to the role.
+
+        $(document).keydown(function(e) {
+        var nodeName = e.target.nodeName.toLowerCase();
+
+        if (e.which === 8) {
+            if ((nodeName === 'input' && e.target.type === 'text') ||
+                nodeName === 'textarea') {
+                // do nothing
+            } else {
+                e.preventDefault();
+            }
+        }
+    });
+
+
+
+
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
 
