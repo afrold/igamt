@@ -83,7 +83,7 @@ public class IGExportTest {
     sl = (SegmentLink) ig.getProfile().getSegmentLibrary().getChildren().toArray()[0];
     dl = (DatatypeLink) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
     tl = (TableLink) ig.getProfile().getTableLibrary().getChildren().toArray()[0];
-    
+
   }
 
   @After
@@ -127,6 +127,34 @@ public class IGExportTest {
   }
 
   @Test
+  public void testCallIGExportXml_All() {
+    File xmlExport = new File("test_export_xml.txt");
+    igs = igService.findAll();
+    for (IGDocument ig : igs){
+      try {
+        FileUtils.writeStringToFile(xmlExport, "ig " + ig.getId());
+        content = igExport.exportAsXmlDisplay(ig);
+        assertNotNull(content);
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        tmpFile = new File("IG_" + timeStamp + ".xml");
+        logger.debug("Writing to file");
+        FileUtils.copyInputStreamToFile(content, tmpFile);
+        logger.debug("Export done");
+        FileUtils.writeStringToFile(xmlExport, ": ok\n");
+
+      } catch (IOException e) {
+        e.printStackTrace();
+        try {
+          FileUtils.writeStringToFile(xmlExport, ": " + e.getMessage() + "\n");
+        } catch (IOException e1) {
+          e1.printStackTrace();
+          logger.debug("Coulnd't write log message");
+        }
+      }
+    }
+  }
+
+  @Test
   public void testCallIGExportHtml() {
     try {
       content = igExport.exportAsHtml(ig);
@@ -138,6 +166,34 @@ public class IGExportTest {
       logger.debug("Export done");
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testCallIGExportHtml_All() {
+    File htmlExport = new File("test_export_html.txt");
+    igs = igService.findAll();
+    for (IGDocument ig : igs){
+      try {
+        FileUtils.writeStringToFile(htmlExport, "ig " + ig.getId());
+        content = igExport.exportAsHtml(ig);
+        assertNotNull(content);
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        tmpFile = new File("IG_" + timeStamp + ".html");
+        logger.debug("Writing to file");
+        FileUtils.copyInputStreamToFile(content, tmpFile);
+        logger.debug("Export done");
+        FileUtils.writeStringToFile(htmlExport, ": ok\n");
+
+      } catch (IOException e) {
+        e.printStackTrace();
+        try {
+          FileUtils.writeStringToFile(htmlExport, ": " + e.getMessage() + "\n");
+        } catch (IOException e1) {
+          e1.printStackTrace();
+          logger.debug("Coulnd't write log message");
+        }
+      }
     }
   }
 
@@ -155,7 +211,35 @@ public class IGExportTest {
       e.printStackTrace();
     }
   }
-  
+
+  @Test
+  public void testCallIGExportDocx_All() {
+    File docxExport = new File("test_export_docx.txt");
+    igs = igService.findAll();
+    for (IGDocument ig : igs){
+      try {
+        FileUtils.writeStringToFile(docxExport, "ig " + ig.getId());
+        content = igExport.exportAsDocx(ig);
+        assertNotNull(content);
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        tmpFile = new File("IG_" + timeStamp + ".docx");
+        logger.debug("Writing to file");
+        FileUtils.copyInputStreamToFile(content, tmpFile);
+        logger.debug("Export done");
+        FileUtils.writeStringToFile(docxExport, ": ok\n");
+
+      } catch (IOException e) {
+        e.printStackTrace();
+        try {
+          FileUtils.writeStringToFile(docxExport, ": " + e.getMessage() + "\n");
+        } catch (IOException e1) {
+          e1.printStackTrace();
+          logger.debug("Coulnd't write log message");
+        }
+      }
+    }
+  }
+
   @Test
   public void testCallIGExportPdf() {
     try {
@@ -278,7 +362,7 @@ public class IGExportTest {
       e.printStackTrace();
     }
   }
-  
+
   @Test
   public void testCallTblExportHtml() {
     try {
@@ -293,7 +377,7 @@ public class IGExportTest {
       e.printStackTrace();
     }
   }
-  
+
   @Test
   public void testCallTblExportDocx() {
     try {
@@ -324,7 +408,7 @@ public class IGExportTest {
     }
   }
 
-  
+
   @Test
   public void testCallDTLExportHtml() {
     try {
