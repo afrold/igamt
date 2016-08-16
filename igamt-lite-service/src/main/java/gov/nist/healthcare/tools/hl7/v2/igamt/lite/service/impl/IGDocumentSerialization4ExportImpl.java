@@ -1615,9 +1615,13 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
           elmComponent.appendChild(elmText1);
         }
 
-        if (c.getTable() != null) {
+        if (c.getTables() != null) {
+          String tablesName = "";
+          for (TableLink tl: c.getTables()){
+            tablesName += tl.getBindingIdentifier() + " ";
+          }
           elmComponent.addAttribute(new Attribute("Binding", 
-              c.getTable().getBindingIdentifier()));
+              tablesName));
         } 
 
         List<Constraint> constraints =

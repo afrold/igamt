@@ -2256,7 +2256,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       } else {
         wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
       }
-      List<TableLink> tables = new ArrayList<TableLink>(profile.getTableLibrary().getChildren());
+      List<TableLink> tables = new ArrayList<TableLink>(profile.getTableLibrary().getTables());
       Collections.sort(tables);
       for (TableLink link : tables) {
         this.addHtmlChunk(this.exportAsHtmlTable(link), wordMLPackage);
