@@ -24,6 +24,7 @@ angular.module('igl').factory('DatatypeService',
                 return children;
             },
             getDatatypeNodesInLib:function(parent, root) {
+                console.log(root);
                 var children = [];
                 if (parent && parent != null) {
                     if (parent.datatype) {
@@ -39,6 +40,7 @@ angular.module('igl').factory('DatatypeService',
                         children = [];
                     }
                 }
+                console.log(children);
                 return children;
             },
 

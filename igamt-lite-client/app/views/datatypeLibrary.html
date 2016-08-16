@@ -152,18 +152,15 @@ span {
                         <form id="selectDtTypeForm" class="form-horizontal">
                             <div class="form-group">
                                 <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                                    <label class="btn  btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')" >
+                                    <label class="btn  btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')">
                                         <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse User's Data Type Librariess
                                     </label>
-
                                     <label class="btn  btn-warning btn-sm" ng-click="getDataTypeLibraryByScope('MASTER')" ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}">
                                         <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse Master Data Type Libraries
                                     </label>
                                 </div>
-
-
                                 <div class="pull-right" style="margin-right: 20px">
-                                    <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('USER')" >
+                                    <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('USER')">
                                         <i class="fa fa-plus"></i> Create USER Data Type Library
                                     </button>
                                     <button type="button" class="btn btn-warning btn-sm" ng-click="openStandardDataypes('MASTER')" ng-if="isAdmin()">
@@ -208,14 +205,11 @@ span {
                                                     <td st-ratio="10">{{dtLib.metaData.hl7Version}}</td>
                                                     <td st-ratio="30">
                                                         <button title="Edit" type="button" class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib,false)" ng-if="dtLib.accountId.toString()=== accountId">
-                                                            <span><i class="fa fa-pencil fa-fw"></i></span> 
-                                                        
-                                                        
+                                                            <span><i class="fa fa-pencil fa-fw"></i></span>
                                                         </button>
                                                         <button title="Edit" type="button" class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib,true)">
-                                                        <span><i class="fa fa-search fa-fw"></i></span>
+                                                            <span><i class="fa fa-search fa-fw"></i></span>
                                                         </button>
-
                                                         <button title="Create Copy" type="button" class="btn btn-xs btn-info" ng-click="copyLibrary(dtLib)">
                                                             <span><i class="fa fa-plus fa-fw"></i></span>
                                                         </button>
@@ -234,9 +228,9 @@ span {
             </div>
         </tab>
         <tab active="DTLibDetails" select="selectDTLibTab(1)" ng-show="datatypeLibrary">
-            <tab-heading >
-            <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Datatype Library</span>
-             <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Datatype Library</span>
+            <tab-heading>
+                <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Datatype Library</span>
+                <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Datatype Library</span>
             </tab-heading>
             <div>
                 <div class="row">
@@ -259,7 +253,7 @@ span {
                                     </button>
                                 </div>
                                 <div class="panel-body toc-container">
-                                    <form  name="forms.editForm">
+                                    <form name="forms.editForm">
                                         <ng-include src="datatypeListView" />
                                     </form>
                                 </div>
@@ -300,52 +294,46 @@ span {
                 </button>
                 </span>
             </div>
-            <div class= "container">
-            <div class="form-group " ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
-                <label class="col-md-2 control-label">HL7 Version</label>
-                <div class="col-md-10">
-                    <input class="form-control" type="text" disabled name="title" ng-model="datatypeLibMetaDataCopy.hl7Version" required>
+            <div class="container">
+                <div class="form-group " ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+                    <label class="col-md-2 control-label">HL7 Version</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" disabled name="title" ng-model="datatypeLibMetaDataCopy.hl7Version" required>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group" ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
-                <label class="col-md-2 control-label">Name</label>
-                <div class="col-md-10">
-                    <input class="form-control" type="text" ng-disabled="readOnly" name="name" ng-model="datatypeLibMetaDataCopy.name" ng-change="setDirty() " required id="name" required>
+                <div class="form-group" ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+                    <label class="col-md-2 control-label">Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" ng-disabled="readOnly" name="name" ng-model="datatypeLibMetaDataCopy.name" ng-change="setDirty() " required id="name" required>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
-                <label class="col-md-2 control-label" for="ext">Extension</label>
-                <div class="col-md-10">
-                    <input type="text" name="identifier" disabled name="ext" class="form-control" ng-model="datatypeLibMetaDataCopy.ext" ng-change="setDirty() ">
+                <div class="form-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
+                    <label class="col-md-2 control-label" for="ext">Extension</label>
+                    <div class="col-md-10">
+                        <input type="text" name="identifier" disabled name="ext" class="form-control" ng-model="datatypeLibMetaDataCopy.ext" ng-change="setDirty() ">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
-                <label class="col-md-2 control-label" for="orgName">Organization Name</label>
-                <div class="col-md-10">
-                    <input type="text" name="orgName" disabled ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.orgName">
+                <div class="form-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
+                    <label class="col-md-2 control-label" for="orgName">Organization Name</label>
+                    <div class="col-md-10">
+                        <input type="text" name="orgName" disabled ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.orgName">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group" ng-class="{'igl-has-error' : editForm.version.$invalid}">
-                <label class="col-md-2 control-label">Version</label>
-                <div class="col-md-10">
-                    <input type="text" name="version" disabled ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.version" required>
+                <div class="form-group" ng-class="{'igl-has-error' : editForm.version.$invalid}">
+                    <label class="col-md-2 control-label">Version</label>
+                    <div class="col-md-10">
+                        <input type="text" name="version" disabled ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.version" required>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group" ng-class="{'igl-has-error' : editForm.date.$invalid}">
-                <label class="col-md-2 control-label">Date</label>
-                <div class="col-md-10">
-                    <input type="text" name="date" disabled ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.date" required>
+                <div class="form-group" ng-class="{'igl-has-error' : editForm.date.$invalid}">
+                    <label class="col-md-2 control-label">Date</label>
+                    <div class="col-md-10">
+                        <input type="text" name="date" disabled ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.date" required>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
-
     </div>
-
-
-
-
-
 </script>
 <script type="text/ng-template" id="DatatypeList.html">
     <div ui-tree ng-controller="TreeCtrl">
@@ -382,7 +370,6 @@ span {
         </ol>
     </div>
 </script>
-
 <script type="text/ng-template" id="DatatypeListReadOnly.html">
     <div ui-tree ng-controller="TreeCtrl">
         <span style="font-size:18px;" data-nodrag ng-click="editMetadata()"><strong>{{datatypeLibrary.metaData.name}}</strong></span>
@@ -418,12 +405,6 @@ span {
         </ol>
     </div>
 </script>
-
-
-
-
-
-
 <script type="text/ng-template" id="addingView.html">
     <div class="" style="margin-bottom: 20px">
         <div class="row">
@@ -434,9 +415,9 @@ span {
                 </select>
             </div>
             <div class="col-md-2 pull-right">
-            <button title="submit" class="btn btn-sm btn-primary " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
-                <span><i class="fa fa-check fa-fw"></i> Submit</span>
-            </button>
+                <button title="submit" class="btn btn-sm btn-primary " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
+                    <span><i class="fa fa-check fa-fw"></i> Submit</span>
+                </button>
             </div>
         </div>
     </div>
@@ -515,21 +496,16 @@ span {
         </div>
     </div>
 </script>
-
-
 <script type="text/ng-template" id="addingViewForMaster.html">
     <div class="page-header col-md-12" style="margin-bottom: 20px">
-
-            <div class="input-group ">
-                <span class="input-group-addon header5 pull-left" id="basic-addon1">Create a new HL7 datatype Flavor</span>
-
-            </div>
-            <div class="pull-right">
+        <div class="input-group ">
+            <span class="input-group-addon header5 pull-left" id="basic-addon1">Create a new HL7 datatype Flavor</span>
+        </div>
+        <div class="pull-right">
             <button title="submit" class="btn btn-sm btn-primary " ng-disabled="addedDatatypes.length===0" ng-click="submit()">
                 <span><i class="fa fa-check fa-fw"></i> Submit</span>
             </button>
-            </div>
-
+        </div>
     </div>
     <div class="col-md-12">
         <div class="col-md-4" style="margin-right:5px;">
@@ -541,19 +517,15 @@ span {
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr class="tbl-header">
-
-                            <th class="col-md-3">Name</th> 
-                            <th class="col-md-1"></th>   
+                            <th class="col-md-3">Name</th>
+                            <th class="col-md-1"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="data in datataypestoAdd| filter:search">
-
-
                             <td class="col-md-3">
                                 <span>{{getLabelOfData(getLabelOfData(data.name, data.ext))}}</span>
                             </td>
-
                             <td class="col-md-1">
                                 <i ng-click="AddDatatypeForMaster(data)" class="fa fa-plus fa-fw" style="color:blue;"></i>
                             </td>
@@ -583,11 +555,9 @@ span {
                             <span>{{data.name}}</span>
                         </td>
                         <td class="col-md-2">
-                            <input type="text" ng-model="data.ext" >{{getCurrentExtesionForMaster(data)}}</input>
-
+                            <input type="text" ng-model="data.ext">{{getCurrentExtesionForMaster(data)}}</input>
                         </td>
                         <td class="col-md-3">
-
                             {{data.description}}
                         </td>
                         <td class="col-md-1">
@@ -599,7 +569,6 @@ span {
         </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="standardDatatypeDlg.html">
     <div id="standard-datatypelibrary-dialog">
         <div class="modal-content" style="padding : 10px 10px 10px 10px;">
@@ -611,15 +580,15 @@ span {
                     <div class="form-group">
                         <div class="container" style="max-width: 200%; max-height: 200px; white-space:nowrap;">
                             <div class="row">
-                                <label class="control-label col-xs-2" style="margin-top : 10px">HL7 Versions</label>
-                                <span class="btn-group btn-group-sm" data-toggle="buttons">
-          <label class="btn btn-primary btn-xs col-xs-10" ng-click="standard.hl7Version = vr; $parent.okDisabled = false"
-                 ng-class="{'active':vr === hl7Version}"
-                 ng-repeat="vr in hl7Versions | orderBy:'toString()' track by vr" style="width : 50px; height : 30px;">
-            <input ng-disabled="loading" type="radio" ng-value="vr"
-                   ng-model="$parent.hl7Version"/>{{vr}}
-          </label>
-        </span>
+
+                            <label class="control-label col-xs-2" style="margin-top : 10px">HL7 Versions</label>
+
+                            <div class="col-md-1">
+                            <select class="form-control input-sm " ng-change="okDisabled = false;" ng-model="standard.hl7Version" required>
+                                    <option ng-repeat="vr in hl7Versions">{{vr}}</option>
+                            </select>
+
+                            </div>
                             </div>
                             <div class="row">
                                 <label for="name" class="control-label col-xs-2">Name</label>
@@ -627,15 +596,15 @@ span {
                             </div>
                             <div class="row">
                                 <label class="control-label col-xs-2" for="ext">Ext</label>
-                                <input type="text" name="ext" class="form-control col-xs-10" ng-model="standard.ext" required style="width : 150px; height : 30px;" />
+                                <input type="text" name="ext" class="form-control col-xs-10" ng-model="standard.ext" required style="width : 250px; height : 30px;" />
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit" ng-disabled="okDisabled" ng-click="ok()">Ok</button>
+                        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" ng-disabled="okDisabled" type="button" ng-click="ok()">Ok</button>
-                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
             </div>
         </div>
     </div>
@@ -719,19 +688,17 @@ span {
     </div>
 </script>
 <script type="text/ng-template" id="EditDatatypeLibraryDatatype.html">
-
     <div ng-controller="EditAreaCtrl" class="container">
-        <div ng-controller="DatatypeListCtrlINLIB">
+        <div ng-controller="DatatypeListCtrlINLIB" ng-init="initDatatypes()">
             <div ng-show="loadingSelection" style="text-align: center;">
                 <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
             </div>
             <div ng-show="!loadingSelection">
                 <div ng-show="datatype !== null" id="executionPanel">
-
-<div class="row" style="margin-left:0px; margin-right: 10px">
-        <div class="page-header" style="margin-bottom: 20px">
-                <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
-                <span class="pull-right">
+                    <div class="row" style="margin-left:0px; margin-right: 10px">
+                        <div class="page-header" style="margin-bottom: 20px">
+                            <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
+                            <span class="pull-right">
 
         <label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-click="publishDatatype(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatype.status === 'PUBLISHED'|| readOnly" style="margin-right : 8px"/>Published</label>
 
@@ -1449,8 +1416,6 @@ span {
     </div>
     </div>
 </script>
-
-
 <script type="text/ng-template" id="AbortPublishCtl.html">
     <div class="modal-header">
         <h3 class="modal-title">
@@ -1459,7 +1424,7 @@ span {
     <div class="modal-body">
         <p>You cannot publish this datatype since it contains unpublished elements </p>
         <div ng-show="unpublishedDatatypes.length>0">
-         <h4>Datatype<h4>
+            <h4>Datatype<h4>
 
 
 
@@ -1496,10 +1461,6 @@ span {
         <div ng-show="unpublishedTables.length>0">
          <h4>Tables<h4>
 
-
-
-      
-
         <div class="igl-table" ng-show="unpublishedTables.length>0">
             <table class="table table-striped table-condensed table-bordered">
                 <thead>
@@ -1519,7 +1480,7 @@ span {
 
                     </td>
                     <td>
-                        <div class="ng-binding">{{obj.table.name+ obj.table.ext}}</div>
+                        <div class="ng-binding">{{obj.table.bindingIdentifier +obj.table.ext}}</div>
                     </td>
                 </tr><!-- end ngRepeat: ref in references -->
                 </tbody>
