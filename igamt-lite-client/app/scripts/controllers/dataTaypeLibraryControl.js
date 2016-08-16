@@ -182,6 +182,12 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         }
 
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
+
+       DatatypeLibrarySvc.getHL7Versions().then(function(result){
+        	$scope.hl7Versions=result;
+        });
+        	console.log("$scope.hl7Versions");
+        	console.log($scope.hl7Versions);
             $rootScope.readOnly = readOnly;
 
             if (!readOnly) {
@@ -1419,7 +1425,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }
             newDatatype.id = null;
             newDatatype.status = 'UNPUBLISHED';
-            newDatatype.scope = 'MASTER';
+            newDatatype.scope = $scope.datatypeLibrary.scope;
             DatatypeService.save(newDatatype).then(function(savedDatatype) {
                 newDatatype = savedDatatype;
                 $rootScope.datatypesMap[savedDatatype.id] = savedDatatype;
@@ -1764,7 +1770,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     dataToAdd.id = new ObjectId().toString();
                     dataToAdd.status = 'UNPUBLISHED';
                     dataToAdd.scope = 'MASTER';
-                    dataToAdd.ext = parseInt($scope.max) + 1;
+                    dataToAdd.ext = parseInt($scope.max);
                     $scope.addedDatatypes.push(dataToAdd);
 
                 });
@@ -1798,7 +1804,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 } else {
                     console.log("extr==dwdwdwddw with the same name");
                     console.log(extesions);
-                    $scope.max = _.max(extesions);
+                    $scope.max = parseInt(_.max(extesions))+1;
 
                     console.log($scope.max);
 

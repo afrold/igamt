@@ -85,7 +85,7 @@
         						<label class="col-md-2 control-label">Extensibility</label>
 
         						<div class="controls col-md-10">
-									<select class="form-control" name="extensibility" ng-model="table.extensibility" ng-options="extensibility for extensibility in config.tableExtensibilities" ng-change="setDirty()"/>
+									<select class="form-control" name="extensibility" ng-model="table.extensibility" ng-options="extensibility for extensibility in ['Open', 'Closed']" ng-change="setDirty()"/>
         						</div>
     						</div>
 

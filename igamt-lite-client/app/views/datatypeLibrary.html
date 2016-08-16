@@ -337,7 +337,7 @@ span {
 </script>
 <script type="text/ng-template" id="DatatypeList.html">
     <div ui-tree ng-controller="TreeCtrl">
-        <span style="font-size:18px;" data-nodrag ng-click="editMetadata()"><strong>{{datatypeLibrary.metaData.name}}khkhkhkh</strong></span>
+        <span style="font-size:18px;" data-nodrag ng-click="editMetadata()"><strong>{{datatypeLibrary.metaData.name}}</strong></span>
         <ol ui-tree-nodes="" ng-model="DataTypeTree">
             <li ng-repeat="dataLibrary in DataTypeTree" ui-tree-node>
                 <div ui-tree-handle data-nodrag context-menu="DataTypeLibraryOptions">
@@ -408,11 +408,32 @@ span {
 <script type="text/ng-template" id="addingView.html">
     <div class="" style="margin-bottom: 20px">
         <div class="row">
-            <div class="input-group col-md-10">
+<!--             <div class="input-group col-md-10">
                 <span class="input-group-addon header5" id="basic-addon1">Add Datatypes From</span>
                 <select class="form-control  col-md-5 input-sm" ng-model="lib" ng-change="setLibrary(lib)" class="col-md-4">
                     <option ng-repeat="lib in datatypeLibList" value='{{lib}}'>{{lib.metaData.name}} ({{lib.scope}})</option>
                 </select>
+            </div> -->
+            <div class="col-md-3">
+            
+            <span class="col-md-1"> <strong> Scope: </strong></span>
+
+
+            <select class="form-control  input-sm col-md-2" ng-model="chosedScope">
+            <option ng-repeat="chosedscope in ['HL7STANDARD','MASTER','USER']" value='{{chosedscope}}'>{{chosedscope}}</option>
+            </select>
+            </div>
+
+            <div>
+             <span class="col-md-1"> <strong> HL7 version: </strong></span>
+            <div class="col-md-2">
+            <select class="form-control input-sm " ng-model="standard.hl7Version" required>
+                <option ng-repeat="vr in hl7Versions">{{vr}}</option>
+            </select>
+
+            </div>
+            </div>
+            </dir>
             </div>
             <div class="col-md-2 pull-right">
                 <button title="submit" class="btn btn-sm btn-primary " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
