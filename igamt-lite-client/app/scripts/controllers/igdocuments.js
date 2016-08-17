@@ -1495,6 +1495,7 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
                     id: $scope.selectedTables[i].id,
                     bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
                 });
+            $rootScope.igdocument.profile.tableLibrary.children.push(newLink);
             childrenLinks.push(newLink);
 
             var addedTable= $scope.selectedTables[i];
