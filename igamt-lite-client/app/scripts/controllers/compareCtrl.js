@@ -1,4 +1,4 @@
-angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectDiff, orderByFilter, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc) {
+angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectDiff, orderByFilter, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, CompareService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc) {
     $scope.igDocumentConfig = {
         selectedType: null
     };
@@ -9,6 +9,8 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             return element.name;
         }
     };
+    console.log("herrereer");
+    console.log($rootScope.message);
 
     $scope.msgSelected = false;
     $scope.igDisabled1 = false;
@@ -286,7 +288,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                             $scope.messages2 = [];
                             $scope.msg2 = "";
                             if (igDoc) {
-                                $scope.segList2=angular.copy(segments);
+                                $scope.segList2 = angular.copy(segments);
                                 //$scope.segList2 = orderByFilter($scope.segList2, 'name');
                                 $scope.dtList2 = angular.copy(datatypes);
                                 $scope.tableList2 = angular.copy(tables);
@@ -1202,159 +1204,54 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             }
         },
         getTemplate: function(node) {
-
-            // if (node.type.element === "table" || node.type.element === "code") {
-            //     $scope.vsTemplate = true;
-            //     return 'valueSet_node';
-            // } else if (node.type.element === "segment") {
-            // console.log("node===============");
-            // console.log(node);
-
             return 'tree_node';
-            // }
-
-
-
-
         }
     });
     $scope.cmpValueSet = function(table1, table2) {
         $scope.loadingSelection = true;
         $scope.vsChanged = false;
         $scope.vsTemplate = true;
-        var vs1 = JSON.parse(table1);
-        var vs2 = JSON.parse(table2);
-        $scope.diff = ObjectDiff.diffOwnProperties(vs1, vs2);
-        $scope.dataList = [];
-        console.log("$scope.diff");
-        console.log($scope.diff);
-
-
-        if ($scope.diff.changed === "object change") {
-            // var array = objToArray($scope.diff);
-            // console.log(array);
-            // var arraySeg = objToArray(array[1]);
-            // console.log(arraySeg);
-            //writeTable(array[1].segments, 0, $scope.gridOptions.data);
-            // for (var i = 0; i < arraySeg.length; i++) {
-            writettTable($scope.diff, $scope.dataList);
-            // }
-
-        }
-
+        $scope.dataList = CompareService.cmpValueSet(table1, table2);
         $scope.loadingSelection = false;
-
-
         if ($scope.valueSet_params) {
             console.log($scope.dataList);
             $scope.showDelta = true;
             $scope.valueSet_params.refresh();
         }
-
-
     };
 
     $scope.cmpDatatype = function(datatype1, datatype2) {
         $scope.loadingSelection = true;
         $scope.dtChanged = false;
         $scope.vsTemplate = false;
-        var dt1 = $scope.fDatatype(JSON.parse(datatype1), $scope.dtList1, $scope.segList1);
-        var dt2 = $scope.fDatatype(JSON.parse(datatype2), $scope.dtList2, $scope.segList2);
-        console.log(JSON.parse($scope.datatype1));
-        console.log("dt1");
-        console.log(dt1);
-
-
-        $scope.diff = ObjectDiff.diffOwnProperties(dt1, dt2);
-        $scope.dataList = [];
-        console.log("$scope.diff");
-
-        console.log($scope.diff);
-
-
-        if ($scope.diff.changed === "object change") {
-            var array = objToArray($scope.diff);
-            console.log(array);
-            var arraySeg = objToArray(array[1]);
-
-            //writeTable(array[1].segments, 0, $scope.gridOptions.data);
-            // for (var i = 0; i < arraySeg.length; i++) {
-            writettTable(arraySeg[0], $scope.dataList);
-            // }
-
-        }
-
+        $scope.dataList = CompareService.cmpDatatype(datatype1, datatype2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
         $scope.loadingSelection = false;
-
-
         if ($scope.dynamic_params) {
             console.log($scope.dataList);
             $scope.showDelta = true;
             $scope.dynamic_params.refresh();
         }
-
     };
     $scope.cmpSegment = function(segment1, segment2) {
-
         $scope.loadingSelection = true;
         $scope.segChanged = false;
         $scope.vsTemplate = false;
-        var seg1 = $scope.fSegment(JSON.parse(segment1), $scope.dtList1, $scope.segList1);
-        var seg2 = $scope.fSegment(JSON.parse(segment2), $scope.dtList2, $scope.segList2);
-
-
-        $scope.diff = ObjectDiff.diffOwnProperties(seg1, seg2);
-        $scope.dataList = [];
-
-
-        if ($scope.diff.changed === "object change") {
-            var array = objToArray($scope.diff);
-            console.log(array);
-            var arraySeg = objToArray(array[1]);
-
-            //writeTable(array[1].segments, 0, $scope.gridOptions.data);
-            // for (var i = 0; i < arraySeg.length; i++) {
-            writettTable(arraySeg[0], $scope.dataList);
-            // }
-
-        }
-
+        $scope.dataList = CompareService.cmpSegment(segment1, segment2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
         $scope.loadingSelection = false;
-
-
         if ($scope.dynamic_params) {
             console.log($scope.dataList);
             $scope.showDelta = true;
             $scope.dynamic_params.refresh();
         }
-
     };
-
     $scope.cmpMessage = function(msg1, msg2) {
         $scope.loadingSelection = true;
         $scope.msgChanged = false;
         $scope.vsTemplate = false;
-        var msg1 = $scope.fMsg(JSON.parse(msg1), $scope.dtList1, $scope.segList1);
-        var msg2 = $scope.fMsg(JSON.parse(msg2), $scope.dtList2, $scope.segList2)
-
-        console.log(msg1);
-        console.log(msg2);
-        $scope.diff = ObjectDiff.diffOwnProperties(msg1, msg2);
-        $scope.dataList = [];
-        console.log($scope.diff);
-
-        if ($scope.diff.changed === "object change") {
-            var array = objToArray($scope.diff);
-            var arraySeg = objToArray(array[1].segments.value);
-
-            //writeTable(array[1].segments, 0, $scope.gridOptions.data);
-            for (var i = 0; i < arraySeg.length; i++) {
-                writettTable(arraySeg[i], $scope.dataList);
-            }
-
-        }
-
         $scope.loadingSelection = false;
+        $scope.dataList = CompareService.cmpMessage(msg1, msg2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+        //$scope.dataList = result;
+
 
 
         if ($scope.dynamic_params) {
@@ -1364,6 +1261,41 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         }
 
     };
+
+    // CompareService.cmpMessage = function(msg1, msg2) {
+    //     $scope.loadingSelection = true;
+    //     $scope.msgChanged = false;
+    //     $scope.vsTemplate = false;
+    //     var msg1 = $scope.fMsg(JSON.parse(msg1), $scope.dtList1, $scope.segList1);
+    //     var msg2 = $scope.fMsg(JSON.parse(msg2), $scope.dtList2, $scope.segList2)
+
+    //     console.log(msg1);
+    //     console.log(msg2);
+    //     $scope.diff = ObjectDiff.diffOwnProperties(msg1, msg2);
+    //     $scope.dataList = [];
+    //     console.log($scope.diff);
+
+    //     if ($scope.diff.changed === "object change") {
+    //         var array = objToArray($scope.diff);
+    //         var arraySeg = objToArray(array[1].segments.value);
+
+    //         //writeTable(array[1].segments, 0, $scope.gridOptions.data);
+    //         for (var i = 0; i < arraySeg.length; i++) {
+    //             writettTable(arraySeg[i], $scope.dataList);
+    //         }
+
+    //     }
+
+    //     $scope.loadingSelection = false;
+
+
+    //     if ($scope.dynamic_params) {
+    //         console.log($scope.dataList);
+    //         $scope.showDelta = true;
+    //         $scope.dynamic_params.refresh();
+    //     }
+
+    // };
 
 
     $scope.compare = function() {

@@ -55,29 +55,29 @@ angular.module('igl').factory('MessageService',
             },
             merge: function(to, from) {
                 to = angular.extend(to, from);
-//                to.accountID = from.accountID;
-//                to.children = from.children;
-//                to.comment = from.comment;
-//                to.conformanceStatements = from.conformanceStatements;
-//                to.date = from.date;
-//                to.description = from.description;
-//                to.event = from.event;
-//                to.hl7Version = from.hl7Version;
-//                to.id = from.id;
-//                to.identifier = from.identifier;
-//                to.libIds = from.libIds;
-//                to.messageID = from.messageID;
-//                to.messageType = from.messageType;
-//                to.name = from.name;
-//                to.participants = from.participants;
-//                to.position = from.position;
-//                to.predicates = from.predicates;
-//                to.scope = from.scope;
-//                to.status = from.status;
-//                to.structID = from.structID;
-//                to.type = from.type;
-//                to.usageNote = from.usageNote;
-//                to.version = from.version;
+                //                to.accountID = from.accountID;
+                //                to.children = from.children;
+                //                to.comment = from.comment;
+                //                to.conformanceStatements = from.conformanceStatements;
+                //                to.date = from.date;
+                //                to.description = from.description;
+                //                to.event = from.event;
+                //                to.hl7Version = from.hl7Version;
+                //                to.id = from.id;
+                //                to.identifier = from.identifier;
+                //                to.libIds = from.libIds;
+                //                to.messageID = from.messageID;
+                //                to.messageType = from.messageType;
+                //                to.name = from.name;
+                //                to.participants = from.participants;
+                //                to.position = from.position;
+                //                to.predicates = from.predicates;
+                //                to.scope = from.scope;
+                //                to.status = from.status;
+                //                to.structID = from.structID;
+                //                to.type = from.type;
+                //                to.usageNote = from.usageNote;
+                //                to.version = from.version;
                 return to;
             },
 
@@ -204,7 +204,7 @@ angular.module('igl').factory('MessageService',
                 });
             },
             addSegToPath: function(path, message, segment, oldPos, newPos) {
-               
+
 
 
                 if (path.length === 1) {
@@ -220,7 +220,7 @@ angular.module('igl').factory('MessageService',
                     var x = angular.copy(path);
                     path.splice(0, 1);
                     //message.children[x[0] - 1]
-                    MessageService.addSegToPath(path, message.children[x[0] - 1], segment,oldPos,newPos);
+                    MessageService.addSegToPath(path, message.children[x[0] - 1], segment, oldPos, newPos);
 
                 }
                 return message;
