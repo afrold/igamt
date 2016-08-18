@@ -1452,11 +1452,11 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
 
     $scope.addTable = function(table) {
         var newTable = angular.copy(table);
-        newTable.id= new ObjectId().toString();
+        newTable.id = new ObjectId().toString();
         console.log("Adding table");
         console.log(newTable);
         console.log("from");
-        console.log(table); 
+        console.log(table);
 
 
         newTable.participants = [];
@@ -1478,30 +1478,30 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
     };
 
 
-    $scope.save = function () {
-        var childrenLinks=[];
+    $scope.save = function() {
+        var childrenLinks = [];
         for (var i = 0; i < $scope.selectedTables.length; i++) {
             //var newTable = $scope.selectedTables[i];
             console.log(JSON.stringify($scope.selectedTables[i]));
             $scope.selectedTables[i].libIds.push($rootScope.igdocument.profile.tableLibrary.id);
             var newLink = angular.fromJson({
-                    id: $scope.selectedTables[i].id,
-                    bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
-                });
+                id: $scope.selectedTables[i].id,
+                bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
+            });
             $rootScope.igdocument.profile.tableLibrary.children.push(newLink);
             childrenLinks.push(newLink);
 
-            var addedTable= $scope.selectedTables[i];
+            var addedTable = $scope.selectedTables[i];
 
 
             console.log(addedTable);
 
             $rootScope.tables.splice(0, 0, addedTable);
             $rootScope.tablesMap[addedTable.id] = addedTable;
-            TableService.save(addedTable).then(function (result) {
+            TableService.save(addedTable).then(function(result) {
                 //newTable = result;
 
-            }, function (error) {
+            }, function(error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
@@ -1511,23 +1511,23 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
         }
 
 
-        TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, childrenLinks).then(function (link) {
+        TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, childrenLinks).then(function(link) {
 
-                    if ($scope.editForm) {
-                        $scope.editForm.$setPristine();
-                        $scope.editForm.$dirty = false;
-                    }
-                    $rootScope.clearChanges();
-                    $rootScope.msg().text = "tableSaved";
-                    $rootScope.msg().type = "success";
-                    $rootScope.msg().show = true;
+            if ($scope.editForm) {
+                $scope.editForm.$setPristine();
+                $scope.editForm.$dirty = false;
+            }
+            $rootScope.clearChanges();
+            $rootScope.msg().text = "tableSaved";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
 
-                }, function(error) {
-                    $scope.saving = false;
-                    $rootScope.msg().text = error.data.text;
-                    $rootScope.msg().type = error.data.type;
-                    $rootScope.msg().show = true;
-                });
+        }, function(error) {
+            $scope.saving = false;
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+        });
 
 
         $modalInstance.dismiss('cancel');
@@ -1603,7 +1603,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
                 $rootScope.filteredDatatypesList.push($scope.newDatatype);
                 $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
                 $rootScope.$broadcast('event:openDatatype', $scope.newDatatype);
-                $rootScope.msg().text = "datypeAdded";
+                $rootScope.msg().text = "datatypeAdded";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 $modalInstance.close(datatypes);
