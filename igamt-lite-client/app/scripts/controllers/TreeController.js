@@ -12,6 +12,7 @@ angular
             function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc, $modal) {
 
                 $scope.collapsedata = false;
+                $scope.collapsePcs=true;
                 $scope.collapsemessage = false;
                 $scope.collapsesegment = false;
                 $scope.collapsetable = false;
@@ -45,6 +46,10 @@ angular
                     $scope.profilecollapsed = !$scope.profilecollapsed;
 
                 };
+                $rootScope.switcherpcs=function(){
+                      $scope.collapsePcs=!$scope.collapsePcs;
+                }
+
 
                 $rootScope.updateSectionContent = function(section) {
                     if (section.childSections) {

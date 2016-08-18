@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI,PcService) {
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
         $scope.uiGrid = {};
@@ -415,6 +415,7 @@ angular.module('igl')
                                 $scope.loadIgDocumentMetaData();
 
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);
+                                $scope.loadPc().then(function(){},function(){});
                             }, function () {
                             });
                         }, function () {
@@ -489,6 +490,34 @@ angular.module('igl')
             });
             return delay.promise;
         };
+
+
+
+
+        $scope.loadPc = function () {
+            var delay = $q.defer();
+            PcService.findAll().then(function (children) {
+
+                $rootScope.pcs = children;
+
+                $rootScope.pcs.push({name:"TEST1", type:"message"});
+                delay.resolve(true);
+            }, function (error) {
+                $rootScope.msg().text = "ProfileComplonentLoadFail";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                delay.reject(false);
+            });
+            return delay.promise;
+        };
+
+
+
+
+
+
+
+
 
 
         $scope.loadTables = function () {
