@@ -526,7 +526,7 @@
                     <button class="btn btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
                     </button>
                     <button class="btn btn-primary" type="button" ng-click="ok()"
-                            ng-disabled="addDT.$invalid || !selected()"><i class="fa fa-check fa-fw"></i>Add
+                            ng-disabled="addDT.$invalid || !isInDts(newDatatype)"><i class="fa fa-check fa-fw"></i>Add
                     </button>
                 </div>
             </form>
@@ -560,7 +560,7 @@
                         Cancel
                     </button>
                     <button class="btn btn-primary" type="button" ng-click="ok()"
-                            ng-disabled="addSeg.$invalid || !selected()"><i class="fa fa-check"></i>Add
+                            ng-disabled="addSeg.$invalid || !isInSegs(newSegment)"><i class="fa fa-check"></i>Add
                     </button>
                 </div>
             </form>

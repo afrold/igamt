@@ -1542,6 +1542,17 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
         });
 
 
+        $scope.isInDts = function(datatype) {
+
+            if ($scope.hl7Datatypes.indexOf(datatype) === -1) {
+                return false;
+            } else {
+                return true;
+            }
+
+        }
+
+
         $scope.selectDT = function(datatype) {
             console.log(datatype);
             $scope.newDatatype = datatype;
@@ -1576,7 +1587,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
                 $rootScope.filteredDatatypesList.push($scope.newDatatype);
                 $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
                 $rootScope.$broadcast('event:openDatatype', $scope.newDatatype);
-                $rootScope.msg().text = "daatypeAdded";
+                $rootScope.msg().text = "datypeAdded";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 $modalInstance.close(datatypes);
@@ -1603,6 +1614,16 @@ angular.module('igl').controller('AddSegmentDlgCtl',
                 return current_b.id == current.id;
             }).length == 0
         });
+        $scope.isInSegs = function(segment) {
+            console.log($scope.hl7Segments.indexOf(segment) === -1);
+
+            if ($scope.hl7Segments.indexOf(segment) === -1) {
+                return false;
+            } else {
+                return true;
+            }
+
+        }
 
 
         //$scope.hl7Segments = _.difference(segments, $rootScope.segments);

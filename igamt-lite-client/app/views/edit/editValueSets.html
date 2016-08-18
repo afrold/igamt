@@ -20,7 +20,7 @@
             <div ng-show="table !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 20px">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Table: {{table.bindingIdentifier}}</span>
+                        <span class="header4">Value Set: {{table.bindingIdentifier}}</span>
                         <span class="pull-right">
 						<button title="Save Changes" type="button" class="btn btn-sm btn-success"
 								ng-disabled="editForm.$invalid || !editForm.$dirty"
@@ -37,7 +37,7 @@
                         <tabset>
                             <tab>
                                 <tab-heading>
-                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Table MetaData
+                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Value Set MetaData
                                 </tab-heading>
                                 <div style="margin-top: 20px">
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIndentifier.$invalid}">
@@ -132,122 +132,20 @@
                                     </div>
                                 </div>
                             </tab>
-                            <tab ng-controller="cmpTableCtrl">
+							<tab>
                                 <tab-heading>
-                                    <i class="fa fa-table fa-fw " aria-hidden="true "></i> Value Set Delta
-                                </tab-heading>
-                                <div class="panel-body" style="margin:5px;">
-                                    <accordion>
-                                        <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
-                                            <accordion-heading>
-                                                <span style="color:white;"> Delta Configuration</span> <i class="pull-right fa" style="color:white;" ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
-                                            </accordion-heading>
-                                            <div class="row" align="center" style="margin-top:5px;margin-bottom:5px">
-                                                <div class="input-group col-md-3">
-                                                    <span class="label " style="background-color:#B5F7EC;color:black;">1</span>
-                                                    <span class="input-group-addon" id="basic-addon1">Version</span>
-
-                                                    <select ng-model="version1" class="form-control " disabled>
-                                                    <option ng-selected="version1"> {{version1}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-2">
-                                                    <span class="input-group-addon" id="basic-addon1">Scope</span>
-                                                    <select ng-model="scope1" class="form-control " disabled>
-                                                    <option ng-selected="scope1"> {{scope1}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-3">
-                                                    <span class="input-group-addon" id="basic-addon1">IG Document</span>
-                                                    <select ng-model="ig1" class="form-control " disabled>
-                                                    <option ng-selected="ig1"> {{ig1}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-4">
-                                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
-                                                    <select ng-model="table1" class="form-control " disabled>
-                                                    <option ng-selected="table1"> {{table1.bindingIdentifier}}</option>
-                                                </select>
-                                                </div>
-                                            </div>
-                                            <div class="row" align="center">
-                                                <div class="input-group col-md-3">
-                                                    <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
-                                                    <span class="input-group-addon" id="basic-addon1">Version</span>
-                                                    <select ng-model="version2" class="form-control " ng-change="setVersion2(version2)">
-                                                    <option ng-repeat="vr in versions " value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-2">
-                                                    <span class="input-group-addon" id="basic-addon1">Scope</span>
-                                                    <select ng-model="scope2" class="form-control " ng-change="setScope2(scope2)">
-                                                    <option ng-repeat="scope in scopes " value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-3">
-                                                    <span class="input-group-addon" id="basic-addon1">IG Document</span>
-                                                    <select class="form-control " ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2"></select>
-                                                </div>
-
-                                                <div class="input-group col-md-4">
-                                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
-
-                                                    <select ng-model="cmp.tableId" class="form-control " ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2">
-                                                        <option value='-1'></option>
-                                                        <option ng-repeat="table in tables2 track by $index" ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{table.bindingIdentifier}}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row" align="center">
-
-                                                <button ng-click="cmpTable(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-info btn-xs">
-                                                        <i class="fa fa-check"></i> Value Set Delta</button>
-
-                                            </div>
-                                        </div>
-                                        <div accordion-group class="panel-primary" is-open="status.isSecondOpen">
-                                            <accordion-heading>
-                                                <span style="color:white;"> Delta Result</span> <i class="pull-right fa" style="color:white;" ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i> </accordion-heading>
-                                            </accordion-heading>
-                                            <div class="panel-body">
-                                                <table tt-table tt-params="dynamicVs_params" class=" table-marginless table-bordered table-condensed ">
-                                                    <thead>
-                                                        <tr>
-
-                                                            <th class="col-xs-2">Name</th>
-                                                            <th class="col-xs-1 ">Content Definition</th>
-                                                            <th class="col-xs-1 ">Code System</th>
-                                                            <th class="col-xs-1 ">Code Usage</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </accordion>
-
-
-
-
-                                </div>
-
-                            </tab>
-
-                            <tab>
-                                <tab-heading>
-                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i> Table Definition
+                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Definition
                                 </tab-heading>
 
                                 <div class="el-def" style="margin-top: 20px">
-                                    <div>
-                                        <span class="pull-right">
-										<button title="Add new Value" type="button" class="btn btn-sm btn-info" ng-click="addValue();">
-											<span><i class="fa fa-plus fa-fw"></i>&nbsp; Add Value</span>
-                                        </button>
-                                        </span>
-                                    </div>
+                                    
 
                                     <div class="">
+										<span class="pull-right">
+											<button title="Add new Value" type="button" class="btn btn-sm btn-info" ng-click="addValue();">
+												<span><i class="fa fa-plus fa-fw"></i>&nbsp; Add Value</span>
+											</button>
+                                        </span>
                                         <div class="table-responsive">
                                             <table st-safe-src="table.codes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
                                                 <thead>
@@ -333,9 +231,111 @@
                                     </div>
                                 </div>
                             </tab>
+                            <tab ng-controller="cmpTableCtrl">
+                                <tab-heading>
+                                    <i class="fa fa-table fa-fw " aria-hidden="true "></i> Value Set Delta
+                                </tab-heading>
+                                <div class="panel-body" style="margin:5px;">
+                                    <accordion>
+                                        <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;"> Delta Configuration</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
+                                            </accordion-heading>
+                                            <div class="row" align="center" style="margin-top:5px;margin-bottom:5px">
+                                                <div class="input-group col-md-3">
+                                                    <span class="label " style="background-color:#B5F7EC;color:black;">1</span>
+                                                    <span class="input-group-addon" id="basic-addon1">Version</span>
+
+                                                    <select ng-model="version1" class="form-control " disabled>
+                                                    <option ng-selected="version1"> {{version1}}</option>
+                                                </select>
+                                                </div>
+                                                <div class="input-group col-md-2">
+                                                    <span class="input-group-addon" id="basic-addon1">Scope</span>
+                                                    <select ng-model="scope1" class="form-control " disabled>
+                                                    <option ng-selected="scope1"> {{scope1}}</option>
+                                                </select>
+                                                </div>
+                                                <div class="input-group col-md-3">
+                                                    <span class="input-group-addon" id="basic-addon1">IG Document</span>
+                                                    <select ng-model="ig1" class="form-control " disabled>
+                                                    <option ng-selected="ig1"> {{ig1}}</option>
+                                                </select>
+                                                </div>
+                                                <div class="input-group col-md-4">
+                                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
+                                                    <select ng-model="table1" class="form-control " disabled>
+                                                    <option ng-selected="table1"> {{table1.bindingIdentifier}}</option>
+                                                </select>
+                                                </div>
+                                            </div>
+                                            <div class="row" align="center">
+                                                <div class="input-group col-md-3">
+                                                    <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
+                                                    <span class="input-group-addon" id="basic-addon1">Version</span>
+                                                    <select ng-model="version2" class="form-control " ng-change="setVersion2(version2)" no-dirty-check>
+                                                    <option ng-repeat="vr in versions " value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
+                                                </select>
+                                                </div>
+                                                <div class="input-group col-md-2">
+                                                    <span class="input-group-addon" id="basic-addon1">Scope</span>
+                                                    <select ng-model="scope2" class="form-control " ng-change="setScope2(scope2)" no-dirty-check>
+                                                    <option ng-repeat="scope in scopes " value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
+                                                </select>
+                                                </div>
+                                                <div class="input-group col-md-3">
+                                                    <span class="input-group-addon" id="basic-addon1">IG Document</span>
+                                                    <select class="form-control " ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
+                                                </div>
+
+                                                <div class="input-group col-md-4">
+                                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
+
+                                                    <select ng-model="cmp.tableId" class="form-control " ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2" no-dirty-check>
+                                                        <option value='-1'></option>
+                                                        <option ng-repeat="table in tables2 track by $index" ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{table.bindingIdentifier}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row" align="center">
+
+                                                <button ng-click="cmpTable(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-info btn-xs">
+                                                        <i class="fa fa-check"></i> Value Set Delta</button>
+
+                                            </div>
+                                        </div>
+                                        <div accordion-group class="panel-primary" is-open="status.isSecondOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;"> Delta Result</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i> </accordion-heading>
+                                            </accordion-heading>
+                                            <div class="panel-body">
+                                                <table tt-table tt-params="dynamicVs_params" class=" table-marginless table-bordered table-condensed ">
+                                                    <thead>
+                                                        <tr>
+
+                                                            <th class="col-xs-2">Name</th>
+                                                            <th class="col-xs-1 ">Content Definition</th>
+                                                            <th class="col-xs-1 ">Code System</th>
+                                                            <th class="col-xs-1 ">Code Usage</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </accordion>
+
+
+
+
+                                </div>
+
+                            </tab>
+
+                            
                             <tab>
                                 <tab-heading>
-                                    <i class="fa fa-link" aria-hidden="true"></i> Table Cross-References <span class="badge">{{references.length}}</span>
+                                    <i class="fa fa-link" aria-hidden="true"></i> Value Set Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
                                     <div ng-show="references != null && references.length > 0">
