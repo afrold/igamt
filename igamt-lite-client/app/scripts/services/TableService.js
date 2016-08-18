@@ -10,6 +10,7 @@ angular.module('igl').factory('TableService',
                 var delay = $q.defer();
                 table.accountId = userInfoService.getAccountID();
                 $http.post('api/tables/save', table).then(function (response) {
+                    console.log(table);
                     var saved = angular.fromJson(response.data);
                     delay.resolve(saved);
                     return saved;

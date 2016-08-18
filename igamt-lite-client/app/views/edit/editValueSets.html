@@ -85,7 +85,7 @@
                                         <label class="col-md-2 control-label">Extensibility</label>
 
                                         <div class="controls col-md-10">
-                                            <select class="form-control" name="extensibility" ng-model="table.extensibility" ng-options="extensibility for extensibility in config.tableExtensibilities" ng-change="setDirty()" />
+                                            <select class="form-control" name="extensibility" ng-model="table.extensibility" ng-options="extensibility for extensibility in ['Open', 'Closed']" ng-change="setDirty()" />
                                         </div>
                                     </div>
 
@@ -132,19 +132,19 @@
                                     </div>
                                 </div>
                             </tab>
-							<tab>
+                            <tab>
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Definition
                                 </tab-heading>
 
                                 <div class="el-def" style="margin-top: 20px">
-                                    
+
 
                                     <div class="">
-										<span class="pull-right">
+                                        <span class="pull-right">
 											<button title="Add new Value" type="button" class="btn btn-sm btn-info" ng-click="addValue();">
 												<span><i class="fa fa-plus fa-fw"></i>&nbsp; Add Value</span>
-											</button>
+                                        </button>
                                         </span>
                                         <div class="table-responsive">
                                             <table st-safe-src="table.codes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
@@ -325,14 +325,11 @@
                                         </div>
                                     </accordion>
 
-
-
-
                                 </div>
 
                             </tab>
 
-                            
+
                             <tab>
                                 <tab-heading>
                                     <i class="fa fa-link" aria-hidden="true"></i> Value Set Cross-References <span class="badge">{{references.length}}</span>
@@ -379,8 +376,8 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div ng-hide="references != null && references.length > 0" style="text-align:center">
-                                        <p>This segment is not being used in this ig document</p>
+                                    <div ng-hide="references != null && references.length > 0">
+                                        <p>This value set is not being used in this ig document</p>
                                     </div>
                                 </div>
                             </tab>

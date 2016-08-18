@@ -128,7 +128,7 @@ color:white;
                                 <span ng-class="{selected :activeModel ==='Value Sets'}" confirm-click data-nodrag ng-click="editRoutSection('Value Sets')">{{ig.childSections.length+1}}.4.Value Sets
                                     </span>
                             </div>
-                            <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node ng-if="!collapsevalueSet" data-type="table">
+                            <li ng-repeat="table in tables|orderBy :'bindingIdentifier'" ui-tree-node ng-if="!collapsevalueSet" data-type="table">
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="ValueSetOptions" style="margin-left:30px;">
                                     <span data-nodrag style="font-weight:normal;" ng-class="{selected : table.id===activeModel}" confirm-click ng-click="editTable(table)">
                                      <span class="badge " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',

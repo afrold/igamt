@@ -299,6 +299,41 @@ angular
                     }
                 };
 
+                $scope.cloneSection=function(section){
+
+                    var clone= angular.copy(section);
+                    clone.id=new ObjectId().toString();
+                    clone.childSections=[];
+                    clone.sectionTitle = section.sectionTitle + Math.floor((Math.random() * 50000) + 1);
+                    if(section.childSections&& section.childSections.length>0){
+                        angular.forEach(section.childSections,function(sect){
+                            clone.childSections.push($scope.cloneInside(sect));
+
+                        });
+                    }
+                    return clone;
+
+
+                };
+
+                $scope.cloneInside= function(sectionInside){
+                    var clone= angular.copy(sectionInside);
+                    clone.id=new ObjectId().toString();
+                    clone.childSections=[];
+                    if(sectionInside.childSections&& sectionInside.childSections.length>0){
+
+                        angular.forEach(sectionInside.childSections,function(sect){
+                            clone.childSections.push($scope.cloneInside(sect));
+
+                        });
+
+                    }
+                    return clone;
+                }
+
+
+
+
                 $scope.debug = function(childSections) {
                     console.log("DEBUG FNCT");
                     console.log(childSections);
@@ -343,14 +378,14 @@ angular
                         function($itemScope) {
 
                             function process() {
-                                var cloneModel = $scope.cloneSectionTree($itemScope.$nodeScope.$modelValue);
+                                var cloneModel = $scope.cloneSection($itemScope.$nodeScope.$modelValue);
                                 cloneModel.sectionPosition = $scope.getLastPosition($itemScope.$nodeScope.$parentNodesScope.$modelValue);
                                 $itemScope.$nodeScope.$parentNodesScope.$modelValue.push(cloneModel);
                                 $scope.editSection(cloneModel);
                                 if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "document") {
                                     $scope.updateChildeSections($rootScope.igdocument.childSections);
                                 } else if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "section") {
-                                    SectionSvc.update($rootScope.igdocument.id, $itemScope.section);
+                                    SectionSvc.save($rootScope.igdocument.id, cloneModel);
 
                                 }
                             };
@@ -507,25 +542,22 @@ angular
 
                 $scope.ValueSetOptionsINLIB = [
 
-                    ['Copy',
-                        function($itemScope) {
-                            if ($rootScope.hasChanges()) {
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                    $scope.copyTableINLIB($itemScope.table);
-                                });
-                            } else {
-                                $scope.copyTableINLIB($itemScope.table, $scope.tableLibrary.id);
-                            }
-                        }
-                    ],
-                    null, ['Delete',
-                        function($itemScope) {
-                            $scope.deleteValueSetINLIB($itemScope.table);
 
-                        }
-                    ]
+                                          ['Copy',
+                                              function($itemScope) {
+                                  
+                                                      $scope.copyTableINLIB($itemScope.table,$scope.tableLibrary.id);
+                                                  
+                                              }
+                                          ],
+                                          null, ['Delete',
+                                              function($itemScope) {
+                                                 $scope.deleteValueSetINLIB($itemScope.table);
 
-                ];
+                                              }
+                                          ]
+
+                                      ];
 
                 $scope.MessagesOption = [
 
@@ -630,10 +662,10 @@ angular
                     ]
                 ];
 
-                $scope.addValueSetsInTableLIB = [
+                $scope.addValueSetsInTableLibrary = [
                     ['Add Tables',
                         function($itemScope) {
-                            $scope.addTables($rootScope.igdocument);
+                            $scope.addTablesInLibrary();
                         }
                     ]
                 ];

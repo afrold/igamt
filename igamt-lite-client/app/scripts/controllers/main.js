@@ -1,10 +1,27 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'ElementUtils', 'SectionSvc',
-    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, ElementUtils, SectionSvc) {
+angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'ElementUtils', 'SectionSvc',
+    function ($document,$scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, ElementUtils, SectionSvc) {
         // This line fetches the info from the server if the user is currently
         // logged in.
         // If success, the app is updated according to the role.
+
+        $(document).keydown(function(e) {
+        var nodeName = e.target.nodeName.toLowerCase();
+
+        if (e.which === 8) {
+            if ((nodeName === 'input' && e.target.type === 'text') ||
+                nodeName === 'textarea') {
+                // do nothing
+            } else {
+                e.preventDefault();
+            }
+        }
+    });
+
+
+
+
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
 
@@ -1134,13 +1151,28 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.findTableRefs = function (table, obj, path) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
-                if (obj.table != undefined) {
-                    if (obj.table.id === table.id) {
+                // if (obj.table != undefined) {
+                //     if (obj.table.id === table.id) {
+                //         var found = angular.copy(obj);
+                //         found.path = path;
+                //         $rootScope.references.push(found);
+                //     }
+                // }
+                if(obj.tables!= undefined &&obj.tables.length>0){
+                    angular.forEach(obj.tables, function(tableInside){
+
+                        if(tableInside.id===table.id){
                         var found = angular.copy(obj);
                         found.path = path;
                         $rootScope.references.push(found);
-                    }
+
+                        }
+                    });
+
+
                 }
+
+
                 $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
             } else if (angular.equals(obj.type, 'segment')) {
                 angular.forEach(obj.fields, function (field) {

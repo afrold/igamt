@@ -138,12 +138,7 @@
                                       ng-click="editSeg(segment);">
 
                                        <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
-                                   'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' ,'unused' : showUnused(segment)}"  ns-popover ns-popover-template="segmentPopover"
-  ns-popover-trigger="mouseenter"
-  ns-popover-placement="bottom"
-  ns-popover-theme="ns-popover-custom-theme"
-  ns-popover-timeout="0"
-  >  {{getScopeLabel(segment)}}	</span>
+                                   'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' ,'unused' : showUnused(segment)}">  {{getScopeLabel(segment)}}	</span>
                                         {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                             </div>
                         </li>

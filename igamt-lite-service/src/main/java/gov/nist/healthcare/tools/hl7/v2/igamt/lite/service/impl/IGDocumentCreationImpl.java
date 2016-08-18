@@ -320,11 +320,11 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
   private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
     DatatypeLibrary dtsSource = pSource.getDatatypeLibrary();
     DatatypeLibrary dtsTarget = pTarget.getDatatypeLibrary();
-    if (SCOPE.USER == dt.getScope()) {
-      dt.setId(null);
+    if (SCOPE.HL7STANDARD == dt.getScope()) {
+      //dt.setId(null);
       dt.getLibIds().remove(dtsSource.getId());
     }
-
+    
     dt.getLibIds().add(dtsTarget.getId());
     datatypeRepository.save(dt);
     DatatypeLink link = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());

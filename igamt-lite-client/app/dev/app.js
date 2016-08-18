@@ -29,9 +29,9 @@ var app = angular
         'dndLists',
         'froala',
         'ui-notification',
-        'ngMockE2E', 'ui.tree',
+        'ngMockE2E', 
+        'ui.tree',
         'blockUI',
-        'nsPopover',
         'ds.objectDiff',
         'ngTagsInput',
         

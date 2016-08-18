@@ -42,7 +42,21 @@ public class DatatypeLibraryDocumentRepositoryImpl implements DatatypeLibraryDoc
 				+ list.size());
 		return list;
 	}
+	
+	@Override
+	public List<DatatypeLibraryDocument> findByScope(SCOPE scope) {
 
+		Criteria where = Criteria.where("scope").is(scope);
+
+
+
+		Query qry = Query.query(where);
+		List<DatatypeLibraryDocument> list = mongo.find(qry, DatatypeLibraryDocument.class);
+		log.debug("DatatypeLibraryRespositoryImpl.findByScopes list.size()="
+				+ list.size());
+		return list;
+	}
+	
 	@Override
 	public List<DatatypeLibraryDocument> findScopesNVersion(List<SCOPE> scopes,
 			String hl7Version) {
