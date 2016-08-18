@@ -1401,47 +1401,49 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
 			for (int i = 1; i < fields.size() + 1; i++) {
 				Field f = fields.get(i);
-				nu.xom.Element elmField = new nu.xom.Element("Field");
-				elmField.addAttribute(new Attribute("Name", f.getName()));
-				elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
+				if (f != null){
+					nu.xom.Element elmField = new nu.xom.Element("Field");
+					elmField.addAttribute(new Attribute("Name", f.getName() != null ? f.getName() : ""));
+					elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
 
-				if (f.getDatatype() != null && f.getDatatype().getExt() != null) {
-					String label =
-							f.getDatatype().getExt().isEmpty() ? f.getDatatype().getName() : f.getDatatype()
-									.getLabel();
-							elmField.addAttribute(new Attribute("Datatype", label));
-				}
-				elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
-				elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
-				elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
-				if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-					elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
-				if (f.getConfLength() != null && !f.getConfLength().equals(""))
-					elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
-				if (f.getTable() != null && !f.getTable().getBindingIdentifier().equals(""))
-					elmField.addAttribute(new Attribute("Binding", 
-							f.getTable().getBindingIdentifier()));
-				if (f.getItemNo() != null && !f.getItemNo().equals(""))
-					elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
-				if (f.getComment() != null && !f.getComment().isEmpty())
-					elmField.addAttribute(new Attribute("Comment", f.getComment()));
-				elmField.addAttribute(new Attribute("Position", String.valueOf(f.getPosition())));
-
-				if (f.getText() != null && !f.getText().isEmpty()) {
-					elmField.appendChild(this.serializeRichtext("Text", f.getText()));
-				}
-
-				List<Constraint> constraints =
-						findConstraints(i, s.getPredicates(), s.getConformanceStatements());
-				if (!constraints.isEmpty()) {
-					for (Constraint constraint : constraints) {
-						nu.xom.Element elmConstraint =
-								serializeConstraintToElement(constraint, s.getName() + "-");
-						elmField.appendChild(elmConstraint);
+					if (f.getDatatype() != null && f.getDatatype().getExt() != null) {
+						String label =
+								f.getDatatype().getExt().isEmpty() ? f.getDatatype().getName() : f.getDatatype()
+										.getLabel();
+								elmField.addAttribute(new Attribute("Datatype", label));
 					}
-				}
+					elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
+					elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
+					elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
+					if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
+						elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
+					if (f.getConfLength() != null && !f.getConfLength().equals(""))
+						elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
+					if (f.getTable() != null && !f.getTable().getBindingIdentifier().equals(""))
+						elmField.addAttribute(new Attribute("Binding", 
+								f.getTable().getBindingIdentifier()));
+					if (f.getItemNo() != null && !f.getItemNo().equals(""))
+						elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
+					if (f.getComment() != null && !f.getComment().isEmpty())
+						elmField.addAttribute(new Attribute("Comment", f.getComment()));
+					elmField.addAttribute(new Attribute("Position", String.valueOf(f.getPosition())));
 
-				elmSegment.appendChild(elmField);
+					if (f.getText() != null && !f.getText().isEmpty()) {
+						elmField.appendChild(this.serializeRichtext("Text", f.getText()));
+					}
+
+					List<Constraint> constraints =
+							findConstraints(i, s.getPredicates(), s.getConformanceStatements());
+					if (!constraints.isEmpty()) {
+						for (Constraint constraint : constraints) {
+							nu.xom.Element elmConstraint =
+									serializeConstraintToElement(constraint, s.getName() + "-");
+							elmField.appendChild(elmConstraint);
+						}
+					}
+
+					elmSegment.appendChild(elmField);
+				}
 			}
 
 			CoConstraints coconstraints = s.getCoConstraints();
