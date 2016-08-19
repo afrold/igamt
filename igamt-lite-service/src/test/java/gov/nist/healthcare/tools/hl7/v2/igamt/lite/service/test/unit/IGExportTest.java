@@ -80,9 +80,9 @@ public class IGExportTest {
     igs = igService.findAll();
     ig = igs.get(0);
 
-    sl = (SegmentLink) ig.getProfile().getSegmentLibrary().getChildren().toArray()[0];
-    dl = (DatatypeLink) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
-    tl = (TableLink) ig.getProfile().getTableLibrary().getChildren().toArray()[0];
+//    sl = (SegmentLink) ig.getProfile().getSegmentLibrary().getChildren().toArray()[0];
+//    dl = (DatatypeLink) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
+//    tl = (TableLink) ig.getProfile().getTableLibrary().getChildren().toArray()[0];
 
   }
 
