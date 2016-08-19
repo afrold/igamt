@@ -41,7 +41,11 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
 
   protected String comment = "";
 
-  protected String usageNote = "";
+  protected String usageNote = ""; 
+  
+  protected String defPreText= "";
+  
+  protected String defPostText = "";
 
 
   public String getId() {
@@ -125,7 +129,24 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
     this.usageNote = usageNote;
   }
 
+  
 
+
+  public String getDefPreText() {
+    return defPreText;
+  }
+
+  public void setDefPreText(String defPreText) {
+    this.defPreText = defPreText;
+  }
+
+  public String getDefPostText() {
+    return defPostText;
+  }
+
+  public void setDefPostText(String defPostText) {
+    this.defPostText = defPostText;
+  }
 
   @Override
   public String toString() {
@@ -156,7 +177,8 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
     clonedDT.setLabel(label);
     clonedDT.setName(name);
     clonedDT.setUsageNote(usageNote);
-
+    clonedDT.setDefPreText(defPreText);
+    clonedDT.setDefPostText(defPostText);
     return clonedDT;
   }
 

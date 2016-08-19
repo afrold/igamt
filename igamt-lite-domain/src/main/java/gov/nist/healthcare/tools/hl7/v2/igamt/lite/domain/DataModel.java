@@ -25,7 +25,7 @@ public abstract class DataModel {
   }
 
   protected String type;
-
+  
   public String dt() {
     return type;
   }

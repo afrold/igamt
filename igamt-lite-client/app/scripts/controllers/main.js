@@ -1935,7 +1935,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
 
 
         $rootScope.openRichTextDlg = function (obj, key, title, disabled) {
-            var modalInstance = $modal.open({
+            return $modal.open({
                 templateUrl: 'RichTextCtrl.html',
                 controller: 'RichTextCtrl',
                 windowClass: 'app-modal-window',
@@ -1956,12 +1956,12 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
         };
 
         $rootScope.openInputTextDlg = function (obj, key, title, disabled) {
-            var modalInstance = $modal.open({
+             return $modal.open({
                 templateUrl: 'InputTextCtrl.html',
                 controller: 'InputTextCtrl',
                 backdrop: true,
                 keyboard: true,
-                windowClass: 'app-modal-window',
+                windowClass: 'input-text-modal-window',
                 backdropClick: false,
                 resolve: {
                     editorTarget: function () {
@@ -2061,6 +2061,10 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
 
         $rootScope.getPredicateAsString = function (constraint) {
             return constraint.description;
+        };
+
+        $rootScope.getTextValue = function (value) {
+            return value;
         };
 
         $rootScope.getConstraintsAsString = function (constraints) {

@@ -1826,7 +1826,7 @@ table.profile-table td {
 
 .tooltip.constraints-tooltip .tooltip-inner {
   color: white;
-  background-color: black;
+  background-color: #3b3b3b;
 }
 
 .panel-heading {
@@ -2300,6 +2300,12 @@ table.conformance-profiles-table td {
 .search-modal-window .modal-dialog {
   width: 50%;
   height: 500px;
+  overflow-y: auto;
+}
+
+.input-text-modal-window .modal-dialog {
+  width: 50%;
+  height: 600px;
   overflow-y: auto;
 }
 

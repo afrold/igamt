@@ -62,13 +62,13 @@
                                             <input type="text" disabled ng-change="setDirty()" name="description" class="form-control" ng-model="datatype.description" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
-                                        <label class="col-md-2 control-label">HL7 Version*</label>
+                                    <!--<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">-->
+                                        <!--<label class="col-md-2 control-label">HL7 Version*</label>-->
 
-                                        <div class="controls col-md-10">
-                                            <input type="text" disabled ng-change="setDirty()" name="hl7Version" class="form-control" ng-model="datatype.hl7Version" required>
-                                        </div>
-                                    </div>
+                                        <!--<div class="controls col-md-10">-->
+                                            <!--<input type="text" disabled ng-change="setDirty()" name="hl7Version" class="form-control" ng-model="datatype.hl7Version" required>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.purposeUse.$invalid}">
                                         <label class="col-md-2 control-label">Purpose and Use</label>
 
@@ -85,11 +85,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.text.$invalid}">
-                                        <label class="col-md-2 control-label">Definition Text</label>
+                                        <label class="col-md-2 control-label">Definition Text (<span style="color:red">REMOVE</span>)</label>
 
                                         <div class="controls col-md-10">
                                             <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'">
-                                                <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="text" id="text" ng-change="setDirty()"></textarea>
+                                                <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>
                                             </div>
                                             <div ng-if="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
                                                 <div class="fr-view">
@@ -107,6 +107,24 @@
 
                                 <div class="el-def" style="margin-top: 5px">
                                     <accordion>
+
+
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isFifthOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'">
+                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPreText" name="text" id="text" ng-change="setDirty()"></textarea>
+                                                </div>
+                                                <div ng-if="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
+                                                    <div class="fr-view">
+                                                        <div froala-view="datatype.defPreText"></div>
+                                                    </div>
+                                                </div>
+                                             </div>
+
+                                         </div>
+
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
 
                                             <accordion-heading>
@@ -158,6 +176,22 @@
 
                                             </div>
                                         </div>
+
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isSixOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'">
+                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="text" ng-change="setDirty()"></textarea>
+                                                </div>
+                                                <div ng-if="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
+                                                    <div class="fr-view">
+                                                        <div froala-view="datatype.defPostText"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
                                             <accordion-heading>
                                                 <span style="color:white;"> Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>                                                </accordion-heading>
@@ -666,12 +700,14 @@
             </div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <a ng-show="node.comment === null || node.comment == undefined || node.comment == ''" ng-click="node.comment = ' '" class="point">
-                <i class="fa fa-plus fa-fw"></i>
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', false)" class="point"
+               tooltip-html="node.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-pencil fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
+                <i class="fa fa-plus fa-fw" ng-show="node.comment === '' || node.comment === null"></i>
             </a>
-            <textarea style="width:100%;height:100%" class="form-control" ng-model="node.comment" ng-change="setDirty()" ng-show="node.comment !== null && node.comment != undefined && node.comment != ''">
-            </textarea>
-            <a ng-show="node.comment !== null && node.comment !== undefined && node.comment != ''" ng-click="node.comment = null" class="point">
+            <a ng-click="clearComments(node,'comment')" ng-show="node.comment !== '' && node.comment !== null">
                 <i class="fa fa-times fa-fw"></i>
             </a>
         </td>
@@ -732,8 +768,16 @@
             </a>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <span class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null" disabled>
-            </span>
+            <!--<span class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null" disabled>-->
+            <!--</span>-->
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point"
+               ng-show="node.comment !== '' && node.comment !== null"
+               tooltip-html="node.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-search fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
+             </a>
+
         </td>
     </tr>
 </script>
@@ -795,8 +839,15 @@
             </div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" disabled>
-            </textarea>
+            <!--<textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" disabled>-->
+            <!--</textarea>-->
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point"
+               ng-show="node.comment !== '' && node.comment !== null"
+               tooltip-html="node.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-search fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
+            </a>
         </td>
     </tr>
 </script>
@@ -854,8 +905,15 @@
             </a>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <span class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null" disabled>
-            </span>
+            <!--<span class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null" disabled>-->
+            <!--</span>-->
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point"
+               ng-show="node.comment !== '' && node.comment !== null"
+               tooltip-html="node.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-search fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
+            </a>
         </td>
     </tr>
 </script>
