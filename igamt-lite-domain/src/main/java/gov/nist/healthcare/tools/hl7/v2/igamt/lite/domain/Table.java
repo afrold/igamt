@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.DataContext;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 
 import java.io.Serializable;
@@ -38,6 +39,8 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   private String bindingIdentifier;
 
   private String name;
+
+  protected DataContext context;
 
   private String description;
   private String version;
@@ -320,6 +323,14 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 
   public void setStatus(STATUS status) {
     this.status = status;
+  }
+
+  public DataContext getContext() {
+    return context;
+  }
+
+  public void setContext(DataContext context) {
+    this.context = context;
   }
 
 
