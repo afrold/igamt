@@ -254,8 +254,10 @@ angular.module('igl').factory(
         
         
         svc.copyMessage = function (message) {
+            var newMessage={};
             var newMessage = angular.copy(message);
-            newMessage.id = null;
+            newMessage.id = new ObjectId().toString();
+            newMessage.position=$rootScope.igdocument.profile.messages.length+1;
             newMessage.name = $rootScope.createNewFlavorName(message.name);
             var groups = ProfileAccessSvc.Messages().getGroups(newMessage);
             angular.forEach(groups, function (group) {
@@ -269,7 +271,7 @@ angular.module('igl').factory(
 
             MessageService.save(newMessage).then(function (result) {
                 newMessage = result;
-                $rootScope.igdocument.profile.messages.children.splice(0, 0, newMessage);
+                $rootScope.igdocument.profile.messages.children.push(newMessage);
                 IgDocumentService.save($rootScope.igdocument).then(function (igd) {
                     $rootScope.messages = $rootScope.igdocument.profile.messages;
                     $rootScope.message = newMessage;

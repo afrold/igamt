@@ -1007,6 +1007,7 @@ angular.module('igl')
         $scope.selectProfileMetaData = function () {
             $rootScope.subview = "EditProfileMetadata.html";
             $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
+            console.log(metaData);
             $rootScope.currentData = $rootScope.igdocument.profile;
             $scope.loadingSelection = true;
             blockUI.start();

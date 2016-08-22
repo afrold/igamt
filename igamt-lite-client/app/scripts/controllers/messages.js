@@ -164,12 +164,14 @@ angular.module('igl')
             console.log($rootScope.message);
             MessageService.save(message).then(function(result) {
                 var index = findIndex(message.id);
-                if (index < 0) {
-                    $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
+                if (index >0) {
+
+                    console.log(index);
+                    $rootScope.igdocument.profile.messages.children[index]=message;
                 }
 
                 MessageService.saveNewElements().then(function() {
-                    MessageService.merge($rootScope.messagesMap[message.id], message);
+                    $rootScope.messagesMap[message.id]=message;
                     cleanState();
                 }, function(error) {
                     $rootScope.msg().text = "Sorry an error occured. Please try again";
