@@ -1,15 +1,15 @@
 <style id="antiClickjack">
-body {
-    display: none !important;
-}
+    body {
+        display: none !important;
+    }
 </style>
 <script type="text/javascript">
-if (self === top) {
-    var antiClickjack = document.getElementById("antiClickjack");
-    antiClickjack.parentNode.removeChild(antiClickjack);
-} else {
-    top.location = self.location;
-}
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
 </script>
 <script type="text/ng-template" id="EditMessages.html">
     <div ng-controller="MessageListCtrl" ng-init="init()">
@@ -33,253 +33,368 @@ if (self === top) {
                         </span>
                     </div>
                     <div class="col-md-12">
-                    <tabset>
-                        <tab>
-                            <tab-heading>
-                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Conformance Profile MetaData
-                            </tab-heading>
-                            <div style="margin-top: 20px">
-                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.name.$invalid}">
-                                    <label class="col-md-2 control-label">Name*</label>
-                                    <div class="controls col-md-10">
-                                        <input class="form-control" type="text" disabled name="name" ng-change="setDirty()" ng-model="message.name" ng-disabled="viewSettings.tableReadonly">
-                                    </div>
-                                </div>
-                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
-                                    <label class="col-md-2 control-label">Identifier*</label>
-                                    <div class="controls col-md-10">
-                                        <input type="text" ng-change="setDirty()" name="identifier" class="form-control" ng-model="message.identifier" ng-disabled="viewSettings.tableReadonly" required>
-                                    </div>
-                                </div>
-                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
-                                    <label class="col-md-2 control-label">Description</label>
-                                    <div class="controls col-md-10">
-                                        <input class="form-control" type="text" name="description" ng-change="setDirty()" ng-model="message.description" ng-disabled="viewSettings.tableReadonly">
-                                    </div>
-                                </div>
-                                <!--<div class="form-group control-group"-->
-                                <!--ng-class="{'igl-has-error' : editForm.messageOId.$invalid}">-->
-                                <!--<label class="col-md-2 control-label">Message OID</label>-->
-                                <!--<div class="controls col-md-10"><input type="text" disabled name="messageOId"-->
-                                <!--class="form-control"-->
-                                <!--ng-model="message.messageID" required></div>-->
-                                <!--</div>-->
-                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageType.$invalid}">
-                                    <label class="col-md-2 control-label">Message Type*</label>
-                                    <div class="controls col-md-10">
-                                        <input type="text" disabled name="messageType" class="form-control" ng-model="message.messageType" required>
-                                    </div>
-                                </div>
-                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageEvent.$invalid}">
-                                    <label class="col-md-2 control-label">Message Event*</label>
-                                    <div class="controls col-md-10">
-                                        <input type="text" disabled name="messageEvent" class="form-control" ng-model="message.event" required ng-disabled="false">
-                                    </div>
-                                </div>
-                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageStructID.$invalid}">
-                                    <label class="col-md-2 control-label">Message Structure ID*</label>
-                                    <div class="controls col-md-10">
-                                        <input type="text" disabled name="messageStructID" class="form-control" ng-model="message.structID" required>
-                                    </div>
-                                </div>
-                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.comment.$invalid}">
-                                    <label class="col-md-2 control-label">Comment</label>
-                                    <div class="controls col-md-10">
-                                        <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly" ng-change="recordDatatypeChange('message','edit',message.id,'message', message.comment)" name="comment" id="comment" class="form-control" ng-model="message.comment" />
-                                    </div>
-                                </div>
-                                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
-                                    <label class="col-md-2 control-label">Definition Text</label>
-                                    <div class="controls col-md-10">
-                                        <div ng-if="!viewSettings.tableReadonly">
-                                            <textarea froala="froalaEditorOptions" ng-model="message.usageNote" name="text" id="text" ng-change="setDirty()"></textarea>
+                        <tabset>
+                            <tab>
+                                <tab-heading>
+                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Conformance Profile MetaData
+                                </tab-heading>
+                                <div style="margin-top: 20px">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.name.$invalid}">
+                                        <label class="col-md-2 control-label">Name*</label>
+                                        <div class="controls col-md-10">
+                                            <input class="form-control" type="text" disabled name="name" ng-change="setDirty()" ng-model="message.name" ng-disabled="viewSettings.tableReadonly">
                                         </div>
-                                        <div ng-if="viewSettings.tableReadonly">
-                                            <div class="fr-view">
-                                                <div froala-view="message.usageNote"></div>
+                                    </div>
+                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
+                                        <label class="col-md-2 control-label">Identifier*</label>
+                                        <div class="controls col-md-10">
+                                            <input type="text" ng-change="setDirty()" name="identifier" class="form-control" ng-model="message.identifier" ng-disabled="viewSettings.tableReadonly" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
+                                        <label class="col-md-2 control-label">Description</label>
+                                        <div class="controls col-md-10">
+                                            <input class="form-control" type="text" name="description" ng-change="setDirty()" ng-model="message.description" ng-disabled="viewSettings.tableReadonly">
+                                        </div>
+                                    </div>
+                                    <!--<div class="form-group control-group"-->
+                                    <!--ng-class="{'igl-has-error' : editForm.messageOId.$invalid}">-->
+                                    <!--<label class="col-md-2 control-label">Message OID</label>-->
+                                    <!--<div class="controls col-md-10"><input type="text" disabled name="messageOId"-->
+                                    <!--class="form-control"-->
+                                    <!--ng-model="message.messageID" required></div>-->
+                                    <!--</div>-->
+                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageType.$invalid}">
+                                        <label class="col-md-2 control-label">Message Type*</label>
+                                        <div class="controls col-md-10">
+                                            <input type="text" disabled name="messageType" class="form-control" ng-model="message.messageType" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageEvent.$invalid}">
+                                        <label class="col-md-2 control-label">Message Event*</label>
+                                        <div class="controls col-md-10">
+                                            <input type="text" disabled name="messageEvent" class="form-control" ng-model="message.event" required ng-disabled="false">
+                                        </div>
+                                    </div>
+                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageStructID.$invalid}">
+                                        <label class="col-md-2 control-label">Message Structure ID*</label>
+                                        <div class="controls col-md-10">
+                                            <input type="text" disabled name="messageStructID" class="form-control" ng-model="message.structID" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.comment.$invalid}">
+                                        <label class="col-md-2 control-label">Comment</label>
+                                        <div class="controls col-md-10">
+                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly" ng-change="recordDatatypeChange('message','edit',message.id,'message', message.comment)" name="comment" id="comment" class="form-control" ng-model="message.comment" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
+                                        <label class="col-md-2 control-label">Definition Text</label>
+                                        <div class="controls col-md-10">
+                                            <div ng-if="!viewSettings.tableReadonly">
+                                                <textarea froala="froalaEditorOptions" ng-model="message.usageNote" name="text" id="text" ng-change="setDirty()"></textarea>
+                                            </div>
+                                            <div ng-if="viewSettings.tableReadonly">
+                                                <div class="fr-view">
+                                                    <div froala-view="message.usageNote"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </tab>
-                        <tab heading="Conformance Profile Definition">
-                            <tab-heading>
-                                <i class="fa fa-table fa-fw" aria-hidden="true"></i> Conformance Profile Definition
-                            </tab-heading>
-                            <div class="el-def">
-                            <span class="pull-left">
-                                     <div style="" ng-dropdown-multiselect=""
-                                          options="viewSettings.columnOptions"
-                                          selected-model="viewSettings.visibleColumns"
-                                          events="viewSettings.events" extra-settings="viewSettings.extra"
-                                          translation-texts="viewSettings.translations"></div>
-                                     </span>
-                                <span class="pull-right" ng-show="!viewSettings.tableReadonly">
-                                     <div class="btn-group">
-                                         <button type="button" class="btn btn-sm btn-info">
-                                             <span><i class="fa fa-plus"></i> Add</span>
-                                         </button>
-                                         <button type="button" class="btn btn-sm btn-info" data-toggle="dropdown" aria-expanded="false">
-                                             <span class="caret"></span>
-                                             <span class="sr-only">Toggle Dropdown</span>
-                                         </button>
-                                         <ul class="dropdown-menu igl-menu" role="menu">
-                                             <li><a class="point" ng-click="addSegmentModal(message)"><i class="fa fa-plus fa-fw"></i> Add Segment</a></li>
-                                             <li><a class="point" ng-click="addGroupModal(message)"><i class="fa fa-plus fa-fw"></i> Add Group</a></li>
-                                         </ul>
-                                     </div>
-                </span>
-                            <table id="messageTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
-                                <!--
-                                <caption>
-                                    <a href="#" onclick="jQuery('#messageTable').treetable('expandAll');  return false;">Expand all</a>
-                                    <a href="#" onclick="jQuery('#messageTable').treetable('collapseAll'); return false;">Collapse all</a>
-                                </caption>
-                                <caption>
-                                    <a ng-show="expanded " ng-click="expandAll() ">
-                                    Expand All
-                                    <span><i class="pull-left glyphicon glyphicon-menu-down"></i></span>
-                                </a>
-                                    <a ng-show="!expanded " ng-click="collapseAll() ">
-                                    Collapse All
-                                    <span><i class="pull-left glyphicon glyphicon-menu-up"></i></span>
-                                </a>
-                                </caption>
-                                -->
-                                <thead>
-                                    <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
-                                        <th class="col-xs-2 col-fixed-250">
-                                            Name
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
-                                            Usage
-                                            <button ng-hide="viewSettings.tableReadonly" class="btn btn-info btn-xs" ng-click="OtoX(message)">O to X</button>
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">Length
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">ConfLength
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
-                                        </th>
-                                        <th class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
-                                        </th>
-                                        <th class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
-                                        </th>
-                                        <th class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">Comment
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                <div class="row" style="margin-top:20px">
-                    <div class="col-md-12 igl-page-header">
-                        <span class="pull-left">
-                                <span class="header5">Conformance Statements</span>
-                        </span>
-                        <span class="pull-right">
-                            </span>
-                    </div>
-                    <div class="col-md-12">
-                        <span ng-hide="message.conformanceStatements.length > 0">No conformance statement</span>
-                        <table class="table table-striped table-bordered" ng-show="message.conformanceStatements.length > 0">
-                            <thead>
-                                <tr class="tbl-header">
-                                    <th class="col-md-1">ID</th>
-                                    <th class="col-md-2">Location</th>
-                                    <th class="col-md-8">Desciption</th>
-                                    <th class="col-md-1"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="c in message.conformanceStatements | orderBy:'constraintTarget'" ">
-                <td class="col-md-1 ">
-                    {{c.constraintId}}
-                </td>
-                <td class="col-md-2 ">
-                    {{c.constraintTarget}}
-                </td>
-                <td class="col-md-8 ">
-                    {{c.description}}
-                </td>
-                <td class="col-md-1 " align="center ">
-                    <button class="btn btn-danger btn-xxs "
-                            ng-click="message.conformanceStatements.splice(message.conformanceStatements.indexOf(c), 1); "
-                            ng-disabled="viewSettings.tableReadonly "><span><i class="fa fa-trash fa-fw ">
-                        &nbsp; </i>Del</span></button>
-                </td>
-                </tr>
-                </tbody>
-            </table>
-            <div>
-            </div>
+                            </tab>
+                            <tab heading="Conformance Profile Definition">
+                                <tab-heading>
+                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i> Conformance Profile Definition
+                                </tab-heading>
+                                
+                                <div class="el-def" style="margin-top: 5px">
+                                    
+                                    
+                    
+                                    <accordion>
+                                        <div accordion-group class="panel-primary " is-open="accordStatus.isFirstOpen ">
+                                            <accordion-heading>
+                                                <span style="color:white; "> Conformance Profile Definition</span> <i class="pull-left fa " style="color:white; " ng-class="{ 'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen} "></i>                                </accordion-heading>
+                                            <div class="panel-body ">
+                                                <span class="pull-left">
+                                                    <div style="" ng-dropdown-multiselect=""
+                                                        options="viewSettings.columnOptions"
+                                                        selected-model="viewSettings.visibleColumns"
+                                                        events="viewSettings.events" extra-settings="viewSettings.extra"
+                                                        translation-texts="viewSettings.translations">
+                                                    </div>
+                                                </span>
+                                                <span class="pull-right" ng-show="!viewSettings.tableReadonly">
+                                                    <div class="btn-group">
+                                                                <button type="button" class="btn btn-sm btn-info">
+                                                                    <span><i class="fa fa-plus"></i> Add</span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-sm btn-info" data-toggle="dropdown" aria-expanded="false">
+                                                                    <span class="caret"></span>
+                                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                                </button>
+                                                        <ul class="dropdown-menu igl-menu" role="menu">
+                                                            <li><a class="point" ng-click="addSegmentModal(message)"><i class="fa fa-plus fa-fw"></i> Add Segment</a></li>
+                                                            <li><a class="point" ng-click="addGroupModal(message)"><i class="fa fa-plus fa-fw"></i> Add Group</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </span>
+                                                <table id="messageTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                                                    <!--
+                                                                <caption>
+                                                                    <a href="#" onclick="jQuery('#messageTable').treetable('expandAll');  return false;">Expand all</a>
+                                                                    <a href="#" onclick="jQuery('#messageTable').treetable('collapseAll'); return false;">Collapse all</a>
+                                                                </caption>
+                                                                <caption>
+                                                                    <a ng-show="expanded " ng-click="expandAll() ">
+                                                                    Expand All
+                                                                    <span><i class="pull-left glyphicon glyphicon-menu-down"></i></span>
+                                                                </a>
+                                                                    <a ng-show="!expanded " ng-click="collapseAll() ">
+                                                                    Collapse All
+                                                                    <span><i class="pull-left glyphicon glyphicon-menu-up"></i></span>
+                                                                </a>
+                                                                </caption>
+                                                                -->
+                                                    <thead>
+                                                        <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
+                                                            <th class="col-xs-2 col-fixed-250">
+                                                                Name
+                                                            </th>
+                                                            <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
+                                                                Usage
+                                                                <button type="button" ng-show="(message.scope === 'USER') && !viewSettings.tableReadonly && (message.children.length>0)" class="btn btn-info btn-xs" ng-click="OtoX(message)">O to X
+                                                                                        </button>
+                                                            </th>
+                                                            <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality
+                                                            </th>
+                                                            <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">Length
+                                                            </th>
+                                                            <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">ConfLength
+                                                            </th>
+                                                            <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
+                                                            </th>
+                                                            <th class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                                                            </th>
+                                                            <th class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
+                                                            </th>
+                                                            <th class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement
+                                                            </th>
+                                                            <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
+                                                            </th>
+                                                            <th class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">Comment
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;"> Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>
+                                            </accordion-heading>
+                                            <div class="panel-body">
+                                                <div class="col-md-12">
+                                                    <span ng-hide="message.conformanceStatements.length > 0">No conformance statement</span>
+                                                    <table class="table table-striped table-bordered" ng-show="message.conformanceStatements.length > 0">
+                                                        <thead>
+                                                            <tr class="tbl-header">
+                                                                <th class="col-md-1">ID</th>
+                                                                <th class="col-md-2">Location</th>
+                                                                <th class="col-md-8">Desciption</th>
+                                                                <th class="col-md-1"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="c in message.conformanceStatements | orderBy:'constraintTarget'" ">
+                                                                            <td class="col-md-1 ">
+                                                                                {{c.constraintId}}
+                                                                            </td>
+                                                                            <td class="col-md-2 ">
+                                                                                {{c.constraintTarget}}
+                                                                            </td>
+                                                                            <td class="col-md-8 ">
+                                                                                {{c.description}}
+                                                                            </td>
+                                                                            <td class="col-md-1 " align="center ">
+                                                                                <button class="btn btn-danger btn-xxs "
+                                                                                        ng-click="message.conformanceStatements.splice(message.conformanceStatements.indexOf(c), 1); "
+                                                                                        ng-disabled="viewSettings.tableReadonly "><span><i class="fa fa-trash fa-fw ">
+                                                                                    &nbsp; </i>Del</span></button>
+                                                                            </td>
+                                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div accordion-group class="panel-primary " is-open="accordStatus.isThirdOpen ">
+                                                        <accordion-heading>
+                                                            <span style="color:white; "> Conditional Predicates</span> <i class="pull-left fa " style="color:white; " ng-class="{ 'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen} "></i> </accordion-heading>
+                                                        <div class="panel-body ">
+                                                            <div class="col-md-12 ">
+                                                                <span ng-hide="message.predicates.length> 0">No conditional predicate</span>
+                                                                <table class="table table-striped table-bordered" ng-show="message.predicates.length > 0">
+                                                                    <thead>
+                                                                        <tr class="tbl-header">
+                                                                            <th class="col-md-2">Location</th>
+                                                                            <th class="col-md-7">Desciption</th>
+                                                                            <th class="col-md-1">True usage</th>
+                                                                            <th class="col-md-1">False usage</th>
+                                                                            <th class="col-md-1"></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr ng-repeat="p in message.predicates | orderBy:'constraintTarget'" ">
+                                                                            <td class="col-md-2 ">
+                                                                                {{p.constraintTarget}}
+                                                                            </td>
+                                                                            <td class="col-md-7 ">
+                                                                                {{p.description}}
+                                                                            </td>
+                                                                            <td class="col-md-1 ">
+                                                                                {{p.trueUsage}}
+                                                                            </td>
+                                                                            <td class="col-md-1 ">
+                                                                                {{p.falseUsage}}
+                                                                            </td>
+                                                                            <td class="col-md-1 " align="center ">
+                                                                                <button class="btn btn-danger btn-xxs "
+                                                                                        ng-click="message.predicates.splice(message.predicates.indexOf(p), 1); "
+                                                                                        ng-disabled="viewSettings.tableReadonly "><span><i class="fa fa-trash fa-fw ">
+                                                                                    &nbsp; </i>Del</span>
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                        </div>
+                                    </accordion>
+                                </div>
+                   
 
-            <div class="row " style="margin-top:20px ">
-                <div class="col-md-12 igl-page-header ">
-                            <span class="pull-left ">
-                                <span class="header5 ">Conditional Predicates</span>
-                            </span>
-                            <span class="pull-right ">
-                            </span>
-                </div>
+            
+        
+                            </tab>
+                            <tab ng-controller="cmpMessageCtrl">
+                                <tab-heading>
+                                    <i class="fa fa-table fa-fw " aria-hidden="true "></i> Conformance Profile Delta
+                                </tab-heading>
+                                <div class="panel-body" style="margin:5px;">
+                                    <accordion>
+                                        <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;"> Delta Configuration</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
+                                            </accordion-heading>
 
-                <div class="col-md-12 ">
-                    <span ng-hide="message.predicates.length> 0">No conditional predicate</span>
-                                    <table class="table table-striped table-bordered" ng-show="message.predicates.length > 0">
-                                        <thead>
-                                            <tr class="tbl-header">
-                                                <th class="col-md-2">Location</th>
-                                                <th class="col-md-7">Desciption</th>
-                                                <th class="col-md-1">True usage</th>
-                                                <th class="col-md-1">False usage</th>
-                                                <th class="col-md-1"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="p in message.predicates | orderBy:'constraintTarget'" ">
-                        <td class="col-md-2 ">
-                            {{p.constraintTarget}}
-                        </td>
-                        <td class="col-md-7 ">
-                            {{p.description}}
-                        </td>
-                        <td class="col-md-1 ">
-                            {{p.trueUsage}}
-                        </td>
-                        <td class="col-md-1 ">
-                            {{p.falseUsage}}
-                        </td>
-                        <td class="col-md-1 " align="center ">
-                            <button class="btn btn-danger btn-xxs "
-                                    ng-click="message.predicates.splice(message.predicates.indexOf(p), 1); "
-                                    ng-disabled="viewSettings.tableReadonly "><span><i class="fa fa-trash fa-fw ">
-                                &nbsp; </i>Del</span>
-                            </button>
-                        </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div>
+                                                <div class="row" align="center" style="margin-top:5px;margin-bottom:5px">
+                                                    <div class="input-group col-md-3">
+                                                        <span class="label " style="background-color:#B5F7EC;color:black;">1</span>
+                                                        <span class="input-group-addon" id="basic-addon1">Version</span>
+
+                                                        <select ng-model="version1" class="form-control " disabled>
+                                                        <option ng-selected="version1"> {{version1}}</option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="input-group col-md-2">
+                                                        <span class="input-group-addon" id="basic-addon1">Scope</span>
+                                                        <select ng-model="scope1" class="form-control " disabled>
+                                                        <option ng-selected="scope1"> {{scope1}}</option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="input-group col-md-3">
+                                                        <span class="input-group-addon" id="basic-addon1">IG Document</span>
+                                                        <select ng-model="ig1" class="form-control " disabled>
+                                                        <option ng-selected="ig1"> {{ig1}}</option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="input-group col-md-4">
+                                                        <span class="input-group-addon" id="basic-addon1">Message</span>
+                                                        <select ng-model="message1" class="form-control " disabled>
+                                                        <option ng-selected="message1"> {{message1.name}}</option>
+                                                    </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row" align="center">
+                                                    <div class="input-group col-md-3">
+                                                        <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
+                                                        <span class="input-group-addon" id="basic-addon1">Version</span>
+                                                        <select ng-model="version2" class="form-control " ng-change="setVersion2(version2)" no-dirty-check>
+                                                        <option ng-repeat="vr in versions " value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="input-group col-md-2">
+                                                        <span class="input-group-addon" id="basic-addon1">Scope</span>
+                                                        <select ng-model="scope2" class="form-control " ng-change="setScope2(scope2)" no-dirty-check>
+                                                        <option ng-repeat="scope in scopes " value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="input-group col-md-3">
+                                                        <span class="input-group-addon" id="basic-addon1">IG Document</span>
+                                                        <select class="form-control " ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-click="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
+                                                    </div>
+
+                                                    <div class="input-group col-md-4">
+                                                        <span class="input-group-addon" id="basic-addon1">Message</span>
+                                                        <select ng-model="message2" class="form-control " ng-change="setMsg2(message2)" ng-disabled="!ig2" no-dirty-check>
+                                                    <option ng-repeat="message in messages2 "  ng-disabled="disableMsg(message,message1)" ng-hide="hideMsg(message,message1)" value='{{message}}'> {{message.name}}</option>
+                                                </select>
+                                                    </div>
+                                                </div>
+                                            <div class="row" align="center">
+
+                                                <button ng-click="cmpMessage(message1,message2)" ng-disabled="!message1 || !message2||!msgChanged" class="btn btn-info btn-xs">
+                                                        <i class="fa fa-check"></i> Message Delta</button>
+
+                                            </div>
+                                        </div>
+                                        <div accordion-group class="panel-primary" is-open="status.isSecondOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;"> Delta Result</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i> </accordion-heading>
+                                            <div class="panel-body">
+                                                <table tt-table tt-params="dynamicMsg_params" class=" table-marginless table-bordered table-condensed ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="col-xs-1 " rowspan="2" style="width:14%; ">Position</th>
+                                                            <th class="col-xs-2 " rowspan="2" style="width:37%;  ">Name</th>
+                                                            <th class="col-xs-1 " rowspan="2" style="width:2% ">Usage</th>
+                                                            <th class="col-xs-1 " colspan="2" style="width:4% ">Cardinality</th>
+                                                            <th class="col-xs-1 " colspan="2" style="width:4% ">Length</th>
+                                                            <th class="col-xs-1 " rowspan="2" style="width:2% ">Conformance Length</th>
+                                                            <th class="col-xs-1 " rowspan="2" style="width:21% ">Data Type</th>
+                                                            <th class="col-xs-1 " rowspan="2" style="width:16% ">Value Set</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="col-xs-1 col-fixed-10" style="width:2% ">min</th>
+                                                            <th class="col-xs-1 col-fixed-10" style="width:2% ">max</th>
+                                                            <th class="col-xs-1 col-fixed-10" style="width:2% ">min</th>
+                                                            <th class="col-xs-1 col-fixed-10" style="width:2% ">max</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </accordion>
+
+
+
+
+                                </div>
+
+                            </tab>
+                            
+
+                        </tabset>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-                                </div>
-</tab>
-</tabset>
-                    </div>
-</div>
-</form>
-</div>
-</div>
-</div>
 </script>
 
 <script type="text/ng-template " id="MessageEditTree.html ">
@@ -324,16 +439,16 @@ if (self === top) {
 
     <tr  tt-node is-branch="hasChildren(node.obj) " ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF) ">
         <td    class="col-xs-2 col-fixed-250 ">
-        <a ng-show="editableSeg!==node.obj.id " ng-click="editSeg(node,message) " class="point ">
+        <a ng-show="editableSeg!==node.obj.id " ng-click="editSgmt(node,message) " class="point ">
                     <span><i class="fa fa-pencil fa-fw "></i></span>
             </a>
             <a ng-show="editableSeg!==node.obj.id " ng-click="deleteSeg(node) " class="point ">
                     <span><i class="glyphicon glyphicon-trash "></i></span>
             </a>
-            <ng-form class="form-inline">
+            <ng-form class="form-inline ">
             <span id="segEditTree " class="label label-segment label-icon ">S</span>
 
-            <a  ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref) " class="point ">
+            <a  ng-show="editableSeg!==node.obj.id " ng-click="redirectSeg(node.obj.ref) " class="point ">
                 {{getSegmentRefNodeName(node.obj)}}
             </a>
 
@@ -341,12 +456,12 @@ if (self === top) {
                     <option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position "> {{child.position}}
                 </select>
                 <select ng-show="editableSeg===node.obj.id " ng-model="segmentRef " ng-change="selectSeg(node,segmentRef) "  style="width:40% " class="form-control input-sm ">
-                    <option ng-repeat="segmentRef in tmpResults " value="{{segmentRef}}"  ng-selected="node.obj.ref.ext===segmentRef.ext "> {{getSegmentLabel(segmentRef)}}
+                    <option ng-repeat="segmentRef in tmpResults " value="{{segmentRef}} "  ng-selected="node.obj.ref.ext===segmentRef.ext "> {{getSegmentLabel(segmentRef)}}
                 </select>
-            <div align="center">
+            <div align="center ">
 
             <a  ng-show="editableSeg===node.obj.id "ng-click="backSeg() " >
-                    <span ><i align="center" class="glyphicon glyphicon-remove "></i></span>
+                    <span ><i align="center " class="glyphicon glyphicon-remove "></i></span>
             </a>
             </div>
           </ng-form>
@@ -444,15 +559,16 @@ if (self === top) {
             <div>-</div>
         </td>
         <td class="col-xs-1 " ng-style="commentWidth " ng-show="viewSettings.isVisibleColumn( 'comment') ">
-            <a ng-show="node.obj.comment === null || node.obj.comment == undefined || node.obj.comment == ''" ng-click="node.obj.comment = ' '" class="point">
-                <i class="fa fa-plus fa-fw"></i>
+            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', false)" class="point"
+               tooltip-html="node.obj.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-pencil fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+                <i class="fa fa-plus fa-fw" ng-show="node.obj.comment === '' || node.obj.comment === null"></i>
             </a>
-            <textarea style="width:100%;height:100%" class="form-control" ng-model="node.obj.comment" ng-change="setDirty()" ng-show="node.obj.comment !== null && node.obj.comment != undefined && node.obj.comment != ''">
-            </textarea>
-            <a ng-show="node.obj.comment !== null && node.obj.comment !== undefined && node.obj.comment != ''" ng-click="node.obj.comment = null" class="point">
+            <a ng-click="clearComments(node.obj,'comment')"  ng-show="node.obj.comment !== '' && node.obj.comment !== null">
                 <i class="fa fa-times fa-fw"></i>
             </a>
-
 
 
         </td>
@@ -469,21 +585,21 @@ if (self === top) {
              <a ng-show="editableGrp!==node.obj.id " ng-click="deleteSeg(node) " class="point ">
                     <span><i class="glyphicon glyphicon-trash "></i></span>
             </a>
-            <ng-form  class="form-inline">
+            <ng-form  class="form-inline ">
            
 
             
                 <span class="label label-success label-icon ">G</span>
                 <span  ng-show="editableGrp===node.obj.id ">
-                <select ng-show="editableGrp===node.obj.id " ng-model="position " ng-change="selectPos() "  style="width:15% " class="form-control input-sm  ">
+                <select ng-show="editableGrp===node.obj.id " ng-model="position " ng-change="selectPos() "  style="width:15% " class="form-control input-sm ">
                 <option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position "> {{child.position}}
             </select>
-                 <input style="width:55%" class="form-control"  ng-model="grpName " type="text "/>
+                 <input style="width:55% " class="form-control "  ng-model="grpName " type="text "/>
                  </span>
                 <span ng-show="editableGrp!==node.obj.id " context-menu="segOption "
                       ng-bind="getGroupNodeName(node.obj) "/>
             
-            <div align="center">
+            <div align="center ">
 
             <a ng-show="editableGrp===node.obj.id && grpName "  ng-click="applyGrp(node,grpName,position) " class="point ">
                     <span><i class="glyphicon glyphicon-ok "></i></span>
@@ -555,7 +671,7 @@ if (self === top) {
                     <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) ">
                         <a ng-click="managePredicate(node, message) "
                            tooltip-html="getPredicateAsString(constraint) " tooltip-append-to-body="true "
-                           class="point"
+                           class="point "
                            tooltip-class="constraints-tooltip " ng-bind-html="getPredicateAsString(constraint) "
                            tooltip-trigger
                            tooltip-animation="false " tooltip-placement="left "></a>
@@ -568,7 +684,7 @@ if (self === top) {
             <div>
                 <div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) ">
                     <a ng-click="manageConformanceStatement(node, message) "
-                       class="point"
+                       class="point "
                        tooltip-html="getConformanceStatementAsString(constraint) " tooltip-append-to-body="true "
                        tooltip-class="constraints-tooltip " ng-bind-html="getConstraintAsId(constraint) "
                        tooltip-trigger
@@ -587,12 +703,15 @@ if (self === top) {
         </td>
 
         <td class="col-xs-1 " ng-style="commentWidth " ng-show="viewSettings.isVisibleColumn( 'comment') ">
-            <a ng-show="node.obj.comment === null || node.obj.comment == undefined || node.obj.comment == ''" ng-click="node.obj.comment = ' '" class="point">
-                <i class="fa fa-plus fa-fw"></i>
+
+            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', false)" class="point"
+               tooltip-html="node.obj.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-pencil fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+                <i class="fa fa-plus fa-fw" ng-show="node.obj.comment === '' || node.obj.comment === null"></i>
             </a>
-            <textarea style="width:100%;height:100%" class="form-control" ng-model="node.obj.comment" ng-change="setDirty()" ng-show="node.obj.comment !== null && node.obj.comment != undefined && node.obj.comment != ''">
-            </textarea>
-            <a ng-show="node.obj.comment !== null && node.obj.comment !== undefined && node.obj.comment != ''" ng-click="node.obj.comment = null" class="point">
+            <a ng-click="clearComments(node.obj,'comment')"  ng-show="node.obj.comment !== '' && node.obj.comment !== null">
                 <i class="fa fa-times fa-fw"></i>
             </a>
         </td>
@@ -600,7 +719,7 @@ if (self === top) {
 </script>
 
 <script type="text/ng-template " id="MessageFieldViewTree.html ">
-    <tr tt-node is-branch="hasChildren(node.obj) " ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
+    <tr tt-node is-branch="hasChildren(node.obj) " ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id]) ">
         <td class="col-xs-2 col-fixed-250 ">
             <span class="label label-field label-icon " ng-show="node.obj.type==='field' ">F</span>
             <span class="label label-sub-component label-icon " ng-show="node.obj.type==='subcomponent' ">S</span>
@@ -637,14 +756,14 @@ if (self === top) {
             <span>{{node.obj.confLength}}</span>
         </td>
         <td class="col-xs-1 col-fixed-100 " ng-show="viewSettings.isVisibleColumn( 'datatype') ">
-            <span class="point " ng-click="redirectDT(node.obj.datatype)"
+            <span class="point " ng-click="redirectDT(node.obj.datatype) "
                     >{{getDatatypeLabel(node.obj.datatype)}}</span>
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
             <div>
                 <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null ">
 
-                    <a class="point " ng-repeat="table in node.obj.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
+                    <a class="point " ng-repeat="table in node.obj.tables " ng-click="redirectVS(table) ">{{getTableLabel(table)}}</a>
                 </span>
             </div>
         </td>
@@ -720,16 +839,25 @@ if (self === top) {
             <div>-</div>
         </td>
         <td class="col-xs-1 " ng-style="commentWidth " ng-show="viewSettings.isVisibleColumn( 'comment') ">
-            <p class="form-control " style="width:100%;height:100% " ng-bind="node.obj.comment "
-               ng-show="node.obj.comment !=null && node.obj.comment !='' ">
+            <!--<p class="form-control " style="width:100%;height:100% " ng-bind="node.obj.comment "-->
+               <!--ng-show="node.obj.comment !=null && node.obj.comment !='' ">-->
 
-            </p>
+            <!--</p>-->
+
+            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point"
+               ng-show="node.obj.comment !== '' && node.obj.comment !== null"
+               tooltip-html="node.obj.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-search fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+            </a>
+
         </td>
     </tr>
 </script>
 
 <script type="text/ng-template " id="MessageComponentViewTree.html ">
-    <tr tt-node is-branch="hasChildren(node.obj) " ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
+    <tr tt-node is-branch="hasChildren(node.obj) " ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id]) ">
         <td class="col-xs-2 col-fixed-250 ">
             <span>
                 <span class="label label-field label-icon " ng-show="node.obj.type==='field' ">F</span>
@@ -767,13 +895,13 @@ if (self === top) {
         </td>
 
         <td class="col-xs-1 col-fixed-100 " ng-show="viewSettings.isVisibleColumn( 'datatype') ">
-            <span class="point " ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}</span>
+            <span class="point " ng-click="redirectDT(node.obj.datatype) ">{{getDatatypeLabel(node.obj.datatype)}}</span>
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
             <div>
                 <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null ">
 
-                    <a class="point " ng-repeat="table in node.obj.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
+                    <a class="point " ng-repeat="table in node.obj.tables " ng-click="redirectVS(table) ">{{getTableLabel(table)}}</a>
                 </span>
             </div>
         </td>
@@ -851,10 +979,17 @@ if (self === top) {
             <div>-</div>
         </td>
         <td class="col-xs-1 " ng-style="commentWidth " ng-show="viewSettings.isVisibleColumn( 'comment') ">
-            <p class="form-control " style="width:100%;height:100% " ng-bind="node.obj.comment "
-               ng-show="node.obj.comment !=null && node.obj.comment !='' ">
+            <!--<p class="form-control " style="width:100%;height:100% " ng-bind="node.obj.comment "-->
+               <!--ng-show="node.obj.comment !=null && node.obj.comment !='' ">-->
 
-            </p>
+            <!--</p>-->
+            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point"
+               ng-show="node.obj.comment !== '' && node.obj.comment !== null"
+               tooltip-html="node.obj.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-search fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+            </a>
         </td>
     </tr>
 </script>
@@ -954,20 +1089,21 @@ if (self === top) {
             <span>{{newConstraint.location_1}}</span>
 
                     <span ng-show="newConstraint.childNodes_1 !=null&& newConstraint.childNodes_1.length> 0">
-                                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'message')}" ng-change="updateLocation1()" ng-model="newConstraint.currentNode_1" ng-options="child as child.name for child in newConstraint.childNodes_1" />
-                                                </span>
-                                                <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'message')">Empty node</span>
-                                                </td>
-                                                <td class="col-md-2">
-                                                    <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'" />
-                                                    <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
-                                                </td>
-                                                <td class="col-md-2">
-                                                    <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
-                                                    <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty constraint pattern</span>
-                                                </td>
-                                                <td class="col-md-2">
-                                                    <span ng-show="newConstraint.contraintType == 'a literal value' || 
+                                                            <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'message')}" ng-change="updateLocation1()" ng-model="newConstraint.currentNode_1" ng-options="child as child.name for child in newConstraint.childNodes_1"
+                                                            />
+                                                            </span>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'message')">Empty node</span>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'" />
+                                                                <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
+                                                                <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty constraint pattern</span>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <span ng-show="newConstraint.contraintType == 'a literal value' || 
                                    newConstraint.contraintType == 'equal to' ||
                                    newConstraint.contraintType == 'not-equal to' ||
                                    newConstraint.contraintType == 'greater than' ||
@@ -978,15 +1114,15 @@ if (self === top) {
                                ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
                                ng-model="newConstraint.value" type="text"/>
                         <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
-                                                    </span>
-                                                    <span ng-show="newConstraint.contraintType == 'one of list values'">
+                                                                </span>
+                                                                <span ng-show="newConstraint.contraintType == 'one of list values'">
                         <input class="form-control"
                                ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
                                ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
                         <span style="color:red;"
                               ng-show="isEmptyConstraintValue(newConstraint)">Empty list of values</span>
-                                                    </span>
-                                                    <span ng-show="newConstraint.contraintType == 'formatted value'">
+                                                                </span>
+                                                                <span ng-show="newConstraint.contraintType == 'formatted value'">
                         <select class="form-control"
                                 ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
                                 ng-model="newConstraint.value"
@@ -997,9 +1133,9 @@ if (self === top) {
                                    ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
                         </div>
                         <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty format</span>
-                                                    <span style="color:red;" ng-show="isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
-                                                    </span>
-                                                    <span ng-show="newConstraint.contraintType == 'identical to another node' ||
+                                                                <span style="color:red;" ng-show="isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
+                                                                </span>
+                                                                <span ng-show="newConstraint.contraintType == 'identical to another node' ||
                                    newConstraint.contraintType == 'equal to another node' ||
                                    newConstraint.contraintType == 'not-equal to another node' ||
                                    newConstraint.contraintType == 'greater than another node' ||
@@ -1007,121 +1143,121 @@ if (self === top) {
                                    newConstraint.contraintType == 'less than another node' ||
                                    newConstraint.contraintType == 'equal to or less than another node'">
                         <span>{{newConstraint.location_2}}</span>
-                                                    <span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
+                                                                <span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
                             <select class="form-control"
                                     ng-class="{'form-control-invalid': isEmptyConstraintAnotherNode(newConstraint, 'message')}"
                                     ng-change="updateLocation2()"
                                     ng-model="newConstraint.currentNode_2"
                                     ng-options="child as child.name for child in newConstraint.childNodes_2"/>
                         </span>
-                                                    <span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'message')">Empty another node</span>
-                                                    </span>
-                                                    <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
+                                                                <span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'message')">Empty another node</span>
+                                                                </span>
+                                                                <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
                         <span>ValueSet ID: </span>
-                                                    <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
+                                                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
                                                         <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">
                                                             {{table.bindingIdentifier}}
                                                         </option>
                                                     </select>
-                                                    <span style="color:red;" ng-show="isEmptyConstraintValueSet(newConstraint)">Empty value set</span>
-                                                    <br/>
-                                                    <span>BindingStrength: </span>
-                                                    <select name="bindingStrength" class="form-control form-control-short" ng-model="newConstraint.bindingStrength">
+                                                                <span style="color:red;" ng-show="isEmptyConstraintValueSet(newConstraint)">Empty value set</span>
+                                                                <br/>
+                                                                <span>BindingStrength: </span>
+                                                                <select name="bindingStrength" class="form-control form-control-short" ng-model="newConstraint.bindingStrength">
                                                         <option value="R">R</option>
                                                         <option value="S">S</option>
                                                         <option value="U">U</option>
                                                     </select>
-                                                    <br/>
-                                                    <span>BindingLocation: </span>
-                                                    <input class="form-control form-control-short" ng-model="newConstraint.bindingLocation" type="text" />
-                                                    </span>
-                                                </td>
-                                                <td class="col-md-1">
-                                                    <select class="form-control" ng-class="{'form-control-invalid': !newConstraint.trueUsage}" ng-model="newConstraint.trueUsage" ng-options="usage for usage in config.usages" />
-                                                    <span style="color:red;" ng-show="!newConstraint.trueUsage">Empty true usage</span>
-                                                </td>
-                                                <td class="col-md-1">
-                                                    <select class="form-control" ng-class="{'form-control-invalid': !newConstraint.falseUsage}" ng-model="newConstraint.falseUsage" ng-options="usage for usage in config.usages" />
-                                                    <span style="color:red;" ng-show="!newConstraint.falseUsage">Empty false usage</span>
-                                                </td>
-                                                <td class="col-md-1" align="center">
-                                                    <button class="btn btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'message')"><span><i class="fa fa-plus fa-fw">
+                                                                <br/>
+                                                                <span>BindingLocation: </span>
+                                                                <input class="form-control form-control-short" ng-model="newConstraint.bindingLocation" type="text" />
+                                                                </span>
+                                                            </td>
+                                                            <td class="col-md-1">
+                                                                <select class="form-control" ng-class="{'form-control-invalid': !newConstraint.trueUsage}" ng-model="newConstraint.trueUsage" ng-options="usage for usage in config.usages" />
+                                                                <span style="color:red;" ng-show="!newConstraint.trueUsage">Empty true usage</span>
+                                                            </td>
+                                                            <td class="col-md-1">
+                                                                <select class="form-control" ng-class="{'form-control-invalid': !newConstraint.falseUsage}" ng-model="newConstraint.falseUsage" ng-options="usage for usage in config.usages" />
+                                                                <span style="color:red;" ng-show="!newConstraint.falseUsage">Empty false usage</span>
+                                                            </td>
+                                                            <td class="col-md-1" align="center">
+                                                                <button class="btn btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'message')"><span><i class="fa fa-plus fa-fw">
                 &nbsp; </i>Add</span></button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <table class="table table-striped table-bordered" ng-show="constraintType === 'Complex'">
-                                        <thead>
-                                            <tr class="tbl-header">
-                                                <th class="col-md-1" style="width: 4.1667%"></th>
-                                                <th class="col-md-2">Complex Type</th>
-                                                <th class="col-md-1" style="width: 4.1667%"></th>
-                                                <th class="col-md-2">First Constraint</th>
-                                                <th class="col-md-1" style="width: 4.1667%"></th>
-                                                <th class="col-md-2">Second Constraint</th>
-                                                <th class="col-md-1">True Usage</th>
-                                                <th class="col-md-1">False Usage
-                                                    < </th>
-                                                        <th class="col-md-1"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="col-md-1" style="width: 4.1667%" align="center">
-                                                    <button class="btn btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <table class="table table-striped table-bordered" ng-show="constraintType === 'Complex'">
+                                                    <thead>
+                                                        <tr class="tbl-header">
+                                                            <th class="col-md-1" style="width: 4.1667%"></th>
+                                                            <th class="col-md-2">Complex Type</th>
+                                                            <th class="col-md-1" style="width: 4.1667%"></th>
+                                                            <th class="col-md-2">First Constraint</th>
+                                                            <th class="col-md-1" style="width: 4.1667%"></th>
+                                                            <th class="col-md-2">Second Constraint</th>
+                                                            <th class="col-md-1">True Usage</th>
+                                                            <th class="col-md-1">False Usage
+                                                                < </th>
+                                                                    <th class="col-md-1"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="col-md-1" style="width: 4.1667%" align="center">
+                                                                <button class="btn btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">
                 &nbsp; </i>Reset</span></button>
-                                                </td>
-                                                <td class="col-md-2">
-                                                    <select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
                                                         <option value="AND">AND</option>
                                                         <option value="OR">OR</option>
                                                         <option value="IFTHEN">IFTHEN</option>
                                                     </select>
-                                                    <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
-                                                </td>
-                                                <td class="col-md-1" align="center" style="width: 4.1667%">
-                                                    <span ng-show="compositeType == 'IFTHEN'">IF</span>
-                                                </td>
-                                                <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
-                                                    <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
-                                                    <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
-                                                </td>
-                                                <td class="col-md-1" align="center" style="width: 4.1667%">
-                                                    <span ng-show="compositeType == 'AND'">AND</span>
-                                                    <span ng-show="compositeType == 'OR'">OR</span>
-                                                    <span ng-show="compositeType == 'IFTHEN'">THEN</span>
-                                                </td>
-                                                <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
-                                                    <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
-                                                    <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
-                                                </td>
-                                                <td class="col-md-1">
-                                                    <select class="form-control" ng-class="{'form-control-invalid': !complexConstraintTrueUsage}" ng-model="complexConstraintTrueUsage" ng-options="usage for usage in config.usages" />
-                                                    <span style="color:red;" ng-show="!complexConstraintTrueUsage">Empty true usage</span>
-                                                </td>
-                                                <td class="col-md-1">
-                                                    <select class="form-control" ng-class="{'form-control-invalid': !complexConstraintFalseUsage}" ng-model="complexConstraintFalseUsage" ng-options="usage for usage in config.usages" />
-                                                    <span style="color:red;" ng-show="!complexConstraintFalseUsage">Empty true usage</span>
-                                                </td>
-                                                <td class="col-md-1" align="center">
-                                                    <button class="btn btn-primary btn-xxs" ng-click="addComplexPredicate()" ng-disabled="erorrForComplexPredicate(compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage)">
+                                                                <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
+                                                            </td>
+                                                            <td class="col-md-1" align="center" style="width: 4.1667%">
+                                                                <span ng-show="compositeType == 'IFTHEN'">IF</span>
+                                                            </td>
+                                                            <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+                                                                <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
+                                                                <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
+                                                            </td>
+                                                            <td class="col-md-1" align="center" style="width: 4.1667%">
+                                                                <span ng-show="compositeType == 'AND'">AND</span>
+                                                                <span ng-show="compositeType == 'OR'">OR</span>
+                                                                <span ng-show="compositeType == 'IFTHEN'">THEN</span>
+                                                            </td>
+                                                            <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                                                                <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
+                                                                <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
+                                                            </td>
+                                                            <td class="col-md-1">
+                                                                <select class="form-control" ng-class="{'form-control-invalid': !complexConstraintTrueUsage}" ng-model="complexConstraintTrueUsage" ng-options="usage for usage in config.usages" />
+                                                                <span style="color:red;" ng-show="!complexConstraintTrueUsage">Empty true usage</span>
+                                                            </td>
+                                                            <td class="col-md-1">
+                                                                <select class="form-control" ng-class="{'form-control-invalid': !complexConstraintFalseUsage}" ng-model="complexConstraintFalseUsage" ng-options="usage for usage in config.usages" />
+                                                                <span style="color:red;" ng-show="!complexConstraintFalseUsage">Empty true usage</span>
+                                                            </td>
+                                                            <td class="col-md-1" align="center">
+                                                                <button class="btn btn-primary btn-xxs" ng-click="addComplexPredicate()" ng-disabled="erorrForComplexPredicate(compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage)">
                                                         <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                    </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-success btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
         &nbsp; </i>Save</span></button>
-                    <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+                                <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
-                    <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+                                <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
-                </div>
+                            </div>
 </script>
 <script type="text/ng-template" id="ConformanceStatementMessageCtrl.html">
     <div class="modal-header">
@@ -1210,7 +1346,8 @@ if (self === top) {
                     class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                                 </td>
                                 <td class="col-md-2">
-                                    <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint) || isDuplicatedConstraintID(newConstraint, targetPlainId)}" ng-model="newConstraint.constraintId" ng-change="targetPlainId = newConstraint.constraintId;" type="text" ng-readonly="targetPlainId !== newConstraint.constraintId" />
+                                    <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint) || isDuplicatedConstraintID(newConstraint, targetPlainId)}" ng-model="newConstraint.constraintId" ng-change="targetPlainId = newConstraint.constraintId;"
+                                        type="text" ng-readonly="targetPlainId !== newConstraint.constraintId" />
                                     <i class="fa fa-pencil" ng-hide="targetPlainId == newConstraint.constraintId" ng-click="targetPlainId = newConstraint.constraintId;"></i>
                                     <i class="fa fa-paper-plane" ng-hide="targetPlainId != newConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1" ng-click="conformanceStatementIdList.push(newConstraint.constraintId); targetPlainId = ''"></i>
                                     <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
@@ -1333,7 +1470,8 @@ if (self === top) {
                     class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                                 </td>
                                 <td class="col-md-2">
-                                    <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyComplexConstraintID(newComplexConstraintId) || isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId)}" ng-model="newComplexConstraintId" ng-change="targetComplexId = newComplexConstraintId;" type="text" ng-readonly="targetComplexId !== newComplexConstraintId" />
+                                    <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyComplexConstraintID(newComplexConstraintId) || isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId)}" ng-model="newComplexConstraintId" ng-change="targetComplexId = newComplexConstraintId;"
+                                        type="text" ng-readonly="targetComplexId !== newComplexConstraintId" />
                                     <i class="fa fa-pencil" ng-hide="targetComplexId == newComplexConstraintId" ng-click="targetComplexId = newComplexConstraintId;"></i>
                                     <i class="fa fa-paper-plane" ng-hide="targetComplexId != newComplexConstraintId || conformanceStatementIdList.indexOf(newComplexConstraintId) != -1" ng-click="conformanceStatementIdList.push(newComplexConstraintId); targetComplexId = ''"></i>
                                     <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
@@ -1384,7 +1522,7 @@ if (self === top) {
     </div>
 </script>
 <script type="text/ng-template" id="MessageReadTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" >
+    <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-xs-2 col-fixed-250">
             <span>{{::node.obj.event}}^{{::node.obj.structID}}:{{::node.obj.description}}</span>
         </td>
@@ -1457,13 +1595,15 @@ if (self === top) {
         </td>
         <td class="col-xs-2" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
+                    tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
         <td class="col-xs-3" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
+                    ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
@@ -1471,8 +1611,15 @@ if (self === top) {
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment" ng-show="node.obj.comment != null && node.obj.comment != ''">
-            </p>
+            <!--<p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment" ng-show="node.obj.comment != null && node.obj.comment != ''">-->
+            <!--</p>-->
+            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point"
+               ng-show="node.obj.comment !== '' && node.obj.comment !== null"
+               tooltip-html="node.obj.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-search fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+            </a>
         </td>
     </tr>
 </script>
@@ -1510,13 +1657,15 @@ if (self === top) {
         </td>
         <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
+                    tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
         <td class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
+                    ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
@@ -1524,8 +1673,15 @@ if (self === top) {
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <p class="form-control" style="width:100%;height:100%" ng-bindl="node.obj.comment" ng-show="node.obj.comment !== '' && node.obj.comment !== null">
-            </p>
+            <!--<p class="form-control" style="width:100%;height:100%" ng-bindl="node.obj.comment" ng-show="node.obj.comment !== '' && node.obj.comment !== null">-->
+            <!--</p>-->
+            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point"
+               ng-show="node.obj.comment !== '' && node.obj.comment !== null"
+               tooltip-html="node.obj.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-search fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+            </a>
         </td>
     </tr>
 </script>
@@ -1535,44 +1691,44 @@ if (self === top) {
             <span class="header4 ">Create Segment</span>
         </div>
     </div>
-     <div class="modal-body">
+    <div class="modal-body">
         <div class="creation-modal-content">
-        <form name="addSegForm" class="form-horizontal" novalidate>
-                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !selected()}">
+            <form name="addSegForm" class="form-horizontal" novalidate>
+                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !selected()}">
                     <label class="col-md-3 control-label ">Existing Segment*</label>
                     <div class="controls col-md-9 ">
-                        <input  class="form-control  " type="text" ng-model="search.name" ng-hide="selected()" required/>
-                        <li  class="form-control  " ng-show="selected()">
+                        <input class="form-control  " type="text" ng-model="search.name" ng-hide="selected()" required/>
+                        <li class="form-control  " ng-show="selected()">
                             {{newSeg.name}} <span ng-show="newSeg.ext">_{{newSeg.ext}}</span>
                             <button type="button" class="close" aria-label="Close" ng-click="unselect()">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </li>
-                     <div ng-if="search.name && !selected()">
-                        <li class="form-control  " ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments | filter:search ">
-                            {{segment.name}} <span ng-show="segment.ext">_{{segment.ext}}</span>
-                        </li>
-                    </div>
+                        <div ng-if="search.name && !selected()">
+                            <li class="form-control  " ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments | filter:search ">
+                                {{segment.name}} <span ng-show="segment.ext">_{{segment.ext}}</span>
+                            </li>
                         </div>
+                    </div>
                 </div>
 
-                <div class="form-group control-group"  ng-class="{'igl-has-error has-feedback': !addSegForm.inputPosition.$valid}">
+                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addSegForm.inputPosition.$valid}">
                     <label class="col-md-3 control-label ">Position*</label>
                     <div class="controls col-md-9 ">
-                        <select ng-model="position " ng-change="selectPos() "  class="form-control input-sm " required id="inputPosition" name="inputPosition">
+                        <select ng-model="position " ng-change="selectPos() " class="form-control input-sm " required id="inputPosition" name="inputPosition">
                             <option ng-show="segmentParent.type==='message'" ng-repeat="child in segmentParent.children "> {{child.position}}
                                 <option ng-show="segmentParent.obj && segmentParent.obj.type==='group'" ng-repeat="child in segmentParent.children "> {{child.obj.position}}
                                     <option value="{{segmentParent.children.length+1}}">{{segmentParent.children.length+1}}
                         </select>
                     </div>
                 </div>
-                 <div class="form-group control-group"  ng-class="{'igl-has-error has-feedback': !addSegForm.usage.$valid}">
+                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addSegForm.usage.$valid}">
                     <label class="col-md-3 control-label ">Usage*</label>
                     <div class="controls col-md-9 ">
-                        <select  class="form-control input-sm " name="usage" id="usage" ng-change="selectUsage(newSegment.usage) " required ng-model="newSegment.usage " ng-options="usage for usage in config.usages " required />
+                        <select class="form-control input-sm " name="usage" id="usage" ng-change="selectUsage(newSegment.usage) " required ng-model="newSegment.usage " ng-options="usage for usage in config.usages " required />
                     </div>
                 </div>
-                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addSegForm.min.$valid ||!addSegForm.max.$valid }">
+                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addSegForm.min.$valid ||!addSegForm.max.$valid }">
                     <label class="col-md-3 control-label ">Cardinality*</label>
                     <div class="controls col-md-9 ">
                         <span class="form-inline ">
@@ -1599,14 +1755,14 @@ if (self === top) {
                                             </span>
                     </div>
                 </div>
-                 <div class="form-group control-group">
+                <div class="form-group control-group">
                     <label class="col-md-3 control-label ">Comment</label>
-                     <div class="controls col-md-9 ">
-                    <textarea  class="form-control  " ng-model="newSegment.comment ">
+                    <div class="controls col-md-9 ">
+                        <textarea class="form-control  " ng-model="newSegment.comment ">
                     </textarea>
-                         </div>
-             </div>
-        </form>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
             <button class="btn btn-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
@@ -1627,33 +1783,33 @@ if (self === top) {
     </div>
     <div class="modal-body">
         <div class="creation-modal-content">
-        <form name="addGrpForm" class="form-horizontal" novalidate>
-                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.inputGroupName.$valid}">
+            <form name="addGrpForm" class="form-horizontal" novalidate>
+                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.inputGroupName.$valid}">
                     <label class="col-md-3 control-label ">Group Name*</label>
                     <div class="controls col-md-9 ">
-                        <input  class="form-control  " type="text" ng-model="grpName" name="inputGroupName" id="inputGroupName"  required/>
+                        <input class="form-control  " type="text" ng-model="grpName" name="inputGroupName" id="inputGroupName" required/>
                     </div>
                 </div>
-                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grPosition.$valid}">
+                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grPosition.$valid}">
                     <label class="col-md-3 control-label ">Position*</label>
                     <div class="controls col-md-9 ">
-                        <select ng-model="position "  class="form-control input-sm " ng-change="selectPos() " class="point " required id="grPosition" name="grPosition">
+                        <select ng-model="position " class="form-control input-sm " ng-change="selectPos() " class="point " required id="grPosition" name="grPosition">
                             <option ng-show="groupParent.type==='message'" ng-repeat="child in groupParent.children "> {{child.position}}
                                 <option ng-show="groupParent.obj && groupParent.obj.type==='group'" ng-repeat="child in groupParent.children "> {{child.obj.position}}
                                     <option value="{{groupParent.children.length+1}}">{{groupParent.children.length+1}}
                         </select>
                     </div>
                 </div>
-                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grUsage.$valid}">
+                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grUsage.$valid}">
                     <label class="col-md-3 control-label ">Usage*</label>
                     <div class="controls col-md-9 ">
-                        <select  class="form-control input-sm " name="grUsage" id="grUsage" ng-change="selectUsage(newGroup.usage) " ng-model="newGroup.usage " ng-options="usage for usage in config.usages " required />
+                        <select class="form-control input-sm " name="grUsage" id="grUsage" ng-change="selectUsage(newGroup.usage) " ng-model="newGroup.usage " ng-options="usage for usage in config.usages " required />
                     </div>
                 </div>
-                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
+                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
                     <label class="col-md-3 control-label ">Cardinality*</label>
                     <div class="controls col-md-9 ">
-                        <span  class="form-inline ">
+                        <span class="form-inline ">
                                                 <input  style="width:49%;margin-right: 1px " class="form-control "
                                                     placeholder="Min"
                                                        name="grCardMin"
@@ -1672,14 +1828,14 @@ if (self === top) {
                                             </span>
                     </div>
                 </div>
-                  <div class="form-group control-group">
+                <div class="form-group control-group">
                     <label class="col-md-3 control-label ">Comment</label>
-                      <div class="controls col-md-9 ">
-                    <textarea  class="form-control  " ng-model="newGroup.comment ">
+                    <div class="controls col-md-9 ">
+                        <textarea class="form-control  " ng-model="newGroup.comment ">
                     </textarea>
-                          </div>
-             </div>
-        </form>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
             <button class="btn btn-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
@@ -1753,12 +1909,12 @@ if (self === top) {
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 </script>
 
 <script type="text/ng-template" id="ConfirmMessageDeleteCtrl.html">
     <div class="modal-header modal-wide">
-         <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Delete Confirmation
+        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Delete Confirmation
         </p>
     </div>
     <div class="modal-body">
@@ -1822,4 +1978,210 @@ if (self === top) {
         <button class="btn btn-primary btn-sm" ng-click="confirm()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Leave</span>
         </button>
     </div>
+</script>
+
+
+<script type="text/ng-template" id="tree_node">
+    <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined)">
+        <td class="col-xs-1 " style="width:14% ">
+            <span ng-bind="node.position.element"></span>
+        </td>
+        <td class="col-xs-2 " style="width:37% ">
+            <table class=" table-borderless" ng-show="(node.label.element && (node.ext.element||node.ext.element===null) )||(node.label.element && !node.ext)">
+                <tr>
+                    <td class="col-sm-1">
+                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment  label-icon lb-sm ">S</span>
+                        <span ng-show="node.type.element==='segment'" class="label label-segment  label-icon lb-sm ">S</span>
+                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
+                        <span ng-show="node.type.element==='component' " class="label label-component label-icon lb-sm">C</span>
+                        <span ng-bind="node.label.element"></span><span ng-show="node.description.element">:<span ng-bind="node.description.element"></span></span>
+                    </td>
+                </tr>
+            </table>
+            <table class=" table-borderless" ng-show="(node.label.element1 && node.label.element2) || (node.label.element && (node.ext.element1 || node.ext.element2))">
+                <tr style="background-color:#B5F7EC">
+                    <td class="col-sm-1">
+                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment label-icon lb-sm " align="center">S</span>
+                        <span ng-show="node.type.element==='segment'" class="label label-segment label-icon lb-sm " align="center">S</span>
+                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
+                        <span ng-show="node.type.element==='component' " class="label label-component label-icon lb-sm">C</span>
+                        <span ng-show="node.type.element1==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element1==='segmentRef'" class="label label-segment label-icon lb-sm ">S</span>
+                        <span ng-bind="node.label.element"></span>
+                        <span ng-bind="node.label.element1"></span>
+                        <span ng-show="node.ext.element1|| node.ext.element">_
+                        <span ng-show="node.ext.element1" ng-bind="node.ext.element1"></span>
+                        <span ng-show="node.ext.element" ng-bind="node.ext.element"></span>
+                        </span>
+                        <span ng-show="node.description">:
+                        <span ng-show="node.description.element1" ng-bind="node.description.element1"></span>
+                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
+                        </span>
+                    </td>
+                </tr>
+                <tr style="background-color:#EDE1AF">
+                    <td class="col-sm-1">
+                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment label-icon lb-sm" align="center">S</span>
+                        <span ng-show="node.type.element==='segment'" class="label label-segment label-icon lb-sm" align="center">S</span>
+                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
+                        <span ng-show="node.type.element==='component' " class="label label-component label-icon lb-sm">C</span>
+                        <span ng-show="node.type.element2==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element2==='segmentRef'" class="label label-segment label-icon  lb-sm">S</span>
+                        <span ng-show="node.type.element2==='segment'" class="label label-segment label-icon  lb-sm">S</span>
+                        <span ng-bind="node.label.element"></span>
+                        <span ng-bind="node.label.element2"></span>
+                        <span ng-show="node.ext.element2||node.ext.element">_
+                        <span ng-show="node.ext.element2" ng-bind="node.ext.element2"></span>
+                        <span ng-show="node.ext.element" ng-bind="node.ext.element"></span>
+                        </span>
+                        <span ng-show="node.description">:
+                        <span ng-show="node.description.element2" ng-bind="node.description.element2"></span>
+                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 " ng-show="node.usage" style="width:2% ">
+            <div align="center">
+                <table class=" table-borderless">
+                    <tr>
+                        <td class="col-md-1" style="background-color:#B5F7EC">
+                            <div align="center"> <span ng-bind="node.usage.element1"></span></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-1" style="background-color:#EDE1AF">
+                            <div align="center"> <span ng-bind="node.usage.element2"></span></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td class="col-xs-1 " ng-show="!node.usage" style="width:2% ">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1 " ng-show="node.minCard" style="width:2% ">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.minCard.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.minCard.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 c" ng-show="!node.minCard" style="width:2% ">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1 " ng-show="node.maxCard" style="width:2% ">
+            <table class="table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.maxCard.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.maxCard.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 " ng-show="!node.maxCard" style="width:2% ">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1 " ng-show="node.minLength" style="width:2% ">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.minLength.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.minLength.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 " ng-show="!node.minLength" style="width:2% ">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1 " ng-show="node.maxLength" style="width:2% ">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.maxLength.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.maxLength.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 " ng-show="!node.maxLength" style="width:2% ">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1 col-fixed-20" ng-show="node.confLength" style="width:2% ">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.confLength.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.confLength.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 " ng-show="!node.confLength" style="width:2% ">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1 col-fixed-20" ng-show="node.datatype" style="width:21% ">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.datatype.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.datatype.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 " ng-show="!node.datatype" style="width:21% ">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-xs-1" ng-show="node.valueset" style="width:16% ">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.valueset.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.valueset.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-xs-1 " ng-show="!node.valueset" style="width:16% ">
+            <div align="center"> - </div>
+        </td>
+    </tr>
 </script>

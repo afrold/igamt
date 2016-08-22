@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.DataContext;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
@@ -29,6 +30,8 @@ public class DataModelWithConstraints extends DataModel {
 
   protected List<Predicate> predicates = new ArrayList<Predicate>();
 
+  protected DataContext context;
+  
   protected List<ConformanceStatement> conformanceStatements =
       new ArrayList<ConformanceStatement>();
 
@@ -154,4 +157,16 @@ public class DataModelWithConstraints extends DataModel {
   public void setStatus(STATUS status) {
     this.status = status;
   }
+
+  public DataContext getContext() {
+    return context;
+  }
+
+  public void setContext(DataContext context) {
+    this.context = context;
+  }
+  
+  
+  
+  
 }

@@ -107,6 +107,15 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     log.info("IGDocumentServiceImpl.findByScopeAndVersion=" + igDocuments.size());
     return igDocuments;
   }
+  
+  @Override
+  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version) {
+	  List<IGDocument> igDocuments = documentRepository.findByAccountIdAndScopesAndVersion(accountId, scopes, hl7Version);
+	    log.info("IGDocumentServiceImpl.findByScopeAndVersion=" + igDocuments.size());
+	    return igDocuments;
+  }
+  
+  
   @Override
   public IGDocument findById(String id) {
     log.info("DataypeServiceImpl.findById=" + id);
@@ -151,4 +160,5 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     // TODO Auto-generated method stub
     return null;
   }
+
 }

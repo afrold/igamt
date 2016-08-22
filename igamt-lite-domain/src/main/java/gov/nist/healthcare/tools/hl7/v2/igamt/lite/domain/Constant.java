@@ -59,5 +59,10 @@ public static final String DATATYPE_LIBRARY_DOCUMENT = "datatypeLibraryDocument"
   public static enum STATUS {
     PUBLISHED, UNPUBLISHED
   };
+  
+  public static enum DataContext {
+    IG, LIBRARY;
+  }
+
 
 }
