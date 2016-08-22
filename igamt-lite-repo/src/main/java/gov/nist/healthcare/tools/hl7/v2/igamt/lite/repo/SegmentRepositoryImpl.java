@@ -32,13 +32,7 @@ public class SegmentRepositoryImpl implements SegmentOperations {
 	@Autowired
 	private MongoOperations mongo;
 
-	@Override
-	public List<Segment> findByLibIds(String segLibId) {
-		Criteria where = Criteria.where("libIds").in(segLibId);
-		Query qry = Query.query(where);
-		return mongo.find(qry, Segment.class);
-	}
-
+	
 	@Override
 	public List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
 		Criteria where = Criteria.where("scope").in(scopes);

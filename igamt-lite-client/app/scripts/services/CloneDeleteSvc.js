@@ -271,7 +271,10 @@ angular.module('igl').factory(
 
             MessageService.save(newMessage).then(function (result) {
                 newMessage = result;
+                $rootScope.messagesMap[newMessage.id]=newMessage;
+                //MessageService.merge($rootScope.messagesMap[newMessage.id], newMessage);                
                 $rootScope.igdocument.profile.messages.children.push(newMessage);
+                
                 IgDocumentService.save($rootScope.igdocument).then(function (igd) {
                     $rootScope.messages = $rootScope.igdocument.profile.messages;
                     $rootScope.message = newMessage;

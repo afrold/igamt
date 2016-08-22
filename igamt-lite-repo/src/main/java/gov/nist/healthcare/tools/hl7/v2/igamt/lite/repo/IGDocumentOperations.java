@@ -29,6 +29,8 @@ public interface IGDocumentOperations {
 	public List<IGDocument> findStandardByVersion(String hl7version);
 
 	public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	
+	public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version);
 
 	public List<String> findHl7Versions();
 

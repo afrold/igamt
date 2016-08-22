@@ -11,20 +11,17 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-
 import java.util.List;
 import java.util.Set;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 public interface SegmentService {
 
   Segment findById(String id);
 
   Segment save(Segment segment);
-
-  List<Segment> findByLibIds(String segLibId);
 
   List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
