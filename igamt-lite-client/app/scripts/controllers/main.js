@@ -64,7 +64,20 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
             }
             return '';
         };
-
+        $rootScope.setCardinalities= function(obj){
+        	if(obj.usage==='R'){
+        		obj.min=1;
+        	}
+        	else if(obj.usage==='X'){
+        		obj.min=0;
+        		obj.max=0;
+        	}else if(obj.usage==='O'){
+        		obj.min=0;
+        		
+        	}
+        };
+        
+        
         $scope.path = function () {
             return $location.url();
         };
