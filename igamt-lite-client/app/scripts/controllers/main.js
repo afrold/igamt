@@ -1392,7 +1392,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         id: new ObjectId().toString(),
                         constraintId: newConstraint.constraintId,
                         constraintTarget: positionPath,
-                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
+                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value2 + '\'.',
                         assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Assertion>'
                     };
                 } else {
@@ -1400,7 +1400,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         id: new ObjectId().toString(),
                         constraintId: newConstraint.constraintId,
                         constraintTarget: positionPath,
-                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value + '\'.',
                         assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Assertion>'
                     };
                 }
@@ -1600,7 +1600,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         id: new ObjectId().toString(),
                         constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
                         constraintTarget: positionPath,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
+                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value2 + '\'.',
                         trueUsage: newConstraint.trueUsage,
                         falseUsage: newConstraint.falseUsage,
                         assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Condition>'
@@ -1610,7 +1610,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         id: new ObjectId().toString(),
                         constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
                         constraintTarget: positionPath,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value + '\'.',
                         trueUsage: newConstraint.trueUsage,
                         falseUsage: newConstraint.falseUsage,
                         assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Condition>'
