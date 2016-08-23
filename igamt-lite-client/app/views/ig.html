@@ -233,17 +233,17 @@
         <div class="row">
             <div class="col-md-12">
                 <div ng-if="!editorTarget.disabled">
-                    <textarea froala="froalaEditorOptions" ng-model="editorTarget.obj[editorTarget.key]"
+                    <textarea rows="10" froala="froalaEditorOptions" style="width:100%;" autofocus ng-model="editorTarget.obj[editorTarget.key]"
                               id="globalEditor" name="content" ng-change="recordChanged()"></textarea>
                 </div>
-                <div ng-if="editorTarget.disabled">
+                <div ng-if="editorTarget.disabled" style="width:100%;">
                     <div froala-view="editorTarget.obj[editorTarget.key]"></div>
                 </div>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="close()"><span><i class="fa fa-times fa-fw">
+        <button class="btn btn-primary btn-md" ng-click="close()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Close</span>
         </button>
     </div>
@@ -263,8 +263,9 @@
         <form class="form-horizontal" novalidate>
             <div class="row">
                 <div class="col-md-12">
-                    <textarea rows="5" type="text" ng-disabled="editorTarget.disabled" style="width:100%;" autofocus
+                    <textarea rows="10" type="text" ng-disabled="editorTarget.disabled" style="width:100%;" autofocus
                               name="inputEditor" class="form-control"
+                              ng-change="recordChanged()"
                               ng-model="editorTarget.obj[editorTarget.key]"></textarea>
                 </div>
             </div>
@@ -272,8 +273,8 @@
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-sm" ng-click="close()"><span><i class="fa fa-check fa-fw">
-            &nbsp; </i>Save</span>
+        <button class="btn btn-primary btn-md" ng-click="close()"><span><i class="fa fa-times fa-fw">
+            &nbsp; </i>Close</span>
         </button>
     </div>
 </script>

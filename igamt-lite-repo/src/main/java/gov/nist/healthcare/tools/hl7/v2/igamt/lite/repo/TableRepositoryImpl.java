@@ -30,14 +30,7 @@ public class TableRepositoryImpl implements TableOperations {
 
   @Autowired
   private MongoOperations mongo;
-
-  @Override
-  public List<Table> findByLibIds(String tabLibId) {
-    Criteria where = Criteria.where("libIds").in(tabLibId);
-    Query qry = Query.query(where);
-    return mongo.find(qry, Table.class);
-  }
-
+ 
   @Override
   public List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
     Criteria where = Criteria.where("scope").in(scopes);
