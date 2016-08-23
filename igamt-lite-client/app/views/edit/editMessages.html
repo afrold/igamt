@@ -1969,8 +1969,11 @@
         </p>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want to leave this page and go to {{destination.type}} : {{destination.name}} </p>
+        <p ng-if ="destination.type!=='table'">Are you sure you want to leave this page and go to {{destination.type}} : {{destination.name}} </p>
+        <p ng-if ="destination.type==='table'">Are you sure you want to leave this page and go to the Value Set : {{destination.bindingIdentifier}}</p>
+
     </div>
+
     </div>
     <div class="modal-footer">
         <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>

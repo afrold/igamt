@@ -9,7 +9,7 @@ angular
             'FilteringSvc',
             'SectionSvc',
 
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc, $modal) {
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc) {
 
                 $scope.collapsedata = false;
                 $scope.collapsePcs=true;
@@ -475,7 +475,7 @@ angular
 
                 $scope.SegmentOptions = [
 
-                    ['Copy',
+                    ['Create a Flavor',
                         function($itemScope) {
 
 
@@ -501,7 +501,7 @@ angular
 
                 $scope.DataTypeOptions = [
 
-                    ['Copy',
+                    ['Create a Flavor',
                         function($itemScope) {
 
 
@@ -525,7 +525,7 @@ angular
 
                 $scope.ValueSetOptions = [
 
-                    ['Copy',
+                    ['Create a Flavor',
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -600,7 +600,7 @@ angular
                 ];
 
                 $scope.ValueSetRootOptions = [
-                    ['Add Table', function($itemScope) {
+                    ['Add Value Sets', function($itemScope) {
                         $scope.addTable($rootScope.igdocument);
                     }]
                 ];
@@ -651,7 +651,7 @@ angular
 
 
                 $scope.ValueSetAddOptionsINLIB = [
-                    ['Add Table ',
+                    ['Add Value Sets ',
                         function($itemScope) {
                             //$scope.addDatatypesFromTree();
                             //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
@@ -660,7 +660,7 @@ angular
                 ];
 
                 $scope.addValueSets = [
-                    ['Add Tables',
+                    ['Add Value Sets',
                         function($itemScope) {
                             $scope.addTables($rootScope.igdocument);
                         }
@@ -668,7 +668,7 @@ angular
                 ];
 
                 $scope.addValueSetsInTableLibrary = [
-                    ['Add Tables',
+                    ['Add Value Sets',
                         function($itemScope) {
                             $scope.addTablesInLibrary();
                         }
