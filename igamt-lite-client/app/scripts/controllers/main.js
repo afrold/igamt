@@ -1518,6 +1518,12 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                 };
             }
 
+
+            if(newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')){
+                cs.assertion= cs.assertion.replace("<Assertion>", "<Assertion><NOT>");
+                cs.assertion = cs.assertion.replace("</Assertion>", "</NOT></Assertion>");
+            }
+
             return cs;
         }
 
@@ -1750,6 +1756,11 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                     falseUsage: newConstraint.falseUsage,
                     assertion: '<Condition><SetID Path=\"' + newConstraint.position_1 + '\"/></Condition>'
                 };
+            }
+
+            if(newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')){
+                cp.assertion= cp.assertion.replace("<Condition>", "<Condition><NOT>");
+                cp.assertion = cp.assertion.replace("</Condition>", "</NOT></Condition>");
             }
 
             return cp;
