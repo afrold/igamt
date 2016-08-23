@@ -790,6 +790,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.save = function() {
         $scope.saving = true;
         var segment = $rootScope.segment;
+        $rootScope.$emit("event:saveSegForDelta");
         var ext = segment.ext;
         if (segment.libIds === undefined) segment.libIds = [];
         if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1) {
@@ -1767,6 +1768,14 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
     $scope.initt();
 
     $rootScope.$on('event:initSegment', function(event) {
+        $scope.initt();
+    });
+
+    $rootScope.$on('event:saveSegForDelta', function(event) {
+        $scope.dataList = [];
+        console.log("hereere=======");
+        console.log($scope.segment2)
+        console.log($scope.segments2);
         $scope.initt();
     });
 
