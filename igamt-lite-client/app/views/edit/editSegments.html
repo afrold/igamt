@@ -1256,8 +1256,10 @@
                                        newConstraint.contraintType == 'equal to or greater than' ||
                                        newConstraint.contraintType == 'less than' ||
                                        newConstraint.contraintType == 'equal to or less than'">
-                            <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" type="text"/>
-                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
+                                    <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" type="text"/>
+                                    <span ng-show="newConstraint.contraintType == 'a literal value'">Case Insensitive: </span>
+                                    <input ng-show="newConstraint.contraintType == 'a literal value'" type="checkbox" ng-model="newConstraint.ignoreCase"/>
+                                    <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                 </span>
                                 <span ng-show="newConstraint.contraintType == 'one of list values'">
                             <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
@@ -1509,8 +1511,10 @@
                                    newConstraint.contraintType == 'equal to or greater than' ||
                                    newConstraint.contraintType == 'less than' ||
                                    newConstraint.contraintType == 'equal to or less than'">
-                        <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" type="text"/>
-                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
+                                    <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" type="text"/>
+                                    <span ng-show="newConstraint.contraintType == 'a literal value'">Case Insensitive: </span>
+                                    <input ng-show="newConstraint.contraintType == 'a literal value'" type="checkbox" ng-model="newConstraint.ignoreCase"/>
+                                    <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                 </span>
                                 <span ng-show="newConstraint.contraintType == 'one of list values'">
                         <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>

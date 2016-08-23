@@ -1085,36 +1085,38 @@
             <button class="btn btn-info btn-xxs " ng-click="initPredicate() "><span><i class="fa fa-refresh fa-fw ">
                 &nbsp; </i>Reset</span></button>
         </td>
+
         <td class="col-md-2 ">
             <span>{{newConstraint.location_1}}</span>
+            <span ng-show="newConstraint.childNodes_1 !=null&& newConstraint.childNodes_1.length> 0">
+                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'message')}" ng-change="updateLocation1()" ng-model="newConstraint.currentNode_1" ng-options="child as child.name for child in newConstraint.childNodes_1" />
+            </span>
+            <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'message')">Empty node</span>
+        </td>
 
-                    <span ng-show="newConstraint.childNodes_1 !=null&& newConstraint.childNodes_1.length> 0">
-                                                            <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'message')}" ng-change="updateLocation1()" ng-model="newConstraint.currentNode_1" ng-options="child as child.name for child in newConstraint.childNodes_1"
-                                                            />
-                                                            </span>
-                                                            <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'message')">Empty node</span>
-                                                            </td>
-                                                            <td class="col-md-2">
-                                                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'" />
-                                                                <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
-                                                            </td>
-                                                            <td class="col-md-2">
-                                                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
-                                                                <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty constraint pattern</span>
-                                                            </td>
-                                                            <td class="col-md-2">
-                                                                <span ng-show="newConstraint.contraintType == 'a literal value' || 
+        <td class="col-md-2">
+            <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'" />
+            <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
+        </td>
+
+        <td class="col-md-2">
+            <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
+            <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty constraint pattern</span>
+        </td>
+
+        <td class="col-md-2">
+            <span ng-show="newConstraint.contraintType == 'a literal value' ||
                                    newConstraint.contraintType == 'equal to' ||
                                    newConstraint.contraintType == 'not-equal to' ||
                                    newConstraint.contraintType == 'greater than' ||
                                    newConstraint.contraintType == 'equal to or greater than' ||
                                    newConstraint.contraintType == 'less than' ||
                                    newConstraint.contraintType == 'equal to or less than'">
-                        <input class="form-control"
-                               ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                               ng-model="newConstraint.value" type="text"/>
-                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
-                                                                </span>
+                <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" type="text"/>
+                <span ng-show="newConstraint.contraintType == 'a literal value'">Case Insensitive: </span>
+                <input ng-show="newConstraint.contraintType == 'a literal value'" type="checkbox" ng-model="newConstraint.ignoreCase"/>
+                <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
+            </span>
                                                                 <span ng-show="newConstraint.contraintType == 'one of list values'">
                         <input class="form-control"
                                ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
@@ -1380,10 +1382,12 @@
                                        newConstraint.contraintType == 'equal to or greater than' ||
                                        newConstraint.contraintType == 'less than' ||
                                        newConstraint.contraintType == 'equal to or less than'">
-                            <input class="form-control"
-                                   ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                                   ng-model="newConstraint.value" type="text"/>
-                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
+                                        <input class="form-control"
+                                            ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
+                                            ng-model="newConstraint.value" type="text"/>
+                                        <span ng-show="newConstraint.contraintType == 'a literal value'">Case Insensitive: </span>
+                                        <input ng-show="newConstraint.contraintType == 'a literal value'" type="checkbox" ng-model="newConstraint.ignoreCase"/>
+                                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                     </span>
                                     <span ng-show="newConstraint.contraintType == 'one of list values'">
                             <input class="form-control"

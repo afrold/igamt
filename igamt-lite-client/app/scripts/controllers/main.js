@@ -1343,7 +1343,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         constraintId: newConstraint.constraintId,
                         constraintTarget: positionPath,
                         description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
-                        assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/></Assertion>'
+                        assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Assertion>'
                     };
                 } else {
 
@@ -1548,7 +1548,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
                         trueUsage: newConstraint.trueUsage,
                         falseUsage: newConstraint.falseUsage,
-                        assertion: '<Condition><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/></Condition>'
+                        assertion: '<Condition><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Condition>'
                     };
                 } else {
                     var componetsList = newConstraint.value.split("^");
