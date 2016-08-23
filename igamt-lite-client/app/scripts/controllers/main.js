@@ -1272,6 +1272,14 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                     description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
                     assertion: '<Assertion><OR>' + firstConstraintAssertion + secondConstraintAssertion + '</OR></Assertion>'
                 };
+            } else if (compositeType === 'XOR') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'XOR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
+                    description: '[' + firstConstraint.description + '] ' + 'XOR' + ' [' + secondConstraint.description + ']',
+                    assertion: '<Assertion><XOR>' + firstConstraintAssertion + secondConstraintAssertion + '</XOR></Assertion>'
+                };
             } else if (compositeType === 'IFTHEN') {
                 cs = {
                     id: new ObjectId().toString(),
@@ -1311,6 +1319,16 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                     trueUsage: '',
                     falseUsage: '',
                     assertion: '<Condition><OR>' + firstConstraintAssertion + secondConstraintAssertion + '</OR></Condition>'
+                };
+            }  else if (compositeType === 'XOR') {
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'XOR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
+                    description: '[' + firstConstraint.description + '] ' + 'XOR' + ' [' + secondConstraint.description + ']',
+                    trueUsage: '',
+                    falseUsage: '',
+                    assertion: '<Condition><XOR>' + firstConstraintAssertion + secondConstraintAssertion + '</XOR></Condition>'
                 };
             } else if (compositeType === 'IFTHEN') {
                 cp = {

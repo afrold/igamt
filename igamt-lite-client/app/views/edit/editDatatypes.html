@@ -1160,9 +1160,8 @@
                             <th class="col-md-1" style="width: 4.1667%"></th>
                             <th class="col-md-2">Second Constraint</th>
                             <th class="col-md-1">True Usage</th>
-                            <th class="col-md-1">False Usage
-                                < </th>
-                                    <th class="col-md-1"></th>
+                            <th class="col-md-1">False Usage</th>
+                            <th class="col-md-1"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1175,6 +1174,7 @@
                                 <select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
                 <option value="AND">AND</option>
                 <option value="OR">OR</option>
+                <option value="XOR">XOR</option>
                 <option value="IFTHEN">IFTHEN</option>
             </select>
                                 <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
@@ -1189,6 +1189,7 @@
                             <td class="col-md-1" align="center" style="width: 4.1667%">
                                 <span ng-show="compositeType == 'AND'">AND</span>
                                 <span ng-show="compositeType == 'OR'">OR</span>
+                                <span ng-show="compositeType == 'XOR'">XOR</span>
                                 <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                             </td>
                             <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
@@ -1448,10 +1449,11 @@
                             </td>
                             <td class="col-md-2">
                                 <select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
-                <option value="AND">AND</option>
-                <option value="OR">OR</option>
-                <option value="IFTHEN">IFTHEN</option>
-            </select>
+                                    <option value="AND">AND</option>
+                                    <option value="OR">OR</option>
+                                    <option value="XOR">XOR</option>
+                                    <option value="IFTHEN">IFTHEN</option>
+                                </select>
                                 <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                             </td>
                             <td class="col-md-1" align="center" style="width: 4.1667%">
@@ -1464,6 +1466,7 @@
                             <td class="col-md-1" align="center" style="width: 4.1667%">
                                 <span ng-show="compositeType == 'AND'">AND</span>
                                 <span ng-show="compositeType == 'OR'">OR</span>
+                                <span ng-show="compositeType == 'XOR'">XOR</span>
                                 <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                             </td>
                             <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
