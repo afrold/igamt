@@ -48,8 +48,7 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
   
   private CoConstraints coConstraints = new CoConstraints();
 
-  protected DataContext context;
-
+ 
   public String getId() {
     return id;
   }
@@ -240,16 +239,6 @@ public CoConstraints getCoConstraints() {
 public void setCoConstraints(CoConstraints coConstraints) {
 	this.coConstraints = coConstraints;
 }
-
-public DataContext getContext() {
-  return context;
-}
-
-public void setContext(DataContext context) {
-  this.context = context;
-}
-
-
-
+ 
 
 }
