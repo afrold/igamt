@@ -1096,7 +1096,7 @@
                                    ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
                         </div>
                         <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty format</span>
-                                <span style="color:red;" ng-show="isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
+                                <span style="color:red;" ng-show="newConstraint.value === 'Regular expression' &&  isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
                                 </span>
                                 <span ng-show="newConstraint.contraintType == 'identical to another node' ||
                                    newConstraint.contraintType == 'equal to another node' ||
@@ -1322,22 +1322,24 @@
                             </td>
                             <td class="col-md-2">
                                 <span>{{newConstraint.datatype}}.</span>
-                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'datatype')}" ng-model="newConstraint.component_1" ng-options="component as component.position for component in datatype.components"
-                                />
+                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'datatype')}" ng-model="newConstraint.component_1" ng-options="component as component.position for component in datatype.components"/>
                                 <span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
-                            <select class="form-control form-control-short" ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components"/>
-                        </span>
+                                    <select class="form-control form-control-short" ng-model="newConstraint.subComponent_1"
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components"/>
+                                </span>
                                 <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'datatype')">Empty node</span>
                             </td>
+
                             <td class="col-md-2">
                                 <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'" />
                                 <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
                             </td>
+
                             <td class="col-md-2">
                                 <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
                                 <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty contraint pattern</span>
                             </td>
+
                             <td class="col-md-2">
                                 <span ng-show="newConstraint.contraintType == 'a literal value' || 
                                        newConstraint.contraintType == 'equal to' ||
@@ -1354,12 +1356,11 @@
                                     <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                 </span>
                                 <span ng-show="newConstraint.contraintType == 'one of list values'">
-                            <input class="form-control"
-                                   ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                                   ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)"
-                                   type="text"/>
-                            <span style="color:red;"
-                                  ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
+                                    <input class="form-control"
+                                        ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
+                                        ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)"
+                                        type="text"/>
+                                    <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
                                 </span>
                                 <span ng-show="newConstraint.contraintType == 'formatted value'">
                             <select class="form-control"
@@ -1372,7 +1373,7 @@
                                        ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
                             </div>
                             <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty format</span>
-                                <span style="color:red;" ng-show="isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
+                                    <span style="color:red;" ng-show="newConstraint.value === 'Regular expression' && isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
                                 </span>
                                 <span ng-show="newConstraint.contraintType == 'identical to another node' ||
                                        newConstraint.contraintType == 'equal to another node' ||

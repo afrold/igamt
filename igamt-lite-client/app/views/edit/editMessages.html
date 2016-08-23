@@ -1135,7 +1135,7 @@
                                    ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
                         </div>
                         <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty format</span>
-                                                                <span style="color:red;" ng-show="isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
+                                                                <span style="color:red;" ng-show="newConstraint.value === 'Regular expression' && isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
                                                                 </span>
                                                                 <span ng-show="newConstraint.contraintType == 'identical to another node' ||
                                    newConstraint.contraintType == 'equal to another node' ||
@@ -1408,7 +1408,7 @@
                                        ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
                             </div>
                             <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty format</span>
-                                    <span style="color:red;" ng-show="isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
+                                    <span style="color:red;" ng-show="newConstraint.value === 'Regular expression' && isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
                                     </span>
                                     <span ng-show="newConstraint.contraintType == 'identical to another node' ||
                                        newConstraint.contraintType == 'equal to another node' ||
