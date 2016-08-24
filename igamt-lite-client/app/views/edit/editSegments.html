@@ -190,7 +190,7 @@
 
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
                                             <accordion-heading>
-                                                <span style="color:white;"> Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i> </accordion-heading>
+                                                <span style="color:white;">Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i> </accordion-heading>
                                             <div class="panel-body">
                                                     <div class="col-md-12 igl-page-header">
                                                                 <span class="pull-right">
@@ -201,7 +201,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <!--<span ng-hide="segment.conformanceStatements.length > 0">No conformance statement</span>-->
-                                                        <table class="table table-striped table-bordered table-condensed" ng-show="segment.conformanceStatements.length > 0">
+                                                        <table st-table="displayed" st-safe-src="segment.conformanceStatements" class="table table-striped table-bordered table-condensed" ng-show="segment.conformanceStatements.length > 0">
                                                             <thead>
                                                                 <tr class="tbl-header">
                                                                     <th class="col-md-1">ID</th>
@@ -211,9 +211,9 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr ng-repeat="c in segment.conformanceStatements | orderBy:'constraintTarget'">
-                                                                    <td class="col-md-1">{{c.constraintId}}</td>
-                                                                    <td class="col-md-2">{{c.constraintTarget}}</td>
+                                                                <tr ng-repeat="c in displayed">
+                                                                    <td st-sort="constraintId" class="col-md-1">{{c.constraintId}}</td>
+                                                                    <td st-sort="constraintTarget" class="col-md-2">{{c.constraintTarget}}</td>
                                                                     <td class="col-md-8">{{c.description}}</td>
                                                                     <td class="col-md-1" align="center">
                                                                         <button class="btn btn-danger btn-xxs" ng-click="segment.conformanceStatements.splice(segment.conformanceStatements.indexOf(c), 1);" ng-hide="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">
@@ -242,10 +242,10 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <!--<span ng-hide="segment.predicates.length > 0">No Conditional Predicate</span>-->
-                                                    <table class="table table-striped table-bordered table-condensed" ng-show="segment.predicates.length > 0">
+                                                    <table st-table="displayed" st-safe-src="segment.predicates" class="table table-striped table-bordered table-condensed" ng-show="segment.predicates.length > 0">
                                                         <thead>
                                                             <tr class="tbl-header">
-                                                                <th class="col-md-2">Location</th>
+                                                                <th st-sort="constraintTarget"class="col-md-2">Location</th>
                                                                 <th class="col-md-7">Desciption</th>
                                                                 <th class="col-md-1">True usage</th>
                                                                 <th class="col-md-1">False usage</th>
@@ -253,7 +253,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr ng-repeat="p in segment.predicates | orderBy:'constraintTarget'">
+                                                            <tr ng-repeat="p in displayed">
                                                                 <td class="col-md-2">{{p.constraintTarget}}</td>
                                                                 <td class="col-md-7">{{p.description}}</td>
                                                                 <td class="col-md-1">{{p.trueUsage}}</td>
@@ -1149,19 +1149,19 @@
                 <div class="page-header">
                     <span class="header5">List of conformance statments</span>
                 </div>
-                <table class="table table-striped table-bordered">
+                <table st-table="displayed" st-safe-src="tempComformanceStatements" class="table table-striped table-bordered">
                     <thead>
                         <tr class="tbl-header">
-                            <th class="col-md-1" style="width: 4.1667%">Draggable</th>
-                            <th class="col-md-2">ID</th>
+                            <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
+                            <th st-sort="constraintId" class="col-md-2">ID</th>
                             <th class="col-md-8">Desciption (
                                 <input type="checkbox" ng-model="viewAssertion"> view assertion )</th>
                             <th class="col-md-1"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="c in tempComformanceStatements | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
-                            <td class="col-md-1" align="center" style="width: 4.1667%">
+                        <tr ng-repeat="c in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
+                            <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                 <i ng-show="c.assertion" class="fa fa-bullseye fa-lg" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                             </td>
                             <td class="col-md-2">
@@ -1449,10 +1449,10 @@
                 <div class="page-header">
                     <span class="header5">List of Predicates</span>
                 </div>
-                <table class="table table-striped table-bordered">
+                <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                     <thead>
                         <tr class="tbl-header">
-                            <th class="col-md-1" style="width: 4.1667%">Draggable</th>
+                            <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
                             <th class="col-md-8">Desciption (
                                 <input type="checkbox" ng-model="viewAssertion"> view assertion )</th>
                             <th class="col-md-1">True Usage</th>
@@ -1461,8 +1461,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="p in tempPredicates | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
-                            <td class="col-md-1" align="center" style="width: 4.1667%">
+                        <tr ng-repeat="p in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
+                            <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                 <i ng-show="p.assertion" class="fa fa-bullseye fa-lg" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="p" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                             </td>
                             <td class="col-md-8">

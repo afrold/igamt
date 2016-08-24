@@ -4,9 +4,6 @@
 
 angular.module('igl')
     .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI) {
-
-
-
         $scope.init = function() {};
         console.log($rootScope.igdocument);
         $scope.accordStatus = {
