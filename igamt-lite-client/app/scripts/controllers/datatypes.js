@@ -1221,12 +1221,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
 
         if ($scope.newConstraint.position_1 != null) {
             $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
-            var cs = null;
-            if ($scope.selectedNode === null) {
-                var cs = $rootScope.generateConformanceStatement(".", $scope.newConstraint);
-            } else {
-                var cs = $rootScope.generateConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
-            }
+            var cs = $rootScope.generateConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
             $scope.tempComformanceStatements.push(cs);
             $scope.changed = true;
             if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
@@ -1255,7 +1250,6 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         $modalInstance.close($scope.selectedNode);
     };
 });
-
 
 angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.constraintType = 'Plain';
@@ -1402,13 +1396,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
         $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 
         if ($scope.newConstraint.position_1 != null) {
-            var cp = null;
-            if ($scope.selectedNode === null) {
-                var cp = $rootScope.generatePredicate(".", $scope.newConstraint);
-            } else {
-                var cp = $rootScope.generatePredicate($scope.selectedNode.position + '[1]', $scope.newConstraint);
-            }
-
+            var cp = $rootScope.generatePredicate($scope.selectedNode.position + '[1]', $scope.newConstraint);
             $scope.tempPredicates.push(cp);
             $scope.changed = true;
         }

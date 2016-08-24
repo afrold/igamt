@@ -1148,8 +1148,8 @@
     <div class="modal-body">
         <form role="form">
             <span class="pull-right">
-                <select class="form-control input-sm" ng-model="selectedNode" ng-options="field as (segment.name + '-' + field.position + ': ' + field.name) for field in segment.fields">
-                    <option value="">Root of {{segment.name}}</option>
+                <select class="form-control input-sm" ng-class="{'form-control-invalid': !selectedNode}" ng-model="selectedNode" ng-options="field as (segment.name + '-' + field.position + ': ' + field.name) for field in segment.fields">
+                    <option value="">Select target location</option>
                 </select>
             </span>
             <div class="table-responsive">
@@ -1364,7 +1364,7 @@
                                 </span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'segment')"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                <button class="btn btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'segment', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                             </td>
                         </tr>
                     </tbody>
@@ -1456,8 +1456,8 @@
     <div class="modal-body">
         <form role="form">
             <span class="pull-right">
-    <select class="form-control input-sm" ng-model="selectedNode" ng-options="field as (segment.name + '.' + field.position + ': ' + field.name) for field in segment.fields | filter:{usage : 'C'}">
-        <option value="">Root of {{segment.name}}</option>
+    <select class="form-control input-sm" ng-class="{'form-control-invalid': !selectedNode}" ng-model="selectedNode" ng-options="field as (segment.name + '.' + field.position + ': ' + field.name) for field in segment.fields | filter:{usage : 'C'}">
+        <option value="">Select target location</option>
     </select>
 </span>
             <div class="table-responsive">
@@ -1671,7 +1671,7 @@
                                 <span style="color:red;" ng-show="!newConstraint.falseUsage">Empty false usage</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'segment')"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                <button class="btn btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'segment', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                             </td>
                         </tr>
                     </tbody>

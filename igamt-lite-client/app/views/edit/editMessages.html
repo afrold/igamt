@@ -1217,7 +1217,7 @@
                                                                 <span style="color:red;" ng-show="!newConstraint.falseUsage">Empty false usage</span>
                                                             </td>
                                                             <td class="col-md-1" align="center">
-                                                                <button class="btn btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'message')"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                                                <button class="btn btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'message', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -1518,7 +1518,7 @@
                                     </span>
                                 </td>
                                 <td class="col-md-1" align="center">
-                                    <button class="btn btn-info btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'segment')"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                    <button class="btn btn-info btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'message', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                 </td>
                             </tr>
                         </tbody>

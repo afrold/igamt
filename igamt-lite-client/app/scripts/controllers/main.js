@@ -1841,7 +1841,8 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
             return false;
         };
 
-        $rootScope.erorrForPredicate = function (newConstraint, type) {
+        $rootScope.erorrForPredicate = function (newConstraint, type, selectedNode) {
+            if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
             if ($rootScope.isEmptyConstraintVerb(newConstraint)) return true;
             if ($rootScope.isEmptyConstraintPattern(newConstraint)) return true;
@@ -1867,7 +1868,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                 newConstraint.contraintType == 'equal to or less than another node') {
                 if ($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
             } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
-                if ($rootScope.isEmptyConstraintValueSet(newConstraint, type)) return true;
+                if ($rootScope.isEmptyConstraintValueSet(newConstraint)) return true;
             }
             if (newConstraint.trueUsage == null) return true;
             if (newConstraint.falseUsage == null) return true;
@@ -1876,7 +1877,8 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
         }
 
 
-        $rootScope.erorrForConfStatement = function (newConstraint, targetId, type) {
+        $rootScope.erorrForConfStatement = function (newConstraint, targetId, type, selectedNode) {
+            if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintID(newConstraint)) return true;
             if ($rootScope.isDuplicatedConstraintID(newConstraint, targetId)) return true;
             if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
@@ -1904,7 +1906,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                 newConstraint.contraintType == 'equal to or less than another node') {
                 if ($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
             } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
-                if ($rootScope.isEmptyConstraintValueSet(newConstraint, type)) return true;
+                if ($rootScope.isEmptyConstraintValueSet(newConstraint)) return true;
             }
             return false;
         };

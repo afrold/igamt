@@ -968,12 +968,10 @@
     <div class="modal-body">
         <form role="form">
             <span class="pull-right">
-    <select class="form-control input-sm" ng-model="selectedNode"
-
-            ng-options="component as (datatype.name + '.' + component.position + ': ' + component.name) for component in datatype.components | filter:{usage : 'C'}">
-        <option value="">Root of {{datatype.name}}</option>
-    </select>
-</span>
+                <select class="form-control input-sm" ng-model="selectedNode" ng-class="{'form-control-invalid': !selectedNode}" ng-options="component as (datatype.name + '.' + component.position + ': ' + component.name) for component in datatype.components | filter:{usage : 'C'}">
+                    <option value="">Select target location</option>
+                </select>
+            </span>
 
             <div class="table-responsive">
                 <div class="page-header">
@@ -1177,7 +1175,7 @@
                                 <span style="color:red;" ng-show="!newConstraint.falseUsage">Empty false usage</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'datatype')"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                <button class="btn btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'datatype', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                             </td>
                         </tr>
                     </tbody>
@@ -1277,8 +1275,8 @@
     <div class="modal-body">
         <form role="form">
             <span class="pull-right">
-                <select class="form-control input-sm" ng-model="selectedNode" ng-options="component as (datatype.name + '.' + component.position + ': ' + component.name) for component in datatype.components">
-                    <option value="">Root of {{datatype.name}}</option>
+                <select class="form-control input-sm" ng-class="{'form-control-invalid': !selectedNode}" ng-model="selectedNode" ng-options="component as (datatype.name + '.' + component.position + ': ' + component.name) for component in datatype.components">
+                    <option value="">Select target location</option>
                 </select>
             </span>
 
@@ -1489,7 +1487,7 @@
                                 </span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'datatype')"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                <button class="btn btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'datatype', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                             </td>
                         </tr>
                     </tbody>
