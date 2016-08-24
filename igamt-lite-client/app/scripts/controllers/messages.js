@@ -962,6 +962,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.selectedMessage = selectedMessage;
+    $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
@@ -1024,6 +1025,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
     }
 
     $scope.initComplexPredicate = function() {
+        $scope.constraints = [];
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
@@ -1180,7 +1182,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
     };
 
     $scope.addComplexPredicate = function() {
-        $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+        $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
         $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
         $scope.complexConstraint.constraintId = $scope.newConstraint.datatype.id + '-' + $scope.selectedNode.position;
@@ -1226,6 +1228,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.selectedMessage = selectedMessage;
+    $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
@@ -1240,6 +1243,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
     }
 
     $scope.initComplexStatement = function() {
+        $scope.constraints = [];
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
@@ -1431,7 +1435,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
     };
 
     $scope.addComplexConformanceStatement = function() {
-        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
         if ($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
         $scope.tempComformanceStatements.push($scope.complexConstraint);

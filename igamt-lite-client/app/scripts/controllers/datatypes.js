@@ -1099,6 +1099,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     $scope.complexConstraint = null;
     $scope.newComplexConstraintId = $rootScope.calNextCSID();
     $scope.newComplexConstraint = [];
+    $scope.constraints = [];
 
     $scope.changed = false;
     $scope.tempComformanceStatements = [];
@@ -1135,6 +1136,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     }
 
     $scope.initComplexStatement = function() {
+        $scope.constraints = [];
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
@@ -1179,7 +1181,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     };
 
     $scope.addComplexConformanceStatement = function() {
-        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
         if ($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
         $scope.tempComformanceStatements.push($scope.complexConstraint);
@@ -1248,7 +1250,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
 angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
-
+    $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
@@ -1292,6 +1294,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
     }
 
     $scope.initComplexPredicate = function() {
+        $scope.constraints = [];
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
@@ -1350,7 +1353,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
     };
 
     $scope.addComplexPredicate = function() {
-        $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+        $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
         $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
 

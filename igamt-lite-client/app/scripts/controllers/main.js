@@ -1249,96 +1249,82 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
             else return true;
         };
 
-        $rootScope.generateCompositeConformanceStatement = function (compositeType, firstConstraint, secondConstraint) {
-            var firstConstraintAssertion = firstConstraint.assertion.replace("<Assertion>", "");
-            firstConstraintAssertion = firstConstraintAssertion.replace("</Assertion>", "");
-            var secondConstraintAssertion = secondConstraint.assertion.replace("<Assertion>", "");
-            secondConstraintAssertion = secondConstraintAssertion.replace("</Assertion>", "");
-
+        $rootScope.generateCompositeConformanceStatement = function (compositeType, firstConstraint, secondConstraint, constraints) {
             var cs = null;
-            if (compositeType === 'AND') {
+            if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR' || compositeType === 'IFTHEN') {
+                var firstConstraintAssertion = firstConstraint.assertion.replace("<Assertion>", "");
+                firstConstraintAssertion = firstConstraintAssertion.replace("</Assertion>", "");
+                var secondConstraintAssertion = secondConstraint.assertion.replace("<Assertion>", "");
+                secondConstraintAssertion = secondConstraintAssertion.replace("</Assertion>", "");
+
                 cs = {
                     id: new ObjectId().toString(),
-                    constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
-                    description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
-                    assertion: '<Assertion><AND>' + firstConstraintAssertion + secondConstraintAssertion + '</AND></Assertion>'
+                    description: '[' + firstConstraint.description + '] ' + compositeType + ' [' + secondConstraint.description + ']',
+                    assertion: '<Assertion><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Assertion>'
                 };
-            } else if (compositeType === 'OR') {
+            } else if (compositeType === 'FORALL' ||compositeType === 'EXIST' ) {
+                var forALLExistId = compositeType;
+                var forALLExistAssertion = '';
+                var forALLExistDescription = compositeType;
+                var forALLExistConstraintTarget = '';
+
+                angular.forEach(constraints, function (c) {
+                    forALLExistAssertion = forALLExistAssertion + c.assertion.replace("<Assertion>", "").replace("</Assertion>", "");
+                    forALLExistDescription = forALLExistDescription + '[' + c.description + ']';
+                    forALLExistId = forALLExistId + '(' + c.constraintId + ')';
+                    forALLExistConstraintTarget = c.constraintTarget;
+                });
+
                 cs = {
                     id: new ObjectId().toString(),
-                    constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
-                    description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
-                    assertion: '<Assertion><OR>' + firstConstraintAssertion + secondConstraintAssertion + '</OR></Assertion>'
-                };
-            } else if (compositeType === 'XOR') {
-                cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'XOR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
-                    description: '[' + firstConstraint.description + '] ' + 'XOR' + ' [' + secondConstraint.description + ']',
-                    assertion: '<Assertion><XOR>' + firstConstraintAssertion + secondConstraintAssertion + '</XOR></Assertion>'
-                };
-            } else if (compositeType === 'IFTHEN') {
-                cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
-                    description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
-                    assertion: '<Assertion><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Assertion>'
+                    constraintId: forALLExistId,
+                    constraintTarget: forALLExistConstraintTarget,
+                    description: forALLExistDescription,
+                    assertion: '<Assertion><' + compositeType + '>' + forALLExistAssertion + '</' + compositeType + '></Assertion>'
                 };
             }
             return cs;
-        }
+        };
 
 
-        $rootScope.generateCompositePredicate = function (compositeType, firstConstraint, secondConstraint) {
-            var firstConstraintAssertion = firstConstraint.assertion.replace("<Condition>", "");
-            firstConstraintAssertion = firstConstraintAssertion.replace("</Condition>", "");
-            var secondConstraintAssertion = secondConstraint.assertion.replace("<Condition>", "");
-            secondConstraintAssertion = secondConstraintAssertion.replace("</Condition>", "");
-
+        $rootScope.generateCompositePredicate = function (compositeType, firstConstraint, secondConstraint, constraints) {
             var cp = null;
-            if (compositeType === 'AND') {
+            if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR' || compositeType === 'IFTHEN') {
+                var firstConstraintAssertion = firstConstraint.assertion.replace("<Condition>", "");
+                firstConstraintAssertion = firstConstraintAssertion.replace("</Condition>", "");
+                var secondConstraintAssertion = secondConstraint.assertion.replace("<Condition>", "");
+                secondConstraintAssertion = secondConstraintAssertion.replace("</Condition>", "");
+
                 cp = {
                     id: new ObjectId().toString(),
-                    constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
-                    description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
+                    description: '[' + firstConstraint.description + '] ' + compositeType + ' [' + secondConstraint.description + ']',
                     trueUsage: '',
                     falseUsage: '',
-                    assertion: '<Condition><AND>' + firstConstraintAssertion + secondConstraintAssertion + '</AND></Condition>'
+                    assertion: '<Condition><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Condition>'
                 };
-            } else if (compositeType === 'OR') {
+            } else if (compositeType === 'FORALL' ||compositeType === 'EXIST' ) {
+                var forALLExistId = compositeType;
+                var forALLExistAssertion = '';
+                var forALLExistDescription = compositeType;
+                var forALLExistConstraintTarget = '';
+
+                angular.forEach(constraints, function (c) {
+                    forALLExistAssertion = forALLExistAssertion + c.assertion.replace("<Condition>", "").replace("</Condition>", "");
+                    forALLExistDescription = forALLExistDescription + '[' + c.description + ']';
+                    forALLExistId = forALLExistId + '(' + c.constraintId + ')';
+                    forALLExistConstraintTarget = c.constraintTarget;
+                });
+
                 cp = {
                     id: new ObjectId().toString(),
-                    constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
-                    description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
-                    trueUsage: '',
-                    falseUsage: '',
-                    assertion: '<Condition><OR>' + firstConstraintAssertion + secondConstraintAssertion + '</OR></Condition>'
-                };
-            }  else if (compositeType === 'XOR') {
-                cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'XOR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
-                    description: '[' + firstConstraint.description + '] ' + 'XOR' + ' [' + secondConstraint.description + ']',
-                    trueUsage: '',
-                    falseUsage: '',
-                    assertion: '<Condition><XOR>' + firstConstraintAssertion + secondConstraintAssertion + '</XOR></Condition>'
-                };
-            } else if (compositeType === 'IFTHEN') {
-                cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
-                    description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
-                    trueUsage: '',
-                    falseUsage: '',
-                    assertion: '<Condition><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Condition>'
+                    constraintId: forALLExistId,
+                    constraintTarget: forALLExistConstraintTarget,
+                    description: forALLExistDescription,
+                    assertion: '<Condition><' + compositeType + '>' + forALLExistAssertion + '</' + compositeType + '></Condition>'
                 };
             }
             return cp;
@@ -1810,21 +1796,33 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
         };
 
 
-        $rootScope.erorrForComplexConfStatement = function (newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint) {
+        $rootScope.erorrForComplexConfStatement = function (newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints) {
+            if ($rootScope.isEmptyCompositeType(compositeType))  return true;
             if ($rootScope.isEmptyComplexConstraintID(newComplexConstraintId)) return true;
             if ($rootScope.isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId))  return true;
-            if ($rootScope.isEmptyCompositeType(compositeType))  return true;
-            if (firstConstraint == null) return true;
-            if (secondConstraint == null) return true;
+            
+            if(compositeType == 'FORALL' || compositeType == 'EXIST'){
+                if(constraints.length < 2) return true;
+            }else {
+                if (firstConstraint == null) return true;
+                if (secondConstraint == null) return true;
+            }
+            
             return false;
         };
 
-        $rootScope.erorrForComplexPredicate = function (compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage) {
+        $rootScope.erorrForComplexPredicate = function (compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage, constraints) {
             if ($rootScope.isEmptyCompositeType(compositeType)) return true;
-            if (firstConstraint == null) return true;
-            if (secondConstraint == null) return true;
             if (complexConstraintTrueUsage == null) return true;
             if (complexConstraintFalseUsage == null) return true;
+
+
+            if(compositeType == 'FORALL' || compositeType == 'EXIST'){
+                if(constraints.length < 2) return true;
+            }else {
+                if (firstConstraint == null) return true;
+                if (secondConstraint == null) return true;
+            }
             return false;
         };
 

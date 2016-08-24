@@ -1067,6 +1067,7 @@ angular.module('igl').controller('ManageCoConstraintsTableCtrl', function($scope
 angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
+    $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
@@ -1111,6 +1112,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
     }
 
     $scope.initComplexPredicate = function() {
+        $scope.constraints = [];
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
@@ -1155,7 +1157,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
     };
 
     $scope.addComplexPredicate = function() {
-        $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+        $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
         $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
         if ($scope.selectedNode === null) {
@@ -1245,6 +1247,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
 angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
+    $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
@@ -1288,6 +1291,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     }
 
     $scope.initComplexStatement = function() {
+        $scope.constraints = [];
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
@@ -1346,7 +1350,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     };
 
     $scope.addComplexConformanceStatement = function() {
-        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
         if ($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
         $scope.tempComformanceStatements.push($scope.complexConstraint);

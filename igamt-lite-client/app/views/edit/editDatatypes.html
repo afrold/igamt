@@ -1185,9 +1185,13 @@
                             <th class="col-md-1" style="width: 4.1667%"></th>
                             <th class="col-md-2">Complex Type</th>
                             <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-2">First Constraint</th>
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-2">Second Constraint</th>
+
+
+                            <th ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5">Constraints</th>
+
+                            <th ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2">First Constraint</th>
+                            <th ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" style="width: 4.1667%"></th>
+                            <th ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2">Second Constraint</th>
                             <th class="col-md-1">True Usage</th>
                             <th class="col-md-1">False Usage</th>
                             <th class="col-md-1"></th>
@@ -1196,32 +1200,39 @@
                     <tbody>
                         <tr>
                             <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">
-                &nbsp; </i>Reset</span></button>
+                                <button class="btn btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                             </td>
                             <td class="col-md-2">
                                 <select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
-                <option value="AND">AND</option>
-                <option value="OR">OR</option>
-                <option value="XOR">XOR</option>
-                <option value="IFTHEN">IFTHEN</option>
-            </select>
+                                    <option value="AND">AND</option>
+                                    <option value="OR">OR</option>
+                                    <option value="XOR">XOR</option>
+                                    <option value="IFTHEN">IFTHEN(IMPLY)</option>
+                                    <option value="FORALL">FORALL</option>
+                                    <option value="EXIST">EXIST</option>
+                                </select>
                                 <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                             </td>
                             <td class="col-md-1" align="center" style="width: 4.1667%">
                                 <span ng-show="compositeType == 'IFTHEN'">IF</span>
+                                <span ng-show="compositeType == 'FORALL'">FORALL</span>
+                                <span ng-show="compositeType == 'EXIST'">EXIST</span>
                             </td>
-                            <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+                            <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}"  data-jqyoui-options>
+                                <span style="color:red;" ng-show="constraints.length < 2">Drop two more constraints here!</span>
+                                <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
+                            </td>
+                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
                                 <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
                                 <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
                             </td>
-                            <td class="col-md-1" align="center" style="width: 4.1667%">
+                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" align="center" style="width: 4.1667%">
                                 <span ng-show="compositeType == 'AND'">AND</span>
                                 <span ng-show="compositeType == 'OR'">OR</span>
                                 <span ng-show="compositeType == 'XOR'">XOR</span>
                                 <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                             </td>
-                            <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
                                 <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
                                 <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                             </td>
@@ -1234,8 +1245,9 @@
                                 <span style="color:red;" ng-show="!complexConstraintFalseUsage">Empty true usage</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addComplexPredicate()" ng-disabled="erorrForComplexPredicate(compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage)">
-                <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                <button class="btn btn-primary btn-xxs" ng-click="addComplexPredicate()" ng-disabled="erorrForComplexPredicate(compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage, constraints)">
+                                    <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -1486,17 +1498,17 @@
                             <th class="col-md-2">ID</th>
                             <th class="col-md-2">Complex Type</th>
                             <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-2">First Constraint</th>
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-2">Second Constraint</th>
+                            <th class="col-md-5" ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'">Constraints</th>
+                            <th class="col-md-2" ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'">First Constraint</th>
+                            <th class="col-md-1" ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" style="width: 4.1667%"></th>
+                            <th class="col-md-2" ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'">Second Constraint</th>
                             <th class="col-md-1"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">
-                &nbsp; </i>Reset</span></button>
+                                <button class="btn btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                             </td>
                             <td class="col-md-2">
                                 <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyComplexConstraintID(newComplexConstraintId) || isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId)}" ng-model="newComplexConstraintId" ng-change="targetComplexId = newComplexConstraintId;"
@@ -1511,30 +1523,41 @@
                                     <option value="AND">AND</option>
                                     <option value="OR">OR</option>
                                     <option value="XOR">XOR</option>
-                                    <option value="IFTHEN">IFTHEN</option>
+                                    <option value="IFTHEN">IFTHEN(IMPLY)</option>
+                                    <option value="FORALL">FORALL</option>
+                                    <option value="EXIST">EXIST</option>
                                 </select>
                                 <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                             </td>
                             <td class="col-md-1" align="center" style="width: 4.1667%">
                                 <span ng-show="compositeType == 'IFTHEN'">IF</span>
+                                <span ng-show="compositeType == 'FORALL'">FORALL</span>
+                                <span ng-show="compositeType == 'EXIST'">EXIST</span>
                             </td>
-                            <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+
+                            <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}"  data-jqyoui-options>
+                                <span style="color:red;" ng-hide="constraints.length > 1">Drop two more constraints here!</span>
+                                <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
+                            </td>
+
+                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
                                 <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
                                 <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
                             </td>
-                            <td class="col-md-1" align="center" style="width: 4.1667%">
+                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" align="center" style="width: 4.1667%">
                                 <span ng-show="compositeType == 'AND'">AND</span>
                                 <span ng-show="compositeType == 'OR'">OR</span>
                                 <span ng-show="compositeType == 'XOR'">XOR</span>
                                 <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                             </td>
-                            <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
                                 <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
                                 <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addComplexConformanceStatement()" ng-disabled="erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint)">
-                <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                <button class="btn btn-primary btn-xxs" ng-click="addComplexConformanceStatement()" ng-disabled="erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints)">
+                                    <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
