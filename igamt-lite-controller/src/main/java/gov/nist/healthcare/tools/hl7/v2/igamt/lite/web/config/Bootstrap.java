@@ -13,6 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -26,6 +27,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
@@ -43,6 +46,8 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   IGDocumentService documentService;
+  @Autowired
+  DatatypeService datatypeService;
 
   @Autowired
   DataCorrectionSectionPosition dataCorrectionSectionPosition;
@@ -68,9 +73,27 @@ public class Bootstrap implements InitializingBean {
     // dataCorrectionSectionPosition.resetSectionPositions();
 //    new DataCorrection().updateValueSetForSegment();
 //    new DataCorrection().updateValueSetsForDT();
-
+	 // ConvertDefinitions();
   }
-
+  
+  
+  private void ConvertDefinitions(){
+	  List<Datatype> datatypes=datatypeService.findByScope("USER");
+	  if(datatypes.size()>0){
+	  for(Datatype dt : datatypes){
+		  if(dt.getUsageNote()!=null||!dt.getUsageNote().isEmpty()){
+			if(dt.getUsageNote()==null||dt.getDefPreText().isEmpty()){
+				dt.setDefPreText(dt.getUsageNote());
+				
+			}else{
+				dt.setDefPreText(dt.getUsageNote()+"<br/>"+dt.getDefPreText());
+			}
+		  }
+		  
+		  datatypeService.save(dt);
+	  }
+	  }
+  }
   private void loadPreloadedIGDocuments() throws Exception {
     IGDocument d = new IGDocument();
 
@@ -125,5 +148,8 @@ public class Bootstrap implements InitializingBean {
         documentService.apply(igd);
     }
   }
+  
+  
+
 
 }

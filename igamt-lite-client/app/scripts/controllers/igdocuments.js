@@ -83,6 +83,9 @@ angular.module('igl')
         $rootScope.closeIGDocument = function() {
             $rootScope.clearChanges();
             $rootScope.igdocument = null;
+            $rootScope.tocView=null;
+            $rootScope.subview=null;
+
             $rootScope.isEditing = false;
             $scope.selectIgTab(0);
             $rootScope.initMaps();
@@ -1196,6 +1199,7 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function($scope,
             if ($scope.igdocumentToDelete === $rootScope.igdocument) {
                 $rootScope.closeIGDocument();
             }
+
             $rootScope.msg().text = "igDeleteSuccess";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;

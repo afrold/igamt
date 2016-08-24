@@ -320,6 +320,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             fileAllowedTypes: ['application/pdf', 'application/msword', 'application/x-pdf', 'text/plain', 'application/xml','text/xml'],
             charCounterCount: false,
             quickInsertTags: 8,
+            heightMin:250,
             immediateAngularModelUpdate:true,
             events: {
                 'froalaEditor.initialized': function () {

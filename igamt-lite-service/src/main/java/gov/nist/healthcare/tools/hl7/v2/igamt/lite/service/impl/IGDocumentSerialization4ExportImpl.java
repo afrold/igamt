@@ -1045,8 +1045,10 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
   private nu.xom.Element serializeOneTable(TableLink tl) {
     Table t = tableService.findById(tl.getId());
-
     nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
+    if(t!=null)
+    {    
+ 
     elmTableDefinition.addAttribute(new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t
         .getBindingIdentifier()));
     elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
@@ -1065,7 +1067,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
         (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
     elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
-
+   
     if (t.getCodes() != null) {
       for (Code c : t.getCodes()) {
         nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
@@ -1081,6 +1083,18 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
             .getComments()));
         elmTableDefinition.appendChild(elmTableElement);
       }
+    }
+    
+    
+    if ((t != null && !t.getDefPreText().isEmpty()) ||(t != null && !t.getDefPostText().isEmpty()) ){
+  	      if (t.getDefPreText() != null && !t.getDefPreText().isEmpty()) {
+  	    	elmTableDefinition.appendChild(this.serializeRichtext("Text1", t.getDefPreText()));
+  	      }
+  	      if (t.getDefPostText() != null && !t.getDefPostText().isEmpty()) {
+  	    	elmTableDefinition.appendChild(this.serializeRichtext("Text2", t.getDefPostText()));
+  	      }
+  	    }
+    
     }
     return elmTableDefinition;
   }
@@ -1570,12 +1584,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
 
 
     elmDatatype.addAttribute(new Attribute("id", d.getId()));
-    if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()){
-      nu.xom.Element elmText = new nu.xom.Element("Text");
-      elmText.addAttribute(new Attribute("Type", "UsageNote"));
-      elmText.appendChild(d.getUsageNote());
-      elmDatatype.appendChild(elmText);
-    }
+    
 
     if (d.getComponents() != null) {
 
@@ -1628,6 +1637,24 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         elmComponent.addAttribute(new Attribute("Position", "1"));
         elmDatatype.appendChild(elmComponent);
       }
+      
+      
+      if ((d != null && !d.getDefPreText().isEmpty()) ||(d != null && !d.getDefPostText().isEmpty()) ){
+    	      if (d.getDefPreText() != null && !d.getDefPreText().isEmpty()) {
+    	    	  elmDatatype.appendChild(this.serializeRichtext("Text1", d.getDefPreText()));
+    	      }
+    	      if (d.getDefPostText() != null && !d.getDefPostText().isEmpty()) {
+    	    	  elmDatatype.appendChild(this.serializeRichtext("Text2", d.getDefPostText()));
+    	      }
+    	    }
+      
+      if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()){
+  	    	  elmDatatype.appendChild(this.serializeRichtext("UsageNote", d.getUsageNote()));
+      		}
+      
+ 
+      
+      
     }
     return elmDatatype;
   }

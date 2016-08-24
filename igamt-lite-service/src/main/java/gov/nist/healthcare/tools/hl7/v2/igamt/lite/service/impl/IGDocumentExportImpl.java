@@ -1446,9 +1446,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
         com.itextpdf.text.Section section1 =
             sectionSgt.addSection(new Paragraph(segmentInfo, titleFont));
 
-        section1.add(Chunk.NEWLINE);
-        section1.add(richTextToParagraph(s.getText1()));
-        section1.add(Chunk.NEWLINE);
+//        section1.add(Chunk.NEWLINE);
+//        section1.add(richTextToParagraph(s.getText1()));
+//        section1.add(Chunk.NEWLINE);
 
         header =
             Arrays.asList("Seq", "Element Name", "DT", "Usage", "Card.", "Length", "Value\nSet",
@@ -1461,9 +1461,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
         this.addCellsPdfTable(table, rows, cellFont, cpColor);
         section1.add(table);
 
-        section1.add(Chunk.NEWLINE);
-        section1.add(richTextToParagraph(s.getText2()));
-        section1.add(Chunk.NEWLINE);
+//        section1.add(Chunk.NEWLINE);
+//        section1.add(richTextToParagraph(s.getText2()));
+//        section1.add(Chunk.NEWLINE);
 
         List<Field> fieldsList = s.getFields();
         Collections.sort(fieldsList);
@@ -2915,7 +2915,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", segmentInfo);
 
       // Add segment details
-      addRichTextToDocx(wordMLPackage, s.getText1());
+      
+//      wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "pre-definition");
+//      addRichTextToDocx(wordMLPackage, s.getText1());
 
       List<String> header =
           Arrays.asList("Seq", "Element Name", "DT", "Usage", "Card.", "Length", "Value Set",
@@ -2926,8 +2928,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       wordMLPackage.getMainDocumentPart().addObject(
           IGDocumentExportImpl.createTableDocxWithConstraints(header, widths, rows, wordMLPackage,
               factory));
-
-      addRichTextToDocx(wordMLPackage, s.getText2());
+//      wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "post-definition");
+//
+//      addRichTextToDocx(wordMLPackage, s.getText2());
 
       // Add field texts
       List<Field> fieldsList = s.getFields();

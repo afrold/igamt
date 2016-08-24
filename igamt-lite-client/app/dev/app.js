@@ -70,10 +70,10 @@ app.config(function($routeProvider, RestangularProvider, $httpProvider, Keepaliv
         .when('/compare', {
             templateUrl: 'views/compare.html'
         })
-        .when('/datatypeLibrary', {
-            templateUrl: 'views/datatypeLibrary.html',
-            controller: 'DatatypeLibraryCtl'
-        })
+        // .when('/datatypeLibrary', {
+        //     templateUrl: 'views/datatypeLibrary.html',
+        //     controller: 'DatatypeLibraryCtl'
+        // })
         .when('/doc', {
             templateUrl: 'views/doc.html'
         })
@@ -347,6 +347,7 @@ app.run(function($rootScope, $location, Restangular, $modal, $filter, base64, us
             charCounterCount: false,
             immediateAngularModelUpdate: true,
             quickInsertTags: 8,
+            heightMin:250,
             events: {
                 'froalaEditor.initialized': function() {
 
