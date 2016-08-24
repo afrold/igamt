@@ -676,6 +676,9 @@
                     <p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
                         <a ng-click="managePredicate(node)" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
                     </p>
+                    <div ng-show="countPredicate(node.position) > 1">
+                        <p class="warning">Multiple predicates</p>
+                    </div>
                 </div>
             </div>
         </td>

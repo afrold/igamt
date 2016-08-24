@@ -602,13 +602,14 @@ angular.module('igl')
         };
 
         $scope.countPredicate = function(position) {
+            var count = 0
             if ($rootScope.message != null) {
                 for (var i = 0, len1 = $rootScope.message.predicates.length; i < len1; i++) {
                     if ($rootScope.message.predicates[i].constraintTarget.indexOf(position) === 0)
-                        return 1;
+                        count = count + 1;
                 }
             }
-            return 0;
+            return count;
         };
 
 
@@ -1442,6 +1443,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
     };
 
     $scope.deleteConformanceStatement = function(conformanceStatement) {
+        $rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf($scope.tempComformanceStatements.constraintId), 1);
         $scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };

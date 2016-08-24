@@ -649,13 +649,14 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.countPredicate = function(position) {
+        var count = 0;
         if ($rootScope.segment != null) {
             for (var i = 0, len1 = $rootScope.segment.predicates.length; i < len1; i++) {
                 if ($rootScope.segment.predicates[i].constraintTarget.indexOf(position + '[') === 0)
-                    return 1;
+                    count = count + 1;
             }
         }
-        return 0;
+        return count;
     };
 
     $scope.deletePredicateByPosition = function(position) {
@@ -1307,6 +1308,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     $scope.initConformanceStatement();
 
     $scope.deleteConformanceStatement = function(conformanceStatement) {
+        $rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf($scope.tempComformanceStatements.constraintId), 1);
         $scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };

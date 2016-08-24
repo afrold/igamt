@@ -539,13 +539,14 @@ angular.module('igl')
         };
 
         $scope.countPredicate = function(position) {
+            var count = 0;
             if ($rootScope.datatype != null)
                 for (var i = 0, len1 = $rootScope.datatype.predicates.length; i < len1; i++) {
                     if ($rootScope.datatype.predicates[i].constraintTarget.indexOf(position + '[') === 0)
-                        return 1;
+                        count = count + 1;
                 }
 
-            return 0;
+            return count;
         };
 
         $scope.countPredicateOnSubComponent = function(position, componentId) {
@@ -1156,6 +1157,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     $scope.initConformanceStatement();
 
     $scope.deleteConformanceStatement = function(conformanceStatement) {
+        $rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf($scope.tempComformanceStatements.constraintId), 1);
         $scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };

@@ -535,6 +535,10 @@
                            tooltip-trigger
                            tooltip-animation="false" tooltip-placement="left"></a>
                     </div>
+
+                    <div ng-show="countPredicate(node.path) > 1">
+                        <p class="warning">Multiple predicates</p>
+                    </div>
                 </div>
             </div>
         </td>
