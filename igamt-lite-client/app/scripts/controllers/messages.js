@@ -611,6 +611,18 @@ angular.module('igl')
             return 0;
         };
 
+
+        $scope.deletePredicateByPath = function(position) {
+            for (var i = 0, len1 = $rootScope.message.predicates.length; i < len1; i++) {
+                if ($rootScope.message.predicates[i].constraintTarget.indexOf(position) === 0) {
+                    $rootScope.message.predicates.splice($rootScope.message.predicates.indexOf($rootScope.message.predicates[i]), 1);
+                    $scope.editForm.$dirty = true;
+                    return true;
+                }
+            }
+            return false;
+        };
+
         $scope.isVisible = function(node) {
             if (node && node != null) {
                 //                return FilteringSvc.show(node);

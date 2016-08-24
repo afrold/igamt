@@ -211,8 +211,8 @@
                                                         <thead>
                                                             <tr class="tbl-header">
                                                                 <th st-sort="constraintId" class="col-md-1">ID</th>
-                                                                <th st-sort="constraintTarget" class="col-md-2">Location</th>
-                                                                <th class="col-md-8">Desciption</th>
+                                                                <th st-sort="constraintTarget" class="col-md-3">Location</th>
+                                                                <th class="col-md-7">Description</th>
                                                                 <th class="col-md-1"></th>
                                                             </tr>
                                                         </thead>
@@ -221,10 +221,10 @@
                                                                 <td class="col-md-1">
                                                                     {{c.constraintId}}
                                                                 </td>
-                                                                <td class="col-md-2">
-                                                                    {{c.constraintTarget}}
+                                                                <td class="col-md-3">
+                                                                    <span ng-bind="displayLocationForDatatype(datatype, c.constraintTarget)" />
                                                                 </td>
-                                                                <td class="col-md-8">
+                                                                <td class="col-md-7">
                                                                     {{c.description}}
                                                                 </td>
                                                                 <td class="col-md-1" align="center">
@@ -257,8 +257,8 @@
                                                     <table st-table="displayed" st-safe-src="datatype.predicates" class="table table-striped table-bordered" ng-show="datatype.predicates.length > 0">
                                                         <thead>
                                                             <tr class="tbl-header">
-                                                                <th st-sort="constraintTarget" class="col-md-2">Location</th>
-                                                                <th class="col-md-7">Desciption</th>
+                                                                <th st-sort="constraintTarget" class="col-md-3">Location</th>
+                                                                <th class="col-md-6">Description</th>
                                                                 <th class="col-md-1">True usage</th>
                                                                 <th class="col-md-1">False usage</th>
                                                                 <th class="col-md-1"></th>
@@ -266,10 +266,10 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr ng-repeat="p in displayed">
-                                                                <td class="col-md-2">
-                                                                    {{p.constraintTarget}}
+                                                                <td class="col-md-3">
+                                                                    <span ng-bind="displayLocationForDatatype(datatype, p.constraintTarget)" />
                                                                 </td>
-                                                                <td class="col-md-7">
+                                                                <td class="col-md-6">
                                                                     {{p.description}}
                                                                 </td>
                                                                 <td class="col-md-1">
@@ -590,18 +590,21 @@
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
             <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)" ng-controller="DatatypeRowCtrl">
-                    <ng-form name="{{formName}}" class="form-inline">
-                        <select class="form-control input-sm" name="usage" id="usage"
+                <ng-form name="{{formName}}" class="form-inline">
+                    <select class="form-control input-sm" name="usage" id="usage"
                                 ng-change="setUsage(node)"
                                 ng-class="{ 'igl-has-error has-feedback' : {{formName}}.usage.$invalid}"
                                 required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
-                    </ng-form>
-                </span>
+                </ng-form>
+            </span>
 
             <div ng-show="node.usage === 'C' && countPredicate(node.position) !== 0">
                 <p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
                     C({{p.trueUsage}}/{{p.falseUsage}})
                 </p>
+                <a ng-click="deletePredicateByPosition(node.position)" class="point">
+                    <span title="Delete Predicate and Change Usage"><i class="fa fa-times fa-fw"></i></span>
+                </a>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">

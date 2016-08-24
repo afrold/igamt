@@ -256,6 +256,16 @@ angular.module('igl')
 
         };
 
+        $scope.deletePredicateByPosition = function(position) {
+            for (var i = 0, len1 = $rootScope.datatype.predicates.length; i < len1; i++) {
+                if ($rootScope.datatype.predicates[i].constraintTarget.indexOf(position + '[') === 0) {
+                    $rootScope.datatype.predicates.splice($rootScope.datatype.predicates.indexOf($rootScope.datatype.predicates[i]), 1);
+                    $scope.editForm.$dirty = true;
+                    return true;
+                }
+            }
+            return false;
+        };
 
 
 

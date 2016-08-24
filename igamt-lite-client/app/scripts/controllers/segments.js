@@ -658,6 +658,17 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         return 0;
     };
 
+    $scope.deletePredicateByPosition = function(position) {
+        for (var i = 0, len1 = $rootScope.segment.predicates.length; i < len1; i++) {
+            if ($rootScope.segment.predicates[i].constraintTarget.indexOf(position + '[') === 0) {
+                $rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf($rootScope.segment.predicates[i]), 1);
+                $scope.editForm.$dirty = true;
+                return true;
+            }
+        }
+        return false;
+    };
+
     $scope.countPredicateOnComponent = function(position, componentId) {
         var dt = $scope.findDTByComponentId(componentId);
         if (dt != null)

@@ -1248,6 +1248,21 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
             }
             else return true;
         };
+        
+        
+        $rootScope.displayLocationForDatatype = function(dt, constraintTarget) {
+            var position = constraintTarget.substring(0, constraintTarget.indexOf('['));
+            var component = _.find(dt.components, function(c){ return c.position == position; });
+            if(component) return dt.name + "." + position + " (" + component.name + ")";
+            return dt.name;
+        };
+
+        $rootScope.displayLocationForSegment = function(segment, constraintTarget) {
+            var position = constraintTarget.substring(0, constraintTarget.indexOf('['));
+            var field = _.find(segment.fields, function(f){ return f.position == position; });
+            if(field) return segment.name + "-" + position + " (" + field.name + ")";
+            return segment.name;
+        };
 
         $rootScope.generateCompositeConformanceStatement = function (compositeType, firstConstraint, secondConstraint, constraints) {
             var cs = null;
