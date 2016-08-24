@@ -991,6 +991,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
             childNodes_1: [],
             childNodes_2: [],
             verb: null,
+            freeText: null,
             contraintType: null,
             value: null,
             ignoreCase: false,
@@ -1191,6 +1192,13 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
         $scope.changed = true;
     };
 
+    $scope.addFreeTextPredicate = function(){
+        $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
+        var cp = $rootScope.generateFreeTextPredicate(selectedNode.path, $scope.newConstraint);
+        $scope.tempPredicates.push(cp);
+        $scope.changed = true;
+        $scope.initPredicate();
+    };
 
     $scope.addPredicate = function() {
         if ($scope.newConstraint.position_1 != null) {
@@ -1216,7 +1224,6 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
     $scope.initPredicate();
 
 });
-
 
 angular.module('igl').controller('ConformanceStatementMessageCtrl', function($scope, $modalInstance, selectedMessage, selectedNode, $rootScope) {
     $scope.constraintType = 'Plain';
@@ -1252,6 +1259,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
             currentNode_2: null,
             childNodes_1: [],
             childNodes_2: [],
+            freeText: null,
             verb: null,
             ignoreCase: false,
             constraintId: $rootScope.calNextCSID(),
@@ -1434,6 +1442,15 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
         $scope.changed = true;
     };
 
+    $scope.addFreeTextConformanceStatement = function() {
+        $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
+        var cs = $rootScope.generateFreeTextConformanceStatement(selectedNode.path, $scope.newConstraint);
+        $scope.tempComformanceStatements.push(cs);
+        $scope.changed = true;
+        if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+        $scope.initConformanceStatement();
+    };
+
     $scope.addConformanceStatement = function() {
         if ($scope.newConstraint.position_1 != null) {
             $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
@@ -1443,7 +1460,6 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
             if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
             $scope.changed = true;
         }
-
         $scope.initConformanceStatement();
     };
 

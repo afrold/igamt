@@ -1095,6 +1095,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
             field_2: null,
             component_2: null,
             subComponent_2: null,
+            freeText: null,
             verb: null,
             ignoreCase: false,
             contraintType: null,
@@ -1167,6 +1168,19 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
         $scope.changed = true;
     };
 
+    $scope.addFreeTextPredicate = function() {
+        $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
+        var cp = null;
+        if ($scope.selectedNode === null) {
+            var cp = $rootScope.generateFreeTextPredicate(".", $scope.newConstraint);
+        } else {
+            var cp = $rootScope.generateFreeTextPredicate($scope.selectedNode.position + '[1]', $scope.newConstraint);
+        }
+
+        $scope.tempPredicates.push(cp);
+        $scope.changed = true;
+        $scope.initPredicate();
+    };
 
     $scope.addPredicate = function() {
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
@@ -1256,6 +1270,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
             field_1: null,
             component_1: null,
             subComponent_1: null,
+            freeText: null,
             field_2: null,
             component_2: null,
             subComponent_2: null,
@@ -1339,6 +1354,19 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $scope.changed = true;
     };
 
+    $scope.addFreeTextConformanceStatement = function() {
+        $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
+        var cs = null;
+        if ($scope.selectedNode === null) {
+            var cs = $rootScope.generateFreeTextConformanceStatement(".", $scope.newConstraint);
+        } else {
+            var cs = $rootScope.generateFreeTextConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
+        }
+        $scope.tempComformanceStatements.push(cs);
+        $scope.changed = true;
+        if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+        $scope.initConformanceStatement();
+    };
 
     $scope.addConformanceStatement = function() {
         $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);

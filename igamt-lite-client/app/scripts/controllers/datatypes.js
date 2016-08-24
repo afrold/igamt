@@ -1120,6 +1120,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
             subComponent_1: null,
             component_2: null,
             subComponent_2: null,
+            freeText: null,
             verb: null,
             ignoreCase: false,
             constraintId: $rootScope.calNextCSID(),
@@ -1186,6 +1187,20 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         $scope.changed = true;
     };
 
+    $scope.addFreeTextConformanceStatement = function(){
+        $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
+        var cs = null;
+        if ($scope.selectedNode === null) {
+            var cs = $rootScope.generateFreeTextConformanceStatement(".", $scope.newConstraint);
+        } else {
+            var cs = $rootScope.generateFreeTextConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
+        }
+        $scope.tempComformanceStatements.push(cs);
+        $scope.changed = true;
+        if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+        $scope.initConformanceStatement();
+    };
+
     $scope.addConformanceStatement = function() {
         $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
         $scope.newConstraint.position_2 = $scope.genPosition($scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
@@ -1205,8 +1220,6 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
             if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
         }
         $scope.initConformanceStatement();
-
-
     };
 
     $scope.ok = function() {
@@ -1264,6 +1277,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
             component_2: null,
             subComponent_2: null,
             verb: null,
+            freeText: null,
             contraintType: null,
             value: null,
             ignoreCase: false,
@@ -1349,6 +1363,20 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
         $scope.tempPredicates.push($scope.complexConstraint);
         $scope.initComplexPredicate();
         $scope.changed = true;
+    };
+
+    $scope.addFreeTextPredicate = function() {
+        $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
+        var cp = null;
+        if ($scope.selectedNode === null) {
+            var cp = $rootScope.generateFreeTextPredicate(".", $scope.newConstraint);
+        } else {
+            var cp = $rootScope.generateFreeTextPredicate($scope.selectedNode.position + '[1]', $scope.newConstraint);
+        }
+
+        $scope.tempPredicates.push(cp);
+        $scope.changed = true;
+        $scope.initPredicate();
     };
 
     $scope.addPredicate = function() {

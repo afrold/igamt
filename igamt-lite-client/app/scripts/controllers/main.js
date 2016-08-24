@@ -1342,7 +1342,19 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                 };
             }
             return cp;
-        }
+        };
+
+        $rootScope.generateFreeTextConformanceStatement = function (positionPath, newConstraint) {
+            var cs = {
+                id: new ObjectId().toString(),
+                constraintId: newConstraint.constraintId,
+                constraintTarget: positionPath,
+                description: newConstraint.freeText,
+                assertion: null
+            };
+
+            return cs;
+        };
 
         $rootScope.generateConformanceStatement = function (positionPath, newConstraint) {
             var cs = null;
@@ -1543,7 +1555,20 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
             }
 
             return cs;
-        }
+        };
+
+        $rootScope.generateFreeTextPredicate = function (positionPath, newConstraint) {
+            var cp = {
+                id: new ObjectId().toString(),
+                constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                constraintTarget: positionPath,
+                description: newConstraint.freeText,
+                trueUsage: newConstraint.trueUsage,
+                falseUsage: newConstraint.falseUsage,
+                assertion: null
+            };
+            return cp;
+        };
 
         $rootScope.generatePredicate = function (positionPath, newConstraint) {
             var cp = null;
