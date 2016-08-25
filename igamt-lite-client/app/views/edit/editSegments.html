@@ -315,16 +315,16 @@
                                                             <tbody>
                                                                 <tr ng-repeat="cc in segment.coConstraints.constraints">
                                                                     <td class="col-md-1" ng-repeat="col in segment.coConstraints.columnList">
-                                                                        <input ng-show="col.constraintType === 'v'" class="form-control" ng-model="cc.values[col.columnPosition].value" ng-change="recordChange()" type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
-                                                                        />
-                                                                        <select ng-show="col.constraintType === 'vs'" ng-model="cc.values[col.columnPosition].value" class="form-control" ng-change="recordChange()" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" ng-options="link.id as tablesMap[link.id].bindingIdentifier for link in igdocument.profile.tableLibrary.children"
-                                                                        />
+                                                                        <input ng-show="col.constraintType === 'v'" class="form-control" ng-model="cc.values[col.columnPosition].value" ng-change="recordChange()" type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
+                                                                        <select ng-show="col.constraintType === 'vs'" ng-model="cc.values[col.columnPosition].value" class="form-control" ng-change="recordChange()" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" ng-options="link.id as tablesMap[link.id].bindingIdentifier for link in igdocument.profile.tableLibrary.children">
+                                                                            <option value="">N/A</option>
+                                                                        </select>
                                                                     </td>
                                                                     <td class="col-md-2">
-                                                                        <input class="form-control" ng-model="cc.description" ng-change="recordChange()" type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" />
+                                                                        <textarea rows="2" cols="20" ng-disabled="viewSettings.tableReadonly || segment.scope === 'HL7STANDARD' || segment.scope === 'MASTER'" ng-change="setDirty()" class="form-control" ng-model="cc.description" />
                                                                     </td>
                                                                     <td class="col-md-2">
-                                                                        <input class="form-control" ng-model="cc.comments" ng-change="recordChange()" type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" />
+                                                                        <textarea rows="2" cols="20" ng-disabled="viewSettings.tableReadonly || segment.scope === 'HL7STANDARD' || segment.scope === 'MASTER'" ng-change="setDirty()" class="form-control" ng-model="cc.comments" />
                                                                     </td>
                                                                     <td class="col-md-1">
                                                                         <button class="btn btn-danger btn-xs" ng-click="deleteCoConstraint(cc);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">

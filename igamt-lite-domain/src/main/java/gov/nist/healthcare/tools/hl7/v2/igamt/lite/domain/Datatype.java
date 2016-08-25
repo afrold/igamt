@@ -46,7 +46,9 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   protected String defPreText= "";
   
   protected String defPostText = "";
-
+  
+  protected int precisionOfDTM = 3;
+  protected boolean timeZoneOfDTM = false;
 
   public String getId() {
     return id;
@@ -179,6 +181,8 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
     clonedDT.setUsageNote(usageNote);
     clonedDT.setDefPreText(defPreText);
     clonedDT.setDefPostText(defPostText);
+    clonedDT.setPrecisionOfDTM(precisionOfDTM);
+    clonedDT.setTimeZoneOfDTM(timeZoneOfDTM);
     return clonedDT;
   }
 
@@ -237,4 +241,22 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   public String getLabel() {
     return label;
   }
+
+public int getPrecisionOfDTM() {
+	return precisionOfDTM;
+}
+
+public void setPrecisionOfDTM(int precisionOfDTM) {
+	this.precisionOfDTM = precisionOfDTM;
+}
+
+public boolean isTimeZoneOfDTM() {
+	return timeZoneOfDTM;
+}
+
+public void setTimeZoneOfDTM(boolean timeZoneOfDTM) {
+	this.timeZoneOfDTM = timeZoneOfDTM;
+}
+  
+  
 }
