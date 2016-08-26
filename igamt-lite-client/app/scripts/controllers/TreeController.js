@@ -659,8 +659,14 @@ angular
                         function($itemScope) {
                             $scope.addTables($rootScope.igdocument);
                         }
+                    ], null,
+                    ['Add New Table',
+                        function($itemScope) {
+                            CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                        }
                     ]
                 ];
+
 
                 $scope.addValueSetsInTableLibrary = [
                     ['Add Tables',

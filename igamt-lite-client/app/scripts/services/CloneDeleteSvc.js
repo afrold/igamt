@@ -140,6 +140,51 @@ angular.module('igl').factory(
 
         };
 
+        svc.createNewTable = function (scope, tableLibrary) {
+            var newTable = {};
+            newTable.participants = [];
+            newTable.scope = scope;
+            newTable.id = null;
+            newTable.libIds = [];
+            newTable.libIds.push(tableLibrary.id);
+            newTable.bindingIdentifier = $rootScope.createNewFlavorName('NewTable');
+            newTable.name = "New Table";
+            newTable.description = "Description";
+            newTable.codes = [];
+
+            TableService.save(newTable).then(function (result) {
+                newTable = result;
+                var newLink = {};
+                newLink.bindingIdentifier = newTable.bindingIdentifier;
+                newLink.id = newTable.id;
+
+                TableLibrarySvc.addChild(tableLibrary.id, newLink).then(function (link) {
+                    tableLibrary.children.splice(0, 0, newLink);
+                    newTable.isNew = true;
+                    $rootScope.tables.splice(0, 0, newTable);
+                    $rootScope.table = newTable;
+                    $rootScope.tablesMap[newTable.id] = newTable;
+
+                    $rootScope.codeSystems = [];
+
+                    if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+                        $rootScope.filteredTablesList.push(newTable);
+                        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+                    }
+                    $rootScope.$broadcast('event:openTable', newTable);
+                }, function (error) {
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
+
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+        };
+
         svc.copyTable = function (table) {
             var newTable = angular.copy(table);
             newTable.participants = [];
@@ -148,8 +193,6 @@ angular.module('igl').factory(
             newTable.libIds = [];
             newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
             newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
-
-            console.log("CHECK:" + newTable.bindingIdentifier);
 
             if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
                 for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
