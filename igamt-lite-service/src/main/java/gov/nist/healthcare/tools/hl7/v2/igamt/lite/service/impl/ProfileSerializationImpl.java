@@ -1444,12 +1444,19 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			if (f.getTable() != null) {
 				if (f.getTable().getBindingIdentifier() != null && !f.getTable().getBindingIdentifier().equals(""))
 					elmField.addAttribute(new Attribute("Binding", f.getTable().getBindingIdentifier()));
-				if (f.getTable().getBindingStrength() != null && !f.getTable().getBindingStrength().equals(""))
-					elmField.addAttribute(
-							new Attribute("BindingStrength", ExportUtil.str(f.getTable().getBindingStrength())));
-				if (f.getTable().getBindingLocation() != null && !f.getTable().getBindingLocation().equals(""))
-					elmField.addAttribute(
-							new Attribute("BindingLocation", ExportUtil.str(f.getTable().getBindingLocation())));
+				if (f.getTable().getBindingStrength() != null && !f.getTable().getBindingStrength().equals("")){
+					elmField.addAttribute(new Attribute("BindingStrength", ExportUtil.str(f.getTable().getBindingStrength())));
+				}
+					
+				if (f.getTable().getBindingLocation() != null && !f.getTable().getBindingLocation().equals("")){
+					elmField.addAttribute(new Attribute("BindingLocation", ExportUtil.str(f.getTable().getBindingLocation())));
+				}else {
+					Datatype d = datatypeService.findById(f.getDatatype().getId());
+					if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
+						elmField.addAttribute(new Attribute("BindingLocation", "1"));
+					}
+				}
+					
 			}
 
 			if (f.isHide())
@@ -1496,11 +1503,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					if (c.getTable().getBindingIdentifier() != null)
 						elmComponent.addAttribute(new Attribute("Binding", c.getTable().getBindingIdentifier()));
 					if (c.getTable().getBindingStrength() != null && !c.getTable().getBindingStrength().equals(""))
-						elmComponent.addAttribute(
-								new Attribute("BindingStrength", ExportUtil.str(c.getTable().getBindingStrength())));
-					if (c.getTable().getBindingLocation() != null && !c.getTable().getBindingLocation().equals(""))
-						elmComponent.addAttribute(
-								new Attribute("BindingLocation", ExportUtil.str(c.getTable().getBindingLocation())));
+						elmComponent.addAttribute(new Attribute("BindingStrength", ExportUtil.str(c.getTable().getBindingStrength())));
+					if (c.getTable().getBindingLocation() != null && !c.getTable().getBindingLocation().equals("")){
+						elmComponent.addAttribute(new Attribute("BindingLocation", ExportUtil.str(c.getTable().getBindingLocation())));
+					}else {
+						Datatype childD = datatypeService.findById(c.getDatatype().getId());
+						if(childD != null && childD.getComponents() != null && childD.getComponents().size() > 0){
+							elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
+						}
+					}
 				}
 				if (c.isHide())
 					elmComponent.addAttribute(new Attribute("Hide", "true"));

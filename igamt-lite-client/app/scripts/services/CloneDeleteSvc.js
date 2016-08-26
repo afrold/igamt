@@ -147,7 +147,9 @@ angular.module('igl').factory(
             newTable.id = null;
             newTable.libIds = [];
             newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
-            newTable.bindingIdentifier = $rootScope.createNewExtension(newTable.bindingIdentifier);
+            newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
+
+            console.log("CHECK:" + newTable.bindingIdentifier);
 
             if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
                 for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {

@@ -191,3 +191,14 @@ input.igl-has-error,select.igl-has-error {
     padding: 0px;
 }
 
+
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    opacity: 0.1;
+}
+
+.tab-content, .tab-content > .tab-pane {
+    border-left:1px;
+    border-right:1px;
+    border-bottom:1px;
+    border-color: #a2a2a2;
+}

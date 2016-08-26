@@ -1101,7 +1101,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
 
         $rootScope.createNewFlavorName = function (label) {
             if ($rootScope.igdocument != null) {
-                if ($rootScope.igdocument.metaData["ext"] === null) {
+                if ($rootScope.igdocument.metaData["ext"] === null || $rootScope.igdocument.metaData["ext"] === '') {
                     return label + "_" + (Math.floor(Math.random() * 10000000) + 1);
                 } else {
                     return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
@@ -1262,83 +1262,114 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
             }
             else return true;
         };
+        
+        
+        $rootScope.displayLocationForDatatype = function(dt, constraintTarget) {
+            var position = constraintTarget.substring(0, constraintTarget.indexOf('['));
+            var component = _.find(dt.components, function(c){ return c.position == position; });
+            if(component) return dt.name + "." + position + " (" + component.name + ")";
+            return dt.name;
+        };
 
-        $rootScope.generateCompositeConformanceStatement = function (compositeType, firstConstraint, secondConstraint) {
-            var firstConstraintAssertion = firstConstraint.assertion.replace("<Assertion>", "");
-            firstConstraintAssertion = firstConstraintAssertion.replace("</Assertion>", "");
-            var secondConstraintAssertion = secondConstraint.assertion.replace("<Assertion>", "");
-            secondConstraintAssertion = secondConstraintAssertion.replace("</Assertion>", "");
+        $rootScope.displayLocationForSegment = function(segment, constraintTarget) {
+            var position = constraintTarget.substring(0, constraintTarget.indexOf('['));
+            var field = _.find(segment.fields, function(f){ return f.position == position; });
+            if(field) return segment.name + "-" + position + " (" + field.name + ")";
+            return segment.name;
+        };
 
+        $rootScope.generateCompositeConformanceStatement = function (compositeType, firstConstraint, secondConstraint, constraints) {
             var cs = null;
-            if (compositeType === 'AND') {
+            if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR' || compositeType === 'IFTHEN') {
+                var firstConstraintAssertion = firstConstraint.assertion.replace("<Assertion>", "");
+                firstConstraintAssertion = firstConstraintAssertion.replace("</Assertion>", "");
+                var secondConstraintAssertion = secondConstraint.assertion.replace("<Assertion>", "");
+                secondConstraintAssertion = secondConstraintAssertion.replace("</Assertion>", "");
+
                 cs = {
                     id: new ObjectId().toString(),
-                    constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
-                    description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
-                    assertion: '<Assertion><AND>' + firstConstraintAssertion + secondConstraintAssertion + '</AND></Assertion>'
+                    description: '[' + firstConstraint.description + '] ' + compositeType + ' [' + secondConstraint.description + ']',
+                    assertion: '<Assertion><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Assertion>'
                 };
-            } else if (compositeType === 'OR') {
+            } else if (compositeType === 'FORALL' ||compositeType === 'EXIST' ) {
+                var forALLExistId = compositeType;
+                var forALLExistAssertion = '';
+                var forALLExistDescription = compositeType;
+                var forALLExistConstraintTarget = '';
+
+                angular.forEach(constraints, function (c) {
+                    forALLExistAssertion = forALLExistAssertion + c.assertion.replace("<Assertion>", "").replace("</Assertion>", "");
+                    forALLExistDescription = forALLExistDescription + '[' + c.description + ']';
+                    forALLExistId = forALLExistId + '(' + c.constraintId + ')';
+                    forALLExistConstraintTarget = c.constraintTarget;
+                });
+
                 cs = {
                     id: new ObjectId().toString(),
-                    constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
-                    description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
-                    assertion: '<Assertion><OR>' + firstConstraintAssertion + secondConstraintAssertion + '</OR></Assertion>'
-                };
-            } else if (compositeType === 'IFTHEN') {
-                cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
-                    description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
-                    assertion: '<Assertion><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Assertion>'
+                    constraintId: forALLExistId,
+                    constraintTarget: forALLExistConstraintTarget,
+                    description: forALLExistDescription,
+                    assertion: '<Assertion><' + compositeType + '>' + forALLExistAssertion + '</' + compositeType + '></Assertion>'
                 };
             }
             return cs;
-        }
+        };
 
 
-        $rootScope.generateCompositePredicate = function (compositeType, firstConstraint, secondConstraint) {
-            var firstConstraintAssertion = firstConstraint.assertion.replace("<Condition>", "");
-            firstConstraintAssertion = firstConstraintAssertion.replace("</Condition>", "");
-            var secondConstraintAssertion = secondConstraint.assertion.replace("<Condition>", "");
-            secondConstraintAssertion = secondConstraintAssertion.replace("</Condition>", "");
-
+        $rootScope.generateCompositePredicate = function (compositeType, firstConstraint, secondConstraint, constraints) {
             var cp = null;
-            if (compositeType === 'AND') {
+            if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR' || compositeType === 'IFTHEN') {
+                var firstConstraintAssertion = firstConstraint.assertion.replace("<Condition>", "");
+                firstConstraintAssertion = firstConstraintAssertion.replace("</Condition>", "");
+                var secondConstraintAssertion = secondConstraint.assertion.replace("<Condition>", "");
+                secondConstraintAssertion = secondConstraintAssertion.replace("</Condition>", "");
+
                 cp = {
                     id: new ObjectId().toString(),
-                    constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
-                    description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
+                    description: '[' + firstConstraint.description + '] ' + compositeType + ' [' + secondConstraint.description + ']',
                     trueUsage: '',
                     falseUsage: '',
-                    assertion: '<Condition><AND>' + firstConstraintAssertion + secondConstraintAssertion + '</AND></Condition>'
+                    assertion: '<Condition><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Condition>'
                 };
-            } else if (compositeType === 'OR') {
+            } else if (compositeType === 'FORALL' ||compositeType === 'EXIST' ) {
+                var forALLExistId = compositeType;
+                var forALLExistAssertion = '';
+                var forALLExistDescription = compositeType;
+                var forALLExistConstraintTarget = '';
+
+                angular.forEach(constraints, function (c) {
+                    forALLExistAssertion = forALLExistAssertion + c.assertion.replace("<Condition>", "").replace("</Condition>", "");
+                    forALLExistDescription = forALLExistDescription + '[' + c.description + ']';
+                    forALLExistId = forALLExistId + '(' + c.constraintId + ')';
+                    forALLExistConstraintTarget = c.constraintTarget;
+                });
+
                 cp = {
                     id: new ObjectId().toString(),
-                    constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
-                    description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
-                    trueUsage: '',
-                    falseUsage: '',
-                    assertion: '<Condition><OR>' + firstConstraintAssertion + secondConstraintAssertion + '</OR></Condition>'
-                };
-            } else if (compositeType === 'IFTHEN') {
-                cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
-                    description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
-                    trueUsage: '',
-                    falseUsage: '',
-                    assertion: '<Condition><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Condition>'
+                    constraintId: forALLExistId,
+                    constraintTarget: forALLExistConstraintTarget,
+                    description: forALLExistDescription,
+                    assertion: '<Condition><' + compositeType + '>' + forALLExistAssertion + '</' + compositeType + '></Condition>'
                 };
             }
             return cp;
-        }
+        };
+
+        $rootScope.generateFreeTextConformanceStatement = function (positionPath, newConstraint) {
+            var cs = {
+                id: new ObjectId().toString(),
+                constraintId: newConstraint.constraintId,
+                constraintTarget: positionPath,
+                description: newConstraint.freeText,
+                assertion: null
+            };
+
+            return cs;
+        };
 
         $rootScope.generateConformanceStatement = function (positionPath, newConstraint) {
             var cs = null;
@@ -1357,7 +1388,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         constraintId: newConstraint.constraintId,
                         constraintTarget: positionPath,
                         description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
-                        assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/></Assertion>'
+                        assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Assertion>'
                     };
                 } else {
 
@@ -1406,7 +1437,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         id: new ObjectId().toString(),
                         constraintId: newConstraint.constraintId,
                         constraintTarget: positionPath,
-                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
+                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value2 + '\'.',
                         assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Assertion>'
                     };
                 } else {
@@ -1414,7 +1445,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         id: new ObjectId().toString(),
                         constraintId: newConstraint.constraintId,
                         constraintTarget: positionPath,
-                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value + '\'.',
                         assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Assertion>'
                     };
                 }
@@ -1532,8 +1563,27 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                 };
             }
 
+
+            if(newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')){
+                cs.assertion= cs.assertion.replace("<Assertion>", "<Assertion><NOT>");
+                cs.assertion = cs.assertion.replace("</Assertion>", "</NOT></Assertion>");
+            }
+
             return cs;
-        }
+        };
+
+        $rootScope.generateFreeTextPredicate = function (positionPath, newConstraint) {
+            var cp = {
+                id: new ObjectId().toString(),
+                constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                constraintTarget: positionPath,
+                description: newConstraint.freeText,
+                trueUsage: newConstraint.trueUsage,
+                falseUsage: newConstraint.falseUsage,
+                assertion: null
+            };
+            return cp;
+        };
 
         $rootScope.generatePredicate = function (positionPath, newConstraint) {
             var cp = null;
@@ -1556,7 +1606,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
                         trueUsage: newConstraint.trueUsage,
                         falseUsage: newConstraint.falseUsage,
-                        assertion: '<Condition><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/></Condition>'
+                        assertion: '<Condition><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Condition>'
                     };
                 } else {
                     var componetsList = newConstraint.value.split("^");
@@ -1608,7 +1658,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         id: new ObjectId().toString(),
                         constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
                         constraintTarget: positionPath,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
+                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value2 + '\'.',
                         trueUsage: newConstraint.trueUsage,
                         falseUsage: newConstraint.falseUsage,
                         assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Condition>'
@@ -1618,7 +1668,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                         id: new ObjectId().toString(),
                         constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
                         constraintTarget: positionPath,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value + '\'.',
                         trueUsage: newConstraint.trueUsage,
                         falseUsage: newConstraint.falseUsage,
                         assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Condition>'
@@ -1766,29 +1816,47 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                 };
             }
 
+            if(newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')){
+                cp.assertion= cp.assertion.replace("<Condition>", "<Condition><NOT>");
+                cp.assertion = cp.assertion.replace("</Condition>", "</NOT></Condition>");
+            }
+
             return cp;
         };
 
 
-        $rootScope.erorrForComplexConfStatement = function (newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint) {
+        $rootScope.erorrForComplexConfStatement = function (newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints) {
+            if ($rootScope.isEmptyCompositeType(compositeType))  return true;
             if ($rootScope.isEmptyComplexConstraintID(newComplexConstraintId)) return true;
             if ($rootScope.isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId))  return true;
-            if ($rootScope.isEmptyCompositeType(compositeType))  return true;
-            if (firstConstraint == null) return true;
-            if (secondConstraint == null) return true;
+            
+            if(compositeType == 'FORALL' || compositeType == 'EXIST'){
+                if(constraints.length < 2) return true;
+            }else {
+                if (firstConstraint == null) return true;
+                if (secondConstraint == null) return true;
+            }
+            
             return false;
         };
 
-        $rootScope.erorrForComplexPredicate = function (compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage) {
+        $rootScope.erorrForComplexPredicate = function (compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage, constraints) {
             if ($rootScope.isEmptyCompositeType(compositeType)) return true;
-            if (firstConstraint == null) return true;
-            if (secondConstraint == null) return true;
             if (complexConstraintTrueUsage == null) return true;
             if (complexConstraintFalseUsage == null) return true;
+
+
+            if(compositeType == 'FORALL' || compositeType == 'EXIST'){
+                if(constraints.length < 2) return true;
+            }else {
+                if (firstConstraint == null) return true;
+                if (secondConstraint == null) return true;
+            }
             return false;
         };
 
-        $rootScope.erorrForPredicate = function (newConstraint, type) {
+        $rootScope.erorrForPredicate = function (newConstraint, type, selectedNode) {
+            if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
             if ($rootScope.isEmptyConstraintVerb(newConstraint)) return true;
             if ($rootScope.isEmptyConstraintPattern(newConstraint)) return true;
@@ -1814,7 +1882,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                 newConstraint.contraintType == 'equal to or less than another node') {
                 if ($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
             } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
-                if ($rootScope.isEmptyConstraintValueSet(newConstraint, type)) return true;
+                if ($rootScope.isEmptyConstraintValueSet(newConstraint)) return true;
             }
             if (newConstraint.trueUsage == null) return true;
             if (newConstraint.falseUsage == null) return true;
@@ -1823,7 +1891,8 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
         }
 
 
-        $rootScope.erorrForConfStatement = function (newConstraint, targetId, type) {
+        $rootScope.erorrForConfStatement = function (newConstraint, targetId, type, selectedNode) {
+            if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintID(newConstraint)) return true;
             if ($rootScope.isDuplicatedConstraintID(newConstraint, targetId)) return true;
             if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
@@ -1851,7 +1920,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
                 newConstraint.contraintType == 'equal to or less than another node') {
                 if ($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
             } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
-                if ($rootScope.isEmptyConstraintValueSet(newConstraint, type)) return true;
+                if ($rootScope.isEmptyConstraintValueSet(newConstraint)) return true;
             }
             return false;
         };

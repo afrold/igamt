@@ -30,8 +30,6 @@ public class DataModelWithConstraints extends DataModel {
 
   protected List<Predicate> predicates = new ArrayList<Predicate>();
 
-  //protected DataContext context;
-  
   protected List<ConformanceStatement> conformanceStatements =
       new ArrayList<ConformanceStatement>();
 
@@ -157,16 +155,5 @@ public class DataModelWithConstraints extends DataModel {
   public void setStatus(STATUS status) {
     this.status = status;
   }
-//
-//  public DataContext getContext() {
-//    return context;
-//  }
-//
-//  public void setContext(DataContext context) {
-//    this.context = context;
-//  }
-//  
-  
-  
   
 }

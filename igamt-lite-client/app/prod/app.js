@@ -35,8 +35,8 @@ var app = angular
         'mgcrea.ngStrap.typeahead',
         'ds.objectDiff',
         'ngTagsInput',
-        '720kb.tooltips',
-        'nsPopover'
+        'nsPopover',
+        'ngMaterial'
      ]);
 
 var

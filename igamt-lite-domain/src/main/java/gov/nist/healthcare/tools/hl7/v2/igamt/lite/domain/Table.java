@@ -40,8 +40,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 
   private String name;
 
-  protected DataContext context;
-
+ 
   private String description;
   private String version;
   private String oid;
@@ -61,6 +60,8 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   protected String date;
 
   protected STATUS status;
+  
+  protected String comment = "";
 
   
   protected String defPreText= "";
@@ -325,13 +326,14 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     this.status = status;
   }
 
-  public DataContext getContext() {
-    return context;
-  }
+public String getComment() {
+	return comment;
+}
 
-  public void setContext(DataContext context) {
-    this.context = context;
-  }
+public void setComment(String comment) {
+	this.comment = comment;
+}
+ 
 
-
+  
 }
