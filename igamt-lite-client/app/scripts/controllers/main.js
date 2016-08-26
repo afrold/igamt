@@ -2302,6 +2302,21 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
             $rootScope.activeModel = param;
         }
 
+        var vm = this;
+
+        $scope.$on("getMenuState", function (event, data) {
+            $scope.$apply(function () {
+                vm.opened = data;
+            });
+        });
+
+        this.toggleNavigation = function() {
+            $mdSidenav('navigation-drawer').toggle();
+        };
+
+
+
+
     }]);
 
 angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user', function ($scope, $modalInstance, user) {

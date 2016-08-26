@@ -35,7 +35,8 @@ var app = angular
         'mgcrea.ngStrap.typeahead',
         'ds.objectDiff',
         'ngTagsInput',
-        'ngMaterial'
+        'ngMaterial',
+        'asideModule'
      ]);
 
 var

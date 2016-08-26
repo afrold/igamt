@@ -34,6 +34,8 @@ var app = angular
         'blockUI',
         'ds.objectDiff',
         'ngTagsInput',
+        'ngMaterial',
+        'asideModule'
         
     ]);
 

@@ -25,6 +25,7 @@
     /*border-color: #285e8e;*/
 }
 
+
 .nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
     color: white;
     background-color: #00788c;
@@ -34,4 +35,58 @@
     color: white;
     background-color: #00788c;
 }
+
+
+.nav > li.nav-header > a {
+    color:black;
+    font-weight: bold;
+}
+
+.nav > li.active > a, .nav > li > a:hover, .nav > li.active > a:hover {
+    color:white;
+    font-weight: bold;
+    background-color: #f1c100;
+}
+
+.navbar .navbar-default, .navbar-header {
+    font-weight: bold;
+    background-color: #f1c100;
+    background:  #f1c100;
+}
+
+.navbar.navbar, .navbar-default.navbar, .navbar.navbar > *, .navbar-default.navbar > * {
+    background-color: #f1c100;
+    background:  #f1c100;
+    color: rgba(255, 255, 255, 0.84);
+}
+
+
+#appcontainer { padding-top: 70px; }
+
+.navbar > .container .navbar-brand {
+    /*margin-left: -60px;*/
+ }
+
+.navbar-collapse {
+    filter: none;
+    border: 0px;
+    border-radius: 0px;
+    border-bottom: 1px solid #f1c100;
+    border-width: 0 0 0px;
+    background: #f1c100;
+    background-color: #f1c100;
+    color: black;
+}
+
+.navbar-brand {
+   padding:0;
+    padding-left: 5px;
+ }
+
+/*.btn-nav-bars {*/
+     /*padding: 5px 5px 5px 5px;*/
+ /*}*/
+
+
+
 
