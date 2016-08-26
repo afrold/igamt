@@ -686,14 +686,28 @@ angular.module('igl')
 
         };
 
-        $scope.addTables = function(igdocument) {
+        $scope.addPHINVADSTables = function(selectedTableLibary) {
             var modalInstance = $modal.open({
-                templateUrl: 'AddTableOpenCtrl.html',
-                controller: 'AddTableOpenCtrl',
+                templateUrl: 'AddPHINVADSTableOpenCtrl.html',
+                controller: 'AddPHINVADSTableOpenCtrl',
                 windowClass: 'conformance-profiles-modal',
                 resolve: {
-                    igdocumentToSelect: function() {
-                        return igdocument;
+                    selectedTableLibary: function() {
+                        return selectedTableLibary;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {}, function() {});
+        };
+
+        $scope.addHL7Table = function(selectedTableLibary) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AddHL7TableOpenCtrl.html',
+                controller: 'AddHL7TableOpenCtrl',
+                windowClass: 'conformance-profiles-modal',
+                resolve: {
+                    selectedTableLibary: function() {
+                        return selectedTableLibary;
                     }
                 }
             });
@@ -1400,15 +1414,13 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     };
 });
 
-angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
+angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
     $scope.loading = false;
-    $scope.igdocumentToSelect = igdocumentToSelect;
-    $scope.source = '';
+    $scope.selectedTableLibary = selectedTableLibary;
     $scope.selectedHL7Version = '';
     $scope.searchText = '';
     $scope.hl7Versions = [];
     $scope.hl7Tables = null;
-    $scope.phinvadsTables = null;
     $scope.selectedTables = [];
 
     $scope.cancel = function() {
@@ -1439,6 +1451,95 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
         });
     };
 
+    $scope.addTable = function(table) {
+        var newTable = angular.copy(table);
+        newTable.id = new ObjectId().toString();
+        newTable.participants = [];
+        newTable.bindingIdentifier = $rootScope.createNewFlavorName(table.bindingIdentifier);
+        newTable.scope = 'USER';
+
+        if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
+            for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
+                newTable.codes[i].id = new ObjectId().toString();
+            }
+        }
+        $scope.selectedTables.push(newTable);
+    };
+
+    $scope.deleteTable = function(table) {
+        var index = $scope.selectedTables.indexOf(table);
+        if (index > -1) $scope.selectedTables.splice(index, 1);
+    };
+
+
+    $scope.save = function() {
+        var childrenLinks = [];
+        for (var i = 0; i < $scope.selectedTables.length; i++) {
+            $scope.selectedTables[i].libIds.push($scope.selectedTableLibary.id);
+            var newLink = angular.fromJson({
+                id: $scope.selectedTables[i].id,
+                bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
+            });
+            $scope.selectedTableLibary.children.push(newLink);
+            childrenLinks.push(newLink);
+            var addedTable = $scope.selectedTables[i];
+            $rootScope.tables.splice(0, 0, addedTable);
+            $rootScope.tablesMap[addedTable.id] = addedTable;
+            TableService.save(addedTable).then(function(result) {
+            }, function(error) {
+                $scope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+
+        }
+        TableLibrarySvc.addChildren($scope.selectedTableLibary.id, childrenLinks).then(function(link) {
+
+            if ($scope.editForm) {
+                $scope.editForm.$setPristine();
+                $scope.editForm.$dirty = false;
+            }
+            $rootScope.clearChanges();
+            $rootScope.msg().text = "tableSaved";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+
+        }, function(error) {
+            $scope.saving = false;
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+        });
+
+
+        $modalInstance.dismiss('cancel');
+    };
+
+    function positionElements(chidren) {
+        var sorted = _.sortBy(chidren, "sectionPosition");
+        var start = sorted[0].sectionPosition;
+        _.each(sorted, function(sortee) {
+            sortee.sectionPosition = start++;
+        });
+        return sorted;
+    };
+
+    $scope.listHL7Versions();
+});
+
+angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
+    $scope.loading = false;
+    $scope.selectedTableLibary = selectedTableLibary;
+    $scope.searchText = '';
+    $scope.hl7Tables = null;
+    $scope.phinvadsTables = null;
+    $scope.selectedTables = [];
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
     $scope.searchPhinvads = function(searchText) {
         $scope.loading = true;
         $scope.searchText = searchText;
@@ -1453,14 +1554,8 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
     $scope.addTable = function(table) {
         var newTable = angular.copy(table);
         newTable.id = new ObjectId().toString();
-        console.log("Adding table");
-        console.log(newTable);
-        console.log("from");
-        console.log(table);
-
-
         newTable.participants = [];
-        newTable.bindingIdentifier = $rootScope.createNewExtension(table.bindingIdentifier);
+        newTable.bindingIdentifier = $rootScope.createNewFlavorName(table.bindingIdentifier);
         newTable.scope = 'USER';
 
         if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
@@ -1468,7 +1563,6 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
                 newTable.codes[i].id = new ObjectId().toString();
             }
         }
-        //console.log(JSON.stringify(newTable));
         $scope.selectedTables.push(newTable);
     };
 
@@ -1481,26 +1575,17 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
     $scope.save = function() {
         var childrenLinks = [];
         for (var i = 0; i < $scope.selectedTables.length; i++) {
-            //var newTable = $scope.selectedTables[i];
-            console.log(JSON.stringify($scope.selectedTables[i]));
-            $scope.selectedTables[i].libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+            $scope.selectedTables[i].libIds.push($scope.selectedTableLibary.id);
             var newLink = angular.fromJson({
                 id: $scope.selectedTables[i].id,
                 bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
             });
             $rootScope.igdocument.profile.tableLibrary.children.push(newLink);
             childrenLinks.push(newLink);
-
             var addedTable = $scope.selectedTables[i];
-
-
-            console.log(addedTable);
-
             $rootScope.tables.splice(0, 0, addedTable);
             $rootScope.tablesMap[addedTable.id] = addedTable;
             TableService.save(addedTable).then(function(result) {
-                //newTable = result;
-
             }, function(error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
@@ -1511,7 +1596,7 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
         }
 
 
-        TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, childrenLinks).then(function(link) {
+        TableLibrarySvc.addChildren($scope.selectedTableLibary.id, childrenLinks).then(function(link) {
 
             if ($scope.editForm) {
                 $scope.editForm.$setPristine();

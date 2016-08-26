@@ -655,16 +655,22 @@ angular
                 ];
 
                 $scope.addValueSets = [
-                    ['Add Tables',
-                        function($itemScope) {
-                            $scope.addTables($rootScope.igdocument);
-                        }
-                    ], null,
                     ['Add New Table',
                         function($itemScope) {
                             CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
                         }
-                    ]
+                    ], null,
+                    ['Import HL7 Tables',
+                        function($itemScope) {
+                            $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary);
+                        }
+                    ], null,
+                    ['Import PHINVADs Tables',
+                        function($itemScope) {
+                            $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                        }
+                    ], null,
+
                 ];
 
 
