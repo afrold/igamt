@@ -39,13 +39,13 @@ public class MessageEvents {
   public MessageEvents(String id, String structId, Set<String> events, String description) {
     this.id = id;
     this.name = structId;
-    createEvents(events);
+    createEvents(events,structId);
     this.description = description;
   }
 
-  void createEvents(Set<String> events) {
+  void createEvents(Set<String> events,String parentStructId) {
     for (String event : events) {
-      this.children.add(new Event(id, event));
+      this.children.add(new Event(id, event,parentStructId));
     }
   }
 

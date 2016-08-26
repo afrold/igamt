@@ -8,6 +8,7 @@ angular.module('igl')
 
 
         $scope.init = function() {};
+        console.log("IN MESSAGES========");
         console.log($rootScope.igdocument);
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
@@ -161,6 +162,9 @@ angular.module('igl')
             if ($scope.messagesParams) {
                 $scope.messagesParams.refresh();
             }
+        };
+        $scope.callMsgDelta = function() {
+            $rootScope.$emit("event:openMsgDelta");
         };
 
 
@@ -1930,6 +1934,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
     $scope.msgChanged = false;
 
 
+
     $scope.scopes = [{
         name: "USER",
         alias: "My IG"
@@ -1952,15 +1957,30 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
 
     var init = function() {
         listHL7Versions().then(function(versions) {
+            $rootScope.deltaMsgList = [];
             $scope.versions = versions;
+            $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
+
+            $scope.scope1 = "USER";
+            $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
+            $scope.message1 = angular.copy($rootScope.message);
+            $scope.segList1 = angular.copy($rootScope.segments);
+            $scope.dtList1 = angular.copy($rootScope.datatypes);
+            $scope.version2 = angular.copy($scope.version1);
+            console.log($scope.scopes);
+            console.log($scope.scopes[1]);
+            $scope.scope2 = "HL7STANDARD";
         });
     };
 
     $scope.$on('event:loginConfirmed', function(event) {
         init();
     });
+    $rootScope.$on('event:openMsgDelta', function(event) {
+        init();
+    });
 
-    init();
+    //init();
 
 
     $scope.status = {
@@ -1969,18 +1989,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         isSecondOpen: true,
         isFirstDisabled: false
     };
-    $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
 
-    $scope.scope1 = "USER";
-    $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
-    $scope.message1 = angular.copy($rootScope.message);
-    $scope.segList1 = angular.copy($rootScope.segments);
-    $scope.dtList1 = angular.copy($rootScope.datatypes);
-    $scope.version2 = angular.copy($scope.version1);
-    console.log($scope.scopes);
-    console.log($scope.scopes[1]);
-
-    $scope.scope2 = "HL7STANDARD";
 
     $scope.setVersion2 = function(vr) {
         $scope.version2 = vr;
@@ -2128,6 +2137,9 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         }
 
     };
+
+
+
 
 
 });

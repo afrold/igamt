@@ -65,6 +65,7 @@ public class Messages extends TextbasedSectionModel implements java.io.Serializa
 
     return null;
   }
+  
 
   public Message findOneByStrucId(String id) {
     if (this.getChildren() != null)

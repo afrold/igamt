@@ -33,9 +33,9 @@
                         </button>
                         </span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12" ng-controller="cmpDatatypeCtrl as cmp">
                         <tabset>
-                            <tab>
+                            <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Data Type MetaData
                                 </tab-heading>
@@ -63,11 +63,11 @@
                                         </div>
                                     </div>
                                     <!--<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">-->
-                                        <!--<label class="col-md-2 control-label">HL7 Version*</label>-->
+                                    <!--<label class="col-md-2 control-label">HL7 Version*</label>-->
 
-                                        <!--<div class="controls col-md-10">-->
-                                            <!--<input type="text" disabled ng-change="setDirty()" name="hl7Version" class="form-control" ng-model="datatype.hl7Version" required>-->
-                                        <!--</div>-->
+                                    <!--<div class="controls col-md-10">-->
+                                    <!--<input type="text" disabled ng-change="setDirty()" name="hl7Version" class="form-control" ng-model="datatype.hl7Version" required>-->
+                                    <!--</div>-->
                                     <!--</div>-->
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.purposeUse.$invalid}">
                                         <label class="col-md-2 control-label">Purpose and Use</label>
@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
                             </tab>
-                            <tab>
+                            <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-table" aria-hidden="true"></i> Data Type Definition
                                 </tab-heading>
@@ -121,9 +121,9 @@
                                                         <div froala-view="datatype.defPreText"></div>
                                                     </div>
                                                 </div>
-                                             </div>
+                                            </div>
 
-                                         </div>
+                                        </div>
 
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
 
@@ -295,7 +295,7 @@
                                     </accordion>
                                 </div>
                             </tab>
-                            <tab ng-controller="cmpDatatypeCtrl as cmp">
+                            <tab ng-click="callDTDelta()">
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw " aria-hidden="true "></i> Datatype Delta
                                 </tab-heading>
@@ -364,7 +364,7 @@
                                             <div class="row" align="center">
 
                                                 <button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="btn btn-info btn-xs">
-                                                        <i class="fa fa-check"></i> Datatype Delta</button>
+                                                        <i class="fa fa-check"></i> Delta</button>
 
                                             </div>
                                         </div>
@@ -407,7 +407,7 @@
 
 
 
-                            <tab>
+                            <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-link" aria-hidden="true"></i> Data Type Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
@@ -700,10 +700,7 @@
             </div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <a ng-click="openInputTextDlg(node, 'comment','Comment', false)" class="point"
-               tooltip-html="node.comment" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip"
-               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', false)" class="point" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 <i class="fa fa-pencil fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
                 <i class="fa fa-plus fa-fw" ng-show="node.comment === '' || node.comment === null"></i>
             </a>
@@ -770,13 +767,10 @@
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <!--<span class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null" disabled>-->
             <!--</span>-->
-            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point"
-               ng-show="node.comment !== '' && node.comment !== null"
-               tooltip-html="node.comment" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip"
-               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-show="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
+                tooltip-placement="left">
                 <i class="fa fa-search fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
-             </a>
+            </a>
 
         </td>
     </tr>
@@ -841,11 +835,8 @@
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <!--<textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" disabled>-->
             <!--</textarea>-->
-            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point"
-               ng-show="node.comment !== '' && node.comment !== null"
-               tooltip-html="node.comment" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip"
-               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-show="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
+                tooltip-placement="left">
                 <i class="fa fa-search fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
             </a>
         </td>
@@ -907,11 +898,8 @@
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <!--<span class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null" disabled>-->
             <!--</span>-->
-            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point"
-               ng-show="node.comment !== '' && node.comment !== null"
-               tooltip-html="node.comment" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip"
-               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-show="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
+                tooltip-placement="left">
                 <i class="fa fa-search fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
             </a>
         </td>

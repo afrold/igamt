@@ -34,9 +34,9 @@
                             </button>
                         </span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12" ng-controller="cmpSegmentCtrl as cmp">
                         <tabset>
-                            <tab>
+                            <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Segment MetaData
                                 </tab-heading>
@@ -92,7 +92,7 @@
                                     <!--</div>-->
                                 </div>
                             </tab>
-                            <tab>
+                            <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Segment Definition
                                 </tab-heading>
@@ -342,7 +342,7 @@
                                 
                                 
                             </tab>
-                            <tab ng-controller="cmpSegmentCtrl as cmp">
+                            <tab ng-click="callSegDelta()">
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw " aria-hidden="true "></i> Segment Delta
                                 </tab-heading>
@@ -398,6 +398,7 @@
                                                     <span class="input-group-addon" id="basic-addon1">IG Document</span>
                                                     <select class="form-control " ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
                                                 </div>
+                                                
 
                                                 <div class="input-group col-md-4">
                                                     <span class="input-group-addon" id="basic-addon1">Segment</span>
@@ -411,7 +412,7 @@
                                             <div class="row" align="center">
 
                                                 <button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || !segment2||!segChanged" class="btn btn-info btn-xs">
-                                                        <i class="fa fa-check"></i> Segment Delta</button>
+                                                        <i class="fa fa-check"></i> Delta</button>
 
                                             </div>
                                         </div>
@@ -452,7 +453,7 @@
 
                             </tab>
                             
-                            <tab>
+                            <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-link" aria-hidden="true"></i> Segment Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
@@ -496,6 +497,8 @@
                     </div>
             </div>
         </div>
+        
+
     </div>
     </div>
 </script>

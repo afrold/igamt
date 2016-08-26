@@ -15,6 +15,7 @@ import java.util.Set;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NamesAndStruct;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 /**
@@ -23,6 +24,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
  */
 public interface MessageOperations {
 
+	  public List<Message> findByIds(Set<String> ids);
+
+
+	List<Message> findByNamesScopeAndVersion(String name,String structId, String scope, String hl7Version);
 
 	 
 }

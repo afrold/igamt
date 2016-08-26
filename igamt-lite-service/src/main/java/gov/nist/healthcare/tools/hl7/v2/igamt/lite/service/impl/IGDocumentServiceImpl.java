@@ -107,6 +107,12 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     log.info("IGDocumentServiceImpl.findByScopeAndVersion=" + igDocuments.size());
     return igDocuments;
   }
+  @Override
+  public List<IGDocument> findByScopeAndVersions(SCOPE scope, List<String> hl7Versions) {
+    List<IGDocument> igDocuments = documentRepository.findByScopeAndVersions(scope, hl7Versions);
+    log.info("IGDocumentServiceImpl.findByScopeAndVersions=" + igDocuments.size());
+    return igDocuments;
+  }
   
   @Override
   public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version) {

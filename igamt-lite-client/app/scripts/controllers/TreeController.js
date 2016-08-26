@@ -588,6 +588,7 @@ angular
 
                     ['Add', function($itemScope) {
                         $scope.hl7Versions('ctx');
+                        //$scope.addMessageToIg($rootScope.igdocument.profile.metaData.hl7Version);
                     }],
                     null, ['Export', function($itemScope) {
                         $scope.selectMessages($rootScope.igdocument);

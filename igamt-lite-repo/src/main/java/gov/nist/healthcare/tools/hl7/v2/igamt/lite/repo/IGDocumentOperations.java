@@ -34,5 +34,7 @@ public interface IGDocumentOperations {
 
 	public List<String> findHl7Versions();
 
+	List<IGDocument> findByScopeAndVersions(SCOPE scope, List<String> hl7Versions);
+
 
 }

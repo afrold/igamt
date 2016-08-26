@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NamesAndStruct;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
@@ -43,6 +46,11 @@ public class MessageServiceImpl implements MessageService {
   public Message findById(String id) {
     log.info("MessageServiceImpl.findById=" + id);
     return messageRepository.findOne(id);
+  }
+  @Override
+  public List<Message> findByIds(Set<String> ids) {
+    log.info("MessageServiceImpl.findByIds=" + ids);
+    return messageRepository.findByIds(ids);
   }
 
 
@@ -67,4 +75,18 @@ public class MessageServiceImpl implements MessageService {
   public void delete(String id) {
     messageRepository.delete(id);
   }
+@Override
+public List<Message> findByNamesScopeAndVersion(String name,String structId, String scope, String hl7Version) {
+	List<Message> messages = messageRepository.findByNamesScopeAndVersion(name,structId,scope, hl7Version);
+    log.info("MessageServiceImpl.findByNamesScopeAndVersion=" + messages.size());
+    return messages;
+}
+public int findMaxPosition(Messages msgs) {
+    int maxPos = 0;
+    for (Message msg : msgs.getChildren()) {
+      maxPos = Math.max(maxPos, msg.getPosition());
+    }
+    return maxPos;
+  }
+
 }

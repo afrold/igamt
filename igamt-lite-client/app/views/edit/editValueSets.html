@@ -33,9 +33,9 @@
                         </span>
                     </div>
 
-                    <div class="">
+                    <div class="" ng-controller="cmpTableCtrl">
                         <tabset>
-                            <tab>
+                            <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Value Set MetaData
                                 </tab-heading>
@@ -132,7 +132,7 @@
                                     </div>
                                 </div>
                             </tab>
-                            <tab>
+                            <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Definition
                                 </tab-heading>
@@ -272,7 +272,7 @@
                                     </div>
 
                             </tab>
-                            <tab ng-controller="cmpTableCtrl">
+                            <tab  ng-click="callVSDelta()">
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw " aria-hidden="true "></i> Value Set Delta
                                 </tab-heading>
@@ -341,7 +341,7 @@
                                             <div class="row" align="center">
 
                                                 <button ng-click="cmpTable(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-info btn-xs">
-                                                        <i class="fa fa-check"></i> Value Set Delta</button>
+                                                        <i class="fa fa-check"></i> Delta</button>
 
                                             </div>
                                         </div>
@@ -371,7 +371,7 @@
                             </tab>
 
 
-                            <tab>
+                            <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-link" aria-hidden="true"></i> Value Set Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>

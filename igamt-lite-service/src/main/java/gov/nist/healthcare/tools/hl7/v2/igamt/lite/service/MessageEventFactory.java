@@ -49,11 +49,15 @@ public class MessageEventFactory {
 
     List<MessageEvents> list = new ArrayList<MessageEvents>();
     for (Message msg : msgs.getChildren()) {
-      String id = msg.getId();
-      String structID = msg.getStructID();
-      Set<String> events = findEvents(structID);
-      String description = msg.getDescription();
-      list.add(new MessageEvents(id, structID, events, description));
+    	
+    		String id = msg.getId();
+    	      
+    	      String structID = msg.getStructID();
+    	      Set<String> events = findEvents(structID);
+    	      String description = msg.getDescription();
+    	      list.add(new MessageEvents(id, structID, events, description));
+    	
+      
     }
     return list;
   }

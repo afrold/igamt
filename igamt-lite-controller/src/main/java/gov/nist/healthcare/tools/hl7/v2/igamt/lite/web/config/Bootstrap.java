@@ -12,6 +12,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -21,13 +22,17 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrection;
@@ -44,6 +49,9 @@ public class Bootstrap implements InitializingBean {
   @Autowired
   IGDocumentService documentService;
 
+  @Autowired
+  MessageService messageService;
+  
   @Autowired
   DataCorrectionSectionPosition dataCorrectionSectionPosition;
 
@@ -68,6 +76,7 @@ public class Bootstrap implements InitializingBean {
     // dataCorrectionSectionPosition.resetSectionPositions();
 //    new DataCorrection().updateValueSetForSegment();
 //    new DataCorrection().updateValueSetsForDT();
+	  //addVersionAndScopetoIG();
 
   }
 
@@ -101,6 +110,34 @@ public class Bootstrap implements InitializingBean {
     }
     if (!existPreloadedDocument)
       documentService.save(d);
+  }
+  
+  private void addVersionAndScopetoIG(){
+	  List<String> hl7Versions = new ArrayList<String>();
+	  hl7Versions.add("2.1");
+	  hl7Versions.add("2.2");
+	  hl7Versions.add("2.3");
+	  hl7Versions.add("2.3.1");
+	  hl7Versions.add("2.4");
+	  hl7Versions.add("2.5");
+	  hl7Versions.add("2.5.1");
+	  hl7Versions.add("2.6");
+	  hl7Versions.add("2.7");
+	  
+	  List<IGDocument> igDocuments = documentService.findByScopeAndVersions(SCOPE.HL7STANDARD, hl7Versions);
+	  System.out.println(igDocuments);
+	  for (IGDocument igd: igDocuments){
+		  Messages msgs =  igd.getProfile().getMessages();
+		  for (Message msg: msgs.getChildren()){
+			  msg.setScope(SCOPE.HL7STANDARD);
+			  msg.setHl7Version(igd.getMetaData().getHl7Version());
+			  
+			  
+		  }
+		  messageService.save(msgs.getChildren());
+		  
+		  
+	  }
   }
 
   private void checkTableNameForAllIGDocuments() throws IGDocumentSaveException {

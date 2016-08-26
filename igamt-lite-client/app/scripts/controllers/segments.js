@@ -5,6 +5,7 @@
 angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService, blockUI) {
     //        $scope.loading = false;
     $scope.init = function() {};
+    console.log("IN SEGMENTS========");
     $scope.accordStatus = {
         isCustomHeaderOpen: false,
         isFirstOpen: true,
@@ -13,6 +14,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         isFourthOpen: true,
         isFirstDisabled: false
     };
+
     $scope.editableDT = '';
     $scope.editableVS = '';
 
@@ -784,6 +786,10 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         $rootScope.clearChanges();
         if ($scope.segmentsParams)
             $scope.segmentsParams.refresh();
+    };
+    $scope.callSegDelta = function() {
+
+        $rootScope.$emit("event:openSegDelta");
     };
 
 
@@ -1697,9 +1703,17 @@ angular.module('igl').controller('EditVSCtrl', function($scope, $modalInstance, 
 
 
 angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, ObjectDiff, orderByFilter, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, CompareService) {
+
+
+
     $scope.segChanged = false;
+    $scope.isDeltaCalled = false;
     var ctrl = this;
     this.segmentId = -1;
+    $scope.setDeltaToF = function() {
+        console.log("HEEEEEEEEEEREREEE");
+        $scope.isDeltaCalled = false;
+    }
 
 
     $scope.scopes = [{
@@ -1731,33 +1745,38 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
             return hl7Versions;
         });
     };
+    $scope.status = {
+        isCustomHeaderOpen: false,
+        isFirstOpen: true,
+        isSecondOpen: false,
+        isFirstDisabled: false
+    };
     $scope.variable = false;
 
     $scope.initt = function() {
+        $scope.isDeltaCalled = true;
+        $scope.dataList = [];
         listHL7Versions().then(function(versions) {
             $scope.versions = versions;
-        });
-        $scope.status = {
-            isCustomHeaderOpen: false,
-            isFirstOpen: true,
-            isSecondOpen: true,
-            isFirstDisabled: false
-        };
+            $scope.segment1 = angular.copy($rootScope.segment);
+            ctrl.segmentId = -1;
+            //$scope.setIG2($scope.ig2);
+            $scope.variable = !$scope.variable;
+            $scope.segList1 = angular.copy($rootScope.segments);
+            $scope.dtList1 = angular.copy($rootScope.datatypes);
+            $scope.version2 = angular.copy($scope.version1);
+            console.log($scope.scopes);
+            console.log($scope.scopes[1]);
+            //$scope.status.isFirstOpen = true;
+            $scope.scope2 = "HL7STANDARD";
+            if ($scope.dynamicSeg_params) {
+                $scope.showDelta = true;
+                $scope.status.isFirstOpen = true;
+                $scope.dynamicSeg_params.refresh();
+            }
 
-        console.log("hereeeee");
-        console.log($rootScope.segment);
-        console.log($scope.ig2);
-        $scope.segment1 = angular.copy($rootScope.segment);
-        ctrl.segmentId = -1;
-        //$scope.setIG2($scope.ig2);
-        $scope.variable = !$scope.variable;
-        $scope.segList1 = angular.copy($rootScope.segments);
-        $scope.dtList1 = angular.copy($rootScope.datatypes);
-        $scope.version2 = angular.copy($scope.version1);
-        console.log($scope.scopes);
-        console.log($scope.scopes[1]);
-        //$scope.status.isFirstOpen = true;
-        $scope.scope2 = "HL7STANDARD";
+        });
+
 
     };
 
@@ -1765,19 +1784,29 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
         $scope.initt();
     });
 
-    $scope.initt();
+    //$scope.initt();
 
     $rootScope.$on('event:initSegment', function(event) {
+        console.log("$scope.isDeltaCalled");
+        console.log($scope.isDeltaCalled);
+        if ($scope.isDeltaCalled) {
+            $scope.initt();
+        }
+        // $scope.initt();
+    });
+
+    $rootScope.$on('event:openSegDelta', function(event) {
         $scope.initt();
     });
 
-    $rootScope.$on('event:saveSegForDelta', function(event) {
-        $scope.dataList = [];
-        console.log("hereere=======");
-        console.log($scope.segment2)
-        console.log($scope.segments2);
-        $scope.initt();
-    });
+
+    // $rootScope.$on('event:saveSegForDelta', function(event) {
+    //     $scope.dataList = [];
+    //     console.log("hereere=======");
+    //     console.log($scope.segment2)
+    //     console.log($scope.segments2);
+    //     $scope.initt();
+    // });
 
     $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
     $scope.scope1 = "USER";

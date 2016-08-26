@@ -686,6 +686,7 @@ angular.module('igl')
 
         };
 
+
         $scope.addTables = function(igdocument) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddTableOpenCtrl.html',
@@ -1545,10 +1546,13 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
 
 
 angular.module('igl').controller('AddDatatypeDlgCtl',
-    function($scope, $rootScope, $modalInstance, hl7Version, datatypes, DatatypeLibrarySvc, DatatypeService) {
+    function($scope, $rootScope, $modalInstance, hl7Version, datatypes, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService) {
 
         //$scope.hl7Version = hl7Version;
         //$scope.hl7Datatypes = datatypes;
+        $rootScope.usedDtLink = [];
+        $rootScope.usedVsLink = [];
+
 
 
         $scope.hl7Datatypes = datatypes.filter(function(current) {
@@ -1593,20 +1597,67 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
                 id: $scope.newDatatype.id,
                 name: $scope.newDatatype.name
             });
+            console.log("ADDDATATYPEEEEEEE");
+            console.log($scope.newDatatype);
+
+            console.log($rootScope.usedDtLink);
 
             DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function(link) {
                 $rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
                 $rootScope.datatypes.splice(0, 0, $scope.newDatatype);
                 $rootScope.datatype = $scope.newDatatype;
                 $rootScope.datatypesMap[$scope.newDatatype.id] = $scope.newDatatype;
-                $rootScope.processElement($scope.newDatatype);
-                $rootScope.filteredDatatypesList.push($scope.newDatatype);
-                $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-                $rootScope.$broadcast('event:openDatatype', $scope.newDatatype);
-                $rootScope.msg().text = "datatypeAdded";
-                $rootScope.msg().type = "success";
-                $rootScope.msg().show = true;
-                $modalInstance.close(datatypes);
+                $rootScope.fillMaps($scope.newDatatype);
+                var usedDtId = _.map($rootScope.usedDtLink, function(num, key) {
+                    return num.id;
+                });
+                DatatypeService.get(usedDtId).then(function(datatypes) {
+                    for (var j = 0; j < datatypes.length; j++) {
+                        $rootScope.fillMaps(datatypes[j]);
+                    }
+                    var newDatatypesLink = _.difference($rootScope.usedDtLink, $rootScope.igdocument.profile.datatypeLibrary.children);
+                    DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, newDatatypesLink).then(function() {
+                        for (var j = 0; j < datatypes.length; j++) {
+                            if (!$rootScope.datatypesMap[datatypes[j].id]) {
+                                $rootScope.datatypesMap[datatypes[j].id] = datatypes[j];
+                                $rootScope.datatypes.push(datatypes[j]);
+                                console.log($rootScope.datatypesMap[datatypes[j].id]);
+                            }
+                        }
+
+                        var usedVsId = _.map($rootScope.usedVsLink, function(num, key) {
+                            return num.id;
+                        });
+                        var newTablesLink = _.difference($rootScope.usedVsLink, $rootScope.igdocument.profile.tableLibrary.children);
+                        TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, newTablesLink).then(function() {
+                            TableService.get(usedVsId).then(function(tables) {
+                                for (var j = 0; j < tables.length; j++) {
+                                    if (!$rootScope.tablesMap[tables[j].id]) {
+                                        $rootScope.tablesMap[tables[j].id] = tables[j];
+                                        $rootScope.tables.push(tables[j]);
+                                    }
+                                }
+                                $rootScope.processElement($scope.newDatatype);
+                                $rootScope.filteredDatatypesList.push($scope.newDatatype);
+                                $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
+                                $rootScope.$broadcast('event:openDatatype', $scope.newDatatype);
+                                $rootScope.msg().text = "datatypeAdded";
+                                $rootScope.msg().type = "success";
+                                $rootScope.msg().show = true;
+                                $modalInstance.close(datatypes);
+
+                            });
+                        });
+
+
+                    });
+
+                });
+
+
+
+
+
             }, function(error) {
                 $rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
@@ -1622,8 +1673,9 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
 
 angular.module('igl').controller('AddSegmentDlgCtl',
-    function($scope, $rootScope, $modalInstance, hl7Version, segments, SegmentService, SegmentLibrarySvc, IgDocumentService) {
-
+    function($scope, $rootScope, $modalInstance, hl7Version, segments, SegmentService, SegmentLibrarySvc, DatatypeService, TableLibrarySvc, TableService, DatatypeLibrarySvc, IgDocumentService) {
+        $rootScope.usedDtLink = [];
+        $rootScope.usedVsLink = [];
 
         $scope.hl7Segments = segments.filter(function(current) {
             return $rootScope.segments.filter(function(current_b) {
@@ -1671,6 +1723,11 @@ angular.module('igl').controller('AddSegmentDlgCtl',
                 name: $scope.newSegment.name
             });
 
+            var usedDtId = _.map($rootScope.usedDtLink, function(num, key) {
+                return num.id;
+            });
+
+
             //            $scope.newSegment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
 
             // SegmentService.save($scope.newSegment).then(function(result) {
@@ -1679,33 +1736,78 @@ angular.module('igl').controller('AddSegmentDlgCtl',
                 $rootScope.segments.splice(0, 0, $scope.newSegment);
                 $rootScope.segment = $scope.newSegment;
                 $rootScope.segmentsMap[$scope.newSegment.id] = $scope.newSegment;
-                //TODO MasterMap need to add Segment
-                $rootScope.processElement($scope.newSegment);
-                //                  MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
-                $rootScope.filteredSegmentsList.push($scope.newSegment);
-                $rootScope.filteredSegmentsList = _.uniq($rootScope.filteredSegmentsList);
-                $rootScope.$broadcast('event:openSegment', $scope.newSegment);
-                $rootScope.msg().text = "segmentAdded";
-                $rootScope.msg().type = "success";
-                $rootScope.msg().show = true;
-                $modalInstance.close(segments);
-            }, function(error) {
-                $scope.saving = false;
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
+                DatatypeService.get(usedDtId).then(function(datatypes) {
+                    for (var j = 0; j < datatypes.length; j++) {
+
+                        $rootScope.fillMaps(datatypes[j]);
+
+                    }
+                    var usedDtId1 = _.map($rootScope.usedDtLink, function(num, key) {
+                        return num.id;
+                    });
+                    var newDatatypesLink = _.difference($rootScope.usedDtLink, $rootScope.igdocument.profile.datatypeLibrary.children);
+                    DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, newDatatypesLink).then(function() {
+                        DatatypeService.get(usedDtId1).then(function(datatypes) {
+                            for (var j = 0; j < datatypes.length; j++) {
+                                if (!$rootScope.datatypesMap[datatypes[j].id]) {
+                                    $rootScope.datatypesMap[datatypes[j].id] = datatypes[j];
+                                    $rootScope.datatypes.push(datatypes[j]);
+                                    console.log($rootScope.datatypesMap[datatypes[j].id]);
+                                }
+                            }
+                            var usedVsId = _.map($rootScope.usedVsLink, function(num, key) {
+                                return num.id;
+                            });
+                            var newTablesLink = _.difference($rootScope.usedVsLink, $rootScope.igdocument.profile.tableLibrary.children);
+                            TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, newTablesLink).then(function() {
+                                TableService.get(usedVsId).then(function(tables) {
+                                    for (var j = 0; j < tables.length; j++) {
+                                        if (!$rootScope.tablesMap[tables[j].id]) {
+                                            $rootScope.tablesMap[tables[j].id] = tables[j];
+                                            $rootScope.tables.push(tables[j]);
+                                        }
+                                    }
+
+                                    //TODO MasterMap need to add Segment
+                                    $rootScope.processElement($scope.newSegment);
+                                    //                  MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                                    $rootScope.filteredSegmentsList.push($scope.newSegment);
+                                    $rootScope.filteredSegmentsList = _.uniq($rootScope.filteredSegmentsList);
+                                    $rootScope.$broadcast('event:openSegment', $scope.newSegment);
+                                    $rootScope.msg().text = "segmentAdded";
+                                    $rootScope.msg().type = "success";
+                                    $rootScope.msg().show = true;
+                                    $modalInstance.close(segments);
+
+                                });
+                            });
+
+
+
+                        });
+
+
+                    });
+
+
+                }, function(error) {
+                    $scope.saving = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
+                //            }, function(error) {
+                //                $scope.saving = false;
+                //                $rootScope.msg().text = error.data.text;
+                //                $rootScope.msg().type = error.data.type;
+                //                $rootScope.msg().show = true;
+                //            });
+
+
             });
-            //            }, function(error) {
-            //                $scope.saving = false;
-            //                $rootScope.msg().text = error.data.text;
-            //                $rootScope.msg().type = error.data.type;
-            //                $rootScope.msg().show = true;
-            //            });
 
-
-        };
-
-        $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $scope.cancel = function() {
+                $modalInstance.dismiss('cancel');
+            };
         };
     });

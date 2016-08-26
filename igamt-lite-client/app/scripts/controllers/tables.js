@@ -11,6 +11,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.params = null;
     $scope.predicate = 'value';
     $scope.reverse = false;
+    $scope.isDeltaCalled = false;
 
     $scope.init = function() {
         $rootScope.$on('event:cloneTableFlavor', function(event, table) {
@@ -33,6 +34,10 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             $scope.editForm.$dirty = false;
         }
         $rootScope.clearChanges();
+    };
+    $scope.callVSDelta = function() {
+
+        $rootScope.$emit("event:openVSDelta");
     };
 
 
@@ -397,6 +402,13 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
     this.tableId = -1;
     $scope.vsChanged = false;
     $scope.variable = false;
+    $scope.isDeltaCalled = false;
+
+    $scope.setDeltaToF = function() {
+        console.log("HEEEEEERREEEEE");
+        $scope.isDeltaCalled = false;
+    }
+
 
 
     $scope.scopes = [{
@@ -418,28 +430,37 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
             return hl7Versions;
         });
     };
+    $scope.status = {
+        isCustomHeaderOpen: false,
+        isFirstOpen: true,
+        isSecondOpen: true,
+        isFirstDisabled: false
+    };
 
     $scope.initt = function() {
+        $scope.isDeltaCalled = true;
+        $scope.dataList = [];
         listHL7Versions().then(function(versions) {
             $scope.versions = versions;
+            $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
+            $scope.scope1 = "USER";
+            $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
+            $scope.table1 = angular.copy($rootScope.table);
+            ctrl.tableId = -1;
+            $scope.variable = !$scope.variable;
+            $scope.tables = null;
+            //$scope.setIG2($scope.ig2);
+            $scope.version2 = angular.copy($scope.version1);
+            //$scope.status.isFirstOpen = true;
+            $scope.scope2 = "HL7STANDARD";
+            if ($scope.dynamicVs_params) {
+                $scope.showDelta = false;
+                $scope.status.isFirstOpen = true;
+                $scope.dynamicVs_params.refresh();
+            }
         });
-        $scope.status = {
-            isCustomHeaderOpen: false,
-            isFirstOpen: true,
-            isSecondOpen: true,
-            isFirstDisabled: false
-        };
-        $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
-        $scope.scope1 = "USER";
-        $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
-        $scope.table1 = angular.copy($rootScope.table);
-        ctrl.tableId = -1;
-        $scope.variable = !$scope.variable;
-        $scope.tables = null;
-        //$scope.setIG2($scope.ig2);
-        $scope.version2 = angular.copy($scope.version1);
-        //$scope.status.isFirstOpen = true;
-        $scope.scope2 = "HL7STANDARD";
+
+
 
     };
 
@@ -447,9 +468,15 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
         $scope.initt();
     });
 
-    $scope.initt();
+    //$scope.initt();
 
     $rootScope.$on('event:initTable', function(event) {
+        if ($scope.isDeltaCalled) {
+            $scope.initt();
+        }
+    });
+
+    $rootScope.$on('event:openVSDelta', function(event) {
         $scope.initt();
     });
 
@@ -464,7 +491,7 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
         $scope.scope2 = scope;
     };
 
-    $scope.$watchGroup(['table1', 'table2', 'variable'], function() {
+    $scope.$watchGroup(['table1', 'table2'], function() {
         $scope.vsChanged = true;
         //$scope.segment1 = angular.copy($rootScope.activeSegment);
 
@@ -581,7 +608,7 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
     $scope.cmpTable = function(table1, table2) {
 
         $scope.loadingSelection = true;
-        $scope.dtChanged = false;
+        $scope.vsChanged = false;
         $scope.vsTemplate = false;
         $scope.dataList = CompareService.cmpValueSet(JSON.stringify(table1), JSON.stringify(table2));
         console.log("hg==========");
