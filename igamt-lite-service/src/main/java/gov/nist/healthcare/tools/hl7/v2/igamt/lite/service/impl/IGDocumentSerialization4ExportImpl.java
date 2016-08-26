@@ -1343,7 +1343,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
     Elements elements1 = doc.select("h1");
     elements1.tagName("p").attr("style", "display: block;font-size: 16.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
-    elements1.after("<hr />");
+    //elements1.after("<hr />");
     Elements elements2 = doc.select("h2");
     elements2.tagName("p").attr("style", "display: block;font-size: 14.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
     Elements elements3 = doc.select("h3");
@@ -1432,9 +1432,20 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
           elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
         if (f.getConfLength() != null && !f.getConfLength().equals(""))
           elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
-        if (f.getTable() != null && !f.getTable().getBindingIdentifier().equals(""))
+        if (f.getTables() != null && (f.getTables().size()>0)){
+        	String temp="";
+        	if((f.getTables().size()>1)){
+        	for (TableLink t : f.getTables()){
+        		temp= temp + ","+t.getBindingIdentifier();
+        		
+        	} 
+        	temp=temp.substring(1);
+        	}else{
+        		temp=f.getTables().get(0).getBindingIdentifier();
+        	}
           elmField.addAttribute(new Attribute("Binding", 
-              f.getTable().getBindingIdentifier()));
+              temp));
+        }
         if (f.getItemNo() != null && !f.getItemNo().equals(""))
           elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
         if (f.getComment() != null && !f.getComment().isEmpty())
@@ -1444,6 +1455,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
         if (f.getText() != null && !f.getText().isEmpty()) {
           elmField.appendChild(this.serializeRichtext("Text", f.getText()));
         }
+  
 
         List<Constraint> constraints =
             findConstraints(i, s.getPredicates(), s.getConformanceStatements());
@@ -1454,7 +1466,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
             elmField.appendChild(elmConstraint);
           }
         }
-
+        
         elmSegment.appendChild(elmField);
       }
 
@@ -1615,10 +1627,20 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
           elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
         }
 
-        if (c.getTable() != null) {
-          elmComponent.addAttribute(new Attribute("Binding", 
-              c.getTable().getBindingIdentifier()));
-        } 
+        if (c.getTables() != null && (c.getTables().size()>0)){
+        	String temp="";
+        	if((c.getTables().size()>1)){
+        	for (TableLink t : c.getTables()){
+        		temp= temp + ","+t.getBindingIdentifier();
+        		
+        	} 
+        	temp=temp.substring(1);
+        	}else{
+        		temp=c.getTables().get(0).getBindingIdentifier();
+        	}
+        	 elmComponent.addAttribute(new Attribute("Binding", 
+              temp));
+        }
 
         List<Constraint> constraints =
             findConstraints(i, d.getPredicates(), d.getConformanceStatements());

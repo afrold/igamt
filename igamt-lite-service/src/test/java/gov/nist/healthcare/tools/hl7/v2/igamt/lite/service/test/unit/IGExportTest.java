@@ -19,6 +19,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.IGDocumentServiceImpl;
@@ -113,6 +114,7 @@ public class IGExportTest {
   @Test
   public void testCallIGExportXml() {
     try {
+    	ig=igService.findOne("57bdd909d4c6df3e702c81a2");
       content = igExport.exportAsXmlDisplay(ig);
       assertNotNull(content);
       timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

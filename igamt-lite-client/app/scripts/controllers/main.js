@@ -68,13 +68,14 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
         	if(obj.usage==='R'){
         		obj.min=1;
         	}
-        	else if(obj.usage==='X'){
+        	else if(obj.usage==='X'||obj.usage==='BW'){
         		obj.min=0;
         		obj.max=0;
         	}else if(obj.usage==='O'){
         		obj.min=0;
         		
         	}
+
         };
         
         
@@ -2206,6 +2207,7 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
 
 
         $rootScope.setUsage = function (node) {
+            console.log("============");
             ElementUtils.setUsage(node);
         };
 

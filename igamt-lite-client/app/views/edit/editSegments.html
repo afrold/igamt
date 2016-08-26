@@ -829,7 +829,7 @@
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') " style="text-align:center ">
             <div ng-show="node.tables.length!==0">
                 <a class="point " ng-repeat="table in node.tables">
-                    <span ng-click="redirectVS(table)">{{table.bindingIdentifier}}</span>
+                    <span ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}</span>
                 </a>
                 <a ng-click="editVSModal(node) " class="point ">
                     <span><i class="fa fa-pencil fa-fw "></i></span>
@@ -935,13 +935,16 @@
             <div>
                 <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null ">
 
-                    <a class="point " ng-repeat="table in node.obj.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
+                    <a class="point " ng-repeat="table in node.obj.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}xx
+</a>
                 </span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
 
-            <a class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
+            <a class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}xx
+
+</a>
         </td>
         <td class="col-xs-1 " ng-style="predWidth " ng-show="viewSettings.isVisibleColumn( 'predicate') ">
             <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true ">
@@ -1017,7 +1020,8 @@
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
             <div>
                 <span ng-show="node.table !=undefined && node.table !=null ">
-                    <a class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
+                    <a class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}xx
+</a>
                 </a>
                 </span>
             </div>
@@ -1098,7 +1102,8 @@
         </td>
         <td class="col-xs-1 col-fixed-130 " ng-show="viewSettings.isVisibleColumn( 'valueSet') ">
 
-            <a type="button " class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
+            <a type="button " class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}xx
+</a>
         </td>
         <td class="col-xs-1 " ng-style="predWidth " ng-show="viewSettings.isVisibleColumn( 'predicate') ">
             <div>
@@ -1301,7 +1306,7 @@
                             <span>ValueSet ID: </span>
                                 <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
                                     <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">
-                                        {{table.bindingIdentifier}}
+                                        {{getTableLabel(tablesMap[table.id])}}
                                     </option>
                                 </select>
                                 <span style="color:red;" ng-show="isEmptyConstraintValueSet(newConstraint)">Empty valueset</span>

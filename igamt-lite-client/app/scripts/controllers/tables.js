@@ -56,6 +56,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                 newLink.bindingIdentifier = bindingIdentifier;
                 TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function(link) {
                     oldLink.bindingIdentifier = link.bindingIdentifier;
+                    oldLink.ext=link.ext;
                     cleanState();
                     $rootScope.msg().text = "tableSaved";
                     $rootScope.msg().type = "success";

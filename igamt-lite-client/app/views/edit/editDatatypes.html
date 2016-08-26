@@ -647,7 +647,7 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.tables.length!==0">
                 <a class="point " ng-repeat="table in node.tables">
-                    <span ng-click="redirectVS(table)">{{table.bindingIdentifier}}</span>
+                    <span ng-click="redirectVS(table)"> {{getTableLabel(tablesMap[table.id])}}</span>
                 </a>
                 <a ng-click="editVSModal(node) " class="point ">
                     <span><i class="fa fa-pencil fa-fw "></i></span>
@@ -747,7 +747,7 @@
             <div>
                 <div ng-show="node.tables != undefined  && node.tables !== null">
                     <span ng-repeat="table in node.tables" ng-click="redirectVS(table)">
-                        {{getTableLabel(table)}}
+                        {{getTableLabel(tablesMap[table.id])}}
                     </span>
                 </div>
             </div>
@@ -818,7 +818,7 @@
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <a ng-repeat="table in node.tables" ng-click="redirectVS(table) " class="point" ng-show="node.tables !== null && node.tables !== undefined">
-                {{getTableLabel(table)}}
+                {{getTableLabel(tablesMap[table.id])}}
             </a>
         </td>
         <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
@@ -886,7 +886,7 @@
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <a ng-repeat="table in node.tables" ng-click="redirectVS(table)" ng-show="node.tables !== null && node.tables !== undefined">
-                {{::getTableLabel(table)}}
+                {{::getTableLabel(tablesMap[table.id])}}
             </a>
         </td>
         <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">

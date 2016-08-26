@@ -57,6 +57,7 @@ angular.module('igl')
                 $scope.accordi.igList = false;
                 $scope.accordi.igDetails = true;
             } else {
+                $scope.selectIGDocumentType('USER');
                 $scope.accordi.igList = true;
                 $scope.accordi.igDetails = false;
             }
@@ -195,7 +196,11 @@ angular.module('igl')
                 }
             });
         };
+        $scope.getTemplateRow= function(row){
+            $rootScope.row= row;
+            return 'templateRow.html';
 
+        }
         $scope.selectIGDocumentType = function(selectedType) {
             //console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
             $scope.igDocumentConfig.selectedType = selectedType;

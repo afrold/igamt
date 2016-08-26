@@ -435,6 +435,7 @@ angular
                 function processAddSection() {
                     var newSection = {};
                     newSection.id = new ObjectId().toString();
+                    newSection.childSections = [];
 
                     var rand = Math.floor(Math.random() * 100);
                     if (!$rootScope.igdocument.profile.metaData.ext) {
