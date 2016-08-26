@@ -21,17 +21,17 @@
 
 .nav-tabs > li.active {
     color: white;
-    background-color: #00a1b5;
+    background-color: #00788c;
     /*border-color: #285e8e;*/
 }
 
 .nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
     color: white;
-    background-color: #00a1b5;
+    background-color: #00788c;
 }
 
 .nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
     color: white;
-    background-color: #00a1b5;
+    background-color: #00788c;
 }
 
