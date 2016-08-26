@@ -240,6 +240,7 @@
 					select="./Text[@Type='Text1']" />
 			</p>
 		</xsl:if>
+		<h4>Segment Definition</h4>
 		<p>
 			<table width="100%" border="1" cellspacing="0" cellpadding="1">
 				<col style="width:5%"></col>
@@ -445,6 +446,7 @@
 					select="./Text[@Type='Text1']" />
 			</p>
 		</xsl:if>
+		<h4>Datatype Definition</h4>
 		<p>
 			<table width="100%" border="1" cellspacing="0" cellpadding="0">
 				<col style="width:5%"></col>
@@ -649,6 +651,7 @@
 				<xsl:value-of select="@Oid"></xsl:value-of>
 			</p>
 		</xsl:if>
+		<h4>Value Set Definition</h4>
 		<table width="100%" border="1" cellspacing="0" cellpadding="0">
 			<col style="width:15%"></col>
 			<col style="width:15%"></col>

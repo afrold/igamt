@@ -1587,8 +1587,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerializationD
     nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
     elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
     elmDatatype.addAttribute(new Attribute("Name", d.getName()));
-    elmDatatype.addAttribute(new Attribute("Label", d.getExt() == null || d.getExt().isEmpty() ? d
-        .getName() : d.getLabel() + " - " + d.getDescription()));
+    elmDatatype.addAttribute(new Attribute("Label",  d.getLabel()));
     elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));
     elmDatatype.addAttribute(new Attribute("Comment", d.getComment()));
     elmDatatype.addAttribute(new Attribute("Hl7Version", d.getHl7Version() == null ? "" : d
