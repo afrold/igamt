@@ -79,7 +79,7 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
 		return mongo.find(qry, IGDocument.class);
 	} 
   @Override
-	public List<IGDocument> findByScopeAndVersions(SCOPE scope, List<String> hl7Versions) {
+	public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions) {
 		Criteria where = Criteria.where("profile.metaData.hl7Version").in(hl7Versions);
 		where.andOperator(Criteria.where("profile.scope").is(scope));
 		Query qry = Query.query(where);

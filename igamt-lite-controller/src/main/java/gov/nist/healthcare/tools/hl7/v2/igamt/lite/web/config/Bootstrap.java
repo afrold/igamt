@@ -76,7 +76,8 @@ public class Bootstrap implements InitializingBean {
     // dataCorrectionSectionPosition.resetSectionPositions();
 //    new DataCorrection().updateValueSetForSegment();
 //    new DataCorrection().updateValueSetsForDT();
-	  //addVersionAndScopetoIG();
+	  //addVersionAndScopetoPRELOADEDIG();
+	  //addVersionAndScopetoHL7IG();
 
   }
 
@@ -111,8 +112,8 @@ public class Bootstrap implements InitializingBean {
     if (!existPreloadedDocument)
       documentService.save(d);
   }
-  
-  private void addVersionAndScopetoIG(){
+  //NOTE:ADD version to preloaded segs,dts,vs
+  private void addVersionAndScopetoHL7IG(){
 	  List<String> hl7Versions = new ArrayList<String>();
 	  hl7Versions.add("2.1");
 	  hl7Versions.add("2.2");
@@ -124,12 +125,41 @@ public class Bootstrap implements InitializingBean {
 	  hl7Versions.add("2.6");
 	  hl7Versions.add("2.7");
 	  
-	  List<IGDocument> igDocuments = documentService.findByScopeAndVersions(SCOPE.HL7STANDARD, hl7Versions);
+	  List<IGDocument> igDocuments = documentService.findByScopeAndVersions(IGDocumentScope.HL7STANDARD, hl7Versions);
 	  System.out.println(igDocuments);
 	  for (IGDocument igd: igDocuments){
 		  Messages msgs =  igd.getProfile().getMessages();
+		 System.out.println(msgs.getChildren().size());
 		  for (Message msg: msgs.getChildren()){
 			  msg.setScope(SCOPE.HL7STANDARD);
+			  msg.setHl7Version(igd.getMetaData().getHl7Version());
+			  
+			  
+		  }
+		  messageService.save(msgs.getChildren());
+		  
+		  
+	  }
+  }
+  private void addVersionAndScopetoPRELOADEDIG(){
+	  List<String> hl7Versions = new ArrayList<String>();
+	  hl7Versions.add("2.1");
+	  hl7Versions.add("2.2");
+	  hl7Versions.add("2.3");
+	  hl7Versions.add("2.3.1");
+	  hl7Versions.add("2.4");
+	  hl7Versions.add("2.5");
+	  hl7Versions.add("2.5.1");
+	  hl7Versions.add("2.6");
+	  hl7Versions.add("2.7");
+	  
+	  List<IGDocument> igDocuments = documentService.findByScopeAndVersions(IGDocumentScope.PRELOADED, hl7Versions);
+	  System.out.println(igDocuments);
+	  for (IGDocument igd: igDocuments){
+		  Messages msgs =  igd.getProfile().getMessages();
+		 System.out.println(msgs.getChildren().size());
+		  for (Message msg: msgs.getChildren()){
+			  msg.setScope(SCOPE.PRELOADED);
 			  msg.setHl7Version(igd.getMetaData().getHl7Version());
 			  
 			  

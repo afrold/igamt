@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -34,7 +35,7 @@ public interface IGDocumentOperations {
 
 	public List<String> findHl7Versions();
 
-	List<IGDocument> findByScopeAndVersions(SCOPE scope, List<String> hl7Versions);
+	List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);
 
 
 }

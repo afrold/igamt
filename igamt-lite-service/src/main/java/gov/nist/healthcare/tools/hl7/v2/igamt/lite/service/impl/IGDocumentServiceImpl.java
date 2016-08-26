@@ -20,6 +20,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
@@ -108,7 +109,7 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     return igDocuments;
   }
   @Override
-  public List<IGDocument> findByScopeAndVersions(SCOPE scope, List<String> hl7Versions) {
+  public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions) {
     List<IGDocument> igDocuments = documentRepository.findByScopeAndVersions(scope, hl7Versions);
     log.info("IGDocumentServiceImpl.findByScopeAndVersions=" + igDocuments.size());
     return igDocuments;

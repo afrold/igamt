@@ -54,6 +54,7 @@ public class MessageEventFactory {
     	      
     	      String structID = msg.getStructID();
     	      Set<String> events = findEvents(structID);
+    	      
     	      String description = msg.getDescription();
     	      list.add(new MessageEvents(id, structID, events, description));
     	
@@ -73,6 +74,7 @@ public class MessageEventFactory {
     } else {
       log.error("No code found for structID=" + structID1);
     }
+    
     return events;
   }
 

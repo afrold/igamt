@@ -148,7 +148,7 @@ angular.module('igl').controller(
                 messageEvents.push({
                     "id": event.id,
                     "children": [{
-                        "name": event.name,
+                        "name": event.name.trim(),
                         "parentStructId": event.parentStructId
                     }]
                 });
