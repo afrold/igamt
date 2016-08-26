@@ -43,7 +43,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerializationDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
@@ -213,7 +213,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
   private ProfileSerialization profileSerializationService;
 
   @Autowired
-  private ProfileSerializationDocument profileSerializationDocumentService;
+  private IGDocumentSerialization profileSerializationDocumentService;
 
   // @Autowired
   // private UserService userService;

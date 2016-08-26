@@ -27,7 +27,7 @@ import java.io.UnsupportedEncodingException;
 
 import nu.xom.Document;
 
-public interface ProfileSerializationDocument {
+public interface IGDocumentSerialization {
   Profile deserializeXMLToProfile(String xmlContentsProfile, String xmlValueSet,
       String xmlConstraints);
 
