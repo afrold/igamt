@@ -55,6 +55,14 @@
                                             <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', igdocument.profile.datatypeLibrary.children)">Extension already used</span>
                                         </div>
                                     </div>
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
+                                        <label class="col-md-2 control-label">Hl7 Version </label>
+
+                                        <div class="controls col-md-10">
+                                            <input type="text"  disabled name="hl7version" id="hl7Version" class="form-control" ng-model="datatype.hl7Version" required aria-describedby="helpBlock2">
+                                        </div>
+                                    </div>
+
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.description.$invalid}">
                                         <label class="col-md-2 control-label">Description</label>
 
