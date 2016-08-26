@@ -4,9 +4,6 @@
 
 angular.module('igl')
     .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI) {
-
-
-
         $scope.init = function() {};
         console.log("IN MESSAGES========");
         console.log($rootScope.igdocument);
@@ -610,13 +607,26 @@ angular.module('igl')
         };
 
         $scope.countPredicate = function(position) {
+            var count = 0
             if ($rootScope.message != null) {
                 for (var i = 0, len1 = $rootScope.message.predicates.length; i < len1; i++) {
                     if ($rootScope.message.predicates[i].constraintTarget.indexOf(position) === 0)
-                        return 1;
+                        count = count + 1;
                 }
             }
-            return 0;
+            return count;
+        };
+
+
+        $scope.deletePredicateByPath = function(position) {
+            for (var i = 0, len1 = $rootScope.message.predicates.length; i < len1; i++) {
+                if ($rootScope.message.predicates[i].constraintTarget.indexOf(position) === 0) {
+                    $rootScope.message.predicates.splice($rootScope.message.predicates.indexOf($rootScope.message.predicates[i]), 1);
+                    $scope.editForm.$dirty = true;
+                    return true;
+                }
+            }
+            return false;
         };
 
         $scope.isVisible = function(node) {
@@ -970,6 +980,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.selectedMessage = selectedMessage;
+    $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
@@ -996,8 +1007,10 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
             childNodes_1: [],
             childNodes_2: [],
             verb: null,
+            freeText: null,
             contraintType: null,
             value: null,
+            ignoreCase: false,
             value2: null,
             trueUsage: null,
             falseUsage: null,
@@ -1030,6 +1043,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
     }
 
     $scope.initComplexPredicate = function() {
+        $scope.constraints = [];
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
@@ -1186,7 +1200,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
     };
 
     $scope.addComplexPredicate = function() {
-        $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+        $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
         $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
         $scope.complexConstraint.constraintId = $scope.newConstraint.datatype.id + '-' + $scope.selectedNode.position;
@@ -1195,6 +1209,13 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
         $scope.changed = true;
     };
 
+    $scope.addFreeTextPredicate = function(){
+        $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
+        var cp = $rootScope.generateFreeTextPredicate(selectedNode.path, $scope.newConstraint);
+        $scope.tempPredicates.push(cp);
+        $scope.changed = true;
+        $scope.initPredicate();
+    };
 
     $scope.addPredicate = function() {
         if ($scope.newConstraint.position_1 != null) {
@@ -1221,11 +1242,11 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
 
 });
 
-
 angular.module('igl').controller('ConformanceStatementMessageCtrl', function($scope, $modalInstance, selectedMessage, selectedNode, $rootScope) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.selectedMessage = selectedMessage;
+    $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
@@ -1240,6 +1261,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
     }
 
     $scope.initComplexStatement = function() {
+        $scope.constraints = [];
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
@@ -1256,7 +1278,9 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
             currentNode_2: null,
             childNodes_1: [],
             childNodes_2: [],
+            freeText: null,
             verb: null,
+            ignoreCase: false,
             constraintId: $rootScope.calNextCSID(),
             contraintType: null,
             value: null,
@@ -1424,17 +1448,27 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
     };
 
     $scope.deleteConformanceStatement = function(conformanceStatement) {
+        $rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf($scope.tempComformanceStatements.constraintId), 1);
         $scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };
 
     $scope.addComplexConformanceStatement = function() {
-        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
         if ($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
         $scope.tempComformanceStatements.push($scope.complexConstraint);
         $scope.initComplexStatement();
         $scope.changed = true;
+    };
+
+    $scope.addFreeTextConformanceStatement = function() {
+        $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
+        var cs = $rootScope.generateFreeTextConformanceStatement(selectedNode.path, $scope.newConstraint);
+        $scope.tempComformanceStatements.push(cs);
+        $scope.changed = true;
+        if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+        $scope.initConformanceStatement();
     };
 
     $scope.addConformanceStatement = function() {
@@ -1446,7 +1480,6 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
             if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
             $scope.changed = true;
         }
-
         $scope.initConformanceStatement();
     };
 
