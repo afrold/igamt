@@ -60,6 +60,8 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   protected String date;
 
   protected STATUS status;
+  
+  protected String comment = "";
 
   
   protected String defPreText= "";
@@ -323,6 +325,15 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   public void setStatus(STATUS status) {
     this.status = status;
   }
+
+public String getComment() {
+	return comment;
+}
+
+public void setComment(String comment) {
+	this.comment = comment;
+}
  
 
+  
 }

@@ -2374,3 +2374,28 @@ ul.search-result > li > a:hover {
   height: 160px;
 
 }
+
+.igl-level-2{
+  background-color: #00c8e0;
+}
+
+tr.tbl-header {
+  background-color: #00d0e6;
+  color: #4a4a4a;
+}
+
+.panel-primary .panel-level1 > .panel-heading {
+  background-color: #00d0e6;
+  color: #4a4a4a;
+}
+
+.tab-content, .tab-content > .tab-pane {
+  border-left:1px;
+  border-right:1px;
+  border-bottom:1px;
+  border-color: #a2a2a2;
+}
+
+.activeTD{
+  background-color: cornflowerblue !important;
+}
