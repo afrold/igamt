@@ -669,7 +669,7 @@ angular
                         function($itemScope) {
                             $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
                         }
-                    ], null,
+                    ]
 
                 ];
 

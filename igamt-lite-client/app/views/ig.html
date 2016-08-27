@@ -478,15 +478,6 @@
                                 <th>Name</th>
                                 <th/>
                             </tr>
-<!--                            <tr>
-                                <th>
-                                    <input ng-model="search.bindingIdentifier" class="form-control" placeholder="by id">
-                                </th>
-                                <th>
-                                    <input ng-model="search.name" class="form-control" placeholder="by name">
-                                </th>
-                                <th/>
-                            </tr>-->
                             </thead>
                             <tbody>
                             <tr ng-repeat="table in phinvadsTables | orderBy:'bindingIdentifier' |  filter:search:strict">
@@ -505,22 +496,24 @@
                         <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                             <thead>
                             <tr>
-                                <th>Binding Identifier</th>
-                                <th>Name</th>
-                                <th>soruce</th>
-                                <th>oid</th>
-                                <th/>
+                                <th class="col-sm-7">Binding Identifier</th>
+                                <th class="col-sm-2">Name</th>
+                                <th class="col-sm-2">oid</th>
+                                <th class="col-sm-1"/>
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="table in selectedTables">
-                                <td>
-                                    <input class="form-control" type="text" ng-model="table.bindingIdentifier"/>
+                                <td class="col-sm-7">
+                                    <textarea rows="3" class="form-control" ng-model="table.bindingIdentifier" />
                                 </td>
-                                <td>{{table.name}}</td>
-                                <td>{{table.source}}</td>
-                                <td>{{table.oid}}</td>
-                                <td><a class="pointer" ng-click="deleteTable(table)"><i class="fa fa-times fa-fw"></i></a></td>
+                                <td class="col-sm-2">
+                                    <textarea rows="3" disabled class="form-control" ng-model="table.name" />
+                                </td>
+                                <td class="col-sm-2">
+                                    <textarea rows="3" disabled class="form-control" ng-model="table.oid" />
+                                </td>
+                                <td class="col-sm-1"><a class="pointer" ng-click="deleteTable(table)"><i class="fa fa-times fa-fw"></i></a></td>
                             </tr>
                             </tbody>
                         </table>
