@@ -780,18 +780,6 @@ angular.module('igl')
         $scope.exportAs = function(format) {
             if ($rootScope.igdocument != null) {
                 IgDocumentService.exportAs($rootScope.igdocument, format);
-
-                //                if (!ViewSettings.tableReadonly) {
-                //                    IgDocumentService.save($rootScope.igdocument).then(function (result) {
-                //                        IgDocumentService.exportAs($rootScope.igdocument, format);
-                //                    }, function (error) {
-                //                        $rootScope.msg().text = error.data.text;
-                //                        $rootScope.msg().type = error.data.type;
-                //                        $rootScope.msg().show = true;
-                //                    });
-                //                } else {
-                //                    IgDocumentService.exportAs($rootScope.igdocument, format);
-                //                }
             }
         };
 
@@ -825,38 +813,6 @@ angular.module('igl')
             $rootScope.section['data'] = obj;
             $rootScope.section['type'] = type;
         };
-
-        //        $scope.save = function () {
-        //            $rootScope.msg().text = null;
-        //            $rootScope.msg().type = null;
-        //            $rootScope.msg().show = false;
-        //            var delay = $q.defer();
-        //            waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
-        //            IgDocumentService.save($rootScope.igdocument).then(function (saveResponse) {
-        //                var found = $scope.findOne($rootScope.igdocument.id);
-        //                if (found != null) {
-        //                    var index = $rootScope.igs.indexOf(found);
-        //                    if (index > 0) {
-        //                        $rootScope.igs [index] = $rootScope.igdocument;
-        //                    }
-        //                }
-        //                $rootScope.msg().text = saveResponse.text;
-        //                $rootScope.msg().type = saveResponse.type;
-        //                $rootScope.msg().show = true;
-        //                StorageService.setIgDocument($rootScope.igdocument);
-        //                $rootScope.clearChanges();
-        //                waitingDialog.hide();
-        //                delay.resolve(true);
-        //            }, function (error) {
-        //                $rootScope.msg().text = error.data.text;
-        //                $rootScope.msg().type = error.data.type;
-        //                $rootScope.msg().show = true;
-        //                waitingDialog.hide();
-        //                delay.reject(false);
-        //            });
-        //            return delay.promise;
-        //        };
-
 
         $scope.exportChanges = function() {
             blockUI.start();
@@ -1559,7 +1515,6 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
             $scope.importedTable.scope = 'USER';
             $scope.importedTable.codes = [];
             $scope.importedTable.libIds = [];
-            console.log($scope.data);
             angular.forEach($scope.data.data, function(row) {
                 index = index + 1;
 
@@ -1878,11 +1833,6 @@ angular.module('igl').controller('AddSegmentDlgCtl',
             }
 
         }
-
-
-        //$scope.hl7Segments = _.difference(segments, $rootScope.segments);
-
-
         $scope.selectSeg = function(segment) {
             $scope.newSegment = segment;
         };
@@ -1901,17 +1851,10 @@ angular.module('igl').controller('AddSegmentDlgCtl',
         };
 
         $scope.ok = function() {
-
-            //var newSegment = JSON.parse(segment);
-
             var newLink = angular.fromJson({
                 id: $scope.newSegment.id,
                 name: $scope.newSegment.name
             });
-
-            //            $scope.newSegment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
-
-            // SegmentService.save($scope.newSegment).then(function(result) {
             SegmentLibrarySvc.addChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {
                 $rootScope.igdocument.profile.segmentLibrary.children.splice(0, 0, newLink);
                 $rootScope.segments.splice(0, 0, $scope.newSegment);
@@ -1933,14 +1876,6 @@ angular.module('igl').controller('AddSegmentDlgCtl',
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
             });
-            //            }, function(error) {
-            //                $scope.saving = false;
-            //                $rootScope.msg().text = error.data.text;
-            //                $rootScope.msg().type = error.data.type;
-            //                $rootScope.msg().show = true;
-            //            });
-
-
         };
 
         $scope.cancel = function() {
