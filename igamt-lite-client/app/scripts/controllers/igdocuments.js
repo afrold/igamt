@@ -686,6 +686,20 @@ angular.module('igl')
 
         };
 
+        $scope.addCSVTables = function(selectedTableLibary) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AddCSVTableOpenCtrl.html',
+                controller: 'AddCSVTableOpenCtrl',
+                windowClass: 'conformance-profiles-modal',
+                resolve: {
+                    selectedTableLibary: function() {
+                        return selectedTableLibary;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {}, function() {});
+        };
+
         $scope.addPHINVADSTables = function(selectedTableLibary) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddPHINVADSTableOpenCtrl.html',
@@ -1528,6 +1542,145 @@ angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalI
     $scope.listHL7Versions();
 });
 
+angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService, IgDocumentService) {
+    $scope.loading = false;
+    $scope.selectedTableLibary = selectedTableLibary;
+    $scope.importedTable = null;
+    $scope.data = null;
+
+    $scope.uploadCSVFile = function(){
+        $scope.loading = true;
+        var f = document.getElementById('file').files[0];
+        var reader = new FileReader();
+        reader.onloadend = function(e){
+            $scope.data = Papa.parse(e.target.result);
+            var index = 0;
+            $scope.importedTable = {};
+            $scope.importedTable.scope = 'USER';
+            $scope.importedTable.codes = [];
+            $scope.importedTable.libIds = [];
+            console.log($scope.data);
+            angular.forEach($scope.data.data, function(row) {
+                index = index + 1;
+
+                if(index > 1 && index < 11){
+                    switch (row[0]) {
+                        case 'Mapping Identifier':
+                            $scope.importedTable.bindingIdentifier = row[1];
+                            break;
+                        case 'Name':
+                            $scope.importedTable.name = row[1];
+                            break;
+                        case 'Description':
+                            $scope.importedTable.description = row[1];
+                            break;
+                        case 'OID':
+                            $scope.importedTable.oid = row[1];
+                            break;
+                        case 'Version':
+                            $scope.importedTable.version = row[1];
+                            break;
+                        case 'Extensibility':
+                            $scope.importedTable.extensibility = row[1];
+                            break;
+                        case 'Stability':
+                            $scope.importedTable.stability = row[1];
+                            break;
+                        case 'Content Definition':
+                            $scope.importedTable.contentDefinition = row[1];
+                            break;
+                        case 'Comment':
+                            $scope.importedTable.comment = row[1];
+                    }
+                }else if (index > 13){
+
+                    var code = {};
+                    code.value = row[0];
+                    code.label = row[1];
+                    code.codeSystem = row[2];
+                    code.codeUsage = row[3];
+                    code.comments = row[4];
+
+                    $scope.importedTable.codes.push(code);
+                }
+            });
+
+            $scope.save();
+        };
+        reader.readAsBinaryString(f);
+        $scope.loading = false;
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+    $scope.save = function() {
+        $scope.importedTable.bindingIdentifier = $rootScope.createNewFlavorName($scope.importedTable.bindingIdentifier);
+        $scope.importedTable.libIds.push($scope.selectedTableLibary.id);
+        var newLink = angular.fromJson({
+            id: $scope.importedTable.id,
+            bindingIdentifier: $scope.importedTable.bindingIdentifier
+        });
+
+        $scope.selectedTableLibary.children.push(newLink);
+
+        var addedTable = $scope.importedTable;
+        $rootScope.tables.splice(0, 0, addedTable);
+        $rootScope.tablesMap[addedTable.id] = addedTable;
+        TableService.save(addedTable).then(function(result) {
+            var newTable = result;
+            TableLibrarySvc.addChild($scope.selectedTableLibary.id, newLink).then(function(link) {
+                if ($scope.editForm) {
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                }
+
+                $scope.selectedTableLibary.children.splice(0, 0, link);
+                $rootScope.tables.splice(0, 0, newTable);
+                $rootScope.table = newTable;
+                $rootScope.tablesMap[newTable.id] = newTable;
+
+                $rootScope.codeSystems = [];
+
+                if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+                    $rootScope.filteredTablesList.push(newTable);
+                    $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+                }
+                $rootScope.$broadcast('event:openTable', newTable);
+
+                $rootScope.clearChanges();
+                $rootScope.msg().text = "tableSaved";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+
+            }, function(error) {
+                $scope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+        }, function(error) {
+            $scope.saving = false;
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+        });
+
+        $modalInstance.dismiss('cancel');
+    };
+
+    function positionElements(chidren) {
+        var sorted = _.sortBy(chidren, "sectionPosition");
+        var start = sorted[0].sectionPosition;
+        _.each(sorted, function(sortee) {
+            sortee.sectionPosition = start++;
+        });
+        return sorted;
+    }
+});
+
 angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
     $scope.loading = false;
     $scope.selectedTableLibary = selectedTableLibary;
@@ -1580,7 +1733,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
                 id: $scope.selectedTables[i].id,
                 bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
             });
-            $rootScope.igdocument.profile.tableLibrary.children.push(newLink);
+            $scope.selectedTableLibary.children.push(newLink);
             childrenLinks.push(newLink);
             var addedTable = $scope.selectedTables[i];
             $rootScope.tables.splice(0, 0, addedTable);

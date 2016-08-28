@@ -669,6 +669,11 @@ angular
                         function($itemScope) {
                             $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
                         }
+                    ], null,
+                    ['Import CSV Tables',
+                        function($itemScope) {
+                            $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                        }
                     ]
 
                 ];

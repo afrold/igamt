@@ -446,6 +446,43 @@
         </div>
     </script>
 
+    <script type="text/ng-template" id="AddCSVTableOpenCtrl.html">
+        <div class="modal-header modal-wide">
+            <div class="form-inline">
+                <span class="header4">Import CSV file</span>
+            </div>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" novalidate>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input class="form-control" type="file" id="file" name="file"/>
+                    </div>
+                </div>
+
+                <p>How it works</p>
+                <ol>
+                    <li>Download 'ValueSet Empty Form (Excel)'</li>
+                    <li>Edit sheets using MS Excel</li>
+                    <li>Save as CSV file</li>
+                    <li>Import CSV file</li>
+                </ol>
+
+                <p>Files</p>
+                <ul>
+                    <li><a class="pointer" href="docs/ValueSet_EmptyForm_Excel.xlsx" target="_blank"><i class="fa fa-file-excel-o fa-fw"></i>ValueSet Empty Form (Excel)</a></li>
+                    <li><a class="pointer" href="docs/ValueSet_EmptyForm_csv.csv" target="_blank"><i class="fa fa-file-code-o fa-fw"></i>ValueSet Empty Form (CSV)</a></li>
+                    <li><a class="pointer" href="docs/ValueSet_sample_excel.xlsx" target="_blank"><i class="fa fa-file-excel-o fa-fw"></i>ValueSet Sample Form (Excel)</a></li>
+                    <li><a class="pointer" href="docs/ValueSet_sample_csv.csv" target="_blank"><i class="fa fa-file-code-o fa-fw"></i>ValueSet Sample Form (CSV)</a></li>
+                </ul>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+            <button class="btn btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+        </div>
+    </script>
+
 <script type="text/ng-template" id="AddPHINVADSTableOpenCtrl.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
