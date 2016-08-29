@@ -42,8 +42,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
@@ -63,7 +63,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -85,12 +84,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import nu.xom.Builder;
-import nu.xom.Nodes;
-import nu.xom.ParsingException;
-import nu.xom.xslt.XSLException;
-import nu.xom.xslt.XSLTransform;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -170,34 +163,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.tidy.Tidy;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chapter;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfImportedPage;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfTemplate;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 @Service
-public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocumentExportService {
+public class IGDocumentExportImpl implements IGDocumentExportService {
   Logger logger = LoggerFactory.getLogger(IGDocumentExportImpl.class);
 
   @Autowired
@@ -288,7 +256,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
   public InputStream exportAsDocx(IGDocument d) {
     if (d != null) {
       // InputStream is = exportAsDocxWithDocx4J(d);
-      //      InputStream is = exportAsDocxFromHtml(d, inlineConstraints);
+      // InputStream is = exportAsDocxFromHtml(d, inlineConstraints);
       InputStream is = exportAsDocxIG(d);
       return is;
     } else {
@@ -307,7 +275,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
   public InputStream exportAsPdf(IGDocument d) {
     if (d != null) {
-      return new NullInputStream(1L);// TODO Use wkhtml2pdf
+      return exportAsHtmlFromXsl4Pdf(d, inlineConstraints); // TODO Use wkhtml2pdf in exportAsHtml4Pdf function
     } else {
       return new NullInputStream(1L);
     }
@@ -332,14 +300,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
   public InputStream exportAsHtml(IGDocument d) {
     if (d != null) {
       return exportAsHtmlFromXsl(d, inlineConstraints);
-    } else {
-      return new NullInputStream(1L);
-    }
-  }
-
-  public InputStream exportAsHtml4Pdf(IGDocument d) {
-    if (d != null) {
-      return exportAsHtmlFromXsl4Pdf(d, inlineConstraints);
     } else {
       return new NullInputStream(1L);
     }
@@ -841,7 +801,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       row = new ArrayList<String>();
       List<SegmentLink> segmentList =
           new ArrayList<SegmentLink>(p.getSegmentLibrary().getChildren());
-      // TODO Check Sort
       // Collections.sort(segmentList);
       for (SegmentLink sl : segmentList) {
         Segment s = segmentService.findById(sl.getId());
@@ -1130,6 +1089,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       transformer.setParameter("includeTOC", "true");
 
       transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
+      
+      //TODO Add here call to wkhtml2pdf
+      
       return FileUtils.openInputStream(tmpHtmlFile);
 
     } catch (TransformerException | IOException e) {
@@ -1167,72 +1129,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     }
   }
 
-
-  public InputStream exportAsPdfFromXsl(IGDocument d, String inlineConstraints) {
-    // Note: inlineConstraint can be true or false
-
-    Profile p = d.getProfile();
-    p.getMessages().setPositionsOrder();
-
-    // TODO check order
-    // p.getSegmentLibrary().setPositionsOrder();
-    // p.getDatatypeLibrary().setPositionsOrder();
-    // p.getTableLibrary().setPositionsOrder();
-
-
-    try {
-      // Generate xml file containing profile
-      File tmpXmlFile = File.createTempFile("ProfileTemp" + UUID.randomUUID().toString(), ".xml");
-      //      File tmpXmlFile = new File("IGDocTemp" + UUID.randomUUID().toString()+".xml");
-      String stringProfile =
-          igDocumentSerializationService.serializeProfileToXML(d.getProfile());
-      FileUtils.writeStringToFile(tmpXmlFile, stringProfile, Charset.forName("UTF-8"));
-
-      // Apply XSL transformation on xml file to generate html
-      File tmpHtmlFile = File.createTempFile("ProfileTemp" + UUID.randomUUID().toString(), ".html");
-      // File tmpHtmlFile = new File("ProfileTemp" + UUID.randomUUID().toString()+".html");
-      Builder builder = new Builder();
-      // nu.xom.Document input = builder.build(tmpXmlFile);
-
-      nu.xom.Document input = igDocumentSerializationService.serializeIGDocumentToDoc(d);
-      nu.xom.Document stylesheet =
-          builder.build(this.getClass().getResourceAsStream("/rendering/igdocument.xsl"));
-      XSLTransform transform = new XSLTransform(stylesheet);
-      transform.setParameter("inlineConstraints", inlineConstraints);
-      Nodes output = transform.transform(input);
-      nu.xom.Document result = XSLTransform.toDocument(output);
-
-      Tidy tidy = new Tidy();
-      tidy.setWraplen(Integer.MAX_VALUE);
-      tidy.setXHTML(true);
-      tidy.setShowWarnings(false); // to hide errors
-      tidy.setQuiet(true); // to hide warning
-      ByteArrayInputStream inputStream = new ByteArrayInputStream(result.toXML().getBytes("UTF-8"));
-      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      tidy.parseDOM(inputStream, outputStream);
-      FileUtils.writeStringToFile(tmpHtmlFile, outputStream.toString("UTF-8"));
-
-      // Convert html document to pdf
-      Document document = new Document();
-      File tmpPdfFile = File.createTempFile("Profile" + UUID.randomUUID().toString(), ".pdf");
-      PdfWriter writer = PdfWriter.getInstance(document, FileUtils.openOutputStream(tmpPdfFile));
-      document.open();
-      XMLWorkerHelper.getInstance().parseXHtml(writer, document,
-          FileUtils.openInputStream(tmpHtmlFile));
-      document.close();
-      return FileUtils.openInputStream(tmpPdfFile);
-    } catch (IOException | DocumentException | ParsingException | XSLException e) {
-      return new NullInputStream(1L);
-    }
-  }
-
-  // table to store placeholder for all chapters and sections
-  private Map<String, PdfTemplate> tocPlaceholder;
-
-  // store the chapters and sections with their title here.
-  private Map<String, Integer> pageByTitle;
-
-
   public void registerChange(Map<String, List<String>> dict, String key, String value) {
     if (dict.containsKey(key)) {
       dict.get(key).add(value);
@@ -1240,83 +1136,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
       dict.put(key, new ArrayList<String>());
       dict.get(key).add(value);
     }
-  }
-
-  @Override
-  public void onChapter(PdfWriter writer, Document document, float paragraphPosition,
-      Paragraph title) {
-    this.pageByTitle.put(title.getContent(), writer.getPageNumber());
-  }
-
-  @Override
-  public void onSection(PdfWriter writer, Document document, float paragraphPosition, int depth,
-      Paragraph title) {
-    this.pageByTitle.put(title.getContent(), writer.getPageNumber());
-  }
-
-
-  private void addTocContent(Document tocDocument, PdfWriter igWriter, String title_,
-      String idTarget) {
-    try {
-      // Create TOC
-      final String title = title_;
-      Chunk chunk = new Chunk(title).setLocalGoto(idTarget);
-      tocDocument.add(new Paragraph(chunk));
-      // Add a placeholder for the page reference
-      tocDocument.add(new VerticalPositionMark() {
-        @Override
-        public void draw(PdfContentByte canvas, float llx, float lly, float urx, float ury, float y) {
-          final PdfTemplate createTemplate = canvas.createTemplate(60, 60);
-          IGDocumentExportImpl.this.tocPlaceholder.put(title, createTemplate);
-          canvas.addTemplate(createTemplate, urx - 60, y);
-        }
-      });
-
-      // Create page numbers
-      BaseFont baseFont;
-      PdfTemplate template = this.tocPlaceholder.get(title);
-      template.beginText();
-
-      baseFont = BaseFont.createFont();
-      template.setFontAndSize(baseFont, 11);
-      template.setTextMatrix(
-          30 - baseFont.getWidthPoint(String.valueOf(igWriter.getPageNumber()), 12), 0);
-      template.showText(String.valueOf(igWriter.getPageNumber()));
-      template.endText();
-
-    } catch (DocumentException | IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-
-  private Paragraph richTextToParagraph(String htmlString) {
-    List<Element> p = new ArrayList<Element>();
-    try {
-      Tidy tidy = new Tidy();
-      tidy.setWraplen(Integer.MAX_VALUE);
-      tidy.setXHTML(true);
-      tidy.setShowWarnings(false); // to hide errors
-      tidy.setQuiet(true); // to hide warning
-      InputStream inputStream = new ByteArrayInputStream(htmlString.getBytes());
-      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      tidy.parseDOM(inputStream, outputStream);
-      String cssString = this.getClass().getResourceAsStream("/rendering/froala_style.min.edited.css").toString();
-
-      String head = "<head><style type=\"text/css\">"+cssString+"</style></head>";
-
-      p = XMLWorkerHelper.parseToElementList("<html>"+ head + "<body>"+outputStream.toString()+"</body></html>", cssString);
-
-      Paragraph paragraph = new Paragraph();
-      for (int k = 0; k < p.size(); ++k) {
-        paragraph.add((Element) p.get(k));
-      }
-      return paragraph;
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return null;
   }
 
   public InputStream exportAsDocxFromHtml(IGDocument igdoc, String inlineConstraints) {
@@ -1852,12 +1671,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     Collections.sort(messagesList);
     List<DatatypeLink> datatypeList =
         new ArrayList<DatatypeLink>(p.getDatatypeLibrary().getChildren());
-    // TODO Check SORT
-    // Collections.sort(datatypeList);
     List<SegmentLink> segmentsList =
         new ArrayList<SegmentLink>(p.getSegmentLibrary().getChildren());
-    // TODO Check SORT
-    // Collections.sort(segmentsList);
 
     wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
         "Conformance information");
@@ -2150,11 +1965,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     }
 
     // Including information regarding segments
-    // TODO CHECK ORDER
-    // p.getSegmentLibrary().setPositionsOrder();
     List<SegmentLink> segmentsList =
         new ArrayList<SegmentLink>(p.getSegmentLibrary().getChildren());
-    // Collections.sort(segmentsList);
     if (p.getSegmentLibrary().getSectionTitle() != null) {
       wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
           p.getSegmentLibrary().getSectionTitle());
@@ -2198,12 +2010,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     }
 
     // Including information regarding data types
-    // TODO CHECK ORDER
-    // p.getDatatypeLibrary().setPositionsOrder();
     List<DatatypeLink> datatypeList =
         new ArrayList<DatatypeLink>(p.getDatatypeLibrary().getChildren());
-    // TODO CHECK ORDER
-    // Collections.sort(datatypeList);
     if (p.getDatatypeLibrary().getSectionTitle() != null) {
       wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
           p.getDatatypeLibrary().getSectionTitle());
@@ -2231,8 +2039,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     addPageBreak(wordMLPackage, factory);
 
     // Including information regarding value sets
-    // TODO CHECK ORDER
-    // p.getTableLibrary().setPositionsOrder();
     List<TableLink> tables = new ArrayList<TableLink>(p.getTableLibrary().getChildren());
      Collections.sort(tables);
     if (p.getTableLibrary().getSectionTitle() != null) {
@@ -2761,96 +2567,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
   }
 
-  public void traverseIGDocument4Pdf(IGDocument d, Document tocDocument, Document igDocument,
-      Font titleFont, PdfWriter igWriter) {
-
-    addContents4Pdf(
-        (Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>) d.getChildSections(), "",
-        1, tocDocument, igDocument, null, titleFont, igWriter);
-
-  }
-
-  private void addContents4Pdf(
-      Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sect, String prefix,
-      Integer depth, Document tocDocument, Document igDocument, com.itextpdf.text.Section chapt,
-      Font titleFont, PdfWriter igWriter) {
-    SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortedSections =
-        sortSections(sect);
-
-    for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section s : sortedSections) {
-      if (depth == 1) {
-        try {
-          tocDocument.add(Chunk.NEWLINE);
-          if (s.getSectionTitle() != null) {
-            Chunk link =
-                new Chunk(String.valueOf(s.getSectionPosition() + 1) + " " + s.getSectionTitle(),
-                    titleFont).setLocalGoto(s.getId());
-            tocDocument.add(new Paragraph(link));
-          } else {
-            Chunk link =
-                new Chunk(String.valueOf(s.getSectionPosition() + 1) + " ", titleFont)
-            .setLocalGoto(s.getId());
-            tocDocument.add(new Paragraph(link));
-          }
-
-          // tocDocument.add(new Paragraph(String.valueOf(s.getSectionPosition()+1) + " " +
-          // s.getSectionTitle(), titleFont));
-          tocDocument.add(Chunk.NEWLINE);
-
-          Chunk target;
-          if (s.getSectionTitle() != null) {
-            target = new Chunk(s.getSectionTitle(), titleFont).setLocalDestination(s.getId());
-          } else {
-            target = new Chunk(" ", titleFont).setLocalDestination(s.getId());
-          }
-          // Paragraph par = new Paragraph(s.getSectionTitle(), titleFont);
-          Chapter chapter = new Chapter(new Paragraph(target), s.getSectionPosition() + 1);
-          chapter.add(Chunk.NEWLINE);
-          if (s.getSectionContents() != null) {
-            chapter.add(richTextToParagraph(s.getSectionContents()));
-          }
-          chapter.add(Chunk.NEWLINE);
-
-          addContents4Pdf((Set<Section>) s.getChildSections(),
-              String.valueOf(s.getSectionPosition() + 1), depth + 1, tocDocument, igDocument,
-              chapter, titleFont, igWriter);
-
-          igDocument.add(chapter); // Note: leave call after addContents4Pdf
-        } catch (DocumentException e) {
-          e.printStackTrace();
-        }
-      } else {
-        if (s.getSectionTitle() != null) {
-          this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4 * depth) + prefix
-              + "." + String.valueOf(s.getSectionPosition()) + " " + s.getSectionTitle(), s.getId());
-        } else {
-          this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4 * depth) + prefix
-              + "." + String.valueOf(s.getSectionPosition()) + " ", s.getId());
-
-        }
-        // Paragraph title = new Paragraph(s.getSectionTitle(), titleFont);
-        Chunk target;
-        if (s.getSectionTitle() != null) {
-          target = new Chunk(s.getSectionTitle(), titleFont).setLocalDestination(s.getId());
-        } else {
-          target = new Chunk(" ", titleFont).setLocalDestination(s.getId());
-        }
-
-        com.itextpdf.text.Section section = chapt.addSection(new Paragraph(target));
-
-        section.add(Chunk.NEWLINE);
-        if (s.getSectionContents() != null) {
-          section.add(richTextToParagraph(s.getSectionContents()));
-        }
-        section.add(Chunk.NEWLINE);
-
-        addContents4Pdf((Set<Section>) s.getChildSections(),
-            prefix + "." + String.valueOf(s.getSectionPosition()), depth + 1, tocDocument,
-            igDocument, section, titleFont, igWriter);
-      }
-    }
-  }
-
   private SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortSections(
       Set<Section> s) {
     SortedSet<Section> sortedSet = new TreeSet<Section>();
@@ -2860,7 +2576,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
     }
     return sortedSet;
   }
-
 
   private static void addImageToPackage(WordprocessingMLPackage wordMLPackage, byte[] bytes)
       throws Exception {
