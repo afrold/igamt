@@ -686,14 +686,42 @@ angular.module('igl')
 
         };
 
-        $scope.addTables = function(igdocument) {
+        $scope.addCSVTables = function(selectedTableLibary) {
             var modalInstance = $modal.open({
-                templateUrl: 'AddTableOpenCtrl.html',
-                controller: 'AddTableOpenCtrl',
+                templateUrl: 'AddCSVTableOpenCtrl.html',
+                controller: 'AddCSVTableOpenCtrl',
                 windowClass: 'conformance-profiles-modal',
                 resolve: {
-                    igdocumentToSelect: function() {
-                        return igdocument;
+                    selectedTableLibary: function() {
+                        return selectedTableLibary;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {}, function() {});
+        };
+
+        $scope.addPHINVADSTables = function(selectedTableLibary) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AddPHINVADSTableOpenCtrl.html',
+                controller: 'AddPHINVADSTableOpenCtrl',
+                windowClass: 'conformance-profiles-modal',
+                resolve: {
+                    selectedTableLibary: function() {
+                        return selectedTableLibary;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {}, function() {});
+        };
+
+        $scope.addHL7Table = function(selectedTableLibary) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AddHL7TableOpenCtrl.html',
+                controller: 'AddHL7TableOpenCtrl',
+                windowClass: 'conformance-profiles-modal',
+                resolve: {
+                    selectedTableLibary: function() {
+                        return selectedTableLibary;
                     }
                 }
             });
@@ -752,18 +780,6 @@ angular.module('igl')
         $scope.exportAs = function(format) {
             if ($rootScope.igdocument != null) {
                 IgDocumentService.exportAs($rootScope.igdocument, format);
-
-                //                if (!ViewSettings.tableReadonly) {
-                //                    IgDocumentService.save($rootScope.igdocument).then(function (result) {
-                //                        IgDocumentService.exportAs($rootScope.igdocument, format);
-                //                    }, function (error) {
-                //                        $rootScope.msg().text = error.data.text;
-                //                        $rootScope.msg().type = error.data.type;
-                //                        $rootScope.msg().show = true;
-                //                    });
-                //                } else {
-                //                    IgDocumentService.exportAs($rootScope.igdocument, format);
-                //                }
             }
         };
 
@@ -797,38 +813,6 @@ angular.module('igl')
             $rootScope.section['data'] = obj;
             $rootScope.section['type'] = type;
         };
-
-        //        $scope.save = function () {
-        //            $rootScope.msg().text = null;
-        //            $rootScope.msg().type = null;
-        //            $rootScope.msg().show = false;
-        //            var delay = $q.defer();
-        //            waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
-        //            IgDocumentService.save($rootScope.igdocument).then(function (saveResponse) {
-        //                var found = $scope.findOne($rootScope.igdocument.id);
-        //                if (found != null) {
-        //                    var index = $rootScope.igs.indexOf(found);
-        //                    if (index > 0) {
-        //                        $rootScope.igs [index] = $rootScope.igdocument;
-        //                    }
-        //                }
-        //                $rootScope.msg().text = saveResponse.text;
-        //                $rootScope.msg().type = saveResponse.type;
-        //                $rootScope.msg().show = true;
-        //                StorageService.setIgDocument($rootScope.igdocument);
-        //                $rootScope.clearChanges();
-        //                waitingDialog.hide();
-        //                delay.resolve(true);
-        //            }, function (error) {
-        //                $rootScope.msg().text = error.data.text;
-        //                $rootScope.msg().type = error.data.type;
-        //                $rootScope.msg().show = true;
-        //                waitingDialog.hide();
-        //                delay.reject(false);
-        //            });
-        //            return delay.promise;
-        //        };
-
 
         $scope.exportChanges = function() {
             blockUI.start();
@@ -1400,15 +1384,13 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     };
 });
 
-angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
+angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
     $scope.loading = false;
-    $scope.igdocumentToSelect = igdocumentToSelect;
-    $scope.source = '';
+    $scope.selectedTableLibary = selectedTableLibary;
     $scope.selectedHL7Version = '';
     $scope.searchText = '';
     $scope.hl7Versions = [];
     $scope.hl7Tables = null;
-    $scope.phinvadsTables = null;
     $scope.selectedTables = [];
 
     $scope.cancel = function() {
@@ -1439,6 +1421,233 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
         });
     };
 
+    $scope.addTable = function(table) {
+        var newTable = angular.copy(table);
+        newTable.id = new ObjectId().toString();
+        newTable.participants = [];
+        newTable.bindingIdentifier = $rootScope.createNewFlavorName(table.bindingIdentifier);
+        newTable.scope = 'USER';
+
+        if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
+            for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
+                newTable.codes[i].id = new ObjectId().toString();
+            }
+        }
+        $scope.selectedTables.push(newTable);
+    };
+
+    $scope.deleteTable = function(table) {
+        var index = $scope.selectedTables.indexOf(table);
+        if (index > -1) $scope.selectedTables.splice(index, 1);
+    };
+
+
+    $scope.save = function() {
+        var childrenLinks = [];
+        for (var i = 0; i < $scope.selectedTables.length; i++) {
+            $scope.selectedTables[i].libIds.push($scope.selectedTableLibary.id);
+            var newLink = angular.fromJson({
+                id: $scope.selectedTables[i].id,
+                bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
+            });
+            $scope.selectedTableLibary.children.push(newLink);
+            childrenLinks.push(newLink);
+            var addedTable = $scope.selectedTables[i];
+            $rootScope.tables.splice(0, 0, addedTable);
+            $rootScope.tablesMap[addedTable.id] = addedTable;
+            TableService.save(addedTable).then(function(result) {
+            }, function(error) {
+                $scope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+
+        }
+        TableLibrarySvc.addChildren($scope.selectedTableLibary.id, childrenLinks).then(function(link) {
+
+            if ($scope.editForm) {
+                $scope.editForm.$setPristine();
+                $scope.editForm.$dirty = false;
+            }
+            $rootScope.clearChanges();
+            $rootScope.msg().text = "tableSaved";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+
+        }, function(error) {
+            $scope.saving = false;
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+        });
+
+
+        $modalInstance.dismiss('cancel');
+    };
+
+    function positionElements(chidren) {
+        var sorted = _.sortBy(chidren, "sectionPosition");
+        var start = sorted[0].sectionPosition;
+        _.each(sorted, function(sortee) {
+            sortee.sectionPosition = start++;
+        });
+        return sorted;
+    };
+
+    $scope.listHL7Versions();
+});
+
+angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService, IgDocumentService) {
+    $scope.loading = false;
+    $scope.selectedTableLibary = selectedTableLibary;
+    $scope.importedTable = null;
+    $scope.data = null;
+
+    $scope.uploadCSVFile = function(){
+        $scope.loading = true;
+        var f = document.getElementById('file').files[0];
+        var reader = new FileReader();
+        reader.onloadend = function(e){
+            $scope.data = Papa.parse(e.target.result);
+            var index = 0;
+            $scope.importedTable = {};
+            $scope.importedTable.scope = 'USER';
+            $scope.importedTable.codes = [];
+            $scope.importedTable.libIds = [];
+            angular.forEach($scope.data.data, function(row) {
+                index = index + 1;
+
+                if(index > 1 && index < 11){
+                    switch (row[0]) {
+                        case 'Mapping Identifier':
+                            $scope.importedTable.bindingIdentifier = row[1];
+                            break;
+                        case 'Name':
+                            $scope.importedTable.name = row[1];
+                            break;
+                        case 'Description':
+                            $scope.importedTable.description = row[1];
+                            break;
+                        case 'OID':
+                            $scope.importedTable.oid = row[1];
+                            break;
+                        case 'Version':
+                            $scope.importedTable.version = row[1];
+                            break;
+                        case 'Extensibility':
+                            $scope.importedTable.extensibility = row[1];
+                            break;
+                        case 'Stability':
+                            $scope.importedTable.stability = row[1];
+                            break;
+                        case 'Content Definition':
+                            $scope.importedTable.contentDefinition = row[1];
+                            break;
+                        case 'Comment':
+                            $scope.importedTable.comment = row[1];
+                    }
+                }else if (index > 13){
+
+                    var code = {};
+                    code.value = row[0];
+                    code.label = row[1];
+                    code.codeSystem = row[2];
+                    code.codeUsage = row[3];
+                    code.comments = row[4];
+
+                    $scope.importedTable.codes.push(code);
+                }
+            });
+
+            $scope.save();
+        };
+        reader.readAsBinaryString(f);
+        $scope.loading = false;
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+    $scope.save = function() {
+        $scope.importedTable.bindingIdentifier = $rootScope.createNewFlavorName($scope.importedTable.bindingIdentifier);
+        $scope.importedTable.libIds.push($scope.selectedTableLibary.id);
+        var newLink = angular.fromJson({
+            id: $scope.importedTable.id,
+            bindingIdentifier: $scope.importedTable.bindingIdentifier
+        });
+
+        $scope.selectedTableLibary.children.push(newLink);
+
+        var addedTable = $scope.importedTable;
+        $rootScope.tables.splice(0, 0, addedTable);
+        $rootScope.tablesMap[addedTable.id] = addedTable;
+        TableService.save(addedTable).then(function(result) {
+            var newTable = result;
+            TableLibrarySvc.addChild($scope.selectedTableLibary.id, newLink).then(function(link) {
+                if ($scope.editForm) {
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                }
+
+                $scope.selectedTableLibary.children.splice(0, 0, link);
+                $rootScope.tables.splice(0, 0, newTable);
+                $rootScope.table = newTable;
+                $rootScope.tablesMap[newTable.id] = newTable;
+
+                $rootScope.codeSystems = [];
+
+                if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+                    $rootScope.filteredTablesList.push(newTable);
+                    $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+                }
+                $rootScope.$broadcast('event:openTable', newTable);
+
+                $rootScope.clearChanges();
+                $rootScope.msg().text = "tableSaved";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+
+            }, function(error) {
+                $scope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+        }, function(error) {
+            $scope.saving = false;
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+        });
+
+        $modalInstance.dismiss('cancel');
+    };
+
+    function positionElements(chidren) {
+        var sorted = _.sortBy(chidren, "sectionPosition");
+        var start = sorted[0].sectionPosition;
+        _.each(sorted, function(sortee) {
+            sortee.sectionPosition = start++;
+        });
+        return sorted;
+    }
+});
+
+angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
+    $scope.loading = false;
+    $scope.selectedTableLibary = selectedTableLibary;
+    $scope.searchText = '';
+    $scope.hl7Tables = null;
+    $scope.phinvadsTables = null;
+    $scope.selectedTables = [];
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
     $scope.searchPhinvads = function(searchText) {
         $scope.loading = true;
         $scope.searchText = searchText;
@@ -1453,14 +1662,8 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
     $scope.addTable = function(table) {
         var newTable = angular.copy(table);
         newTable.id = new ObjectId().toString();
-        console.log("Adding table");
-        console.log(newTable);
-        console.log("from");
-        console.log(table);
-
-
         newTable.participants = [];
-        newTable.bindingIdentifier = $rootScope.createNewExtension(table.bindingIdentifier);
+        newTable.bindingIdentifier = $rootScope.createNewFlavorName(table.bindingIdentifier);
         newTable.scope = 'USER';
 
         if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
@@ -1468,7 +1671,6 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
                 newTable.codes[i].id = new ObjectId().toString();
             }
         }
-        //console.log(JSON.stringify(newTable));
         $scope.selectedTables.push(newTable);
     };
 
@@ -1481,26 +1683,17 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
     $scope.save = function() {
         var childrenLinks = [];
         for (var i = 0; i < $scope.selectedTables.length; i++) {
-            //var newTable = $scope.selectedTables[i];
-            console.log(JSON.stringify($scope.selectedTables[i]));
-            $scope.selectedTables[i].libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+            $scope.selectedTables[i].libIds.push($scope.selectedTableLibary.id);
             var newLink = angular.fromJson({
                 id: $scope.selectedTables[i].id,
                 bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
             });
-            $rootScope.igdocument.profile.tableLibrary.children.push(newLink);
+            $scope.selectedTableLibary.children.push(newLink);
             childrenLinks.push(newLink);
-
             var addedTable = $scope.selectedTables[i];
-
-
-            console.log(addedTable);
-
             $rootScope.tables.splice(0, 0, addedTable);
             $rootScope.tablesMap[addedTable.id] = addedTable;
             TableService.save(addedTable).then(function(result) {
-                //newTable = result;
-
             }, function(error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
@@ -1511,7 +1704,7 @@ angular.module('igl').controller('AddTableOpenCtrl', function($scope, $modalInst
         }
 
 
-        TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, childrenLinks).then(function(link) {
+        TableLibrarySvc.addChildren($scope.selectedTableLibary.id, childrenLinks).then(function(link) {
 
             if ($scope.editForm) {
                 $scope.editForm.$setPristine();
@@ -1640,11 +1833,6 @@ angular.module('igl').controller('AddSegmentDlgCtl',
             }
 
         }
-
-
-        //$scope.hl7Segments = _.difference(segments, $rootScope.segments);
-
-
         $scope.selectSeg = function(segment) {
             $scope.newSegment = segment;
         };
@@ -1663,17 +1851,10 @@ angular.module('igl').controller('AddSegmentDlgCtl',
         };
 
         $scope.ok = function() {
-
-            //var newSegment = JSON.parse(segment);
-
             var newLink = angular.fromJson({
                 id: $scope.newSegment.id,
                 name: $scope.newSegment.name
             });
-
-            //            $scope.newSegment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
-
-            // SegmentService.save($scope.newSegment).then(function(result) {
             SegmentLibrarySvc.addChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {
                 $rootScope.igdocument.profile.segmentLibrary.children.splice(0, 0, newLink);
                 $rootScope.segments.splice(0, 0, $scope.newSegment);
@@ -1695,14 +1876,6 @@ angular.module('igl').controller('AddSegmentDlgCtl',
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
             });
-            //            }, function(error) {
-            //                $scope.saving = false;
-            //                $rootScope.msg().text = error.data.text;
-            //                $rootScope.msg().type = error.data.type;
-            //                $rootScope.msg().show = true;
-            //            });
-
-
         };
 
         $scope.cancel = function() {

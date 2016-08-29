@@ -44,7 +44,7 @@ public class WebBeanConfig {
 				"SDO" }));
 		config.setTableStabilities(toSet(new String[] { "Static", "Dynamic" }));
 		config.setTableContentDefinitions(toSet(new String[] { "Extensional", "Intensional" }));
-		config.setTableExtensibilities(toSet(new String[] { "Open", "Close" }));
+		config.setTableExtensibilities(toSet(new String[] { "Open", "Closed" }));
 		config.setConstraintVerbs(toSet(new String[] { "SHALL be", "SHALL NOT be", "should be", "should not be", "may be", "may not be", "is", "is not" }));
 		config.setConstraintTypes(toSet(new String[] { 
 				"valued",
