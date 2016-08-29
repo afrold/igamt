@@ -32,10 +32,10 @@ var app = angular
         'ngDragDrop',
         'ui.tree',
         'blockUI',
-        'mgcrea.ngStrap.typeahead',
         'ds.objectDiff',
         'ngTagsInput',
-        'ngMaterial'
+        'ngMaterial',
+        'pageslide-directive'
       ]);
 
 var
