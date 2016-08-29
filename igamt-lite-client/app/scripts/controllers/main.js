@@ -6,18 +6,18 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
         // logged in.
         // If success, the app is updated according to the role.
 
-        $(document).keydown(function(e) {
-        var nodeName = e.target.nodeName.toLowerCase();
+    //     $(document).keydown(function(e) {
+    //     var nodeName = e.target.nodeName.toLowerCase();
 
-        if (e.which === 8) {
-            if ((nodeName === 'input' && e.target.type === 'text') ||
-                nodeName === 'textarea') {
-                // do nothing
-            } else {
-                e.preventDefault();
-            }
-        }
-    });
+    //     if (e.which === 8) {
+    //         if ((nodeName === 'input' && e.target.type === 'text') ||
+    //             nodeName === 'textarea') {
+    //             // do nothing
+    //         } else {
+    //             e.preventDefault();
+    //         }
+    //     }
+    // });
 
 
 

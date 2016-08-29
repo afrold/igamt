@@ -11,8 +11,10 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.params = null;
     $scope.predicate = 'value';
     $scope.reverse = false;
+    $scope.selectedCodes=[];
 
     $scope.init = function() {
+        $scope.selectedCodes=[];
         $rootScope.$on('event:cloneTableFlavor', function(event, table) {
             $scope.copyTable(table);
         });
@@ -144,11 +146,55 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         }
         $scope.setDirty();
     };
-
-    $scope.deleteValue = function(value) {
-        if (!$scope.isNewValueThenDelete(value.id)) {
-            $rootScope.recordChangeForEdit2('value', "delete", value.id, 'id', value.id);
+    $scope.ProcessChecking= function(){
+        console.log("here");
+        if($scope.selectedCodes.length===0){
+            $scope.checkAllValues();
+        }else{
+            $scope.uncheckAllValues();
         }
+
+    }
+    $scope.addOrRemoveValue= function(c){
+        if(c.selected===true){
+            $scope.selectedCodes.push(c);
+        }else if (c.selected===false){
+             var index = $scope.selectedCodes.indexOf(c);
+                if (index > -1) {
+                    $scope.selectedCodes.splice(index, 1);
+                }
+        }
+
+
+    }
+    $scope.deleteSlectedValues= function(){
+        console.log()
+        console.log("deleting");
+        $rootScope.table.codes=_.difference($rootScope.table.codes,$scope.selectedCodes);
+         $scope.selectedCodes=[];
+    }
+    $scope.checkAllValues= function(){
+        console.log("deleting");
+        angular.forEach($rootScope.table.codes, function(c){
+            c.selected=true;
+            $scope.selectedCodes.push(c);
+        });
+    }
+    $scope.uncheckAllValues= function(){
+        console.log("deleting");
+         //console.log($rootScope.displayCollection);
+        angular.forEach($rootScope.table.codes, function(c){
+            if(c.selected&&c.selected===true){
+               c.selected=false;
+            }
+        });
+        $scope.selectedCodes=[];
+    }
+    $scope.deleteValue = function(value) {
+        // if (!$scope.isNewValueThenDelete(value.id)) {
+        //     $rootScope.recordChangeForEdit2('value', "delete", value.id, 'id', value.id);
+        // }
+        console.log($scope.selectedCodes);
         $rootScope.table.codes.splice($rootScope.table.codes.indexOf(value), 1);
         $scope.setDirty();
     };
