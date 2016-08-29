@@ -1047,7 +1047,7 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 		Table t = tableService.findById(tl.getId());
 
 		nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
-		elmTableDefinition.addAttribute(new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t
+		elmTableDefinition.addAttribute(new Attribute("Id", t.getBindingIdentifier() == null ? "" : t
 				.getBindingIdentifier()));
 		elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
 				(tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
@@ -1619,7 +1619,7 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 					if (c.getTables() != null) {
 						String tablesName = "";
 						for (TableLink tl: c.getTables()){
-							tablesName += tl.getBindingIdentifier() + " ";
+							tablesName += tableService.findById(tl.getId()).getName() + " ";
 						}
 						elmComponent.addAttribute(new Attribute("Binding", 
 								tablesName));
