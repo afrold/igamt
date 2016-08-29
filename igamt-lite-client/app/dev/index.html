@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/ripples.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_editor.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_style.min.css" />
-    <!-- endbower -->
+      <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -44,26 +44,38 @@
     <link rel="stylesheet" href="lib/igamt.css"/>
     <link rel="stylesheet" href="lib/toc.css"/>
     <link rel="stylesheet" href="lib/nav.css"/>
-    <link rel="stylesheet" href="lib/sidebar-menu/simple-sidebar.css"/>
+    <link rel="stylesheet" href="lib/side-menu.css"/>
     <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
     <style>
         body {
             /*background-color: #F1F1F2;*/
-            font-family: 'Cairo', sans-serif;
+            /*font-family: 'Cairo', sans-serif;*/
+            font-family: RobotoDraft, Roboto, sans-serif;
         }
         * {
-            font-family: 'Cairo', sans-serif;
+            /*font-family: 'Cairo', sans-serif;*/
+            font-family: RobotoDraft, Roboto, sans-serif;
         }
     </style>
 
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit confirm-on-leave block-ui="main">
+<div ng-include="'views/sidebar_menu.html'"></div>
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
         your browser</a> to improve your experience.</p>
     <![endif]-->
+
+
+
+
+
 
 
     <!-- Add your site or application content here -->

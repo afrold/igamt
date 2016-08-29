@@ -1,0 +1,111 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "angular-pageslide-directive",
+        "scope": null,
+        "escapedName": "angular-pageslide-directive",
+        "name": "angular-pageslide-directive",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client"
+    ]
+  ],
+  "_from": "angular-pageslide-directive@latest",
+  "_id": "angular-pageslide-directive@2.1.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/angular-pageslide-directive",
+  "_nodeVersion": "6.0.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/angular-pageslide-directive-2.1.0.tgz_1470248704901_0.566179733723402"
+  },
+  "_npmUser": {
+    "name": "danielepiccone",
+    "email": "mild.taste@gmail.com"
+  },
+  "_npmVersion": "3.8.6",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "angular-pageslide-directive",
+    "scope": null,
+    "escapedName": "angular-pageslide-directive",
+    "name": "angular-pageslide-directive",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular-pageslide-directive/-/angular-pageslide-directive-2.1.0.tgz",
+  "_shasum": "8d404cde286ec8a4100287d83441639929ae04c1",
+  "_shrinkwrap": null,
+  "_spec": "angular-pageslide-directive",
+  "_where": "/Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client",
+  "author": {
+    "name": "Daniele Piccone",
+    "email": "mail@danielepiccone.com"
+  },
+  "bugs": {
+    "url": "https://github.com/dpiccone/ng-pageslide/issues"
+  },
+  "dependencies": {},
+  "description": "An AngularJS directive which slides another panel over your browser to reveal an additional interaction pane.",
+  "devDependencies": {
+    "angular-mocks": "1.5.5",
+    "grunt": "0.4.5",
+    "grunt-contrib-concat": "0.3.0",
+    "grunt-contrib-jshint": "0.6.5",
+    "grunt-contrib-uglify": "0.2.7",
+    "grunt-karma": "0.12.2",
+    "http-server": "0.9.0",
+    "jasmine-core": "2.4.1",
+    "karma": "0.13.22",
+    "karma-coverage": "0.5.5",
+    "karma-coveralls": "1.1.2",
+    "karma-jasmine": "0.3.8",
+    "karma-phantomjs-launcher": "1.0.1"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "8d404cde286ec8a4100287d83441639929ae04c1",
+    "tarball": "https://registry.npmjs.org/angular-pageslide-directive/-/angular-pageslide-directive-2.1.0.tgz"
+  },
+  "gitHead": "a0641ade4da98e15a226ef46e66fe4694fee1bca",
+  "homepage": "https://github.com/dpiccone/ng-pageslide",
+  "keywords": [
+    "angular",
+    "pageslide",
+    "offcanvas",
+    "modal",
+    "pane"
+  ],
+  "license": "MIT",
+  "main": "dist/angular-pageslide-directive.js",
+  "maintainers": [
+    {
+      "name": "danielepiccone",
+      "email": "mild.taste@gmail.com"
+    }
+  ],
+  "name": "angular-pageslide-directive",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "angular": "1.5.x"
+  },
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dpiccone/ng-pageslide.git"
+  },
+  "scripts": {
+    "examples": "http-server ./examples",
+    "test": "grunt test"
+  },
+  "version": "2.1.0"
+}
