@@ -2304,17 +2304,20 @@ angular.module('igl').controller('MainCtrl', ['$document','$scope', '$rootScope'
 
         var vm = this;
 
-        $scope.$on("getMenuState", function (event, data) {
-            $scope.$apply(function () {
-                vm.opened = data;
-            });
-        });
+//        $scope.$on("getMenuState", function (event, data) {
+//            $scope.$apply(function () {
+//                vm.opened = data;
+//            });
+//        });
+//
+//        this.toggleNavigation = function() {
+//            $mdSidenav('navigation-drawer').toggle();
+//        };
 
-        this.toggleNavigation = function() {
-            $mdSidenav('navigation-drawer').toggle();
+        $scope.checkedNavigation = false;
+        $scope.toggleNavigation = function() {
+            $scope.checkedNavigation = !$scope.checkedNavigation;
         };
-
-
 
 
     }]);

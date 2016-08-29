@@ -35,8 +35,8 @@ var app = angular
         'ds.objectDiff',
         'ngTagsInput',
         'ngMaterial',
-        'asideModule'
-        
+        'pageslide-directive'
+
     ]);
 
 var

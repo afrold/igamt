@@ -46,6 +46,8 @@
     <link rel="stylesheet" href="bower_components/angular-ui-notification/dist/angular-ui-notification.css" />
     <link rel="stylesheet" href="bower_components/angular-object-diff/dist/angular-object-diff.css" />
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
+    <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.min.css">
+    <link rel="stylesheet" href="bower_components/angular-motion/dist/modules/slide.min.css">
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -85,7 +87,7 @@
 
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit confirm-on-leave block-ui="main">
-<div ng-include="'views/sidebar_menu.html'"></div>
+
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
@@ -94,13 +96,8 @@
     <![endif]-->
 
 
-
-
-
-
-
     <!-- Add your site or application content here -->
-    <div id="appcontainer" class="">
+    <div id="appcontainer" class="am-slide-left">
 
         <!--<div class="container">-->
             <!--<div class="row">-->
@@ -205,6 +202,7 @@
     <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
     <script src="bower_components/angular-object-diff/dist/angular-object-diff.js"></script>
     <script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-scenario/angular-scenario.js"></script>
     <script src="bower_components/angular-mocks/angular-mocks.js"></script>
     <!-- endbower -->
@@ -212,12 +210,6 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
 	<script src="lib/Objectid.js"></script>
-	<script src="lib/angular-pageslide-directive/Gruntfile.js"></script>
-	<script src="lib/angular-pageslide-directive/dist/angular-pageslide-directive.js"></script>
-	<script src="lib/angular-pageslide-directive/dist/angular-pageslide-directive.min.js"></script>
-	<script src="lib/angular-pageslide-directive/karma.conf.js"></script>
-	<script src="lib/angular-pageslide-directive/src/angular-pageslide-directive.js"></script>
-	<script src="lib/angular-pageslide-directive/test/angular-pageslide-directive.spec.js"></script>
 	<script src="lib/angular-treetable/angular-treetable.js"></script>
 	<script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
 	<script src="lib/angular-treetable/js/jquery.treetable.js"></script>

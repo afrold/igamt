@@ -1,7 +1,9 @@
 {
   "name": "igl",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "angular-pageslide-directive": "^2.1.0"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-autoprefixer": "^0.7.3",

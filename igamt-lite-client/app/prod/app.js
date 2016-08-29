@@ -35,9 +35,8 @@ var app = angular
         'mgcrea.ngStrap.typeahead',
         'ds.objectDiff',
         'ngTagsInput',
-        'ngMaterial',
-        'asideModule'
-     ]);
+        'ngMaterial'
+      ]);
 
 var
 //the HTTP headers to be used by all requests
