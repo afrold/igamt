@@ -1619,7 +1619,9 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 					if (c.getTables() != null) {
 						String tablesName = "";
 						for (TableLink tl: c.getTables()){
-							tablesName += tableService.findById(tl.getId()).getName() + " ";
+							if (tl != null && tl.getBindingIdentifier()!= null){
+								tablesName += tl.getBindingIdentifier() + " ";
+							}
 						}
 						elmComponent.addAttribute(new Attribute("Binding", 
 								tablesName));
