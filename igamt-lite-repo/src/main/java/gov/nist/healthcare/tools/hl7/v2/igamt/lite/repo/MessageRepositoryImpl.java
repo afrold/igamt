@@ -31,11 +31,20 @@ public class MessageRepositoryImpl implements MessageOperations {
 	} 
 	@Override
 	  public List<Message> findByNamesScopeAndVersion(String name,String structId,String scope, String hl7Version) {
-		List<Message> messages=new ArrayList<Message>();
 		Criteria where = Criteria.where("event").is(name);
 	    where.andOperator(Criteria.where("hl7Version").is(hl7Version),Criteria.where("scope").is(scope),Criteria.where("structID").is(structId));
 	    Query qry = Query.query(where);
 	    
 	    return mongo.find(qry, Message.class);
+	  }
+	
+	@Override
+	  public Message findByStructIdAndScopeAndVersion(String structId,String scope, String hl7Version) {
+		Criteria where = Criteria.where("structID").is(structId);
+	    where.andOperator(Criteria.where("hl7Version").is(hl7Version),Criteria.where("scope").is(scope));
+	    Query qry = Query.query(where);
+	    
+	    
+	    return  mongo.find(qry, Message.class).get(0);
 	  }
 }

@@ -29,5 +29,8 @@ public interface MessageOperations {
 
 	List<Message> findByNamesScopeAndVersion(String name,String structId, String scope, String hl7Version);
 
+
+	Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version);
+
 	 
 }

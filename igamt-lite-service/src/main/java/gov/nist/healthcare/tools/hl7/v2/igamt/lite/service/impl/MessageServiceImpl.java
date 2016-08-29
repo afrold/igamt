@@ -81,6 +81,11 @@ public List<Message> findByNamesScopeAndVersion(String name,String structId, Str
     log.info("MessageServiceImpl.findByNamesScopeAndVersion=" + messages.size());
     return messages;
 }
+public Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version) {
+	Message message = messageRepository.findByStructIdAndScopeAndVersion(structId,scope, hl7Version);
+    log.info("MessageServiceImpl.findByNamesScopeAndVersion=" + message.getId());
+    return message;
+}
 public int findMaxPosition(Messages msgs) {
     int maxPos = 0;
     for (Message msg : msgs.getChildren()) {

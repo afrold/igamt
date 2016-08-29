@@ -1102,10 +1102,34 @@ public class IGDocumentController extends CommonController {
       throws IOException, IGDocumentNotFoundException, IGDocumentException, CloneNotSupportedException {
 
 	  List<Message> newMessages = new ArrayList<Message>();
+	  IGDocument d = igDocumentService.findOne(id);
+	    if (d == null) {
+	      throw new IGDocumentNotFoundException(id);
+	    }
+	    
+	    Profile p = d.getProfile();
+	    Messages msgs = p.getMessages();
+	    
+	    List<Message> msgsToadd = new ArrayList<Message>();
 	    try {
 	    	for(EventWrapper nands:eventWrapper){
-	    		newMessages.addAll(messageService.findByNamesScopeAndVersion(nands.getName(),nands.getParentStructId(),nands.getScope(),nands.getHl7Version()));
+	    		Message newMessage =messageService.findByStructIdAndScopeAndVersion(nands.getParentStructId(),nands.getScope(),nands.getHl7Version());
+	    		Message m1 = null;
+	            m1 = newMessage.clone();
+	            m1.setId(null);
+	            m1.setScope(Constant.SCOPE.USER);
+	            String name = m1.getMessageType() + "^" + nands.getName() + "^" + m1.getStructID();
+	            log.debug("Message.name=" + name);
+	            m1.setName(name);
+	            int position=messageService.findMaxPosition(msgs);
+	            m1.setPosition(++position);
+	            messageRepository.save(m1);
+	            msgsToadd.add(m1);
+	        	msgs.addMessage(m1);
 	    	}
+	    	 p.setMessages(msgs);
+	    	 d.setProfile(p);
+	    	 igDocumentService.save(d);
 	    	
 	      if (newMessages.isEmpty()) {
 	        throw new NotFoundException("Message not found for event=" + eventWrapper.toString());
@@ -1114,33 +1138,12 @@ public class IGDocumentController extends CommonController {
 	      log.error("", e);
 	    }
 	    
-    IGDocument d = igDocumentService.findOne(id);
-    if (d == null) {
-      throw new IGDocumentNotFoundException(id);
-    }
-    
-    Profile p = d.getProfile();
-    Messages msgs = p.getMessages();
-    
-    List<Message> msgsToadd = new ArrayList<Message>();
+   
 
-    for(Message m : newMessages){
-    	Message m1 = null;
-        m1 = m.clone();
-        m1.setId(null);
-        m1.setScope(Constant.SCOPE.USER);
-        String name = m1.getMessageType() + "^" + m1.getEvent() + "^" + m1.getStructID();
-        log.debug("Message.name=" + name);
-        m1.setName(name);
-        int position=messageService.findMaxPosition(msgs);
-        m1.setPosition(++position);
-        messageRepository.save(m1);
-        msgsToadd.add(m1);
-    	msgs.addMessage(m1);
-    }
-    p.setMessages(msgs);
-    d.setProfile(p);
-    igDocumentService.save(d);
+//    for(Message m : newMessages){
+//    	
+//    }
+   
     return msgsToadd;
   }
   
