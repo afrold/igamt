@@ -41,18 +41,19 @@ if (self === top) {
                     </tr>
                     <tr class="tbl-header">
                         <th st-ratio="5">#</th>
-                        <th st-ratio="55" st-sort="metaData.title">Document Title</th>
+                        <th st-ratio="45" st-sort="metaData.title">Document Title</th>
+                        <th st-ratio="10" st-sort="cp">#Conformance Profiles</th>
                         <th st-ratio="10" st-sort="metaData.hl7Version">HL7 Version</th>
                         <th st-ratio="10" st-sort="metaData.date">Date</th>
-
                         <th st-ratio="20">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="row in tmpIgs track by row.id | orderBy:'metaData.date'" ng-class="{'current': igdocument != null && row.id === igdocument.id}">
                         <td st-ratio="5">{{$index + 1}}</td>
-                        <td st-ratio="55"> {{row.metaData.title}}<span style="margin-left:5px ;    color: #1e88e5 !important;" class="glyphicon glyphicon-info-sign" ns-popover ns-popover-template="templateRow.html"  ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="right|top" ns-popover-timeout="0"> </span>
+                        <td st-ratio="45"> {{row.metaData.title}}
                         </td>
+                        <td st-ratio="10" st-sort="cp"><span style="margin-left:5px ;    color: #1e88e5 !important;" class="badge" ns-popover ns-popover-template="templateRow.html"  ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="right|top" ns-popover-timeout="0">{{row.profile.messages.children.length}} </span></td>
                         <td st-ratio="10" ng-bind="row.profile.metaData.hl7Version"></td>
                         <td st-ratio="10" ng-bind="row.metaData.date"></td>
                         <td st-ratio="20">
@@ -73,7 +74,7 @@ if (self === top) {
                     </tr>
                 </tbody>
                     <tr style="float:center !important; ">
-                        <td colspan="5" class="text-center" style="float:center !important; ">
+                        <td colspan="6" class="text-center" style="float:center !important; ">
                             <div st-pagination="" st-items-by-page="7" st-displayed-pages="7" style="float:center !important; "></div>
                         </td>
                     </tr>

@@ -779,12 +779,12 @@
                                                        name="min"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
-                                                       ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
+                                                       ng-class="{ 'igl-has-error' : {{formName}}.min.$invalid}"
                                                        ng-model="node.min" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="max"
                                                        ng-change="setDirty()"
-                                                       ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
+                                                       ng-class="{ 'igl-has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.max" required>
                                             </span>
@@ -797,12 +797,12 @@
                                                        name="minLength"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
-                                                       ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
+                                                       ng-class="{ 'igl-has-error' : {{formName}}.minLength.$invalid}"
                                                        ng-model="node.minLength" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="maxLength"
                                                        ng-change="setDirty()"
-                                                       ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
+                                                       ng-class="{ 'igl-has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.maxLength" required>
                                             </span>
@@ -814,7 +814,7 @@
                                             <input style="width:50%" class="form-control" type="text"
                                                    name="confLength"
                                                    ng-change="setDirty()"
-                                                   ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
+                                                   ng-class="{ 'igl-has-error' : {{formName}}.confLength.$invalid}"
                                                    ng-pattern="/^\d+$/"
                                                    ng-model="node.confLength">
                                             </span>
