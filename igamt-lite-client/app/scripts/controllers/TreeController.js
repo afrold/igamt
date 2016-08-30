@@ -30,6 +30,11 @@ angular
                 $scope.Activate = function(param) {
                     $rootScope.activeModel = param;
                 }
+                $scope.getDeleteLabl= function(){
+                    // if($rootScope.references.length===0){
+                        return "Delete"
+                    // }else return "Show References"
+                } 
 
                 $rootScope.switcherDatatypeLibrary = function() {
 
@@ -492,7 +497,7 @@ angular
 
                         }
                     ],
-                    null, ['Delete',
+                    null, [$scope.getDeleteLabl(),
                         function($itemScope) {
                             CloneDeleteSvc.deleteSegment($itemScope.segment);
                         }
@@ -678,7 +683,7 @@ angular
                             $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
                         }
                     ], null,
-                    ['Import CSV Tables',
+                    ['Import CSV Value Sets',
                         function($itemScope) {
                             $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
                         }
