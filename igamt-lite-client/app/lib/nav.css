@@ -147,3 +147,18 @@
 .ig-dropdown-menu > * {
     color: black;
 }
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: #f1c100;
+    border-color: #f1c100;
+}
+
+
+.ig-dropdown-menu > li {
+}
+
+.dropdown-menu .ig-dropdown-menu {
+    background-color: #ffec9d;
+    width:100%;
+    margin-top: -10px;
+}

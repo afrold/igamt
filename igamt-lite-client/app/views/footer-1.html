@@ -1,0 +1,50 @@
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
+<div id="footer">
+    <table>
+        <tbody>
+        <tr>
+            <td class="box">
+                <a href="http://www.nist.gov" target="_blank"><img class="footerImage" src="images/nist_logo.gif" alt="The NIST Logo" title="The NIST Logo" /></a>
+            </td>
+
+            <td class="box">
+                <div>
+                    <h5>Application Information</h5>
+                    <span>Date: {{appInfo.date |  date: 'MM/dd/yyyy HH:mm:ss'}}, </span>
+                    <span>Application Version: {{appInfo.version}}</span>
+                 </div>
+            </td>
+
+            <td class="box">
+                <div>
+                    <h5>Supported Browsers</h5>
+                    <span>Chrome, Firefox, Safari</span>
+                </div>
+            </td>
+
+            <td class="box">
+                <div>
+                    <h5>External Links</h5>
+                    <a class="footer-link" href="http://www.nist.gov/public_affairs/disclaimer.cfm" target="_blank" title="View Disclaimer">Disclaimer</a> |
+                    <a  class="footer-link" href="http://www.nist.gov/public_affairs/privacy.cfm#privpolicy" target="_blank" title="View Privacy Policy">Privacy/Policy</a>|
+                    <a class="footer-link" ng-href="mailto:{{appInfo.adminEmail}}" title="Email Website Administrator @: {{appInfo.adminEmail}}">Website Administrator</a>
+                </div>
+            </td>
+
+            <td class="box" >
+                <a href="http://www.itl.nist.gov" target="_blank"><img class="footerImage" src="images/itl-logo.jpg" alt="ITL Logo" title="ITL Logo" /></a>
+            </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+</div>
