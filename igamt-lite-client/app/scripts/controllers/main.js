@@ -741,7 +741,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             var prefix = '';
             if(ext != null && ext !== ''){
                 prefix = ext;
-            }else if(ext != null && ext !== ''){
+            }else if(flavorName != null && flavorName !== ''){
                 prefix = flavorName;
             }else {
                 prefix = 'Default';

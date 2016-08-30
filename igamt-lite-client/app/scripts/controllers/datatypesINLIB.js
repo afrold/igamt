@@ -1128,7 +1128,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeLibCtrl', function
             component_2: null,
             subComponent_2: null,
             verb: null,
-            constraintId: $rootScope.calNextCSID($rootScope.libEXT, $scope.datatype.name + "_" + $scope.datatype.ext);
+            constraintId: $rootScope.calNextCSID($rootScope.libEXT, $scope.datatype.name + "_" + $scope.datatype.ext),
             contraintType: null,
             value: null,
             value2: null,
