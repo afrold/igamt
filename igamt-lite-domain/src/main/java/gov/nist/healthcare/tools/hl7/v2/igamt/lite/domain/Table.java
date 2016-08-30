@@ -1,8 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.DataContext;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,7 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 
 /**
  * 
@@ -31,16 +28,12 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 
   @Id
   private String id;
-
   private String hl7Version;
-
   private Set<String> libIds = new HashSet<String>();
-
   private String bindingIdentifier;
+  private String name;  
+  private boolean newTable;
 
-  private String name;
-
- 
   private String description;
   private String version;
   private String oid;
@@ -332,6 +325,14 @@ public String getComment() {
 
 public void setComment(String comment) {
 	this.comment = comment;
+}
+
+public boolean isNewTable() {
+	return newTable;
+}
+
+public void setNewTable(boolean newTable) {
+	this.newTable = newTable;
 }
  
 
