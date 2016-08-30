@@ -1266,7 +1266,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = $rootScope.calNextCSID();
+    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.segment.name + "_" + $rootScope.segment.ext);
     $scope.newComplexConstraint = [];
 
     $scope.changed = false;
@@ -1293,7 +1293,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
             subComponent_2: null,
             verb: null,
             ignoreCase: false,
-            constraintId: $rootScope.calNextCSID(),
+            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.segment.name + "_" + $rootScope.segment.ext),
             contraintType: null,
             value: null,
             value2: null,
@@ -1309,7 +1309,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = $rootScope.calNextCSID();
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.segment.name + "_" + $rootScope.segment.ext);
     }
 
     $scope.initConformanceStatement();

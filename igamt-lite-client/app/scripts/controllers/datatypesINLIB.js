@@ -1104,7 +1104,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeLibCtrl', function
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = $rootScope.calNextCSIDINLIB();
+    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.libEXT, $scope.datatype.name + "_" + $scope.datatype.ext);
     $scope.newComplexConstraint = [];
     $scope.datatype = datatype;
     $scope.changed = false;
@@ -1128,7 +1128,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeLibCtrl', function
             component_2: null,
             subComponent_2: null,
             verb: null,
-            constraintId: $rootScope.calNextCSIDINLIB(),
+            constraintId: $rootScope.calNextCSID($rootScope.libEXT, $scope.datatype.name + "_" + $scope.datatype.ext);
             contraintType: null,
             value: null,
             value2: null,
@@ -1143,7 +1143,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeLibCtrl', function
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = $rootScope.calNextCSIDINLIB();
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.libEXT, $scope.datatype.name + "_" + $scope.datatype.ext);
     }
 
     $scope.initConformanceStatement();

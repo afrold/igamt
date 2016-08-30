@@ -727,38 +727,26 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return $rootScope.datatypesMap && $rootScope.datatypesMap[id];
         };
 
-        $rootScope.calNextCSID = function() {
-            if ($rootScope.igdocument.metaData.ext != null) {
-                var maxIDNum = Number(0);
-                angular.forEach($rootScope.conformanceStatementIdList, function(id) {
-                    if (id != null) {
-                        var tempID = parseInt(id.replace($rootScope.igdocument.metaData.ext + "-", ""));
-
-                        if (tempID > maxIDNum) maxIDNum = tempID;
-                    }
-                });
-
-                return $rootScope.igdocument.metaData.ext + "-" + (maxIDNum + 1);
-            } else {
-                return "";
+        $rootScope.calNextCSID = function(ext, flavorName) {
+            var prefix = '';
+            if(ext != null && ext !== ''){
+                prefix = ext;
+            }else if(ext != null && ext !== ''){
+                prefix = flavorName;
+            }else {
+                prefix = 'Default';
             }
-        };
-        $rootScope.calNextCSIDINLIB = function() {
-            if ($rootScope.libEXT && $rootScope.libEXT != null) {
-                var maxIDNum = Number(0);
-                angular.forEach($rootScope.conformanceStatementIdList, function(id) {
-                    if (id != null) {
-                        var tempID = parseInt(id.replace($rootScope.libEXT + "-", ""));
+            var maxIDNum = Number(0);
+            angular.forEach($rootScope.conformanceStatementIdList, function(id) {
+                if (id != null) {
+                    var tempID = parseInt(id.replace(prefix + "-", ""));
 
-                        if (tempID > maxIDNum) maxIDNum = tempID;
-                    }
-                });
-
-                return $rootScope.libEXT + "-" + (maxIDNum + 1);
-            } else {
-                return "";
-            }
+                    if (tempID > maxIDNum) maxIDNum = tempID;
+                }
+            });
+            return prefix + "-" + (maxIDNum + 1);
         };
+
         $rootScope.usedSegsLink = [];
         $rootScope.usedDtLink = [];
         $rootScope.usedVsLink = [];
