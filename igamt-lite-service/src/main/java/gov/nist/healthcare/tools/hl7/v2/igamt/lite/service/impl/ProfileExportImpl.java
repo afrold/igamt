@@ -1753,6 +1753,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
       wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", segmentInfo);
 
       // Add segment details
+   
+      
       addRichTextToDocx(wordMLPackage, s.getText1());
 
       List<String> header =
@@ -1764,8 +1766,9 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
       wordMLPackage.getMainDocumentPart().addObject(
           ProfileExportImpl.createTableDocxWithConstraints(header, widths, rows, wordMLPackage,
               factory));
-
-      addRichTextToDocx(wordMLPackage, s.getText2());
+//      wordMLPackage.getMainDocumentPart().addParagraphOfText("post-Definition");
+//      System.out.println("=============================================================");
+//      addRichTextToDocx(wordMLPackage, s.getText2());
 
       // Add field texts
       List<Field> fieldsList = s.getFields();

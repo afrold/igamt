@@ -37,4 +37,7 @@ public interface DatatypeService {
 
   Set<Datatype> collectDatatypes(Datatype datatype);
 
+
+  List<Datatype> findByScope(String scope);
+
 }

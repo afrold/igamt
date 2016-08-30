@@ -54,7 +54,7 @@ angular.module('igl').factory('MessageService',
                 }
             },
             merge: function(to, from) {
-                to = angular.extend(to, from);
+                to = _.extend(to, from);
                 //                to.accountID = from.accountID;
                 //                to.children = from.children;
                 //                to.comment = from.comment;

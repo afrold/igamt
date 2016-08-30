@@ -38,4 +38,6 @@ public interface DatatypeOperations {
   // List<Datatype> findDups(Datatype dt);
 
   List<Datatype> findUserDatatypesByIds(Set<String> ids);
+
+  List<Datatype> findByScope(String scope);
 }

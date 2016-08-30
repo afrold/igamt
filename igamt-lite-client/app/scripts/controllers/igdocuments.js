@@ -3,7 +3,8 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI,PcService) {
+
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
         $scope.uiGrid = {};
@@ -56,6 +57,7 @@ angular.module('igl')
                 $scope.accordi.igList = false;
                 $scope.accordi.igDetails = true;
             } else {
+                $scope.selectIGDocumentType('USER');
                 $scope.accordi.igList = true;
                 $scope.accordi.igDetails = false;
             }
@@ -82,6 +84,9 @@ angular.module('igl')
         $rootScope.closeIGDocument = function() {
             $rootScope.clearChanges();
             $rootScope.igdocument = null;
+            $rootScope.tocView=null;
+            $rootScope.subview=null;
+
             $rootScope.isEditing = false;
             $scope.selectIgTab(0);
             $rootScope.initMaps();
@@ -191,7 +196,11 @@ angular.module('igl')
                 }
             });
         };
+        $scope.getTemplateRow= function(row){
+            $rootScope.row= row;
+            return 'templateRow.html';
 
+        }
         $scope.selectIGDocumentType = function(selectedType) {
             //console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
             $scope.igDocumentConfig.selectedType = selectedType;
@@ -414,10 +423,16 @@ angular.module('igl')
                                 $scope.loadIgDocumentMetaData();
 
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);
-                            }, function() {});
-                        }, function() {});
-                    }, function() {});
-                }, function() {});
+                                $scope.loadPc().then(function(){},function(){});
+                            }, function () {
+                            });
+                        }, function () {
+                        });
+                    }, function () {
+                    });
+                }, function () {
+                });
+
             }
 
         };
@@ -486,7 +501,33 @@ angular.module('igl')
         };
 
 
-        $scope.loadTables = function() {
+        $scope.loadPc = function () {
+            var delay = $q.defer();
+            PcService.findAll().then(function (children) {
+
+                $rootScope.pcs = children;
+
+                $rootScope.pcs.push({name:"TEST1", type:"message"});
+                delay.resolve(true);
+            }, function (error) {
+                $rootScope.msg().text = "ProfileComplonentLoadFail";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                delay.reject(false);
+            });
+            return delay.promise;
+        };
+
+
+
+
+
+
+
+
+
+
+        $scope.loadTables = function () {
             var delay = $q.defer();
             $rootScope.igdocument.profile.tableLibrary.type = "tables";
 
@@ -952,6 +993,7 @@ angular.module('igl')
         $scope.selectProfileMetaData = function() {
             $rootScope.subview = "EditProfileMetadata.html";
             $rootScope.metaData = angular.copy($rootScope.igdocument.profile.metaData);
+            console.log(metaData);
             $rootScope.currentData = $rootScope.igdocument.profile;
             $scope.loadingSelection = true;
             blockUI.start();
@@ -1147,6 +1189,7 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function($scope,
             if ($scope.igdocumentToDelete === $rootScope.igdocument) {
                 $rootScope.closeIGDocument();
             }
+
             $rootScope.msg().text = "igDeleteSuccess";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;

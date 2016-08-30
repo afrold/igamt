@@ -6,22 +6,18 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         // logged in.
         // If success, the app is updated according to the role.
 
-        $(document).keydown(function(e) {
-            var nodeName = e.target.nodeName.toLowerCase();
+    //     $(document).keydown(function(e) {
+    //     var nodeName = e.target.nodeName.toLowerCase();
 
-            if (e.which === 8) {
-                if ((nodeName === 'input' && e.target.type === 'text') ||
-                    nodeName === 'textarea') {
-                    // do nothing
-                } else {
-                    e.preventDefault();
-                }
-            }
-        });
-
-
-
-
+    //     if (e.which === 8) {
+    //         if ((nodeName === 'input' && e.target.type === 'text') ||
+    //             nodeName === 'textarea') {
+    //             // do nothing
+    //         } else {
+    //             e.preventDefault();
+    //         }
+    //     }
+    // });
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
 
@@ -64,8 +60,22 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return '';
         };
+        $rootScope.setCardinalities= function(obj){
+        	if(obj.usage==='R'){
+        		obj.min=1;
+        	}
+        	else if(obj.usage==='X'||obj.usage==='BW'){
+        		obj.min=0;
+        		obj.max=0;
+        	}else if(obj.usage==='O'){
+        		obj.min=0;
+        		
+        	}
 
-        $scope.path = function() {
+        };
+        
+        
+        $scope.path = function () {
             return $location.url();
         };
 
@@ -2269,6 +2279,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $rootScope.isDatatypeSubDT = function(component) {
             return DatatypeService.isDatatypeSubDT(component, $rootScope.datatype);
         };
+
 
 
         $rootScope.setUsage = function(node) {
