@@ -1369,13 +1369,13 @@
                     </span>
                     <span class="pull-right">
                         <div class="btn-group btn-group-sm" data-toggle="buttons">
-                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Free'; newConstraint.constraintId = calNextCSID();" ng-class="{'active':constraintType === 'Free'}">
+                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Free'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, selectedMessage.structID);" ng-class="{'active':constraintType === 'Free'}">
                                 <input type="radio" ng-value="constraintType">Add new Free-Text Conf.Statement
                             </label>
-                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID();" ng-class="{'active':constraintType === 'Plain'}">
+                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, selectedMessage.structID);" ng-class="{'active':constraintType === 'Plain'}">
                                 <input type="radio" ng-value="constraintType">Add New Plain Conf.Statement
                             </label>
-                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID();" ng-class="{'active':constraintType === 'Complex'}">
+                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID(igdocument.metaData.ext, selectedMessage.structID);" ng-class="{'active':constraintType === 'Complex'}">
                                 <input type="radio" ng-value="constraintType">Add New Complex Conf.Statement
                             </label>
                         </div>
