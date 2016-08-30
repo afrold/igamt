@@ -428,6 +428,12 @@
 			<xsl:value-of select="@Description" />
 		</h3>
 
+		<xsl:if test="count(Text[@Type='PurposeAndUse']) &gt; 0">
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="Text[@Type='PurposeAndUse']" />
+			</p>
+		</xsl:if>
 		<xsl:value-of select="@Comment"></xsl:value-of>
 		<xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
 			<h4>Usage Note </h4>
@@ -559,6 +565,13 @@
 			<h4>
 				post-definition:
 			</h4>
+				<xsl:if test="count(./Text[@Type='Text']) &gt; 0">
+					<p>
+						<u><xsl:value-of select="./Text[@Type='Name']" />: </u>
+						<xsl:value-of disable-output-escaping="yes"
+							select="./Text[@Type='Text']" />
+					</p>
+				</xsl:if>
 			<p>
 				<xsl:value-of disable-output-escaping="yes"
 					select="./Text[@Type='Text2']" />
@@ -595,7 +608,7 @@
 				]
 			</td>
 			<td>
-				<xsl:value-of select="@Binding" />
+				<xsl:value-of disable-output-escaping="yes" select="@Binding" />
 			</td>
 			<td>
 				<xsl:value-of select="@Comment" />
