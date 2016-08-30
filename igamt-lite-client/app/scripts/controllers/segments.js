@@ -1098,6 +1098,16 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
     $scope.tempPredicates = [];
     angular.copy($rootScope.segment.predicates, $scope.tempPredicates);
 
+    $scope.countPredicateForTemp = function() {
+        var count = 0;
+
+        for (var i = 0, len1 = $scope.tempPredicates.length; i < len1; i++) {
+            if ($scope.tempPredicates[i].constraintTarget.indexOf($scope.selectedNode.position + '[') === 0)
+                count = count + 1;
+        }
+        return count;
+    };
+
     $scope.setChanged = function() {
         $scope.changed = true;
     }

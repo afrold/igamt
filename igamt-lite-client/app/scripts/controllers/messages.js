@@ -1030,7 +1030,18 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
 
     $scope.setChanged = function() {
         $scope.changed = true;
-    }
+    };
+
+    $scope.countPredicateForTemp = function() {
+        var count = 0
+        if ($rootScope.message != null) {
+            for (var i = 0, len1 = $scope.tempPredicates.length; i < len1; i++) {
+                if ($scope.tempPredicates[i].constraintTarget.indexOf($scope.selectedNode.path) === 0)
+                    count = count + 1;
+            }
+        }
+        return count;
+    };
 
     $scope.initPredicate = function() {
         $scope.newConstraint = angular.fromJson({
