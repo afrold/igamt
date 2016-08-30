@@ -151,16 +151,17 @@ angular.module('igl').factory(
             newTable.name = "New Table";
             newTable.description = "Description";
             newTable.codes = [];
+            newTable.newTable = true;
 
             TableService.save(newTable).then(function (result) {
                 newTable = result;
+                console.log(newTable);
                 var newLink = {};
                 newLink.bindingIdentifier = newTable.bindingIdentifier;
                 newLink.id = newTable.id;
 
                 TableLibrarySvc.addChild(tableLibrary.id, newLink).then(function (link) {
                     tableLibrary.children.splice(0, 0, newLink);
-                    newTable.isNew = true;
                     $rootScope.tables.splice(0, 0, newTable);
                     $rootScope.table = newTable;
                     $rootScope.tablesMap[newTable.id] = newTable;
