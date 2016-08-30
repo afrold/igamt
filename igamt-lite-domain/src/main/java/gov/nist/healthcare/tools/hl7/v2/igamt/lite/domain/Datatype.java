@@ -239,7 +239,8 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   }
 
   public String getLabel() {
-    return label;
+	  if(this.getExt()==null||this.getExt().isEmpty()) return this.getName();
+	  else return this.getName()+"_"+this.getExt();
   }
 
 public int getPrecisionOfDTM() {

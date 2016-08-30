@@ -6,22 +6,18 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         // logged in.
         // If success, the app is updated according to the role.
 
-        $(document).keydown(function(e) {
-            var nodeName = e.target.nodeName.toLowerCase();
+    //     $(document).keydown(function(e) {
+    //     var nodeName = e.target.nodeName.toLowerCase();
 
-            if (e.which === 8) {
-                if ((nodeName === 'input' && e.target.type === 'text') ||
-                    nodeName === 'textarea') {
-                    // do nothing
-                } else {
-                    e.preventDefault();
-                }
-            }
-        });
-
-
-
-
+    //     if (e.which === 8) {
+    //         if ((nodeName === 'input' && e.target.type === 'text') ||
+    //             nodeName === 'textarea') {
+    //             // do nothing
+    //         } else {
+    //             e.preventDefault();
+    //         }
+    //     }
+    // });
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
 
@@ -64,8 +60,22 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return '';
         };
+        $rootScope.setCardinalities= function(obj){
+        	if(obj.usage==='R'){
+        		obj.min=1;
+        	}
+        	else if(obj.usage==='X'||obj.usage==='BW'){
+        		obj.min=0;
+        		obj.max=0;
+        	}else if(obj.usage==='O'){
+        		obj.min=0;
+        		
+        	}
 
-        $scope.path = function() {
+        };
+        
+        
+        $scope.path = function () {
             return $location.url();
         };
 
@@ -727,38 +737,26 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return $rootScope.datatypesMap && $rootScope.datatypesMap[id];
         };
 
-        $rootScope.calNextCSID = function() {
-            if ($rootScope.igdocument.metaData.ext != null) {
-                var maxIDNum = Number(0);
-                angular.forEach($rootScope.conformanceStatementIdList, function(id) {
-                    if (id != null) {
-                        var tempID = parseInt(id.replace($rootScope.igdocument.metaData.ext + "-", ""));
-
-                        if (tempID > maxIDNum) maxIDNum = tempID;
-                    }
-                });
-
-                return $rootScope.igdocument.metaData.ext + "-" + (maxIDNum + 1);
-            } else {
-                return "";
+        $rootScope.calNextCSID = function(ext, flavorName) {
+            var prefix = '';
+            if(ext != null && ext !== ''){
+                prefix = ext;
+            }else if(flavorName != null && flavorName !== ''){
+                prefix = flavorName;
+            }else {
+                prefix = 'Default';
             }
-        };
-        $rootScope.calNextCSIDINLIB = function() {
-            if ($rootScope.libEXT && $rootScope.libEXT != null) {
-                var maxIDNum = Number(0);
-                angular.forEach($rootScope.conformanceStatementIdList, function(id) {
-                    if (id != null) {
-                        var tempID = parseInt(id.replace($rootScope.libEXT + "-", ""));
+            var maxIDNum = Number(0);
+            angular.forEach($rootScope.conformanceStatementIdList, function(id) {
+                if (id != null) {
+                    var tempID = parseInt(id.replace(prefix + "-", ""));
 
-                        if (tempID > maxIDNum) maxIDNum = tempID;
-                    }
-                });
-
-                return $rootScope.libEXT + "-" + (maxIDNum + 1);
-            } else {
-                return "";
-            }
+                    if (tempID > maxIDNum) maxIDNum = tempID;
+                }
+            });
+            return prefix + "-" + (maxIDNum + 1);
         };
+
         $rootScope.usedSegsLink = [];
         $rootScope.usedDtLink = [];
         $rootScope.usedVsLink = [];
@@ -2281,6 +2279,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $rootScope.isDatatypeSubDT = function(component) {
             return DatatypeService.isDatatypeSubDT(component, $rootScope.datatype);
         };
+
 
 
         $rootScope.setUsage = function(node) {

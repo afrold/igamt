@@ -104,4 +104,10 @@ public class DatatypeServiceImpl implements DatatypeService {
     return datatypes;
   }
 
+@Override
+public List<Datatype> findByScope(String scope) {
+	// TODO Auto-generated method stub
+	return datatypeRepository.findByScope(scope);
+}
+
 }

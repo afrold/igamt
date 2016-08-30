@@ -165,6 +165,39 @@ angular.module('igl')
         };
 
 
+//        $scope.save = function() {
+//            $scope.saving = true;
+//            var message = $rootScope.message;
+//
+//            console.log($rootScope.message);
+//            MessageService.save(message).then(function(result) {
+//            	var copy= angular.copy(message);
+//   
+//
+//                MessageService.saveNewElements().then(function() {
+//                	
+//                    var index = findIndex(message.id);
+//                    if (index >= 0) {
+//
+//                        console.log(index);
+//                        $rootScope.igdocument.profile.messages.children[index]=copy;
+//                        
+//                    }
+//                	// don't use the messageService.merge since it need $$hashkey property
+//                    $rootScope.messagesMap[message.id]= copy;
+//                    cleanState();
+//                }, function(error) {
+//                    $rootScope.msg().text = "Sorry an error occured. Please try again";
+//                    $rootScope.msg().type = "danger";
+//                    $rootScope.msg().show = true;
+//                });
+//            }, function(error) {
+//                $rootScope.msg().text = error.data.text;
+//                $rootScope.msg().type = error.data.type;
+//                $rootScope.msg().show = true;
+//            });
+//        };
+        
         $scope.save = function() {
             $scope.saving = true;
             var message = $rootScope.message;
@@ -191,6 +224,9 @@ angular.module('igl')
                 $rootScope.msg().show = true;
             });
         };
+        
+        
+        
 
 
         $scope.delete = function(message) {
@@ -1251,7 +1287,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = $rootScope.calNextCSID();
+    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $scope.selectedMessage.structID);
     $scope.changed = false;
     $scope.tempComformanceStatements = [];
     angular.copy($scope.selectedMessage.conformanceStatements, $scope.tempComformanceStatements);
@@ -1265,7 +1301,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = $rootScope.calNextCSID();
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $scope.selectedMessage.structID);
     }
 
     $scope.initConformanceStatement = function() {
@@ -1281,7 +1317,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
             freeText: null,
             verb: null,
             ignoreCase: false,
-            constraintId: $rootScope.calNextCSID(),
+            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $scope.selectedMessage.structID),
             contraintType: null,
             value: null,
             value2: null,

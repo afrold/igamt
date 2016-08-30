@@ -30,7 +30,6 @@ public class DataModelWithConstraints extends DataModel {
 
   protected List<Predicate> predicates = new ArrayList<Predicate>();
 
-   
   protected List<ConformanceStatement> conformanceStatements =
       new ArrayList<ConformanceStatement>();
 
@@ -156,9 +155,5 @@ public class DataModelWithConstraints extends DataModel {
   public void setStatus(STATUS status) {
     this.status = status;
   }
-
- 
-  
-  
   
 }

@@ -9,9 +9,10 @@ angular
             'FilteringSvc',
             'SectionSvc',
 
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc, $modal) {
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc) {
 
                 $scope.collapsedata = false;
+                $scope.collapsePcs=true;
                 $scope.collapsemessage = false;
                 $scope.collapsesegment = false;
                 $scope.collapsetable = false;
@@ -29,6 +30,11 @@ angular
                 $scope.Activate = function(param) {
                     $rootScope.activeModel = param;
                 }
+                $scope.getDeleteLabl= function(){
+                    // if($rootScope.references.length===0){
+                        return "Delete"
+                    // }else return "Show References"
+                } 
 
                 $rootScope.switcherDatatypeLibrary = function() {
 
@@ -45,6 +51,10 @@ angular
                     $scope.profilecollapsed = !$scope.profilecollapsed;
 
                 };
+                $rootScope.switcherpcs=function(){
+                      $scope.collapsePcs=!$scope.collapsePcs;
+                }
+
 
                 $rootScope.updateSectionContent = function(section) {
                     if (section.childSections) {
@@ -430,6 +440,7 @@ angular
                 function processAddSection() {
                     var newSection = {};
                     newSection.id = new ObjectId().toString();
+                    newSection.childSections = [];
 
                     var rand = Math.floor(Math.random() * 100);
                     if (!$rootScope.igdocument.profile.metaData.ext) {
@@ -470,7 +481,7 @@ angular
 
                 $scope.SegmentOptions = [
 
-                    ['Copy',
+                    ['Create a Flavor',
                         function($itemScope) {
 
 
@@ -486,7 +497,7 @@ angular
 
                         }
                     ],
-                    null, ['Delete',
+                    null, [$scope.getDeleteLabl(),
                         function($itemScope) {
                             CloneDeleteSvc.deleteSegment($itemScope.segment);
                         }
@@ -496,7 +507,7 @@ angular
 
                 $scope.DataTypeOptions = [
 
-                    ['Copy',
+                    ['Create a Flavor',
                         function($itemScope) {
 
 
@@ -520,7 +531,7 @@ angular
 
                 $scope.ValueSetOptions = [
 
-                    ['Copy',
+                    ['Create a Flavor',
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -596,7 +607,7 @@ angular
                 ];
 
                 $scope.ValueSetRootOptions = [
-                    ['Import Table', function($itemScope) {
+                    ['Import Value Sets', function($itemScope) {
                         $scope.addTable($rootScope.igdocument);
                     }]
                 ];
@@ -647,7 +658,8 @@ angular
 
 
                 $scope.ValueSetAddOptionsINLIB = [
-                    ['Import Table ',
+                    ['Import Value Sets ',
+
                         function($itemScope) {
                             //$scope.addDatatypesFromTree();
                             //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
@@ -657,21 +669,25 @@ angular
 
                 $scope.addValueSets = [
 
+
                     ['Import New Value Set',
                         function($itemScope) {
                             CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
                         }
-                    ], null,
-                    ['Import from HL7',
+                    ], 
+                    ['Import HL7 Value Sets',
+
                         function($itemScope) {
                             $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary);
                         }
-                    ], null,
+                    ], 
+
                     ['Import from PHINVADs',
                         function($itemScope) {
                             $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
                         }
-                    ], null,
+                    ],
+
                     ['Import CSV file',
                         function($itemScope) {
                             $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
@@ -682,7 +698,7 @@ angular
 
 
                 $scope.addValueSetsInTableLibrary = [
-                    ['Import Tables',
+                    ['Import Value Sets',
                         function($itemScope) {
                             $scope.addTablesInLibrary();
                         }
@@ -830,14 +846,12 @@ angular
 
                 $rootScope.editTable = function(table) {
                     if ($rootScope.hasChanges()) {
-
                         $rootScope.openConfirmLeaveDlg().result.then(function() {
                             processEditTable(table);
                         });
                     } else {
                         processEditTable(table);
                     }
-
                 };
 
                 function processEditMessage(message) {

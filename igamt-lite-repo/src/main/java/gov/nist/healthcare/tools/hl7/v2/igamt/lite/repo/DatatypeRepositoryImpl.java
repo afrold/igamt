@@ -47,6 +47,14 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
     // qry = set4Brevis(qry);
     return mongo.find(qry, Datatype.class);
   }
+  
+  @Override
+  public List<Datatype> findByScope(String scope) {
+    Criteria where = Criteria.where("scope").is(scope);
+    Query qry = Query.query(where);
+    // qry = set4Brevis(qry);
+    return mongo.find(qry, Datatype.class);
+  }
 
   @Override
   public Datatype findById(String id) {

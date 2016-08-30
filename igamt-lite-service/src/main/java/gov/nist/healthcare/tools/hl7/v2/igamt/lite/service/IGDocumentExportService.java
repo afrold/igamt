@@ -30,8 +30,6 @@ public interface IGDocumentExportService {
 
   InputStream exportAsPdf(IGDocument d) throws IOException;
 
-  InputStream exportAsPdfFromXsl(IGDocument d, String inlineConstraints) throws IOException;
-
   InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids)
       throws IOException, CloneNotSupportedException;
 
@@ -68,8 +66,6 @@ public interface IGDocumentExportService {
   InputStream exportAsHtml(IGDocument d) throws IOException;
   
   InputStream exportAsHtmlSegment(SegmentLink sl) throws IOException;
-
-  InputStream exportAsHtml4Pdf(IGDocument d) throws IOException;
 
   InputStream exportAsHtmlDatatypes(IGDocument d) throws IOException;
 
