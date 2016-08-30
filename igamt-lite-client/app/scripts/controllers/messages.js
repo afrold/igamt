@@ -5,6 +5,7 @@
 angular.module('igl')
     .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI) {
         $scope.init = function() {};
+        console.log("IN MESSAGES========");
         console.log($rootScope.igdocument);
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
@@ -159,6 +160,9 @@ angular.module('igl')
                 $scope.messagesParams.refresh();
             }
         };
+        $scope.callMsgDelta = function() {
+            $rootScope.$emit("event:openMsgDelta");
+        };
 
 
 //        $scope.save = function() {
@@ -197,6 +201,7 @@ angular.module('igl')
         $scope.save = function() {
             $scope.saving = true;
             var message = $rootScope.message;
+            $rootScope.$emit("event:saveMsgForDelta");
 
             console.log($rootScope.message);
             MessageService.save(message).then(function(result) {
@@ -1994,7 +1999,9 @@ angular.module('igl').controller('redirectCtrl', function($scope, $modalInstance
 
 
 angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, ObjectDiff, orderByFilter, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, CompareService) {
+
     $scope.msgChanged = false;
+
 
 
     $scope.scopes = [{
@@ -2019,15 +2026,30 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
 
     var init = function() {
         listHL7Versions().then(function(versions) {
+            $rootScope.deltaMsgList = [];
             $scope.versions = versions;
+            $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
+
+            $scope.scope1 = "USER";
+            $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
+            $scope.message1 = angular.copy($rootScope.message);
+            $scope.segList1 = angular.copy($rootScope.segments);
+            $scope.dtList1 = angular.copy($rootScope.datatypes);
+            $scope.version2 = angular.copy($scope.version1);
+            console.log($scope.scopes);
+            console.log($scope.scopes[1]);
+            $scope.scope2 = "HL7STANDARD";
         });
     };
 
     $scope.$on('event:loginConfirmed', function(event) {
         init();
     });
+    $rootScope.$on('event:openMsgDelta', function(event) {
+        init();
+    });
 
-    init();
+    //init();
 
 
     $scope.status = {
@@ -2036,18 +2058,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         isSecondOpen: true,
         isFirstDisabled: false
     };
-    $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
 
-    $scope.scope1 = "USER";
-    $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
-    $scope.message1 = angular.copy($rootScope.message);
-    $scope.segList1 = angular.copy($rootScope.segments);
-    $scope.dtList1 = angular.copy($rootScope.datatypes);
-    $scope.version2 = angular.copy($scope.version1);
-    console.log($scope.scopes);
-    console.log($scope.scopes[1]);
-
-    $scope.scope2 = "HL7STANDARD";
 
     $scope.setVersion2 = function(vr) {
         $scope.version2 = vr;
@@ -2150,7 +2161,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
 
     $scope.dynamicMsg_params = new ngTreetableParams({
         getNodes: function(parent) {
-            if ($scope.dataList !== undefined) {
+            if ($rootScope.deltaMsgList !== undefined) {
 
                 //return parent ? parent.fields : $scope.test;
                 if (parent) {
@@ -2165,7 +2176,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
                     }
 
                 } else {
-                    return $scope.dataList;
+                    return $rootScope.deltaMsgList;
                 }
 
             }
@@ -2176,26 +2187,28 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
     });
 
     $scope.cmpMessage = function(msg1, msg2) {
+        $rootScope.deltaMap = {};
         $scope.loadingSelection = true;
         $scope.msgChanged = false;
         $scope.vsTemplate = false;
         $scope.loadingSelection = false;
-        console.log(msg1);
-        console.log(JSON.stringify(msg1));
-        $scope.dataList = CompareService.cmpMessage(JSON.stringify(msg1), msg2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+        $rootScope.deltaMsgList = CompareService.cmpMessage(JSON.stringify(msg1), msg2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
         //$scope.dataList = result;
 
 
 
 
         if ($scope.dynamicMsg_params) {
-            console.log($scope.dataList);
+            console.log($rootScope.deltaMsgList);
             $scope.showDelta = true;
             $scope.status.isSecondOpen = true;
             $scope.dynamicMsg_params.refresh();
         }
 
     };
+
+
+
 
 
 });

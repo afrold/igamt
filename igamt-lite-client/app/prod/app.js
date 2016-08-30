@@ -32,12 +32,12 @@ var app = angular
         'ngDragDrop',
         'ui.tree',
         'blockUI',
-        'mgcrea.ngStrap.typeahead',
         'ds.objectDiff',
         'ngTagsInput',
         'nsPopover',
-        'ngMaterial'
-     ]);
+        'ngMaterial',
+        'pageslide-directive'
+      ]);
 
 var
 //the HTTP headers to be used by all requests

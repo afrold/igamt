@@ -71,15 +71,21 @@
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/image.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/line_breaker.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/table.css">
-    <link rel="stylesheet" href="lib/sidebar-menu/simple-sidebar.css"/>
+    <link rel="stylesheet" href="lib/side-menu.css"/>
     <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
     <style>
         body {
             /*background-color: #F1F1F2;*/
-            font-family: 'Cairo', sans-serif;
+            /*font-family: 'Cairo', sans-serif;*/
+            font-family: RobotoDraft, Roboto, sans-serif;
         }
         * {
-            font-family: 'Cairo', sans-serif;
+            /*font-family: 'Cairo', sans-serif;*/
+            font-family: RobotoDraft, Roboto, sans-serif;
         }
     </style>
     <script type="text/javascript">
@@ -92,6 +98,7 @@
     </script>
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit confirm-on-leave block-ui="main">
+<div ng-include="'views/sidebar_menu.html'"></div>
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
@@ -199,7 +206,6 @@
     <script src="bower_components/angular-bootstrap-contextmenu/contextMenu.js"></script>
     <script src="bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
     <script src="bower_components/angular-ui-select/dist/select.js"></script>
-    <script src="bower_components/angular-unsavedChanges/unsavedChanges.js"></script>
     <script src="bower_components/nsPopover/src/nsPopover.js"></script>
     <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.js"></script>
     <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
@@ -213,6 +219,8 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="lib/Objectid.js"></script>
+    <script src="lib/PapaParse/papaparse.min.js"></script>
+    <script src="lib/angular-pageslide-directive/dist/angular-pageslide-directive.min.js"></script>
     <script src="lib/angular-treetable/angular-treetable.js"></script>
     <script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
     <script src="lib/angular-treetable/js/jquery.treetable.js"></script>
@@ -242,7 +250,6 @@
     <script src="lib/jquery.i18n.properties-1.0.9.js"></script>
     <script src="lib/lrDragNDrop.js"></script>
     <script src="lib/ng-grid-csv-export-custom.js"></script>
-    <script src="lib/sidebar-menu/sidebar_menu.js"></script>
     <script src="lib/utils.js"></script>
     <script src="prod/app.js"></script>
     <script src="prod/userInfoService.js"></script>
@@ -270,7 +277,6 @@
     <script src="scripts/services/MessageService.js"></script>
     <script src="scripts/services/MessagesSvc.js"></script>
     <script src="scripts/services/MultiAccountLoader.js"></script>
-    <script src="scripts/services/PcService.js"></script>
     <script src="scripts/services/ProfileAccessSvc.js"></script>
     <script src="scripts/services/ProfileSvc.js"></script>
     <script src="scripts/services/SectionSvc.js"></script>

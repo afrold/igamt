@@ -401,6 +401,7 @@ module.exports = function(grunt) {
 											'*.html', 
 											'views/**/*.html',
 											'images/{,*/}*.{webp}',
+										    'docs/**/*',
 											'fonts/**/*', 
 											'assets/**/*',
 											'lib/**/*', 

@@ -678,6 +678,10 @@ angular.module('igl')
             if ($scope.datatypesParams)
                 $scope.datatypesParams.refresh();
         };
+        $scope.callDTDelta = function() {
+
+            $rootScope.$emit("event:openDTDelta");
+        };
 
         $scope.save = function() {
             var datatype = $rootScope.datatype;
@@ -1618,6 +1622,11 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
     var ctrl = this;
     this.datatypeId = -1;
     $scope.dtChanged = false;
+    $scope.isDeltaCalled = false;
+    $scope.setDeltaToF = function() {
+        console.log("HEEEEEERREEEEE");
+        $scope.isDeltaCalled = false;
+    }
 
 
 
@@ -1628,6 +1637,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
         name: "HL7STANDARD",
         alias: "Base HL7"
     }];
+
     $scope.getLabel = function(element) {
         if (element) {
             if (element.ext !== null) {
@@ -1650,34 +1660,44 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
             return hl7Versions;
         });
     };
+    $scope.status = {
+        isCustomHeaderOpen: false,
+        isFirstOpen: true,
+        isSecondOpen: true,
+        isFirstDisabled: false
+    };
 
     $scope.initt = function() {
+        $scope.isDeltaCalled = true;
+        $scope.dataList = [];
         listHL7Versions().then(function(versions) {
             $scope.versions = versions;
+            $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
+            $scope.scope1 = "USER";
+            $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
+            $scope.datatype1 = angular.copy($rootScope.datatype);
+            ctrl.datatypeId = -1;
+            $scope.variable = !$scope.variable;
+
+
+            $scope.segments2 = null;
+            //$scope.setIG2($scope.ig2);
+            $scope.segList1 = angular.copy($rootScope.segments);
+            $scope.dtList1 = angular.copy($rootScope.datatypes);
+            $scope.version2 = angular.copy($scope.version1);
+            console.log($scope.scopes);
+            console.log($scope.scopes[1]);
+            //$scope.status.isFirstOpen = true;
+            $scope.scope2 = "HL7STANDARD";
+            if ($scope.dynamicDt_params) {
+                $scope.showDelta = false;
+                $scope.status.isFirstOpen = true;
+                $scope.dynamicDt_params.refresh();
+            }
+
         });
-        $scope.status = {
-            isCustomHeaderOpen: false,
-            isFirstOpen: true,
-            isSecondOpen: true,
-            isFirstDisabled: false
-        };
-        $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
-        $scope.scope1 = "USER";
-        $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
-        $scope.datatype1 = angular.copy($rootScope.datatype);
-        ctrl.datatypeId = -1;
-        $scope.variable = !$scope.variable;
 
 
-        $scope.segments2 = null;
-        //$scope.setIG2($scope.ig2);
-        $scope.segList1 = angular.copy($rootScope.segments);
-        $scope.dtList1 = angular.copy($rootScope.datatypes);
-        $scope.version2 = angular.copy($scope.version1);
-        console.log($scope.scopes);
-        console.log($scope.scopes[1]);
-        //$scope.status.isFirstOpen = true;
-        $scope.scope2 = "HL7STANDARD";
 
     };
 
@@ -1685,9 +1705,16 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
         $scope.initt();
     });
 
-    $scope.initt();
+    //$scope.initt();
 
     $rootScope.$on('event:initDatatype', function(event) {
+        console.log("$scope.isDeltaCalled");
+        console.log($scope.isDeltaCalled);
+        if ($scope.isDeltaCalled) {
+            $scope.initt();
+        }
+    });
+    $rootScope.$on('event:openDTDelta', function(event) {
         $scope.initt();
     });
 
@@ -1705,10 +1732,8 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
     $scope.$watchGroup(['datatype1', 'datatype2'], function() {
         $scope.dtChanged = true;
         //$scope.segment1 = angular.copy($rootScope.activeSegment);
-
-
     }, true);
-    $scope.$watchGroup(['version2', 'scope2', 'variable', ], function() {
+    $scope.$watchGroup(['version2', 'scope2', 'variable'], function() {
         $scope.igList2 = [];
         $scope.segments2 = [];
         $scope.ig2 = "";

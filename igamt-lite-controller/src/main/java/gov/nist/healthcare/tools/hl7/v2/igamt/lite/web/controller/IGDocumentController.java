@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -16,6 +18,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +53,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NamesAndStruct;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PositionComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
@@ -64,6 +68,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
@@ -84,6 +89,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.EventWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
@@ -111,6 +117,8 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   AccountRepository accountRepository;
+  @Autowired
+  private MessageRepository messageRepository;
 
   @Autowired
   private IGDocumentCreationService igDocumentCreation;
@@ -451,7 +459,7 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentNotFoundException(e);
     }
   }
-
+  
   @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
   public ResponseMessage delete(@PathVariable("id") String id) throws IGDocumentDeleteException {
     try {
@@ -1084,6 +1092,87 @@ public class IGDocumentController extends CommonController {
     Set<Message> sortedSet = new HashSet<Message>();
     sortedSet.addAll(sortedList);
     msgs.setChildren(sortedSet);
+    p.setMessages(msgs);
+    d.setProfile(p);
+    igDocumentService.save(d);
+    return null;
+  }
+ 
+  
+  @RequestMapping(value = "/{id}/findAndAddMessages", method = RequestMethod.POST)
+  public List<Message> findAndAddMessages(@PathVariable("id") String id,
+      @RequestBody  List<EventWrapper> eventWrapper)
+      throws IOException, IGDocumentNotFoundException, IGDocumentException, CloneNotSupportedException {
+
+	  List<Message> newMessages = new ArrayList<Message>();
+	  IGDocument d = igDocumentService.findOne(id);
+	    if (d == null) {
+	      throw new IGDocumentNotFoundException(id);
+	    }
+	    
+	    Profile p = d.getProfile();
+	    Messages msgs = p.getMessages();
+	    
+	    List<Message> msgsToadd = new ArrayList<Message>();
+	    try {
+	    	for(EventWrapper nands:eventWrapper){
+	    		Message newMessage =messageService.findByStructIdAndScopeAndVersion(nands.getParentStructId(),nands.getScope(),nands.getHl7Version());
+	    		Message m1 = null;
+	            m1 = newMessage.clone();
+	            m1.setId(null);
+	            m1.setScope(Constant.SCOPE.USER);
+	            String name = m1.getMessageType() + "^" + nands.getName() + "^" + m1.getStructID();
+	            log.debug("Message.name=" + name);
+	            m1.setName(name);
+	            int position=messageService.findMaxPosition(msgs);
+	            m1.setPosition(++position);
+	            messageRepository.save(m1);
+	            msgsToadd.add(m1);
+	        	msgs.addMessage(m1);
+	    	}
+	    	 p.setMessages(msgs);
+	    	 d.setProfile(p);
+	    	 igDocumentService.save(d);
+	    	
+	      if (newMessages.isEmpty()) {
+	        throw new NotFoundException("Message not found for event=" + eventWrapper.toString());
+	      }
+	    } catch (Exception e) {
+	      log.error("", e);
+	    }
+	    
+   
+
+//    for(Message m : newMessages){
+//    	
+//    }
+   
+    return msgsToadd;
+  }
+  
+  @RequestMapping(value = "/{id}/addMessages", method = RequestMethod.POST)
+  public String addMessages(@PathVariable("id") String id,
+      @RequestBody Set<String> messageIds)
+      throws IOException, IGDocumentNotFoundException, IGDocumentException, CloneNotSupportedException {
+
+    System.out.println(id);
+    System.out.println();
+    IGDocument d = igDocumentService.findOne(id);
+    if (d == null) {
+      throw new IGDocumentNotFoundException(id);
+    }
+
+    Profile p = d.getProfile();
+    Messages msgs = p.getMessages();
+    List<Message> newMsgs = messageService.findByIds(messageIds);
+    for(Message m : newMsgs){
+    	Message m1 = null;
+        m1 = m.clone();
+        m1.setId(null);
+        m1.setScope(Constant.SCOPE.USER);
+        messageRepository.save(m1);
+    	msgs.addMessage(m1);
+    }
     p.setMessages(msgs);
     d.setProfile(p);
     igDocumentService.save(d);

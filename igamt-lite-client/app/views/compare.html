@@ -5,7 +5,17 @@
             <div style="margin:5px">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title" style="width:12%; margin:0 auto;">Delta Settings</h3>
+                        <h3 class="panel-title">
+                            <div style="padding-left:40%">
+                                <div class="input-group ">
+                                    <span class="input-group-addon" id="basic-addon1">Delta Settings</span>
+                                    <select ng-model="toCmp" class="form-control " ng-change="setCmpType(toCmp)" style="width:150px;">
+                                        <option value="" disabled selected>Select Delta Type</option>
+                                        <option ng-repeat="cmpType in toCompare " value='{{cmpType.name}}'> {{cmpType.alias}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </h3>
                     </div>
                     <div class="panel-body">
                         <div class="col-md-8 ">
@@ -61,74 +71,7 @@
                                     <select class="form-control " ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2"></select>
                                 </div>
                             </div>
-                            <div class="row" style="padding-top:20px">
-                                <div class="input-group col-md-4">
-                                    <span class="input-group-addon" id="basic-addon1">Compare</span>
-                                    <select ng-model="toCmp" class="form-control " ng-change="setCmpType(toCmp)">
-                                        <option ng-repeat="cmpType in toCompare " value='{{cmpType.name}}'> {{cmpType.alias}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row" align="right">
-                                <div class="col-md-1">
-                                    <button ng-click="clearMessage()" class="btn btn-default btn-xs "><i class="fa fa-times"></i> Clear {{toCmp}}</button>
-                                </div>
-                            </div>
-                            <div class="row" align="center">
-                                <div class="input-group col-md-9" ng-show="cmpMsg">
-                                    <span class="input-group-addon" id="basic-addon1">Message</span>
-                                    <select ng-model="msg1" class="form-control" ng-change="setMsg1(msg1)" ng-disabled="!ig1">
-                                        <option ng-repeat="message in messages1 " ng-disabled="disableMsg(message,msg2)" ng-hide="hideMsg(message,msg2)" value='{{message}}'> {{message.name}}</option>
-                                    </select>
-                                </div>
-                                <div class="input-group col-md-9" ng-show="cmpSeg">
-                                    <span class="input-group-addon" id="basic-addon1">Segment</span>
-                                    <select ng-model="segment1" class="form-control " ng-change="setSegment1(segment1)">
-                                        <option ng-repeat="segment in segments1 " ng-disabled="disableSeg(segment,segment2)" ng-hide="hideSeg(segment,segment2)" value='{{segment}}'> {{getLabel(segment)}}</option>
-                                    </select>
-                                </div>
-                                <div class="input-group col-md-9" ng-show="cmpDT">
-                                    <span class="input-group-addon" id="basic-addon1">Datatype</span>
-                                    <select ng-model="datatype1" class="form-control " ng-change="setDatatype1(datatype1)">
-                                        <option ng-repeat="datatype in datatypes1 " ng-disabled="disableSeg(datatype,datatype2)" ng-hide="hideSeg(datatype,datatype2)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
-                                    </select>
-                                </div>
-                                <div class="input-group col-md-9" ng-show="cmpVS">
-                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
-                                    <select ng-model="table1" class="form-control  col-md-1 input-sm" ng-change="setTable1(table1)">
-                                        <option ng-repeat="table in tables1 " ng-disabled="disableSeg(table,table2)" ng-hide="hideSeg(table,table2)" value='{{table}}'> {{table.bindingIdentifier}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row" align="center">
-                                <div class="input-group col-md-9" ng-show="cmpMsg">
-                                    <span class="input-group-addon" id="basic-addon1">Message</span>
-                                    <select ng-model="msg2" class="form-control " ng-change="setMsg2(msg2)" ng-disabled="!ig2">
-                                        <option ng-repeat="message in messages2 " ng-disabled="disableMsg(message,msg1)" ng-hide="hideMsg(message,msg1)" value='{{message}}'> {{message.name}}</option>
-                                    </select>
-                                </div>
-                                <div class="input-group col-md-9" ng-show="cmpSeg">
-                                    <span class="input-group-addon" id="basic-addon1">Segment</span>
-                                    <select ng-model="segment2" class="form-control " ng-change="setSegment2(segment2)">
-                                        <option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{segment}}'> {{getLabel(segment)}}</option>
-                                    </select>
-                                </div>
-                                <div class="input-group col-md-9" ng-show="cmpDT">
-                                    <span class="input-group-addon" id="basic-addon1">Datatype</span>
-                                    <select ng-model="datatype2" class="form-control " ng-change="setDatatype2(datatype2)">
-                                        <option ng-repeat="datatype in datatypes2 " ng-disabled="disableSeg(datatype,datatype1)" ng-hide="hideSeg(datatype,datatype1)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
-                                    </select>
-                                </div>
-                                <div class="input-group col-md-9" ng-show="cmpVS">
-                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
-                                    <select ng-model="table2" class="form-control  col-md-1 input-sm" ng-change="setTable2(table2)">
-                                        <option ng-repeat="table in tables2 " ng-disabled="disableSeg(table,table1)" ng-hide="hideSeg(table,table1)" value='{{table}}'> {{table.bindingIdentifier}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row" style="padding-top:20px">
+                            <div class="row" style="padding-top:5px;padding-left:63%">
                                 <div class="col-md-4" align="right" ng-show="cmpMsg">
                                     <button ng-click="cmpMessage(msg1,msg2)" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-info btn-md">
                                         <i class="fa fa-check"></i> Message Delta</button>
@@ -146,6 +89,74 @@
                                         <i class="fa fa-check"></i> Value Set Delta</button>
                                 </div>
                             </div>
+                            <!--<div class="row" style="padding-top:20px">
+                                <div class="input-group col-md-4">
+                                    <span class="input-group-addon" id="basic-addon1">Compare</span>
+                                    <select ng-model="toCmp" class="form-control " ng-change="setCmpType(toCmp)">
+                                        <option ng-repeat="cmpType in toCompare " value='{{cmpType.name}}'> {{cmpType.alias}}</option>
+                                    </select>
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row" align="right">
+                                <div class="col-md-1">
+                                    <button ng-click="clearMessage()" class="btn btn-default btn-xs "><i class="fa fa-times"></i> Clear {{toCmp}}</button>
+                                </div>
+                            </div>
+                            <div class="row" align="center">
+                                <div class="input-group col-md-9" ng-show="cmpMsg">
+                                    <span class="input-group-addon" id="basic-addon1">Message</span>
+                                    <select ng-model="msg1" class="form-control" ng-change="setMsg1(msg1)" ng-disabled="!ig1">
+                                        <option ng-repeat="message in messages1 " ng-disabled="disableMsg(message,msg2)" ng-hide="hideMsg(message,msg2)" value='{{message}}'> {{message.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="input-group col-md-9" ng-show="cmpSeg">
+                                    <span class="input-group-addon" id="basic-addon1">Segment</span>
+                                    <select ng-model="segment1" class="form-control " ng-change="setSegment1(segment1)" ng-disabled="!ig1">
+                                        <option ng-repeat="segment in segments1 " ng-disabled="disableSeg(segment,segment2)" ng-hide="hideSeg(segment,segment2)" value='{{segment}}'> {{getLabel(segment)}}</option>
+                                    </select>
+                                </div>
+                                <div class="input-group col-md-9" ng-show="cmpDT">
+                                    <span class="input-group-addon" id="basic-addon1">Datatype</span>
+                                    <select ng-model="datatype1" class="form-control " ng-change="setDatatype1(datatype1)" ng-disabled="!ig1">
+                                        <option ng-repeat="datatype in datatypes1 " ng-disabled="disableSeg(datatype,datatype2)" ng-hide="hideSeg(datatype,datatype2)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
+                                    </select>
+                                </div>
+                                <div class="input-group col-md-9" ng-show="cmpVS">
+                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
+                                    <select ng-model="table1" class="form-control  col-md-1 input-sm" ng-change="setTable1(table1)" ng-disabled="!ig1">
+                                        <option ng-repeat="table in tables1 " ng-disabled="disableSeg(table,table2)" ng-hide="hideSeg(table,table2)" value='{{table}}'> {{table.bindingIdentifier}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" align="center">
+                                <div class="input-group col-md-9" ng-show="cmpMsg">
+                                    <span class="input-group-addon" id="basic-addon1">Message</span>
+                                    <select ng-model="msg2" class="form-control " ng-change="setMsg2(msg2)" ng-disabled="!ig2">
+                                        <option ng-repeat="message in messages2 " ng-disabled="disableMsg(message,msg1)" ng-hide="hideMsg(message,msg1)" value='{{message}}'> {{message.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="input-group col-md-9" ng-show="cmpSeg">
+                                    <span class="input-group-addon" id="basic-addon1">Segment</span>
+                                    <select ng-model="segment2" class="form-control " ng-change="setSegment2(segment2)" ng-disabled="!ig2">
+                                        <option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{segment}}'> {{getLabel(segment)}}</option>
+                                    </select>
+                                </div>
+                                <div class="input-group col-md-9" ng-show="cmpDT">
+                                    <span class="input-group-addon" id="basic-addon1">Datatype</span>
+                                    <select ng-model="datatype2" class="form-control " ng-change="setDatatype2(datatype2)" ng-disabled="!ig2">
+                                        <option ng-repeat="datatype in datatypes2 " ng-disabled="disableSeg(datatype,datatype1)" ng-hide="hideSeg(datatype,datatype1)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
+                                    </select>
+                                </div>
+                                <div class="input-group col-md-9" ng-show="cmpVS">
+                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
+                                    <select ng-model="table2" class="form-control  col-md-1 input-sm" ng-change="setTable2(table2)" ng-disabled="!ig2">
+                                        <option ng-repeat="table in tables2 " ng-disabled="disableSeg(table,table1)" ng-hide="hideSeg(table,table1)" value='{{table}}'> {{table.bindingIdentifier}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -420,7 +431,7 @@
             <table class=" table-borderless" ng-show="node.label.element && node.description.element">
                 <tr>
                     <td class="col-sm-1">
-                        
+
                         <span ng-bind="node.label.element"></span><span ng-show="node.description.element">:<span ng-bind="node.description.element"></span></span>
                     </td>
                 </tr>
@@ -430,7 +441,7 @@
                     <td class="col-sm-1">
                         <span ng-bind="node.label.element"></span>
                         <span ng-bind="node.label.element1"></span>
-                        
+
                         <span ng-show="node.description">:
                         <span ng-show="node.description.element1" ng-bind="node.description.element1"></span>
                         <span ng-show="node.description.element" ng-bind="node.description.element"></span>
@@ -441,7 +452,7 @@
                     <td class="col-sm-1">
                         <span ng-bind="node.label.element"></span>
                         <span ng-bind="node.label.element2"></span>
-                        
+
                         <span ng-show="node.description">:
                         <span ng-show="node.description.element2" ng-bind="node.description.element2"></span>
                         <span ng-show="node.description.element" ng-bind="node.description.element"></span>
@@ -486,7 +497,7 @@
         <td class="col-xs-1 " ng-show="!node.codeSystem">
             <div align="center"> - </div>
         </td>
-        <td class="col-xs-1 " ng-show="node.codeUsage" >
+        <td class="col-xs-1 " ng-show="node.codeUsage">
             <table class="table-borderless">
                 <tr>
                     <td class="col-md-1" style="background-color:#B5F7EC">
@@ -503,7 +514,7 @@
         <td class="col-xs-1 " ng-show="!node.codeUsage">
             <div align="center"> - </div>
         </td>
-        
+
     </tr>
 </script>
 <!--<script type="text/ng-template " id="expandableRowTemplate.html ">

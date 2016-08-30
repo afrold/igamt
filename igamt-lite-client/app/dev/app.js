@@ -34,7 +34,9 @@ var app = angular
         'blockUI',
         'ds.objectDiff',
         'ngTagsInput',
-        'nsPopover'
+        'nsPopover',
+        'ngMaterial',
+        'pageslide-directive'
     ]);
 
 var

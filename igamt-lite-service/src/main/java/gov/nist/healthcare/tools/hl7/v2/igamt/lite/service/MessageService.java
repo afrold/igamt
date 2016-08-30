@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NamesAndStruct;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 public interface MessageService {
 
@@ -32,5 +36,15 @@ public interface MessageService {
   // Message save(Set<Message> messages);
 
   void save(Set<Message> messages);
+  
+
+List<Message> findByIds(Set<String> ids);
+
+
+int findMaxPosition(Messages msgs);
+
+List<Message> findByNamesScopeAndVersion(String name,String structId, String scope, String hl7Version);
+
+Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version);
 
 }

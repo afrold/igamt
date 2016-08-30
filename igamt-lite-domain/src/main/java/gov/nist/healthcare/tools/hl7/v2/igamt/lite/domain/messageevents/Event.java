@@ -19,19 +19,29 @@ public class Event {
 
   String id;
   String name;
+  String parentStructId;
   final String type = "event";
 
   public Event() {
     super();
   }
 
-  public Event(String id, String event) {
+  public Event(String id, String event,String parentStructId) {
     super();
     this.id = id;
     this.name = event;
+    this.parentStructId=parentStructId;
   }
 
-  public String getId() {
+  public String getParentStructId() {
+	return parentStructId;
+}
+
+public void setParentStructId(String parentStructId) {
+	this.parentStructId = parentStructId;
+}
+
+public String getId() {
     return id;
   }
 

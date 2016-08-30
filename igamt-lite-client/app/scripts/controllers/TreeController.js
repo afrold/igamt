@@ -594,6 +594,7 @@ angular
 
                     ['Add', function($itemScope) {
                         $scope.hl7Versions('ctx');
+                        //$scope.addMessageToIg($rootScope.igdocument.profile.metaData.hl7Version);
                     }],
                     null, ['Export', function($itemScope) {
                         $scope.selectMessages($rootScope.igdocument);
@@ -661,12 +662,30 @@ angular
                 ];
 
                 $scope.addValueSets = [
+
                     ['Add Value Sets',
                         function($itemScope) {
-                            $scope.addTables($rootScope.igdocument);
+                            CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                        }
+                    ], null,
+                    ['Import HL7 Value Sets',
+                        function($itemScope) {
+                            $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary);
+                        }
+                    ], null,
+                    ['Import PHINVADs Value Sets',
+                        function($itemScope) {
+                            $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                        }
+                    ], null,
+                    ['Import CSV Tables',
+                        function($itemScope) {
+                            $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
                         }
                     ]
+
                 ];
+
 
                 $scope.addValueSetsInTableLibrary = [
                     ['Add Value Sets',
