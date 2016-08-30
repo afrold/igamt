@@ -16,7 +16,7 @@ angular.module('igl').controller(
                     $scope.hl7VersionsInstance();
                 });
             }else {
-            	if($rootScope.igdocument != null){
+            	if(clickSource === 'btn'&& $rootScope.igdocument != null){
             		$rootScope.clearChanges();
             		$rootScope.closeIGDocument();
             	}
