@@ -1069,7 +1069,7 @@
                     <tbody>
                         <tr ng-repeat="p in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
                             <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
-                                <i ng-show="p.assertion" class="fa fa-bullseye fa-lg" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="p" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
+                                <i ng-show="p.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="p" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                             </td>
                             <td class="col-md-8">
                                 <input class="form-control" ng-model="p.description" ng-change="setChanged()" type="text" />
@@ -1088,14 +1088,14 @@
                     </tbody>
                 </table>
                 <span class="pull-left">
-                    <span class="header5" ng-show="constraintType === 'Free'">Add new FreeText predicate</span>
+                    <span class="header5" ng-show="constraintType === 'Free'">Add new Free-Text predicate</span>
                     <span class="header5" ng-show="constraintType === 'Plain'">Add new plain predicate</span>
                     <span class="header5" ng-show="constraintType === 'Complex'">Add new complex predicate</span>
                 </span>
                 <span class="pull-right">
         <div class="btn-group btn-group-sm" data-toggle="buttons">
             <label class="btn btn-info btn-xs" ng-click="constraintType = 'Free'" ng-class="{'active':constraintType === 'Free'}">
-                <input type="radio" ng-value="constraintType">Add FreeText predicate
+                <input type="radio" ng-value="constraintType">Add Free-Text predicate
             </label>
             <label class="btn btn-info btn-xs" ng-click="constraintType = 'Plain'" ng-class="{'active':constraintType === 'Plain'}">
                 <input type="radio" ng-value="constraintType">Add plain predicate
@@ -1109,7 +1109,7 @@
                     <thead>
                         <tr class="tbl-header">
                             <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-8">FreeText (Not supported by validation tool)</th>
+                            <th class="col-md-8">Free-Text (Not supported by validation tool)</th>
                             <th class="col-md-1">True Usage</th>
                             <th class="col-md-1">False Usage</th>
                             <th class="col-md-1"></th>
@@ -1375,7 +1375,7 @@
                     <tbody>
                         <tr ng-repeat="c in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
                             <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
-                                <i ng-show="c.assertion" class="fa fa-bullseye fa-lg" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
+                                <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                             </td>
                             <td class="col-md-2">
                                 <input class="form-control form-control-short80" ng-model="c.constraintId" ng-change="setChanged(); targetId = c.constraintId;" type="text" ng-readonly="targetId !== c.constraintId" />
@@ -1395,7 +1395,7 @@
                 </table>
 
                 <span class="pull-left">
-                    <span class="header5" ng-show="constraintType === 'Free'">Add new FreeText conformance statement</span>
+                    <span class="header5" ng-show="constraintType === 'Free'">Add new Free-Text conformance statement</span>
                     <span class="header5" ng-show="constraintType === 'Plain'">Add new plain conformance statement</span>
                     <span class="header5" ng-show="constraintType === 'Complex'">Add new complex conformance statement</span>
                 </span>
@@ -1403,7 +1403,7 @@
                 <span class="pull-right">
                     <div class="btn-group btn-group-sm" data-toggle="buttons">
                         <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Free'; newConstraint.constraintId = calNextCSID();" ng-class="{'active':constraintType === 'Free'}">
-                            <input type="radio" ng-value="constraintType">Add new FreeText Conf.Statement
+                            <input type="radio" ng-value="constraintType">Add new Free-Text Conf.Statement
                         </label>
                         <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID();" ng-class="{'active':constraintType === 'Plain'}">
                             <input type="radio" ng-value="constraintType">Add new plain Conf.Statement
@@ -1419,7 +1419,7 @@
                         <tr class="tbl-header">
                             <th class="col-md-1" style="width: 4.1667%"></th>
                             <th class="col-md-2">ID</th>
-                            <th class="col-md-8">FreeText (Not supported by validation tool)</th>
+                            <th class="col-md-8">Free-Text (Not supported by validation tool)</th>
                             <th class="col-md-1"></th>
                         </tr>
                     </thead>

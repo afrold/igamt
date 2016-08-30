@@ -667,23 +667,25 @@ angular
                 ];
 
                 $scope.addValueSets = [
-
                     ['Add Value Sets',
                         function($itemScope) {
                             CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
                         }
-                    ], null,
+                    ], 
                     ['Import HL7 Value Sets',
+
                         function($itemScope) {
                             $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary);
                         }
-                    ], null,
-                    ['Import PHINVADs Value Sets',
+                    ], 
+
+                    ['Import from PHINVADs',
                         function($itemScope) {
                             $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
                         }
-                    ], null,
-                    ['Import CSV Value Sets',
+                    ],
+
+                    ['Import CSV file',
                         function($itemScope) {
                             $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
                         }
@@ -841,14 +843,12 @@ angular
 
                 $rootScope.editTable = function(table) {
                     if ($rootScope.hasChanges()) {
-
                         $rootScope.openConfirmLeaveDlg().result.then(function() {
                             processEditTable(table);
                         });
                     } else {
                         processEditTable(table);
                     }
-
                 };
 
                 function processEditMessage(message) {
