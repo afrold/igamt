@@ -478,16 +478,9 @@
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn( 'usage')">
             <div>
-
-<<<<<<< HEAD
-                <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 ) ">
-                    <select class="form-control input-sm " name="usage " ng-change="setDirty();setCardinalities(node.obj) " required
-                            ng-model="node.obj.usage " ng-options="usage for usage in config.usages "/>
-=======
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
                     <select class="form-control input-sm" name="usage" ng-change="setDirty()" required
                             ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
->>>>>>> 5d4c01fa760130353e5773730bed6b77974df778
                 </span>
 
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
@@ -782,13 +775,9 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn( 'valueSet')">
             <div>
                 <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null">
-
-<<<<<<< HEAD
                     <a class="point " ng-repeat="table in node.obj.tables " ng-click="redirectVS(table) ">{{getTableLabel(tablesMap[table.id])}}
 </a>
-=======
-                    <a class="point" ng-repeat="table in node.obj.tables" ng-click="redirectVS(table)">{{getTableLabel(table)}}</a>
->>>>>>> 5d4c01fa760130353e5773730bed6b77974df778
+
                 </span>
             </div>
         </td>

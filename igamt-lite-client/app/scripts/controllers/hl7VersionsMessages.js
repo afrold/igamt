@@ -11,15 +11,15 @@ angular.module('igl').controller(
             if ($rootScope.hasChanges()) {
                 $rootScope.openConfirmLeaveDlg().result.then(function() {
                     $rootScope.clearChanges();
+                    $rootScope.closeIGDocument();
+                    $rootScope.hl7Versions = [];
                     $scope.hl7VersionsInstance();
                 });
-            } else if (clickSource === 'btn' && $rootScope.igdocument != null) {
-                return $modal.open({
-                    templateUrl: 'CreateNewIGAlert.html',
-                    size: 'md',
-                    controller: 'CreateNewIGAlertCtrl'
-                });
-            } else {
+            }else {
+            	if($rootScope.igdocument != null){
+            		$rootScope.clearChanges();
+            		$rootScope.closeIGDocument();
+            	}
                 $rootScope.hl7Versions = [];
                 $scope.hl7VersionsInstance();
             }
