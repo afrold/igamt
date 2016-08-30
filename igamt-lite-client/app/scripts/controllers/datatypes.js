@@ -1112,7 +1112,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = $rootScope.calNextCSID();
+    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
     $scope.newComplexConstraint = [];
     $scope.constraints = [];
 
@@ -1139,7 +1139,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
             freeText: null,
             verb: null,
             ignoreCase: false,
-            constraintId: $rootScope.calNextCSID(),
+            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext),
             contraintType: null,
             value: null,
             value2: null,
@@ -1155,7 +1155,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = $rootScope.calNextCSID();
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
     }
 
     $scope.initConformanceStatement();
@@ -1271,6 +1271,17 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
     $scope.changed = false;
     $scope.tempPredicates = [];
     angular.copy($rootScope.datatype.predicates, $scope.tempPredicates);
+
+
+    $scope.countPredicateForTemp = function() {
+        var count = 0;
+
+        for (var i = 0, len1 = $scope.tempPredicates.length; i < len1; i++) {
+            if ($scope.tempPredicates[i].constraintTarget.indexOf($scope.selectedNode.position + '[') === 0)
+                count = count + 1;
+        }
+        return count;
+    };
 
 
     $scope.setChanged = function() {

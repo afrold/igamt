@@ -524,7 +524,7 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn( 'valueSet')">
             <div>-</div>
         </td>
-        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn( 'predicate')">
+        <td class="col-xs-1" ng-style="predWidth" ng-class="{'has-error': node.obj.usage === 'C' && countPredicate(node.path) != 1}" ng-show="viewSettings.isVisibleColumn( 'predicate')">
             <div>
                 <div ng-show="countPredicate(node.path)===0 && node.obj.usage==='C'">
                     <a ng-click="managePredicate(node, message)" class="point">
@@ -1307,7 +1307,8 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-success btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+                                <p ng-show="countPredicateForTemp() != 1" class="warning">Single Predicate allowed!</p>
+                                <button class="btn btn-success btn-sm" ng-show="changed" ng-disabled="countPredicateForTemp() != 1" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
                                 <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
                                 <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
                             </div>
@@ -1368,13 +1369,13 @@
                     </span>
                     <span class="pull-right">
                         <div class="btn-group btn-group-sm" data-toggle="buttons">
-                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Free'; newConstraint.constraintId = calNextCSID();" ng-class="{'active':constraintType === 'Free'}">
+                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Free'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, selectedMessage.structID);" ng-class="{'active':constraintType === 'Free'}">
                                 <input type="radio" ng-value="constraintType">Add new Free-Text Conf.Statement
                             </label>
-                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID();" ng-class="{'active':constraintType === 'Plain'}">
+                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, selectedMessage.structID);" ng-class="{'active':constraintType === 'Plain'}">
                                 <input type="radio" ng-value="constraintType">Add New Plain Conf.Statement
                             </label>
-                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID();" ng-class="{'active':constraintType === 'Complex'}">
+                            <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID(igdocument.metaData.ext, selectedMessage.structID);" ng-class="{'active':constraintType === 'Complex'}">
                                 <input type="radio" ng-value="constraintType">Add New Complex Conf.Statement
                             </label>
                         </div>

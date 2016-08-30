@@ -1030,7 +1030,18 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
 
     $scope.setChanged = function() {
         $scope.changed = true;
-    }
+    };
+
+    $scope.countPredicateForTemp = function() {
+        var count = 0
+        if ($rootScope.message != null) {
+            for (var i = 0, len1 = $scope.tempPredicates.length; i < len1; i++) {
+                if ($scope.tempPredicates[i].constraintTarget.indexOf($scope.selectedNode.path) === 0)
+                    count = count + 1;
+            }
+        }
+        return count;
+    };
 
     $scope.initPredicate = function() {
         $scope.newConstraint = angular.fromJson({
@@ -1287,7 +1298,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = $rootScope.calNextCSID();
+    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $scope.selectedMessage.structID);
     $scope.changed = false;
     $scope.tempComformanceStatements = [];
     angular.copy($scope.selectedMessage.conformanceStatements, $scope.tempComformanceStatements);
@@ -1301,7 +1312,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = $rootScope.calNextCSID();
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $scope.selectedMessage.structID);
     }
 
     $scope.initConformanceStatement = function() {
@@ -1317,7 +1328,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function($sc
             freeText: null,
             verb: null,
             ignoreCase: false,
-            constraintId: $rootScope.calNextCSID(),
+            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $scope.selectedMessage.structID),
             contraintType: null,
             value: null,
             value2: null,
