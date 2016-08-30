@@ -231,6 +231,7 @@ angular.module('igl')
         };
 
         $scope.clone = function(igdocument) {
+            console.log(igdocument);
             $scope.toEditIGDocumentId = igdocument.id;
             $http.post('api/igdocuments/' + igdocument.id + '/clone').then(function(response) {
                 $scope.toEditIGDocumentId = null;
@@ -1455,8 +1456,7 @@ angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalI
             var addedTable = $scope.selectedTables[i];
             $rootScope.tables.splice(0, 0, addedTable);
             $rootScope.tablesMap[addedTable.id] = addedTable;
-            TableService.save(addedTable).then(function(result) {
-            }, function(error) {
+            TableService.save(addedTable).then(function(result) {}, function(error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
@@ -1504,11 +1504,11 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
     $scope.importedTable = null;
     $scope.data = null;
 
-    $scope.uploadCSVFile = function(){
+    $scope.uploadCSVFile = function() {
         $scope.loading = true;
         var f = document.getElementById('file').files[0];
         var reader = new FileReader();
-        reader.onloadend = function(e){
+        reader.onloadend = function(e) {
             $scope.data = Papa.parse(e.target.result);
             var index = 0;
             $scope.importedTable = {};
@@ -1518,7 +1518,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
             angular.forEach($scope.data.data, function(row) {
                 index = index + 1;
 
-                if(index > 1 && index < 11){
+                if (index > 1 && index < 11) {
                     switch (row[0]) {
                         case 'Mapping Identifier':
                             $scope.importedTable.bindingIdentifier = row[1];
@@ -1547,7 +1547,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
                         case 'Comment':
                             $scope.importedTable.comment = row[1];
                     }
-                }else if (index > 13){
+                } else if (index > 13) {
 
                     var code = {};
                     code.value = row[0];
@@ -1693,8 +1693,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
             var addedTable = $scope.selectedTables[i];
             $rootScope.tables.splice(0, 0, addedTable);
             $rootScope.tablesMap[addedTable.id] = addedTable;
-            TableService.save(addedTable).then(function(result) {
-            }, function(error) {
+            TableService.save(addedTable).then(function(result) {}, function(error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
@@ -1742,13 +1741,20 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
         //$scope.hl7Version = hl7Version;
         //$scope.hl7Datatypes = datatypes;
-
+        var secretEmptyKey = '[$empty$]'
 
         $scope.hl7Datatypes = datatypes.filter(function(current) {
             return $rootScope.datatypes.filter(function(current_b) {
                 return current_b.id == current.id;
             }).length == 0
         });
+        $scope.dtComparator = function(datatype, viewValue) {
+            if (datatype) {
+                console.log(datatype.name);
+                console.log(datatype);
+            }
+            return viewValue === secretEmptyKey || (datatype && ('' + datatype.name).toLowerCase().indexOf(('' + viewValue).toLowerCase()) > -1);
+        };
 
 
         $scope.isInDts = function(datatype) {
@@ -1815,14 +1821,20 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
 
 angular.module('igl').controller('AddSegmentDlgCtl',
-    function($scope, $rootScope, $modalInstance, hl7Version, segments, SegmentService, SegmentLibrarySvc, IgDocumentService) {
+    function($scope, $rootScope, $modalInstance, hl7Version, $http, segments, SegmentService, SegmentLibrarySvc, IgDocumentService) {
 
-
+        var secretEmptyKey = '[$empty$]'
         $scope.hl7Segments = segments.filter(function(current) {
             return $rootScope.segments.filter(function(current_b) {
                 return current_b.id == current.id;
             }).length == 0
         });
+        $scope.segComparator = function(seg, viewValue) {
+
+            return viewValue === secretEmptyKey || ('' + seg).toLowerCase().indexOf(('' + viewValue).toLowerCase()) > -1;
+        };
+        console.log("=----");
+        console.log($scope.hl7Segments);
         $scope.isInSegs = function(segment) {
             console.log($scope.hl7Segments.indexOf(segment) === -1);
 

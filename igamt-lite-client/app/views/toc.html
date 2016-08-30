@@ -38,6 +38,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', end
 
 color:white;
 }
+.label-PRL {
+	background: cornflowerblue;
+    font-weight: 400;
+}
 
 
 
@@ -103,7 +107,7 @@ color:white;
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : segment.id===activeModel}" confirm-click ng-click="editSeg(segment);">
 
                                        <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
-                                   'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }">  {{getScopeLabel(segment)}} </span> {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
+                                   'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS','label-PRL':getScopeLabel(segment)==='PRL' }">  {{getScopeLabel(segment)}} </span> {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                                 </div>
                             </li>
                         </ol>
@@ -117,7 +121,7 @@ color:white;
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDataType(data)">
 
                                      <span class="badge " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}" >  {{getScopeLabel(data)}}</span> {{getDatatypeLabel(data)}}-{{data.description}}
+                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}" >  {{getScopeLabel(data)}}</span> {{getDatatypeLabel(data)}}-{{data.description}}
                                     </span>
                                 </div>
                             </li>
@@ -132,7 +136,7 @@ color:white;
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="ValueSetOptions" style="margin-left:30px;">
                                     <span data-nodrag style="font-weight:normal;" ng-class="{selected : table.id===activeModel}" confirm-click ng-click="editTable(table)">
                                      <span class="badge " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
                                     </span>
                                 </div>
                             </li>
