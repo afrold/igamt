@@ -60,22 +60,6 @@ public class DatatypeServiceImpl implements DatatypeService {
     return datatypeRepository.findByIds(ids);
   }
 
-  @Override
-  @Deprecated
-  public List<Datatype> findByLibIds(String dtLibId) {
-    List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId);
-    log.info("DataypeServiceImpl.findAll=" + datatypes.size());
-    return datatypes;
-  }
-
-
-
-  @Override
-  public List<Datatype> findByFullDTsLibIds(String dtLibId) {
-    List<Datatype> datatypes = datatypeRepository.findFullDTsByLibIds(dtLibId);
-    log.info("DataypeServiceImpl.findAll=" + datatypes.size());
-    return datatypes;
-  }
 
   @Override
   public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
@@ -119,5 +103,11 @@ public class DatatypeServiceImpl implements DatatypeService {
     }
     return datatypes;
   }
+
+@Override
+public List<Datatype> findByScope(String scope) {
+	// TODO Auto-generated method stub
+	return datatypeRepository.findByScope(scope);
+}
 
 }

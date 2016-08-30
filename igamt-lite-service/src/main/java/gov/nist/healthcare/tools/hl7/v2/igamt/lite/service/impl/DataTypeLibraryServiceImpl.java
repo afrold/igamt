@@ -139,7 +139,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 
   @Override
   public void delete(String dtLibId) {
-    List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId);
+    List<Datatype> datatypes = findDatatypesById(dtLibId);
     for (Datatype datatype : datatypes) {
       Set<String> libIds = datatype.getLibIds();
       libIds.remove(dtLibId);

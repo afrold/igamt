@@ -232,11 +232,15 @@
 		<xsl:value-of select="@Comment"></xsl:value-of>
 		<br></br>
 		<xsl:if test="count(./Text[@Type='Text1']) &gt; 0">
+			<h4>
+				Pre-definition:
+			</h4>
 			<p>
 				<xsl:value-of disable-output-escaping="yes"
 					select="./Text[@Type='Text1']" />
 			</p>
 		</xsl:if>
+		<h4>Segment Definition</h4>
 		<p>
 			<table width="100%" border="1" cellspacing="0" cellpadding="1">
 				<col style="width:5%"></col>
@@ -325,30 +329,38 @@
 				</xsl:if>
 			</xsl:when>
 		</xsl:choose>
+		<!-- <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text2']" 
+			/> -->
 
-		<xsl:value-of disable-output-escaping="yes"
-			select="./Text[@Type='Text2']" />
-
-		<xsl:for-each select="Field">
-			<xsl:sort select="@Position" data-type="number"></xsl:sort>
-			<xsl:if test="count(Text) &gt; 0">
-				<p>
-					<b>
-						<xsl:value-of select="../@Name" />
-						-
-						<xsl:value-of select="./@Position" />
-						&#160;
-						<xsl:value-of select="./@Name" />
-						(
-						<xsl:value-of select="./@Datatype" />
-						)
-					</b>
-					<xsl:value-of disable-output-escaping="yes"
-						select="./Text[@Type='Text']" />
-				</p>
-			</xsl:if>
-		</xsl:for-each>
-		<br></br>
+		<xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
+			<h4>
+				post-definition:
+			</h4>
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="./Text[@Type='Text2']" />
+			</p>
+		</xsl:if>
+		<xsl:if test="count(./Field/Text[@Type='Text']) &gt; 0">
+			<h4>Fields Definition Texts</h4>
+			<xsl:for-each select="Field">
+				<xsl:sort select="@Position" data-type="number"></xsl:sort>
+				<xsl:if test="count(Text) &gt; 0">
+					<p>
+						<b>
+							<xsl:value-of select="../@Name" />
+							-
+							<xsl:value-of select="./@Position" />
+							:
+							&#160;
+							<xsl:value-of select="./@Name" />
+						</b>
+						<xsl:value-of disable-output-escaping="yes"
+							select="./Text[@Type='Text']" />
+					</p>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:if>
 		<xsl:if test="count(coconstraints/table) &gt; 0">
 			<p>
 				<strong>
@@ -403,6 +415,11 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="SingleValueSetBreak">
+		<br></br>
+		<xsl:value-of select="@Value" />
+	</xsl:template>
+
 	<xsl:template match="Datatype">
 		<br></br>
 		<h3>
@@ -419,11 +436,23 @@
 		</xsl:if>
 		<xsl:value-of select="@Comment"></xsl:value-of>
 		<xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
+			<h4>Usage Note </h4>
 			<p>
 				<xsl:value-of disable-output-escaping="yes"
 					select="Text[@Type='UsageNote']" />
 			</p>
 		</xsl:if>
+
+		<xsl:if test="count(./Text[@Type='Text1']) &gt; 0">
+			<h4>
+				pre-definition:
+			</h4>
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="./Text[@Type='Text1']" />
+			</p>
+		</xsl:if>
+		<h4>Datatype Definition</h4>
 		<p>
 			<table width="100%" border="1" cellspacing="0" cellpadding="0">
 				<col style="width:5%"></col>
@@ -513,9 +542,29 @@
 				</xsl:when>
 			</xsl:choose>
 		</xsl:if>
-
-		<xsl:for-each select="Component">
-			<xsl:sort select="@Position" data-type="number"></xsl:sort>
+		<xsl:if test="count(./Component/Text[@Type='Text']) &gt; 0">
+			<h4>Components Definition Texts</h4>
+			<xsl:for-each select="Component">
+				<xsl:sort select="@Position" data-type="number"></xsl:sort>
+				<xsl:if test="count(./Text[@Type='Text']) &gt; 0">
+					<p>
+						<strong>
+							<xsl:value-of disable-output-escaping="yes" select="../@Name" />
+							-
+							<xsl:value-of disable-output-escaping="yes" select="@Position" />
+							:
+							<xsl:value-of disable-output-escaping="yes" select="@Name" />
+						</strong>
+						<xsl:value-of disable-output-escaping="yes"
+							select="./Text[@Type='Text']" />
+					</p>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:if>
+		<xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
+			<h4>
+				post-definition:
+			</h4>
 				<xsl:if test="count(./Text[@Type='Text']) &gt; 0">
 					<p>
 						<u><xsl:value-of select="./Text[@Type='Name']" />: </u>
@@ -523,7 +572,13 @@
 							select="./Text[@Type='Text']" />
 					</p>
 				</xsl:if>
-		</xsl:for-each>
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="./Text[@Type='Text2']" />
+			</p>
+		</xsl:if>
+
+
 	</xsl:template>
 
 	<xsl:template name="component">
@@ -553,7 +608,7 @@
 				]
 			</td>
 			<td>
-				<xsl:value-of select="@Binding" />
+				<xsl:value-of disable-output-escaping="yes" select="@Binding" />
 			</td>
 			<td>
 				<xsl:value-of select="@Comment" />
@@ -574,6 +629,17 @@
 			-
 			<xsl:value-of select="@Description" />
 		</h3>
+		<xsl:if test="count(./Text[@Type='Text1']) &gt; 0">
+			<h4>
+				pre-definition:
+			</h4>
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="./Text[@Type='Text1']" />
+			</p>
+		</xsl:if>
+
+
 		<xsl:if test="@Stability != ''">
 			<p>
 				<xsl:text>Stability: </xsl:text>
@@ -598,6 +664,7 @@
 				<xsl:value-of select="@Oid"></xsl:value-of>
 			</p>
 		</xsl:if>
+		<h4>Value Set Definition</h4>
 		<table width="100%" border="1" cellspacing="0" cellpadding="0">
 			<col style="width:15%"></col>
 			<col style="width:15%"></col>
@@ -629,6 +696,18 @@
 				</xsl:for-each>
 			</tbody>
 		</table>
+
+
+
+		<xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
+			<h4>
+				post-definition:
+			</h4>
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="./Text[@Type='Text2']" />
+			</p>
+		</xsl:if>
 		<!-- <br></br> -->
 	</xsl:template>
 
@@ -878,7 +957,6 @@
 	<xsl:template name="dispSectContent">
 		<xsl:value-of disable-output-escaping="yes" select="SectionContent" />
 	</xsl:template>
-
 </xsl:stylesheet>
 
 

@@ -24,6 +24,7 @@ angular.module('igl').factory('DatatypeService',
                 return children;
             },
             getDatatypeNodesInLib:function(parent, root) {
+                console.log(root);
                 var children = [];
                 if (parent && parent != null) {
                     if (parent.datatype) {
@@ -39,6 +40,7 @@ angular.module('igl').factory('DatatypeService',
                         children = [];
                     }
                 }
+                console.log(children);
                 return children;
             },
 
@@ -69,7 +71,7 @@ angular.module('igl').factory('DatatypeService',
 
 
             getTemplateINLIB: function(node, root) {
-                if (root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
+                if ($rootScope.readOnly || root != null && root.scope === 'HL7STANDARD' || root.scope === null||root != null && root.status === 'PUBLISHED' ) {
                     return DatatypeService.getReadTemplateINLIB(node, root);
                 } else {
                     //console.log("INTO THE NODES ")
@@ -177,6 +179,21 @@ angular.module('igl').factory('DatatypeService',
                 }
                 return delay.promise;
             },
+
+            getOneDatatype: function(id) {
+                var delay = $q.defer();
+
+                    $http.get('api/datatypes/' + id).then(function(response) {
+                        var datatype = angular.fromJson(response.data);
+                        delay.resolve(datatype);
+                    }, function(error) {
+                        delay.reject(error);
+                    });
+
+                return delay.promise;
+            },
+
+
             get: function(ids) {
                 var delay = $q.defer();
                 $http.post('api/datatypes/findByIds', ids).then(function(response) {
@@ -312,7 +329,21 @@ angular.module('igl').factory('DatatypeService',
                     });
                 }
                 $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
+            },
+            resetLib: function() {
+                if ($rootScope.addedDatatypes != null && $rootScope.addedDatatypes.length > 0) {
+                    _.each($rootScope.addedDatatypes, function(id) {
+                        delete $rootScope.datatypesMap[id];
+                    });
+                }
+                if ($rootScope.addedTables != null && $rootScope.addedTables.length > 0) {
+                    _.each($rootScope.addedTables, function(id) {
+                        delete $rootScope.tablesMap[id];
+                    });
+                }
+                $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
             }
+
         };
         return DatatypeService;
     });

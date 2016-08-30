@@ -45,6 +45,42 @@ angular.module('igl')
 
 
 
+        $scope.openRichTextDlg = function (obj, key, title, disabled) {
+            var original = obj[key];
+            var modalInstance = $rootScope.openRichTextDlg(obj, key, title, disabled);
+            modalInstance.result.then(function () {
+                if(!disabled && original !== obj[key]){
+                    $scope.setDirty();
+                }
+            }, function () {
+                if(!disabled && original !== obj[key]){
+                    $scope.setDirty();
+                }
+            });
+        };
+
+        $scope.openInputTextDlg = function (obj, key, title, disabled) {
+            var original = obj[key];
+            var modalInstance = $rootScope.openInputTextDlg(obj, key, title, disabled);
+            modalInstance.result.then(function () {
+                if(!disabled && original !== obj[key]){
+                    $scope.setDirty();
+                }
+            }, function () {
+                if(!disabled && original !== obj[key]){
+                    $scope.setDirty();
+                }
+            });
+        };
+
+        $scope.clearComments = function (obj, key) {
+            obj[key] = '';
+            $scope.setDirty();
+        };
+
+
+
+
 
 
 

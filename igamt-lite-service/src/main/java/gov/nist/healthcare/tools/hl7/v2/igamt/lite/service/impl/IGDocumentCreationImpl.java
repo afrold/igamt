@@ -286,10 +286,10 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
     SegmentLink sgt = sref.getRef();
     sgtsTarget.addSegment(sgt);
     Segment seg = segmentRepository.findOne(sref.getRef().getId());
-    if (SCOPE.USER == seg.getScope()) {
-      seg.setId(null);
-      seg.getLibIds().remove(sgtsSource.getId());
-    }
+//    if (SCOPE.USER == seg.getScope()) {
+//      seg.setId(null);
+//      seg.getLibIds().remove(sgtsSource.getId());
+//    }
     seg.getLibIds().add(sgtsTarget.getId());
     segmentRepository.save(seg);
     for (Field f : seg.getFields()) {
@@ -320,11 +320,11 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
   private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
     DatatypeLibrary dtsSource = pSource.getDatatypeLibrary();
     DatatypeLibrary dtsTarget = pTarget.getDatatypeLibrary();
-    if (SCOPE.USER == dt.getScope()) {
-      dt.setId(null);
-      dt.getLibIds().remove(dtsSource.getId());
-    }
-
+//    if (SCOPE.HL7STANDARD == dt.getScope()) {
+//      //dt.setId(null);
+//      dt.getLibIds().remove(dtsSource.getId());
+//    }
+    
     dt.getLibIds().add(dtsTarget.getId());
     datatypeRepository.save(dt);
     DatatypeLink link = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());
@@ -346,11 +346,11 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
   private void addTable(Table vsd, Profile pSource, Profile pTarget) {
     TableLibrary vsdSource = pTarget.getTableLibrary();
     TableLibrary vsdTarget = pTarget.getTableLibrary();
-
-    if (SCOPE.USER == vsd.getScope()) {
-      vsd.setId(null);
-      vsd.getLibIds().remove(vsdSource.getId());
-    }
+//
+//    if (SCOPE.USER == vsd.getScope()) {
+//      vsd.setId(null);
+//      vsd.getLibIds().remove(vsdSource.getId());
+//    }
     vsd.getLibIds().add(vsdTarget.getId());
     tableRepository.save(vsd);
     vsdTarget.addTable(vsd);

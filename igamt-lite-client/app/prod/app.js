@@ -32,10 +32,12 @@ var app = angular
         'ngDragDrop',
         'ui.tree',
         'blockUI',
-        'mgcrea.ngStrap.typeahead',
         'ds.objectDiff',
         'ngTagsInput',
-     ]);
+        'nsPopover',
+        'ngMaterial',
+        'pageslide-directive'
+      ]);
 
 var
 //the HTTP headers to be used by all requests
@@ -320,6 +322,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             fileAllowedTypes: ['application/pdf', 'application/msword', 'application/x-pdf', 'text/plain', 'application/xml','text/xml'],
             charCounterCount: false,
             quickInsertTags: 8,
+            heightMin:250,
             immediateAngularModelUpdate:true,
             events: {
                 'froalaEditor.initialized': function () {
@@ -337,7 +340,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
                 }
             },
             key: 'Rg1Wb2KYd1Td1WIh1CVc2F==',
-            imageResize: false,
+            imageResize: true,
             imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageAlt']
         };
         httpHeaders.common['appVersion'] = appInfo.version;

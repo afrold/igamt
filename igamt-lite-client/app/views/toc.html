@@ -45,11 +45,11 @@ color:white;
 <div ng-controller="IGDocumentListCtrl" class="uitree">
     <div ng-controller="HL7VersionsDlgCtrl">
         <div ng-controller="TreeCtrl">
-            <div ui-tree="treeOptions" style="margin-left:8px;">
+            <div ui-tree="treeOptions" style="margin-left:8px; margin-bottom :20px;">
                 <ol ui-tree-nodes="" ng-model="TreeIgs">
                     <li ng-repeat="ig in TreeIgs" ui-tree-node>
                         <div ui-tree-handle class="treeRoot">
-                            <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">{{igdocument.metaData.title}} 
+                            <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">{{igdocument.metaData.title}} <span  class= "badge"> V{{igdocument.profile.metaData.hl7Version}}  </span>
                         </span>
                         </div>
                         <script type="text/ng-template" id="nodes_renderer.html">
@@ -78,7 +78,7 @@ color:white;
                                 <span style="font-size:14px;" context-menu="MessagesRootOption" ng-class="{selected :activeModel ==='Conformance Profiles'}" ng-click="editRoutSection('Conformance Profiles');" confirm-click data-nodrag>
                   {{ig.childSections.length+1}}.1.Conformance Profiles </span>
                             </div>
-                            <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node ng-if="!collapsemessage" data-type="message">
+                            <li ng-repeat="msg in ig.profile.messages.children track by $index " ui-tree-node ng-if="!collapsemessage" data-type="message">
                                 <div ui-tree-handle context-menu="MessagesOption" style="margin-left:30px;">
                                     <span class="glyphicon glyphicon-move"></span> <span data-nodrag style="font-weight: normal;" confirm-click ng-class="{selected : msg.id===activeModel}" ng-click="editMessage(msg)">
                   {{updateMessagePositions(ig.profile.messages.children)}}
@@ -87,11 +87,38 @@ color:white;
                                 </div>
                             </li>
                         </ol>
-                        <script type="text/ng-template" id="segmentPopover">
-                            <span>
-    {{segment.scope}}
-  </span>
-                        </script>
+
+
+<!--                     <ol ui-tree-nodes="" ng-model="pcs" ng-show="!profilecollapsed" data-type="pcs">
+                            <div ui-tree-handle class="messageContent" style="margin-left:15px;">
+                                <i data-nodrag ng-click="switcherpcs()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsePcs, 'fa-caret-right': collapsePcs}"></i>
+                                <span data-nodrag>
+                {{ig.childSections.length+1}}.2.Profile Components:</span>
+                            </div>
+                            <li ng-repeat="pc in pcs" ui-tree-node ng-if="!collapsePcs" data-type="pc">
+                                <div ui-tree-handle data-nodrag confirm-click style="margin-left:30px;">
+                                    <span data-nodrag style="font-weight: normal;" ng-class="{selected : pc===activeModel}" confirm-click ng-click="pc===activeModel;">
+
+                                       <span class="badge">  {{PC}} </span>{{pc.name}}</span>
+                                </div>
+                            </li>
+                        </ol> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         <ol ui-tree-nodes="" ng-model="segments" ng-show="!profilecollapsed" data-type="segments">
                             <div ui-tree-handle class="messageContent" style="margin-left:15px;" context-menu="addSegment">
                                 <i data-nodrag ng-click="switcherseg()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsesegment, 'fa-caret-right': collapsesegment}"></i>
@@ -128,7 +155,7 @@ color:white;
                                 <span ng-class="{selected :activeModel ==='Value Sets'}" confirm-click data-nodrag ng-click="editRoutSection('Value Sets')">{{ig.childSections.length+1}}.4.Value Sets
                                     </span>
                             </div>
-                            <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node ng-if="!collapsevalueSet" data-type="table">
+                            <li ng-repeat="table in tables|orderBy :'bindingIdentifier'" ui-tree-node ng-if="!collapsevalueSet" data-type="table">
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="ValueSetOptions" style="margin-left:30px;">
                                     <span data-nodrag style="font-weight:normal;" ng-class="{selected : table.id===activeModel}" confirm-click ng-click="editTable(table)">
                                      <span class="badge " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',

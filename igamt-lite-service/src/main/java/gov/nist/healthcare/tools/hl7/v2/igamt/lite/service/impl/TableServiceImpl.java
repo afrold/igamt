@@ -11,11 +11,6 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
 /**
  * @author gcr1
@@ -39,13 +39,6 @@ public class TableServiceImpl implements TableService {
   @Override
   public List<Table> findAll() {
     return tableRepository.findAll();
-  }
-
-  @Override
-  public List<Table> findByLibIds(String tabLibId) {
-    List<Table> tables = tableRepository.findByLibIds(tabLibId);
-    log.info("TableServiceImpl.findAll=" + tables.size());
-    return tables;
   }
 
   @Override

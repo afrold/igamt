@@ -11,15 +11,11 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 
 public interface DatatypeService {
 
@@ -28,10 +24,6 @@ public interface DatatypeService {
   Datatype save(Datatype datatype);
 
   List<Datatype> findAll();
-
-  List<Datatype> findByLibIds(String dtLibId);
-
-  List<Datatype> findByFullDTsLibIds(String dtLibId);
 
   List<Datatype> findByIds(Set<String> ids);
 
@@ -44,5 +36,8 @@ public interface DatatypeService {
   void save(List<Datatype> datatypes);
 
   Set<Datatype> collectDatatypes(Datatype datatype);
+
+
+  List<Datatype> findByScope(String scope);
 
 }

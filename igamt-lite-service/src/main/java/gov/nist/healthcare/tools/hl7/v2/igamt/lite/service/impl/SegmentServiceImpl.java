@@ -41,15 +41,6 @@ public class SegmentServiceImpl implements SegmentService {
     return segmentRepository.findAll();
   }
 
-  @Deprecated
-  @Override
-  public List<Segment> findByLibIds(String segLibId) {
-    List<Segment> datatypes = segmentRepository.findByLibIds(segLibId);
-    log.info("DataypeServiceImpl.findAll=" + datatypes.size());
-    return datatypes;
-  }
-
-
 
   @Override
   public Segment findById(String id) {

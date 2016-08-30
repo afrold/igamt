@@ -41,12 +41,12 @@
 <div ng-controller="HL7VersionsDlgCtrl">
     <div ng-controller="TreeCtrl">
 
-      <div ui-tree="treeOptions" style= "margin-left:8px;">
+      <div ui-tree="treeOptions" style= "margin-left:8px;margin-bottom :20px;">
             <ol ui-tree-nodes="" ng-model="TreeIgs">
            
                 <li ng-repeat="ig in TreeIgs" ui-tree-node >
                     <div ui-tree-handle class="treeRoot">
-                        <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">{{igdocument.metaData.title}} 
+                        <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">{{igdocument.metaData.title}} <span  class= "badge"> V{{igdocument.profile.metaData.hl7Version}}  </span>
                         </span>
 
                     </div>
@@ -98,7 +98,7 @@
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
 
-                    <div ng-if="!collapsemessage" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="badge label-default" ng-click="selectedMessage=null; resetMessages(); selectedSegment=null;resetSegments()" ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
+                    <div ng-if="!collapsemessage && selectedMessage" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="badge label-default" ng-click="selectedMessage=null; resetMessages(); selectedSegment=null;resetSegments()" ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
 
                         <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node
 
@@ -128,11 +128,7 @@
                     <!--   <div ng-if="!collapsemessage" data-nodrag ui-tree-handle style ="margin-left:30px;"> <label ng-click="selectedMessage=null; resetMessages()" ng-if="!collapsesegment" >clear filter</label></div> -->
                     
 <!--                      <input type="radio" name="messagesRadio" title="filter by this conformance profile" ng-model="msg.checked" ng-click="processMessageTree(selectedMessage, null)"/> -->
-<script type="text/ng-template" id="segmentPopover">
-  <span>
-    {{segment.scope}}
-  </span>
-</script>                                           
+                                           
 
                     <ol ui-tree-nodes="" ng-model="filteredSegmentsList"
                         ng-show="!profilecollapsed" data-type="segments">
@@ -146,7 +142,7 @@
 
                 {{ig.childSections.length+1}}.2.Segments and field descriptions:{{filteredSegmentsList.length}}/{{segments.length}}</span>
                         </div>
-                        <div ng-if="!collapsesegment" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="badge label-default" ng-click="selectedSegment=null ;resetSegments() " ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
+                        <div ng-if="!collapsesegment &&selectedSegment" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="badge label-default" ng-click="selectedSegment=null ;resetSegments() " ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
                         <li ng-repeat="segment in filteredSegmentsList"
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle  data-nodrag 
@@ -169,12 +165,7 @@
 <!-- <input type="checkbox" ng-model="segment.checked" ng-click="uncheckAndDisableOthers(segment)" ng-disabled="segment.anotherIsChecked"/> -->
 
   <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
-  'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }"  ns-popover ns-popover-template="segmentPopover"
-  ns-popover-trigger="mouseenter"
-  ns-popover-placement="bottom"
-  ns-popover-theme="ns-popover-custom-theme"
-  ns-popover-timeout="0"
-  >  {{getScopeLabel(segment)}}	</span>
+  'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }" >  {{getScopeLabel(segment)}}	</span>
                                         {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                             </div>
                         </li>

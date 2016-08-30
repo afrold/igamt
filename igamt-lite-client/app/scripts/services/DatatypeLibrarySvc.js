@@ -45,6 +45,7 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
                 return angular.fromJson(response.data);
             });
     };
+   
 
     svc.getDatatypesByLibrary = function (dtLibId) {
         return $http.get(

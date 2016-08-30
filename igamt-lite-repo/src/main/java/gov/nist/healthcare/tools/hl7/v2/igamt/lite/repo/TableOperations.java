@@ -11,19 +11,17 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-
 import java.util.List;
 import java.util.Set;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 /**
  * @author gcr1
  *
  */
 public interface TableOperations {
-
-  List<Table> findByLibIds(String tabLibId);
 
   List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 

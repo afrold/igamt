@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.DataContext;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -47,7 +48,7 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
   
   private CoConstraints coConstraints = new CoConstraints();
 
-
+ 
   public String getId() {
     return id;
   }
@@ -238,4 +239,6 @@ public CoConstraints getCoConstraints() {
 public void setCoConstraints(CoConstraints coConstraints) {
 	this.coConstraints = coConstraints;
 }
+ 
+
 }

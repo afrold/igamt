@@ -1,83 +1,65 @@
 <style id="antiClickjack">
-body {
-    display: none !important;
-}
+    body {
+        display: none !important;
+    }
 </style>
 <script type="text/javascript">
-if (self === top) {
-    var antiClickjack = document.getElementById("antiClickjack");
-    antiClickjack.parentNode.removeChild(antiClickjack);
-} else {
-    top.location = self.location;
-}
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
 </script>
-<!-- <!-- Fixed navbar -->
-<div class="navbar navbar-default navbar-static-top" role="navigation">
-    <div class="brand" id="appheader">
-        <a style="display: inline-block; text-shadow:none" href="#">
-            <div id="apptitle">
-                <div><span msg key="app.title"></span><span style='color:red; font-size:12px'> <span style='color:red; font-size:12px'> {{appInfo.version}}</span></span>
-                </div>
-            </div>
-            <div id="appsubtitle">
-                <div msg key="app.subtitle"></div>
-            </div>
-        </a>
-        <!--<div id="userInfo" ng-show="isAuthenticated()">-->
-        <!--<div>-->
-        <!--<span>Welcome, </span>-->
-        <!--<span class="userInfoValue" ng-bind="getFullName()"></span>-->
-        <!--</div>-->
-        <!--&lt;!&ndash;<div>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span>Role: </span>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span class="userInfoValue" ng-bind="getRoleAsString()"></span>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--</div>-->
-    </div>
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <!--<li ng-class="{'active':isActive('/home')}"><a href="#/home"><i class="glyphicon glyphicon-home"></i>Home</a></li>-->
-            <li ng-class="activeWhen(path()=='/home')" class="nav-header">
-                <a class="point" href="#/home"><i class="fa fa-home"></i>&nbsp;<span msg key="navbar.home"></span></a>
-            </li>
-            <li class="nav-header" ng-class="activeWhen(path()=='/ig')"><a class="point" href="#/ig"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.igs"></span></a></li>
-            <li class="nav-header" ng-show="isAdmin()" ng-class="activeWhen(path()=='/datatypeLibrary')"><a class="point" href="#/datatypeLibrary"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.datatypeLibrary"></span></a></li>
-            <li class="nav-header" ng-class="activeWhen(path()=='/compare')"><a class="point" href="#/compare"><i class="fa fa-cogs"></i>&nbsp;<span msg class="msg" key="navbar.compare"></span></a></li>
-            <li class="nav-header" ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
-            <li class="nav-header" ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
 
-         </ul>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">-->
+            <!--<span class="sr-only">Toggle navigation</span>-->
+            <!--<span class="icon-bar"></span>-->
+            <!--<span class="icon-bar"></span>-->
+            <!--<span class="icon-bar"></span>-->
+            <!--</button>-->
 
-        <ul class="nav navbar-nav navbar-right" style="margin-right: 15px">
-            <li class="dropdown clear-fix" ng-show="isAuthenticated()" ng-class="isActive('/useraccount') || isActive('/transport-settings')">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i
-                        class="fa fa-user"></i>&nbsp;Hello, {{getFullName()}} <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li ng-class="isActive('/useraccount')"><a class="point" href="#/useraccount"><i
-                            class="fa fa-user"></i>&nbsp;My Profile</a></li>
-                    <li class="">
-                        <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span class="msg">Logout</span></a>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown clear-fix" ng-show="!isAuthenticated()" ng-class="isActive('/useraccount') || isActive('/registration') || isActive('/forgotten')">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i
-                        class="fa fa-user"></i>&nbsp;Hello Guest <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li class="">
-                        <a class="point" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp; <span class="msg">Login</span></a> </li>
-                    <li ng-class="isActive('/registration')">
-                        <a href="#/registration">
-                            <i class="fa fa-user-plus"></i>&nbsp;<span msg key="navbar.registration"></span>
-                        </a>
-                    </li>
-                    <li ng-class="isActive('/forgotten')">
-                        <a href="#/forgotten">
-                            <i class="fa fa-repeat"></i>&nbsp;<span msg key="navbar.forgotten"></span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+            <span class="navbar-brand" >
+                <button type="button" ng-click="toggleNavigation()"  class="btn btn-lg btn-default btn-nav-bars"  ps-push='true' ps-open="checkedNavigation" ps-container='appcontainer'><i class="fa fa-bars"></i>
+                </button>
+                <span href="#" id="apptitle">
+                    <span msg key="app.title"></span>
+                    <span style='color:green; font-size:12px'> {{appInfo.version}}</span>
+                </span>
+            </span>
 </div>
+
+        <div class="navbar-collapse" id="bs-example-navbar-collapse-1">
+            <p class="navbar-text navbar-right">
+                          <span ng-if="activeWhen(path()=='/home')">
+                             <span msg key="navbar.home"></span>
+                         </span>
+                <span ng-if="activeWhen(path()=='/ig')">
+                    <span msg key="navbar.igs"></span>
+                </span>
+                <span ng-if="activeWhen(path()=='/compare')">
+                    <span msg key="navbar.compare"></span>
+                </span>
+                <span ng-if="activeWhen(path()=='/doc')">
+                    <span msg key="navbar.documentation"></span>
+                </span>
+                <span ng-if="activeWhen(path()=='/about')">
+                    <span msg key="navbar.about"></span>
+                </span>
+                <span ng-if="activeWhen(path()=='/datatypeLibrary')">
+                    <span msg key="navbar.datatypeLibrary"></span>
+                </span>
+
+</p>
+
+              </div>
+
+        </div>
+
+
+    </div>
+</nav>

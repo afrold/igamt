@@ -35,12 +35,12 @@
 <div ng-controller="IGDocumentListCtrl" class="uitree">
 <div ng-controller="HL7VersionsDlgCtrl">
     <div ng-controller="TreeCtrl">
-        <div ui-tree="treeOptions" style= "margin-left:8px;" data-nodrag>
+        <div ui-tree="treeOptions" style= "margin-left:8px; margin-bottom :20px;" data-nodrag>
             <ol ui-tree-nodes="" ng-model="TreeIgs">
            
                 <li ng-repeat="ig in TreeIgs" ui-tree-node>
                     <div ui-tree-handle class="treeRoot">
-                        <span data-nodrag ng-click="editIg(ig)" >{{igdocument.metaData.title}}
+                        <span data-nodrag ng-click="editIg(ig)" >{{igdocument.metaData.title}} <span  class= "badge"> V{{igdocument.profile.metaData.hl7Version}}  </span>
                         </span>
 
                     </div>
@@ -138,12 +138,7 @@
                                       ng-click="editSeg(segment);">
 
                                        <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
-                                   'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' ,'unused' : showUnused(segment)}"  ns-popover ns-popover-template="segmentPopover"
-  ns-popover-trigger="mouseenter"
-  ns-popover-placement="bottom"
-  ns-popover-theme="ns-popover-custom-theme"
-  ns-popover-timeout="0"
-  >  {{getScopeLabel(segment)}}	</span>
+                                   'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' ,'unused' : showUnused(segment)}">  {{getScopeLabel(segment)}}	</span>
                                         {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                             </div>
                         </li>

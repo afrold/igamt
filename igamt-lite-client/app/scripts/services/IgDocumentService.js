@@ -48,6 +48,33 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
             });
             return delay.promise;
         },
+        addMessages: function(igId, childrenIds) {
+            var delay = $q.defer();
+            $http.post('api/igdocuments/' + igId + '/addMessages', childrenIds).then(function(response) {
+                //var link = angular.fromJson(response.data);
+                delay.resolve(true);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+        findAndAddMessages: function(igId, event) {
+            var delay = $q.defer();
+            // var namesAndscopeAndVersion = {
+            //     "name": event.name,
+            //     "parentStructId": event.parentStructId,
+            //     "scope": event.scope,
+            //     "hl7Version": event.hl7Version
+            // };
+            $http.post('api/igdocuments/' + igId + '/findAndAddMessages', angular.toJson(event)).then(function(response) {
+                var msgs = angular.fromJson(response.data);
+                delay.resolve(msgs);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+
         deleteMessage: function(igId, messageId) {
             var delay = $q.defer();
             $http.post('api/igdocuments/' + igId + '/deleteMessage/' + messageId).then(function(response) {

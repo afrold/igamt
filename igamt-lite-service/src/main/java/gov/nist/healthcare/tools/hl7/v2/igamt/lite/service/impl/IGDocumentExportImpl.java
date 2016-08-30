@@ -1980,7 +1980,9 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", segmentInfo);
 
       // Add segment details
-      addRichTextToDocx(wordMLPackage, s.getText1());
+      
+//      wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "pre-definition");
+//      addRichTextToDocx(wordMLPackage, s.getText1());
 
       List<String> header =
           Arrays.asList("Seq", "Element Name", "DT", "Usage", "Card.", "Length", "Value Set",
@@ -1991,8 +1993,9 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       wordMLPackage.getMainDocumentPart().addObject(
           IGDocumentExportImpl.createTableDocxWithConstraints(header, widths, rows, wordMLPackage,
               factory));
-
-      addRichTextToDocx(wordMLPackage, s.getText2());
+//      wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "post-definition");
+//
+//      addRichTextToDocx(wordMLPackage, s.getText2());
 
       // Add field texts
       List<Field> fieldsList = s.getFields();

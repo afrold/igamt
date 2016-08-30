@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.DataContext;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 
 import java.io.Serializable;
@@ -39,6 +40,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 
   private String name;
 
+ 
   private String description;
   private String version;
   private String oid;
@@ -58,8 +60,13 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   protected String date;
 
   protected STATUS status;
+  
+  protected String comment = "";
 
-
+  
+  protected String defPreText= "";
+  
+  protected String defPostText = "";
 
   public Table() {
     super();
@@ -214,6 +221,24 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     return null;
   }
 
+  
+  
+  public String getDefPreText() {
+    return defPreText;
+  }
+
+  public void setDefPreText(String defPreText) {
+    this.defPreText = defPreText;
+  }
+
+  public String getDefPostText() {
+    return defPostText;
+  }
+
+  public void setDefPostText(String defPostText) {
+    this.defPostText = defPostText;
+  }
+
   @Override
   public String toString() {
     return "Table [id=" + id + ", bindingIdentifier=" + bindingIdentifier + ", name=" + name
@@ -255,7 +280,8 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     clonedTable.setType(type);
     clonedTable.setGroup(group);
     clonedTable.setOrder(order);
-
+    clonedTable.setDefPreText(defPreText);
+    clonedTable.setDefPostText(defPostText);
     return clonedTable;
   }
 
@@ -300,5 +326,14 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     this.status = status;
   }
 
+public String getComment() {
+	return comment;
+}
 
+public void setComment(String comment) {
+	this.comment = comment;
+}
+ 
+
+  
 }
