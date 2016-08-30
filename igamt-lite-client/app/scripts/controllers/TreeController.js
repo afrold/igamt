@@ -655,22 +655,22 @@ angular
                 ];
 
                 $scope.addValueSets = [
-                    ['Add New Table',
+                    ['Add New Value Set',
                         function($itemScope) {
                             CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
                         }
                     ], null,
-                    ['Import HL7 Tables',
+                    ['Import from HL7',
                         function($itemScope) {
                             $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary);
                         }
                     ], null,
-                    ['Import PHINVADs Tables',
+                    ['Import from PHINVADs',
                         function($itemScope) {
                             $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
                         }
                     ], null,
-                    ['Import CSV Tables',
+                    ['Import CSV file',
                         function($itemScope) {
                             $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
                         }
