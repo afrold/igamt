@@ -592,8 +592,8 @@
                                 <input type="text" class="form-control input-lg" ng-model="newDatatype" data-limit="15"
                                        data-animation="am-flip-x"
                                        data-auto-select="true"
-                                       bs-options="datatype as datatype.name for datatype in hl7Datatypes"
-                                       placeholder="Search By Name" bs-typeahead>
+                                       typeahead="datatype as datatype.name for datatype in hl7Datatypes|filter:$viewValue"
+                                       placeholder="Search By Name" >
                             </div>
                         </div>
                     </div>
@@ -615,8 +615,10 @@
             <div class="modal-header">
                 <h3 class="modal-title">Import Segment</h3>
             </div>
+            
             <form name="addSeg" id="addSeg">
                 <div class="modal-body">
+                    
                     <div class="container" style="margin-bottom: 20px;margin-top: 20px">
                         <div class="row flavor-seach-box">
                             <!--<p>HL7 Version:{{hl7Version}}</p>-->
@@ -625,8 +627,8 @@
                                 <input type="text" class="form-control input-lg" ng-model="newSegment" data-limit="15"
                                        data-animation="am-flip-x"
                                        data-auto-select="true"
-                                       bs-options="segment as segment.name for segment in hl7Segments"
-                                       placeholder="Search By Name" bs-typeahead>
+                                       typeahead="segment as segment.name for segment in hl7Segments|filter:$viewValue"
+                                       placeholder="Search By Name" >
                             </div>
                         </div>
                     </div>

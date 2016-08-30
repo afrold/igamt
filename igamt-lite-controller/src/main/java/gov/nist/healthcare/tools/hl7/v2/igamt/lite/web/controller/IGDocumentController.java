@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -18,7 +16,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +50,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NamesAndStruct;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PositionComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
@@ -297,8 +293,9 @@ public class IGDocumentController extends CommonController {
           String oldDatatypeId = null;
           Datatype d = datatypes.get(i);
           DatatypeLink dl = datatypeLibrary.findOne(d.getId()).clone();
-          if (d.getScope().equals(SCOPE.USER)) {
+          if (d.getScope().equals(SCOPE.USER)  || d.getScope().equals(SCOPE.PRELOADED)) {
             oldDatatypeId = d.getId();
+            d.setScope(SCOPE.USER);
             d.setId(null);
             d.setLibId(new HashSet<String>());
           }
@@ -319,11 +316,12 @@ public class IGDocumentController extends CommonController {
           String oldSegmentId = null;
           Segment s = segments.get(i);
           SegmentLink sl = segmentLibrary.findOne(s.getId());
-          if (s.getScope().equals(SCOPE.USER)) {
+          if (s.getScope().equals(SCOPE.USER) || s.getScope().equals(SCOPE.PRELOADED)) {
             oldSegmentId = s.getId();
+            s.setScope(SCOPE.USER);
             s.setId(null);
             s.setLibId(new HashSet<String>());
-          }
+          } 
           s.getLibIds().add(clonedSegmentLibrary.getId());
           segmentService.save(s);
           sl.setId(s.getId());
@@ -341,8 +339,9 @@ public class IGDocumentController extends CommonController {
           String oldTableId = null;
           Table t = tables.get(i);
           TableLink tl = tableLibrary.findOneTableById(t.getId());
-          if (t.getScope().equals(SCOPE.USER)) {
+          if (t.getScope().equals(SCOPE.USER)  || t.getScope().equals(SCOPE.PRELOADED)) {
             oldTableId = t.getId();
+            t.setScope(SCOPE.USER);
             t.setId(null);
             t.setLibIds(new HashSet<String>());
           }

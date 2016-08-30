@@ -597,7 +597,7 @@ angular
 
                 $scope.MessagesRootOption = [
 
-                    ['Add', function($itemScope) {
+                    ['Import Message', function($itemScope) {
                         $scope.hl7Versions('ctx');
                         //$scope.addMessageToIg($rootScope.igdocument.profile.metaData.hl7Version);
                     }],
@@ -607,7 +607,7 @@ angular
                 ];
 
                 $scope.ValueSetRootOptions = [
-                    ['Add Value Sets', function($itemScope) {
+                    ['Import Value Sets', function($itemScope) {
                         $scope.addTable($rootScope.igdocument);
                     }]
                 ];
@@ -631,7 +631,7 @@ angular
                 ];
 
                 $scope.addSegment = [
-                    ['Add Segment',
+                    ['Import Segment',
                         function($itemScope) {
                             $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);
                         }
@@ -639,7 +639,7 @@ angular
                 ];
 
                 $scope.addDatatype = [
-                    ['Add Datatype',
+                    ['Import Datatype',
                         function($itemScope) {
                             $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
                         }
@@ -647,7 +647,7 @@ angular
                 ];
 
                 $scope.DataTypeLibraryOptions = [
-                    ['Add Datatypes',
+                    ['Import Datatypes',
                         function($itemScope) {
                             $scope.addDatatypesFromTree();
                             //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
@@ -658,7 +658,8 @@ angular
 
 
                 $scope.ValueSetAddOptionsINLIB = [
-                    ['Add Value Sets ',
+                    ['Import Value Sets ',
+
                         function($itemScope) {
                             //$scope.addDatatypesFromTree();
                             //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
@@ -667,7 +668,9 @@ angular
                 ];
 
                 $scope.addValueSets = [
-                    ['Add Value Sets',
+
+
+                    ['Import New Value Set',
                         function($itemScope) {
                             CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
                         }
@@ -695,7 +698,7 @@ angular
 
 
                 $scope.addValueSetsInTableLibrary = [
-                    ['Add Value Sets',
+                    ['Import Value Sets',
                         function($itemScope) {
                             $scope.addTablesInLibrary();
                         }
@@ -1030,6 +1033,8 @@ angular
 
                     } else if (leaf.scope === 'MASTER') {
                         return 'MAS';
+                    } else if (leaf.scope === 'PRELOADED') {
+                        return 'PRL';
                     } else {
                         return "";
 
