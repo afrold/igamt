@@ -147,13 +147,13 @@
 </script>
 <script type="text/ng-template" id="MessageEventsNode.html">
     <tr tt-node is-branch="node.type === 'message'">
-        <td class="" style="width:300px">
+        <td class="" style="width:300px;color:black">
            
             <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool"
                    ng-change="trackSelections(bool, node)"></input><span ng-bind="::node.name"
                                                                          style="margin-left : 7px;"></span>
         </td>
-        <td class="" style="width:585px" ng-bind="::node.description"></td>
+        <td class="" style="width:585px;color:black"" ng-bind="::node.description"></td>
         
     </tr>
 

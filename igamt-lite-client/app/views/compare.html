@@ -8,7 +8,7 @@
                         <h3 class="panel-title">
                             <div style="padding-left:40%">
                                 <div class="input-group ">
-                                    <span class="input-group-addon" id="basic-addon1">Delta Settings</span>
+                                    <span class="input-group-addon" id="basic-addon1" style="color:black;">Delta Settings</span>
                                     <select ng-model="toCmp" class="form-control " ng-change="setCmpType(toCmp)" style="width:150px;">
                                         <option value="" disabled selected>Select Delta Type</option>
                                         <option ng-repeat="cmpType in toCompare " value='{{cmpType.name}}'> {{cmpType.alias}}</option>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="col-md-8 ">
-                            <div class="row" align="right">
+                            <div class="row" align="right" style="margin-bottom:20px">
                                 <div class="col-md-1">
                                     <button ng-click="clearAll()" class="btn btn-raised btn-primary btn-xs"><i class="fa fa-times"></i> Clear All</button>
                                 </div>
@@ -33,7 +33,7 @@
                                     <button ng-click="clearIG()" class="btn btn-raised btn-default btn-xs "><i class="fa fa-times"></i> Clear IG Document</button>
                                 </div>
                             </div>
-                            <div class="row" align="center">
+                            <div class="row" align="center" style="margin-bottom:20px">
                                 <div class="col-md-1 "><span class="label " style="background-color:#B5F7EC;color:black;">1</span></div>
                                 <div class="input-group col-md-3">
                                     <span class="input-group-addon" id="basic-addon1">Version</span>
@@ -99,12 +99,12 @@
                             </div>-->
                         </div>
                         <div class="col-md-4">
-                            <div class="row" align="right">
-                                <div class="col-md-1">
+                            <div class="row" style="margin-bottom:20px">
+                                <div class="col-md-1" align="right">
                                     <button ng-click="clearMessage()" class="btn btn-raised btn-default btn-xs "><i class="fa fa-times"></i> Clear {{toCmp}}</button>
                                 </div>
                             </div>
-                            <div class="row" align="center">
+                            <div class="row" align="center" style="margin-bottom:20px">
                                 <div class="input-group col-md-9" ng-show="cmpMsg">
                                     <span class="input-group-addon" id="basic-addon1">Message</span>
                                     <select ng-model="msg1" class="form-control" ng-change="setMsg1(msg1)" ng-disabled="!ig1">
@@ -130,7 +130,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row" align="center">
+                            <div class="row" align="center" style="margin-bottom:20px">
                                 <div class="input-group col-md-9" ng-show="cmpMsg">
                                     <span class="input-group-addon" id="basic-addon1">Message</span>
                                     <select ng-model="msg2" class="form-control " ng-change="setMsg2(msg2)" ng-disabled="!ig2">
