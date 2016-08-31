@@ -562,3 +562,7 @@ li.active > a{
     background-color: white;
     color:black;
 }
+
+.form-group .checkbox label, .form-group .radio label, .form-group label {
+     color: black;
+ }
