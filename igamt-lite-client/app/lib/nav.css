@@ -144,5 +144,6 @@
 }
 
 .nav-tabs > li {
-     margin-bottom: 0px;
+    margin-bottom: 0px;
+    height: 31px;
 }
