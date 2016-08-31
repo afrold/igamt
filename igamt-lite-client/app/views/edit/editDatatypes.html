@@ -678,7 +678,7 @@
             <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)" ng-controller="DatatypeRowCtrl">
                 <ng-form name="{{formName}}" class="form-inline">
                     <select class="form-control input-sm" name="usage" id="usage"
-                                ng-change="setUsage(node)"
+                                ng-change="setUsage(node); openPredicateDialog(node);"
                                 ng-class="{ 'igl-has-error has-feedback' : {{formName}}.usage.$invalid}"
                                 required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
                 </ng-form>

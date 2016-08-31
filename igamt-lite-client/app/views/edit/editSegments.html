@@ -760,7 +760,7 @@
             <div class="form-inline ">
                 <span ng-show="node.usage !=='C' || (node.usage==='C' && countPredicate(node.position)===0 ) ">
                     <select class="form-control input-sm " name="usage "
-                            ng-change="setUsage(node);setCardinalities(node) "
+                            ng-change="setUsage(node);setCardinalities(node);openPredicateDialog(node);"
                             required ng-model="node.usage " ng-options="usage for usage in config.usages "/>
                 </span>
                 <div ng-show="node.usage==='C' && countPredicate(node.position) !==0">

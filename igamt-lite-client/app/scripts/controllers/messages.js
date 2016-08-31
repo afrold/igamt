@@ -102,8 +102,9 @@ angular.module('igl')
             });
         };
 
-
-
+        $scope.openPredicateDialog =function (node){
+            if(node.obj.usage == 'C') $scope.managePredicate(node, $rootScope.message);
+        };
 
         $scope.expanded = true;
         $scope.expandAll = function() {

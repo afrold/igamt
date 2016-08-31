@@ -47,6 +47,10 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
     };
 
+    $scope.openPredicateDialog =function (node){
+        if(node.usage == 'C') $scope.managePredicate(node);
+    };
+
     $scope.deleteField = function(fieldToDelete, segment) {
         var modalInstance = $modal.open({
             templateUrl: 'DeleteField.html',

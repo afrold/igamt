@@ -67,6 +67,10 @@ angular.module('igl')
             });
         };
 
+        $scope.openPredicateDialog =function (node){
+          if(node.usage == 'C') $scope.managePredicate(node);
+        };
+
 
         $scope.OtoX = function(message) {
             console.log(message);
