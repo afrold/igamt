@@ -16,12 +16,18 @@ if (self === top) {
         <form id="selectIgTypeForm" class="form-horizontal">
             <div class="form-group">
                 <div style="margin-left:15px" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                    <label class="btn  btn-primary btn-sm" ng-click="selectIGDocumentType(tt.type)" ng-class="{'active':igDocumentConfig.selectedType === tt.type}" ng-repeat="tt in igDocumentTypes | uppercase">
-                        <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.igDocumentConfig.selectedType"><i class="fa fa-th-list"></i> {{tt.name}}
-                    </label>
+                    <!--<label class="btn btn-raised btn-raised  btn-primary btn-sm" ng-click="selectIGDocumentType(tt.type)" ng-class="{'active':igDocumentConfig.selectedType === tt.type}" ng-repeat="tt in igDocumentTypes | uppercase">-->
+                        <!--<input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.igDocumentConfig.selectedType"><i class="fa fa-th-list"></i> {{tt.name}}-->
+                    <!--</label>-->
+
+                    <div class="btn-group btn-group-raised" role="group" aria-label="">
+                        <button type="button" ng-click="selectIGDocumentType(tt.type)" ng-class="{'active':igDocumentConfig.selectedType === tt.type}" ng-repeat="tt in igDocumentTypes | uppercase" class="btn btn-raised btn-primary igl-btn-choice"><i class="fa fa-th-list"></i> {{::tt.name}}</button>
+                    </div>
+
+
                 </div>
                 <div class="pull-right" style="margin-right:20px">
-                    <button type="button" class="btn btn-info btn-sm" ng-click="hl7Versions('btn')" ng-controller="HL7VersionsDlgCtrl"><i class="fa fa-plus"></i> Create New IG Document
+                    <button type="button" class="btn btn-raised btn-raised btn-info btn-raised" ng-click="hl7Versions('btn')" ng-controller="HL7VersionsDlgCtrl"><i class="fa fa-plus"></i> Create New IG Document
                     </button>
                 </div>
             </div>
@@ -57,17 +63,17 @@ if (self === top) {
                         <td st-ratio="10" ng-bind="row.profile.metaData.hl7Version"></td>
                         <td st-ratio="10" ng-bind="row.metaData.date"></td>
                         <td st-ratio="20">
-                            <button ng-show="igDocumentConfig.selectedType === 'USER'" title="Edit IG Document" type="button" class="btn btn-xs btn-primary" ng-click="edit(row)">
+                            <button ng-show="igDocumentConfig.selectedType === 'USER'" title="Edit IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-primary" ng-click="edit(row)">
                                 <span><i
                                                 class="fa fa-pencil fa-fw"></i></span>
                             </button>
-                            <button title="View IG Document" type="button" class="btn btn-xs btn-default" ng-click="view(row)">
+                            <button title="View IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-default" ng-click="view(row)">
                                 <span><i class="fa fa-search fa-fw"></i></span>
                             </button>
-                            <button title="Create Copy of IG Document" type="button" class="btn btn-xs btn-info" ng-click="clone(row);selectIGDocumentType('USER')">
+                            <button title="Create Copy of IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="clone(row);selectIGDocumentType('USER')">
                                 <span><i class="fa fa-plus fa-fw"></i></span>
                             </button>
-                            <button title="Delete IG Document" type="button" class="btn btn-xs btn-danger" ng-show="igDocumentConfig.selectedType === 'USER'" ng-click="confirmDelete(row)">
+                            <button title="Delete IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-show="igDocumentConfig.selectedType === 'USER'" ng-click="confirmDelete(row)">
                                 <span><i class="fa fa-trash-o fa-fw"></i></span>
                             </button>
                         </td>

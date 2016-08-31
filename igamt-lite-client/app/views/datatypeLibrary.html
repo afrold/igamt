@@ -152,21 +152,21 @@ span {
                         <form id="selectDtTypeForm" class="form-horizontal">
                             <div class="form-group">
                                 <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                                    <label class="btn  btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')">
+                                    <label class="btn btn-raised btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')">
                                         <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse User's Data Type Librariess
                                     </label>
-                                    <label class="btn  btn-warning btn-sm" ng-click="getDataTypeLibraryByScope('MASTER')" ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}">
+                                    <label class="btn btn-raised btn-warning btn-sm" ng-click="getDataTypeLibraryByScope('MASTER')" ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}">
                                         <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse Master Data Type Libraries
                                     </label>
                                 </div>
                                 <div class="pull-right" style="margin-right: 20px">
-                                    <button type="button" class="btn btn-primary btn-sm" ng-click="openStandardDataypes('USER')">
+                                    <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="openStandardDataypes('USER')">
                                         <i class="fa fa-plus"></i> Create USER Data Type Library
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-sm" ng-click="openStandardDataypes('MASTER')" ng-if="isAdmin()">
+                                    <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="openStandardDataypes('MASTER')" ng-if="isAdmin()">
                                         <i class="fa fa-plus"></i> Create A MASTER Datatype Library
                                     </button>
-                                    <!--<button type="button" class="btn btn-primary btn-sm"-->
+                                    <!--<button type="button" class="btn btn-raised btn-primary btn-sm"-->
                                     <!--ng-click="openStandardDataypes('MASTER')">-->
                                     <!--<i class="fa fa-plus"></i> Create MASTER Data Type Library-->
                                     <!--</button>-->
@@ -204,16 +204,16 @@ span {
                                                 <td st-ratio="25">{{dtLib.metaData.date}}
                                                     <td st-ratio="10">{{dtLib.metaData.hl7Version}}</td>
                                                     <td st-ratio="30">
-                                                        <button title="Edit" type="button" class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib,false)" ng-if="dtLib.accountId.toString()=== accountId">
+                                                        <button title="Edit" type="button" class="btn btn-raised btn-xs btn-primary" ng-click="editLibrary(dtLib,false)" ng-if="dtLib.accountId.toString()=== accountId">
                                                             <span><i class="fa fa-pencil fa-fw"></i></span>
                                                         </button>
-                                                        <button title="Edit" type="button" class="btn btn-xs btn-primary" ng-click="editLibrary(dtLib,true)">
+                                                        <button title="Edit" type="button" class="btn btn-raised btn-xs btn-primary" ng-click="editLibrary(dtLib,true)">
                                                             <span><i class="fa fa-search fa-fw"></i></span>
                                                         </button>
-                                                        <button title="Create Copy" type="button" class="btn btn-xs btn-info" ng-click="copyLibrary(dtLib)">
+                                                        <button title="Create Copy" type="button" class="btn btn-raised btn-xs btn-info" ng-click="copyLibrary(dtLib)">
                                                             <span><i class="fa fa-plus fa-fw"></i></span>
                                                         </button>
-                                                        <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="deleteLibrary(dtLib)" ng-if="dtLib.accountId.toString()===accountId">
+                                                        <button title="Delete" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteLibrary(dtLib)" ng-if="dtLib.accountId.toString()===accountId">
                                                             <span><i class="fa fa-trash-o fa-fw"></i></span>
                                                         </button>
                                                     </td>
@@ -239,7 +239,7 @@ span {
                     <br/>
                     <div class="row">
                         <div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right: 6px">
-                            <button title="Show Table of Contents" class="btn btn-xs btn-primary" ng-click="hideToc = !hideToc">
+                            <button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">
                                 <i class="fa fa-caret-right"></i>
                             </button>
                         </div>
@@ -248,7 +248,7 @@ span {
                                 <!-- Default panel contents -->
                                 <div class="panel-heading panel-heading-collapsable">
                                     <i class="glyphicon glyphicon-list"></i> Table of Contents
-                                    <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right" style="margin: 0px" ng-click="hideToc = !hideToc">
+                                    <button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right" style="margin: 0px" ng-click="hideToc = !hideToc">
                                         <i class="fa fa-caret-left"></i>
                                     </button>
                                 </div>
@@ -283,13 +283,13 @@ span {
                 <span class="header4">Datatype Library Metadata</span>
                 <span class="pull-right">
 
-          <button type="button" class="btn btn-sm btn-primary"
+          <button type="button" class="btn btn-raised btn-sm btn-primary"
                 ng-disabled="!editForm.$dirty"
                 ng-click="saveMetaData()">
 
            <span><i class="fa fa-check fa-fw" ng-disabled="readOnly"></i> Save</span>
                 </button>
-                <button title="Discard changes" type="button" class="btn btn-sm btn-warning" ng-disabled="!editForm.$dirty ||readOnly" ng-click="resetMetaData()">
+                <button title="Discard changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty ||readOnly" ng-click="resetMetaData()">
                     <span><i class="fa fa-times fa-fw"></i>Reset</span>
                 </button>
                 </span>
@@ -436,7 +436,7 @@ span {
             </dir>
             </div>
             <div class="col-md-2 pull-right">
-                <button title="submit" class="btn btn-sm btn-primary " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
+                <button title="submit" class="btn btn-raised btn-sm btn-primary " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
                     <span><i class="fa fa-check fa-fw"></i> Submit</span>
                 </button>
             </div>
@@ -509,7 +509,7 @@ span {
                             {{data.description}}
                         </td>
                         <td class="col-md-1">
-                            <button class="btn btn-xs btn-danger" ng-click="addedDatatypes.splice($index,1);miniDTMap[data.id]=false">X</button>
+                            <button class="btn btn-raised btn-xs btn-danger" ng-click="addedDatatypes.splice($index,1);miniDTMap[data.id]=false">X</button>
                         </td>
                     </tr>
                 </tbody>
@@ -523,7 +523,7 @@ span {
             <span class="input-group-addon header5 pull-left" id="basic-addon1">Create a new HL7 datatype Flavor</span>
         </div>
         <div class="pull-right">
-            <button title="submit" class="btn btn-sm btn-primary " ng-disabled="addedDatatypes.length===0" ng-click="submit()">
+            <button title="submit" class="btn btn-raised btn-sm btn-primary " ng-disabled="addedDatatypes.length===0" ng-click="submit()">
                 <span><i class="fa fa-check fa-fw"></i> Submit</span>
             </button>
         </div>
@@ -582,7 +582,7 @@ span {
                             {{data.description}}
                         </td>
                         <td class="col-md-1">
-                            <button class="btn btn-xs btn-danger" ng-click="addedDatatypes.splice($index,1);miniDTMap[data.id]=false">X</button>
+                            <button class="btn btn-raised btn-xs btn-danger" ng-click="addedDatatypes.splice($index,1);miniDTMap[data.id]=false">X</button>
                         </td>
                     </tr>
                 </tbody>
@@ -622,8 +622,8 @@ span {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit" ng-disabled="okDisabled" ng-click="ok()">Ok</button>
-                        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                        <button class="btn btn-raised btn-primary" type="submit" ng-disabled="okDisabled" ng-click="ok()">Ok</button>
+                        <button class="btn btn-raised btn-warning" type="button" ng-click="cancel()">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -701,8 +701,8 @@ span {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" ng-disabled="okDisabled" type="button" ng-click="ok()">Ok</button>
-                    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                    <button class="btn btn-raised btn-primary" ng-disabled="okDisabled" type="button" ng-click="ok()">Ok</button>
+                    <button class="btn btn-raised btn-warning" type="button" ng-click="cancel()">Cancel</button>
                 </div>
             </form>
         </div>
@@ -723,13 +723,13 @@ span {
 
         <label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-click="publishDatatype(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatype.status === 'PUBLISHED'|| readOnly" style="margin-right : 8px"/>Published</label>
 
-         <button title="Save Changes" type="button" class="btn btn-xs btn-success"
+         <button title="Save Changes" type="button" class="btn btn-raised btn-xs btn-success"
                 ng-hide="datatype.scope === 'HL7STANDARD'"
                  ng-disabled="editForm.$invalid ||!editForm.$dirty ||readOnly"
                  ng-click="saveDatatype(datatype)">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </button>
-                            <button title="Reset the Data Type" type="button" class="btn btn-xs btn-warning" ng-hide="datatype.status === 'PUBLISHED'||readOnly" ng-disabled="!editForm.$dirty" ng-click="resetDatatype()">
+                            <button title="Reset the Data Type" type="button" class="btn btn-raised btn-xs btn-warning" ng-hide="datatype.status === 'PUBLISHED'||readOnly" ng-disabled="!editForm.$dirty" ng-click="resetDatatype()">
                                 <span><i class="fa fa-close fa-fw"></i>Reset</span>
                             </button>
                             </span>
@@ -812,7 +812,7 @@ span {
                                                         <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                                                             <th class="col-xs-2 col-fixed-250">Name</th>
                                                             <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                                                                <button class="btn btn-info btn-xs" ng-show="(datatype.status === 'UNPUBLISHED')&& !readOnly" ng-click="OtoX(datatype)">O to X</button>
+                                                                <button class="btn btn-raised btn-info btn-xs" ng-show="(datatype.status === 'UNPUBLISHED')&& !readOnly" ng-click="OtoX(datatype)">O to X</button>
                                                             </th>
                                                             <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">Length
                                                             </th>
@@ -836,7 +836,7 @@ span {
                                                 </table>
                                                 <!--<span class="pull-right">-->
                                                 <!--<div class="btn-group">-->
-                                                <!--<button ng-show="datatype.scope!=='HL7STANDARD'" ng-click="addComponentModal(datatype)" type="button" class="btn btn-info btn-md">-->
+                                                <!--<button ng-show="datatype.scope!=='HL7STANDARD'" ng-click="addComponentModal(datatype)" type="button" class="btn btn-raised btn-info btn-md">-->
                                                 <!--<span><i class="glyphicon glyphicon-plus"></i> Add component</span>-->
                                                 <!--</button>-->
                                                 <!--</div>-->
@@ -847,7 +847,7 @@ span {
                                 <span class="header5">Conformance Statements</span>
                                                         </span>
                                                         <span class="pull-right">
-                                <button class="btn btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
+                                <button class="btn btn-raised btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
                                         ng-hide="datatype.status === 'PUBLISHED'||readOnly"><span><i class="fa fa-plus fa-fw">
                                     &nbsp; </i>Add Conf.Statement</span></button>
                                                         </span>
@@ -875,7 +875,7 @@ span {
                                                                         {{c.description}}
                                                                     </td>
                                                                     <td class="col-md-1" align="center">
-                                                                        <button class="btn btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="readOnly"><span><i class="fa fa-trash fa-fw">
+                                                                        <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="readOnly"><span><i class="fa fa-trash fa-fw">
                                 &nbsp; </i>Del</span></button>
                                                                     </td>
                                                                 </tr>
@@ -889,7 +889,7 @@ span {
                                 <span class="header5">Conditional Predicates</span>
                                                                 </span>
                                                                 <span class="pull-right">
-                                <button class="btn btn-primary btn-xs" ng-click="managePredicate(null);"
+                                <button class="btn btn-raised btn-primary btn-xs" ng-click="managePredicate(null);"
                                         ng-hide="datatype.status === 'PUBLISHED'"><span><i class="fa fa-plus fa-fw">
                                     &nbsp; </i>Add Predicate</span></button>
                                                                 </span>
@@ -921,7 +921,7 @@ span {
                                                                                 {{p.falseUsage}}
                                                                             </td>
                                                                             <td class="col-md-1" align="center">
-                                                                                <button class="btn btn-danger btn-xxs" ng-click="datatype.predicates.splice(datatype.predicates.indexOf(p), 1);" ng-disabled="readOnly"><span><i class="fa fa-trash fa-fw">
+                                                                                <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.predicates.splice(datatype.predicates.indexOf(p), 1);" ng-disabled="readOnly"><span><i class="fa fa-trash fa-fw">
                                         &nbsp; </i>Del</span>
                                                                                 </button>
                                                                             </td>
@@ -1339,7 +1339,7 @@ span {
 <script type="text/ng-template" id="DatatypeReferencesCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Data Type References Found
-            <button class="btn  btn-xs btn-primary pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+            <button class="btn btn-raised btn-xs btn-primary pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">
                 &nbsp; </i>Close</span>
             </button>
         </h3>
@@ -1384,10 +1384,10 @@ span {
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+        <button class="btn btn-raised btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                 class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -1406,10 +1406,10 @@ span {
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+        <button class="btn btn-raised btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                 class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -1428,7 +1428,7 @@ span {
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -1515,7 +1515,7 @@ span {
 
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -1538,10 +1538,10 @@ span {
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+        <button class="btn btn-raised btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                 class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -1563,10 +1563,10 @@ span {
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+        <button class="btn btn-raised btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                 class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -1586,10 +1586,10 @@ span {
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+        <button class="btn btn-raised btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                 class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -1643,7 +1643,7 @@ span {
                                 <select class="form-control" ng-model="p.falseUsage" ng-change="setChanged()" ng-options="usage for usage in config.usages" />
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-danger btn-xxs" ng-click="deletePredicate(p)"><span><i class="fa fa-trash fa-fw">
+                                <button class="btn btn-raised btn-danger btn-xxs" ng-click="deletePredicate(p)"><span><i class="fa fa-trash fa-fw">
                 &nbsp; </i>Del</span></button>
                             </td>
                         </tr>
@@ -1655,11 +1655,11 @@ span {
                 </span>
                 <span class="pull-right">
         <div class="btn-group btn-group-sm" data-toggle="buttons">
-            <label class="btn btn-info btn-xs" ng-click="constraintType = 'Plain'"
+            <label class="btn btn-raised btn-info btn-xs" ng-click="constraintType = 'Plain'"
                    ng-class="{'active':constraintType === 'Plain'}">
                 <input type="radio" ng-value="constraintType">Add plain predicate
             </label>
-            <label class="btn btn-info btn-xs" ng-click="constraintType = 'Complex'"
+            <label class="btn btn-raised btn-info btn-xs" ng-click="constraintType = 'Complex'"
                    ng-class="{'active':constraintType === 'Complex'}">
                 <input type="radio" ng-value="constraintType">Add complex predicate
             </label>
@@ -1681,7 +1681,7 @@ span {
                     <tbody>
                         <tr>
                             <td class="col-md-1" align="center" style="width: 4.1667%">
-                                <button class="btn btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">
+                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">
                 &nbsp; </i>Reset</span></button>
                             </td>
                             <td class="col-md-2">
@@ -1778,7 +1778,7 @@ span {
                                 <span style="color:red;" ng-show="!newConstraint.falseUsage">Empty false usage</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'datatype')"><span><i class="fa fa-plus fa-fw">
+                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'datatype')"><span><i class="fa fa-plus fa-fw">
                 &nbsp; </i>Add</span></button>
                             </td>
                         </tr>
@@ -1802,7 +1802,7 @@ span {
                     <tbody>
                         <tr>
                             <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">
+                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">
                 &nbsp; </i>Reset</span></button>
                             </td>
                             <td class="col-md-2">
@@ -1838,7 +1838,7 @@ span {
                                 <span style="color:red;" ng-show="!complexConstraintFalseUsage">Empty true usage</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addComplexPredicate()">
+                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addComplexPredicate()">
                                     <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                             </td>
                         </tr>
@@ -1848,11 +1848,11 @@ span {
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
+        <button class="btn btn-raised btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
         &nbsp; </i>Save</span></button>
-        <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
-        <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        <button class="btn btn-raised btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
     </div>
 </script>
@@ -1870,12 +1870,12 @@ span {
                         <label for="publish" style="margin : 0 10px 0 0">
                         <input type="checkbox" ng-click="confirmPublishTable(table)" ng-model="table.status" ng-true-value="'PUBLISHED'"  ng-disabled="table.status === 'PUBLISHED'|| readOnly||table.scope=='HL7STANDARD'" style="margin-right : 8px"/>Published</label>
 
-                        <button title="Save Changes" type="button" class="btn btn-sm btn-success"
+                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                                 ng-disabled="editForm.$invalid || !editForm.$dirty"
                                 ng-click="save()">
                             <span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
-                        <button title="Reset Changes" type="button" class="btn btn-sm btn-warning" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty" ng-click="reset()">
                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
                         </button>
                         </span>
@@ -1968,7 +1968,7 @@ span {
                                 <div class="el-def" style="margin-top: 20px">
                                     <div>
                                         <span class="pull-right">
-                                        <button title="Add new Value" type="button" class="btn btn-sm btn-info" ng-click="addValue(); searchValue.value = ''; searchValue.label = '';">
+                                        <button title="Add new Value" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue(); searchValue.value = ''; searchValue.label = '';">
                                             <span><i class="fa fa-plus fa-fw"></i>&nbsp; Add Value</span>
                                         </button>
                                         </span>
@@ -2005,13 +2005,13 @@ span {
                                                         </th>
                                                         <th>
                                                             <div class="btn-group btn-group-xs btn-info" role="group" aria-label="...">
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-default btn-info">R</button>
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-default btn-info">P</button>
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-default btn-info">E</button>
+                                                                <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-raised btn-default btn-info">R</button>
+                                                                <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-raised btn-default btn-info">P</button>
+                                                                <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-raised btn-default btn-info">E</button>
                                                             </div>
                                                         </th>
                                                         <th>
-                                                            <button title="Reset Search" type="button" class="btn btn-xs btn-info" ng-click="searchValue.value = ''; searchValue.label = '';">
+                                                            <button title="Reset Search" type="button" class="btn btn-raised btn-xs btn-info" ng-click="searchValue.value = ''; searchValue.label = '';">
                                                                 <i class="fa fa-refresh fa-fw"></i>
                                                             </button>
                                                         </th>
@@ -2053,7 +2053,7 @@ span {
                                                             </select>
                                                         </td>
                                                         <td class="col-md-1">
-                                                            <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="deleteValue(c)">
+                                                            <button title="Delete" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteValue(c)">
                                                                 <i class="fa fa-trash-o fa-fw"></i>
                                                             </button>
                                                         </td>
@@ -2084,12 +2084,12 @@ span {
                         <span class="pull-right">
                         <label for="publish" style="margin : 0 10px 0 0">
                         <input type="checkbox" ng-click="confirmPublishTable(table)" ng-model="table.status" ng-true-value="'PUBLISHED'"  ng-disabled="table.status === 'PUBLISHED'|| readOnly||table.scope=='HL7STANDARD'" style="margin-right : 8px"/>Published</label>
-                        <button title="Save Changes" type="button" class="btn btn-sm btn-success"
+                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                                 ng-disabled="editForm.$invalid || !editForm.$dirty"
                                 ng-click="save()">
                             <span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
-                        <button title="Reset Changes" type="button" class="btn btn-sm btn-warning" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty" ng-click="reset()">
                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
                         </button>
                         </span>
@@ -2182,7 +2182,7 @@ span {
                                 <div class="el-def" style="margin-top: 20px">
                                     <div>
                                         <span class="pull-right">
-                                        <button title="Add new Value" type="button" class="btn btn-sm btn-info" ng-click="addValue();">
+                                        <button title="Add new Value" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
                                             <span><i class="fa fa-plus fa-fw"></i>&nbsp; Add Value</span>
                                         </button>
                                         </span>
@@ -2211,9 +2211,9 @@ span {
                                                         </th>
                                                         <th>
                                                             <div class="btn-group btn-group-xs btn-info" role="group" aria-label="...">
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-default btn-info">R</button>
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-default btn-info">P</button>
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-default btn-info">E</button>
+                                                                <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-raised btn-default btn-info">R</button>
+                                                                <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-raised btn-default btn-info">P</button>
+                                                                <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-raised btn-default btn-info">E</button>
                                                             </div>
                                                         </th>
                                                         <th>
@@ -2256,7 +2256,7 @@ span {
                                                             </select>
                                                         </td>
                                                         <td class="col-md-1">
-                                                            <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="deleteValue(c)">
+                                                            <button title="Delete" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteValue(c)">
                                                                 <i class="fa fa-trash-o fa-fw"></i>
                                                             </button>
                                                         </td>
@@ -2337,24 +2337,24 @@ span {
             <div class="row">
                 <div class="col-md-12">
                     <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                        <label class="btn btn-primary btn-xs" ng-click="source = 'HL7'; listHL7Versions()" ng-class="{'active':source === 'HL7'}">
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="source = 'HL7'; listHL7Versions()" ng-class="{'active':source === 'HL7'}">
                             <input ng-disabled="loading" type="radio" ng-value="source" ng-model="$parent.source">From HL7 Standard
                         </label>
-                        <label class="btn btn-primary btn-xs" ng-click="source = 'PHINVADS'" ng-class="{'active':source === 'PHINVADS'}">
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="source = 'PHINVADS'" ng-class="{'active':source === 'PHINVADS'}">
                             <input ng-disabled="loading" type="radio" ng-value="source" ng-model="$parent.source">From PHINVADS
                         </label>
                     </div>
                 </div>
                 <div ng-show="source==='HL7'" class="col-md-12">
                     <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                        <label class="btn btn-primary btn-xs" ng-click="selectedHL7Version = vr; loadTablesByVersion(vr)" ng-class="{'active':vr === selectedHL7Version}" ng-repeat="vr in hl7Versions">
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="selectedHL7Version = vr; loadTablesByVersion(vr)" ng-class="{'active':vr === selectedHL7Version}" ng-repeat="vr in hl7Versions">
                             <input type="radio" ng-value="vr" ng-model="$parent.selectedHL7Version">{{vr}}</input>
                         </label>
                     </div>
                 </div>
                 <div ng-show="source==='PHINVADS'" class="col-md-12">
                     <input class="form-control" placeholder="type PHINVADS OID" type="text" name="searchText" ng-model="searchText">
-                    <button title="Find valueset" type="button" class="btn btn-xs btn-info" ng-disabled="oid === null || oid === ''" ng-click="searchPhinvads(searchText)">
+                    <button title="Find valueset" type="button" class="btn btn-raised btn-xs btn-info" ng-disabled="oid === null || oid === ''" ng-click="searchPhinvads(searchText)">
                         <span><i class="fa fa-search fa-fw"></i>&nbsp; Serach</span>
                     </button>
                 </div>
@@ -2456,11 +2456,11 @@ span {
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="save()"><span><i
+        <button class="btn btn-raised btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="save()"><span><i
                 class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-        <button class="btn btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-        <button class="btn btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
     </div>
 </script>
@@ -2482,7 +2482,7 @@ span {
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="close()"><span><i class="fa fa-times fa-fw">
+        <button class="btn btn-raised btn-primary" ng-click="close()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Close</span>
         </button>
     </div>

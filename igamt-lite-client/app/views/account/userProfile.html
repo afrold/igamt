@@ -52,7 +52,7 @@
             </div>
             <div class="control-group form-group">
                 <div class="col-md-offset-2 col-sm-7">
-                     <button class="btn btn-primary" ng-click='changePassword()' ng-disabled='!changePasswordForm.$valid'><div msg key="account.changePasswordButton"></div></button>
+                     <button class="btn btn-raised btn-primary" ng-click='changePassword()' ng-disabled='!changePasswordForm.$valid'><div msg key="account.changePasswordButton"></div></button>
                 </div>
             </div>
         </div>
@@ -154,8 +154,8 @@
 
             <div class="control-group form-group" >
                 <div class="col-md-offset-2 col-sm-7">
-                     <button class="btn btn-primary" ng-click='updateAccount()' ng-disabled='!editAccountForm.$valid || isUnchanged(account)'><div msg key="account.updateButton"></div></button>
-                     <button class="btn btn-warning" ng-click='resetForm()' ng-disabled='isUnchanged(account)'><div msg key="account.resetButton"></div></button>
+                     <button class="btn btn-raised btn-primary" ng-click='updateAccount()' ng-disabled='!editAccountForm.$valid || isUnchanged(account)'><div msg key="account.updateButton"></div></button>
+                     <button class="btn btn-raised btn-warning" ng-click='resetForm()' ng-disabled='isUnchanged(account)'><div msg key="account.resetButton"></div></button>
                 </div>
             </div>
         </div>
@@ -167,7 +167,7 @@
             </p>
             <div class="control-group form-group">
                 <div class="controls col-sm-10">
-                     <button class="btn btn-danger" ng-click='deleteAccount()'><div msg key="account.deleteButton"></div></button>
+                     <button class="btn btn-raised btn-danger" ng-click='deleteAccount()'><div msg key="account.deleteButton"></div></button>
                 </div>
             </div>
         </div>

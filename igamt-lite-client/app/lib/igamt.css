@@ -208,7 +208,7 @@ input.igl-has-error,select.igl-has-error {
 /***      **/
 
 #footer {
-    background: #333333;
+    background: #01579b;
     /*background-color: white;*/
     color: white;
     padding: 96px 0px 96px 0px;
@@ -336,7 +336,7 @@ ul.list-horiz > li, li.list-horiz {
 }
 
 a:visited {
-    color: #2d9de7;
+    color:  #0277bd;
 }
 
 .social-btn {
@@ -510,7 +510,7 @@ ul, menu, dir {
     text-decoration: none;
 }
 a:visited {
-    color: #2d9de7;
+    color:  #0277bd;
 }
 
 .menu--footer-menu ul.menu li {
@@ -520,5 +520,15 @@ a:visited {
     margin-left: 0;
 }
 
+.btn{
+    border:0px;
+}
 
 
+.btn-primary .active{
+    background:#0277BD;
+}
+
+.modal-header{
+    background: #0277BD;
+}

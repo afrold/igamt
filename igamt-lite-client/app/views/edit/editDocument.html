@@ -19,21 +19,21 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Document Metadata</span>
             <span class="pull-right">
-         <button title="Save Changes" class="btn btn-sm btn-success"
+         <button title="Save Changes" class="btn btn-raised btn-sm btn-success"
                  ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="viewSettings.tableReadonly"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
 
-                <!--<button ng-show="editForm.$invalid" title="The data you entered are invalid. Please fix data before saving" class="btn btn-sm btn-primary"-->
+                <!--<button ng-show="editForm.$invalid" title="The data you entered are invalid. Please fix data before saving" class="btn btn-raised btn-sm btn-primary"-->
                         <!--ng-disabled="editForm.$invalid || !editForm.$dirty"-->
                         <!--ng-hide="viewSettings.tableReadonly"-->
                         <!--ng-click="save()">-->
                     <!--<span><i class="fa fa-check fa-fw"></i> Save</span>-->
                 <!--</button>-->
 
-                         <button title="Cancel Changes" type="button" class="btn btn-sm btn-warning"
+                         <button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                                  ng-disabled="!editForm.$dirty"
                                  ng-hide="viewSettings.tableReadonly"
                                  ng-click="reset()">
@@ -169,13 +169,13 @@
             <div class="page-header" style="margin-bottom: 20px">
                 <span class="header4">Message Infrastructure</span>
             <span class="pull-right">
-         <button title="Save Changes" type="button" class="btn btn-md btn-primary"
+         <button title="Save Changes" type="button" class="btn btn-raised btn-md btn-primary"
                  ng-disabled="editForm.$invalid || editForm.$pristine"
                  ng-hide="viewSettings.tableReadonly"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
-                         <button title="Cancel Changes" type="button" class="btn btn-md btn-warning"
+                         <button title="Cancel Changes" type="button" class="btn btn-raised btn-md btn-warning"
                                  ng-hide="viewSettings.tableReadonly"
                                  ng-disabled="editForm.$pristine"
                                  ng-click="reset()">
