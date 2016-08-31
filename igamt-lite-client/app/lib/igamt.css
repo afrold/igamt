@@ -555,3 +555,8 @@ a:visited {
 li.active > a{
     font-weight:bold;
 }
+
+.cp-tooltip, .cp-tooltip > * {
+    background-color: white;
+    color:black;
+}
