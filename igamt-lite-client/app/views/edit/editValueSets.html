@@ -22,12 +22,12 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span>
                         <span class="pull-right">
-						<button title="Save Changes" type="button" class="btn btn-sm btn-success"
+						<button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
 								ng-disabled="editForm.$invalid || !editForm.$dirty"
                 	 			ng-click="save()">
 							<span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
-                        <button title="Reset Changes" type="button" class="btn btn-sm btn-warning" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty" ng-click="reset()">
 							<span><i class="fa fa-times fa-fw"></i> Reset</span>
 						</button>
                         </span>
@@ -176,10 +176,10 @@
                                             <div class="panel-body">
                                     <div class="">
                                         <span class="pull-right">
-											<button title="Add new Value" type="button" class="btn btn-sm btn-info" ng-click="addValue();">
+											<button title="Add new Value" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
 												<span><i class="fa fa-plus fa-fw"></i>Add Value</span>
                                         </button>
-                                        <button title="Delete Values" type="button" class="btn btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
+                                        <button title="Delete Values" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
                                                 <i class="fa fa-trash-o fa-fw"></i>Delete Values <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
                                                 </button>
                                         </span>
@@ -208,9 +208,9 @@
                                                         <th st-sort="label" class="col-md-3">Description</th>
                                                         <th class="col-md-2">CodeSystem</th>
                                                         <th class="col-md-1">Usage  <span class="btn-group btn-group-xs btn-info" role="group" aria-label="...">
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-default btn-info">R</button>
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-default btn-info">P</button>
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-default btn-info">E</button>
+                                                                <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-raised btn-default btn-info">R</button>
+                                                                <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-raised btn-default btn-info">P</button>
+                                                                <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-raised btn-default btn-info">E</button>
                                                             </span></th>
                                                         <th class="col-md-3">Comments</th>
                                                         
@@ -266,7 +266,7 @@
                                                         </td>
 
 <!--                                                         <td class="col-md-1">
-                                                            <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="deleteValue(c)">
+                                                            <button title="Delete" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteValue(c)">
 														<i class="fa fa-trash-o fa-fw"></i> -->
 <!-- 													</button>
                                                         </td> -->
@@ -374,7 +374,7 @@
                                             </div>
                                             <div class="row" align="center">
 
-                                                <button ng-click="cmpTable(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-info btn-xs">
+                                                <button ng-click="cmpTable(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-raised btn-info btn-xs">
                                                         <i class="fa fa-check"></i> Delta</button>
 
                                             </div>
@@ -701,9 +701,9 @@
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
     </div>
 </script>
@@ -711,7 +711,7 @@
 <script type="text/ng-template" id="ValueSetReferencesCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Value Set References Found
-            <button class="btn btn-primary btn-xs pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
+            <button class="btn btn-raised btn-primary btn-xs pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
             </button>
         </h3>
     </div>
@@ -748,7 +748,7 @@
         </div>
     </div>
     <!--<div class="modal-footer">-->
-    <!--<button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>-->
+    <!--<button class="btn btn-raised btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>-->
     <!--</button>-->
     <!--</div>-->
 </script>

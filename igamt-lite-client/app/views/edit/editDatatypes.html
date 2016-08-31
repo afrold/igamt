@@ -22,13 +22,13 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
-         <button title="Save Changes" type="button" class="btn btn-sm btn-success"
+         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                  ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
-                        <button title="Reset Changes" type="button" class="btn btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
                         </button>
                         </span>
@@ -153,7 +153,7 @@
                                                             <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                                                                 <th class="col-xs-2 col-fixed-250">Name</th>
                                                                 <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                                                                    <button type="button" class="btn btn-info btn-xs" ng-show="(datatype.scope === 'USER')&& !viewSettings.tableReadonly && (datatype.components.length>0)" ng-click="OtoX(datatype)">O to X
+                                                                    <button type="button" class="btn btn-raised btn-info btn-xs" ng-show="(datatype.scope === 'USER')&& !viewSettings.tableReadonly && (datatype.components.length>0)" ng-click="OtoX(datatype)">O to X
                                                                         </button>
                                                                 </th>
                                                                 <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">Length
@@ -285,7 +285,7 @@
                                                 <div class="col-md-12 igl-page-header">
 
                                                     <span class="pull-right">
-                                                        <button class="btn btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
+                                                        <button class="btn btn-raised btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
                                                                 ng-hide="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER') || !datatype.components || datatype.components.length == 0"><span><i
                                                                 class="fa fa-plus fa-fw">
                                                             &nbsp; </i>Add Conf.Statement</span></button>
@@ -314,7 +314,7 @@
                                                                     {{c.description}}
                                                                 </td>
                                                                 <td class="col-md-1" align="center">
-                                                                    <button class="btn btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">
+                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">
                                                                         &nbsp; </i>Del</span></button>
                                                                 </td>
                                                             </tr>
@@ -332,7 +332,7 @@
                                                 <div class="col-md-12 igl-page-header">
 
                                                     <span class="pull-right">
-                                                                <button class="btn btn-primary btn-xs" ng-click="managePredicate(null);"
+                                                                <button class="btn btn-raised btn-primary btn-xs" ng-click="managePredicate(null);"
                                                                         ng-hide="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER') || !datatype.components || datatype.components.length == 0"><span><i
                                                                         class="fa fa-plus fa-fw">
                                                                     &nbsp; </i>Add Predicate</span></button>
@@ -365,7 +365,7 @@
                                                                     {{p.falseUsage}}
                                                                 </td>
                                                                 <td class="col-md-1" align="center">
-                                                                    <button class="btn btn-danger btn-xxs" ng-click="datatype.predicates.splice(datatype.predicates.indexOf(p), 1);" ng-disabled="viewSettings.tableReadonly"><span><i
+                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.predicates.splice(datatype.predicates.indexOf(p), 1);" ng-disabled="viewSettings.tableReadonly"><span><i
                                                                                     class="fa fa-trash fa-fw">
                                                                                 &nbsp; </i>Del</span>
                                                                             </button>
@@ -449,7 +449,7 @@
                                             </div>
                                             <div class="row" align="center">
 
-                                                <button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="btn btn-info btn-xs">
+                                                <button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="btn btn-raised btn-info btn-xs">
                                                         <i class="fa fa-check"></i> Delta</button>
 
                                             </div>
@@ -559,9 +559,9 @@
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
     </div>
 </script>
@@ -999,7 +999,7 @@
 <script type="text/ng-template" id="DatatypeReferencesCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Data Type References Found
-            <button class="btn  btn-xs btn-primary pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+            <button class="btn btn-raised  btn-xs btn-primary pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">
                 &nbsp; </i>Close</span>
             </button>
         </h3>
@@ -1081,7 +1081,7 @@
                                 <select class="form-control" ng-model="p.falseUsage" ng-change="setChanged()" ng-options="usage for usage in config.conditionalUsage" />
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-danger btn-xxs" ng-click="deletePredicate(p)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+                                <button class="btn btn-raised btn-danger btn-xxs" ng-click="deletePredicate(p)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
                             </td>
                         </tr>
                     </tbody>
@@ -1093,13 +1093,13 @@
                 </span>
                 <span class="pull-right">
         <div class="btn-group btn-group-sm" data-toggle="buttons">
-            <label class="btn btn-info btn-xs" ng-click="constraintType = 'Free'" ng-class="{'active':constraintType === 'Free'}">
+            <label class="btn btn-raised btn-info btn-xs" ng-click="constraintType = 'Free'" ng-class="{'active':constraintType === 'Free'}">
                 <input type="radio" ng-value="constraintType">Add Free-Text predicate
             </label>
-            <label class="btn btn-info btn-xs" ng-click="constraintType = 'Plain'" ng-class="{'active':constraintType === 'Plain'}">
+            <label class="btn btn-raised btn-info btn-xs" ng-click="constraintType = 'Plain'" ng-class="{'active':constraintType === 'Plain'}">
                 <input type="radio" ng-value="constraintType">Add plain predicate
             </label>
-            <label class="btn btn-info btn-xs" ng-click="constraintType = 'Complex'" ng-class="{'active':constraintType === 'Complex'}">
+            <label class="btn btn-raised btn-info btn-xs" ng-click="constraintType = 'Complex'" ng-class="{'active':constraintType === 'Complex'}">
                 <input type="radio" ng-value="constraintType">Add complex predicate
             </label>
         </div>
@@ -1117,7 +1117,7 @@
                     <tbody>
                         <tr>
                             <td class="col-md-1" align="center" style="width: 4.1667%">
-                                <button class="btn btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                             </td>
                             <td class="col-md-8">
                                 <input class="form-control" ng-model="newConstraint.freeText" type="text"/>
@@ -1131,7 +1131,7 @@
                                 <span style="color:red;" ng-show="!newConstraint.falseUsage">Empty false usage</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                             </td>
                         </tr>
                     </tbody>
@@ -1152,7 +1152,7 @@
                     <tbody>
                         <tr>
                             <td class="col-md-1" align="center" style="width: 4.1667%">
-                                <button class="btn btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                             </td>
                             <td class="col-md-2">
                                 <span>{{newConstraint.datatype}}.</span>
@@ -1251,7 +1251,7 @@
                                 <span style="color:red;" ng-show="!newConstraint.falseUsage">Empty false usage</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'datatype', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'datatype', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                             </td>
                         </tr>
                     </tbody>
@@ -1277,7 +1277,7 @@
                     <tbody>
                         <tr>
                             <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                             </td>
                             <td class="col-md-2">
                                 <select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
@@ -1322,7 +1322,7 @@
                                 <span style="color:red;" ng-show="!complexConstraintFalseUsage">Empty true usage</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addComplexPredicate()" ng-disabled="erorrForComplexPredicate(compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage, constraints)">
+                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addComplexPredicate()" ng-disabled="erorrForComplexPredicate(compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage, constraints)">
                                     <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span>
                                 </button>
                             </td>
@@ -1334,11 +1334,11 @@
     </div>
     <div class="modal-footer">
         <p ng-show="countPredicateForTemp() != 1" class="warning">Single Predicate allowed!</p>
-        <button class="btn btn-primary btn-sm" ng-disabled="countPredicateForTemp() != 1" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="countPredicateForTemp() != 1" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
         &nbsp; </i>Save</span></button>
-        <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
-        <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        <button class="btn btn-raised btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
     </div>
 </script>
@@ -1388,7 +1388,7 @@
                                 <span ng-show="viewAssertion">{{c.assertion}}</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-danger btn-xxs" ng-click="deleteConformanceStatement(c)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+                                <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatement(c)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
                             </td>
                         </tr>
                     </tbody>
@@ -1402,13 +1402,13 @@
 
                 <span class="pull-right">
                     <div class="btn-group btn-group-sm" data-toggle="buttons">
-                        <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Free'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, datatype.name + '_' + datatype.ext);" ng-class="{'active':constraintType === 'Free'}">
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Free'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, datatype.name + '_' + datatype.ext);" ng-class="{'active':constraintType === 'Free'}">
                             <input type="radio" ng-value="constraintType">Add new Free-Text Conf.Statement
                         </label>
-                        <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, datatype.name + '_' + datatype.ext);" ng-class="{'active':constraintType === 'Plain'}">
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, datatype.name + '_' + datatype.ext);" ng-class="{'active':constraintType === 'Plain'}">
                             <input type="radio" ng-value="constraintType">Add new plain Conf.Statement
                         </label>
-                        <label class="btn btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID(igdocument.metaData.ext, datatype.name + '_' + datatype.ext);" ng-class="{'active':constraintType === 'Complex'}">
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID(igdocument.metaData.ext, datatype.name + '_' + datatype.ext);" ng-class="{'active':constraintType === 'Complex'}">
                             <input type="radio" ng-value="constraintType">Add new complex Conf.Statement
                         </label>
                     </div>
@@ -1426,7 +1426,7 @@
                     <tbody>
                         <tr>
                             <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                             </td>
                             <td class="col-md-2">
                                 <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint) || isDuplicatedConstraintID(newConstraint, targetPlainId)}" ng-model="newConstraint.constraintId" ng-change="targetPlainId = newConstraint.constraintId;"
@@ -1440,7 +1440,7 @@
                                 <input class="form-control" ng-model="newConstraint.freeText" type="text"/>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                             </td>
                         </tr>
                     </tbody>
@@ -1461,7 +1461,7 @@
                     <tbody>
                         <tr>
                             <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                             </td>
                             <td class="col-md-2">
                                 <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint) || isDuplicatedConstraintID(newConstraint, targetPlainId)}" ng-model="newConstraint.constraintId" ng-change="targetPlainId = newConstraint.constraintId;"
@@ -1564,7 +1564,7 @@
                                 </span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'datatype', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'datatype', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                             </td>
                         </tr>
                     </tbody>
@@ -1586,7 +1586,7 @@
                     <tbody>
                         <tr>
                             <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                             </td>
                             <td class="col-md-2">
                                 <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyComplexConstraintID(newComplexConstraintId) || isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId)}" ng-model="newComplexConstraintId" ng-change="targetComplexId = newComplexConstraintId;"
@@ -1633,7 +1633,7 @@
                                 <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                             </td>
                             <td class="col-md-1" align="center">
-                                <button class="btn btn-primary btn-xxs" ng-click="addComplexConformanceStatement()" ng-disabled="erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints)">
+                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addComplexConformanceStatement()" ng-disabled="erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints)">
                                     <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span>
                                 </button>
                             </td>
@@ -1645,11 +1645,11 @@
     </div>
     <div class="modal-footer">
         <span class="pull-right">
-        <button class="btn btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i
+        <button class="btn btn-raised btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i
                 class="fa fa-check fa-fw">&nbsp; </i>Bind</span></button>
-        <button class="btn btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Cancel</span></button>
-        <button class="btn btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        <button class="btn btn-raised btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Cancel</span></button>
         </span>
     </div>
@@ -1771,13 +1771,13 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button ng-show="changed" type="button" ng-click="mappingTable()" class="btn btn-primary btn-sm"><i
+        <button ng-show="changed" type="button" ng-click="mappingTable()" class="btn btn-raised btn-primary btn-sm"><i
                 class="fa fa-plus fa-fw">&nbsp; </i>Save
         </button>
-        <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-warning btn-sm"><i
+        <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-raised btn-warning btn-sm"><i
                 class="fa fa-times fa-fw">&nbsp; </i>Close
         </button>
-        <button ng-show="!changed" class="btn btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        <button ng-show="!changed" class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Cancel</span></button>
     </div>
 </script>
@@ -1791,19 +1791,19 @@
         <div class="row">
             <!--<div class="col-md-12">-->
             <!--<span class="btn-group btn-group-sm pull-left" data-toggle="buttons">-->
-            <!--<label class="btn  btn-primary btn-xs"-->
+            <!--<label class="btn btn-raised  btn-primary btn-xs"-->
             <!--ng-click="loadLibrariesByFlavorName('USER')"-->
             <!--ng-class="{'active':selection.scope === 'USER'}">-->
             <!--<input type="radio" value="USER"-->
             <!--ng-model="$parent.selection.scope"><i class="fa fa-th-list"></i>MY IG DATA TYPES-->
             <!--</label>-->
-            <!--<label class="btn  btn-primary btn-xs"-->
+            <!--<label class="btn btn-raised  btn-primary btn-xs"-->
             <!--ng-click="loadLibrariesByFlavorName('HL7STANDARD')"-->
             <!--ng-class="{'active':selection.scope === 'HL7STANDARD'}">-->
             <!--<input type="radio" value="HL7STANDARD"-->
             <!--ng-model="$parent.selection.scope"><i class="fa fa-th-list"></i>HL7 DATA TYPES-->
             <!--</label>-->
-            <!--<label class="btn  btn-primary btn-xs"-->
+            <!--<label class="btn btn-raised  btn-primary btn-xs"-->
             <!--ng-click="loadLibrariesByFlavorName('MASTER')"-->
             <!--ng-class="{'active':selection.scope === 'MASTER'}">-->
             <!--<input type="radio" value="MASTER"-->
@@ -1816,7 +1816,7 @@
                 <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
                 <!--<div class="panel-heading panel-heading-collapsable">-->
                 <!--<i class="glyphicon glyphicon-list"></i>Data Type Flavors-->
-                <!--&lt;!&ndash;<button title="Hide Flavors" class="btn btn-xs btn-primary pull-right"&ndash;&gt;-->
+                <!--&lt;!&ndash;<button title="Hide Flavors" class="btn btn-raised btn-xs btn-primary pull-right"&ndash;&gt;-->
                 <!--&lt;!&ndash;ng-click="collapsed = !collapsed">&ndash;&gt;-->
                 <!--&lt;!&ndash;<i class="fa fa-caret-left"></i>&ndash;&gt;-->
                 <!--&lt;!&ndash;</button>&ndash;&gt;-->
@@ -1873,10 +1873,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="pull-right">
-                    <button class="btn tbn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
+                    <button class="btn btn-raised tbn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
                         &nbsp; </i>Cancel</span>
                     </button>
-                    <button class="btn btn-primary btn-sm" ng-click="submit()" ng-disabled="selection.selected === null || selection.selected.id === currentDatatype.id"><span><i
+                    <button class="btn btn-raised btn-primary btn-sm" ng-click="submit()" ng-disabled="selection.selected === null || selection.selected.id === currentDatatype.id"><span><i
                             class="fa fa-play fa-fw">
                         &nbsp; </i>Bind</span>
                     </button>
@@ -2002,11 +2002,11 @@
         </form>
         <hr/>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-sm" ng-click="addComponent()" ng-disabled="addCompForm.$invalid "><span><i
+            <button class="btn btn-raised btn-primary btn-sm" ng-click="addComponent()" ng-disabled="addCompForm.$invalid "><span><i
                     class="fa fa-play fa-fw">
                 &nbsp; </i>Add</span>
             </button>
-            <button class="btn btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
+            <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
                 &nbsp; </i>Cancel</span>
             </button>
         </div>
@@ -2021,9 +2021,9 @@
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
     </div>
 </script>
@@ -2037,9 +2037,9 @@
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
     </div>
 </script>

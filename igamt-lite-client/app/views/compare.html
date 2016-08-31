@@ -21,16 +21,16 @@
                         <div class="col-md-8 ">
                             <div class="row" align="right">
                                 <div class="col-md-1">
-                                    <button ng-click="clearAll()" class="btn btn-primary btn-xs"><i class="fa fa-times"></i> Clear All</button>
+                                    <button ng-click="clearAll()" class="btn btn-raised btn-primary btn-xs"><i class="fa fa-times"></i> Clear All</button>
                                 </div>
                                 <div class="col-md-3">
-                                    <button ng-click="clearVersion()" class="btn btn-default btn-xs "><i class="fa fa-times"></i> Clear Version</button>
+                                    <button ng-click="clearVersion()" class="btn btn-raised btn-default btn-xs "><i class="fa fa-times"></i> Clear Version</button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button ng-click="clearScope()" class="btn btn-default btn-xs "><i class="fa fa-times"></i> Clear Scope</button>
+                                    <button ng-click="clearScope()" class="btn btn-raised btn-default btn-xs "><i class="fa fa-times"></i> Clear Scope</button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button ng-click="clearIG()" class="btn btn-default btn-xs "><i class="fa fa-times"></i> Clear IG Document</button>
+                                    <button ng-click="clearIG()" class="btn btn-raised btn-default btn-xs "><i class="fa fa-times"></i> Clear IG Document</button>
                                 </div>
                             </div>
                             <div class="row" align="center">
@@ -73,19 +73,19 @@
                             </div>
                             <div class="row" style="padding-top:5px;padding-left:63%">
                                 <div class="col-md-4" align="right" ng-show="cmpMsg">
-                                    <button ng-click="cmpMessage(msg1,msg2)" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-info btn-md">
+                                    <button ng-click="cmpMessage(msg1,msg2)" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-raised btn-info btn-md">
                                         <i class="fa fa-check"></i> Message Delta</button>
                                 </div>
                                 <div class="col-md-4" align="right" ng-show="cmpSeg">
-                                    <button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || !segment2||!segChanged" class="btn btn-info btn-md">
+                                    <button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || !segment2||!segChanged" class="btn btn-raised btn-info btn-md">
                                         <i class="fa fa-check"></i> Segment Delta</button>
                                 </div>
                                 <div class="col-md-4" align="right" ng-show="cmpDT">
-                                    <button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="btn btn-info btn-md">
+                                    <button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="btn btn-raised btn-info btn-md">
                                         <i class="fa fa-check"></i> Datatype Delta</button>
                                 </div>
                                 <div class="col-md-4" align="right" ng-show="cmpVS">
-                                    <button ng-click="cmpValueSet(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-info btn-md">
+                                    <button ng-click="cmpValueSet(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-raised btn-info btn-md">
                                         <i class="fa fa-check"></i> Value Set Delta</button>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                         <div class="col-md-4">
                             <div class="row" align="right">
                                 <div class="col-md-1">
-                                    <button ng-click="clearMessage()" class="btn btn-default btn-xs "><i class="fa fa-times"></i> Clear {{toCmp}}</button>
+                                    <button ng-click="clearMessage()" class="btn btn-raised btn-default btn-xs "><i class="fa fa-times"></i> Clear {{toCmp}}</button>
                                 </div>
                             </div>
                             <div class="row" align="center">

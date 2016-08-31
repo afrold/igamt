@@ -30,12 +30,12 @@
             <div class="col-md-12">
                 <span class="header4 pull-left">
 <div class="btn-group btn-group-sm" data-toggle="buttons" style="margin-right: 10px;">
-    <label class="btn btn-primary btn-sm" ng-click="filtering=true;displayFilteredTree()"
+    <label class="btn btn-raised btn-primary btn-sm" ng-click="filtering=true;displayFilteredTree()"
            ng-class="{active:filtering===true}">
         <input type="radio"> Filter ON</input>
     </label>
 
-    <label class="btn btn-primary btn-sm active " ng-click="filtering=false; displayRegularTree() "
+    <label class="btn btn-raised btn-primary btn-sm active " ng-click="filtering=false; displayRegularTree() "
            ng-class="{active:filtering===false}">
         <input type="radio"> Filter OFF </input>
     </label>
@@ -46,27 +46,27 @@
                 <!--</button>-->
 
                 <div class="btn-group">
-                    <label class="btn btn-primary btn-sm" ng-class="{active:$root.usageF===false}"
+                    <label class="btn btn-raised btn-primary btn-sm" ng-class="{active:$root.usageF===false}"
                            ng-click="$root.usageF=false">
                         All Usages
                     </label>
-                    <label class=" btn btn-primary btn-sm" ng-class="{active:$root.usageF===true}" ng-click="usageFilter()"
+                    <label class=" btn btn-raised btn-primary btn-sm" ng-class="{active:$root.usageF===true}" ng-click="usageFilter()"
                            >
                         Only R,RE,C
                     </label>
                 </div>
 
                   <button ng-show="viewSettings.tableReadonly && igDocumentConfig.selectedType === 'USER'" title="Edit"
-                          type="button" class="btn btn-sm btn-primary" ng-click="edit(igdocument)">
+                          type="button" class="btn btn-raised btn-sm btn-primary" ng-click="edit(igdocument)">
                     <span><i
                             class="fa fa-pencil fa-fw"></i>Edit</span>
                   </button>
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-info btn-sm"><span><i
+                    <button type="button" class="btn btn-raised btn-info btn-sm"><span><i
                             class="fa fa-download fa-fw"></i> Export</span>
                     </button>
-                    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown"
+                    <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown"
                             aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
@@ -78,10 +78,10 @@
                         <li><a class="point" ng-click="exportAs('html')">As HTML</a></li>
                     </ul>
                 </div>
-                <button title="Close the IG Document" type="button" class="btn btn-sm btn-warning" ng-click="close()">
+                <button title="Close the IG Document" type="button" class="btn btn-raised btn-sm btn-warning" ng-click="close()">
                     <span><i class="fa fa-close fa-fw"></i>Close</span>
                 </button>
-                <button title="Delete permanently" type="button" class="btn btn-sm btn-danger"
+                <button title="Delete permanently" type="button" class="btn btn-raised btn-sm btn-danger"
                         ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"
                         ng-click="confirmDelete(igdocument)">
                     <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
@@ -95,7 +95,7 @@
             </div>
                  <div class="row">
                 <!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
-                    <!--<button title="Show Table of Contents" class="btn btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
+                    <!--<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
                         <!--<i class="fa fa-caret-right"></i>-->
                     <!--</button>-->
                 <!--</div>-->
@@ -105,7 +105,7 @@
                         <div class="panel-heading panel-heading-collapsable">
                             <i class="glyphicon glyphicon-list"></i><span
                                 > Table of Contents </span>
-                            <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
+                            <button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right"
                                     style="margin:0px" ng-click="hideToc = !hideToc">
                                 <i class="fa fa-caret-left"></i>
                             </button>
@@ -118,7 +118,7 @@
                 <div ng-class="{'col-md-9': !hideToc,'col-md-12': hideToc}">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <button title="Show Table of Contents" class="btn btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc">
+                            <button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc">
                                 <i class="fa fa-caret-right"></i>
                             </button>
                             <i class="fa fa-pencil" aria-hidden="true"></i> Edit Area

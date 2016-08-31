@@ -11,14 +11,14 @@
         <span class="header4 pull-left">Data Type: {{getLabel(datatypeCopy.name, datatypeCopy.ext)}}</span>
                      <span class="pull-right">
   		<label for="publish" style="margin : 0 10px 0 0"><input type="checkbox" ng-model="datatypeCopy.status" ng-true-value="'PUBLISHED'" ng-false-value="'UNPUBLISHED'" ng-disabled="datatypeCopy.status === 'PUBLISHED'" style="margin-right : 8px"/>Published</label>
-         <button title="Save Changes" type="button" class="btn btn-xs btn-success"
+         <button title="Save Changes" type="button" class="btn btn-raised btn-xs btn-success"
 				ng-hide="datatypeCopy.scope === 'HL7STANDARD'"
                  ng-disabled="!forms.editForm.$dirty"
                  ng-click="saveDatatype(datatypeCopy)">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          </button>
 
-                   <button title="Reset the Data Type" type="button" class="btn btn-xs btn-warning"
+                   <button title="Reset the Data Type" type="button" class="btn btn-raised btn-xs btn-warning"
 				ng-hide="datatypeCopy.scope === 'HL7STANDARD'"
                            ng-disabled="!forms.editForm.$dirty" ng-click="resetDatatype(datatypeCopy)">
                         <span><i class="fa fa-close fa-fw"></i>Reset</span>

@@ -1,5 +1,5 @@
-<div pageslide ps-open="checkedNavigation"  ps-speed="0.1" ps-side="left" ps-push="true" >
-    <ul class="nav" style="padding-top:30px">
+<div pageslide ps-open="checkedNavigation"  ps-side="left" ps-push="true" style="padding-top:50px" ps-size="300px">
+    <ul class="nav" >
         <!--<li ng-class="{'active':isActive('/home')}"><a href="#/home"><i class="glyphicon glyphicon-home"></i>Home</a></li>-->
         <li  ng-class="activeWhen(path()=='/home')" class="nav-header" >
             <a class="point" ng-click="toggleNavigation()" href="#/home"><i class="fa fa-home"></i>&nbsp;<span msg key="navbar.home"></span></a>
@@ -22,7 +22,7 @@
             </ul>
         </li>
         <li class="dropdown clear-fix ig-dropdown-menu" ng-show="!isAuthenticated()" ng-class="isActive('/useraccount') || isActive('/registration') || isActive('/forgotten')">
-            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i
+            <a class="dropdown-toggle ig-dropdown-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i
                     class="fa fa-user"></i>&nbsp;Hello Guest <span class="caret"></span></a>
             <ul class="dropdown-menu ig-dropdown-menu">
                 <li  class="">

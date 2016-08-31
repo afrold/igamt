@@ -97,7 +97,7 @@
                     <!--</div>-->
                     <!--<div class="col-md-12">-->
                     <!--<div ng-show="!igdocument" class="btn-group btn-group-sm pull-left" data-toggle="buttons">-->
-                    <!--<label class="btn btn-primary btn-xs"-->
+                    <!--<label class="btn btn-raised btn-primary btn-xs"-->
                     <!--ng-click="$parent.hl7Version = vr; loadIGDocumentsByVersion()"-->
                     <!--ng-class="{'active':vr === hl7Version}" ng-repeat="vr in hl7Versions">-->
                     <!--<input ng-disabled="loading" type="radio" ng-value="vr" ng-model="$parent.hl7Version">{{vr}}-->
@@ -136,9 +136,9 @@
         <div class="row">
             <div class="col-md-12">
 
-                <button class="btn btn-default" type="button" ng-click="cancel()"><i class="fa fa-times"></i>Cancel
+                <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times"></i>Cancel
                 </button>
-                <button class="btn btn-info" type="button" ng-click="ok()" ng-disabled="okDisabled"><i
+                <button class="btn btn-raised btn-info" type="button" ng-click="ok()" ng-disabled="okDisabled"><i
                         class="fa fa-check"></i>Submit
                 </button>
             </div>
@@ -169,10 +169,10 @@
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+        <button class="btn btn-raised btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                 class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -191,13 +191,13 @@
             be lost</p>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
+        <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
                 class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
         </button>
-        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
                 class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -215,13 +215,13 @@
             All unsaved changes will be lost</p>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
+        <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
                 class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
         </button>
-        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
                 class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -248,7 +248,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-md" ng-click="close()"><span><i class="fa fa-times fa-fw">
+        <button class="btn btn-raised btn-primary btn-md" ng-click="close()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Close</span>
         </button>
     </div>
@@ -278,7 +278,7 @@
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-md" ng-click="close()"><span><i class="fa fa-times fa-fw">
+        <button class="btn btn-raised btn-primary btn-md" ng-click="close()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Close</span>
         </button>
     </div>
@@ -295,17 +295,17 @@
                 </div>
                 <div class="col-md-12">
                     <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                        <label class="btn btn-primary btn-xs" ng-click="xmlFormat = 'Validation'"
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat = 'Validation'"
                                ng-class="{'active':xmlFormat === 'Validation'}">
                             <input ng-disabled="loading" type="radio" ng-value="xmlFormat" ng-model="$parent.xmlFormat">NIST
                             Validation Format
                         </label>
-                        <label class="btn btn-primary btn-xs" ng-click="xmlFormat = 'Display'"
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat = 'Display'"
                                ng-class="{'active':xmlFormat === 'Display'}">
                             <input ng-disabled="loading" type="radio" ng-value="xmlFormat" ng-model="$parent.xmlFormat">NIST
                             Display Format
                         </label>
-                        <label class="btn btn-primary btn-xs" ng-click="xmlFormat = 'Gazelle'"
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat = 'Gazelle'"
                                ng-class="{'active':xmlFormat === 'Gazelle'}">
                             <input ng-disabled="loading" type="radio" ng-value="xmlFormat" ng-model="$parent.xmlFormat">Gazelle
                             Format
@@ -343,11 +343,11 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-sm"
+        <button class="btn btn-raised btn-primary btn-sm"
                 ng-disabled="xmlFormat === '' || xmlFormat === null || selectedMessagesIDs === null || selectedMessagesIDs.length  === 0 "
                 ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw"></i>Export</span>
         </button>
-        <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
@@ -366,7 +366,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                            <label class="btn btn-primary btn-xs"
+                            <label class="btn btn-raised btn-primary btn-xs"
                                    ng-click="selectedHL7Version = vr; loadTablesByVersion(vr)"
                                    ng-class="{'active':vr === selectedHL7Version}" ng-repeat="vr in hl7Versions">
                                 <input type="radio" ng-value="vr" ng-model="$parent.selectedHL7Version">{{vr}}</input>
@@ -437,13 +437,13 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
+            <button class="btn btn-raised btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
                     ng-click="save()"><span><i
                     class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-            <button class="btn btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
+            <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
                     ng-click="cancel()"><span><i
                     class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-            <button class="btn btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading"
+            <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading"
                     ng-click="cancel()"><span><i
                     class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
         </div>
@@ -481,8 +481,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-sm" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-            <button class="btn btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+            <button class="btn btn-raised btn-primary btn-sm" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+            <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
         </div>
     </script>
 
@@ -565,13 +565,13 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
+        <button class="btn btn-raised btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
                 ng-click="save()"><span><i
                 class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-        <button class="btn btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
                 ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-        <button class="btn btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading"
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading"
                 ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
     </div>
@@ -600,9 +600,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
+                    <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
                     </button>
-                    <button class="btn btn-primary" type="button" ng-click="ok()"
+                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()"
                             ng-disabled="addDT.$invalid || !isInDts(newDatatype)"><i class="fa fa-check fa-fw"></i>Add
                     </button>
                 </div>
@@ -635,10 +635,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>
+                    <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>
                         Cancel
                     </button>
-                    <button class="btn btn-primary" type="button" ng-click="ok()"
+                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()"
                             ng-disabled="addSeg.$invalid || !isInSegs(newSegment)"><i class="fa fa-check"></i>Add
                     </button>
                 </div>
