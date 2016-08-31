@@ -2337,3 +2337,30 @@ input[type="file"] {
   padding: 6px 12px;
   cursor: pointer;
 }
+
+.form-group label.control-label {
+    font-size: 15px;
+    line-height: 0;
+    font-weight: 500;
+    margin: 16px 0 0 0;}
+
+.input-group-addon {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
+    color: #222;
+    text-align: center;
+    background-color: #eeeeee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+
+.btn-group-raised .btn.btn-primary, .btn-group-raised .input-group-btn .btn.btn-primary, .btn.btn-fab.btn-primary, .btn.btn-raised.btn-primary, .input-group-btn .btn.btn-fab.btn-primary, .input-group-btn .btn.btn-raised.btn-primary{
+  
+background-color: rgb(79, 195, 247);
+  color :white;
+
+}
