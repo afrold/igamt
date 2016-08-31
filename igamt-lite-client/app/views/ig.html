@@ -147,13 +147,13 @@
 </script>
 <script type="text/ng-template" id="MessageEventsNode.html">
     <tr tt-node is-branch="node.type === 'message'">
-        <td class="" style="width:300px">
+        <td class="" style="width:300px;color:black">
            
             <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool"
                    ng-change="trackSelections(bool, node)"></input><span ng-bind="::node.name"
                                                                          style="margin-left : 7px;"></span>
         </td>
-        <td class="" style="width:585px" ng-bind="::node.description"></td>
+        <td class="" style="width:585px;color:black"" ng-bind="::node.description"></td>
         
     </tr>
 
@@ -459,24 +459,27 @@
             <form class="form-horizontal" novalidate>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <input class="form-control" type="file" id="file" name="file"/>
+                        <label for="file" class="custom-file-upload">
+                            <i class="fa fa-cloud-upload"></i> Choose CSV File
+                        </label>
+                        <input id="file" type="file" name="file"/>
                     </div>
                 </div>
 
-                <p>How it works</p>
-                <ol>
-                    <li>Download 'ValueSet Empty Form (Excel)'</li>
-                    <li>Edit sheets using MS Excel</li>
-                    <li>Save as CSV file</li>
-                    <li>Import CSV file</li>
+                <p style="color:blue;">How it works</p>
+                <ol style="color:blue;">
+                    <li style="color:blue;">Download 'ValueSet Empty Form (Excel)'</li>
+                    <li style="color:blue;">Edit sheets using MS Excel</li>
+                    <li style="color:blue;">Save as CSV file</li>
+                    <li style="color:blue;">Import CSV file</li>
                 </ol>
 
-                <p>Files</p>
+                <p style="color:blue;">Files</p>
                 <ul>
-                    <li><a class="pointer" href="docs/ValueSet_EmptyForm_Excel.xlsx" target="_blank"><i class="fa fa-file-excel-o fa-fw"></i>ValueSet Empty Form (Excel)</a></li>
-                    <li><a class="pointer" href="docs/ValueSet_EmptyForm_csv.csv" target="_blank"><i class="fa fa-file-code-o fa-fw"></i>ValueSet Empty Form (CSV)</a></li>
-                    <li><a class="pointer" href="docs/ValueSet_sample_excel.xlsx" target="_blank"><i class="fa fa-file-excel-o fa-fw"></i>ValueSet Sample Form (Excel)</a></li>
-                    <li><a class="pointer" href="docs/ValueSet_sample_csv.csv" target="_blank"><i class="fa fa-file-code-o fa-fw"></i>ValueSet Sample Form (CSV)</a></li>
+                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_EmptyForm_Excel.xlsx" target="_blank"><i class="fa fa-file-excel-o fa-fw"></i>ValueSet Empty Form (Excel)</a></li>
+                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_EmptyForm_csv.csv" target="_blank"><i class="fa fa-file-code-o fa-fw"></i>ValueSet Empty Form (CSV)</a></li>
+                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_sample_excel.xlsx" target="_blank"><i class="fa fa-file-excel-o fa-fw"></i>ValueSet Sample Form (Excel)</a></li>
+                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_sample_csv.csv" target="_blank"><i class="fa fa-file-code-o fa-fw"></i>ValueSet Sample Form (CSV)</a></li>
                 </ul>
             </form>
         </div>

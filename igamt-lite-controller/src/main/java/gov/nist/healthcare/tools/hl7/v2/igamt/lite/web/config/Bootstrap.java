@@ -97,7 +97,6 @@ public class Bootstrap implements InitializingBean {
     // new DataCorrection().updateValueSetsForDT();
     // addVersionAndScopetoPRELOADEDIG();
     // addVersionAndScopetoHL7IG();
-
   }
 
   private void loadPreloadedIGDocuments() throws Exception {
