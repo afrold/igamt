@@ -476,10 +476,10 @@
            
 
         </td>
-        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn( 'usage')">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
             <div>
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
-                    <select class="form-control input-sm" name="usage" ng-change="setDirty()" required
+                    <select class="form-control input-sm" name="usage" ng-change="setDirty();openPredicateDialog(node);" required
                             ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
                 </span>
 
@@ -487,7 +487,7 @@
                     <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true)">
                         C({{constraint.trueUsage}}/{{constraint.falseUsage}})
                     </p>
-                    <a ng-click="deletePredicateByPath(node.path)" class="point">
+                    <a ng-click="deletePredicateByPath(node.path, message)" class="point">
                         <span title="Delete Predicate and Change Usage"><i class="fa fa-times fa-fw"></i></span>
                     </a>
                 </div>
@@ -524,7 +524,7 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn( 'valueSet')">
             <div>-</div>
         </td>
-        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn( 'predicate')">
+        <td class="col-xs-1" ng-style="predWidth" ng-class="{'has-error': node.obj.usage === 'C' && countPredicate(node.path) != 1}" ng-show="viewSettings.isVisibleColumn( 'predicate')">
             <div>
                 <div ng-show="countPredicate(node.path)===0 && node.obj.usage==='C'">
                     <a ng-click="managePredicate(node, message)" class="point">
@@ -625,7 +625,7 @@
             <div>
 
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
-                    <select class="form-control input-sm" name="usage" ng-change="setDirty()" required
+                    <select class="form-control input-sm" name="usage" ng-change="setDirty(); openPredicateDialog(node);" required
                             ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
                 </span>
 
@@ -633,7 +633,7 @@
                     <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true)">
                         C({{constraint.trueUsage}}/{{constraint.falseUsage}})
                     </p>
-                    <a ng-click="deletePredicateByPath(node.path)" class="point">
+                    <a ng-click="deletePredicateByPath(node.path, message)" class="point">
                         <span title="Delete Predicate and Change Usage"><i class="fa fa-times fa-fw"></i></span>
                     </a>
                 </div>
@@ -1260,8 +1260,8 @@
                                                                     <option value="OR">OR</option>
                                                                     <option value="XOR">XOR</option>
                                                                     <option value="IFTHEN">IFTHEN(IMPLY)</option>
-                                                                    <option value="FORALL">FORALL</option>
-                                                                    <option value="EXIST">EXIST</option>
+                                                                    <option value="FORALL">FORALL(True, if all assertions are true)</option>
+                                                                    <option value="EXIST">EXIST(True, if one of assertions is true)</option>
                                                                 </select>
                                                                 <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                             </td>
@@ -1307,7 +1307,8 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-raised btn-success btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+                                <p ng-show="countPredicateForTemp() != 1" class="warning">Single Predicate allowed!</p>
+                                <button class="btn btn-raised btn-success btn-sm" ng-show="changed" ng-disabled="countPredicateForTemp() != 1" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
                                 <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
                                 <button class="btn btn-raised btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
                             </div>
@@ -1368,13 +1369,13 @@
                     </span>
                     <span class="pull-right">
                         <div class="btn-group btn-group-sm" data-toggle="buttons">
-                            <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Free'; newConstraint.constraintId = calNextCSID();" ng-class="{'active':constraintType === 'Free'}">
+                            <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Free'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, selectedMessage.structID);" ng-class="{'active':constraintType === 'Free'}">
                                 <input type="radio" ng-value="constraintType">Add new Free-Text Conf.Statement
                             </label>
-                            <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID();" ng-class="{'active':constraintType === 'Plain'}">
+                            <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, selectedMessage.structID);" ng-class="{'active':constraintType === 'Plain'}">
                                 <input type="radio" ng-value="constraintType">Add New Plain Conf.Statement
                             </label>
-                            <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID();" ng-class="{'active':constraintType === 'Complex'}">
+                            <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID(igdocument.metaData.ext, selectedMessage.structID);" ng-class="{'active':constraintType === 'Complex'}">
                                 <input type="radio" ng-value="constraintType">Add New Complex Conf.Statement
                             </label>
                         </div>
@@ -1568,8 +1569,8 @@
                                         <option value="OR">OR</option>
                                         <option value="XOR">XOR</option>
                                         <option value="IFTHEN">IFTHEN(IMPLY)</option>
-                                        <option value="FORALL">FORALL</option>
-                                        <option value="EXIST">EXIST</option>
+                                        <option value="FORALL">FORALL(True, if all assertions are true)</option>
+                                        <option value="EXIST">EXIST(True, if one of assertions is true)</option>
                                     </select>
                                     <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                 </td>
@@ -2283,4 +2284,19 @@
             <div align="center"> - </div>
         </td>
     </tr>
+</script>
+<script type="text/ng-template" id="DeleteMessagePredicate.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Delete Confirmation</h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete the predicate? </p>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+    </div>
 </script>

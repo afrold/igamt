@@ -102,8 +102,9 @@ angular.module('igl')
             });
         };
 
-
-
+        $scope.openPredicateDialog =function (node){
+            if(node.obj.usage == 'C') $scope.managePredicate(node, $rootScope.message);
+        };
 
         $scope.expanded = true;
         $scope.expandAll = function() {
@@ -654,15 +655,23 @@ angular.module('igl')
         };
 
 
-        $scope.deletePredicateByPath = function(position) {
-            for (var i = 0, len1 = $rootScope.message.predicates.length; i < len1; i++) {
-                if ($rootScope.message.predicates[i].constraintTarget.indexOf(position) === 0) {
-                    $rootScope.message.predicates.splice($rootScope.message.predicates.indexOf($rootScope.message.predicates[i]), 1);
-                    $scope.editForm.$dirty = true;
-                    return true;
+        $scope.deletePredicateByPath = function(position, message) {
+            var modalInstance = $modal.open({
+                templateUrl: 'DeleteMessagePredicate.html',
+                controller: 'DeleteMessagePredicateCtrl',
+                size: 'md',
+                resolve: {
+                    position: function() {
+                        return position;
+                    },
+                    message: function() {
+                        return message;
+                    }
                 }
-            }
-            return false;
+            });
+            modalInstance.result.then(function() {
+                $scope.setDirty();
+            });
         };
 
         $scope.isVisible = function(node) {
@@ -1030,7 +1039,18 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
 
     $scope.setChanged = function() {
         $scope.changed = true;
-    }
+    };
+
+    $scope.countPredicateForTemp = function() {
+        var count = 0
+        if ($rootScope.message != null) {
+            for (var i = 0, len1 = $scope.tempPredicates.length; i < len1; i++) {
+                if ($scope.tempPredicates[i].constraintTarget.indexOf($scope.selectedNode.path) === 0)
+                    count = count + 1;
+            }
+        }
+        return count;
+    };
 
     $scope.initPredicate = function() {
         $scope.newConstraint = angular.fromJson({
@@ -2195,20 +2215,30 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         $rootScope.deltaMsgList = CompareService.cmpMessage(JSON.stringify(msg1), msg2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
         //$scope.dataList = result;
 
-
-
-
         if ($scope.dynamicMsg_params) {
             console.log($rootScope.deltaMsgList);
             $scope.showDelta = true;
             $scope.status.isSecondOpen = true;
             $scope.dynamicMsg_params.refresh();
         }
+    };
+});
 
+angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, $modalInstance, position, message, $rootScope) {
+    $scope.selectedMessage = message;
+    $scope.position = position;
+    $scope.delete = function() {
+        for (var i = 0, len1 = $scope.selectedSegment.predicates.length; i < len1; i++) {
+            if ($scope.selectedMessage.predicates[i].constraintTarget.indexOf(position) === 0) {
+                $scope.selectedMessage.predicates.splice($scope.selectedMessage.predicates.indexOf($scope.selectedMessage.predicates[i]), 1);
+                $modalInstance.close();
+                return;
+            }
+        }
+        $modalInstance.close();
     };
 
-
-
-
-
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
 });

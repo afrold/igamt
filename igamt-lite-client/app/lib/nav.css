@@ -138,3 +138,11 @@
 .igl-btn-choice .active {
     background:#01579B;
 }
+
+.nav-tabs {
+    border-bottom: 1px solid #01579B;
+}
+
+.nav-tabs > li {
+     margin-bottom: 0px;
+}
