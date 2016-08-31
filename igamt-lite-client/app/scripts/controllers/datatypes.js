@@ -48,6 +48,25 @@ angular.module('igl')
             });
         };
 
+        $scope.deletePredicate = function(position, datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'DeleteDatatypePredicate.html',
+                controller: 'DeleteDatatypePredicateCtrl',
+                size: 'md',
+                resolve: {
+                    position: function() {
+                        return position;
+                    },
+                    datatype: function() {
+                        return datatype;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {
+                $scope.setDirty();
+            });
+        };
+
 
         $scope.OtoX = function(message) {
             console.log(message);
@@ -255,19 +274,6 @@ angular.module('igl')
             });
 
         };
-
-        $scope.deletePredicateByPosition = function(position) {
-            for (var i = 0, len1 = $rootScope.datatype.predicates.length; i < len1; i++) {
-                if ($rootScope.datatype.predicates[i].constraintTarget.indexOf(position + '[') === 0) {
-                    $rootScope.datatype.predicates.splice($rootScope.datatype.predicates.indexOf($rootScope.datatype.predicates[i]), 1);
-                    $scope.editForm.$dirty = true;
-                    return true;
-                }
-            }
-            return false;
-        };
-
-
 
         $scope.editVS = function(field) {
             $scope.editableVS = field.id;
@@ -1588,9 +1594,6 @@ angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInst
 
 });
 
-
-
-
 angular.module('igl').controller('DeleteComponentCtrl', function($scope, $modalInstance, componentToDelete, datatype, $rootScope, SegmentService, blockUI) {
     $scope.componentToDelete = componentToDelete;
     $scope.loading = false;
@@ -1876,6 +1879,23 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
         }
 
     };
+});
 
+angular.module('igl').controller('DeleteDatatypePredicateCtrl', function($scope, $modalInstance, position, datatype, $rootScope) {
+    $scope.selectedDatatype = datatype;
+    $scope.position = position;
+    $scope.delete = function() {
+        for (var i = 0, len1 = $scope.selectedDatatype.predicates.length; i < len1; i++) {
+            if ($scope.selectedDatatype.predicates[i].constraintTarget.indexOf($scope.position + '[') === 0) {
+                $scope.selectedDatatype.predicates.splice($scope.selectedDatatype.predicates.indexOf($scope.selectedDatatype.predicates[i]), 1);
+                $modalInstance.close();
+                return;
+            }
+        }
+        $modalInstance.close();
+    };
 
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
 });

@@ -688,7 +688,7 @@
                 <p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
                     C({{p.trueUsage}}/{{p.falseUsage}})
                 </p>
-                <a ng-click="deletePredicateByPosition(node.position)" class="point">
+                <a ng-click="deletePredicate(node.position, datatype)" class="point">
                     <span title="Delete Predicate and Change Usage"><i class="fa fa-times fa-fw"></i></span>
                 </a>
             </div>
@@ -2019,6 +2019,22 @@
     </div>
     <div class="modal-body">
         <p>Are you sure you want to delete Component: {{componentToDelete.name}} ? </p>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="DeleteDatatypePredicate.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Delete Confirmation</h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete the predicate? </p>
     </div>
     </div>
     <div class="modal-footer">

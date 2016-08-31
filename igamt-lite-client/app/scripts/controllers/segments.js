@@ -661,15 +661,23 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         return count;
     };
 
-    $scope.deletePredicateByPosition = function(position) {
-        for (var i = 0, len1 = $rootScope.segment.predicates.length; i < len1; i++) {
-            if ($rootScope.segment.predicates[i].constraintTarget.indexOf(position + '[') === 0) {
-                $rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf($rootScope.segment.predicates[i]), 1);
-                $scope.editForm.$dirty = true;
-                return true;
+    $scope.deletePredicateByPosition = function(position, segment) {
+        var modalInstance = $modal.open({
+            templateUrl: 'DeleteSegmentPredicate.html',
+            controller: 'DeleteSegmentPredicateCtrl',
+            size: 'md',
+            resolve: {
+                position: function() {
+                    return position;
+                },
+                segment: function() {
+                    return segment;
+                }
             }
-        }
-        return false;
+        });
+        modalInstance.result.then(function() {
+            $scope.setDirty();
+        });
     };
 
     $scope.countPredicateOnComponent = function(position, componentId) {
@@ -2012,4 +2020,23 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
     };
 
 
+});
+
+angular.module('igl').controller('DeleteSegmentPredicateCtrl', function($scope, $modalInstance, position, segment, $rootScope) {
+    $scope.selectedSegment = segment;
+    $scope.position = position;
+    $scope.delete = function() {
+        for (var i = 0, len1 = $scope.selectedSegment.predicates.length; i < len1; i++) {
+            if ($scope.selectedSegment.predicates[i].constraintTarget.indexOf($scope.position + '[') === 0) {
+                $scope.selectedSegment.predicates.splice($scope.selectedSegment.predicates.indexOf($scope.selectedSegment.predicates[i]), 1);
+                $modalInstance.close();
+                return;
+            }
+        }
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
 });
