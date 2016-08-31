@@ -94,10 +94,10 @@ if (self === top) {
 <!--</div>-->
 <script type="text/ng-template" id="templateRow.html">
     <div class="triangle"></div>
-    <div style="z-index: 99999">
-        <div class="col-md-12">
+    <div style="z-index: 99999" class="cp-tooltip">
+        <div class="col-md-12" class="cp-tooltip">
             <h5>Conformance Profiles</h5>
-            <ul>
+            <ul class="cp-tooltip">
                 <li ng-repeat="msg in row.profile.messages.children">
                     {{msg.name}}
                 </li>
