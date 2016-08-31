@@ -678,7 +678,7 @@ angular
                     ['Import HL7 Value Sets',
 
                         function($itemScope) {
-                            $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary);
+                            $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
                         }
                     ], 
 

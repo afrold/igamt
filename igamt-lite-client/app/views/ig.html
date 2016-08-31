@@ -422,9 +422,7 @@
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="table in selectedTables">
-                                    <td>
-                                        <input class="form-control" type="text" ng-model="table.bindingIdentifier"/>
-                                    </td>
+                                    <td>{{table.bindingIdentifier}}</td>
                                     <td>{{table.name}}</td>
                                     <td>{{table.hl7Version}}</td>
                                     <td>{{table.oid}}</td>
@@ -546,8 +544,11 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="table in selectedTables">
-                                <td class="col-sm-7">
+                                <td class="col-sm-7" ng-class="{'has-error': isDuplicatedID(table)}" >
                                     <textarea rows="3" class="form-control" ng-model="table.bindingIdentifier" />
+                                    <div ng-show="isDuplicatedID(table)">
+                                        <p class="warning">Duplicated ID</p>
+                                    </div>
                                 </td>
                                 <td class="col-sm-2">
                                     <textarea rows="3" disabled class="form-control" ng-model="table.name" />
