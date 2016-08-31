@@ -532,3 +532,26 @@ a:visited {
 .modal-header{
     background: #0277BD;
 }
+
+.home-page-panel {
+    height:300px;
+}
+
+.home-page-panel  .panel-heading{
+    background-color:#4FC3F7;
+}
+
+.btn {
+    border-radius: 0px;
+    color:white;
+    font-weight:bold;
+}
+
+.panel-heading > a {
+    color:white;
+    font-weight:bold;
+}
+
+li.active > a{
+    font-weight:bold;
+}
