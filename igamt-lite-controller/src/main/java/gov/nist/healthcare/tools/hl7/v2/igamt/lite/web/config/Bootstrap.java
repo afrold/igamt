@@ -95,8 +95,8 @@ public class Bootstrap implements InitializingBean {
     // dataCorrectionSectionPosition.resetSectionPositions();
     // new DataCorrection().updateValueSetForSegment();
     // new DataCorrection().updateValueSetsForDT();
-//    addVersionAndScopetoPRELOADEDIG();
-//    addVersionAndScopetoHL7IG();
+    addVersionAndScopetoPRELOADEDIG();
+    addVersionAndScopetoHL7IG();
 
   }
 
