@@ -1436,7 +1436,7 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 					String temp="";
 					if((f.getTables().size()>1)){
 						for (TableLink t : f.getTables()){
-							
+
 							temp= temp + ","+tableService.findById(t.getId()).getBindingIdentifier();
 
 						} 
@@ -1583,97 +1583,95 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 	}
 
 	private nu.xom.Element serializeOneDatatype(DatatypeLink dl) {
-		Datatype d = datatypeService.findById(dl.getId());
-
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
-		elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
-		elmDatatype.addAttribute(new Attribute("Name", d.getName()));
-		elmDatatype.addAttribute(new Attribute("Label",  d.getLabel()));
-		elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));
-		elmDatatype.addAttribute(new Attribute("Comment", d.getComment()));
-		elmDatatype.addAttribute(new Attribute("Hl7Version", d.getHl7Version() == null ? "" : d
-				.getHl7Version()));// TODO Check do we want here?
+		if (dl != null && dl.getId() != null) {
+			Datatype d = datatypeService.findById(dl.getId());
+			if (d != null){
+				elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
+				elmDatatype.addAttribute(new Attribute("Name", d.getName()));
+				elmDatatype.addAttribute(new Attribute("Label",  d.getLabel()));
+				elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));
+				elmDatatype.addAttribute(new Attribute("Comment", d.getComment()));
+				elmDatatype.addAttribute(new Attribute("Hl7Version", d.getHl7Version() == null ? "" : d
+						.getHl7Version()));// TODO Check do we want here?
+
+				elmDatatype.addAttribute(new Attribute("id", d.getId()));
 
 
-		elmDatatype.addAttribute(new Attribute("id", d.getId()));
+				if (d.getComponents() != null) {
 
+					Map<Integer, Component> components = new HashMap<Integer, Component>();
 
-		if (d.getComponents() != null) {
+					for (Component c : d.getComponents()) {
+						components.put(c.getPosition(), c);
+					}
 
-			Map<Integer, Component> components = new HashMap<Integer, Component>();
-
-			for (Component c : d.getComponents()) {
-				components.put(c.getPosition(), c);
-			}
-
-			for (int i = 1; i < components.size() + 1; i++) {
-				Component c = components.get(i);
-				nu.xom.Element elmComponent = new nu.xom.Element("Component");
-				elmComponent.addAttribute(new Attribute("Name", c.getName()));
-				elmComponent.addAttribute(new Attribute("Usage", c.getUsage().toString()));
-				if (c.getDatatype() != null && c.getDatatype().getLabel() != null) {
-					elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype().getLabel()));
-				}
-				elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
-				if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
-					elmComponent.addAttribute(new Attribute("MaxLength", c.getMaxLength()));
-				if (c.getConfLength() != null && !c.getConfLength().equals(""))
-
-					elmComponent.addAttribute(new Attribute("ConfLength", c.getConfLength()));
-				if (c.getComment() != null && !c.getComment().equals(""))
-					elmComponent.addAttribute(new Attribute("Comment", c.getComment()));
-				elmComponent.addAttribute(new Attribute("Position", c.getPosition().toString()));
-				if (c.getText() != null & !c.getText().isEmpty()) {
-					elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
-				}
-
-				if (c.getTables() != null && (c.getTables().size()>0)){
-					String temp="";
-					for (TableLink t : c.getTables()){
-						if (t.getId() != null && tableService.findById(t.getId()) != null){
-							temp = temp + "," + tableService.findById(t.getId()).getBindingIdentifier();
+					for (int i = 1; i < components.size() + 1; i++) {
+						Component c = components.get(i);
+						nu.xom.Element elmComponent = new nu.xom.Element("Component");
+						elmComponent.addAttribute(new Attribute("Name", c.getName()));
+						elmComponent.addAttribute(new Attribute("Usage", c.getUsage().toString()));
+						if (c.getDatatype() != null && c.getDatatype().getLabel() != null) {
+							elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype().getLabel()));
 						}
-					} 
-					temp=temp.substring(1);
-					elmComponent.addAttribute(new Attribute("Binding", 
-							temp));
-				}
+						elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
+						if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
+							elmComponent.addAttribute(new Attribute("MaxLength", c.getMaxLength()));
+						if (c.getConfLength() != null && !c.getConfLength().equals(""))
 
-				List<Constraint> constraints =
-						findConstraints(i, d.getPredicates(), d.getConformanceStatements());
-				if (!constraints.isEmpty()) {
-					for (Constraint constraint : constraints) {
-						nu.xom.Element elmConstraint =
-								serializeConstraintToElement(constraint, d.getName() + ".");
-						elmComponent.appendChild(elmConstraint);
+							elmComponent.addAttribute(new Attribute("ConfLength", c.getConfLength()));
+						if (c.getComment() != null && !c.getComment().equals(""))
+							elmComponent.addAttribute(new Attribute("Comment", c.getComment()));
+						elmComponent.addAttribute(new Attribute("Position", c.getPosition().toString()));
+						if (c.getText() != null & !c.getText().isEmpty()) {
+							elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
+						}
+
+						if (c.getTables() != null && (c.getTables().size()>0)){
+							String temp="";
+							for (TableLink t : c.getTables()){
+								if (t.getId() != null && tableService.findById(t.getId()) != null){
+									temp = temp + "," + tableService.findById(t.getId()).getBindingIdentifier();
+								}
+							} 
+							temp=temp.substring(1);
+							elmComponent.addAttribute(new Attribute("Binding", 
+									temp));
+						}
+
+						List<Constraint> constraints =
+								findConstraints(i, d.getPredicates(), d.getConformanceStatements());
+						if (!constraints.isEmpty()) {
+							for (Constraint constraint : constraints) {
+								nu.xom.Element elmConstraint =
+										serializeConstraintToElement(constraint, d.getName() + ".");
+								elmComponent.appendChild(elmConstraint);
+							}
+						}
+						elmDatatype.appendChild(elmComponent);
+					}
+					if (d.getComponents().size() == 0) {
+						nu.xom.Element elmComponent = new nu.xom.Element("Component");
+						elmComponent.addAttribute(new Attribute("Name", d.getName()));
+						elmComponent.addAttribute(new Attribute("Position", "1"));
+						elmDatatype.appendChild(elmComponent);
+					}
+
+
+					if ((d != null && !d.getDefPreText().isEmpty()) ||(d != null && !d.getDefPostText().isEmpty()) ){
+						if (d.getDefPreText() != null && !d.getDefPreText().isEmpty()) {
+							elmDatatype.appendChild(this.serializeRichtext("Text1", d.getDefPreText()));
+						}
+						if (d.getDefPostText() != null && !d.getDefPostText().isEmpty()) {
+							elmDatatype.appendChild(this.serializeRichtext("Text2", d.getDefPostText()));
+						}
+					}
+
+					if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()){
+						elmDatatype.appendChild(this.serializeRichtext("UsageNote", d.getUsageNote()));
 					}
 				}
-				elmDatatype.appendChild(elmComponent);
 			}
-			if (d.getComponents().size() == 0) {
-				nu.xom.Element elmComponent = new nu.xom.Element("Component");
-				elmComponent.addAttribute(new Attribute("Name", d.getName()));
-				elmComponent.addAttribute(new Attribute("Position", "1"));
-				elmDatatype.appendChild(elmComponent);
-			}
-
-
-			if ((d != null && !d.getDefPreText().isEmpty()) ||(d != null && !d.getDefPostText().isEmpty()) ){
-				if (d.getDefPreText() != null && !d.getDefPreText().isEmpty()) {
-					elmDatatype.appendChild(this.serializeRichtext("Text1", d.getDefPreText()));
-				}
-				if (d.getDefPostText() != null && !d.getDefPostText().isEmpty()) {
-					elmDatatype.appendChild(this.serializeRichtext("Text2", d.getDefPostText()));
-				}
-			}
-
-			if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()){
-				elmDatatype.appendChild(this.serializeRichtext("UsageNote", d.getUsageNote()));
-			}
-
-
-
-
 		}
 		return elmDatatype;
 	}
