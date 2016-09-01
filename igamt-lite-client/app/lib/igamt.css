@@ -538,7 +538,9 @@ a:visited {
 }
 
 .home-page-panel  .panel-heading{
-    background-color:#4FC3F7;
+    background-color:#29B6F6;
+    color:white;
+    font-weight: bold;
 }
 
 .btn {
@@ -560,3 +562,7 @@ li.active > a{
     background-color: white;
     color:black;
 }
+
+.form-group .checkbox label, .form-group .radio label, .form-group label {
+     color: black;
+ }

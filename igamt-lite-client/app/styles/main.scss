@@ -53,7 +53,7 @@ $icon-font-path: "../fonts/";
 /* Space out content a bit */
 body {
   background: #01579b;
-  color: white;
+  color: black;
 }
 
 
@@ -2099,7 +2099,7 @@ input.form-control-short80 {
  }
 
 .home-page-panel > .panel-heading{
-   background-color:#4FC3F7;
+   background-color:#29B6F6;
 }
 
 //
@@ -2306,7 +2306,7 @@ tr.tbl-header {
  }
 
 .panel-primary .panel-level1 > .panel-heading {
-  background-color: #4FC3F7;
+  background-color: #29B6F6;
  }
 
 .tab-content, .tab-content > .tab-pane {
@@ -2336,4 +2336,35 @@ input[type="file"] {
   display: inline-block;
   padding: 6px 12px;
   cursor: pointer;
+}
+
+.form-group label.control-label {
+    font-size: 15px;
+    line-height: 0;
+    font-weight: 500;
+    margin: 16px 0 0 0;}
+
+.input-group-addon {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
+    color: #222;
+    text-align: center;
+    background-color: #eeeeee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+
+.btn-group-raised .btn.btn-primary, .btn-group-raised .input-group-btn .btn.btn-primary, .btn.btn-fab.btn-primary, .btn.btn-raised.btn-primary, .input-group-btn .btn.btn-fab.btn-primary, .input-group-btn .btn.btn-raised.btn-primary{
+  
+background-color: rgb(79, 195, 247);
+  color :white;
+
+}
+
+#appcontainer{
+  margin-bottom:50px;
 }
