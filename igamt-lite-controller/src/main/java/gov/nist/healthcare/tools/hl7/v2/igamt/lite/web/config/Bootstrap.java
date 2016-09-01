@@ -41,9 +41,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -95,9 +97,12 @@ public class Bootstrap implements InitializingBean {
     // dataCorrectionSectionPosition.resetSectionPositions();
     // new DataCorrection().updateValueSetForSegment();
     // new DataCorrection().updateValueSetsForDT();
-    //addVersionAndScopetoPRELOADEDIG();
-    //addVersionAndScopetoHL7IG();
-
+	  //Note: Run The next four lines just one time and then comment them.
+//	  addVersionAndScopetoPRELOADEDIG(); 
+//	  addVersionAndScopetoHL7IG();
+//	  addVersionAndScopetoUSERIG();	 
+//	  addScopeUserToOldClonedPRELOADEDIG();
+	  
   }
 
   private void loadPreloadedIGDocuments() throws Exception {
@@ -161,111 +166,251 @@ public class Bootstrap implements InitializingBean {
 
     }
   }
+  private void addVersionAndScopetoUSERIG() throws ProfileException, IGDocumentException {
+	    List<String> hl7Versions = new ArrayList<String>();
+	    hl7Versions.add("2.1");
+	    hl7Versions.add("2.2");
+	    hl7Versions.add("2.3");
+	    hl7Versions.add("2.3.1");
+	    hl7Versions.add("2.4");
+	    hl7Versions.add("2.5");
+	    hl7Versions.add("2.5.1");
+	    hl7Versions.add("2.6");
+	    hl7Versions.add("2.7");
 
-  private void addVersionAndScopetoPRELOADEDIG() {
+	    List<IGDocument> igDocuments =
+	        documentService.findByScopeAndVersionsInIg(IGDocumentScope.USER, hl7Versions);
+	    for (IGDocument igd : igDocuments) {
+	    	if(igd.getProfile().getScope()==IGDocumentScope.PRELOADED){
+	    		System.out.println(igd.getProfile().getScope());
+	    		igd.getProfile().setScope(IGDocumentScope.USER);
+	    	}
+	      Messages msgs = igd.getProfile().getMessages();
+	      System.out.println(msgs.getChildren().size());
+	      for (Message msg : msgs.getChildren()) {
+	        msg.setScope(SCOPE.USER);
+	        msg.setHl7Version(igd.getMetaData().getHl7Version());
+
+
+	      }
+	      profileService.save(igd.getProfile());
+	      documentService.save(igd);
+	      messageService.save(msgs.getChildren());
+
+
+	    }
+	  }
+
+  private void addScopeUserToOldClonedPRELOADEDIG() {
     List<String> hl7Versions = new ArrayList<String>();
-    hl7Versions.add("2.1");
-    hl7Versions.add("2.2");
-    hl7Versions.add("2.3");
-    hl7Versions.add("2.3.1");
-    hl7Versions.add("2.4");
-    hl7Versions.add("2.5");
+//    hl7Versions.add("2.1");
+//    hl7Versions.add("2.2");
+//    hl7Versions.add("2.3");
+//    hl7Versions.add("2.3.1");
+//    hl7Versions.add("2.4");
+//    hl7Versions.add("2.5");
     hl7Versions.add("2.5.1");
-    hl7Versions.add("2.6");
-    hl7Versions.add("2.7");
+//    hl7Versions.add("2.6");
+//    hl7Versions.add("2.7");
 
     List<IGDocument> igDocuments =
-        documentService.findByScopeAndVersions(IGDocumentScope.PRELOADED, hl7Versions);
+        documentService.findByScopeAndVersionsInIg(IGDocumentScope.USER, hl7Versions);
     Set<String> segIds = new HashSet<String>();
     for (IGDocument igd : igDocuments) {
       Messages msgs = igd.getProfile().getMessages();
       for (Message msg : msgs.getChildren()) {
-        msg.setScope(SCOPE.PRELOADED);
-        for (SegmentRefOrGroup segRef : msg.getChildren()) {
+        if(msg.getScope()==SCOPE.USER||msg.getScope()==SCOPE.PRELOADED){
+        	msg.setScope(SCOPE.USER);
+	        for (SegmentRefOrGroup segRef : msg.getChildren()) {
+	
+	          if (segRef instanceof SegmentRef) {
+	            segIds.add(((SegmentRef) segRef).getRef().getId());
+	          } else if (segRef instanceof Group) {
+	            segIds.addAll(processGrp((Group) segRef));
+	          }
+	        }
+	        List<Segment> preSegs = segmentService.findByIds(segIds);
+	        Set<String> preDtsId = new HashSet<String>();
+	        Set<String> preVssId = new HashSet<String>();
+	        List<Segment> segToSave = new ArrayList<Segment>();
+	        List<Datatype> dtToSave = new ArrayList<Datatype>();
+	        List<Table> tableToSave = new ArrayList<Table>();
+	        for (Segment seg : preSegs) {
+	          if (seg.getScope() == SCOPE.PRELOADED) {
+	            seg.setScope(SCOPE.USER);
+	            for (Field fld : seg.getFields()) {
+	              preDtsId.add(fld.getDatatype().getId());
+	              for (TableLink t : fld.getTables()) {
+	                preVssId.add(t.getId());
+	              }
+	            }
+	            List<Datatype> preDts = datatypeService.findByIds(preDtsId);
+	            // List<Table> preVss=tableService.findAllByIds(preVssId);
+	            for (Datatype dt : preDts) {
+	              if (dt.getScope() == SCOPE.PRELOADED) {
+	                for (Component comp : dt.getComponents()) {
+	                  for (TableLink t : comp.getTables()) {
+	                    preVssId.add(t.getId());
+	                  }
+	                }
+	                dt.setScope(SCOPE.USER);
+	                dtToSave.add(dt);
+	
+	              }
+	            }
+	            Set<String> preDtsIdInComp = new HashSet<String>();
+	            for (Datatype dtInComp : dtToSave) {
+	              for (Component comp : dtInComp.getComponents()) {
+	
+	                preDtsIdInComp.add(comp.getDatatype().getId());
+	              }
+	
+	            }
+	            List<Datatype> preDtsInComp = datatypeService.findByIds(preDtsIdInComp);
+	            for (Datatype dt : preDtsInComp) {
+	              if (dt.getScope() == SCOPE.PRELOADED) {
+	                for (Component comp : dt.getComponents()) {
+	                  for (TableLink t : comp.getTables()) {
+	                    preVssId.add(t.getId());
+	                  }
+	                }
+	                dt.setScope(SCOPE.USER);
+	                dtToSave.add(dt);
+	
+	              }
+	            }
+	            List<Table> preVs = tableService.findAllByIds(preVssId);
+	
+	            for (Table preTable : preVs) {
+	              if (preTable.getScope() == SCOPE.PRELOADED) {
+	                preTable.setScope(SCOPE.USER);
+	                tableToSave.add(preTable);
+	              }
+	            }
+	            System.out.println(dtToSave);
+	            segToSave.add(seg);
+	
+	          }
+	        
+	        }
+	        segmentService.save(segToSave);
+	        datatypeService.save(dtToSave);
+	        tableService.save(tableToSave);
+	
+	        msg.setHl7Version(igd.getMetaData().getHl7Version());
 
-          if (segRef instanceof SegmentRef) {
-            segIds.add(((SegmentRef) segRef).getRef().getId());
-          } else if (segRef instanceof Group) {
-            segIds.addAll(processGrp((Group) segRef));
-          }
+
         }
-        List<Segment> preSegs = segmentService.findByIds(segIds);
-        Set<String> preDtsId = new HashSet<String>();
-        Set<String> preVssId = new HashSet<String>();
-        List<Segment> segToSave = new ArrayList<Segment>();
-        List<Datatype> dtToSave = new ArrayList<Datatype>();
-        List<Table> tableToSave = new ArrayList<Table>();
-        for (Segment seg : preSegs) {
-          if (seg.getScope() == SCOPE.USER) {
-            seg.setScope(SCOPE.PRELOADED);
-            for (Field fld : seg.getFields()) {
-              preDtsId.add(fld.getDatatype().getId());
-              for (TableLink t : fld.getTables()) {
-                preVssId.add(t.getId());
-              }
-            }
-            List<Datatype> preDts = datatypeService.findByIds(preDtsId);
-            // List<Table> preVss=tableService.findAllByIds(preVssId);
-            for (Datatype dt : preDts) {
-              if (dt.getScope() == SCOPE.USER) {
-                for (Component comp : dt.getComponents()) {
-                  for (TableLink t : comp.getTables()) {
-                    preVssId.add(t.getId());
-                  }
-                }
-                dt.setScope(SCOPE.PRELOADED);
-                dtToSave.add(dt);
-
-              }
-            }
-            Set<String> preDtsIdInComp = new HashSet<String>();
-            for (Datatype dtInComp : dtToSave) {
-              for (Component comp : dtInComp.getComponents()) {
-
-                preDtsIdInComp.add(comp.getDatatype().getId());
-              }
-
-            }
-            List<Datatype> preDtsInComp = datatypeService.findByIds(preDtsIdInComp);
-            for (Datatype dt : preDtsInComp) {
-              if (dt.getScope() == SCOPE.USER) {
-                for (Component comp : dt.getComponents()) {
-                  for (TableLink t : comp.getTables()) {
-                    preVssId.add(t.getId());
-                  }
-                }
-                dt.setScope(SCOPE.PRELOADED);
-                dtToSave.add(dt);
-
-              }
-            }
-            List<Table> preVs = tableService.findAllByIds(preVssId);
-
-            for (Table preTable : preVs) {
-              if (preTable.getScope() == SCOPE.USER) {
-                preTable.setScope(SCOPE.PRELOADED);
-                tableToSave.add(preTable);
-              }
-            }
-            System.out.println(dtToSave);
-            segToSave.add(seg);
-
-          }
-        }
-        segmentService.save(segToSave);
-        datatypeService.save(dtToSave);
-        tableService.save(tableToSave);
-
-        msg.setHl7Version(igd.getMetaData().getHl7Version());
-
-
-
       }
       messageService.save(msgs.getChildren());
 
 
     }
   }
+  private void addVersionAndScopetoPRELOADEDIG() {
+	    List<String> hl7Versions = new ArrayList<String>();
+//	    hl7Versions.add("2.1");
+//	    hl7Versions.add("2.2");
+//	    hl7Versions.add("2.3");
+//	    hl7Versions.add("2.3.1");
+//	    hl7Versions.add("2.4");
+//	    hl7Versions.add("2.5");
+	    hl7Versions.add("2.5.1");
+//	    hl7Versions.add("2.6");
+//	    hl7Versions.add("2.7");
+
+	    List<IGDocument> igDocuments =
+	        documentService.findByScopeAndVersionsInIg(IGDocumentScope.PRELOADED, hl7Versions);
+	    Set<String> segIds = new HashSet<String>();
+	    for (IGDocument igd : igDocuments) {
+	      Messages msgs = igd.getProfile().getMessages();
+	      for (Message msg : msgs.getChildren()) {
+	        msg.setScope(SCOPE.PRELOADED);
+	        for (SegmentRefOrGroup segRef : msg.getChildren()) {
+
+	          if (segRef instanceof SegmentRef) {
+	            segIds.add(((SegmentRef) segRef).getRef().getId());
+	          } else if (segRef instanceof Group) {
+	            segIds.addAll(processGrp((Group) segRef));
+	          }
+	        }
+	        List<Segment> preSegs = segmentService.findByIds(segIds);
+	        Set<String> preDtsId = new HashSet<String>();
+	        Set<String> preVssId = new HashSet<String>();
+	        List<Segment> segToSave = new ArrayList<Segment>();
+	        List<Datatype> dtToSave = new ArrayList<Datatype>();
+	        List<Table> tableToSave = new ArrayList<Table>();
+	        for (Segment seg : preSegs) {
+	          if (seg.getScope() == SCOPE.USER) {
+	            seg.setScope(SCOPE.PRELOADED);
+	            for (Field fld : seg.getFields()) {
+	              preDtsId.add(fld.getDatatype().getId());
+	              for (TableLink t : fld.getTables()) {
+	                preVssId.add(t.getId());
+	              }
+	            }
+	            List<Datatype> preDts = datatypeService.findByIds(preDtsId);
+	            // List<Table> preVss=tableService.findAllByIds(preVssId);
+	            for (Datatype dt : preDts) {
+	              if (dt.getScope() == SCOPE.USER) {
+	                for (Component comp : dt.getComponents()) {
+	                  for (TableLink t : comp.getTables()) {
+	                    preVssId.add(t.getId());
+	                  }
+	                }
+	                dt.setScope(SCOPE.PRELOADED);
+	                dtToSave.add(dt);
+
+	              }
+	            }
+	            Set<String> preDtsIdInComp = new HashSet<String>();
+	            for (Datatype dtInComp : dtToSave) {
+	              for (Component comp : dtInComp.getComponents()) {
+
+	                preDtsIdInComp.add(comp.getDatatype().getId());
+	              }
+
+	            }
+	            List<Datatype> preDtsInComp = datatypeService.findByIds(preDtsIdInComp);
+	            for (Datatype dt : preDtsInComp) {
+	              if (dt.getScope() == SCOPE.USER) {
+	                for (Component comp : dt.getComponents()) {
+	                  for (TableLink t : comp.getTables()) {
+	                    preVssId.add(t.getId());
+	                  }
+	                }
+	                dt.setScope(SCOPE.PRELOADED);
+	                dtToSave.add(dt);
+
+	              }
+	            }
+	            List<Table> preVs = tableService.findAllByIds(preVssId);
+
+	            for (Table preTable : preVs) {
+	              if (preTable.getScope() == SCOPE.USER) {
+	                preTable.setScope(SCOPE.PRELOADED);
+	                tableToSave.add(preTable);
+	              }
+	            }
+	            System.out.println(dtToSave);
+	            segToSave.add(seg);
+
+	          }
+	        }
+	        segmentService.save(segToSave);
+	        datatypeService.save(dtToSave);
+	        tableService.save(tableToSave);
+
+	        msg.setHl7Version(igd.getMetaData().getHl7Version());
+
+
+
+	      }
+	      messageService.save(msgs.getChildren());
+
+
+	    }
+	  }
 
   // private Set<String> SegIdsInMsg(Message msg, Set<String> result){
   // for(SegmentRefOrGroup segRef: msg.getChildren()){

@@ -268,6 +268,9 @@ public class IGDocumentController extends CommonController {
 
       for (Message m : igDocument.getProfile().getMessages().getChildren()) {
         m.setId(null);
+        if(m.getScope()==SCOPE.PRELOADED){
+        	m.setScope(SCOPE.USER);
+        }
         messageService.save(m);
       }
 

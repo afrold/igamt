@@ -41,7 +41,6 @@ angular.module('igl').controller(
                 console.log("Changes discarded.");
             });
         };
-
         $scope.hl7VersionsInstance = function() {
             $scope.listHL7Versions().then(function(response) {
                 var hl7Versions = [];
