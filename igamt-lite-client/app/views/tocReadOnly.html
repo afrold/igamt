@@ -138,7 +138,7 @@
                                       ng-click="editSeg(segment);">
 
                                        <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
-                                   'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS','label-PRL':getScopeLabel(segment)==='PRL'} ,'unused' : showUnused(segment)}">  {{getScopeLabel(segment)}}	</span>
+                                   'label-USE': !showUnused(segment)&&getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS','label-PRL':getScopeLabel(segment)==='PRL' ,'unused' : showUnused(segment)}">  {{getScopeLabel(segment)}}	</span>
                                         {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                             </div>
                         </li>
@@ -164,7 +164,7 @@
 
                                       ng-click="editDataType(data);">
                                      <span class="badge " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                   'label-USE':  !showUnused(data)&&getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'},'unused' : showUnused(data)}" >  {{getScopeLabel(data)}}</span> 
+                                   'label-USE':  !showUnused(data)&&getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL','unused' : showUnused(data)}" >  {{getScopeLabel(data)}}</span> 
                                       
                                        {{getDatatypeLabel(data)}}-{{data.description}}</span>
 
@@ -196,7 +196,7 @@
                                       
                                       ng-click="editTable(table);">
                                      <span class="badge " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE':  !showUnused(table)&&getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL'},'unused': showUnused(table)}" >  {{getScopeLabel(table)}}</span> 
+                                   'label-USE':  !showUnused(table)&&getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL','unused': showUnused(table)}" >  {{getScopeLabel(table)}}</span> 
                                       
                                       {{table.bindingIdentifier}}-{{table.description}}</span>
 

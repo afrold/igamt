@@ -15,11 +15,11 @@ angular.module('igl').controller(
                     $rootScope.hl7Versions = [];
                     $scope.hl7VersionsInstance();
                 });
-            }else {
-            	if(clickSource === 'btn'&& $rootScope.igdocument != null){
-            		$rootScope.clearChanges();
-            		$rootScope.closeIGDocument();
-            	}
+            } else {
+                if (clickSource === 'btn' && $rootScope.igdocument != null) {
+                    $rootScope.clearChanges();
+                    $rootScope.closeIGDocument();
+                }
                 $rootScope.hl7Versions = [];
                 $scope.hl7VersionsInstance();
             }
@@ -109,6 +109,12 @@ angular.module('igl').controller(
         var messageEvents = [];
         $scope.messageEventsParams = null;
         $scope.scrollbarWidth = $rootScope.getScrollbarWidth();
+        $scope.status = {
+            isCustomHeaderOpen: false,
+            isFirstOpen: true,
+            isSecondOpen: true,
+            isFirstDisabled: false
+        };
 
 
         $scope.messageEventsParams = new ngTreetableParams({
@@ -138,12 +144,16 @@ angular.module('igl').controller(
             }
             return rval;
         };
+        $scope.eventList = [];
 
         $scope.trackSelections = function(bool, event) {
-            console.log("event");
-            console.log(event);
+            // console.log("event");
+            // console.log(event);
+
+
 
             if (bool) {
+                $scope.eventList.push(event);
                 messageEvents.push({
                     "id": event.id,
                     "children": [{
@@ -152,9 +162,16 @@ angular.module('igl').controller(
                     }]
                 });
             } else {
+                console.log(messageEvents);
                 for (var i = 0; i < messageEvents.length; i++) {
-                    if (messageEvents[i].id == event.id) {
+
+                    if (messageEvents[i].children[0].name == event.name.trim() && messageEvents[i].children[0].parentStructId == event.parentStructId) {
                         messageEvents.splice(i, 1);
+                    }
+                }
+                for (var i = 0; i < $scope.eventList.length; i++) {
+                    if ($scope.eventList[i].name == event.name && $scope.eventList[i].parentStructId == event.parentStructId) {
+                        $scope.eventList.splice(i, 1);
                     }
                 }
             }
@@ -178,7 +195,10 @@ angular.module('igl').controller(
             switch ($rootScope.clickSource) {
                 case "btn":
                     {
-                        createIGDocument($scope.hl7Version, messageEvents);
+                        if (!$scope.hl7VersionsDlgForm.$invalid) {
+                            createIGDocument($scope.hl7Version, messageEvents);
+                        }
+
                         break;
                     }
                 case "ctx":
@@ -191,9 +211,11 @@ angular.module('igl').controller(
 
         var createIGDocument = function(hl7Version, msgEvts) {
             console.log("create Ig called");
+            console.log($scope.hl7VersionsDlgForm);
             var iprw = {
                 "hl7Version": hl7Version,
                 "msgEvts": msgEvts,
+                "metaData": $scope.hl7VersionsDlgForm.metaData,
                 "accountID": userInfoService.getAccountID(),
                 "timeout": 60000
             };

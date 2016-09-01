@@ -442,10 +442,11 @@ select.form-control-node:checked {
 }
 
 input.form-control {
-  background-color: #efefef;
+  background-color:white;
+  background-image: none !important;
   //  color: black;
   cursor: pointer;
-  //  border: 1px solid #cccccc;
+    border: 1px solid #cccccc;
 }
 
 input.form-control-warning {
@@ -630,6 +631,10 @@ ul > li.igl-tbl-item > a {
 
 .form-horizontal {
   //background: #f5f5f5;
+}
+.form-horizontal label {
+    text-align: right;
+    color: black;
 }
 
 #ehrfooter {
@@ -1190,7 +1195,9 @@ h4.addPOAFormDateSectionTitle {
 .matchactive {
   font-weight: bold;
 }
-
+.modal-header {
+  color:white;
+}
 //
 //.modal {
 //  position:absolute; //fix to allow scrolling for modal on small windows
@@ -1891,6 +1898,12 @@ table.igl-list-table {
 .form-group{
   text-align:left;
 }
+.form-control, .form-group .form-control {
+    border: 1px solid #ccc;;
+}
+.form-control[disabled], .form-group .form-control[disabled], fieldset[disabled]{
+  background-color: lightgrey;
+}
 
 ul.dropdown-menu, ul.dropdown-menu > li {
   background: #f9f9f9;
@@ -2038,6 +2051,10 @@ div.col-margin{
 
 input.form-control {
   padding: 0px;
+  border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
 }
 
 input.form-control-invalid {
