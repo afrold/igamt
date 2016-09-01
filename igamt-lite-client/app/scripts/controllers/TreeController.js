@@ -395,7 +395,7 @@ angular
                                 if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "document") {
                                     $scope.updateChildeSections($rootScope.igdocument.childSections);
                                 } else if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === "section") {
-                                    SectionSvc.save($rootScope.igdocument.id, cloneModel);
+                                    SectionSvc.update($rootScope.igdocument.id, $itemScope.$nodeScope.$parentNodeScope.$modelValue);
 
                                 }
                             };
@@ -426,10 +426,22 @@ angular
 
 
                             SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id).then(function() {
+
+
                                 if ($itemScope.section.id === $rootScope.activeModel) {
                                     $scope.displayNullView();
                                 }
+                                if($itemScope.$nodeScope.$parentNodeScope.$modelValue.type==='section'){
+                                SectionSvc.update($rootScope.igdocument.id, $itemScope.$nodeScope.$parentNodeScope.$modelValue);
+                            }else if($itemScope.$nodeScope.$parentNodeScope.$modelValue.type==='document'){
+                                $scope.updateChildeSections($rootScope.igdocument.childSections);
+
+
+                            }
                             });
+
+
+
 
 
                         }
