@@ -110,4 +110,10 @@ public List<Datatype> findByScope(String scope) {
 	return datatypeRepository.findByScope(scope);
 }
 
+@Override
+public List<Datatype> findByNameAndVErsion(String name, String version) {
+	// TODO Auto-generated method stub
+	return datatypeRepository.findByNameAndVersion(name,version);
+}
+
 }

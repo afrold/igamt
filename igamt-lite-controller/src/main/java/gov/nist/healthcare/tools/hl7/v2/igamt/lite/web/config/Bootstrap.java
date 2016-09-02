@@ -40,6 +40,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
@@ -60,6 +61,8 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   IGDocumentService documentService;
+  @Autowired
+  UnchangedDataRepository unchangedData;
 
   @Autowired
   MessageService messageService;
@@ -130,6 +133,24 @@ public class Bootstrap implements InitializingBean {
     if (!existPreloadedDocument)
       documentService.save(d);
   }
+  
+  private void FillUnchanged(){
+	  List<SCOPE> scopes = new ArrayList<SCOPE>();
+	  scopes.add(SCOPE.HL7STANDARD);
+	  String[] versions = {"2.1","2.2","2.3","2.4","2.5","2.6","2.7","2.8","2.8.1","2.8.2"};
+	  List <Datatype> dataInit= datatypeService.findByScopesAndVersion(scopes, "2.8.2");
+	  
+	  for(int i=0 ; i< versions.length;i++){
+		 
+	  }
+	  
+	  
+	  
+	  
+	  
+  }
+  
+  
 
   // NOTE:ADD version to preloaded segs,dts,vs
   private void addVersionAndScopetoHL7IG() {

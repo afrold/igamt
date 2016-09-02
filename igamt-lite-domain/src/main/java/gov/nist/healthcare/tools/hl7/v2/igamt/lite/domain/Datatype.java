@@ -221,8 +221,28 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
     }
     return x;
   }
+  
+  public boolean isIdentique(Datatype d){
+	if(!this.getName().equals(d.getName())) {
+		return false;
+	}
+	else if (d.getComponents().size()!=this.getComponents().size()){
+		return false;
+	}else{
+		for(int i= 0; i < d.getComponents().size(); i++){
+			if(!this.getComponents().get(i).isIdentique(d.getComponents().get(i))){
+			return false;
+			}
+			
+		}
+		return true;
+	} 
+	
+	
+  }
+  
 
-  @Override
+@Override
   public int hashCode() {
     return new HashCodeBuilder(17, 31).append(id).toHashCode();
   }

@@ -40,4 +40,6 @@ public interface DatatypeOperations {
   List<Datatype> findUserDatatypesByIds(Set<String> ids);
 
   List<Datatype> findByScope(String scope);
+
+  List<Datatype> findByNameAndVersion(String name, String version);
 }

@@ -55,7 +55,14 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
     // qry = set4Brevis(qry);
     return mongo.find(qry, Datatype.class);
   }
-
+  @Override
+  public List<Datatype> findByNameAndVersion(String name,String version) {
+	    Criteria where = Criteria.where("scope").is(name);
+	    where.andOperator(Criteria.where("hl7Version").is(version));
+	    Query qry = Query.query(where);
+    return mongo.find(qry, Datatype.class);
+  }
+  
   @Override
   public Datatype findById(String id) {
     Criteria where = Criteria.where("id").is(id);
