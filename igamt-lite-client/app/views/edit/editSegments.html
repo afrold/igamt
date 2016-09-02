@@ -831,7 +831,7 @@
             </a>
             <div ng-show="editableDT===node.id">
                 <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
-                    <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}}
+                    <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}}
                     </option>
                 </select>
             </div>
@@ -2139,7 +2139,7 @@
         <h3 class="modal-title">Select Value Sets for {{field.type}} : {{field.name}}</h3>
     </div>
     <div class="modal-body">
-        <tags-input ng-model="vs" display-property="bindingIdentifier" placeholder="Select Value Sets" add-from-autocomplete-only="true" replace-spaces-with-dashes="false" on-tag-added="tagAdded($tag)" on-tag-removed="tagRemoved($tag)">
+        <tags-input ng-model="vs" key-property="id" display-property="bindingIdentifier" placeholder="Select Value Sets" add-from-autocomplete-only="true" replace-spaces-with-dashes="false" on-tag-added="tagAdded($tag)" on-tag-removed="tagRemoved($tag)">
             <auto-complete source="loadVS($query)" min-length="0" load-on-focus="true" max-results-to-show="10"></auto-complete>
         </tags-input>
     </div>
