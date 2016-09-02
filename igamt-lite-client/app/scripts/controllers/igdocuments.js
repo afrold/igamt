@@ -1866,6 +1866,7 @@ angular.module('igl').controller('AddSegmentDlgCtl',
                 for (var i = 0; i < length; i++) {
                     hl7Versions.push(response.data[i]);
                 }
+                console.log(hl7Versions);
                 return hl7Versions;
             });
         };
@@ -1873,8 +1874,18 @@ angular.module('igl').controller('AddSegmentDlgCtl',
 
         var init = function() {
             listHL7Versions().then(function(versions) {
-                $scope.versions = versions;
+                //$scope.versions = versions;
+                var v = [];
+                for (var i = 0; i < versions.length; i++) {
+                    if (versions.indexOf(hl7Version) <= i) {
+                        v.push(versions[i]);
+                    }
+                }
+                console.log("v");
+
+                console.log(v);
                 $scope.version1 = hl7Version;
+                $scope.versions = v;
                 var scopes = ['HL7STANDARD'];
                 SegmentService.getSegmentsByScopesAndVersion(scopes, hl7Version).then(function(result) {
                     console.log("result");

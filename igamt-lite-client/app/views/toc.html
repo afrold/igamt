@@ -134,7 +134,7 @@ color:white;
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : segment.id===activeModel}" confirm-click ng-click="editSeg(segment);">
 
                                        <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
-                                   'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS','label-PRL':getScopeLabel(segment)==='PRL' }"> {{getScopeLabel(segment)}} {{hasSameVersion(segment)}} </span> {{getSegmentLabel(segment)}}-{{segment.description}} {{hasSameVersion(segment)}}</span>
+                                   'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS','label-PRL':getScopeLabel(segment)==='PRL' }"> {{getScopeLabel(segment)}} {{hasSameVersion(segment)}} </span> {{getSegmentLabel(segment)}}-{{segment.description}} </span>
                                 </div>
                             </li>
                         </ol>
@@ -148,7 +148,7 @@ color:white;
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDataType(data)">
 
                                      <span class="badge " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}" > {{getScopeLabel(data)}} {{hasSameVersion(data)}}</span> {{getDatatypeLabel(data)}}-{{data.description}} {{hasSameVersion(data)}}
+                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}" > {{getScopeLabel(data)}} {{hasSameVersion(data)}}</span> {{getDatatypeLabel(data)}}-{{data.description}} 
                                     </span>
                                 </div>
                             </li>

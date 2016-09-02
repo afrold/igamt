@@ -1282,7 +1282,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $rootScope.displayLocationForDatatype = function(dt, constraintTarget) {
             var position = constraintTarget.substring(0, constraintTarget.indexOf('['));
             var component = _.find(dt.components, function(c) {
-                return c.position == position; });
+                return c.position == position;
+            });
             if (component) return dt.name + "." + position + " (" + component.name + ")";
             return dt.name;
         };
@@ -1290,7 +1291,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $rootScope.displayLocationForSegment = function(segment, constraintTarget) {
             var position = constraintTarget.substring(0, constraintTarget.indexOf('['));
             var field = _.find(segment.fields, function(f) {
-                return f.position == position; });
+                return f.position == position;
+            });
             if (field) return segment.name + "-" + position + " (" + field.name + ")";
             return segment.name;
         };
@@ -2241,11 +2243,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return "";
         };
         $rootScope.hasSameVersion = function(element) {
-            if (element.hl7Version !== $rootScope.hl7Version) {
-                return element.hl7Version;
-            } else {
-                return "";
-            }
+
+            return element.hl7Version;
+
         }
 
         $rootScope.getTableLabel = function(table) {
