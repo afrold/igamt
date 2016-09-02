@@ -358,17 +358,17 @@
                     <div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">
                         <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Validation' "
                                ng-class="{ 'active':xmlFormat==='Validation' } ">
-                            <input ng-disabled="loading " type="radio " ng-value="xmlFormat " ng-model="$parent.xmlFormat ">NIST
+                            NIST
                             Validation Format
                         </label>
                         <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Display' "
                                ng-class="{ 'active':xmlFormat==='Display' } ">
-                            <input ng-disabled="loading " type="radio " ng-value="xmlFormat " ng-model="$parent.xmlFormat ">NIST
+                             NIST
                             Display Format
                         </label>
                         <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Gazelle' "
                                ng-class="{ 'active':xmlFormat==='Gazelle' } ">
-                            <input ng-disabled="loading " type="radio " ng-value="xmlFormat " ng-model="$parent.xmlFormat ">Gazelle
+                           Gazelle
                             Format
                         </label>
                     </div>
@@ -387,9 +387,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="message in igdocumentToSelect.profile.messages.children ">
+                            <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id">
                                 <td style="width:30px ">
-                                    <input type="checkbox " ng-model="bool "
+                                    <input type="checkbox" ng-model="bool"
                                            ng-change="trackSelections(bool, message.id) ">
                                 </td>
                                 <td style="width:150px ">{{message.identifier}}</td>
