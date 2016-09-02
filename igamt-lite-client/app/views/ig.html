@@ -75,11 +75,11 @@
             <div class="modal-header modal-wide">
                 <div class="form-inline">
                     <span class="header4" style="color:white;">Select Message Events</span>
-                    
+
                     <button ng-show="clickSource === 'btn'" class="btn btn-raised btn-info btn-xs pull-right" type="button" ng-click="ok()" ng-disabled="okDisabled || hl7VersionsDlgForm.$invalid">
                     <i class="fa fa-check"></i>Submit
                 </button>
-                 <button ng-show="clickSource === 'ctx'" class="btn btn-raised btn-info btn-xs pull-right" type="button" ng-click="ok()" ng-disabled="okDisabled">
+                    <button ng-show="clickSource === 'ctx'" class="btn btn-raised btn-info btn-xs pull-right" type="button" ng-click="ok()" ng-disabled="okDisabled">
                     <i class="fa fa-check"></i>Submit
                 </button>
                     <button class="btn btn-raised btn-default btn-xs pull-right" type="button" ng-click="cancel()">
@@ -127,7 +127,7 @@
 
                                 </div>
                             </div>-->
-                            <div class=" row">
+                            <div class=" row" style="padding-top:5px">
                                 <label for="example-text-input" class="col-xs-2 col-form-label">Title*</label>
                                 <div class="col-xs-10">
                                     <input class="form-control form-control-xs" type="text" ng-model="hl7VersionsDlgForm.metaData.title" required>
@@ -178,7 +178,7 @@
                         </accordion-heading>
                         <div class="input-group">
                             <span class="input-group-addon">Selected Messages:</span>
-                            <span ng-repeat="event in eventList">{{event.name}}^{{event.parentStructId}},</span>
+                            <span ng-repeat="event in eventList" class="label label-primary">{{event.name}}^{{event.parentStructId}}</span>
 
                         </div>
                         <div class="row" style="margin-left:20px">
@@ -204,7 +204,7 @@
 
             </div>
             <div class="modal-footer">
-                
+
             </div>
         </form>
     </script>
@@ -676,6 +676,13 @@
                     <div class="container" style="margin-bottom: 20px;margin-top: 20px">
                         <div class="row flavor-seach-box">
                             <!--<p>HL7 Version:{{hl7Version}}</p>-->
+
+                            <div class="input-group">
+                                <span class="input-group-addon" id="version-basic-addon1">HL7 Versions</span>
+                                <select ng-model="version1" class="form-control " ng-change="setVersion(version1)">
+                                        <option ng-repeat="vr in versions " value='{{vr}}'> {{vr}}</option>
+                                    </select>
+                            </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="segment-basic-addon1"><i class="fa fa-search"></i> Search</span>
                                 <input type="text" class="form-control input-lg" ng-model="newSegment" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="segment as segment.name for segment in hl7Segments|filter:$viewValue" placeholder="Search By Name">

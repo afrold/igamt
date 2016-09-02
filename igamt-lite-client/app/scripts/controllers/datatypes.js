@@ -67,8 +67,8 @@ angular.module('igl')
             });
         };
 
-        $scope.openPredicateDialog =function (node){
-          if(node.usage == 'C') $scope.managePredicate(node);
+        $scope.openPredicateDialog = function(node) {
+            if (node.usage == 'C') $scope.managePredicate(node);
         };
 
 
@@ -231,7 +231,8 @@ angular.module('igl')
                 _.each(library.children, function(link) {
                     if (link.name === name) {
                         link.libraryName = library.metaData.name;
-                        link.hl7Version = library.metaData.hl7Version;
+                        link.hl7Version = $rootScope.datatypesMap[link.id].hl7Version;
+                        //link.hl7Version = library.metaData.hl7Version;
                         results.push(link);
                     }
                 });
@@ -1215,7 +1216,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         $scope.changed = true;
     };
 
-    $scope.addFreeTextConformanceStatement = function(){
+    $scope.addFreeTextConformanceStatement = function() {
         $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
         var cs = null;
         if ($scope.selectedNode === null) {

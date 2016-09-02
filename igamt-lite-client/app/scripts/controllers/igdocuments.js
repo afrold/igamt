@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI,PcService) {
+    .controller('IGDocumentListCtrl', function($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
 
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
@@ -84,8 +84,8 @@ angular.module('igl')
         $rootScope.closeIGDocument = function() {
             $rootScope.clearChanges();
             $rootScope.igdocument = null;
-            $rootScope.tocView=null;
-            $rootScope.subview=null;
+            $rootScope.tocView = null;
+            $rootScope.subview = null;
 
             $rootScope.isEditing = false;
             $scope.selectIgTab(0);
@@ -196,8 +196,8 @@ angular.module('igl')
                 }
             });
         };
-        $scope.getTemplateRow= function(row){
-            $rootScope.row= row;
+        $scope.getTemplateRow = function(row) {
+            $rootScope.row = row;
             return 'templateRow.html';
 
         }
@@ -423,15 +423,11 @@ angular.module('igl')
                                 $scope.loadIgDocumentMetaData();
 
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);
-                                $scope.loadPc().then(function(){},function(){});
-                            }, function () {
-                            });
-                        }, function () {
-                        });
-                    }, function () {
-                    });
-                }, function () {
-                });
+                                $scope.loadPc().then(function() {}, function() {});
+                            }, function() {});
+                        }, function() {});
+                    }, function() {});
+                }, function() {});
 
             }
 
@@ -501,15 +497,15 @@ angular.module('igl')
         };
 
 
-        $scope.loadPc = function () {
+        $scope.loadPc = function() {
             var delay = $q.defer();
-            PcService.findAll().then(function (children) {
+            PcService.findAll().then(function(children) {
 
                 $rootScope.pcs = children;
 
-                $rootScope.pcs.push({name:"TEST1", type:"message"});
+                $rootScope.pcs.push({ name: "TEST1", type: "message" });
                 delay.resolve(true);
-            }, function (error) {
+            }, function(error) {
                 $rootScope.msg().text = "ProfileComplonentLoadFail";
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
@@ -527,7 +523,7 @@ angular.module('igl')
 
 
 
-        $scope.loadTables = function () {
+        $scope.loadTables = function() {
             var delay = $q.defer();
             $rootScope.igdocument.profile.tableLibrary.type = "tables";
 
@@ -693,38 +689,26 @@ angular.module('igl')
         };
 
         $scope.addSegments = function(hl7Version) {
-            var scopes = ['HL7STANDARD'];
 
-            SegmentService.getSegmentsByScopesAndVersion(scopes, $scope.hl7Version).then(function(result) {
-                console.log("result");
-                console.log(result);
-
-
-                console.log("addSegment scopes=" + scopes.length);
-                var addSegmentInstance = $modal.open({
-                    templateUrl: 'AddSegmentDlg.html',
-                    controller: 'AddSegmentDlgCtl',
-                    windowClass: 'flavor-modal-window',
-                    resolve: {
-                        hl7Version: function() {
-                            return $scope.hl7Version;
-                        },
-                        segments: function() {
-
-
-                            return result;
-                        }
+            var addSegmentInstance = $modal.open({
+                templateUrl: 'AddSegmentDlg.html',
+                controller: 'AddSegmentDlgCtl',
+                windowClass: 'flavor-modal-window',
+                resolve: {
+                    hl7Version: function() {
+                        return $scope.hl7Version;
                     }
-                }).result.then(function(results) {
-                    var ids = [];
-                    angular.forEach(results, function(result) {
-                        ids.push(result.id);
-                    });
 
-
+                }
+            }).result.then(function(results) {
+                var ids = [];
+                angular.forEach(results, function(result) {
+                    ids.push(result.id);
                 });
 
+
             });
+
 
         };
 
@@ -1431,7 +1415,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     };
 });
 
-angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, hl7Version ,$rootScope, $http, $cookies, TableLibrarySvc, TableService) {
+angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, hl7Version, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
     $scope.loading = false;
     $scope.selectedTableLibary = selectedTableLibary;
     $scope.selectedHL7Version = hl7Version;
@@ -1465,7 +1449,7 @@ angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalI
         }).then(function(response) {
             $scope.hl7Tables = [];
             angular.forEach(response.data, function(table) {
-                if(!$scope.isAlreadyIn(table)){
+                if (!$scope.isAlreadyIn(table)) {
                     $scope.hl7Tables.push(table);
                 }
             });
@@ -1475,7 +1459,7 @@ angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalI
 
 
 
-    $scope.isAlreadyIn = function (table){
+    $scope.isAlreadyIn = function(table) {
         if ($rootScope.tablesMap[table.id] == null) return false;
         return true;
     };
@@ -1720,9 +1704,9 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
         if (index > -1) $scope.selectedTables.splice(index, 1);
     };
 
-    $scope.isDuplicatedID = function (table){
+    $scope.isDuplicatedID = function(table) {
         for (var i = 0, len1 = $rootScope.tables.length; i < len1; i++) {
-            if(table.bindingIdentifier == $rootScope.tables[i].bindingIdentifier) return true;
+            if (table.bindingIdentifier == $rootScope.tables[i].bindingIdentifier) return true;
         }
         return false;
     };
@@ -1869,30 +1853,91 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
 
 angular.module('igl').controller('AddSegmentDlgCtl',
-    function($scope, $rootScope, $modalInstance, hl7Version, $http, segments, SegmentService, SegmentLibrarySvc, IgDocumentService) {
+    function($scope, $rootScope, $modalInstance, hl7Version, $http, SegmentService, SegmentLibrarySvc, DatatypeService, DatatypeLibrarySvc, TableService, TableLibrarySvc, IgDocumentService) {
 
+
+
+        var listHL7Versions = function() {
+            return $http.get('api/igdocuments/findVersions', {
+                timeout: 60000
+            }).then(function(response) {
+                var hl7Versions = [];
+                var length = response.data.length;
+                for (var i = 0; i < length; i++) {
+                    hl7Versions.push(response.data[i]);
+                }
+                return hl7Versions;
+            });
+        };
+
+
+        var init = function() {
+            listHL7Versions().then(function(versions) {
+                $scope.versions = versions;
+                $scope.version1 = hl7Version;
+                var scopes = ['HL7STANDARD'];
+                SegmentService.getSegmentsByScopesAndVersion(scopes, hl7Version).then(function(result) {
+                    console.log("result");
+                    console.log(result);
+
+                    $scope.hl7Segments = result.filter(function(current) {
+                        return $rootScope.segments.filter(function(current_b) {
+                            return current_b.id == current.id;
+                        }).length == 0
+                    });
+
+
+
+
+                    console.log("addSegment scopes=" + scopes.length);
+
+
+                });
+            });
+
+        };
+        init();
         var secretEmptyKey = '[$empty$]'
-        $scope.hl7Segments = segments.filter(function(current) {
-            return $rootScope.segments.filter(function(current_b) {
-                return current_b.id == current.id;
-            }).length == 0
-        });
         $scope.segComparator = function(seg, viewValue) {
 
             return viewValue === secretEmptyKey || ('' + seg).toLowerCase().indexOf(('' + viewValue).toLowerCase()) > -1;
         };
+
+
+
+        $scope.setVersion = function(version) {
+            console.log(version);
+            var scopes = ['HL7STANDARD'];
+            SegmentService.getSegmentsByScopesAndVersion(scopes, version).then(function(result) {
+                console.log("result");
+                console.log(result);
+
+                $scope.hl7Segments = result.filter(function(current) {
+                    return $rootScope.segments.filter(function(current_b) {
+                        return current_b.id == current.id;
+                    }).length == 0
+                });
+
+
+
+
+                console.log("addSegment scopes=" + scopes.length);
+
+
+            });
+        }
+
         console.log("=----");
         console.log($scope.hl7Segments);
         $scope.isInSegs = function(segment) {
-            console.log($scope.hl7Segments.indexOf(segment) === -1);
 
-            if ($scope.hl7Segments.indexOf(segment) === -1) {
+            if (segment && $scope.hl7Segments.indexOf(segment) === -1) {
                 return false;
             } else {
                 return true;
             }
 
-        }
+        };
         $scope.selectSeg = function(segment) {
             $scope.newSegment = segment;
         };
@@ -1915,13 +1960,16 @@ angular.module('igl').controller('AddSegmentDlgCtl',
                 id: $scope.newSegment.id,
                 name: $scope.newSegment.name
             });
+            $rootScope.usedDtLink = [];
+            $rootScope.usedVsLink = [];
+            $rootScope.fillMaps($scope.newSegment);
             SegmentLibrarySvc.addChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {
                 $rootScope.igdocument.profile.segmentLibrary.children.splice(0, 0, newLink);
                 $rootScope.segments.splice(0, 0, $scope.newSegment);
                 $rootScope.segment = $scope.newSegment;
                 $rootScope.segmentsMap[$scope.newSegment.id] = $scope.newSegment;
                 //TODO MasterMap need to add Segment
-                $rootScope.processElement($scope.newSegment);
+
                 //                  MastermapSvc.addSegmentObject(newSegment, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
                 $rootScope.filteredSegmentsList.push($scope.newSegment);
                 $rootScope.filteredSegmentsList = _.uniq($rootScope.filteredSegmentsList);
@@ -1929,7 +1977,66 @@ angular.module('igl').controller('AddSegmentDlgCtl',
                 $rootScope.msg().text = "segmentAdded";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
-                $modalInstance.close(segments);
+                $modalInstance.close();
+                var usedDtId = _.map($rootScope.usedDtLink, function(num, key) {
+                    return num.id;
+                });
+                DatatypeService.get(usedDtId).then(function(datatypes) {
+                    for (var j = 0; j < datatypes.length; j++) {
+
+                        $rootScope.fillMaps(datatypes[j]);
+
+                    }
+                    var usedDtId1 = _.map($rootScope.usedDtLink, function(num, key) {
+                        return num.id;
+                    });
+                    var newDatatypesLink = _.difference($rootScope.usedDtLink, $rootScope.igdocument.profile.datatypeLibrary.children);
+                    DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, newDatatypesLink).then(function() {
+                        $rootScope.igdocument.profile.datatypeLibrary.children = _.union(newDatatypesLink, $rootScope.igdocument.profile.datatypeLibrary.children);
+
+                        DatatypeService.get(usedDtId1).then(function(datatypes) {
+                            for (var j = 0; j < datatypes.length; j++) {
+                                if (!$rootScope.datatypesMap[datatypes[j].id]) {
+
+                                    $rootScope.datatypesMap[datatypes[j].id] = datatypes[j];
+                                    $rootScope.datatypes.push(datatypes[j]);
+                                    $rootScope.processElement(datatypes[j]);
+                                }
+                            }
+
+                            var usedVsId = _.map($rootScope.usedVsLink, function(num, key) {
+                                return num.id;
+                            });
+                            console.log("$rootScope.usedVsLink");
+
+                            console.log($rootScope.usedVsLink);
+                            var newTablesLink = _.difference($rootScope.usedVsLink, $rootScope.igdocument.profile.tableLibrary.children);
+                            console.log(newTablesLink);
+
+                            TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, newTablesLink).then(function() {
+                                $rootScope.igdocument.profile.tableLibrary.children = _.union(newTablesLink, $rootScope.igdocument.profile.tableLibrary.children);
+
+                                TableService.get(usedVsId).then(function(tables) {
+                                    for (var j = 0; j < tables.length; j++) {
+                                        if (!$rootScope.tablesMap[tables[j].id]) {
+                                            $rootScope.tablesMap[tables[j].id] = tables[j];
+                                            $rootScope.tables.push(tables[j]);
+                                            $rootScope.processElement(tables[j]);
+
+                                        }
+                                    }
+
+
+                                    $rootScope.processElement($scope.newSegment);
+
+                                });
+                            });
+
+
+                        });
+                    });
+                });
+
             }, function(error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;
