@@ -150,9 +150,12 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         }
         $scope.setDirty();
     };
-    $scope.ProcessChecking= function(){
+    $rootScope.checkAll=false;
+    $scope.ProcessChecking= function(checkAll){
+
+
         console.log("here");
-        if($scope.selectedCodes.length===0){
+        if(checkAll){
             $scope.checkAllValues();
         }else{
             $scope.uncheckAllValues();
@@ -178,7 +181,6 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
          $scope.selectedCodes=[];
     }
     $scope.checkAllValues= function(){
-        console.log("deleting");
         angular.forEach($rootScope.table.codes, function(c){
             c.selected=true;
             $scope.selectedCodes.push(c);

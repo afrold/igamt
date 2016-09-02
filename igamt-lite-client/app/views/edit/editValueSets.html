@@ -198,7 +198,7 @@
                                     </tr>
                                                     <tr class="tbl-header">
                                                         <th class="col-md-1">
-                                                        <input type="checkbox" ng-model="checkAll" ng-click="ProcessChecking()"> 
+                                                        <input type="checkbox" ng-model="checkAll" ng-change="ProcessChecking(checkAll)"> 
                                                         <span ng-if="checkAll">UnCheck All</span>
                                                         <span ng-if="!checkAll"> Check All</span>
                                                         </input>

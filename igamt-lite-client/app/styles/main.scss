@@ -344,6 +344,9 @@ table{
 div.ngRow.selected {
   background: #ffef8f;
 }
+div.fr-tooltip[style]{
+  left:300px !important;
+}
 
 .container {
   margin: 0 auto;
