@@ -60,14 +60,14 @@
                         </div>
 
                         <ol ui-tree-nodes="" ng-model="section.childSections" data-type="sections" ng-if="section.childSections&&!this.NodeScope.collapsed" >
-                            <li ng-repeat="section in section.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections"  ng-if="section.childSections&&!collapsed">
+                            <li ng-repeat="section in section.childSections track by section.id" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections"  ng-if="section.childSections&&!collapsed">
                             </li>
                         </ol>
                      </script>
 
                     
                     <ol  ui-tree-nodes="" ng-model="ig.childSections" data-type="sections"  style="margin-left:0px;">
-                        <li ng-repeat="section in ig.childSections" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:0px;"></li>
+                        <li ng-repeat="section in ig.childSections track by section.id" ui-tree-node ng-include="'nodes_renderer.html'" data-type="sections" ng-init="x=section.sectionPosition" ng-if="!this.$parentNodeScope.collapsed" style="margin-left:0px;"></li>
 
                     </ol>
                     
@@ -92,7 +92,7 @@
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
 
-                        <li ng-repeat="msg in ig.profile.messages.children " ui-tree-node
+                        <li ng-repeat="msg in ig.profile.messages.children track by msg.id" ui-tree-node
 
                             ng-if="!collapsemessage" data-type="message">
                             <div ui-tree-handle 

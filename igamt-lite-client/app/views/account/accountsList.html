@@ -44,7 +44,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="row in tmpAccountList">
+                    <tr ng-repeat="row in tmpAccountList track by row.id">
                         <td st-ratio="5">
                             <input ng-click="selectAccount(row)"
                                    ng-checked="account != null && row == account"
