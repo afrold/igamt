@@ -1436,11 +1436,13 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 					String temp="";
 					if((f.getTables().size()>1)){
 						for (TableLink t : f.getTables()){
-							
+							if(temp.equals("")){
+							temp=tableService.findById(t.getId()).getBindingIdentifier();
+							}
+							else{
 							temp= temp + ","+tableService.findById(t.getId()).getBindingIdentifier();
-
+							}
 						} 
-						temp=temp.substring(1);
 					}else{
 						temp=f.getTables().get(0).getBindingIdentifier();
 					}
@@ -1631,10 +1633,15 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 					String temp="";
 					for (TableLink t : c.getTables()){
 						if (t.getId() != null && tableService.findById(t.getId()) != null){
+							
+							if(temp.equals("")){
+							temp=tableService.findById(t.getId()).getBindingIdentifier();
+
+							}else{
 							temp = temp + "," + tableService.findById(t.getId()).getBindingIdentifier();
+							}
 						}
 					} 
-					temp=temp.substring(1);
 					elmComponent.addAttribute(new Attribute("Binding", 
 							temp));
 				}
