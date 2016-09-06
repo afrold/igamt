@@ -1027,8 +1027,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		if (f.getConfLength() != null && !f.getConfLength().equals(""))
 			elmField.addAttribute(new Attribute("ConfLength", ExportUtil.str(f.getConfLength())));
 		if (f.getTable() != null) {
-			if (f.getTable().getBindingIdentifier() != null)
-				elmField.addAttribute(new Attribute("Binding", f.getTable().getBindingIdentifier()));
+			Table table = tableService.findById(f.getTable().getId());
+			if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+				elmField.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
 			if (f.getTable().getBindingStrength() != null && !f.getTable().getBindingStrength().equals(""))
 				elmField.addAttribute(
 						new Attribute("BindingStrength", ExportUtil.str(f.getTable().getBindingStrength())));
@@ -1177,7 +1178,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		if (c.getConfLength() != null && !c.getConfLength().equals(""))
 			elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
 		if (c.getTable() != null) {
-			elmComponent.addAttribute(new Attribute("Binding", c.getTable().getBindingIdentifier()));
+			Table table = tableService.findById(c.getTable().getId());
+			if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+				elmComponent.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
 			if (c.getTable().getBindingStrength() != null && !c.getTable().getBindingStrength().equals(""))
 				elmComponent.addAttribute(
 						new Attribute("BindingStrength", ExportUtil.str(c.getTable().getBindingStrength())));
@@ -1310,7 +1313,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		if (sc.getConfLength() != null && !sc.getConfLength().equals(""))
 			elmSubComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(sc.getConfLength())));
 		if (sc.getTable() != null) {
-			elmSubComponent.addAttribute(new Attribute("Binding", sc.getTable().getBindingIdentifier()));
+			Table table = tableService.findById(sc.getTable().getId());
+			if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+				elmSubComponent.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
 			if (sc.getTable().getBindingStrength() != null && !sc.getTable().getBindingStrength().equals(""))
 				elmSubComponent.addAttribute(
 						new Attribute("BindingStrength", ExportUtil.str(sc.getTable().getBindingStrength())));
@@ -1442,8 +1447,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			if (f.getConfLength() != null && !f.getConfLength().equals(""))
 				elmField.addAttribute(new Attribute("ConfLength", ExportUtil.str(f.getConfLength())));
 			if (f.getTable() != null) {
-				if (f.getTable().getBindingIdentifier() != null && !f.getTable().getBindingIdentifier().equals(""))
-					elmField.addAttribute(new Attribute("Binding", f.getTable().getBindingIdentifier()));
+				Table table = tableService.findById(f.getTable().getId());
+				if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+					elmField.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
 				if (f.getTable().getBindingStrength() != null && !f.getTable().getBindingStrength().equals("")){
 					elmField.addAttribute(new Attribute("BindingStrength", ExportUtil.str(f.getTable().getBindingStrength())));
 				}
@@ -1500,8 +1506,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
 					elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
 				if (c.getTable() != null) {
-					if (c.getTable().getBindingIdentifier() != null)
-						elmComponent.addAttribute(new Attribute("Binding", c.getTable().getBindingIdentifier()));
+					Table table = tableService.findById(c.getTable().getId());
+					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+						elmComponent.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
 					if (c.getTable().getBindingStrength() != null && !c.getTable().getBindingStrength().equals(""))
 						elmComponent.addAttribute(new Attribute("BindingStrength", ExportUtil.str(c.getTable().getBindingStrength())));
 					if (c.getTable().getBindingLocation() != null && !c.getTable().getBindingLocation().equals("")){
@@ -1550,7 +1557,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
 					elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
 				if (c.getTable() != null) {
-					elmComponent.addAttribute(new Attribute("Binding", c.getTable().getBindingIdentifier()));
+					Table table = tableService.findById(c.getTable().getId());
+					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+						elmComponent.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
 					if (c.getTable().getBindingStrength() != null && !c.getTable().getBindingStrength().equals(""))
 						elmComponent.addAttribute(
 								new Attribute("BindingStrength", ExportUtil.str(c.getTable().getBindingStrength())));
