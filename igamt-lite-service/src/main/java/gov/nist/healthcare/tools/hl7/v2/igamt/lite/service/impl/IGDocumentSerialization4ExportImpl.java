@@ -575,20 +575,22 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 				cpinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
 
 
-				Map<Integer, SegmentRefOrGroup> segmentRefOrGroups =
-						new HashMap<Integer, SegmentRefOrGroup>();
-
-				for (SegmentRefOrGroup segmentRefOrGroup : m.getChildren()) {
-					segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
-				}
-
-				for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
-					SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
+//				Map<Integer, SegmentRefOrGroup> segmentRefOrGroups =
+//						new HashMap<Integer, SegmentRefOrGroup>();
+//
+//				for (SegmentRefOrGroup segmentRefOrGroup : m.getChildren()) {
+//					segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
+//				}
+				
+				List<SegmentRefOrGroup> children = m.getChildren();
+				for (int i = 0; i < children.size(); i++) {
+					SegmentRefOrGroup segmentRefOrGroup = children.get(i);
+				
 
 					String prefixcp = String.valueOf(profile.getSectionPosition() + 1) + "5.1.3";
 					String prefixcs = String.valueOf(profile.getSectionPosition() + 1) + "5.2.3";
 
-					this.serializeSegmentRefOrGroupConstraint(i, segmentRefOrGroup, csinfo, cpinfo, prefixcs,
+					this.serializeSegmentRefOrGroupConstraint(segmentRefOrGroup.getPosition(), segmentRefOrGroup, csinfo, cpinfo, prefixcs,
 							prefixcp);
 
 				}
@@ -645,15 +647,16 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 					cpinfo.addAttribute(new Attribute("title", s.getLabel()));
 					cpinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
 
-					Map<Integer, Field> fields = new HashMap<Integer, Field>();
+//					Map<Integer, Field> fields = new HashMap<Integer, Field>();
 
-					for (Field f : s.getFields()) {
-						fields.put(f.getPosition(), f);
-					}
+//					for (Field f : s.getFields()) {
+//						fields.put(f.getPosition(), f);
+//					}
 
-					for (int i = 1; i < fields.size() + 1; i++) {
+					List<Field> children = s.getFields();
+					for (int i = 0; i < children.size(); i++) {
 						List<Constraint> constraints =
-								findConstraints(i, s.getPredicates(), s.getConformanceStatements());
+								findConstraints(children.get(i).getPosition(), s.getPredicates(), s.getConformanceStatements());
 						if (!constraints.isEmpty()) {
 							for (Constraint constraint : constraints) {
 								nu.xom.Element elmConstraint =
@@ -708,7 +711,7 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 			if (datatypeService != null && dl.getId() != null
 					&& datatypeService.findById(dl.getId()) != null) {
 				Datatype d = datatypeService.findById(dl.getId());
-				if (d.getComponents() != null) {
+				if (d.getComponents() != null&&d.getComponents().size()>0) {
 
 					nu.xom.Element csinfo = new nu.xom.Element("Constraints");
 					csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
@@ -723,15 +726,15 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 					cpdtinfo.addAttribute(new Attribute("h", String.valueOf(3)));
 					cpdtinfo.addAttribute(new Attribute("title", d.getLabel()));
 					cpdtinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
-
-					Map<Integer, Component> components = new HashMap<Integer, Component>();
-					for (Component c : d.getComponents()) {
-						components.put(c.getPosition(), c);
-					}
-					for (int i = 1; i < components.size() + 1; i++) {
+//
+//					Map<Integer, Component> components = new HashMap<Integer, Component>();
+//					for (Component c : d.getComponents()) {
+//						components.put(c.getPosition(), c);
+//					}
+					for (int i = 0; i < d.getComponents().size(); i++) {
 						// Component c = components.get(i);
 						List<Constraint> constraints =
-								findConstraints(i, d.getPredicates(), d.getConformanceStatements());
+								findConstraints(d.getComponents().get(i).getPosition(), d.getPredicates(), d.getConformanceStatements());
 						if (!constraints.isEmpty()) {
 							for (Constraint constraint : constraints) {
 								nu.xom.Element elmConstraint =
@@ -809,16 +812,17 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 		}
 
 		if (segmentRefOrGroup instanceof Group) {
-			Map<Integer, SegmentRefOrGroup> segmentRefOrGroups =
-					new HashMap<Integer, SegmentRefOrGroup>();
+//			Map<Integer, SegmentRefOrGroup> segmentRefOrGroups =
+//					new HashMap<Integer, SegmentRefOrGroup>();
+//
+//			for (SegmentRefOrGroup srog : ((Group) segmentRefOrGroup).getChildren()) {
+//				segmentRefOrGroups.put(srog.getPosition(), srog);
+//			}
 
-			for (SegmentRefOrGroup srog : ((Group) segmentRefOrGroup).getChildren()) {
-				segmentRefOrGroups.put(srog.getPosition(), srog);
-			}
-
-			for (int j = 1; j < segmentRefOrGroups.size() + 1; j++) {
-				SegmentRefOrGroup srog = segmentRefOrGroups.get(j);
-				this.serializeSegmentRefOrGroupConstraint(j, srog, csinfo, cpinfo, prefixcs, prefixcp);
+			List<SegmentRefOrGroup> children = ((Group) segmentRefOrGroup).getChildren();
+			for (int j = 0; j < children.size(); j++) {
+				SegmentRefOrGroup srog = children.get(j);
+				this.serializeSegmentRefOrGroupConstraint(srog.getPosition(), srog, csinfo, cpinfo, prefixcs, prefixcp);
 			}
 		}
 	}
@@ -1407,14 +1411,14 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 				}
 			}
 
-			Map<Integer, Field> fields = new HashMap<Integer, Field>();
-
-			for (Field f : s.getFields()) {
-				fields.put(f.getPosition(), f);
-			}
-
-			for (int i = 1; i < fields.size() + 1; i++) {
-				Field f = fields.get(i);
+//			Map<Integer, Field> fields = new HashMap<Integer, Field>();
+//
+//			for (Field f : s.getFields()) {
+//				fields.put(f.getPosition(), f);
+//			}
+				
+			for (int i = 0; i < s.getFields().size(); i++) {
+				Field f =s.getFields().get(i);
 				nu.xom.Element elmField = new nu.xom.Element("Field");
 				elmField.addAttribute(new Attribute("Name", f.getName()));
 				elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
@@ -1599,15 +1603,15 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 
 
 		if (d.getComponents() != null) {
+//
+//			Map<Integer, Component> components = new HashMap<Integer, Component>();
+//
+//			for (Component c : d.getComponents()) {
+//				components.put(c.getPosition(), c);
+//			}
 
-			Map<Integer, Component> components = new HashMap<Integer, Component>();
-
-			for (Component c : d.getComponents()) {
-				components.put(c.getPosition(), c);
-			}
-
-			for (int i = 1; i < components.size() + 1; i++) {
-				Component c = components.get(i);
+			for (int i = 0; i < d.getComponents().size(); i++) {
+				Component c = d.getComponents().get(i);
 				nu.xom.Element elmComponent = new nu.xom.Element("Component");
 				elmComponent.addAttribute(new Attribute("Name", c.getName()));
 				elmComponent.addAttribute(new Attribute("Usage", c.getUsage().toString()));

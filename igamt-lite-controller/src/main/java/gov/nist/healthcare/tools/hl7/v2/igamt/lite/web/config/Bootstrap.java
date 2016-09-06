@@ -13,8 +13,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
@@ -40,6 +43,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
@@ -55,6 +59,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSe
 public class Bootstrap implements InitializingBean {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+  private HashMap<String, ArrayList<List<String>>> DatatypeMap= new HashMap<String, ArrayList<List<String>>>();
+  private HashMap<Datatype, Integer> Visited= new HashMap<Datatype, Integer>();
 
   @Autowired
   ProfileService profileService;
@@ -100,6 +107,7 @@ public class Bootstrap implements InitializingBean {
     // new DataCorrection().updateValueSetsForDT();
     // addVersionAndScopetoPRELOADEDIG();
     // addVersionAndScopetoHL7IG();
+	 CreateCollectionOfUnchanged();
   }
 
   private void loadPreloadedIGDocuments() throws Exception {
@@ -134,22 +142,91 @@ public class Bootstrap implements InitializingBean {
       documentService.save(d);
   }
   
-  private void FillUnchanged(){
+  private void initMAp(){
 	  List<SCOPE> scopes = new ArrayList<SCOPE>();
 	  scopes.add(SCOPE.HL7STANDARD);
-	  String[] versions = {"2.1","2.2","2.3","2.4","2.5","2.6","2.7","2.8","2.8.1","2.8.2"};
-	  List <Datatype> dataInit= datatypeService.findByScopesAndVersion(scopes, "2.8.2");
-	  
-	  for(int i=0 ; i< versions.length;i++){
-		 
+	  List <Datatype> dataInit= datatypeService.findByScopesAndVersion(scopes, "2.1");
+	  for(Datatype dt : dataInit){
+		  ArrayList<List<String>> temp = new ArrayList<List<String>>();
+		  List<String> version1= new ArrayList<String>();
+		  version1.add("2.1");
+		  temp.add(version1);
+		  DatatypeMap.put(dt.getName(), temp);
+		  
 	  }
-	  
-	  
-	  
-	  
-	  
+
   }
   
+private void AddVersiontoMap(String version){
+	Visited= new HashMap<Datatype, Integer>();
+
+	List<SCOPE> scopes = new ArrayList<SCOPE>();
+	scopes.add(SCOPE.HL7STANDARD);
+	List <Datatype> datatypesToAdd= datatypeService.findByScopesAndVersion(scopes, version);
+	
+	for(Datatype dt : datatypesToAdd){
+		  ArrayList<List<String>> temp = new ArrayList<List<String>>();
+		  List<String> version2= new ArrayList<String>();
+		  temp.add(version2);
+		  //DatatypeMap.put(dt.getName(), temp);
+		  if(!DatatypeMap.containsKey(dt.getName())){
+			  
+			  DatatypeMap.put(dt.getName(), temp);
+
+		  }else{
+			  ArrayList<List<String>> vaueOfKey= DatatypeMap.get(dt.getName());
+			  Datatype d=null;
+			  for(int i=0; i<DatatypeMap.get(dt.getName()).size();i++){
+				  if(DatatypeMap.get(dt.getName()).get(i).size()>0){
+				  d = datatypeService.findByNameAndVersion(dt.getName(), DatatypeMap.get(dt.getName()).get(i).get(0));
+				  }
+				  if(d!=null){
+					  if(d.isIdentique(dt)){
+						  List<String> list2= DatatypeMap.get(dt.getName()).get(i);
+						  list2.add(version);
+						  DatatypeMap.get(dt.getName()).set(i, list2);
+						  System.out.println("FOUND IDENTIQUE ");
+						  
+						  Visited.put(dt,1);
+					  }		  
+				  }
+			  }
+			  if(!Visited.containsKey(dt)){
+				  List<String> version2Add= new ArrayList<String>();
+				  version2Add.add(version);
+				  DatatypeMap.get(dt.getName()).add(version2Add);
+				  //DatatypeMap.put(dt.getName(), temp);
+				  Visited.put(dt,1);
+			  }	  
+		  }
+	  }
+
+}	
+  public void addAllVersions(){
+	  initMAp();
+	  String[] versions = {"2.2","2.3","2.4","2.5","2.6","2.7","2.8","2.8.1","2.8.2"};
+	  //String[] versions = {"2.2","2.3"};
+	  for(int i= 0; i<versions.length; i++){
+	  AddVersiontoMap(versions[i].toString());
+	  }
+  }
+  public void CreateCollectionOfUnchanged(){
+	  addAllVersions();
+	  
+	  for (Entry<String, ArrayList<List<String>>> e :DatatypeMap.entrySet()){
+		  String name = e.getKey();
+		  ArrayList<List<String>> values = e.getValue();
+		  
+		  for (List<String> versions: values){
+			  UnchangedData unchanged= new UnchangedData();
+			  unchanged.setName(name);
+			  unchanged.setVersions(versions);
+			  unchangedData.insert(unchanged);
+		  }
+		  
+		  
+	  }
+  }
   
 
   // NOTE:ADD version to preloaded segs,dts,vs

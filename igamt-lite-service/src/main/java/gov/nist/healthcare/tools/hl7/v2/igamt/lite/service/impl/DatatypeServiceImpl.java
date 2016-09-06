@@ -111,7 +111,7 @@ public List<Datatype> findByScope(String scope) {
 }
 
 @Override
-public List<Datatype> findByNameAndVErsion(String name, String version) {
+public Datatype findByNameAndVersion(String name, String version) {
 	// TODO Auto-generated method stub
 	return datatypeRepository.findByNameAndVersion(name,version);
 }
