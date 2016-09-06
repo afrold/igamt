@@ -193,7 +193,7 @@
                                                 <thead>
                                 <tr>
                                         <th colspan="6">
-                                        <input st-search placeholder="Search " class="input-sm form-control" type="search" />
+                                        <input st-search placeholder="Search" class="input-sm form-control" type="search" />
                                         </th>
                                     </tr>
                                                     <tr class="tbl-header">
@@ -272,9 +272,9 @@
                                                         </td> -->
                                                     </tr>
                                                 </tbody>
-                    <tr style="float:center !important; ">
-                        <td colspan="6" class="text-center" style="float:center !important; ">
-                            <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7" style="float:center !important; "></div>
+                    <tr style="float:center !important;">
+                        <td colspan="6" class="text-center" style="float:center !important;">
+                            <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7" style="float:center !important;"></div>
                         </td>
                     </tr>
 
@@ -308,7 +308,7 @@
                             </tab>
                             <tab  ng-click="callVSDelta()">
                                 <tab-heading>
-                                    <i class="fa fa-table fa-fw " aria-hidden="true "></i> Value Set Delta
+                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Delta
                                 </tab-heading>
                                 <div class="panel-body" style="margin:5px;">
                                     <accordion>
@@ -318,28 +318,28 @@
                                             </accordion-heading>
                                             <div class="row" align="center" style="margin-top:5px;margin-bottom:5px">
                                                 <div class="input-group col-md-3">
-                                                    <span class="label " style="background-color:#B5F7EC;color:black;">1</span>
+                                                    <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
                                                     <span class="input-group-addon" id="basic-addon1">Version</span>
 
-                                                    <select ng-model="version1" class="form-control " disabled>
+                                                    <select ng-model="version1" class="form-control" disabled>
                                                     <option ng-selected="version1"> {{version1}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-2">
                                                     <span class="input-group-addon" id="basic-addon1">Scope</span>
-                                                    <select ng-model="scope1" class="form-control " disabled>
+                                                    <select ng-model="scope1" class="form-control" disabled>
                                                     <option ng-selected="scope1"> {{scope1}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-3">
                                                     <span class="input-group-addon" id="basic-addon1">IG Document</span>
-                                                    <select ng-model="ig1" class="form-control " disabled>
+                                                    <select ng-model="ig1" class="form-control" disabled>
                                                     <option ng-selected="ig1"> {{ig1}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-4">
                                                     <span class="input-group-addon" id="basic-addon1">Value Set</span>
-                                                    <select ng-model="table1" class="form-control " disabled>
+                                                    <select ng-model="table1" class="form-control" disabled>
                                                     <option ng-selected="table1"> {{table1.bindingIdentifier}}</option>
                                                 </select>
                                                 </div>
@@ -348,25 +348,25 @@
                                                 <div class="input-group col-md-3">
                                                     <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
                                                     <span class="input-group-addon" id="basic-addon1">Version</span>
-                                                    <select ng-model="version2" class="form-control " ng-change="setVersion2(version2)" no-dirty-check>
-                                                    <option ng-repeat="vr in versions " value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
+                                                    <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
+                                                    <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-2">
                                                     <span class="input-group-addon" id="basic-addon1">Scope</span>
-                                                    <select ng-model="scope2" class="form-control " ng-change="setScope2(scope2)" no-dirty-check>
-                                                    <option ng-repeat="scope in scopes " value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
+                                                    <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
+                                                    <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-3">
                                                     <span class="input-group-addon" id="basic-addon1">IG Document</span>
-                                                    <select class="form-control " ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
+                                                    <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
                                                 </div>
 
                                                 <div class="input-group col-md-4">
                                                     <span class="input-group-addon" id="basic-addon1">Value Set</span>
 
-                                                    <select ng-model="cmp.tableId" class="form-control " ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2" no-dirty-check>
+                                                    <select ng-model="cmp.tableId" class="form-control" ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2" no-dirty-check>
                                                         <option value='-1'></option>
                                                         <option ng-repeat="table in tables2 track by $index" ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{table.bindingIdentifier}}</option>
                                                     </select>
@@ -384,13 +384,13 @@
                                                 <span style="color:white;"> Delta Result</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i> </accordion-heading>
                                             </accordion-heading>
                                             <div class="panel-body">
-                                                <table tt-table tt-params="dynamicVs_params" class=" table-marginless table-bordered table-condensed ">
+                                                <table tt-table tt-params="dynamicVs_params" class=" table-marginless table-bordered table-condensed">
                                                     <thead>
                                                         <tr>
                                                             <th class="col-xs-2">Name</th>
-                                                            <th class="col-xs-1 ">Content Definition</th>
-                                                            <th class="col-xs-1 ">Code System</th>
-                                                            <th class="col-xs-1 ">Code Usage</th>
+                                                            <th class="col-xs-1">Content Definition</th>
+                                                            <th class="col-xs-1">Code System</th>
+                                                            <th class="col-xs-1">Code Usage</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody></tbody>
@@ -750,8 +750,8 @@
 </script>
 
 <script type="text/ng-template" id="valueSet_node">
-    <tr tt-node is-branch="node.codes!==undefined ">
-        <td class="col-xs-2 ">
+    <tr tt-node is-branch="node.codes!==undefined">
+        <td class="col-xs-2">
             <table class=" table-borderless" ng-show="node.label.element && node.description.element">
                 <tr>
                     <td class="col-sm-1">
@@ -785,7 +785,7 @@
                 </tr>
             </table>
         </td>
-        <td class="col-xs-1 " ng-show="node.contentDefinition">
+        <td class="col-xs-1" ng-show="node.contentDefinition">
             <div align="center">
                 <table class=" table-borderless">
                     <tr>
@@ -801,10 +801,10 @@
                 </table>
             </div>
         </td>
-        <td class="col-xs-1 " ng-show="!node.contentDefinition">
+        <td class="col-xs-1" ng-show="!node.contentDefinition">
             <div align="center"> - </div>
         </td>
-        <td class="col-xs-1 " ng-show="node.codeSystem">
+        <td class="col-xs-1" ng-show="node.codeSystem">
             <table class=" table-borderless">
                 <tr>
                     <td class="col-md-1" style="background-color:#B5F7EC">
@@ -818,10 +818,10 @@
                 </tr>
             </table>
         </td>
-        <td class="col-xs-1 " ng-show="!node.codeSystem">
+        <td class="col-xs-1" ng-show="!node.codeSystem">
             <div align="center"> - </div>
         </td>
-        <td class="col-xs-1 " ng-show="node.codeUsage">
+        <td class="col-xs-1" ng-show="node.codeUsage">
             <table class="table-borderless">
                 <tr>
                     <td class="col-md-1" style="background-color:#B5F7EC">
@@ -835,7 +835,7 @@
                 </tr>
             </table>
         </td>
-        <td class="col-xs-1 " ng-show="!node.codeUsage">
+        <td class="col-xs-1" ng-show="!node.codeUsage">
             <div align="center"> - </div>
         </td>
 

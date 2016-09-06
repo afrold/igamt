@@ -41,12 +41,12 @@
 <div ng-controller="HL7VersionsDlgCtrl">
     <div ng-controller="TreeCtrl">
 
-      <div ui-tree="treeOptions" style= "margin-left:8px;margin-bottom :20px;">
+      <div ui-tree="treeOptions" style="margin-left:8px;margin-bottom :20px;">
             <ol ui-tree-nodes="" ng-model="TreeIgs">
            
                 <li ng-repeat="ig in TreeIgs" ui-tree-node >
                     <div ui-tree-handle class="treeRoot">
-                        <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">{{igdocument.metaData.title}} <span  class= "badge"> V{{igdocument.profile.metaData.hl7Version}}  </span>
+                        <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">{{igdocument.metaData.title}} <span  class="badge"> V{{igdocument.profile.metaData.hl7Version}}  </span>
                         </span>
 
                     </div>
@@ -88,12 +88,12 @@
                     </div>
                     <ol ui-tree-nodes="" ng-model="ig.profile.messages.children"
                         ng-show="!profilecollapsed" data-type="messages">
-                        <div  ui-tree-handle  style= "margin-left:15px;">
+                        <div  ui-tree-handle  style="margin-left:15px;">
 
                             <i data-nodrag ng-click="switchermsg()" class="fa fa-caret-down"
                                ng-class="{'fa-caret-down': !collapsemessage, 'fa-caret-right': collapsemessage}"></i>
 
-							 <span  style= "font-size:14px;"context-menu="MessagesRootOption" ng-class="{selected :activeModel ==='Conformance Profiles'}"
+							 <span  style="font-size:14px;"context-menu="MessagesRootOption" ng-class="{selected :activeModel ==='Conformance Profiles'}"
                                    ng-click="editRoutSection('Conformance Profiles');" confirm-click data-nodrag >
 									{{ig.childSections.length+1}}.1.Conformance Profiles </span>
                         </div>
@@ -142,7 +142,7 @@
 
                 {{ig.childSections.length+1}}.2.Segments and field descriptions:{{filteredSegmentsList.length}}/{{segments.length}}</span>
                         </div>
-                        <div ng-if="!collapsesegment &&selectedSegment" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="badge label-default" ng-click="selectedSegment=null ;resetSegments() " ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
+                        <div ng-if="!collapsesegment &&selectedSegment" data-nodrag ui-tree-handle style ="margin-left:30px;"> <span class="badge label-default" ng-click="selectedSegment=null ;resetSegments()" ng-if="!collapsesegment" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
                         <li ng-repeat="segment in filteredSegmentsList track by segment.id"
                             ui-tree-node ng-if="!collapsesegment" data-type="segment">
                             <div ui-tree-handle  data-nodrag 
@@ -164,7 +164,7 @@
 
 <!-- <input type="checkbox" ng-model="segment.checked" ng-click="uncheckAndDisableOthers(segment)" ng-disabled="segment.anotherIsChecked"/> -->
 
-  <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
+  <span class="badge" ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
   'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS' }" >  {{getScopeLabel(segment)}}	</span>
                                         {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
                             </div>
@@ -194,7 +194,7 @@
 <!--                 <input type="radio" -->
 <!--                 ng-model="data.checked" -->
 <!--                 name="dataTypesRadio" ng-click="rebuildTreeFromDatatype(data)"/>   -->
-                                     <span class="badge " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                    'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}" >  {{getScopeLabel(data)}}</span> 
                                       
           
@@ -228,7 +228,7 @@
                                       ng-class="{selected : table.id===activeModel}"
                                       confirm-click
                                       ng-click="editTable(table)">
-                                     <span class="badge " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> 
                                       
                                       {{table.bindingIdentifier}}-{{table.description}}</span>

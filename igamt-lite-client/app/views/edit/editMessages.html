@@ -742,7 +742,7 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn( 'valueSet')">
             <div>
                 <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null">
-                    <a class="point " ng-repeat="table in node.obj.tables track by table.id " ng-click="redirectVS(table) ">{{getTableLabel(tablesMap[table.id])}}
+                    <a class="point" ng-repeat="table in node.obj.tables track by table.id" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
 </a>
 
                 </span>
@@ -860,7 +860,7 @@
             <div>
                 <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null">
 
-                    <a class="point " ng-repeat="table in node.obj.tables track by table.id " ng-click="redirectVS(table) ">{{getTableLabel(tablesMap[table.id])}}
+                    <a class="point" ng-repeat="table in node.obj.tables track by table.id" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
 </a>
                 </span>
             </div>

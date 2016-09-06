@@ -249,13 +249,13 @@
                                                         </div>
                                                     </div>
 
-                                                    <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'" class="form-group control-group" ">
-                                                        <label class="col-md-2 control-label ">Time Zone</label>
+                                                    <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'" class="form-group control-group">
+                                                        <label class="col-md-2 control-label">Time Zone</label>
 
-                                                        <div class="controls col-md-10 ">
-                                                            <md-checkbox ng-model="datatype.timeZoneOfDTM " aria-label="TimeZone ">
-                                                                <Span ng-show="datatype.timeZoneOfDTM ">Time Zone Required</Span>
-                                                                <Span ng-hide="datatype.timeZoneOfDTM ">Time Zone Optional</Span>
+                                                        <div class="controls col-md-10">
+                                                            <md-checkbox ng-model="datatype.timeZoneOfDTM" aria-label="TimeZone">
+                                                                <Span ng-show="datatype.timeZoneOfDTM">Time Zone Required</Span>
+                                                                <Span ng-hide="datatype.timeZoneOfDTM">Time Zone Optional</Span>
                                                             </md-checkbox>
                                                         </div>
                                                     </div>
@@ -263,35 +263,35 @@
                                             </div>
                                         </div>
 
-                                        <div accordion-group class="panel-primary " is-open="accordStatus.isSixOpen ">
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isSixOpen">
                                             <accordion-heading>
-                                                <span style="color:white; ">Definition Post-Text</span> <i class="pull-left fa " style="color:white; " ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen} "></i>                                                </accordion-heading>
-                                            <div class="panel-body ">
-                                                <div ng-if="!viewSettings.tableReadonly && datatype.scope==='USER' ">
-                                                    <textarea froala="froalaEditorOptions " ng-model="datatype.defPostText " name="text " id="text " ng-change="setDirty() "></textarea>
+                                                <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div ng-if="!viewSettings.tableReadonly && datatype.scope==='USER'">
+                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="text" ng-change="setDirty()"></textarea>
                                                 </div>
-                                                <div ng-if="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' ) ">
-                                                    <div class="fr-view ">
-                                                        <div froala-view="datatype.defPostText "></div>
+                                                <div ng-if="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' )">
+                                                    <div class="fr-view">
+                                                        <div froala-view="datatype.defPostText"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div accordion-group class="panel-primary " is-open="accordStatus.isSecondOpen ">
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
                                             <accordion-heading>
-                                                <span style="color:white; ">Conformance Statements</span> <i class="pull-left fa " style="color:white; " ng-class="{ 'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen} "></i>                                                </accordion-heading>
-                                            <div class="panel-body ">
-                                                <div class="col-md-12 igl-page-header ">
+                                                <span style="color:white;">Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div class="col-md-12 igl-page-header">
 
-                                                    <span class="pull-right ">
-                                                        <button class="btn btn-raised btn-primary btn-xs " ng-click="manageConformanceStatement(null); "
-                                                                ng-hide="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' ) || !datatype.components || datatype.components.length==0 "><span><i
-                                                                class="fa fa-plus fa-fw ">
+                                                    <span class="pull-right">
+                                                        <button class="btn btn-raised btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
+                                                                ng-hide="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' ) || !datatype.components || datatype.components.length==0"><span><i
+                                                                class="fa fa-plus fa-fw">
                                                             &nbsp; </i>Add Conf.Statement</span></button>
                                                     </span>
                                                 </div>
-                                                <div class="col-md-12 ">
+                                                <div class="col-md-12">
                                                     <span ng-hide="datatype.conformanceStatements.length> 0">No conformance statement</span>
                                                         <table st-table="displayed" st-safe-src="datatype.conformanceStatements" class="table table-striped table-bordered" ng-show="datatype.conformanceStatements.length > 0">
                                                             <thead>
@@ -383,7 +383,7 @@
                             </tab>
                             <tab ng-click="callDTDelta()">
                                 <tab-heading>
-                                    <i class="fa fa-table fa-fw " aria-hidden="true "></i> Datatype Delta
+                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i> Datatype Delta
                                 </tab-heading>
                                 <div class="panel-body" style="margin:5px;">
                                     <accordion>
@@ -393,28 +393,28 @@
                                             </accordion-heading>
                                             <div class="row" align="center" style="margin-top:5px;margin-bottom:5px">
                                                 <div class="input-group col-md-3">
-                                                    <span class="label " style="background-color:#B5F7EC;color:black;">1</span>
+                                                    <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
                                                     <span class="input-group-addon" id="basic-addon1">Version</span>
 
-                                                    <select ng-model="version1" class="form-control " disabled>
+                                                    <select ng-model="version1" class="form-control" disabled>
                                                     <option ng-selected="version1"> {{version1}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-2">
                                                     <span class="input-group-addon" id="basic-addon1">Scope</span>
-                                                    <select ng-model="scope1" class="form-control " disabled>
+                                                    <select ng-model="scope1" class="form-control" disabled>
                                                     <option ng-selected="scope1"> {{scope1}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-3">
                                                     <span class="input-group-addon" id="basic-addon1">IG Document</span>
-                                                    <select ng-model="ig1" class="form-control " disabled>
+                                                    <select ng-model="ig1" class="form-control" disabled>
                                                     <option ng-selected="ig1"> {{ig1}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-4">
                                                     <span class="input-group-addon" id="basic-addon1">Datatype</span>
-                                                    <select ng-model="datatype1" class="form-control " disabled>
+                                                    <select ng-model="datatype1" class="form-control" disabled>
                                                     <option ng-selected="datatype1"> {{getLabel(datatype1)}}</option>
                                                 </select>
                                                 </div>
@@ -423,25 +423,25 @@
                                                 <div class="input-group col-md-3">
                                                     <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
                                                     <span class="input-group-addon" id="basic-addon1">Version</span>
-                                                    <select ng-model="version2" class="form-control " ng-change="setVersion2(version2)" no-dirty-check>
-                                                    <option ng-repeat="vr in versions " value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
+                                                    <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
+                                                    <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-2">
                                                     <span class="input-group-addon" id="basic-addon1">Scope</span>
-                                                    <select ng-model="scope2" class="form-control " ng-change="setScope2(scope2)" no-dirty-check>
-                                                    <option ng-repeat="scope in scopes " value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
+                                                    <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
+                                                    <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-3">
                                                     <span class="input-group-addon" id="basic-addon1">IG Document</span>
-                                                    <select class="form-control " ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
+                                                    <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
                                                 </div>
 
                                                 <div class="input-group col-md-4">
                                                     <span class="input-group-addon" id="basic-addon1">Datatype</span>
 
-                                                    <select ng-model="cmp.datatypeId" class="form-control " ng-change="setDatatype2(cmp.datatypeId)" ng-disabled="!ig2" no-dirty-check>
+                                                    <select ng-model="cmp.datatypeId" class="form-control" ng-change="setDatatype2(cmp.datatypeId)" ng-disabled="!ig2" no-dirty-check>
                                                         <option value='-1'></option>
                                                         <option ng-repeat="datatype in datatypes2 track by $index" ng-disabled="disableDT(datatype,datatype1)" ng-hide="hideDT(datatype,datatype1)" value='{{$index}}'> {{getLabel(datatype)}}</option>
                                                     </select>
@@ -459,23 +459,23 @@
                                                 <span style="color:white;"> Delta Result</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i> </accordion-heading>
                                             </accordion-heading>
                                             <div class="panel-body">
-                                                <table tt-table tt-params="dynamicDt_params" class=" table-marginless table-bordered table-condensed ">
+                                                <table tt-table tt-params="dynamicDt_params" class=" table-marginless table-bordered table-condensed">
                                                     <thead>
                                                         <tr>
-                                                            <th class="col-xs-1 " rowspan="2" style="width:14%; ">Position</th>
-                                                            <th class="col-xs-2 " rowspan="2" style="width:37%;  ">Name</th>
-                                                            <th class="col-xs-1 " rowspan="2" style="width:2% ">Usage</th>
-                                                            <th class="col-xs-1 " colspan="2" style="width:4% ">Cardinality</th>
-                                                            <th class="col-xs-1 " colspan="2" style="width:4% ">Length</th>
-                                                            <th class="col-xs-1 " rowspan="2" style="width:2% ">Conformance Length</th>
-                                                            <th class="col-xs-1 " rowspan="2" style="width:21% ">Data Type</th>
-                                                            <th class="col-xs-1 " rowspan="2" style="width:16% ">Value Set</th>
+                                                            <th class="col-xs-1" rowspan="2" style="width:14%;">Position</th>
+                                                            <th class="col-xs-2" rowspan="2" style="width:37%;">Name</th>
+                                                            <th class="col-xs-1" rowspan="2" style="width:2%">Usage</th>
+                                                            <th class="col-xs-1" colspan="2" style="width:4%">Cardinality</th>
+                                                            <th class="col-xs-1" colspan="2" style="width:4%">Length</th>
+                                                            <th class="col-xs-1" rowspan="2" style="width:2%">Conformance Length</th>
+                                                            <th class="col-xs-1" rowspan="2" style="width:21%">Data Type</th>
+                                                            <th class="col-xs-1" rowspan="2" style="width:16%">Value Set</th>
                                                         </tr>
                                                         <tr>
-                                                            <th class="col-xs-1 col-fixed-10" style="width:2% ">min</th>
-                                                            <th class="col-xs-1 col-fixed-10" style="width:2% ">max</th>
-                                                            <th class="col-xs-1 col-fixed-10" style="width:2% ">min</th>
-                                                            <th class="col-xs-1 col-fixed-10" style="width:2% ">max</th>
+                                                            <th class="col-xs-1 col-fixed-10" style="width:2%">min</th>
+                                                            <th class="col-xs-1 col-fixed-10" style="width:2%">max</th>
+                                                            <th class="col-xs-1 col-fixed-10" style="width:2%">min</th>
+                                                            <th class="col-xs-1 col-fixed-10" style="width:2%">max</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody></tbody>
@@ -564,7 +564,7 @@
     </div>
 </script>
 <script type="text/ng-template" id="DatatypeEditTree.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node) ">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-2 col-fixed-250">{{$index}}
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
@@ -591,7 +591,7 @@
     </tr>
 </script>
 <script type="text/ng-template" id="DatatypeReadTree.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node) ">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-2 col-fixed-250">
             <span style="width:60%" type="text" name="name" ng-bind="::node.name"></span>
             <span ng-bind="::node.description"></span>
@@ -626,13 +626,13 @@
     </tr>
 </script>
 <script type="text/ng-template" id="DatatypeComponentEditTree.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF) " ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)" ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
         <td class="col-xs-2 col-fixed-250" ng-controller="DatatypeRowCtrl">
-            <!--<a ng-show="editableSeg!==node.id " ng-click="editComponent(node,datatype) " class="point ">-->
-            <!--<span><i class="fa fa-pencil fa-fw "></i></span>-->
+            <!--<a ng-show="editableSeg!==node.id" ng-click="editComponent(node,datatype)" class="point">-->
+            <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
             <!--</a>-->
-            <!--<a ng-show="editableSeg!==node.id " ng-click="deleteComponent(node,datatype) " class="point ">-->
-            <!--<span><i class="glyphicon glyphicon-trash "></i></span>-->
+            <!--<a ng-show="editableSeg!==node.id" ng-click="deleteComponent(node,datatype)" class="point">-->
+            <!--<span><i class="glyphicon glyphicon-trash"></i></span>-->
             <!--</a>-->
             <ng-form name="{{formName}}" class="form-inline">
                 <!--<input type="checkbox" ng-checked="isChildSelected(node)" ng-click="selectChild($event,node)">-->
@@ -654,20 +654,20 @@
 
             </span>
                 </span>
-                <span ng-show="editableComp===node.id ">
-              <select ng-model="position " ng-change="selectPos() " style="width:15% " class="form-control input-sm ">
-                  <option ng-repeat="child in datatype.components track by child.id" ng-selected="node.position===child.position ">
+                <span ng-show="editableComp===node.id">
+              <select ng-model="position" ng-change="selectPos()" style="width:15%" class="form-control input-sm">
+                  <option ng-repeat="child in datatype.components track by child.id" ng-selected="node.position===child.position">
                       {{child.position}}
               </select>
-            <input style="width:55%" class="form-control " ng-model="compName " type="text "/>
+            <input style="width:55%" class="form-control" ng-model="compName" type="text"/>
             </span>
 
                 <div align="center">
-                    <a ng-show="editableComp===node.id && compName " ng-click="applyComp(datatype,node,compName,position) " class="point ">
-                        <span><i class="glyphicon glyphicon-ok "></i></span>
+                    <a ng-show="editableComp===node.id && compName" ng-click="applyComp(datatype,node,compName,position)" class="point">
+                        <span><i class="glyphicon glyphicon-ok"></i></span>
                     </a>
-                    <a ng-show="editableComp===node.id " ng-click="backComp() " class="point ">
-                        <span><i class="glyphicon glyphicon-remove "></i></span>
+                    <a ng-show="editableComp===node.id" ng-click="backComp()" class="point">
+                        <span><i class="glyphicon glyphicon-remove"></i></span>
                     </a>
                 </div>
             </ng-form>
@@ -706,25 +706,25 @@
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
                 <div ng-show="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
-                    <a class="point" ng-show="editableDT!==node.id " ng-click="redirectDT(node.datatype)">
+                    <a class="point" ng-show="editableDT!==node.id" ng-click="redirectDT(node.datatype)">
                         {{getDatatypeLabel(datatypesMap[node.datatype.id])}} 
                     </a>
 
-                    <div ng-show="editableDT===node.id ">
-                        <select ng-model="datatype " ng-change="selectDT(node,datatype) " class="form-control input-sm ">
-                            <option ng-repeat="datatype in results track by datatype.id" value="{{datatype}} "
-                                    ng-selected="node.datatype.ext===datatype.ext "> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}}
+                    <div ng-show="editableDT===node.id">
+                        <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
+                            <option ng-repeat="datatype in results track by datatype.id" value="{{datatype}}"
+                                    ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}}
                             </option>
                         </select>
                     </div>
-                    <a ng-show="editableDT!==node.id " ng-click="editDT(node) " class="point ">
-                        <span><i class="fa fa-pencil fa-fw "></i></span>
+                    <a ng-show="editableDT!==node.id" ng-click="editDT(node)" class="point">
+                        <span><i class="fa fa-pencil fa-fw"></i></span>
                     </a>
 
                     <div align="center">
 
-                        <a ng-show="editableDT===node.id " ng-click="backDT() " class="point ">
-                            <span><i class="glyphicon glyphicon-remove "></i></span>
+                        <a ng-show="editableDT===node.id" ng-click="backDT()" class="point">
+                            <span><i class="glyphicon glyphicon-remove"></i></span>
                         </a>
                     </div>
                 </div>
@@ -732,16 +732,16 @@
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.tables.length!==0">
-                <a class="point " ng-repeat="table in node.tables track by table.id">
+                <a class="point" ng-repeat="table in node.tables track by table.id">
                     <span ng-click="redirectVS(table)"> {{getTableLabel(tablesMap[table.id])}}</span>
                 </a>
-                <a ng-click="editVSModal(node) " class="point ">
-                    <span><i class="fa fa-pencil fa-fw "></i></span>
+                <a ng-click="editVSModal(node)" class="point">
+                    <span><i class="fa fa-pencil fa-fw"></i></span>
                 </a>
             </div>
             <div ng-show="(node.tables.length===0) && isAvailableDTForTable(datatypesMap[node.datatype.id])">
-                <a ng-click="editVSModal(node) " class="point ">
-                    <span><i class="fa fa-plus fa-fw "></i></span>
+                <a ng-click="editVSModal(node)" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
                 </a>
             </div>
         </td>
@@ -799,7 +799,7 @@
     </tr>
 </script>
 <script type="text/ng-template" id="DatatypeComponentReadTree.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF) ">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)">
         <td class="col-xs-2 col-fixed-250">
             <span class="label label-component label-icon">C</span>
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
@@ -899,7 +899,7 @@
             </div>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table) " class="point" ng-show="node.tables !== null && node.tables !== undefined">
+            <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" class="point" ng-show="node.tables !== null && node.tables !== undefined">
                 {{getTableLabel(tablesMap[table.id])}}
             </a>
         </td>
@@ -1887,7 +1887,7 @@
 <script type="text/ng-template" id="AddComponentModal.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
-            <span class="header4 ">Add Component</span>
+            <span class="header4">Add Component</span>
         </div>
     </div>
     <hr/>
@@ -1896,16 +1896,16 @@
             <div class="row" style="margin-bottom: 20px">
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">Name*</label>
-                    <input style="width:30% " class="form-control col-md-4 " ng-model="newComponent.name " required/>
+                    <input style="width:30%" class="form-control col-md-4" ng-model="newComponent.name" required/>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 20px">
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">Position*</label>
 
-                    <div class="controls ">
-                        <select ng-model="position " ng-change="selectPos() " style="width:30% " class="form-control input-sm " required>
-                            <option ng-repeat="component in datatype.components track by component.id "> {{component.position}}
+                    <div class="controls">
+                        <select ng-model="position" ng-change="selectPos()" style="width:30%" class="form-control input-sm" required>
+                            <option ng-repeat="component in datatype.components track by component.id"> {{component.position}}
                             <option value="{{datatype.components.length+1}}">{{datatype.components.length+1}}
                         </select>
                     </div>
@@ -1915,8 +1915,8 @@
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">Usage*</label>
 
-                    <div class="controls ">
-                        <select style="width:30% " class="form-control input-sm " name="usage " ng-change="selectUsage(newComponent.usage) " ng-model="newComponent.usage " ng-options="usage for usage in config.usages " required/>
+                    <div class="controls">
+                        <select style="width:30%" class="form-control input-sm" name="usage" ng-change="selectUsage(newComponent.usage)" ng-model="newComponent.usage" ng-options="usage for usage in config.usages" required/>
                     </div>
                 </div>
             </div>
@@ -1924,22 +1924,22 @@
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">Length*</label>
 
-                    <div class="controls " ng-controller="SegmentRowCtrl ">
-                        <span ng-form name="{{formName}} " class="form-inline ">
-                                                <input style="width:15% " class="form-control col-md-2 "
+                    <div class="controls" ng-controller="SegmentRowCtrl">
+                        <span ng-form name="{{formName}}" class="form-inline">
+                                                <input style="width:15%" class="form-control col-md-2"
                                                        placeholder="Min Length"
-                                                       name="min "
+                                                       name="min"
 
-                                                       ng-pattern="/^\d+$/ "
-                                                       ng-model="newComponent.minLength " ng-disabled="disableMin"
+                                                       ng-pattern="/^\d+$/"
+                                                       ng-model="newComponent.minLength" ng-disabled="disableMin"
                                                        required>
-                                                <input style="width:15% " class="form-control col-md-2 " type="text "
+                                                <input style="width:15%" class="form-control col-md-2" type="text"
                                                        placeholder="Max Length"
-                                                       name="max "
+                                                       name="max"
 
 
-                                                       ng-pattern="/^\d+$|^\*?$/ "
-                                                       ng-model="newComponent.maxLength " ng-disabled="disableMax"
+                                                       ng-pattern="/^\d+$|^\*?$/"
+                                                       ng-model="newComponent.maxLength" ng-disabled="disableMax"
                                                        required>
                                             </span>
                     </div>
@@ -1948,16 +1948,16 @@
             <div class="row" style="margin-bottom: 20px">
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">Conf Length</label>
-                    <input style="width:30% " class="form-control col-md-4 " name="confLength " ng-pattern="/^\d+$/ " ng-model="newComponent.confLength ">
+                    <input style="width:30%" class="form-control col-md-4" name="confLength" ng-pattern="/^\d+$/" ng-model="newComponent.confLength">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 20px">
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">Datatype</label>
 
-                    <div class="controls ">
-                        <input style="width:30% " class="form-control col-md-4 " type="text" ng-model="searchDT.name" ng-hide="selectedDT()" />
-                        <li style="width:30% " class="form-control col-md-4 col-md-offset-6" ng-show="selectedDT()">
+                    <div class="controls">
+                        <input style="width:30%" class="form-control col-md-4" type="text" ng-model="searchDT.name" ng-hide="selectedDT()" />
+                        <li style="width:30%" class="form-control col-md-4 col-md-offset-6" ng-show="selectedDT()">
                             {{DT.name}} <span ng-show="DT.ext">_{{DT.ext}}</span>
                             <button type="button" class="close" aria-label="Close" ng-click="unselectDT()">
                                 <span aria-hidden="true">&times;</span>
@@ -1965,7 +1965,7 @@
                         </li>
                     </div>
                     <div ng-if="searchDT.name  && !selectedDT()">
-                        <li style="width:30% " class="form-control col-md-4 col-md-offset-6" ng-class="{'active':isDTActive(datatype.id)}" ng-click="selectDT(datatype)" ng-repeat="datatype in datatypes | filter:searchDT ">
+                        <li style="width:30%" class="form-control col-md-4 col-md-offset-6" ng-class="{'active':isDTActive(datatype.id)}" ng-click="selectDT(datatype)" ng-repeat="datatype in datatypes | filter:searchDT">
                             {{datatype.name}} <span ng-show="datatype.ext">_{{datatype.ext}}</span>
                         </li>
                     </div>
@@ -1975,9 +1975,9 @@
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">ValueSet</label>
 
-                    <div class="controls ">
-                        <input style="width:30% " class="form-control col-md-4 " type="text" ng-model="searchVS.name" ng-hide="selectedVS()" />
-                        <li style="width:30% " class="form-control col-md-4 col-md-offset-6" ng-show="selectedVS()">
+                    <div class="controls">
+                        <input style="width:30%" class="form-control col-md-4" type="text" ng-model="searchVS.name" ng-hide="selectedVS()" />
+                        <li style="width:30%" class="form-control col-md-4 col-md-offset-6" ng-show="selectedVS()">
                             {{VS.name}}
                             <button type="button" class="close" aria-label="Close" ng-click="unselectVS()">
                                 <span aria-hidden="true">&times;</span>
@@ -1985,7 +1985,7 @@
                         </li>
                     </div>
                     <div ng-if="searchVS.name && !selectedVS()">
-                        <li style="width:30% " class="form-control col-md-4 col-md-offset-6" ng-class="{'active':isDTActive(valueSet.id)}" ng-click="selectVS(valueSet)" ng-repeat="valueSet in valueSets | filter:searchVS ">
+                        <li style="width:30%" class="form-control col-md-4 col-md-offset-6" ng-class="{'active':isDTActive(valueSet.id)}" ng-click="selectVS(valueSet)" ng-repeat="valueSet in valueSets | filter:searchVS">
                             {{valueSet.name}}
                         </li>
                     </div>
@@ -1994,14 +1994,14 @@
             <div class="row" style="margin-bottom: 20px">
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">Comment</label>
-                    <textarea style="width:30% " class="form-control col-md-4 " ng-model="newComponent.comment ">
+                    <textarea style="width:30%" class="form-control col-md-4" ng-model="newComponent.comment">
                     </textarea>
                 </div>
             </div>
         </form>
         <hr/>
         <div class="modal-footer">
-            <button class="btn btn-raised btn-primary btn-sm" ng-click="addComponent()" ng-disabled="addCompForm.$invalid "><span><i
+            <button class="btn btn-raised btn-primary btn-sm" ng-click="addComponent()" ng-disabled="addCompForm.$invalid"><span><i
                     class="fa fa-play fa-fw">
                 &nbsp; </i>Add</span>
             </button>
