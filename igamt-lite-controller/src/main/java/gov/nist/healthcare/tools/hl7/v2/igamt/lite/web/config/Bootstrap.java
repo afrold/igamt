@@ -106,12 +106,7 @@ public class Bootstrap implements InitializingBean {
     // addVersionAndScopetoHL7IG();
     // addVersionAndScopetoUSERIG();
     // addScopeUserToOldClonedPRELOADEDIG();
-
-
-
-    // not done
     // changeTabletoTablesInNewHl7();
-
 
   }
 
@@ -123,7 +118,6 @@ public class Bootstrap implements InitializingBean {
     hl7Versions.add("2.8.2");
     List<IGDocument> igDocuments =
         documentService.findByScopeAndVersionsInIg(IGDocumentScope.HL7STANDARD, hl7Versions);
-    Set<String> segIds = new HashSet<String>();
     for (IGDocument igd : igDocuments) {
       Set<String> usedSegsId = new HashSet<String>();
       SegmentLibrary segmentLib = igd.getProfile().getSegmentLibrary();
@@ -135,6 +129,7 @@ public class Bootstrap implements InitializingBean {
         for (Field fld : usedSeg.getFields()) {
           if (fld.getTable() != null) {
             fld.getTables().add(fld.getTable());
+            System.out.println("Field Table Added=" + fld.getTable());
           }
         }
       }
@@ -149,6 +144,7 @@ public class Bootstrap implements InitializingBean {
         for (Component comp : usedDt.getComponents()) {
           if (comp.getTable() != null) {
             comp.getTables().add(comp.getTable());
+            System.out.println("Component Table Added=" + comp.getTable());
           }
         }
       }
@@ -370,7 +366,7 @@ public class Bootstrap implements InitializingBean {
     for (IGDocument igd : igDocuments) {
       Messages msgs = igd.getProfile().getMessages();
       for (Message msg : msgs.getChildren()) {
-        if (msg.getScope() == SCOPE.USER || msg.getScope() == SCOPE.PRELOADED) {
+        if (SCOPE.USER.equals(msg.getScope()) || SCOPE.PRELOADED.equals(msg.getScope())) {
           msg.setScope(SCOPE.USER);
         }
       }
@@ -383,7 +379,7 @@ public class Bootstrap implements InitializingBean {
       }
       List<Segment> usedSegs = segmentService.findByIds(usedSegsId);
       for (Segment usedSeg : usedSegs) {
-        if (usedSeg.getScope() == SCOPE.PRELOADED) {
+        if (SCOPE.PRELOADED.equals(usedSeg.getScope())) {
           usedSeg.setScope(SCOPE.USER);
         }
       }
@@ -397,7 +393,7 @@ public class Bootstrap implements InitializingBean {
       }
       List<Datatype> usedDts = datatypeService.findByIds(usedDtsId);
       for (Datatype usedDt : usedDts) {
-        if (usedDt.getScope() == SCOPE.PRELOADED) {
+        if (SCOPE.PRELOADED.equals((usedDt.getScope()))) {
           usedDt.setScope(SCOPE.USER);
         }
       }
@@ -411,7 +407,7 @@ public class Bootstrap implements InitializingBean {
       }
       List<Table> usedTbs = tableService.findAllByIds(usedTbsId);
       for (Table usedDt : usedTbs) {
-        if (usedDt.getScope() == SCOPE.PRELOADED) {
+        if (SCOPE.PRELOADED.equals(usedDt.getScope())) {
           usedDt.setScope(SCOPE.USER);
         }
       }
