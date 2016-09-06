@@ -136,12 +136,9 @@ public class Bootstrap implements InitializingBean {
           if (fld.getTable() != null) {
             fld.getTables().add(fld.getTable());
           }
-
         }
-
       }
       segmentService.save(usedSegs);
-
       Set<String> usedDtsId = new HashSet<String>();
       DatatypeLibrary datatypeLib = igd.getProfile().getDatatypeLibrary();
       for (DatatypeLink dtLink : datatypeLib.getChildren()) {
@@ -153,14 +150,9 @@ public class Bootstrap implements InitializingBean {
           if (comp.getTable() != null) {
             comp.getTables().add(comp.getTable());
           }
-
         }
-
       }
       datatypeService.save(usedDts);
-
-
-
     }
 
   }
