@@ -436,7 +436,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th class="col-xs-1" rowspan="2" style="width:14%;">Position</th>
-                                                            <th class="col-xs-2" rowspan="2" style="width:37%; ">Name</th>
+                                                            <th class="col-xs-2" rowspan="2" style="width:37%;">Name</th>
                                                             <th class="col-xs-1" rowspan="2" style="width:2%">Usage</th>
                                                             <th class="col-xs-1" colspan="2" style="width:4%">Cardinality</th>
                                                             <th class="col-xs-1" colspan="2" style="width:4%">Length</th>
@@ -754,12 +754,12 @@
                 </div>
             </ng-form>
         </td>
-        <td class="col-xs-1 col-fixed-80 " ng-show="viewSettings.isVisibleColumn( 'usage') ">
-            <div class="form-inline ">
-                <span ng-show="node.usage !=='C' || (node.usage==='C' && countPredicate(node.position)===0 ) ">
-                    <select class="form-control input-sm " name="usage "
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn( 'usage')">
+            <div class="form-inline">
+                <span ng-show="node.usage !=='C' || (node.usage==='C' && countPredicate(node.position)===0 )">
+                    <select class="form-control input-sm" name="usage"
                             ng-change="setUsage(node);setCardinalities(node);openPredicateDialog(node);"
-                            required ng-model="node.usage " ng-options="usage for usage in config.usages "/>
+                            required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
                 </span>
                 <div ng-show="node.usage==='C' && countPredicate(node.position) !==0">
                     <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
@@ -831,7 +831,7 @@
             </a>
             <div ng-show="editableDT===node.id">
                 <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
-                    <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}}
+                    <option ng-repeat="datatype in results track by datatype.id" value="{{datatype}}" ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}}
                     </option>
                 </select>
             </div>
@@ -843,7 +843,7 @@
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn( 'valueSet')" style="text-align:center">
             <div ng-show="node.tables.length!==0">
-                <a class="point " ng-repeat="table in node.tables">
+                <a class="point" ng-repeat="table in node.tables">
                     <span ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}</span>
                 </a>
                 <a ng-click="editVSModal(node)" class="point">
@@ -952,13 +952,13 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn( 'valueSet')">
             <div>
                 <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null">
-                    <a class="point " ng-repeat="table in node.obj.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}xx
+                    <a class="point" ng-repeat="table in node.obj.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}xx
 </a>
                 </span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn( 'valueSet')">
-            <a class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
+            <a class="point" ng-show="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
 
 </a>
         </td>
@@ -1035,8 +1035,8 @@
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn( 'valueSet')">
             <div>
-                <span ng-show="node.table !=undefined && node.table !=null ">
-                    <a class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}xx
+                <span ng-show="node.table !=undefined && node.table !=null">
+                    <a class="point" ng-show="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}xx
 </a>
                 </a>
                 </span>
@@ -1117,7 +1117,7 @@
             </span>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn( 'valueSet')">
-            <a type="button " class="point " ng-show="node.tables !=undefined && node.tables !==null " ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}xx
+            <a type="button" class="point" ng-show="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}xx
 </a>
         </td>
         <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn( 'predicate')">

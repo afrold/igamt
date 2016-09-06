@@ -742,7 +742,7 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn( 'valueSet')">
             <div>
                 <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null">
-                    <a class="point " ng-repeat="table in node.obj.tables " ng-click="redirectVS(table) ">{{getTableLabel(tablesMap[table.id])}}
+                    <a class="point" ng-repeat="table in node.obj.tables track by table.id" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
 </a>
 
                 </span>
@@ -860,7 +860,7 @@
             <div>
                 <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null">
 
-                    <a class="point " ng-repeat="table in node.obj.tables " ng-click="redirectVS(table) ">{{getTableLabel(tablesMap[table.id])}}
+                    <a class="point" ng-repeat="table in node.obj.tables track by table.id" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
 </a>
                 </span>
             </div>
@@ -1126,7 +1126,7 @@
                                 <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
                         <span>ValueSet ID: </span>
                                 <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
-                                                        <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">
+                                                        <option ng-repeat="table in tables track by table.id |orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">
                                                             {{table.bindingIdentifier}}
                                                         </option>
                                                     </select>
@@ -1436,7 +1436,7 @@
                                     <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
                                         <span>ValueSet ID: </span>
                                     <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
-                                            <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">
+                                            <option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">
                                                 {{table.bindingIdentifier}}
                                             </option>
                                         </select>
@@ -1719,7 +1719,7 @@
                             </button>
                         </li>
                         <div ng-if="search.name && !selected()">
-                            <li class="form-control" ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments | filter:search">
+                            <li class="form-control" ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments track by segment.id | filter:search">
                                 {{segment.name}} <span ng-show="segment.ext">_{{segment.ext}}</span>
                             </li>
                         </div>
