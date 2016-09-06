@@ -193,7 +193,7 @@ input.igl-has-error,select.igl-has-error {
 
 
 .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
-    opacity: 0.1;
+    opacity: 0.8;
 }
 
 .tab-content, .tab-content > .tab-pane {

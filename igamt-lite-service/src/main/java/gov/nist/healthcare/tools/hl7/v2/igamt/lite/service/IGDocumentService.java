@@ -98,6 +98,8 @@ public interface IGDocumentService {
 
   public IGDocument findById(String id);
 
+List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions);
+
 
   // TODO NEED TO REVIEW
 }

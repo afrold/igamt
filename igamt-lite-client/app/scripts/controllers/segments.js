@@ -47,8 +47,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
     };
 
-    $scope.openPredicateDialog =function (node){
-        if(node.usage == 'C') $scope.managePredicate(node);
+    $scope.openPredicateDialog = function(node) {
+        if (node.usage == 'C') $scope.managePredicate(node);
     };
 
     $scope.deleteField = function(fieldToDelete, segment) {
@@ -183,7 +183,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             _.each(library.children, function(link) {
                 if (link.name === name) {
                     link.libraryName = library.metaData.name;
-                    link.hl7Version = library.metaData.hl7Version;
+                    link.hl7Version = $rootScope.datatypesMap[link.id].hl7Version;
+                    //link.hl7Version = library.metaData.hl7Version;
                     results.push(link);
                 }
             });
