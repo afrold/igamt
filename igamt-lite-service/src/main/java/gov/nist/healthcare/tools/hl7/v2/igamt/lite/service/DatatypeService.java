@@ -36,8 +36,10 @@ public interface DatatypeService {
   void save(List<Datatype> datatypes);
 
   Set<Datatype> collectDatatypes(Datatype datatype);
-  Datatype findByNameAndVersion(String name, String Version);
 
   List<Datatype> findByScope(String scope);
+
+Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+
 
 }

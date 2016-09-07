@@ -41,5 +41,5 @@ public interface DatatypeOperations {
 
   List<Datatype> findByScope(String scope);
 
-  Datatype findByNameAndVersion(String name, String version);
+  Datatype findByNameAndVersionAndScope(String name, String version, String scope);
 }

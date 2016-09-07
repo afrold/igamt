@@ -43,7 +43,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
@@ -61,7 +61,7 @@ public class Bootstrap implements InitializingBean {
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   private HashMap<String, ArrayList<List<String>>> DatatypeMap= new HashMap<String, ArrayList<List<String>>>();
-  private HashMap<Datatype, Integer> Visited= new HashMap<Datatype, Integer>();
+  private HashMap<String, Integer> Visited= new HashMap<String, Integer>();
 
   @Autowired
   ProfileService profileService;
@@ -158,8 +158,7 @@ public class Bootstrap implements InitializingBean {
   }
   
 private void AddVersiontoMap(String version){
-	Visited= new HashMap<Datatype, Integer>();
-
+	Visited= new HashMap<String, Integer>();
 	List<SCOPE> scopes = new ArrayList<SCOPE>();
 	scopes.add(SCOPE.HL7STANDARD);
 	List <Datatype> datatypesToAdd= datatypeService.findByScopesAndVersion(scopes, version);
@@ -167,36 +166,28 @@ private void AddVersiontoMap(String version){
 	for(Datatype dt : datatypesToAdd){
 		  ArrayList<List<String>> temp = new ArrayList<List<String>>();
 		  List<String> version2= new ArrayList<String>();
+		  version2.add(version);
 		  temp.add(version2);
 		  //DatatypeMap.put(dt.getName(), temp);
 		  if(!DatatypeMap.containsKey(dt.getName())){
-			  
 			  DatatypeMap.put(dt.getName(), temp);
-
 		  }else{
-			  ArrayList<List<String>> vaueOfKey= DatatypeMap.get(dt.getName());
-			  Datatype d=null;
 			  for(int i=0; i<DatatypeMap.get(dt.getName()).size();i++){
-				  if(DatatypeMap.get(dt.getName()).get(i).size()>0){
-				  d = datatypeService.findByNameAndVersion(dt.getName(), DatatypeMap.get(dt.getName()).get(i).get(0));
-				  }
-				  if(d!=null){
+				  Datatype  d = datatypeService.findByNameAndVersionAndScope(dt.getName(), DatatypeMap.get(dt.getName()).get(i).get(0),"HL7STANDARD");
+				  if(d!=null&&!Visited.containsKey(dt.getName())){
 					  if(d.isIdentique(dt)){
-						  List<String> list2= DatatypeMap.get(dt.getName()).get(i);
-						  list2.add(version);
-						  DatatypeMap.get(dt.getName()).set(i, list2);
-						  System.out.println("FOUND IDENTIQUE ");
+						  DatatypeMap.get(dt.getName()).get(i).add(version);
 						  
-						  Visited.put(dt,1);
+						  System.out.println("FOUND IDENTIQUE");
+						  Visited.put(dt.getName(),1);
 					  }		  
 				  }
 			  }
-			  if(!Visited.containsKey(dt)){
+			  if(!Visited.containsKey(dt.getName())){
 				  List<String> version2Add= new ArrayList<String>();
 				  version2Add.add(version);
 				  DatatypeMap.get(dt.getName()).add(version2Add);
-				  //DatatypeMap.put(dt.getName(), temp);
-				  Visited.put(dt,1);
+				  Visited.put(dt.getName(),1);
 			  }	  
 		  }
 	  }
@@ -204,7 +195,7 @@ private void AddVersiontoMap(String version){
 }	
   public void addAllVersions(){
 	  initMAp();
-	  String[] versions = {"2.2","2.3","2.4","2.5","2.6","2.7","2.8","2.8.1","2.8.2"};
+	  String[] versions = {"2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7","2.7.1","2.8","2.8.1","2.8.2"};
 	  //String[] versions = {"2.2","2.3"};
 	  for(int i= 0; i<versions.length; i++){
 	  AddVersiontoMap(versions[i].toString());
@@ -218,7 +209,7 @@ private void AddVersiontoMap(String version){
 		  ArrayList<List<String>> values = e.getValue();
 		  
 		  for (List<String> versions: values){
-			  UnchangedData unchanged= new UnchangedData();
+			  UnchangedDataType unchanged= new UnchangedDataType();
 			  unchanged.setName(name);
 			  unchanged.setVersions(versions);
 			  unchangedData.insert(unchanged);

@@ -5,14 +5,14 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "unchangedData")
-public class UnchangedData {
+@Document(collection = "unchangedDataType")
+public class UnchangedDataType {
 
 	  @Id
 	  private String id;
 	  private List<String> versions;
 	  private String name;	  
-	  public UnchangedData() {
+	  public UnchangedDataType() {
 		    super();
 		  }
 

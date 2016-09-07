@@ -97,7 +97,7 @@ public boolean isIdentique(Component c) {
 	if(c.getUsage()!=this.getUsage()){
 		return false;
 	}
-	if(!c.getDatatype().getId().equals(this.datatype.getId())){
+	if(!c.getDatatype().getName().equals(this.datatype.getName())){
 		return false;
 	}
 	return true;
