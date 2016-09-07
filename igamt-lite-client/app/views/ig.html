@@ -12,83 +12,89 @@
     }
 </script>
 <div class="container" ng-controller="IGDocumentListCtrl" ng-init="initIGDocuments()">
-<div class="row" ng-show="isAuthenticated()">
-    <!--<div class="row">-->
-    <div ng-show="!isPending()">
-        <!--<div class="page-header">-->
-        <!--<h5> Hello, <span ng-bind="getFullName()"></span></h5>-->
-        <!--</div>-->
-        <br/>
+    <div class="row" ng-show="isAuthenticated()">
+        <!--<div class="row">-->
+        <div ng-show="!isPending()">
+            <!--<div class="page-header">-->
+            <!--<h5> Hello, <span ng-bind="getFullName()"></span></h5>-->
+            <!--</div>-->
+            <br/>
 
-        <tabset>
-            <tab active="accordi.igList" select="selectIgTab(0)">
-                <tab-heading>
-                    <i class="fa fa-file-text-o fa-fw"></i> IG Documents List
-                </tab-heading>
-                <div ng-include="'views/edit/listIG.html'"></div>
-            </tab>
-            <tab active="accordi.igDetails" select="selectIgTab(1)" ng-if="igdocument&&igdocument!==null">
-                <tab-heading >
-                   <span ng-if="!viewSettings.tableReadonly"> <i  class="fa fa-pencil fa-fw"></i>IG Document</span>
-                   <span ng-if="viewSettings.tableReadonly"> <i class="fa fa-search fa-fw"></i>IG Document</span>
-                </tab-heading>
-                <div ng-include="'views/edit/editIG.html'"></div>
-            </tab>
-        </tabset>
+            <tabset>
+                <tab active="accordi.igList" select="selectIgTab(0)">
+                    <tab-heading>
+                        <i class="fa fa-file-text-o fa-fw"></i> IG Documents List
+                    </tab-heading>
+                    <div ng-include="'views/edit/listIG.html'"></div>
+                </tab>
+                <tab active="accordi.igDetails" select="selectIgTab(1)" ng-if="igdocument&&igdocument!==null">
+                    <tab-heading>
+                        <span ng-if="!viewSettings.tableReadonly"> <i  class="fa fa-pencil fa-fw"></i>IG Document</span>
+                        <span ng-if="viewSettings.tableReadonly"> <i class="fa fa-search fa-fw"></i>IG Document</span>
+                    </tab-heading>
+                    <div ng-include="'views/edit/editIG.html'"></div>
+                </tab>
+            </tabset>
 
-        <!--<accordion close-others="false">-->
-        <!--<accordion-group is-open="accordi.igList" panel-class="panel-primary">-->
-        <!--<accordion-heading>-->
-        <!--<i class="fa" ng-class="{'fa-caret-down': accordi.igList, 'fa-caret-right': !accordi.igList}"></i>-->
-        <!--<i class="fa fa-file-text-o fa-fw"></i> IG Documents List-->
-        <!--</accordion-heading>-->
-        <!--&lt;!&ndash;<div class="panel panel-info">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
-        <!--<div ng-include="'views/edit/listIG.html'"></div>-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--</accordion-group>-->
-        <!--<accordion-group is-open="accordi.igDetails" panel-class="panel-primary">-->
-        <!--<accordion-heading>-->
-        <!--<i class="fa"-->
-        <!--ng-class="{'fa-caret-down': accordi.igDetails, 'fa-caret-right': !accordi.igDetails}"></i>-->
-        <!--<i class="fa fa-pencil fa-fw"></i>Edit IG Document : {{igdocument.metaData.title}}-->
-        <!--</accordion-heading>-->
-        <!--&lt;!&ndash;<div class="panel panel-info">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
-        <!--<div ng-include="'views/edit/editIG.html'"></div>-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--</accordion-group>-->
-        <!--</accordion>-->
-    </div>
-    <div style="font-size: 18px;text-align: center" ng-show="isPending()">
-        <div msg key='account.pendingSection'></div>
-    </div>
-</div>
-<div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto">
-    <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can
-        also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
-</div>
-<script type="text/ng-template" id="hl7VersionsDlg.html">
-    <div class="modal-header modal-wide">
-        <div class="form-inline">
-            <span class="header4">Select Message Events</span>
+            <!--<accordion close-others="false">-->
+            <!--<accordion-group is-open="accordi.igList" panel-class="panel-primary">-->
+            <!--<accordion-heading>-->
+            <!--<i class="fa" ng-class="{'fa-caret-down': accordi.igList, 'fa-caret-right': !accordi.igList}"></i>-->
+            <!--<i class="fa fa-file-text-o fa-fw"></i> IG Documents List-->
+            <!--</accordion-heading>-->
+            <!--&lt;!&ndash;<div class="panel panel-info">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
+            <!--<div ng-include="'views/edit/listIG.html'"></div>-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--</accordion-group>-->
+            <!--<accordion-group is-open="accordi.igDetails" panel-class="panel-primary">-->
+            <!--<accordion-heading>-->
+            <!--<i class="fa"-->
+            <!--ng-class="{'fa-caret-down': accordi.igDetails, 'fa-caret-right': !accordi.igDetails}"></i>-->
+            <!--<i class="fa fa-pencil fa-fw"></i>Edit IG Document : {{igdocument.metaData.title}}-->
+            <!--</accordion-heading>-->
+            <!--&lt;!&ndash;<div class="panel panel-info">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
+            <!--<div ng-include="'views/edit/editIG.html'"></div>-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--</accordion-group>-->
+            <!--</accordion>-->
+        </div>
+        <div style="font-size: 18px;text-align: center" ng-show="isPending()">
+            <div msg key='account.pendingSection'></div>
         </div>
     </div>
-    <div class="modal-body">
-        <form id="hl7VersionsDlgForm" name="hl7VersionsDlgForm" class="form-horizontal" novalidate>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group control-group" ng-show="clickSource === 'btn'"
-                         ng-class="{'igl-has-error has-feedback' : hl7VersionsDlgForm.hl7Version.$invalid}">
-                        <label class="col-md-2 control-label " style="text-align: left">HL7 Version*:</label>
+    <div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto">
+        <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
+    </div>
+    <script type="text/ng-template" id="hl7VersionsDlg.html">
+        <form id="hl7VersionsDlgForm" name="hl7VersionsDlgForm" class="form-horizontal">
 
-                        <div class="controls col-md-1">
-                            <select class="form-control input-sm" name="hl7Version" id="hl7Version"
-                                    ng-change="loadIGDocumentsByVersion()"
-                                    ng-disabled="loading || igdocument"
-                                    required ng-model="hl7Version" ng-options="vr for vr in hl7Versions"/>
+            <div class="modal-header modal-wide">
+                <div class="form-inline">
+                    <span class="header4" style="color:white;">Create IG Document</span>
+
+                    <button ng-show="clickSource === 'btn'" class="btn btn-raised btn-info btn-xs pull-right" type="button" ng-click="ok()" ng-disabled="okDisabled || hl7VersionsDlgForm.$invalid">
+                    <i class="fa fa-check"></i>Submit
+                </button>
+                    <button ng-show="clickSource === 'ctx'" class="btn btn-raised btn-info btn-xs pull-right" type="button" ng-click="ok()" ng-disabled="okDisabled">
+                    <i class="fa fa-check"></i>Submit
+                </button>
+                    <button class="btn btn-raised btn-default btn-xs pull-right" type="button" ng-click="cancel()">
+                    <i class="fa fa-times"></i>Cancel
+                </button>
+                </div>
+            </div>
+            <div class="modal-body">
+
+                <div class="col-md-12">
+                    <div ng-show="clickSource === 'btn'" ng-class="{'igl-has-error has-feedback' : hl7VersionsDlgForm.hl7Version.$invalid}">
+                        <label class="col-md-2 control-label" style="text-align: left">HL7 Version*:</label>
+
+                        <div class="col-md-3">
+                            <select class="form-control" name="hl7Version" id="hl7Version" ng-change="loadIGDocumentsByVersion()" ng-disabled="loading || igdocument" required ng-model="hl7Version" ng-options="vr for vr in hl7Versions" />
                         </div>
                     </div>
 
@@ -105,55 +111,110 @@
                     <!--</div>-->
                     <!--</div>-->
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group control-group">
-                        <label class="col-md-2 control-label" style="text-align: left">List of Events*</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div ng-show="loading" style="text-align:center">
-                        <i class="fa fa-spinner fa-pulse fa-2x"></i>
-                    </div>
-                    <div ng-show="!loading">
-                        <div class="table-responsive">
-                            <table tt-table tt-params="messageEventsParams" ng-if="messageEventsParams"
-                                   class="table table-striped table-bordered table-fix-header table-condensed hl7-versions-table">
-                                <thead>
-                                <tr class="tbl-header">
-                                    <td class="" style="width:300px">Struct ID</td>
-                                    <td class="" style="width:600px">Description</td>
-                                </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+
+
+
+                <accordion ng-show="hl7Version">
+                    <div accordion-group class="panel-primary" is-open="status.isFirstOpen" ng-show="clickSource==='btn'">
+                        <accordion-heading>
+                            <span style="color:white;"> IG Document Metadata</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
+                        </accordion-heading>
+                        <div class="row">
+                            <!--<div class="row">
+                                <label for="example-version-input" class="col-xs-2 col-form-label">HL7 Version*</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" ng-model="hl7Version" disabled>
+
+                                </div>
+                            </div>-->
+                            <div class=" row" style="padding-top:5px">
+                                <label for="example-text-input" class="col-xs-2 col-form-label">Title*</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control form-control-xs" type="text" ng-model="hl7VersionsDlgForm.metaData.title" required>
+                                </div>
+                            </div>
+                            <div class=" row">
+                                <label for="example-search-input" class="col-xs-2 col-form-label">Sub-Title</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.subTitle">
+                                </div>
+                            </div>
+                            <div class=" row">
+                                <label for="example-email-input" class="col-xs-2 col-form-label">Organization</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.orgName">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-url-input" class="col-xs-2 col-form-label">Extension</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.ext">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-tel-input" class="col-xs-2 col-form-label">Specification</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.specificationName">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-password-input" class="col-xs-2 col-form-label">Status</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.status">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="example-number-input" class="col-xs-2 col-form-label">Topics</label>
+                                <div class="col-xs-10">
+                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.topics">
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </div>
+                    <div accordion-group class="panel-primary" is-open="status.isSecondOpen">
+                        <accordion-heading>
+                            <span style="color:white;"> List of Events*</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i>
+                        </accordion-heading>
+                        <div class="input-group">
+                            <span class="input-group-addon">Selected Messages:</span>
+                            <span ng-repeat="event in eventList" class="label label-primary">{{event.name}}^{{event.parentStructId}}</span>
+
+                        </div>
+                        <div class="row" style="margin-left:20px">
+                            <div ng-show="loading" style="text-align:center">
+                                <i class="fa fa-spinner fa-pulse fa-2x"></i>
+                            </div>
+                            <div ng-show="!loading">
+                                <div class="table-responsive">
+                                    <table tt-table tt-params="messageEventsParams" ng-if="messageEventsParams" class="table table-striped table-bordered table-fix-header table-condensed hl7-versions-table">
+                                        <thead>
+                                            <tr class="tbl-header">
+                                                <td class="" style="width:300px">Struct ID</td>
+                                                <td class="" style="width:600px">Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </accordion>
+
+            </div>
+            <div class="modal-footer">
+
             </div>
         </form>
-    </div>
-    <div class="modal-footer">
-        <div class="row">
-            <div class="col-md-12">
+    </script>
+    <script type="text/ng-template" id="MessageEventsNode.html">
+        <tr tt-node is-branch="node.type === 'message'">
+            <td class="" style="width:300px;color:black">
 
-                <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times"></i>Cancel
-                </button>
-                <button class="btn btn-raised btn-info" type="button" ng-click="ok()" ng-disabled="okDisabled"><i
-                        class="fa fa-check"></i>Submit
-                </button>
-            </div>
-        </div>
-    </div>
-</script>
-<script type="text/ng-template" id="MessageEventsNode.html">
-    <tr tt-node is-branch="node.type === 'message'">
-        <td class="" style="width:300px;color:black">
-           
-            <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool"
-                   ng-change="trackSelections(bool, node)"></input><span ng-bind="::node.name"
-                                                                         style="margin-left : 7px;"></span>
-        </td>
-        <td class="" style="width:585px;color:black"" ng-bind="::node.description"></td>
+                <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-change="trackSelections(bool, node)"></input><span ng-bind="::node.name" style="margin-left : 7px;"></span>
+            </td>
+            <td class="" style="width:585px;color:black"" ng-bind="::node.description"></td>
         
     </tr>
 
@@ -165,7 +226,7 @@
     </div>
     <div class="modal-body">
       
-        <p>Are you sure you want to delete the IG Document: "{{igdocumentToDelete.metaData.title}}"  ? This operation is irreversible</p>
+        <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}}"  ? This operation is irreversible</p>
     </div>
     </div>
     <div class="modal-footer">
@@ -255,12 +316,12 @@
 </script>
 <script type="text/ng-template" id="InputTextCtrl.html">
     <div class="modal-header">
-        <h3 ng-show="editorTarget.obj.type === 'segmentRef'">
+        <h3 ng-show="editorTarget.obj.type==='segmentRef'">
             {{editorTarget.obj.position}}.{{segmentsMap[editorTarget.obj.ref].name}}:{{segmentsMap[editorTarget.obj.ref].description}}</h3>
 
-        <h3 ng-show="editorTarget.obj.type === 'group'">{{editorTarget.obj.position}}.{{editorTarget.obj.name}}</h3>
+        <h3 ng-show="editorTarget.obj.type==='group'">{{editorTarget.obj.position}}.{{editorTarget.obj.name}}</h3>
 
-        <h3 ng-show="editorTarget.obj.type !=  'segmentRef' && editorTarget.obj.type !=  'group'" class="modal-title">
+        <h3 ng-show="editorTarget.obj.type !='segmentRef' && editorTarget.obj.type !='group'" class="modal-title">
             {{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
             {{editorTarget.title}}</h3>
     </div>
@@ -295,19 +356,19 @@
                 </div>
                 <div class="col-md-12">
                     <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat = 'Validation'"
-                               ng-class="{'active':xmlFormat === 'Validation'}">
-                            <input ng-disabled="loading" type="radio" ng-value="xmlFormat" ng-model="$parent.xmlFormat">NIST
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat='Validation'"
+                               ng-class="{ 'active':xmlFormat==='Validation' }">
+                            NIST
                             Validation Format
                         </label>
-                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat = 'Display'"
-                               ng-class="{'active':xmlFormat === 'Display'}">
-                            <input ng-disabled="loading" type="radio" ng-value="xmlFormat" ng-model="$parent.xmlFormat">NIST
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat='Display'"
+                               ng-class="{ 'active':xmlFormat==='Display' }">
+                             NIST
                             Display Format
                         </label>
-                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat = 'Gazelle'"
-                               ng-class="{'active':xmlFormat === 'Gazelle'}">
-                            <input ng-disabled="loading" type="radio" ng-value="xmlFormat" ng-model="$parent.xmlFormat">Gazelle
+                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat='Gazelle'"
+                               ng-class="{ 'active':xmlFormat==='Gazelle' }">
+                           Gazelle
                             Format
                         </label>
                     </div>
@@ -326,7 +387,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="message in igdocumentToSelect.profile.messages.children">
+                            <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id">
                                 <td style="width:30px">
                                     <input type="checkbox" ng-model="bool"
                                            ng-change="trackSelections(bool, message.id)">
@@ -344,7 +405,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-raised btn-primary btn-sm"
-                ng-disabled="xmlFormat === '' || xmlFormat === null || selectedMessagesIDs === null || selectedMessagesIDs.length  === 0 "
+                ng-disabled="xmlFormat==='' || xmlFormat===n ull || selectedMessagesIDs===n ull || selectedMessagesIDs.length===0"
                 ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw"></i>Export</span>
         </button>
         <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
@@ -367,13 +428,13 @@
                     <div class="col-md-12">
                         <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
                             <label class="btn btn-raised btn-primary btn-xs"
-                                   ng-click="selectedHL7Version = vr; loadTablesByVersion(vr)"
-                                   ng-class="{'active':vr === selectedHL7Version}" ng-repeat="vr in hl7Versions">
+                                   ng-click="selectedHL7Version=v r; loadTablesByVersion(vr)"
+                                   ng-class="{ 'active':vr===selectedHL7Version}" ng-repeat="vr in hl7Versions">
                                 <input type="radio" ng-value="vr" ng-model="$parent.selectedHL7Version">{{vr}}</input>
                             </label>
                         </div>
                     </div>
-                    <div class="col-md-6" ng-show="selectedHL7Version !== ''">
+                    <div class="col-md-6" ng-show="selectedHL7Version !==''">
                         <div ng-show="loading" style="text-align:center">
                             <i class="fa fa-spinner fa-pulse fa-2x"></i>
                         </div>
@@ -397,7 +458,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="table in hl7Tables | orderBy:'bindingIdentifier' |  filter:search:strict">
+                                <tr ng-repeat="table in hl7Tables | orderBy: 'bindingIdentifier' | filter:search:strict">
                                     <td>{{table.bindingIdentifier}}</td>
                                     <td>{{table.name}}</td>
                                     <td><a class="pointer" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
@@ -407,87 +468,84 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-md-6" ng-show="selectedTables.length > 0">
-                        <div class="igl-table">
-                            <h5>Selected tables</h5>
-                            <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                                <thead>
-                                <tr>
-                                    <th>Binding Identifier</th>
-                                    <th>Name</th>
-                                    <th>HL7 Version</th>
-                                    <th>oid</th>
-                                    <th/>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="table in selectedTables">
-                                    <td>{{table.bindingIdentifier}}</td>
-                                    <td>{{table.name}}</td>
-                                    <td>{{table.hl7Version}}</td>
-                                    <td>{{table.oid}}</td>
-                                    <td><a class="pointer" ng-click="deleteTable(table)"><i
+                    <div class="col-md-6" ng-show="selectedTables.length> 0">
+                <div class="igl-table">
+                    <h5>Selected tables</h5>
+                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                        <thead>
+                            <tr>
+                                <th>Binding Identifier</th>
+                                <th>Name</th>
+                                <th>HL7 Version</th>
+                                <th>oid</th>
+                                <th/>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="table in selectedTables">
+                                <td>{{table.bindingIdentifier}}</td>
+                                <td>{{table.name}}</td>
+                                <td>{{table.hl7Version}}</td>
+                                <td>{{table.oid}}</td>
+                                <td><a class="pointer" ng-click="deleteTable(table)"><i
                                             class="fa fa-times fa-fw"></i></a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-raised btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
-                    ng-click="save()"><span><i
+</div>
+</div>
+</form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-raised btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="save()"><span><i
                     class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-            <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
-                    ng-click="cancel()"><span><i
+    <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="cancel()"><span><i
                     class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-            <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading"
-                    ng-click="cancel()"><span><i
+    <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading" ng-click="cancel()"><span><i
                     class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-        </div>
-    </script>
+</div>
+</script>
 
-    <script type="text/ng-template" id="AddCSVTableOpenCtrl.html">
-        <div class="modal-header modal-wide">
-            <div class="form-inline">
-                <span class="header4">Import CSV file</span>
-            </div>
+<script type="text/ng-template" id="AddCSVTableOpenCtrl.html">
+    <div class="modal-header modal-wide">
+        <div class="form-inline">
+            <span class="header4">Import CSV file</span>
         </div>
-        <div class="modal-body">
-            <form class="form-horizontal" novalidate>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <label for="file" class="custom-file-upload">
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" novalidate>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <label for="file" class="custom-file-upload">
                             <i class="fa fa-cloud-upload"></i> Choose CSV File
                         </label>
-                        <input id="file" type="file" name="file"/>
-                    </div>
+                    <input id="file" type="file" name="file" />
                 </div>
+            </div>
 
-                <p style="color:blue;">How it works</p>
-                <ol style="color:blue;">
-                    <li style="color:blue;">Download 'ValueSet Empty Form (Excel)'</li>
-                    <li style="color:blue;">Edit sheets using MS Excel</li>
-                    <li style="color:blue;">Save as CSV file</li>
-                    <li style="color:blue;">Import CSV file</li>
-                </ol>
+            <p style="color:blue;">How it works</p>
+            <ol style="color:blue;">
+                <li style="color:blue;">Download 'ValueSet Empty Form (Excel)'</li>
+                <li style="color:blue;">Edit sheets using MS Excel</li>
+                <li style="color:blue;">Save as CSV file</li>
+                <li style="color:blue;">Import CSV file</li>
+            </ol>
 
-                <p style="color:blue;">Files</p>
-                <ul>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_EmptyForm_Excel.xlsx" target="_blank"><i class="fa fa-file-excel-o fa-fw"></i>ValueSet Empty Form (Excel)</a></li>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_EmptyForm_csv.csv" target="_blank"><i class="fa fa-file-code-o fa-fw"></i>ValueSet Empty Form (CSV)</a></li>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_sample_excel.xlsx" target="_blank"><i class="fa fa-file-excel-o fa-fw"></i>ValueSet Sample Form (Excel)</a></li>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_sample_csv.csv" target="_blank"><i class="fa fa-file-code-o fa-fw"></i>ValueSet Sample Form (CSV)</a></li>
-                </ul>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-raised btn-primary btn-sm" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-            <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-        </div>
-    </script>
+            <p style="color:blue;">Files</p>
+            <ul>
+                <li style="color:blue;"><a class="pointer" href="docs/ValueSet_EmptyForm_Excel.xlsx" target="_blank"><i class="fa fa-file-excel-o fa-fw"></i>ValueSet Empty Form (Excel)</a></li>
+                <li style="color:blue;"><a class="pointer" href="docs/ValueSet_EmptyForm_csv.csv" target="_blank"><i class="fa fa-file-code-o fa-fw"></i>ValueSet Empty Form (CSV)</a></li>
+                <li style="color:blue;"><a class="pointer" href="docs/ValueSet_sample_excel.xlsx" target="_blank"><i class="fa fa-file-excel-o fa-fw"></i>ValueSet Sample Form (Excel)</a></li>
+                <li style="color:blue;"><a class="pointer" href="docs/ValueSet_sample_csv.csv" target="_blank"><i class="fa fa-file-code-o fa-fw"></i>ValueSet Sample Form (CSV)</a></li>
+            </ul>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-primary btn-sm" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+        <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+    </div>
+</script>
 
 <script type="text/ng-template" id="AddPHINVADSTableOpenCtrl.html">
     <div class="modal-header modal-wide">
@@ -497,57 +555,57 @@
     </div>
     <div class="modal-body">
         <form class="form-horizontal" novalidate>
-                <div class="form-group">
-                    <div class="col-sm-11">
-                        <input type="text" name="searchText" ng-model="searchText" class="form-control" placeholder="Type Criteria">
-                    </div>
-                    <div class="col-sm-1">
-                        <a ng-click="searchPhinvads(searchText)" class="point">
-                            <span><i class="fa fa-search fa-fw"></i></span>
-                        </a>
-                    </div>
+            <div class="form-group">
+                <div class="col-sm-11">
+                    <input type="text" name="searchText" ng-model="searchText" class="form-control" placeholder="Type Criteria">
                 </div>
+                <div class="col-sm-1">
+                    <a ng-click="searchPhinvads(searchText)" class="point">
+                        <span><i class="fa fa-search fa-fw"></i></span>
+                    </a>
+                </div>
+            </div>
 
-                <div class="col-md-6">
-                    <div ng-show="loading" style="text-align:center">
-                        <i class="fa fa-spinner fa-pulse fa-2x"></i>
-                    </div>
-                    <div ng-show="!loading && phinvadsTables" class="igl-table">
-                        <h5>{{phinvadsTables.length}} tables found!</h5>
-                        <table ng-show="phinvadsTables.length > 0" class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                            <thead>
+            <div class="col-md-6">
+                <div ng-show="loading" style="text-align:center">
+                    <i class="fa fa-spinner fa-pulse fa-2x"></i>
+                </div>
+                <div ng-show="!loading && phinvadsTables" class="igl-table">
+                    <h5>{{phinvadsTables.length}} tables found!</h5>
+                    <table ng-show="phinvadsTables.length > 0" class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                        <thead>
                             <tr>
                                 <th>Binding Identifier</th>
                                 <th>Name</th>
                                 <th/>
                             </tr>
-                            </thead>
-                            <tbody>
+                        </thead>
+                        <tbody>
                             <tr ng-repeat="table in phinvadsTables | orderBy:'bindingIdentifier' |  filter:search:strict">
                                 <td>{{table.bindingIdentifier}}</td>
                                 <td>{{table.name}}</td>
                                 <td><a class="pointer" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
                                 </td>
                             </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-md-6" ng-show="selectedTables.length > 0">
-                    <div class="igl-table">
-                        <h5>Selected tables</h5>
-                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                            <thead>
+            </div>
+            <div class="col-md-6" ng-show="selectedTables.length > 0">
+                <div class="igl-table">
+                    <h5>Selected tables</h5>
+                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                        <thead>
                             <tr>
                                 <th class="col-sm-7">Binding Identifier</th>
                                 <th class="col-sm-2">Name</th>
                                 <th class="col-sm-2">oid</th>
-                                <th class="col-sm-1"/>
+                                <th class="col-sm-1" />
                             </tr>
-                            </thead>
-                            <tbody>
+                        </thead>
+                        <tbody>
                             <tr ng-repeat="table in selectedTables">
-                                <td class="col-sm-7" ng-class="{'has-error': isDuplicatedID(table)}" >
+                                <td class="col-sm-7" ng-class="{'has-error': isDuplicatedID(table)}">
                                     <textarea rows="3" class="form-control" ng-model="table.bindingIdentifier" />
                                     <div ng-show="isDuplicatedID(table)">
                                         <p class="warning">Duplicated ID</p>
@@ -561,21 +619,18 @@
                                 </td>
                                 <td class="col-sm-1"><a class="pointer" ng-click="deleteTable(table)"><i class="fa fa-times fa-fw"></i></a></td>
                             </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-raised btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
-                ng-click="save()"><span><i
+        <button class="btn btn-raised btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="save()"><span><i
                 class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading"
-                ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading"
-                ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
     </div>
 </script>
@@ -588,16 +643,12 @@
             </div>
             <form name="addDT">
                 <div class="modal-body">
-                    <div class="container"  style="margin-bottom: 20px;margin-top: 20px">
+                    <div class="container" style="margin-bottom: 20px;margin-top: 20px">
                         <div class="row flavor-seach-box">
                             <!--<p>HL7 Version:{{hl7Version}}</p>-->
                             <div class="input-group">
                                 <span class="input-group-addon" id="datatype-basic-addon1"><i class="fa fa-search"></i> Search</span>
-                                <input type="text" class="form-control input-lg" ng-model="newDatatype" data-limit="15"
-                                       data-animation="am-flip-x"
-                                       data-auto-select="true"
-                                       typeahead="datatype as datatype.name for datatype in hl7Datatypes|filter:$viewValue"
-                                       placeholder="Search By Name" >
+                                <input type="text" class="form-control input-lg" ng-model="newDatatype" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as datatype.name for datatype in hl7Datatypes|filter:$viewValue" placeholder="Search By Name">
                             </div>
                         </div>
                     </div>
@@ -605,8 +656,7 @@
                 <div class="modal-footer">
                     <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
                     </button>
-                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()"
-                            ng-disabled="addDT.$invalid || !isInDts(newDatatype)"><i class="fa fa-check fa-fw"></i>Add
+                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="addDT.$invalid || !isInDts(newDatatype)"><i class="fa fa-check fa-fw"></i>Add
                     </button>
                 </div>
             </form>
@@ -619,20 +669,26 @@
             <div class="modal-header">
                 <h3 class="modal-title">Import Segment</h3>
             </div>
-            
+
             <form name="addSeg" id="addSeg">
                 <div class="modal-body">
-                    
+
                     <div class="container" style="margin-bottom: 20px;margin-top: 20px">
                         <div class="row flavor-seach-box">
                             <!--<p>HL7 Version:{{hl7Version}}</p>-->
+
+                            <div class="input-group" style="padding-bottom:5px;"  align="center" data-toggle="buttons">
+                                <span class="input-group-addon" id="version-basic-addon1">HL7 Versions</span>
+                                <select ng-model="version1" class="form-control col-md-3" ng-change="setVersion(version1)">
+                                        <option ng-repeat="vr in versions" value='{{vr}}'> {{vr}}</option>
+                                    </select>
+                                       
+                                       
+                                   
+                            </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="segment-basic-addon1"><i class="fa fa-search"></i> Search</span>
-                                <input type="text" class="form-control input-lg" ng-model="newSegment" data-limit="15"
-                                       data-animation="am-flip-x"
-                                       data-auto-select="true"
-                                       typeahead="segment as segment.name for segment in hl7Segments|filter:$viewValue"
-                                       placeholder="Search By Name" >
+                                <input type="text" class="form-control input-lg" ng-model="newSegment" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="segment as segment.name for segment in hl7Segments|filter:$viewValue" placeholder="Search By Name">
                             </div>
                         </div>
                     </div>
@@ -641,8 +697,7 @@
                     <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>
                         Cancel
                     </button>
-                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()"
-                            ng-disabled="addSeg.$invalid || !isInSegs(newSegment)"><i class="fa fa-check"></i>Add
+                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="addSeg.$invalid || !isInSegs(newSegment)"><i class="fa fa-check"></i>Add
                     </button>
                 </div>
             </form>

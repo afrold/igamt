@@ -21,6 +21,11 @@
                           display: none !important;
                       }
     </style>
+
+    <link rel="" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/material-custom/bootstrap-material-design.min.css" />
+    <link rel="stylesheet" href="lib/material-custom/ripples.min.css" />
+
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -52,9 +57,7 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    <link rel="" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="lib/material-custom/bootstrap-material-design.min.css" />
-    <link rel="stylesheet" href="lib/material-custom/ripples.min.css" />
+
 
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -88,6 +91,13 @@
             /*font-family: 'Cairo', sans-serif;*/
             font-family: RobotoDraft, Roboto, sans-serif;
         }
+
+        .froala-editor
+        .image-wrapper ul
+        li.drop-upload form input {
+            margin-left: 0;
+        }
+
     </style>
     <script type="text/javascript">
         if (self === top) {
@@ -99,7 +109,6 @@
     </script>
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit confirm-on-leave block-ui="main">
-<div ng-include="'views/sidebar_menu.html'"></div>
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>

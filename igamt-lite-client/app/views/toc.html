@@ -53,7 +53,7 @@ color:white;
                 <ol ui-tree-nodes="" ng-model="TreeIgs">
                     <li ng-repeat="ig in TreeIgs" ui-tree-node>
                         <div ui-tree-handle class="treeRoot">
-                            <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">{{igdocument.metaData.title}} <span  class= "badge"> V{{igdocument.profile.metaData.hl7Version}}  </span>
+                            <span data-nodrag ng-click="editIg(ig)" confirm-click context-menu="igOptions">{{igdocument.metaData.title}} <span  class="badge"> V{{igdocument.profile.metaData.hl7Version}}  </span>
                         </span>
                         </div>
                         <script type="text/ng-template" id="nodes_renderer.html">
@@ -82,7 +82,7 @@ color:white;
                                 <span style="font-size:14px;" context-menu="MessagesRootOption" ng-class="{selected :activeModel ==='Conformance Profiles'}" ng-click="editRoutSection('Conformance Profiles');" confirm-click data-nodrag>
                   {{ig.childSections.length+1}}.1.Conformance Profiles </span>
                             </div>
-                            <li ng-repeat="msg in ig.profile.messages.children track by $index " ui-tree-node ng-if="!collapsemessage" data-type="message">
+                            <li ng-repeat="msg in ig.profile.messages.children track by $index" ui-tree-node ng-if="!collapsemessage" data-type="message">
                                 <div ui-tree-handle context-menu="MessagesOption" style="margin-left:30px;">
                                     <span class="glyphicon glyphicon-move"></span> <span data-nodrag style="font-weight: normal;" confirm-click ng-class="{selected : msg.id===activeModel}" ng-click="editMessage(msg)">
                   {{updateMessagePositions(ig.profile.messages.children)}}
@@ -133,8 +133,8 @@ color:white;
                                 <div ui-tree-handle data-nodrag confirm-click style="margin-left:30px;" context-menu="SegmentOptions">
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : segment.id===activeModel}" confirm-click ng-click="editSeg(segment);">
 
-                                       <span class="badge " ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
-                                   'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS','label-PRL':getScopeLabel(segment)==='PRL' }">  {{getScopeLabel(segment)}} </span> {{getSegmentLabel(segment)}}-{{segment.description}} {{isUnused(segment)}}</span>
+                                       <span class="badge" ng-class="{'label-HL7' : getScopeLabel(segment)==='HL7',
+                                   'label-USE': getScopeLabel(segment)==='USR','label-MASTER':getScopeLabel(segment)==='MAS','label-PRL':getScopeLabel(segment)==='PRL' }"> {{getScopeLabel(segment)}} {{hasSameVersion(segment)}} </span> {{getSegmentLabel(segment)}}-{{segment.description}} </span>
                                 </div>
                             </li>
                         </ol>
@@ -147,8 +147,8 @@ color:white;
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptions" style="margin-left:30px;">
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDataType(data)">
 
-                                     <span class="badge " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}" >  {{getScopeLabel(data)}}</span> {{getDatatypeLabel(data)}}-{{data.description}}
+                                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}" > {{getScopeLabel(data)}} {{hasSameVersion(data)}}</span> {{getDatatypeLabel(data)}}-{{data.description}} 
                                     </span>
                                 </div>
                             </li>
@@ -162,8 +162,8 @@ color:white;
                             <li ng-repeat="table in tables|orderBy :'bindingIdentifier'" ui-tree-node ng-if="!collapsevalueSet" data-type="table">
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="ValueSetOptions" style="margin-left:30px;">
                                     <span data-nodrag style="font-weight:normal;" ng-class="{selected : table.id===activeModel}" confirm-click ng-click="editTable(table)">
-                                     <span class="badge " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
+                                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL'}" >  {{getScopeLabel(table)}} {{hasSameVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}} 
                                     </span>
                                 </div>
                             </li>

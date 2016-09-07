@@ -118,7 +118,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
   }
 
   @Override
-  public IGDocument createIntegratedIGDocument(List<MessageEvents> msgEvts, String hl7Version,
+  public IGDocument createIntegratedIGDocument(List<MessageEvents> msgEvts,DocumentMetaData metadata, String hl7Version,
       Long accountId) throws IGDocumentException {
     // Creation of profile
     IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
@@ -128,14 +128,14 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
     pTarget.setAccountId(accountId);
 
     // Setting igDocument metaData
-    DocumentMetaData metaData = new DocumentMetaData();
+    DocumentMetaData metaData = metadata;
     dTarget.setMetaData(metaData);
     Date date = new Date();
     metaData.setDate(Constant.mdy.format(date));
-    metaData.setVersion("1.0");
-    metaData.setIdentifier("Default Identifier");
-    metaData.setSubTitle("Default Sub Title");
-    metaData.setTitle("Default Title");
+//    metaData.setVersion("1.0");
+//    metaData.setIdentifier("Default Identifier");
+//    metaData.setSubTitle(metadata.getSubTitle());
+//    metaData.setTitle(metadata.getTitle());
 
     // Setting profile metaData
     ProfileMetaData profileMetaData = new ProfileMetaData();

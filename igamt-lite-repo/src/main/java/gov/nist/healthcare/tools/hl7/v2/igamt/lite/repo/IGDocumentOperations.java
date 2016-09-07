@@ -37,5 +37,7 @@ public interface IGDocumentOperations {
 
 	List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);
 
+	List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions);
+
 
 }

@@ -295,7 +295,7 @@ span {
                 </span>
             </div>
             <div class="container">
-                <div class="form-group " ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+                <div class="form-group" ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
                     <label class="col-md-2 control-label">HL7 Version</label>
                     <div class="col-md-10">
                         <input class="form-control" type="text" disabled name="title" ng-model="datatypeLibMetaDataCopy.hl7Version" required>
@@ -304,13 +304,13 @@ span {
                 <div class="form-group" ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
                     <label class="col-md-2 control-label">Name</label>
                     <div class="col-md-10">
-                        <input class="form-control" type="text" ng-disabled="readOnly" name="name" ng-model="datatypeLibMetaDataCopy.name" ng-change="setDirty() " required id="name" required>
+                        <input class="form-control" type="text" ng-disabled="readOnly" name="name" ng-model="datatypeLibMetaDataCopy.name" ng-change="setDirty()" required id="name" required>
                     </div>
                 </div>
                 <div class="form-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
                     <label class="col-md-2 control-label" for="ext">Extension</label>
                     <div class="col-md-10">
-                        <input type="text" name="identifier" disabled name="ext" class="form-control" ng-model="datatypeLibMetaDataCopy.ext" ng-change="setDirty() ">
+                        <input type="text" name="identifier" disabled name="ext" class="form-control" ng-model="datatypeLibMetaDataCopy.ext" ng-change="setDirty()">
                     </div>
                 </div>
                 <div class="form-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
@@ -347,7 +347,7 @@ span {
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsInLib">
-                            <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data)" title="Filter By This Datatype" /> <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                            <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data)" title="Filter By This Datatype" /> <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}</span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}</span>
                         </div>
@@ -360,7 +360,7 @@ span {
                     <li ng-repeat="table in derivedTables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed" context-menu="ValueSetOptionsINLIB">
                         <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)">
                             <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
-                                     <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                     <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
                             </span>
                         </div>
@@ -382,7 +382,7 @@ span {
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;">
-                            <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data)" title="Filter By This Datatype" /> <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                            <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data)" title="Filter By This Datatype" /> <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}</span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}</span>
                         </div>
@@ -395,7 +395,7 @@ span {
                     <li ng-repeat="table in derivedTables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed">
                         <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)">
                             <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
-                                     <span class="label label-icon " ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                     <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
                             </span>
                         </div>
@@ -427,7 +427,7 @@ span {
             <div>
              <span class="col-md-1"> <strong> HL7 version: </strong></span>
             <div class="col-md-2">
-            <select class="form-control input-sm " ng-model="standard.hl7Version" required>
+            <select class="form-control input-sm" ng-model="standard.hl7Version" required>
                 <option ng-repeat="vr in hl7Versions">{{vr}}</option>
             </select>
 
@@ -436,7 +436,7 @@ span {
             </dir>
             </div>
             <div class="col-md-2 pull-right">
-                <button title="submit" class="btn btn-raised btn-sm btn-primary " style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
+                <button title="submit" class="btn btn-raised btn-sm btn-primary" style="margin-left:5px;" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
                     <span><i class="fa fa-check fa-fw"></i> Submit</span>
                 </button>
             </div>
@@ -481,7 +481,7 @@ span {
                 <i class="icon-search"></i>
                 <input type="search" class="form-control" placeholder="Search" ng-model="searchinselected.name" />
             </div>
-            <table class="table table-striped table-bordered  toc-container" data-drop="true" ng-model="addedDatatypes " jqyoui-droppable="{onDrop:'dropCallback'}">
+            <table class="table table-striped table-bordered  toc-container" data-drop="true" ng-model="addedDatatypes" jqyoui-droppable="{onDrop:'dropCallback'}">
                 <thead>
                     <tr class="tbl-header">
                         <th class="col-md-1">Name</th>
@@ -519,11 +519,11 @@ span {
 </script>
 <script type="text/ng-template" id="addingViewForMaster.html">
     <div class="page-header col-md-12" style="margin-bottom: 20px">
-        <div class="input-group ">
+        <div class="input-group">
             <span class="input-group-addon header5 pull-left" id="basic-addon1">Create a new HL7 datatype Flavor</span>
         </div>
         <div class="pull-right">
-            <button title="submit" class="btn btn-raised btn-sm btn-primary " ng-disabled="addedDatatypes.length===0" ng-click="submit()">
+            <button title="submit" class="btn btn-raised btn-sm btn-primary" ng-disabled="addedDatatypes.length===0" ng-click="submit()">
                 <span><i class="fa fa-check fa-fw"></i> Submit</span>
             </button>
         </div>
@@ -560,7 +560,7 @@ span {
                 <i class="icon-search"></i>
                 <input type="search" class="form-control" placeholder="Search" ng-model="searchinselected.name" />
             </div>
-            <table class="table table-striped table-bordered  toc-container" data-drop="true" ng-model="addedDatatypes " jqyoui-droppable="{onDrop:'dropCallback'}">
+            <table class="table table-striped table-bordered  toc-container" data-drop="true" ng-model="addedDatatypes" jqyoui-droppable="{onDrop:'dropCallback'}">
                 <thead>
                     <tr class="tbl-header">
                         <th class="col-md-1">Name</th>
@@ -605,7 +605,7 @@ span {
                             <label class="control-label col-xs-2" style="margin-top : 10px">HL7 Versions</label>
 
                             <div class="col-md-1">
-                            <select class="form-control input-sm " ng-change="okDisabled = false;" ng-model="standard.hl7Version" required>
+                            <select class="form-control input-sm" ng-change="okDisabled = false;" ng-model="standard.hl7Version" required>
                                     <option ng-repeat="vr in hl7Versions">{{vr}}</option>
                             </select>
 
@@ -946,7 +946,7 @@ span {
     </div>
 </script>
 <script type="text/ng-template" id="DatatypeReadTreeINLIB.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node) ">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-xs-2 col-fixed-250">
             <span style="width:60%" type="text" name="name" ng-bind="::node.name"></span>
             <span ng-bind="::node.description"></span>
@@ -981,13 +981,13 @@ span {
     </tr>
 </script>
 <script type="text/ng-template" id="DatatypeComponentEditTreeINLIB.html">
-    <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF) " ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)" ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
         <td class="col-xs-2 col-fixed-250" ng-controller="DatatypeRowCtrl">
-            <!--<a ng-show="editableSeg!==node.id " ng-click="editComponent(node,datatype) " class="point ">-->
-            <!--<span><i class="fa fa-pencil fa-fw "></i></span>-->
+            <!--<a ng-show="editableSeg!==node.id" ng-click="editComponent(node,datatype)" class="point">-->
+            <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
             <!--</a>-->
-            <!--<a ng-show="editableSeg!==node.id " ng-click="deleteComponent(node,datatype) " class="point ">-->
-            <!--<span><i class="glyphicon glyphicon-trash "></i></span>-->
+            <!--<a ng-show="editableSeg!==node.id" ng-click="deleteComponent(node,datatype)" class="point">-->
+            <!--<span><i class="glyphicon glyphicon-trash"></i></span>-->
             <!--</a>-->
             <ng-form name="{{formName}}" class="form-inline">
                 <!--<input type="checkbox" ng-checked="isChildSelected(node)" ng-click="selectChild($event,node)">-->
@@ -1007,18 +1007,18 @@ span {
 
             </span>
                 </span>
-                <span ng-show="editableComp===node.id ">
-              <select  ng-model="position " ng-change="selectPos() "  style="width:15% " class="form-control input-sm ">
-                    <option ng-repeat="child in datatype.components "  ng-selected="node.position===child.position "> {{child.position}}
+                <span ng-show="editableComp===node.id">
+              <select  ng-model="position" ng-change="selectPos()"  style="width:15%" class="form-control input-sm">
+                    <option ng-repeat="child in datatype.components"  ng-selected="node.position===child.position"> {{child.position}}
                 </select>
-            <input  style="width:55%" class="form-control "  ng-model="compName " type="text "/>
+            <input  style="width:55%" class="form-control"  ng-model="compName" type="text"/>
             </span>
                 <div align="center">
-                    <a ng-show="editableComp===node.id && compName " ng-click="applyComp(datatype,node,compName,position) " class="point ">
-                        <span><i class="glyphicon glyphicon-ok "></i></span>
+                    <a ng-show="editableComp===node.id && compName" ng-click="applyComp(datatype,node,compName,position)" class="point">
+                        <span><i class="glyphicon glyphicon-ok"></i></span>
                     </a>
-                    <a ng-show="editableComp===node.id " ng-click="backComp() " class="point ">
-                        <span><i class="glyphicon glyphicon-remove "></i></span>
+                    <a ng-show="editableComp===node.id" ng-click="backComp()" class="point">
+                        <span><i class="glyphicon glyphicon-remove"></i></span>
                     </a>
                 </div>
             </ng-form>
@@ -1053,21 +1053,21 @@ span {
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
                 <div ng-show="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
-                    <a class="point" ng-show="editableDT!==node.id " ng-click="redirectDTLIB(node.datatype)">
+                    <a class="point" ng-show="editableDT!==node.id" ng-click="redirectDTLIB(node.datatype)">
                         {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                     </a>
-                    <div ng-show="editableDT===node.id ">
-                        <select ng-model="datatype " ng-change="selectDT(node,datatype) " class="form-control input-sm ">
-                            <option ng-repeat="datatype in results" value="{{datatype}} " ng-selected="node.datatype.ext===datatype.ext "> {{getDatatypeLabel(datatype)}} FROM {{datatype.libraryName}}
+                    <div ng-show="editableDT===node.id">
+                        <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
+                            <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} FROM {{datatype.libraryName}}
                             </option>
                         </select>
                     </div>
-                    <a ng-show="editableDT!==node.id " ng-click="editDT(node) " class="point ">
-                        <span><i class="fa fa-pencil fa-fw "></i></span>
+                    <a ng-show="editableDT!==node.id" ng-click="editDT(node)" class="point">
+                        <span><i class="fa fa-pencil fa-fw"></i></span>
                     </a>
                     <div align="center">
-                        <a ng-show="editableDT===node.id " ng-click="backDT() " class="point ">
-                            <span><i class="glyphicon glyphicon-remove "></i></span>
+                        <a ng-show="editableDT===node.id" ng-click="backDT()" class="point">
+                            <span><i class="glyphicon glyphicon-remove"></i></span>
                         </a>
                     </div>
                 </div>
@@ -1075,37 +1075,37 @@ span {
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.table != undefined && node.table !== null">
-                <a ng-show="editableVS!==node.id " class="point" ng-click="redirectVS(node.table)">
+                <a ng-show="editableVS!==node.id" class="point" ng-click="redirectVS(node.table)">
                     <span>{{node.table.bindingIdentifier}}</span>
                 </a>
-                <a ng-show="editableVS!==node.id " ng-click="editVS(node) " class="point ">
-                    <span><i class="fa fa-pencil fa-fw "></i></span>
+                <a ng-show="editableVS!==node.id" ng-click="editVS(node)" class="point">
+                    <span><i class="fa fa-pencil fa-fw"></i></span>
                 </a>
-                <a ng-show="editableVS!==node.id " ng-click="deleteTable(node)" class="point">
-                    <span><i class="glyphicon glyphicon-trash "></i></span>
+                <a ng-show="editableVS!==node.id" ng-click="deleteTable(node)" class="point">
+                    <span><i class="glyphicon glyphicon-trash"></i></span>
                 </a>
             </div>
-            <input class="form-control col-md-4 " type="text" ng-model="searchVS.name" ng-hide="editableVS!==node.id || VSselected" />
-            <li class="form-control col-md-4 " ng-show="editableVS===node.id && VSselected">
+            <input class="form-control col-md-4" type="text" ng-model="searchVS.name" ng-hide="editableVS!==node.id || VSselected" />
+            <li class="form-control col-md-4" ng-show="editableVS===node.id && VSselected">
                 {{selectedValueSet.bindingIdentifier}}
                 <button type="button" class="close" aria-label="Close" ng-click="unselectVS()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </li>
             <div ng-if="searchVS.name && !VSselected && editableVS===node.id">
-                <li class="form-control col-md-4 " ng-class="{'active':isActive(valueSet.id)}" ng-click="selectVS(node,valueSet)" ng-repeat="valueSet in derivedTables | filter:searchVS ">
+                <li class="form-control col-md-4" ng-class="{'active':isActive(valueSet.id)}" ng-click="selectVS(node,valueSet)" ng-repeat="valueSet in derivedTables | filter:searchVS">
                     {{valueSet.name}}
                 </li>
             </div>
             <div align="center">
-                <a ng-show="editableVS===node.id && VSselected" ng-click="applyVS(node) " class="point ">
+                <a ng-show="editableVS===node.id && VSselected" ng-click="applyVS(node)" class="point">
                     <span><i class="glyphicon glyphicon-ok"></i></span>
                 </a>
-                <a ng-show="editableVS===node.id " ng-click="backVS() " class="point ">
-                    <span><i class="glyphicon glyphicon-remove "></i></span>
+                <a ng-show="editableVS===node.id" ng-click="backVS()" class="point">
+                    <span><i class="glyphicon glyphicon-remove"></i></span>
                 </a>
             </div>
-            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTables(datatypesMap[node.datatype.id]) &&  editableVS!==node.id ">
+            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTables(datatypesMap[node.datatype.id]) &&  editableVS!==node.id">
                 <a ng-click="editVS(node)" class="point">
                     <span><i class="fa fa-plus fa-fw"></i></span>
                 </a>
@@ -1255,7 +1255,7 @@ span {
             </div>
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a ng-click="redirectVS(node.table) " class="point" ng-show="node.table !== null && node.table !== undefined">
+            <a ng-click="redirectVS(node.table)" class="point" ng-show="node.table !== null && node.table !== undefined">
                 {{getTableLabel(tablesMap[node.table.id])}}
             </a>
         </td>

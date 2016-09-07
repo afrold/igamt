@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers;
 import java.io.Serializable;
 import java.util.List;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 
@@ -16,7 +17,9 @@ public class IntegrationIGDocumentRequestWrapper implements Serializable {
 
 	String hl7Version;
 	List<MessageEvents> msgEvts;
+	DocumentMetaData metaData;
 	IGDocument igdocument;
+	
 	Long accountId;
 
 	public String getHl7Version() {
@@ -33,6 +36,14 @@ public class IntegrationIGDocumentRequestWrapper implements Serializable {
 
 	public void setMsgEvts(List<MessageEvents> msgEvts) {
 		this.msgEvts = msgEvts;
+	}
+
+	public DocumentMetaData getMetaData() {
+		return metaData;
+	}
+
+	public void setMetaData(DocumentMetaData metaData) {
+		this.metaData = metaData;
 	}
 
 	public IGDocument getIgdocument() {

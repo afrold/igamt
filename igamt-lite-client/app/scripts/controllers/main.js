@@ -6,18 +6,18 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         // logged in.
         // If success, the app is updated according to the role.
 
-    //     $(document).keydown(function(e) {
-    //     var nodeName = e.target.nodeName.toLowerCase();
+        //     $(document).keydown(function(e) {
+        //     var nodeName = e.target.nodeName.toLowerCase();
 
-    //     if (e.which === 8) {
-    //         if ((nodeName === 'input' && e.target.type === 'text') ||
-    //             nodeName === 'textarea') {
-    //             // do nothing
-    //         } else {
-    //             e.preventDefault();
-    //         }
-    //     }
-    // });
+        //     if (e.which === 8) {
+        //         if ((nodeName === 'input' && e.target.type === 'text') ||
+        //             nodeName === 'textarea') {
+        //             // do nothing
+        //         } else {
+        //             e.preventDefault();
+        //         }
+        //     }
+        // });
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
 
@@ -60,22 +60,21 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return '';
         };
-        $rootScope.setCardinalities= function(obj){
-        	if(obj.usage==='R'){
-        		obj.min=1;
-        	}
-        	else if(obj.usage==='X'||obj.usage==='BW'){
-        		obj.min=0;
-        		obj.max=0;
-        	}else if(obj.usage==='O'){
-        		obj.min=0;
-        		
-        	}
+        $rootScope.setCardinalities = function(obj) {
+            if (obj.usage === 'R') {
+                obj.min = 1;
+            } else if (obj.usage === 'X' || obj.usage === 'BW') {
+                obj.min = 0;
+                obj.max = 0;
+            } else if (obj.usage === 'O') {
+                obj.min = 0;
+
+            }
 
         };
-        
-        
-        $scope.path = function () {
+
+
+        $scope.path = function() {
             return $location.url();
         };
 
@@ -270,16 +269,15 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             $rootScope.started = false;
 
         };
-        $rootScope.setCardinalities= function(obj){
-            if(obj.usage==='R'){
-                obj.min=1;
-            }
-            else if(obj.usage==='X'||obj.usage==='BW'){
-                obj.min=0;
-                obj.max=0;
-            }else if(obj.usage==='O'){
-                obj.min=0;
-                
+        $rootScope.setCardinalities = function(obj) {
+            if (obj.usage === 'R') {
+                obj.min = 1;
+            } else if (obj.usage === 'X' || obj.usage === 'BW') {
+                obj.min = 0;
+                obj.max = 0;
+            } else if (obj.usage === 'O') {
+                obj.min = 0;
+
             }
 
         };
@@ -752,11 +750,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         $rootScope.calNextCSID = function(ext, flavorName) {
             var prefix = '';
-            if(ext != null && ext !== ''){
+            if (ext != null && ext !== '') {
                 prefix = ext;
-            }else if(flavorName != null && flavorName !== ''){
+            } else if (flavorName != null && flavorName !== '') {
                 prefix = flavorName;
-            }else {
+            } else {
                 prefix = 'Default';
             }
             var maxIDNum = Number(0);
@@ -1279,23 +1277,27 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 return false;
             } else return true;
         };
-        
-        
+
+
         $rootScope.displayLocationForDatatype = function(dt, constraintTarget) {
             var position = constraintTarget.substring(0, constraintTarget.indexOf('['));
-            var component = _.find(dt.components, function(c){ return c.position == position; });
-            if(component) return dt.name + "." + position + " (" + component.name + ")";
+            var component = _.find(dt.components, function(c) {
+                return c.position == position;
+            });
+            if (component) return dt.name + "." + position + " (" + component.name + ")";
             return dt.name;
         };
 
         $rootScope.displayLocationForSegment = function(segment, constraintTarget) {
             var position = constraintTarget.substring(0, constraintTarget.indexOf('['));
-            var field = _.find(segment.fields, function(f){ return f.position == position; });
-            if(field) return segment.name + "-" + position + " (" + field.name + ")";
+            var field = _.find(segment.fields, function(f) {
+                return f.position == position;
+            });
+            if (field) return segment.name + "-" + position + " (" + field.name + ")";
             return segment.name;
         };
 
-        $rootScope.generateCompositeConformanceStatement = function (compositeType, firstConstraint, secondConstraint, constraints) {
+        $rootScope.generateCompositeConformanceStatement = function(compositeType, firstConstraint, secondConstraint, constraints) {
             var cs = null;
             if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR' || compositeType === 'IFTHEN') {
                 var firstConstraintAssertion = firstConstraint.assertion.replace("<Assertion>", "");
@@ -1310,13 +1312,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     description: '[' + firstConstraint.description + '] ' + compositeType + ' [' + secondConstraint.description + ']',
                     assertion: '<Assertion><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Assertion>'
                 };
-            } else if (compositeType === 'FORALL' ||compositeType === 'EXIST' ) {
+            } else if (compositeType === 'FORALL' || compositeType === 'EXIST') {
                 var forALLExistId = compositeType;
                 var forALLExistAssertion = '';
                 var forALLExistDescription = compositeType;
                 var forALLExistConstraintTarget = '';
 
-                angular.forEach(constraints, function (c) {
+                angular.forEach(constraints, function(c) {
                     forALLExistAssertion = forALLExistAssertion + c.assertion.replace("<Assertion>", "").replace("</Assertion>", "");
                     forALLExistDescription = forALLExistDescription + '[' + c.description + ']';
                     forALLExistId = forALLExistId + '(' + c.constraintId + ')';
@@ -1336,7 +1338,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
 
-        $rootScope.generateCompositePredicate = function (compositeType, firstConstraint, secondConstraint, constraints) {
+        $rootScope.generateCompositePredicate = function(compositeType, firstConstraint, secondConstraint, constraints) {
             var cp = null;
             if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR' || compositeType === 'IFTHEN') {
                 var firstConstraintAssertion = firstConstraint.assertion.replace("<Condition>", "");
@@ -1353,13 +1355,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     falseUsage: '',
                     assertion: '<Condition><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Condition>'
                 };
-            } else if (compositeType === 'FORALL' ||compositeType === 'EXIST' ) {
+            } else if (compositeType === 'FORALL' || compositeType === 'EXIST') {
                 var forALLExistId = compositeType;
                 var forALLExistAssertion = '';
                 var forALLExistDescription = compositeType;
                 var forALLExistConstraintTarget = '';
 
-                angular.forEach(constraints, function (c) {
+                angular.forEach(constraints, function(c) {
                     forALLExistAssertion = forALLExistAssertion + c.assertion.replace("<Condition>", "").replace("</Condition>", "");
                     forALLExistDescription = forALLExistDescription + '[' + c.description + ']';
                     forALLExistId = forALLExistId + '(' + c.constraintId + ')';
@@ -1377,7 +1379,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return cp;
         };
 
-        $rootScope.generateFreeTextConformanceStatement = function (positionPath, newConstraint) {
+        $rootScope.generateFreeTextConformanceStatement = function(positionPath, newConstraint) {
             var cs = {
                 id: new ObjectId().toString(),
                 constraintId: newConstraint.constraintId,
@@ -1582,15 +1584,15 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
 
 
-            if(newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')){
-                cs.assertion= cs.assertion.replace("<Assertion>", "<Assertion><NOT>");
+            if (newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')) {
+                cs.assertion = cs.assertion.replace("<Assertion>", "<Assertion><NOT>");
                 cs.assertion = cs.assertion.replace("</Assertion>", "</NOT></Assertion>");
             }
 
             return cs;
         };
 
-        $rootScope.generateFreeTextPredicate = function (positionPath, newConstraint) {
+        $rootScope.generateFreeTextPredicate = function(positionPath, newConstraint) {
             var cp = {
                 id: new ObjectId().toString(),
                 constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
@@ -1834,8 +1836,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 };
             }
 
-            if(newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')){
-                cp.assertion= cp.assertion.replace("<Condition>", "<Condition><NOT>");
+            if (newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')) {
+                cp.assertion = cp.assertion.replace("<Condition>", "<Condition><NOT>");
                 cp.assertion = cp.assertion.replace("</Condition>", "</NOT></Condition>");
             }
 
@@ -1843,30 +1845,30 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
 
-        $rootScope.erorrForComplexConfStatement = function (newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints) {
-            if ($rootScope.isEmptyCompositeType(compositeType))  return true;
+        $rootScope.erorrForComplexConfStatement = function(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints) {
+            if ($rootScope.isEmptyCompositeType(compositeType)) return true;
             if ($rootScope.isEmptyComplexConstraintID(newComplexConstraintId)) return true;
-            if ($rootScope.isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId))  return true;
-            
-            if(compositeType == 'FORALL' || compositeType == 'EXIST'){
-                if(constraints.length < 2) return true;
-            }else {
+            if ($rootScope.isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId)) return true;
+
+            if (compositeType == 'FORALL' || compositeType == 'EXIST') {
+                if (constraints.length < 2) return true;
+            } else {
                 if (firstConstraint == null) return true;
                 if (secondConstraint == null) return true;
             }
-            
+
             return false;
         };
 
-        $rootScope.erorrForComplexPredicate = function (compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage, constraints) {
+        $rootScope.erorrForComplexPredicate = function(compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage, constraints) {
             if ($rootScope.isEmptyCompositeType(compositeType)) return true;
             if (complexConstraintTrueUsage == null) return true;
             if (complexConstraintFalseUsage == null) return true;
 
 
-            if(compositeType == 'FORALL' || compositeType == 'EXIST'){
-                if(constraints.length < 2) return true;
-            }else {
+            if (compositeType == 'FORALL' || compositeType == 'EXIST') {
+                if (constraints.length < 2) return true;
+            } else {
                 if (firstConstraint == null) return true;
                 if (secondConstraint == null) return true;
             }
@@ -1874,7 +1876,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
 
-        $rootScope.erorrForPredicate = function (newConstraint, type, selectedNode) {
+        $rootScope.erorrForPredicate = function(newConstraint, type, selectedNode) {
             if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
             if ($rootScope.isEmptyConstraintVerb(newConstraint)) return true;
@@ -1910,7 +1912,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
 
-        $rootScope.erorrForConfStatement = function (newConstraint, targetId, type, selectedNode) {
+        $rootScope.erorrForConfStatement = function(newConstraint, targetId, type, selectedNode) {
             if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintID(newConstraint)) return true;
             if ($rootScope.isDuplicatedConstraintID(newConstraint, targetId)) return true;
@@ -2240,6 +2242,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return "";
         };
+        $rootScope.hasSameVersion = function(element) {
+
+            return element.hl7Version;
+
+        }
 
         $rootScope.getTableLabel = function(table) {
             if (table && table != null) {
@@ -2339,15 +2346,15 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         var vm = this;
 
-//        $scope.$on("getMenuState", function (event, data) {
-//            $scope.$apply(function () {
-//                vm.opened = data;
-//            });
-//        });
-//
-//        this.toggleNavigation = function() {
-//            $mdSidenav('navigation-drawer').toggle();
-//        };
+        //        $scope.$on("getMenuState", function (event, data) {
+        //            $scope.$apply(function () {
+        //                vm.opened = data;
+        //            });
+        //        });
+        //
+        //        this.toggleNavigation = function() {
+        //            $mdSidenav('navigation-drawer').toggle();
+        //        };
 
         $scope.checkedNavigation = false;
         $scope.toggleNavigation = function() {
@@ -2355,7 +2362,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
 
-    }]);
+    }
+]);
 
 
 angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user', function($scope, $modalInstance, user) {

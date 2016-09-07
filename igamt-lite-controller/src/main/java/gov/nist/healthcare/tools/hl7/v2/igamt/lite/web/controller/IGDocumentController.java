@@ -268,6 +268,9 @@ public class IGDocumentController extends CommonController {
 
       for (Message m : igDocument.getProfile().getMessages().getChildren()) {
         m.setId(null);
+        if(m.getScope()==SCOPE.PRELOADED){
+        	m.setScope(SCOPE.USER);
+        }
         messageService.save(m);
       }
 
@@ -785,10 +788,11 @@ public class IGDocumentController extends CommonController {
       throws IGDocumentException {
     log.info("Creation of IGDocument.");
     log.debug("idrw.getMsgEvts()=" + idrw.getMsgEvts());
+    log.debug("idrw.getMsgEvts()=" + idrw.getMetaData());
     log.debug("idrw.getAccountId()=" + idrw.getAccountId());
     User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-    IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),
+    IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),idrw.getMetaData(),
         idrw.getHl7Version(), account.getId());
 
 
