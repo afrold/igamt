@@ -131,6 +131,7 @@ angular.module('igl').factory('CompareService',
                 if (segment.type === "segment") {
                     elements.push(segment);
                 }
+                console.log("elements==============");
                 console.log(elements);
                 return CompareService.fElements(elements, datatypeList, segmentList);
             },
@@ -231,6 +232,7 @@ angular.module('igl').factory('CompareService',
 
                 };
 
+
                 return fields;
 
 
@@ -260,7 +262,8 @@ angular.module('igl').factory('CompareService',
                             };
                         }
                         if (childArray.value.type.value === "field" || childArray.value.type.value === "component" || childArray.value.type.value === "datatype") {
-
+                            console.log("++++++++++++++++++++");
+                            console.log(childArray);
                             if (childArray.value.name.changed === "primitive change") {
                                 result.label = {
                                     element1: childArray.value.name.removed,
