@@ -20,18 +20,17 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
         },
         getOne: function(id) {
             var delay = $q.defer();
-            if ($rootScope.tablesMap[id] === undefined || $rootScope.tablesMap[id] === undefined) {
-                console.log("getOne==>");
+//            if ($rootScope.tablesMap[id] === undefined || $rootScope.tablesMap[id] === undefined) {
+//                console.log("getOne==>");
                 $http.get('api/tables/' + id).then(function(response) {
                     var table = angular.fromJson(response.data);
-                    console.log("<==getOne" + table);
                     delay.resolve(table);
                 }, function(error) {
                     delay.reject(error);
                 });
-            } else {
-                delay.resolve($rootScope.tablesMap[id]);
-            }
+//            } else {
+//                delay.resolve($rootScope.tablesMap[id]);
+//            }
             return delay.promise;
         },
         get: function(ids) {
@@ -77,7 +76,7 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
         },
         findAllByIds: function(tableIds) {
             var delay = $q.defer();
-            $http.post('api/tables/findAllByIds', tableIds).then(function(response) {
+            $http.post('api/tables/findShortAllByIds', tableIds).then(function(response) {
                 delay.resolve(angular.fromJson(response.data));
             }, function(error) {
                 delay.reject(error);

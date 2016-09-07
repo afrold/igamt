@@ -187,7 +187,7 @@ span {
                                                     <input st-search placeholder="Search" class="input-sm form-control" type="search" />
                                                 </th>
                                             </tr>
-                                            <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
+                                            <tr class="tbl-header" style="">
                                                 <th st-ratio="5">#</th>
                                                 <th st-ratio="10" st-sort-default="true">Name</th>
                                                 <th st-ratio="20">Extension</th>
@@ -661,7 +661,7 @@ span {
                                             </tr>
                                         </tbody>
                                         <tfoot ng-show="datatypesLibStruct.length >= 5">
-                                            <tr style="margin-right: {{scrollbarWidth}}px;">
+                                            <tr style="">
                                                 <td colspan="5" class="text-center">
                                                     <span st-pagination="" st-items-by-page="5" st-displayed-pages="7"></span>
                                                 </td>
@@ -689,7 +689,7 @@ span {
                                         </tr>
                                     </tbody>
                                     <tfoot ng-show="selectedLib.children.length >= 5">
-                                        <tr style="margin-right: {{scrollbarWidth}}px;">
+                                        <tr style="">
                                             <td colspan="5" class="text-center">
                                                 <span st-pagination="" st-items-by-page="5" st-displayed-pages="7"></span>
                                             </td>
@@ -809,7 +809,7 @@ span {
                                             <div class="table-responsive">
                                                 <table id="treeTable" tt-table tt-params="datatypesParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                     <thead>
-                                                        <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
+                                                        <tr class="tbl-header" style="">
                                                             <th class="col-xs-2 col-fixed-250">Name</th>
                                                             <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage
                                                                 <button class="btn btn-raised btn-info btn-xs" ng-show="(datatype.status === 'UNPUBLISHED')&& !readOnly" ng-click="OtoX(datatype)">O to X</button>
@@ -822,9 +822,9 @@ span {
                                                             </th>
                                                             <th class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Concept Domain/ Minimum Code System
                                                             </th>
-                                                            <th class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
+                                                            <th class="col-xs-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
                                                             </th>
-                                                            <th class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement
+                                                            <th class="col-xs-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement
                                                             </th>
                                                             <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
                                                             </th>
@@ -966,10 +966,10 @@ span {
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>-</div>
         </td>
-        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-xs-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>-</div>
         </td>
-        <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
+        <td class="col-xs-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>-</div>
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
@@ -1111,7 +1111,7 @@ span {
                 </a>
             </div>
         </td>
-        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-xs-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="countPredicate(node.position) === 0 && node.usage === 'C'">
                     <a ng-click="managePredicate(node)" class="point">
@@ -1126,7 +1126,7 @@ span {
                 </div>
             </div>
         </td>
-        <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
+        <td class="col-xs-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>
                 <div ng-show="countConformanceStatements(node.position) == 0">
                     <a ng-click="manageConformanceStatement(node)" class="point">
@@ -1199,12 +1199,12 @@ span {
                 </div>
             </div>
         </td>
-        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-xs-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </p>
         </td>
-        <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
+        <td class="col-xs-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <p ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </p>
@@ -1259,11 +1259,11 @@ span {
                 {{getTableLabel(tablesMap[node.table.id])}}
             </a>
         </td>
-        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-xs-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
-        <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
+        <td class="col-xs-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
@@ -1317,11 +1317,11 @@ span {
                 {{getTableLabel(tablesMap[node.table.id])}}
             </a>
         </td>
-        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-xs-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
-        <td class="col-xs-2" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
+        <td class="col-xs-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>

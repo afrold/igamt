@@ -85,5 +85,12 @@ public class TableServiceImpl implements TableService {
     return tableRepository.findAllByIds(ids);
   }
 
+  @Override
+  public List<Table> findShortAllByIds(Set<String> ids) {
+    // TODO Auto-generated method stub
+    return tableRepository.findShortAllByIds(ids);
+  }
+
+
 
 }

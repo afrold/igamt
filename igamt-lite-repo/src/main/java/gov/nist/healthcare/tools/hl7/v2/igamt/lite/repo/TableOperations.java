@@ -31,5 +31,7 @@ public interface TableOperations {
 
   List<Table> findAllByIds(Set<String> ids);
 
+  List<Table> findShortAllByIds(Set<String> ids);
+
 
 }

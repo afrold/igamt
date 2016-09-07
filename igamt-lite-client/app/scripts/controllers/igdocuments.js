@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
+    .controller('IGDocumentListCtrl', function(TableService,$scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
 
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
@@ -1078,40 +1078,71 @@ angular.module('igl')
         $scope.selectTable = function(t) {
             $rootScope.Activate(t.id);
             var table = angular.copy(t);
-
             if ($scope.viewSettings.tableReadonly || table.scope !== 'USER') {
                 $rootScope.subview = "ReadValueSets.html";
             } else {
                 $rootScope.subview = "EditValueSets.html";
             }
-
             $scope.loadingSelection = true;
             blockUI.start();
-            $timeout(
-                function() {
-                    $rootScope.table = table;
-                    $rootScope.$emit("event:initTable");
-                    $rootScope.currentData = $rootScope.table;
-                    $rootScope.codeSystems = [];
-                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
-                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
-                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
-                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
-                            }
+            TableService.getOne(table.id).then(function(tbl){
+                $rootScope.table = tbl;
+                $rootScope.$emit("event:initTable");
+                $rootScope.currentData = $rootScope.table;
+                $rootScope.codeSystems = [];
+                for (var i = 0; i < $rootScope.table.codes.length; i++) {
+                    if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+                        if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+                            $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
                         }
                     }
-                    $rootScope.references = [];
-                    angular.forEach($rootScope.segments, function(segment) {
-                        $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment));
-                    });
-                    angular.forEach($rootScope.datatypes, function(dt) {
-                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
-                    });
-                    $rootScope.tmpReferences = [].concat($rootScope.references);
-                    $scope.loadingSelection = false;
-                    $rootScope.$emit("event:initEditArea");
-                    blockUI.stop();
-                }, 100);
+                }
+                $rootScope.references = [];
+                angular.forEach($rootScope.segments, function(segment) {
+                    $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment));
+                });
+                angular.forEach($rootScope.datatypes, function(dt) {
+                    $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
+                });
+                $rootScope.tmpReferences = [].concat($rootScope.references);
+                $scope.loadingSelection = false;
+                $rootScope.$emit("event:initEditArea");
+                blockUI.stop();
+            }, function(errr){
+                $scope.loadingSelection = false;
+                $rootScope.msg().text = errr.data.text;
+                $rootScope.msg().type = errr.data.type;
+                $rootScope.msg().show = true;
+                blockUI.stop();
+            });
+
+//            $timeout(
+//                function() {
+//                    $rootScope.table = table;
+//                    $rootScope.$emit("event:initTable");
+//                    $rootScope.currentData = $rootScope.table;
+//                    $rootScope.codeSystems = [];
+//                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
+//                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+//                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+//                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+//                            }
+//                        }
+//                    }
+//                    $rootScope.references = [];
+//                    angular.forEach($rootScope.segments, function(segment) {
+//                        $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment));
+//                    });
+//                    angular.forEach($rootScope.datatypes, function(dt) {
+//                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
+//                    });
+//                    $rootScope.tmpReferences = [].concat($rootScope.references);
+//                    $scope.loadingSelection = false;
+//                    $rootScope.$emit("event:initEditArea");
+//                    blockUI.stop();
+//                }, 100);
+
+
         };
 
         $scope.selectSection = function(section) {
