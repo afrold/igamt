@@ -18,12 +18,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +28,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 
 public class IGDocumentRepositoryImpl implements IGDocumentOperations {
 
@@ -59,52 +57,57 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
   @Override
   public List<IGDocument> findStandardByVersion(String hl7version) {
     log.debug("findStandardByVersion");
-    Criteria where =
-        Criteria.where("scope").is(IGDocumentScope.HL7STANDARD)
-            .andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7version));
+    Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD)
+        .andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7version));
     Query query = Query.query(where);
     List<IGDocument> list = mongo.find(query, IGDocument.class);
     log.debug("findStandardByVersion list.size()=" + list.size());
     return list;
   }
-  
-  
+
+
   @Override
-	public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-		Criteria where = Criteria.where("profile.scope").in(scopes);
-		where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
-		Query qry = Query.query(where);
-		qry.fields().include("_id");
-		qry.fields().include("metaData.title");
-		return mongo.find(qry, IGDocument.class);
-	} 
-  @Override
-	public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions) {
-		Criteria where = Criteria.where("profile.metaData.hl7Version").in(hl7Versions);
-		where.andOperator(Criteria.where("profile.scope").is(scope));
-		Query qry = Query.query(where);
-		
-		return mongo.find(qry, IGDocument.class);
-	} 
-  @Override
-	public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions) {
-		Criteria where = Criteria.where("metaData.hl7Version").in(hl7Versions);
-		where.andOperator(Criteria.where("scope").is(scope));
-		Query qry = Query.query(where);
-		
-		return mongo.find(qry, IGDocument.class);
-	} 
-  @Override
-  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version) {
-	  Criteria where = Criteria.where("profile.scope").in(scopes);
-		//where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
-		where.andOperator(Criteria.where("accountId").is(accountId).andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version)));
-		Query qry = Query.query(where);
-		qry.fields().include("_id");
-		qry.fields().include("metaData.title");
-		return mongo.find(qry, IGDocument.class);
+  public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+    Criteria where = Criteria.where("profile.scope").in(scopes);
+    where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
+    Query qry = Query.query(where);
+    qry.fields().include("_id");
+    qry.fields().include("metaData.title");
+    return mongo.find(qry, IGDocument.class);
   }
-  
+
+  @Override
+  public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions) {
+    Criteria where = Criteria.where("profile.metaData.hl7Version").in(hl7Versions);
+    where.andOperator(Criteria.where("profile.scope").is(scope));
+    Query qry = Query.query(where);
+
+    return mongo.find(qry, IGDocument.class);
+  }
+
+  @Override
+  public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope,
+      List<String> hl7Versions) {
+    Criteria where = Criteria.where("metaData.hl7Version").in(hl7Versions);
+    where.andOperator(Criteria.where("scope").is(scope));
+    Query qry = Query.query(where);
+
+    return mongo.find(qry, IGDocument.class);
+  }
+
+  @Override
+  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes,
+      String hl7Version) {
+    Criteria where = Criteria.where("profile.scope").in(scopes);
+    // where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
+    where.andOperator(Criteria.where("accountId").is(accountId)
+        .andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version)));
+    Query qry = Query.query(where);
+    qry.fields().include("_id");
+    qry.fields().include("metaData.title");
+    return mongo.find(qry, IGDocument.class);
+  }
+
   /**
    * TODO: Refactor this to not load IG Doc in memory
    */
@@ -119,6 +122,13 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     }
     Collections.sort(rval);
     return rval;
+  }
+
+  @Override
+  public List<IGDocument> findAllByScope(IGDocumentScope scope) {
+    Criteria where = Criteria.where("scope").is(scope);
+    Query qry = Query.query(where);
+    return mongo.find(qry, IGDocument.class);
   }
 
 }

@@ -78,10 +78,10 @@
                         <li><a class="point" ng-click="exportAs('html')">As HTML</a></li>
                     </ul>
                 </div>
-                <button title="Close the IG Document" type="button" class="btn btn-raised btn-sm btn-warning" ng-click="close()">
+                <button title="Close the IG Document" style="margin-top:0px" type="button" class="btn btn-raised btn-sm btn-warning" ng-click="close()">
                     <span><i class="fa fa-close fa-fw"></i>Close</span>
                 </button>
-                <button title="Delete permanently" type="button" class="btn btn-raised btn-sm btn-danger"
+                <button style="margin-top:0px" title="Delete permanently" type="button" class="btn btn-raised btn-sm btn-danger"
                         ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"
                         ng-click="confirmDelete(igdocument)">
                     <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>

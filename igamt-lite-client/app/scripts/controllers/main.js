@@ -906,6 +906,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         if (parent.path) {
                             s.path = parent.path + "." + element.position + "[1]";
                         }
+
+                        if($rootScope.segmentsMap[s.obj.ref.id] == undefined){
+                            throw new Error("Cannot find Segment[id=" + s.obj.ref.id + ", name= " + s.obj.ref.name + "]");
+                        }
                         s.obj.ref.ext = $rootScope.segmentsMap[s.obj.ref.id].ext;
                         s.obj.ref.label = $rootScope.getLabel(s.obj.ref.name, s.obj.ref.ext);
                         parent.children.push(s);
@@ -933,9 +937,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         f.obj = element;
                         f.path = parent.path + "." + element.position + "[1]";
                         f.children = [];
-                        console.log("====HEEEEREEEEEE");
-                        console.log(f.obj);
-                        console.log($rootScope.datatypesMap[f.obj.datatype.id]);
+                        var d = $rootScope.datatypesMap[f.obj.datatype.id];
+                        if(d === undefined){
+                            throw new Error("Cannot find Data Type[id=" + f.obj.datatype.id + ", name= " + f.obj.datatype.name + "]");
+                        }
                         f.obj.datatype.ext = $rootScope.datatypesMap[f.obj.datatype.id].ext;
                         f.obj.datatype.label = $rootScope.getLabel(f.obj.datatype.name, f.obj.datatype.ext);
                         // for (var i = 0; i < f.obj.tables.length; i++) {
@@ -961,7 +966,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         c.obj = element;
                         c.path = parent.path + "." + element.position + "[1]";
                         c.children = [];
-                        c.obj.datatype.ext = $rootScope.datatypesMap[c.obj.datatype.id].ext;
+                        var d = $rootScope.datatypesMap[c.obj.datatype.id];
+                        if(d === undefined){
+                            throw new Error("Cannot find Data Type[id=" + c.obj.datatype.id + ", name= " + c.obj.datatype.name + "]");
+                        }
+                        console.log('datatype id=' + c.obj.datatype.id);
+                        c.obj.datatype.ext = d.ext;
                         c.obj.datatype.label = $rootScope.getLabel(c.obj.datatype.name, c.obj.datatype.ext);
                         parent.children.push(c);
                         $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);

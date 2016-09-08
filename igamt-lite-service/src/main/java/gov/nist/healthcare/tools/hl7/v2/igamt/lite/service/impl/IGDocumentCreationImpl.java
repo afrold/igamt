@@ -329,6 +329,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
     datatypeRepository.save(dt);
     DatatypeLink link = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());
     if (!dtsTarget.getChildren().contains(link)) {
+      dtsTarget.addDatatype(link);
       for (Component cpt : dt.getComponents()) {
         Datatype dt1 = datatypeRepository.findOne(cpt.getDatatype().getId());
         addDatatype(dt1, pSource, pTarget);
@@ -341,7 +342,6 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
           }
         }
       }
-      dtsTarget.addDatatype(link);
     }
   }
 
