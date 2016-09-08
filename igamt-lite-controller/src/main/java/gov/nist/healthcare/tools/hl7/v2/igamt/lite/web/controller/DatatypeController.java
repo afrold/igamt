@@ -18,9 +18,11 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopeAndNameAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeDeleteException;
@@ -99,7 +101,31 @@ public class DatatypeController extends CommonController {
     }
     return datatypes;
   }
+  
 
+	@RequestMapping(value = "/findOneStrandard", method = RequestMethod.POST)
+	 public Datatype findByNameAndVersionAndScope(@RequestBody ScopeAndNameAndVersionWrapper unchagedDatatype) {
+
+	    	    Datatype d =null;
+	    	    try {
+	    	      User u = userService.getCurrentUser();
+	    	      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+	    	      if (account == null) {
+	    	        throw new UserAccountNotFoundException();
+	    	      }
+	    	      d = datatypeService.findByNameAndVersionAndScope(unchagedDatatype.getName(),unchagedDatatype.getHl7Version(),"HL7STANDARD");
+
+	    	      if (d==null) {
+	    	        throw new NotFoundException("Datatype not found for scopesAndVersion");
+	    	      }
+	    	    } catch (Exception e) {
+	    	      log.error("", e);
+	    	    }
+	    	    return d;
+	    	  }
+	 
+	    
+	    
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public Datatype save(@RequestBody Datatype datatype) throws DatatypeSaveException,
       ForbiddenOperationException {

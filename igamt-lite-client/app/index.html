@@ -132,10 +132,11 @@
         <div ng-view></div>
 
     </div>
-
     <div ng-include="'views/footer.html'"></div>
     <div ng-include="'views/templates.html'"></div>
  	<div ng-include="'views/edit/editDatatypes.html'"></div>
+ 	<div ng-include="'views/edit/editDatatypeInLibrary.html'"></div>
+ 	
     <ng-include src="'views/edit/editDocument.html'"></ng-include>
     <ng-include src="'views/edit/editSegments.html'"></ng-include>
     <ng-include src="'views/edit/editMessages.html'"></ng-include>
@@ -337,6 +338,7 @@
     <script src="scripts/controllers/EditSectionsCtl.js"></script>
     <script src="scripts/controllers/ErrorsCtrl.js"></script>
     <script src="scripts/controllers/FilteringCtl.js"></script>
+    <script src="scripts/controllers/LibraryDt.js"></script>
     <script src="scripts/controllers/MastermapCtl.js"></script>
     <script src="scripts/controllers/ToCCtl.js"></script>
     <script src="scripts/controllers/TreeController.js"></script>

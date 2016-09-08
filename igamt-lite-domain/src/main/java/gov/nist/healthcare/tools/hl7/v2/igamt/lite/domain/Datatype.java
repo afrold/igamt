@@ -36,6 +36,7 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   protected List<Component> components = new ArrayList<Component>();
 
   private String name = "";
+  private List<String> versions; 
 
   private String description = "";
 
@@ -46,6 +47,7 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   protected String defPreText= "";
   
   protected String defPostText = "";
+  
   
   protected int precisionOfDTM = 3;
   protected boolean timeZoneOfDTM = false;

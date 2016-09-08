@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -25,7 +26,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -49,7 +52,8 @@ public class DatatypeLibraryDocumentController {
 	private DatatypeLibraryDocumentService datatypeLibraryDocumentService;
 	@Autowired
 	UserService userService;
-
+	@Autowired
+	UnchangedDataRepository unchangedDatatype;
 	@Autowired
 	AccountRepository accountRepository;
 	
@@ -161,9 +165,6 @@ public class DatatypeLibraryDocumentController {
 		  }
 		  return hasRole;
 		}
-		 
-	
-	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public DatatypeLibraryDocument create(@RequestBody LibraryCreateWrapper dtlcw) throws LibrarySaveException {
 		System.out.println(hasRole("ROLE_ADMIN"));
@@ -208,6 +209,25 @@ public class DatatypeLibraryDocumentController {
 		log.info("Saving the " + datatypeLibrary.getMetaData().getName() + " datatype library.");
 		DatatypeLibraryDocument saved = datatypeLibraryDocumentService.save(datatypeLibrary);
 		return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
+	}
+	
+	@RequestMapping(value = "/getAllDatatypesName", method = RequestMethod.POST)
+	public List<UnchangedDataType> getAllDatatypesName() throws LibrarySaveException {
+		HashMap<String, Integer> visted= new HashMap<String,Integer>();
+		List<UnchangedDataType> result = new ArrayList<UnchangedDataType>();
+		
+		List <UnchangedDataType> temp=unchangedDatatype.findAll();
+		for(UnchangedDataType data: temp){
+			if(!data.getName().contains("_")){
+				
+				result.add(data);
+			//	visted.put(data.getName(), 1);
+				
+			}
+		}
+		
+		
+		return result;
 	}
 
 }

@@ -89,6 +89,13 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
                 return angular.fromJson(response.data)
             });
     };
+    svc.getAllDatatypesNames = function (datatypeLibrary) {
+        
+        return $http.post(
+            'api/datatype-library-document/getAllDatatypesName').then(function (response) {
+                return angular.fromJson(response.data)
+            });
+    };
     
     
     return svc;

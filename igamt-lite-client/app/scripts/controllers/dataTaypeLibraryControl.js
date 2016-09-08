@@ -22,6 +22,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $rootScope.segmentPredicates = [];
         $scope.linksForData = [];
         $scope.linksForTables = [];
+        $scope.AllUnchanged=[];
 
         // list of segment level predicates of
         $rootScope.segmentConformanceStatements = []; // list of segment level
@@ -85,6 +86,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.scopes = [];
         $scope.tableCollapsed = false;
         $scope.datatypeLibrariesConfig = {};
+        $scope.AllUnchanged=[];
         //$scope.accountId =userInfoService.accountId;
 
         $rootScope.readOnly = false;
@@ -183,11 +185,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
 
-       DatatypeLibrarySvc.getHL7Versions().then(function(result){
-        	$scope.hl7Versions=result;
-        });
-        	console.log("$scope.hl7Versions");
-        	console.log($scope.hl7Versions);
+            DatatypeLibrarySvc.getHL7Versions().then(function(result) {
+                $scope.hl7Versions = result;
+            });
+            DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {
+                $scope.AllUnchanged = res;
+            });
+            
+
+            console.log("$scope.hl7Versions");
+            console.log($scope.hl7Versions);
             $rootScope.readOnly = readOnly;
 
             if (!readOnly) {
@@ -523,15 +530,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }
 
         };
-
-
-
-
-
-
-
-
-
 
 
         $scope.LinksForSubmit = function(element) {
@@ -1330,14 +1328,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
 
         $scope.editDatatype = function(datatype) {
-        	$scope.datatype = datatype;
+            $scope.datatype = datatype;
             $rootScope.datatype = datatype;
 
             $scope.editView = "EditDatatypeLibraryDatatype.html";
+            $scope.editView = "EditDatatypesInLib.html";
+
 
             $scope.datatype = datatype;
             $rootScope.datatype = datatype;
-            if ($rootScope.datatypesParams &&$rootScope.datatype) {
+            if ($rootScope.datatypesParams && $rootScope.datatype) {
                 $rootScope.datatypesParams.refresh();
             }
             console.log("$scope.datatype");
@@ -1360,59 +1360,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             //     $scope.datatypeLibrariesConfig.selectedType = 'USER';
             // }
         };
-
-
-
-
-
-
-
-
-        // $scope.editDatatypep = function(datatype) {
-        //     $scope.editView = "";
-
-        //     $rootScope.currentData = datatype;
-
-        //     //console.log($scope.datatypesParams);
-
-        //     $scope.datatypesParams = new ngTreetableParams({
-        //         getNodes: function(parent) {
-        //             return DatatypeService.getDatatypeNodesInLib(parent, datatype);
-        //         },
-        //         getTemplate: function(node) {
-        //             return DatatypeService.getTemplateINLIB(node, datatype);
-        //         }
-        //     });
-
-
-        //     //$scope.datatype=datatype;
-
-
-
-
-        //     $scope.editView = "EditDatatypeLibraryDatatype.html";
-
-
-        //     $scope.added = [];
-
-
-
-
-        //     $scope.tableWidth = null;
-        //     $scope.scrollbarWidth = $scope.getScrollbarWidth();
-        //     $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
-        //     $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
-        //     $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
-        //     console.log($scope.datatypesParams);
-        //     // console.log($scope.datatype.components);
-
-        //     $scope.datatype = datatype;
-        //     $scope.datatypesParams.refresh();
-
-        //     // if ($scope.datatypeStruct) {
-        //     //     $scope.datatypeLibrariesConfig.selectedType = 'USER';
-        //     // }
-        // };
 
         $scope.copyDatatype = function(datatypeCopy) {
             var newDatatype = angular.copy(datatypeCopy);
@@ -1711,7 +1658,26 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }
             return temp;
 
-        }
+        };
+
+
+        $scope.getDatatypeFromUnchanged= function(data1){
+            var data= angular.copy(data1);
+
+            var versions= data.versions;
+            var version=0;
+            console.log("versions ===== data ");
+            console.log(versions);
+            if(versions.length&&versions.length>0){
+                version=versions[0];
+            }
+            var name= data.name;
+        DatatypeService.getOneStandard(name, version).then(function(result) {
+            $scope.AddDatatypeForMaster(result);
+        });
+
+        };
+
 
         $scope.AddDatatypeForMaster = function(datatype) {
             $scope.max = 1;
@@ -1804,7 +1770,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 } else {
                     console.log("extr==dwdwdwddw with the same name");
                     console.log(extesions);
-                    $scope.max = parseInt(_.max(extesions))+1;
+                    $scope.max = parseInt(_.max(extesions)) + 1;
 
                     console.log($scope.max);
 

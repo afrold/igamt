@@ -244,7 +244,13 @@ public DatatypeLibrary saveTableLibrary(String libId, TableLibrary tableLibrary)
 @Override
 public void delete(String dtLibId) {
     
+    DatatypeLibraryDocument dtlibDoc= datatypeLibraryDocumentRepository.findById(dtLibId);
+    datatypeLibraryService.delete(dtlibDoc.getDatatypeLibrary());
+    tableLibraryService.delete(dtlibDoc.getTableLibrary());
     datatypeLibraryDocumentRepository.delete(dtLibId);
+
+    
+    
   }
 
 
