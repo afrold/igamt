@@ -353,7 +353,7 @@ angular
 
                 $scope.sectionOption = [
 
-                    ['add Section',
+                    ['Add Section',
                         function($itemScope) {
                             var newSection = {};
                             newSection.type = "section";
@@ -471,7 +471,7 @@ angular
 
                 $scope.igOptions = [
 
-                    ['Create Section',
+                    ['Add Section',
                         function($itemScope) {
 
 
@@ -609,11 +609,11 @@ angular
 
                 $scope.MessagesRootOption = [
 
-                    ['Add Message', function($itemScope) {
+                    ['Add Profile', function($itemScope) {
                         $scope.hl7Versions('ctx');
                         //$scope.addMessageToIg($rootScope.igdocument.profile.metaData.hl7Version);
                     }],
-                    null, ['Export', function($itemScope) {
+                    null, ['Export Profile', function($itemScope) {
                         $scope.selectMessages($rootScope.igdocument);
                     }]
                 ];
