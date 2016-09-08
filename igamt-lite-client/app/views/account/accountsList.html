@@ -24,7 +24,7 @@
                     <tr >
                         <th colspan="8" st-ratio="100"><input st-search="" class="form-control" type="text"/></th>
                     </tr>
-                    <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
+                    <tr class="tbl-header" style="">
                         <th st-ratio="5"></th>
                         <th st-sort="fullName" st-ratio="20">
                             <div msg key='account.fullName'></div>
@@ -63,7 +63,7 @@
                     </tr>
                     </tbody>
                     <tfoot ng-show="accountList.length >= 20">
-                    <tr style="margin-right: {{scrollbarWidth}}px;">
+                    <tr style="">
                         <td colspan="8">
                             <div st-pagination="" st-items-by-page="20" st-displayed-pages="7"></div>
                         </td>

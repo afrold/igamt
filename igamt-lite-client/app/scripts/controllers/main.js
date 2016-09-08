@@ -906,6 +906,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         if (parent.path) {
                             s.path = parent.path + "." + element.position + "[1]";
                         }
+
+                        if($rootScope.segmentsMap[s.obj.ref.id] == undefined){
+                            throw new Error("Cannot find Segment[id=" + s.obj.ref.id + ", name= " + s.obj.ref.name + "]");
+                        }
                         s.obj.ref.ext = $rootScope.segmentsMap[s.obj.ref.id].ext;
                         s.obj.ref.label = $rootScope.getLabel(s.obj.ref.name, s.obj.ref.ext);
                         parent.children.push(s);
@@ -933,9 +937,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         f.obj = element;
                         f.path = parent.path + "." + element.position + "[1]";
                         f.children = [];
-                        console.log("====HEEEEREEEEEE");
-                        console.log(f.obj);
-                        console.log($rootScope.datatypesMap[f.obj.datatype.id]);
+                        var d = $rootScope.datatypesMap[f.obj.datatype.id];
+                        if(d === undefined){
+                            throw new Error("Cannot find Data Type[id=" + f.obj.datatype.id + ", name= " + f.obj.datatype.name + "]");
+                        }
                         f.obj.datatype.ext = $rootScope.datatypesMap[f.obj.datatype.id].ext;
                         f.obj.datatype.label = $rootScope.getLabel(f.obj.datatype.name, f.obj.datatype.ext);
                         // for (var i = 0; i < f.obj.tables.length; i++) {
@@ -961,7 +966,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         c.obj = element;
                         c.path = parent.path + "." + element.position + "[1]";
                         c.children = [];
-                        c.obj.datatype.ext = $rootScope.datatypesMap[c.obj.datatype.id].ext;
+                        var d = $rootScope.datatypesMap[c.obj.datatype.id];
+                        if(d === undefined){
+                            throw new Error("Cannot find Data Type[id=" + c.obj.datatype.id + ", name= " + c.obj.datatype.name + "]");
+                        }
+                        console.log('datatype id=' + c.obj.datatype.id);
+                        c.obj.datatype.ext = d.ext;
                         c.obj.datatype.label = $rootScope.getLabel(c.obj.datatype.name, c.obj.datatype.ext);
                         parent.children.push(c);
                         $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
@@ -1147,74 +1157,80 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $rootScope.findDatatypeRefs = function(datatype, obj, path) {
-            if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
-                if (obj.datatype.id === datatype.id) {
-                    var found = angular.copy(obj);
-                    found.path = path;
-                    $rootScope.references.push(found);
-                }
-                $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path);
-            } else if (angular.equals(obj.type, 'segment')) {
-                angular.forEach(obj.fields, function(field) {
-                    $rootScope.findDatatypeRefs(datatype, field, path + "-" + field.position);
-                });
-            } else if (angular.equals(obj.type, 'datatype')) {
-                if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
-                    angular.forEach(obj.components, function(component) {
-                        $rootScope.findDatatypeRefs(datatype, component, path + "." + component.position);
+            if(obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.datatype.id === datatype.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        $rootScope.references.push(found);
+                    }
+                    $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function (field) {
+                        $rootScope.findDatatypeRefs(datatype, field, path + "-" + field.position);
                     });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function (component) {
+                            $rootScope.findDatatypeRefs(datatype, component, path + "." + component.position);
+                        });
+                    }
                 }
             }
         };
 
         $rootScope.findSegmentRefs = function(segment, obj, path) {
-            if (angular.equals(obj.type, 'message') || angular.equals(obj.type, 'group')) {
-                angular.forEach(obj.children, function(child) {
-                    $rootScope.findSegmentRefs(segment, child, path + "." + child.position);
-                });
-            } else if (angular.equals(obj.type, 'segmentRef')) {
-                if (obj.ref.id === segment.id) {
-                    var found = angular.copy(obj);
-                    found.path = path;
-                    $rootScope.references.push(found);
+            if(obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'message') || angular.equals(obj.type, 'group')) {
+                    angular.forEach(obj.children, function (child) {
+                        $rootScope.findSegmentRefs(segment, child, path + "." + child.position);
+                    });
+                } else if (angular.equals(obj.type, 'segmentRef')) {
+                    if (obj.ref.id === segment.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        $rootScope.references.push(found);
+                    }
                 }
             }
         };
 
         $rootScope.findTableRefs = function(table, obj, path) {
-            if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
-                // if (obj.table != undefined) {
-                //     if (obj.table.id === table.id) {
-                //         var found = angular.copy(obj);
-                //         found.path = path;
-                //         $rootScope.references.push(found);
-                //     }
-                // }
-                if (obj.tables != undefined && obj.tables.length > 0) {
-                    angular.forEach(obj.tables, function(tableInside) {
+            if(obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    // if (obj.table != undefined) {
+                    //     if (obj.table.id === table.id) {
+                    //         var found = angular.copy(obj);
+                    //         found.path = path;
+                    //         $rootScope.references.push(found);
+                    //     }
+                    // }
+                    if (obj.tables != undefined && obj.tables.length > 0) {
+                        angular.forEach(obj.tables, function (tableInside) {
 
-                        if (tableInside.id === table.id) {
-                            var found = angular.copy(obj);
-                            found.path = path;
-                            $rootScope.references.push(found);
+                            if (tableInside.id === table.id) {
+                                var found = angular.copy(obj);
+                                found.path = path;
+                                $rootScope.references.push(found);
 
-                        }
+                            }
+                        });
+
+
+                    }
+
+
+                    $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function (field) {
+                        $rootScope.findTableRefs(table, field, path + "-" + field.position);
                     });
-
-
-                }
-
-
-                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
-            } else if (angular.equals(obj.type, 'segment')) {
-                angular.forEach(obj.fields, function(field) {
-                    $rootScope.findTableRefs(table, field, path + "-" + field.position);
-                });
-            } else if (angular.equals(obj.type, 'datatype')) {
-                if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
-                    angular.forEach(obj.components, function(component) {
-                        $rootScope.findTableRefs(table, component, path + "." + component.position);
-                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function (component) {
+                            $rootScope.findTableRefs(table, component, path + "." + component.position);
+                        });
+                    }
                 }
             }
         };

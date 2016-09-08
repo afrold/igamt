@@ -201,7 +201,7 @@
                    class="table table-bordered table-fix-header table-condensed profile-table">
                 <thead>
                 <tr class="tbl-header"
-                    style="margin-right: {{scrollbarWidth}}px;">
+                    style="">
                     <th class="col-xs-1 col-fixed-100"
                         ng-show="viewSettings.isVisibleColumn('length')">SEQ
                     </th>
@@ -217,10 +217,10 @@
                     <th class="col-xs-1 col-fixed-130"
                         ng-show="viewSettings.isVisibleColumn('valueSet')">Concept Domain/ Minimum Code System
                     </th>
-                    <th class="col-xs-1" ng-style="predWidth"
+                    <th class="col-xs-1" ng-style="predWidthx"
                         ng-show="viewSettings.isVisibleColumn('predicate')">Condition Predicate
                     </th>
-                    <th class="col-xs-2" ng-style="csWidth"
+                    <th class="col-xs-2" ng-style="csWidthx"
                         ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement
                     </th>
                     <th class="col-xs-1" ng-style="commentWidth"

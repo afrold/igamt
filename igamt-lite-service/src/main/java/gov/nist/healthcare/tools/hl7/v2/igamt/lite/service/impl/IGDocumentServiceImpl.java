@@ -18,17 +18,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentClone;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -43,6 +32,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.MongoException;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentClone;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 
 @Service
 public class IGDocumentServiceImpl implements IGDocumentService {
@@ -101,33 +100,40 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     log.debug("User IG Document found=" + igDocuments.size());
     return igDocuments;
   }
-  
+
   @Override
   public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
     List<IGDocument> igDocuments = documentRepository.findByScopesAndVersion(scopes, hl7Version);
     log.info("IGDocumentServiceImpl.findByScopeAndVersion=" + igDocuments.size());
     return igDocuments;
   }
+
   @Override
   public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions) {
     List<IGDocument> igDocuments = documentRepository.findByScopeAndVersions(scope, hl7Versions);
     log.info("IGDocumentServiceImpl.findByScopeAndVersions=" + igDocuments.size());
     return igDocuments;
   }
+
   @Override
-  public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions) {
-    List<IGDocument> igDocuments = documentRepository.findByScopeAndVersionsInIg(scope, hl7Versions);
+  public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope,
+      List<String> hl7Versions) {
+    List<IGDocument> igDocuments =
+        documentRepository.findByScopeAndVersionsInIg(scope, hl7Versions);
     log.info("IGDocumentServiceImpl.findByScopeAndVersionsInIg=" + igDocuments.size());
     return igDocuments;
   }
+
   @Override
-  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version) {
-	  List<IGDocument> igDocuments = documentRepository.findByAccountIdAndScopesAndVersion(accountId, scopes, hl7Version);
-	    log.info("IGDocumentServiceImpl.findByScopeAndVersion=" + igDocuments.size());
-	    return igDocuments;
+  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes,
+      String hl7Version) {
+    List<IGDocument> igDocuments =
+        documentRepository.findByAccountIdAndScopesAndVersion(accountId, scopes, hl7Version);
+    log.info("IGDocumentServiceImpl.findByScopeAndVersion=" + igDocuments.size());
+    return igDocuments;
   }
-  
-  
+
+
   @Override
   public IGDocument findById(String id) {
     log.info("DataypeServiceImpl.findById=" + id);
@@ -171,6 +177,13 @@ public class IGDocumentServiceImpl implements IGDocumentService {
   public ElementVerification verifyValueSet(IGDocument p, String id, String type) {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  @Override
+  public List<IGDocument> findAllByScope(IGDocumentScope scope) {
+    List<IGDocument> igDocuments = documentRepository.findAllByScope(scope);
+    log.info("igDocuments=" + igDocuments.size());
+    return igDocuments;
   }
 
 }

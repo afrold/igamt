@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
+    .controller('IGDocumentListCtrl', function(TableService,$scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
 
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
@@ -923,42 +923,50 @@ angular.module('igl')
                 blockUI.start();
                 $timeout(
                     function() {
-                        SegmentService.get(segment.id).then(function(result) {
-                            $rootScope.segment = angular.copy(segment);
-                            $rootScope.$emit("event:initSegment");
+                        try {
+                            SegmentService.get(segment.id).then(function (result) {
+                                $rootScope.segment = angular.copy(segment);
+                                $rootScope.$emit("event:initSegment");
 
-                            $rootScope.currentData = $rootScope.segment;
-                            $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
-                            $rootScope.segment["type"] = "segment";
-                            $rootScope.tableWidth = null;
-                            $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                            $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                            $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                            $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                            $scope.loadingSelection = false;
-                            try {
-                                if ($scope.segmentsParams)
-                                    $scope.segmentsParams.refresh();
-                            } catch (e) {
+                                $rootScope.currentData = $rootScope.segment;
+                                $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
+                                $rootScope.segment["type"] = "segment";
+                                $rootScope.tableWidth = null;
+                                $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                                $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                                $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                                $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                                $scope.loadingSelection = false;
+                                try {
+                                    if ($scope.segmentsParams)
+                                        $scope.segmentsParams.refresh();
+                                } catch (e) {
 
-                            }
+                                }
 
-                            $rootScope.references = [];
-                            angular.forEach($rootScope.igdocument.profile.messages.children, function(message) {
-                                $rootScope.findSegmentRefs($rootScope.segment, message, message.name);
+                                $rootScope.references = [];
+                                angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
+                                    $rootScope.findSegmentRefs($rootScope.segment, message, message.name);
+                                });
+                                $rootScope.tmpReferences = [].concat($rootScope.references);
+
+                                $scope.loadingSelection = false;
+                                $rootScope.$emit("event:initEditArea");
+                                blockUI.stop();
+                            }, function (error) {
+                                $scope.loadingSelection = false;
+                                $rootScope.msg().text = error.data.text;
+                                $rootScope.msg().type = error.data.type;
+                                $rootScope.msg().show = true;
+                                blockUI.stop();
                             });
-                            $rootScope.tmpReferences = [].concat($rootScope.references);
-
+                        }catch(e){
                             $scope.loadingSelection = false;
-                            $rootScope.$emit("event:initEditArea");
-                            blockUI.stop();
-                        }, function(error) {
-                            $scope.loadingSelection = false;
-                            $rootScope.msg().text = error.data.text;
-                            $rootScope.msg().type = error.data.type;
+                            $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                            $rootScope.msg().type = "danger";
                             $rootScope.msg().show = true;
                             blockUI.stop();
-                        });
+                        }
                     }, 100);
             }
         };
@@ -1000,6 +1008,7 @@ angular.module('igl')
                 blockUI.start();
                 $timeout(
                     function() {
+                        try{
                         DatatypeService.getOne(datatype.id).then(function(result) {
                             $rootScope.datatype = angular.copy(result);
                             $rootScope.$emit("event:initDatatype");
@@ -1043,6 +1052,13 @@ angular.module('igl')
                             $rootScope.msg().show = true;
                             blockUI.stop();
                         });
+                        }catch(e){
+                            $scope.loadingSelection = false;
+                            $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                            $rootScope.msg().type = "danger";
+                            $rootScope.msg().show = true;
+                            blockUI.stop();
+                        }
                     }, 100);
             }
         };
@@ -1054,42 +1070,48 @@ angular.module('igl')
             blockUI.start();
             $timeout(
                 function() {
-                    $rootScope.originalMessage = message;
-                    $rootScope.message = angular.copy(message);
-                    $rootScope.currentData = $rootScope.message;
-                    $rootScope.processMessageTree($rootScope.message);
-                    $rootScope.tableWidth = null;
-                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 630);
-                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
-                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
-                    $scope.loadingSelection = false;
                     try {
-                        if ($scope.messagesParams)
-                            $scope.messagesParams.refresh();
-                    } catch (e) {
+                        $rootScope.originalMessage = message;
+                        $rootScope.message = angular.copy(message);
+                        $rootScope.currentData = $rootScope.message;
+                        $rootScope.processMessageTree($rootScope.message);
+                        $rootScope.tableWidth = null;
+                        $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                        $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                        $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                        $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                        $scope.loadingSelection = false;
+                        try {
+                            if ($scope.messagesParams)
+                                $scope.messagesParams.refresh();
+                        } catch (e) {
 
+                        }
+                        $rootScope.$emit("event:initEditArea");
+                        blockUI.stop();
+                    }catch(e){
+                        $scope.loadingSelection = false;
+                        $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                        $rootScope.msg().type = "danger";
+                        $rootScope.msg().show = true;
+                        blockUI.stop();
                     }
-                    $rootScope.$emit("event:initEditArea");
-                    blockUI.stop();
                 }, 100);
         };
 
         $scope.selectTable = function(t) {
             $rootScope.Activate(t.id);
             var table = angular.copy(t);
-
             if ($scope.viewSettings.tableReadonly || table.scope !== 'USER') {
                 $rootScope.subview = "ReadValueSets.html";
             } else {
                 $rootScope.subview = "EditValueSets.html";
             }
-
             $scope.loadingSelection = true;
             blockUI.start();
-            $timeout(
-                function() {
-                    $rootScope.table = table;
+            try {
+                TableService.getOne(table.id).then(function (tbl) {
+                    $rootScope.table = tbl;
                     $rootScope.$emit("event:initTable");
                     $rootScope.currentData = $rootScope.table;
                     $rootScope.codeSystems = [];
@@ -1101,17 +1123,58 @@ angular.module('igl')
                         }
                     }
                     $rootScope.references = [];
-                    angular.forEach($rootScope.segments, function(segment) {
+                    angular.forEach($rootScope.segments, function (segment) {
                         $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment));
                     });
-                    angular.forEach($rootScope.datatypes, function(dt) {
+                    angular.forEach($rootScope.datatypes, function (dt) {
                         $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
                     });
                     $rootScope.tmpReferences = [].concat($rootScope.references);
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
                     blockUI.stop();
-                }, 100);
+                }, function (errr) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = errr.data.text;
+                    $rootScope.msg().type = errr.data.type;
+                    $rootScope.msg().show = true;
+                    blockUI.stop();
+                });
+            }catch(e){
+                $scope.loadingSelection = false;
+                $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                blockUI.stop();
+            }
+
+//            $timeout(
+//                function() {
+//                    $rootScope.table = table;
+//                    $rootScope.$emit("event:initTable");
+//                    $rootScope.currentData = $rootScope.table;
+//                    $rootScope.codeSystems = [];
+//                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
+//                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+//                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+//                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+//                            }
+//                        }
+//                    }
+//                    $rootScope.references = [];
+//                    angular.forEach($rootScope.segments, function(segment) {
+//                        $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment));
+//                    });
+//                    angular.forEach($rootScope.datatypes, function(dt) {
+//                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
+//                    });
+//                    $rootScope.tmpReferences = [].concat($rootScope.references);
+//                    $scope.loadingSelection = false;
+//                    $rootScope.$emit("event:initEditArea");
+//                    blockUI.stop();
+//                }, 100);
+
+
         };
 
         $scope.selectSection = function(section) {
@@ -1125,12 +1188,20 @@ angular.module('igl')
 
             $timeout(
                 function() {
+                    try{
                     $rootScope.section = angular.copy(section);
                     $rootScope.currentData = $rootScope.section;
                     $rootScope.originalSection = section;
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
                     blockUI.stop();
+                    }catch(e){
+                        $scope.loadingSelection = false;
+                        $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                        $rootScope.msg().type = "danger";
+                        $rootScope.msg().show = true;
+                        blockUI.stop();
+                    }
                 }, 100);
         };
 

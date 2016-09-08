@@ -35,5 +35,7 @@ public interface TableService {
 
   List<Table> findAllByIds(Set<String> ids);
 
+  List<Table> findShortAllByIds(Set<String> ids);
+
 
 }
