@@ -353,11 +353,11 @@ span {
                         </div>
                     </li>
                 </ol>
-                <ol ui-tree-nodes="" ng-model="derivedTables" ng-show="!profilecollapsed" data-type="tables">
+                <ol ui-tree-nodes="" ng-model="tables" ng-show="!profilecollapsed" data-type="tables">
                     <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="addValueSetsInTableLibrary">
-                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Tables {{derivedTables.length}}
+                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Tables {{tables.length}}
                     </div>
-                    <li ng-repeat="table in derivedTables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed" context-menu="ValueSetOptionsINLIB">
+                    <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed" context-menu="ValueSetOptionsINLIB">
                         <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)">
                             <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
@@ -384,20 +384,20 @@ span {
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;">
                             <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data)" title="Filter By This Datatype" /> <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}</span>
-                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}</span>
+                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}</span> <i ng-show="data.status!=='PUBLISHED'" class="fa fa-pencil fa-fw">UP</i>
                         </div>
                     </li>
                 </ol>
-                <ol ui-tree-nodes="" ng-model="derivedTables" ng-show="!profilecollapsed" data-type="tables">
+                <ol ui-tree-nodes="" ng-model="tables" ng-show="!profilecollapsed" data-type="tables">
                     <div ui-tree-handle data-nodrag ng-click="editMetadata()">
-                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Tables {{derivedTables.length}}
+                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Tables {{tables.length}}
                     </div>
-                    <li ng-repeat="table in derivedTables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed">
+                    <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed">
                         <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)">
                             <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
-                            </span>
+                            </span><i ng-show="table.status!=='PUBLISHED'" class="fa fa-pencil fa-fw"></i>
                         </div>
                     </li>
                 </ol>
@@ -1104,7 +1104,7 @@ span {
                 </button>
             </li>
             <div ng-if="searchVS.name && !VSselected && editableVS===node.id">
-                <li class="form-control col-md-4" ng-class="{'active':isActive(valueSet.id)}" ng-click="selectVS(node,valueSet)" ng-repeat="valueSet in derivedTables | filter:searchVS">
+                <li class="form-control col-md-4" ng-class="{'active':isActive(valueSet.id)}" ng-click="selectVS(node,valueSet)" ng-repeat="valueSet in tables | filter:searchVS">
                     {{valueSet.name}}
                 </li>
             </div>
@@ -2475,7 +2475,7 @@ span {
                 class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
     </div>
 </script>
-<script type="text/ng-template" id="RichTextCtrlLIB.html">
+<script type="text/ng-template" id="RichTextCtrl.html">
     <div class="modal-header modal-wide">
         <h3 class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
             {{editorTarget.title}}</h3>

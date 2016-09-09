@@ -710,11 +710,39 @@ angular
 
 
                 $scope.addValueSetsInTableLibrary = [
-                    ['Import Value Sets',
+                    // ['Import Value Sets',
+                    //     function($itemScope) {
+                    //         $scope.addTablesInLibrary();
+                    //     }
+                    // ]
+
+
+                    ['Import New Value Set',
                         function($itemScope) {
-                            $scope.addTablesInLibrary();
+                            CloneDeleteSvc.createNewTable('USER', $scope.tableLibrary);
+                            $scope.editTableINLIB($rootScope.table);
+
+                        }
+                    ], 
+                    ['Import HL7 Value Sets',
+
+                        function($itemScope) {
+                            $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                        }
+                    ], 
+
+                    ['Import from PHINVADs',
+                        function($itemScope) {
+                            $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                        }
+                    ],
+
+                    ['Import CSV file',
+                        function($itemScope) {
+                            $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
                         }
                     ]
+
                 ];
 
                 function processEditSeg(seg) {

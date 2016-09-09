@@ -58,7 +58,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.editableDTInLib = '';
         $scope.editableVS = '';
         $scope.derivedDatatypes = [];
-        $scope.derivedTables = [];
+        $rootScope.tables = [];
         $scope.toShow === "";
         $rootScope.datatypesMap = {};
         $scope.tablesMap = {};
@@ -215,7 +215,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $rootScope.tablesMap = {};
             $rootScope.igdocument = null;
 
-            $scope.derivedTables = [];
+            $rootScope.tables = [];
             $scope.tablesIds = [];
             $scope.datatypeLibrary = datatypeLibraryDocument.datatypeLibrary;
             $scope.datatypesIds = [];
@@ -477,13 +477,13 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     if (element.table != null) {
                         $scope.linksForTables.push(element.table);
 
-                        var index = $scope.derivedTables.indexOf($rootScope.tablesMap[element.table.id]);
+                        var index = $rootScope.tables.indexOf($rootScope.tablesMap[element.table.id]);
                         if (index < 0) {
 
                             console.log("Adding the table");
                             console.log(element);
                             console.log($rootScope.tablesMap[element.table.id]);
-                            $scope.derivedTables.push($rootScope.tablesMap[element.table.id]);
+                            $rootScope.tables.push($rootScope.tablesMap[element.table.id]);
                         }
 
 
@@ -647,13 +647,13 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
                     if (element.table != null) {
 
-                        var index = $scope.derivedTables.indexOf($rootScope.tablesMap[element.table.id]);
+                        var index = $rootScope.tables.indexOf($rootScope.tablesMap[element.table.id]);
                         if (index < 0) {
 
                             console.log("Adding the table");
                             console.log(element);
                             console.log($rootScope.tablesMap[element.table.id]);
-                            $scope.derivedTables.push($rootScope.tablesMap[element.table.id]);
+                            $rootScope.tables.push($rootScope.tablesMap[element.table.id]);
                         }
 
 
@@ -681,7 +681,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.filteringModeON = true;
 
             // $scope.tablesIds = [];
-            $scope.derivedTables = [];
+            $rootScope.tables = [];
             $scope.getFilteredTables(datatype);
 
 
@@ -734,12 +734,12 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 var newLink = {};
                 newLink.bindingIdentifier = table.bindingIdentifier;
                 newLink.id = table.id;
-                if ($scope.derivedTables && $scope.derivedTables != null) {
+                if ($rootScope.tables && $rootScope.tables != null) {
                     console.log("dddddddddddddddddddddd");
                     console.log(table);
-                    var index = $scope.derivedTables.indexOf(table);
+                    var index = $rootScope.tables.indexOf(table);
                     if (index >= 0)
-                        $scope.derivedTables.splice(index, 1);
+                        $rootScope.tables.splice(index, 1);
                 }
 
                 TableLibrarySvc.deleteChild($scope.tableLibrary.id, newLink.id).then(function(link) {
@@ -892,7 +892,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             console.log(tableIds);
 
             TableService.findAllByIds(tableIds).then(function(tables) {
-                $scope.derivedTables = tables;
+                $rootScope.tables = tables;
                 angular.forEach(tables, function(table) {
                     $rootScope.tablesMap[table.id] = table;
                 });
@@ -939,10 +939,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     this[child.id] = child;
                 }, $scope.tablesMap);
 
-                console.log($scope.derivedTables)
-                $scope.derivedTables = tables;
+                console.log($rootScope.tables)
+                $rootScope.tables = tables;
                 $scope.initialTables = angular.copy(tables);
-                $scope.derivedTables.forEach(function(table, i) {
+                $rootScope.tables.forEach(function(table, i) {
                     var newLink = {};
                     newLink.bindingIdentifier = table.bindingIdentifier;
                     newLink.id = table.id;
@@ -977,7 +977,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                         return $scope.tableLibrary;
                     },
                     derivedTables: function() {
-                        return $scope.derivedTables;
+                        return $rootScope.tables;
                     }
                 }
             });
@@ -995,7 +995,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
                 if (!$rootScope.tablesMap[table.id] || $rootScope.tablesMap[table.id] === undefined) {
 
-                    $scope.derivedTables.push(table);
+                    $rootScope.tables.push(table);
                     $rootScope.tablesMap[table.id] = table;
                     var newLink = {};
                     newLink.bindingIdentifier = table.bindingIdentifier;
@@ -1024,6 +1024,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         $scope.editTableINLIB = function(table) {
             $scope.table = table;
+            $rootScope.table=table;
             // $scope.datatype=null;
             // $rootScope.currentData=table;
 
@@ -1073,7 +1074,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
                 TableLibrarySvc.addChild($scope.tableLibrary.id, newLink).then(function(link) {
                     $scope.tableLibrary.children.splice(0, 0, newLink);
-                    $scope.derivedTables.splice(0, 0, newTable);
+                    $rootScope.tables.splice(0, 0, newTable);
                     $scope.table = newTable;
                     $scope.tablesMap[newTable.id] = newTable;
 
@@ -1363,10 +1364,17 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         $scope.copyDatatype = function(datatypeCopy) {
             var newDatatype = angular.copy(datatypeCopy);
+            
             if (newDatatype.ext !== null) {
                 newDatatype.ext = newDatatype.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
-
-            } else {
+                  
+            } else if(newDatatype.scope==='MASTER'){
+            	
+             $scope.getLastExtensionForMaster( newDatatype.name);
+             newDatatype.ext=$scope.max; 
+            	
+            }
+            else {
                 newDatatype.ext = (Math.floor(Math.random() * 10000000) + 1);
 
             }
@@ -1673,6 +1681,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }
             var name= data.name;
         DatatypeService.getOneStandard(name, version).then(function(result) {
+            result.versions= versions;
             $scope.AddDatatypeForMaster(result);
         });
 

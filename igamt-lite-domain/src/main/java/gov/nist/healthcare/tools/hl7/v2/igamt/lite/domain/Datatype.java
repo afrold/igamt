@@ -36,9 +36,17 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   protected List<Component> components = new ArrayList<Component>();
 
   private String name = "";
-  private List<String> versions; 
+  private List<String> hl7versions=new ArrayList<String>(); 
 
-  private String description = "";
+  public List<String> getHl7versions() {
+	return hl7versions;
+}
+
+public void setHl7versions(List<String> hl7versions) {
+	this.hl7versions = hl7versions;
+}
+
+private String description = "";
 
   protected String comment = "";
 

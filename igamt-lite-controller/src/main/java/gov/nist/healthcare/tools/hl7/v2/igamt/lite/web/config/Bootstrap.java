@@ -108,6 +108,7 @@ public class Bootstrap implements InitializingBean {
     // addVersionAndScopetoPRELOADEDIG();
     // addVersionAndScopetoHL7IG();
 	 //CreateCollectionOfUnchanged();
+	  //AddVersionsToDatatypes();
   }
 
   private void loadPreloadedIGDocuments() throws Exception {
@@ -394,6 +395,22 @@ private void AddVersiontoMap(String version){
       if (ischanged)
         documentService.apply(igd);
     }
+  }
+  
+  private void AddVersionsToDatatypes(){
+	  List<Datatype> dts = datatypeService.findAll(); 
+	  for(Datatype d : dts){
+		  if(d.getHl7versions()!=null){
+			  if(!d.getScope().equals(SCOPE.MASTER)){
+				  
+				  d.getHl7versions().add(d.getHl7Version());
+				  datatypeService.save(d);
+		  
+			  }
+		  }
+	  }
+	  
+	  
   }
 
 }

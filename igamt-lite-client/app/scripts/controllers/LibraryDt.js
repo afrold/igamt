@@ -217,60 +217,72 @@ angular.module('igl')
         };
 
 
+//        $scope.editDT = function(field) {
+//            $scope.editableDT = field.id;
+//            $scope.loadLibrariesByFlavorName = function() {
+//                var delay = $q.defer();
+//                $scope.ext = null;
+//                $scope.results = [];
+//                $scope.tmpResults = [];
+//                $scope.results = $scope.results.concat(filterFlavors($scope.datatypeLibrary, field.datatype.name));
+//                $scope.tmpResults = [].concat($scope.results);
+//                DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $scope.datatypeLibrary.metaData.hl7Version).then(function(libraries) {
+//                    if (libraries != null) {
+//                        _.each(libraries, function(library) {
+//                            $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
+//                        });
+//                    }
+//
+//                    $scope.results = _.uniq($scope.results, function(item, key, a) {
+//                        return item.id;
+//                    });
+//                    $scope.tmpResults = [].concat($scope.results);
+//
+//                    delay.resolve(true);
+//                }, function(error) {
+//                    $rootScope.msg().text = "Sorry could not load the data types";
+//                    $rootScope.msg().type = error.data.type;
+//                    $rootScope.msg().show = true;
+//                    delay.reject(error);
+//                });
+//                return delay.promise;
+//            };
+//
+//
+//            var filterFlavors = function(library, name) {
+//                var results = [];
+//                _.each(library.children, function(link) {
+//                    if (link.name === name) {
+//                        link.libraryName = library.metaData.name;
+//                        link.hl7Version = $rootScope.datatypesMap[link.id].hl7Version;
+//                        //link.hl7Version = library.metaData.hl7Version;
+//                        results.push(link);
+//                    }
+//                });
+//                return results;
+//            };
+//
+//
+//
+//
+//            $scope.loadLibrariesByFlavorName().then(function(done) {
+//                console.log($scope.results);
+//                // $scope.selection.selected = $scope.currentDatatype.id;
+//                // $scope.showSelectedDetails($scope.currentDatatype);
+//            });
+//        };
+        $scope.results = [];
         $scope.editDT = function(field) {
             $scope.editableDT = field.id;
-            $scope.loadLibrariesByFlavorName = function() {
-                var delay = $q.defer();
-                $scope.ext = null;
+
                 $scope.results = [];
-                $scope.tmpResults = [];
-                $scope.results = $scope.results.concat(filterFlavors($scope.datatypeLibrary, field.datatype.name));
-                $scope.tmpResults = [].concat($scope.results);
-                DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
-                    if (libraries != null) {
-                        _.each(libraries, function(library) {
-                            $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
-                        });
-                    }
-
-                    $scope.results = _.uniq($scope.results, function(item, key, a) {
-                        return item.id;
-                    });
-                    $scope.tmpResults = [].concat($scope.results);
-
-                    delay.resolve(true);
-                }, function(error) {
-                    $rootScope.msg().text = "Sorry could not load the data types";
-                    $rootScope.msg().type = error.data.type;
-                    $rootScope.msg().show = true;
-                    delay.reject(error);
+                angular.forEach($scope.datatypeLibrary.children ,function(dtLink){
+                	if(dtLink.name&&dtLink.name===field.datatype.name&&field.datatype.id!==dtLink.id){
+                		$scope.results.push(dtLink);
+                	}
                 });
-                return delay.promise;
             };
-
-
-            var filterFlavors = function(library, name) {
-                var results = [];
-                _.each(library.children, function(link) {
-                    if (link.name === name) {
-                        link.libraryName = library.metaData.name;
-                        link.hl7Version = $rootScope.datatypesMap[link.id].hl7Version;
-                        //link.hl7Version = library.metaData.hl7Version;
-                        results.push(link);
-                    }
-                });
-                return results;
-            };
-
-
-
-
-            $scope.loadLibrariesByFlavorName().then(function(done) {
-                console.log($scope.results);
-                // $scope.selection.selected = $scope.currentDatatype.id;
-                // $scope.showSelectedDetails($scope.currentDatatype);
-            });
-        };
+        
         $scope.backDT = function() {
             $scope.editableDT = '';
         };
@@ -674,7 +686,7 @@ angular.module('igl')
                 var child = ComponentService.create($rootScope.datatype.components.length + 1);
                 $rootScope.datatype.components.push(child);
                 //TODO update master map
-                //MastermapSvc.addDatatypeObject($rootScope.datatype, [[$rootScope.igdocument.id, "ig"], [$rootScope.igdocument.profile.id, "profile"]]);
+                //MastermapSvc.addDatatypeObject($rootScope.datatype, [[$rootScope.igdocument.id, "ig"], [$scope.datatypeLibrary.id, "profile"]]);
                 //TODO:remove as legacy code
                 $rootScope.parentsMap[child.id] = $rootScope.datatype;
                 if ($scope.datatypesParams)
@@ -717,44 +729,6 @@ angular.module('igl')
             $rootScope.$emit("event:openDTDelta");
         };
 
-        $scope.save = function() {
-            var datatype = $rootScope.datatype;
-            var ext = datatype.ext;
-            if (datatype.libIds == undefined) datatype.libIds = [];
-            if (datatype.libIds.indexOf($scope.datatypeLibrary.id) == -1) {
-                datatype.libIds.push($scope.datatypeLibrary.id);
-            }
-            DatatypeService.save(datatype).then(function(result) {
-                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $scope.datatypeLibrary.children);
-                var newLink = DatatypeService.getDatatypeLink(result);
-                newLink.ext = ext;
-                DatatypeLibrarySvc.updateChild($scope.datatypeLibrary.id, newLink).then(function(link) {
-                    DatatypeService.saveNewElements().then(function() {
-                        DatatypeService.merge($rootScope.datatypesMap[result.id], result);
-                        oldLink.ext = newLink.ext;
-                        oldLink.name = newLink.name;
-                        $scope.saving = false;
-                        cleanState();
-                    }, function(error) {
-                        $scope.saving = false;
-                        $rootScope.msg().text = "Sorry an error occured. Please try again";
-                        $rootScope.msg().type = "danger";
-                        $rootScope.msg().show = true;
-                    });
-                }, function(error) {
-                    $scope.saving = false;
-                    $rootScope.msg().text = "Sorry an error occured. Please try again";
-                    $rootScope.msg().type = "danger";
-                    $rootScope.msg().show = true;
-                });
-
-            }, function(error) {
-                $scope.saving = false;
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
-            });
-        };
 
         $scope.cancel = function() {
             //TODO: remove changes from master ma
@@ -799,7 +773,7 @@ angular.module('igl')
                     },
 
                     hl7Version: function() {
-                        return $rootScope.igdocument.profile.metaData.hl7Version;
+                        return $scope.datatypeLibrary.metaData.hl7Version;
                     },
                     datatypeLibrary: function() {
                         return $scope.datatypeLibrary;
@@ -839,13 +813,13 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrlForLib', funct
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
+    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.libEXT, $scope.datatype.name + "_" + $scope.datatype.ext);
     $scope.newComplexConstraint = [];
     $scope.constraints = [];
 
     $scope.changed = false;
     $scope.tempComformanceStatements = [];
-    angular.copy($rootScope.datatype.conformanceStatements, $scope.tempComformanceStatements);
+    angular.copy($scope.datatype.conformanceStatements, $scope.tempComformanceStatements);
 
 
     $scope.setChanged = function() {
@@ -866,7 +840,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrlForLib', funct
             freeText: null,
             verb: null,
             ignoreCase: false,
-            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext),
+            constraintId: $rootScope.calNextCSID($rootScope.libEXT, $scope.datatype.name + "_" + $scope.datatype.ext),
             contraintType: null,
             value: null,
             value2: null,
@@ -882,7 +856,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrlForLib', funct
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = $rootScope.calNextCSID($scope.datatypeLibrary.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.libEXT, $scope.datatype.name + "_" + $scope.datatype.ext);
     }
 
     $scope.initConformanceStatement();
