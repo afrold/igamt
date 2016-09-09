@@ -55,6 +55,13 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
   }
 
   @Override
+  public List<IGDocument> findUser() {
+    Criteria where = Criteria.where("scope").is(IGDocumentScope.USER);
+    Query query = Query.query(where);
+    return mongo.find(query, IGDocument.class);
+  }
+
+  @Override
   public List<IGDocument> findStandardByVersion(String hl7version) {
     log.debug("findStandardByVersion");
     Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD)

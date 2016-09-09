@@ -115,6 +115,7 @@ public class IGExportTest {
 	@Test
 	public void testCallIGExportXml() {
 		try {
+			ig = igService.findOne("57a0b50f84aea2241d55799d");
 			content = igExport.exportAsXmlDisplay(ig);
 			assertNotNull(content);
 			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -130,7 +131,7 @@ public class IGExportTest {
 
 	@Test
 	public void testCallIGExportXml_All() {
-		File xmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_xml.txt");
+		File xmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_all_xml.txt");
 		StringBuilder rst = new StringBuilder();
 		igs = igService.findAll();
 		for (IGDocument ig : igs){
@@ -158,13 +159,48 @@ public class IGExportTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.debug(rst.toString());
-			logger.debug("could write report");
+			logger.debug("couldn't write report");
+		}
+	}
+
+	@Test
+	public void testCallIGExportXml_User() {
+		File xmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_users_xml.txt");
+		StringBuilder rst = new StringBuilder();
+		igs = igService.findAllUser();
+		for (IGDocument ig : igs){
+			rst.append("ig " + ig.getId());
+			try {
+				FileUtils.writeStringToFile(xmlExport, "ig " + ig.getId());
+				content = igExport.exportAsXmlDisplay(ig);
+				assertNotNull(content);
+				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+				tmpFile = new File("IG_" + timeStamp + ".xml");
+				logger.debug("Writing to file");
+				FileUtils.copyInputStreamToFile(content, tmpFile);
+				logger.debug("Export done");
+				rst.append(": ok\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+				rst.append(": " + e.getMessage() + "\n");
+			} catch (Exception e) {
+				e.printStackTrace();
+				rst.append(": " + e.getMessage() + "\n");
+			}
+		}
+		try {
+			FileUtils.writeStringToFile(xmlExport, rst.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.debug(rst.toString());
+			logger.debug("couldn't write report");
 		}
 	}
 
 	@Test
 	public void testCallIGExportHtml() {
 		try {
+			ig = igService.findOne("57a0b50f84aea2241d55799d");
 			content = igExport.exportAsHtml(ig);
 			assertNotNull(content);
 			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -179,7 +215,7 @@ public class IGExportTest {
 
 	@Test
 	public void testCallIGExportHtml_All() {
-		File htmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_html.txt");
+		File htmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_all_html.txt");
 		StringBuilder rst = new StringBuilder();
 		igs = igService.findAll();
 		for (IGDocument ig : igs){
@@ -207,13 +243,48 @@ public class IGExportTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.debug(rst.toString());
-			logger.debug("could write report");
+			logger.debug("couldn't write report");
+		}
+	}
+
+	@Test
+	public void testCallIGExportHtml_User() {
+		File htmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_user_html.txt");
+		StringBuilder rst = new StringBuilder();
+		igs = igService.findAllUser();
+		for (IGDocument ig : igs){
+			rst.append("ig " + ig.getId());
+			try {
+				FileUtils.writeStringToFile(htmlExport, "ig " + ig.getId());
+				content = igExport.exportAsHtml(ig);
+				assertNotNull(content);
+				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+				tmpFile = new File("IG_" + timeStamp + ".html");
+				logger.debug("Writing to file");
+				FileUtils.copyInputStreamToFile(content, tmpFile);
+				logger.debug("Export done");
+				rst.append(": ok\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+				rst.append(": " + e.getMessage() + "\n");
+			} catch (Exception e) {
+				e.printStackTrace();
+				rst.append(": " + e.getMessage() + "\n");
+			}
+		}
+		try {
+			FileUtils.writeStringToFile(htmlExport, rst.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.debug(rst.toString());
+			logger.debug("couldn't write report");
 		}
 	}
 
 	@Test
 	public void testCallIGExportDocx() {
 		try {
+			ig = igService.findOne("57ade9c884ae90ce1261bd59");
 			content = igExport.exportAsDocx(ig);
 			assertNotNull(content);
 			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -228,7 +299,7 @@ public class IGExportTest {
 
 	@Test
 	public void testCallIGExportDocx_All() {
-		File docxExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_docx.txt");
+		File docxExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_all_docx.txt");
 		StringBuilder rst = new StringBuilder();
 		igs = igService.findAll();
 		for (IGDocument ig : igs){
@@ -255,10 +326,42 @@ public class IGExportTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.debug(rst.toString());
-			logger.debug("could write report");
+			logger.debug("couldn't write report");
 		}
 	}
 
+	@Test
+	public void testCallIGExportDocx_User() {
+		File docxExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_user_docx.txt");
+		StringBuilder rst = new StringBuilder();
+		igs = igService.findAll();
+		for (IGDocument ig : igs){
+			rst.append("ig " + ig.getId());
+			try {
+				content = igExport.exportAsDocx(ig);
+				assertNotNull(content);
+				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+				tmpFile = new File("IG_" + timeStamp + ".docx");
+				logger.debug("Writing to file");
+				FileUtils.copyInputStreamToFile(content, tmpFile);
+				logger.debug("Export done");
+				rst.append(": ok\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+				rst.append(": " + e.getMessage() + "\n");
+			} catch (Exception e) {
+				e.printStackTrace();
+				rst.append(": " + e.getMessage() + "\n");
+			}
+		}
+		try {
+			FileUtils.writeStringToFile(docxExport, rst.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.debug(rst.toString());
+			logger.debug("couldn't write report");
+		}
+	}
 	@Test
 	public void testCallIGExportPdf() {
 		try {
