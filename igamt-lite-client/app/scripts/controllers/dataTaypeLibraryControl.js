@@ -388,7 +388,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 $scope.LinksForSubmit(data);
                 if (data.status !== "PUBLISHED") {
                     DatatypeService.save(data).then(function(res) {
-
                     });
                 }
 
@@ -413,7 +412,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.tableLibrary.children = _.union($scope.tableLibrary.children, $scope.linksForTables);
             $rootScope.tablesMap = {};
             $rootScope.datatypesMap = {};
-
+            $scope.addedDatatypes=[];
             DatatypeLibrarySvc.addChildren($scope.datatypeLibrary.id, $scope.linksForData).then(function(results) {
 
 
@@ -422,7 +421,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     $scope.loadDatatypes().then(function() {
 
                         $scope.loadTables().then(function() {
-
+                        	
                         }, function() {});
                     }, function() {});
 
@@ -1029,7 +1028,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             // $rootScope.currentData=table;
 
             //$scope.Activate(table.id);
+           
             $scope.editView = "EditTablesINLIB.html";
+            
+            //$scope.editView = "EditValueSetsInDtLib.html";
 
         }
 
@@ -1681,8 +1683,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }
             var name= data.name;
         DatatypeService.getOneStandard(name, version).then(function(result) {
-            result.versions= versions;
-            $scope.AddDatatypeForMaster(result);
+        	var masterDt= angular.copy(result);
+        	masterDt.hl7versions= data.versions;
+            //result.versions= versions;
+            $scope.AddDatatypeForMaster(masterDt);
         });
 
         };
@@ -1924,6 +1928,17 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
 
     });
+	
+//	$scope.getVersionDisplay = function(data){
+//		var versions = data.hl7versions;
+//		if(versions.length&&versions.length===1){
+//			return versions[0];
+//		} 
+//		if(versions.length&&versions.length>1){
+//			
+//		}
+//		
+//	} 
 
 
 

@@ -128,7 +128,10 @@ angular.module('igl')
 
             $scope.Posselected = true;
         };
-
+        $scope.getTableLabel=function(table){
+        	
+        	return table.bindingIdentifier;
+        }
         $scope.initDatatypes = function() {
             // if($rootScope.datatypesParams!==undefined){
             //     $rootScope.datatypesParams.refresh();
@@ -292,7 +295,7 @@ angular.module('igl')
         $scope.editVSModal = function(component) {
             var modalInstance = $modal.open({
                 templateUrl: 'editVSModal.html',
-                controller: 'EditVSCtrl',
+                controller: 'EditVSCtrlForLib',
                 windowClass: 'edit-VS-modal',
                 resolve: {
 
@@ -300,7 +303,7 @@ angular.module('igl')
                         return $rootScope.tables;
                     },
 
-                    field: function() {
+                    component: function() {
                         return component;
                     }
 
@@ -308,8 +311,8 @@ angular.module('igl')
             });
             modalInstance.result.then(function(datatype) {
                 $scope.setDirty();
-                if ($scope.segmentsParams) {
-                    $scope.segmentsParams.refresh();
+                if ($scope.datatypesParams) {
+                    $scope.datatypesParams.refresh();
                 }
             });
 
@@ -1323,6 +1326,67 @@ angular.module('igl').controller('DeleteComponentCtrl', function($scope, $modalI
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
+
+});
+
+angular.module('igl').controller('EditVSCtrlForLib', function($scope, $modalInstance, valueSets, component, $rootScope, SegmentService, blockUI) {
+
+    $scope.vsChanged = false;
+    $scope.component = component;
+    $scope.vs = angular.copy(component.tables);
+    $scope.tableList = angular.copy(component.tables);;
+    $scope.loadVS = function($query) {
+
+
+        return valueSets;
+        
+//        filter(function(table) {
+//            return table.bindingIdentifier.toLowerCase().indexOf($query.toLowerCase()) != -1;
+//        });
+
+    };
+    $scope.tagAdded = function(tag) {
+        $scope.vsChanged = true;
+        $scope.tableList.push({
+            id: tag.id,
+            bindingIdentifier: tag.bindingIdentifier,
+            bindingLocation: null,
+            bindingStrength: null
+        });
+
+
+        //$scope.log.push('Added: ' + tag.text);
+    };
+
+    $scope.tagRemoved = function(tag) {
+        $scope.vsChanged = true;
+
+        for (var i = 0; i < $scope.tableList.length; i++) {
+            if ($scope.tableList[i].id === tag.id) {
+                $scope.tableList.splice(i, 1);
+            }
+        };
+
+
+    };
+
+    $scope.addVS = function() {
+        blockUI.start();
+
+        $scope.vsChanged = false;
+        component.tables = $scope.tableList;
+
+        blockUI.stop();
+
+        $modalInstance.close();
+
+
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
 
 });
 

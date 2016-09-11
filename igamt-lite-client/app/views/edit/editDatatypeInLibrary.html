@@ -288,7 +288,7 @@
 
                                                     <span class="pull-right">
                                                         <button class="btn btn-raised btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
-                                                                ng-hide="readOnly || (datatype.status==="'PUBLISHED'" ) || !datatype.components || datatype.components.length==0"><span><i
+                                                                ng-hide="readOnly || (datatype.status==='PUBLISHED' ) || !datatype.components || datatype.components.length==0"><span><i
                                                                 class="fa fa-plus fa-fw">
                                                             &nbsp; </i>Add Conf.Statement</span></button>
                                                     </span>
@@ -624,7 +624,7 @@
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.tables.length!==0">
                 <a class="point" ng-repeat="table in node.tables track by table.id">
-                    <span ng-click="redirectVS(table)"> {{getTableLabel(tablesMap[table.id])}}</span>
+                    <span ng-click="redirectVS(table)"> {{table.bindingIdentifier}}</span>
                 </a>
                 <a ng-click="editVSModal(node)" class="point">
                     <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -723,7 +723,7 @@
             <div>
                 <div ng-show="node.tables != undefined  && node.tables !== null">
                     <span ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">
-                        {{getTableLabel(tablesMap[table.id])}}
+                        {{table.bindingIdentifier}}
                     </span>
                 </div>
             </div>
