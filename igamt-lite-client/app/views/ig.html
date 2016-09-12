@@ -648,9 +648,20 @@
                             <!--<p>HL7 Version:{{hl7Version}}</p>-->
                             <div class="input-group">
                                 <span class="input-group-addon" id="datatype-basic-addon1"><i class="fa fa-search"></i> Search</span>
-                                <input type="text" class="form-control input-lg" ng-model="newDatatype" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as datatype.name for datatype in hl7Datatypes|filter:$viewValue" placeholder="Search By Name">
+                                <input type="text" class="form-control input-lg" ng-model="newDatatype" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as datatype.label for datatype in hl7Datatypes|filter:$viewValue" placeholder="Search By Name">
+
                             </div>
                         </div>
+<div ng-if="newDatatype" class="container" style="margin-bottom: 20px;margin-top: 20px">
+<div><strong>Description:</strong>{{newDatatype.description}}</div>
+
+								<div>
+								<strong>Supported Versions:</strong>
+										<ul>
+											<li ng-repeat="version in newDatatype.hl7versions">{{version}}</li>
+										</ul>
+								</div>
+</div>
                     </div>
                 </div>
                 <div class="modal-footer">

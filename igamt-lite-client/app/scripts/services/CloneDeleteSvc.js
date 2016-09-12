@@ -79,12 +79,16 @@ angular.module('igl').factory(
 
         svc.copyDatatype = function (datatype) {
             var newDatatype = angular.copy(datatype, {});
+
             newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
             newDatatype.scope = 'USER';
             newDatatype.participants = [];
             newDatatype.id = null;
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
+            if(datatype.scope==='MASTER'){
+            	newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
+            }
 
 
             if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {

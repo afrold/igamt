@@ -285,11 +285,11 @@ span {
 
           <button type="button" class="btn btn-raised btn-sm btn-primary"
                 ng-disabled="!editForm.$dirty"
-                ng-click="saveMetaData()">
+                ng-click="saveMetaDataOfLibrary()">
 
            <span><i class="fa fa-check fa-fw" ng-disabled="readOnly"></i> Save</span>
                 </button>
-                <button title="Discard changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty ||readOnly" ng-click="resetMetaData()">
+                <button title="Discard changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty ||readOnly" ng-click="resetMetaDataOfLibrary()">
                     <span><i class="fa fa-times fa-fw"></i>Reset</span>
                 </button>
                 </span>
@@ -566,7 +566,8 @@ span {
                 <thead>
                     <tr class="tbl-header">
                         <th class="col-md-1">Name</th>
-                        <th class="col-md-2">Extension</th>
+                        <th class="col-md-1">Extension</th>
+						<th class="col-md-1">Versions</th>
                         <th class="col-md-2">Description
                         </th>
                         <th class="col-md-1">Actions</th>
@@ -575,10 +576,14 @@ span {
                 <tbody>
                     <tr ng-repeat="data in addedDatatypes| filter:search1">
                         <td class="col-md-1">
-                            <span>{{data.name}}[{{data.hl7versions[0]}}-{{data.hl7versions[data.hl7versions.length-1]}}}</span>
+                            <span>{{data.name}}</span>
                         </td>
-                        <td class="col-md-2">
+                        <td class="col-md-1">
                             <input type="text" ng-model="data.ext">{{getCurrentExtesionForMaster(data)}}</input>
+                        </td>
+                     	<td class="col-md-1">
+						  <ul>
+                                    <li ng-repeat="version in data.hl7versions">{{version}}</li></ul>
                         </td>
                         <td class="col-md-2">
                             {{data.description}}

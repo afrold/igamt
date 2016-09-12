@@ -162,14 +162,14 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         //     });
         // };
 
-        $scope.saveMetaData = function() {
+        $scope.saveMetaDataOfLibrary = function() {
             $scope.datatypeLibrary.metaData = angular.copy($scope.datatypeLibMetaDataCopy);
             DatatypeLibrarySvc.saveMetaData($scope.datatypeLibrary.id, $scope.datatypeLibMetaDataCopy);
             $scope.editForm.$setPristine();
             cleanState();
         };
 
-        $scope.resetMetaData = function() {
+        $scope.resetMetaDataOfLibrary = function() {
 
             $scope.datatypeLibMetaDataCopy = angular.copy($scope.datatypeLibrary.metaData);
 
@@ -179,11 +179,15 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         $scope.editMetadata = function() {
+        	
             $scope.datatypeLibMetaDataCopy = $scope.DataTypeTree[0].metaData;
+            $rootScope.currentData= $scope.datatypeLibMetaDataCopy;
+            console.log($scope.datatypeLibMetaDataCopy);
             $scope.editView = "LibraryMetaData.html";
         }
 
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
+        	$rootScope.libraryDoc= datatypeLibraryDocument;
 
             DatatypeLibrarySvc.getHL7Versions().then(function(result) {
                 $scope.hl7Versions = result;
@@ -246,6 +250,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.datatypeLibraryId = $scope.datatypeLibrary.id;
             $rootScope.currentLibVersion = $scope.hl7Version;
             $scope.datatypeLibMetaDataCopy = angular.copy($scope.datatypeLibrary.metaData);
+            $rootScope.currentData= $scope.datatypeLibMetaDataCopy;
             $scope.loadingSelection = false;
             $scope.DataTypeTree = [];
             $scope.datatypeLibCopy = angular.copy($scope.datatypeLibrary);
@@ -257,7 +262,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
                 }, function() {});
             }, function() {});
-
 
 
             $scope.DataTypeTree.push($scope.datatypeLibCopy);
@@ -1025,9 +1029,9 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.table = table;
             $rootScope.table=table;
             // $scope.datatype=null;
-            // $rootScope.currentData=table;
+            $rootScope.currentData=$scope.table;
 
-            //$scope.Activate(table.id);
+            $scope.Activate(table.id);
            
             $scope.editView = "EditTablesINLIB.html";
             
@@ -1333,8 +1337,9 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.editDatatype = function(datatype) {
             $scope.datatype = datatype;
             $rootScope.datatype = datatype;
+            $rootScope.currentData=$scope.datatype;
 
-            $scope.editView = "EditDatatypeLibraryDatatype.html";
+            //$scope.editView = "EditDatatypeLibraryDatatype.html";
             $scope.editView = "EditDatatypesInLib.html";
 
 
@@ -1923,10 +1928,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 TableService.save(table);
             });
         };
-
-
-
-
     });
 	
 //	$scope.getVersionDisplay = function(data){

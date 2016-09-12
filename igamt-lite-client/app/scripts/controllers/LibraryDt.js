@@ -211,7 +211,7 @@ angular.module('igl')
 
                 });
                 modalInstance.result.then(function() {
-                    $rootScope.editDataType(datatype);
+                    $scope.editDataType(datatype);
                 });
 
 

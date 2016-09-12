@@ -221,6 +221,18 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
+            getPublishedMaster: function(hl7Version){
+                var delay = $q.defer();
+
+                $http.post('api/datatypes/findPublished',hl7Version).then(function(response) {
+                    console.log(response);
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
             getDataTypesByScopesAndVersion : function(scopes, hl7Version) {
                 //console.log("datatypes/findByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
                 var scopesAndVersion = {

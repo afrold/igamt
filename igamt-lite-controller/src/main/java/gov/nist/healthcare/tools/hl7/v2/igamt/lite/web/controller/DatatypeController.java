@@ -17,6 +17,7 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -103,8 +104,8 @@ public class DatatypeController extends CommonController {
   }
   
 
-	@RequestMapping(value = "/findOneStrandard", method = RequestMethod.POST)
-	 public Datatype findByNameAndVersionAndScope(@RequestBody ScopeAndNameAndVersionWrapper unchagedDatatype) {
+  @RequestMapping(value = "/findOneStrandard", method = RequestMethod.POST)
+	public Datatype findByNameAndVersionAndScope(@RequestBody ScopeAndNameAndVersionWrapper unchagedDatatype) {
 
 	    	    Datatype d =null;
 	    	    try {
@@ -122,9 +123,36 @@ public class DatatypeController extends CommonController {
 	    	      log.error("", e);
 	    	    }
 	    	    return d;
-	    	  }
-	 
-	    
+	   }
+  @RequestMapping(value = "/findPublished", method = RequestMethod.POST)
+	public List<Datatype> findPublishedMaster(@RequestBody String version) {
+	  			List<Datatype> published=new ArrayList<Datatype>();
+	    	    try {
+	    	      User u = userService.getCurrentUser();
+	    	      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+	    	      if (account == null) {
+	    	        throw new UserAccountNotFoundException();
+	    	      }
+	    	      List<Datatype> master = datatypeService.findByScope("MASTER");
+	    	      for(Datatype dt : master){
+	    	    	  if(dt.getStatus().equals(STATUS.PUBLISHED)){
+	    	    		  for(String v : dt.getHl7versions()){
+	    	    			  if(v.equals(version)){
+	    	    				  published.add(dt);
+	    	    				  
+	    	    			  }
+	    	    		  }
+	    	    		  
+	    	    		  
+	    	    	  }
+	    	      }
+	    	      
+	    	    }catch (Exception e) {
+		    	      log.error("", e);
+		    	    }
+	    	    return published;
+	   }
+    
 	    
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public Datatype save(@RequestBody Datatype datatype) throws DatatypeSaveException,

@@ -651,11 +651,16 @@ angular
                 ];
 
                 $scope.addDatatype = [
-                    ['Import Datatype',
+                    ['Import HL7 Datatype',
                         function($itemScope) {
                             $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
                         }
-                    ]
+                    ],
+                    ['Import HL7 Flavors Datatype',
+                     function($itemScope) {
+                         $scope.addMasterDatatype($rootScope.igdocument.profile.metaData.hl7Version);
+                     }
+                 ]
                 ];
 
                 $scope.DataTypeLibraryOptions = [
