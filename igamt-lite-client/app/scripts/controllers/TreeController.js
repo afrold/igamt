@@ -353,7 +353,7 @@ angular
 
                 $scope.sectionOption = [
 
-                    ['add Section',
+                    ['Add Section',
                         function($itemScope) {
                             var newSection = {};
                             newSection.type = "section";
@@ -471,7 +471,7 @@ angular
 
                 $scope.igOptions = [
 
-                    ['add Section',
+                    ['Add Section',
                         function($itemScope) {
 
 
@@ -493,7 +493,7 @@ angular
 
                 $scope.SegmentOptions = [
 
-                    ['Create a Flavor',
+                    ['Create Flavor',
                         function($itemScope) {
 
 
@@ -519,7 +519,7 @@ angular
 
                 $scope.DataTypeOptions = [
 
-                    ['Create a Flavor',
+                    ['Create Flavor',
                         function($itemScope) {
 
 
@@ -543,7 +543,7 @@ angular
 
                 $scope.ValueSetOptions = [
 
-                    ['Create a Flavor',
+                    ['Create Flavor',
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -609,23 +609,23 @@ angular
 
                 $scope.MessagesRootOption = [
 
-                    ['Import Message', function($itemScope) {
+                    ['Add Profile', function($itemScope) {
                         $scope.hl7Versions('ctx');
                         //$scope.addMessageToIg($rootScope.igdocument.profile.metaData.hl7Version);
                     }],
-                    null, ['Export', function($itemScope) {
+                    null, ['Export Profile', function($itemScope) {
                         $scope.selectMessages($rootScope.igdocument);
                     }]
                 ];
 
                 $scope.ValueSetRootOptions = [
-                    ['Import Value Sets', function($itemScope) {
+                    ['Add Value Sets', function($itemScope) {
                         $scope.addTable($rootScope.igdocument);
                     }]
                 ];
 
                 $scope.DataTypeOptionsInLib = [
-                    ['Create a Copy',
+                    ['Copy',
                         function($itemScope) {
                             console.log("create a copy=" + $itemScope);
                             console.log($itemScope.data);
@@ -643,7 +643,7 @@ angular
                 ];
 
                 $scope.addSegment = [
-                    ['Import Segment',
+                    ['Add HL7 Segment',
                         function($itemScope) {
                             $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);
                         }
@@ -651,7 +651,7 @@ angular
                 ];
 
                 $scope.addDatatype = [
-                    ['Import Datatype',
+                    ['Add HL7 Data Type',
                         function($itemScope) {
                             $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
                         }
@@ -670,7 +670,7 @@ angular
 
 
                 $scope.ValueSetAddOptionsINLIB = [
-                    ['Import Value Sets ',
+                    ['Add Value Sets ',
 
                         function($itemScope) {
                             //$scope.addDatatypesFromTree();
@@ -682,25 +682,25 @@ angular
                 $scope.addValueSets = [
 
 
-                    ['Import New Value Set',
+                    ['Add New Value Set',
                         function($itemScope) {
                             CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
                         }
                     ], 
-                    ['Import HL7 Value Sets',
+                    ['Add HL7 Value Sets',
 
                         function($itemScope) {
                             $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
                         }
                     ], 
 
-                    ['Import from PHINVADs',
+                    ['Add from PHINVADs',
                         function($itemScope) {
                             $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
                         }
                     ],
 
-                    ['Import CSV file',
+                    ['Add from CSV file',
                         function($itemScope) {
                             $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
                         }

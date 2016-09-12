@@ -12,17 +12,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import static org.junit.Assert.assertNotNull;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.IGDocumentServiceImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +33,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.IGDocumentServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContextUnit.class})
@@ -167,7 +168,7 @@ public class IGExportTest {
 	public void testCallIGExportXml_User() {
 		File xmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_users_xml.txt");
 		StringBuilder rst = new StringBuilder();
-		igs = igService.findAllUser();
+	    igs = igService.findAllByScope(IGDocumentScope.USER);
 		for (IGDocument ig : igs){
 			rst.append("ig " + ig.getId());
 			try {
@@ -334,7 +335,7 @@ public class IGExportTest {
 	public void testCallIGExportDocx_User() {
 		File docxExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_user_docx.txt");
 		StringBuilder rst = new StringBuilder();
-		igs = igService.findAll();
+		igs = igService.findAllUser();
 		for (IGDocument ig : igs){
 			rst.append("ig " + ig.getId());
 			try {
@@ -545,6 +546,4 @@ public class IGExportTest {
 			e.printStackTrace();
 		}
 	}
-
-
 }
