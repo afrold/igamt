@@ -108,25 +108,25 @@
                                 <div class="input-group col-md-9" ng-show="cmpMsg">
                                     <span class="input-group-addon" id="basic-addon1">Message</span>
                                     <select ng-model="msg1" class="form-control" ng-change="setMsg1(msg1)" ng-disabled="!ig1">
-                                        <option ng-repeat="message in messages1" ng-disabled="disableMsg(message,msg2)" ng-hide="hideMsg(message,msg2)" value='{{message}}'> {{message.name}}</option>
+                                        <option ng-repeat="message in messages1 track by message.id" ng-disabled="disableMsg(message,msg2)" ng-hide="hideMsg(message,msg2)" value='{{message}}'> {{message.name}}</option>
                                     </select>
                                 </div>
                                 <div class="input-group col-md-9" ng-show="cmpSeg">
                                     <span class="input-group-addon" id="basic-addon1">Segment</span>
                                     <select ng-model="segment1" class="form-control" ng-change="setSegment1(segment1)" ng-disabled="!ig1">
-                                        <option ng-repeat="segment in segments1" ng-disabled="disableSeg(segment,segment2)" ng-hide="hideSeg(segment,segment2)" value='{{segment}}'> {{getLabel(segment)}}</option>
+                                        <option ng-repeat="segment in segments1 track by segment.id" ng-disabled="disableSeg(segment,segment2)" ng-hide="hideSeg(segment,segment2)" value='{{segment}}'> {{getLabel(segment)}}</option>
                                     </select>
                                 </div>
                                 <div class="input-group col-md-9" ng-show="cmpDT">
                                     <span class="input-group-addon" id="basic-addon1">Datatype</span>
                                     <select ng-model="datatype1" class="form-control" ng-change="setDatatype1(datatype1)" ng-disabled="!ig1">
-                                        <option ng-repeat="datatype in datatypes1" ng-disabled="disableSeg(datatype,datatype2)" ng-hide="hideSeg(datatype,datatype2)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
+                                        <option ng-repeat="datatype in datatypes1 track by datatype.id" ng-disabled="disableSeg(datatype,datatype2)" ng-hide="hideSeg(datatype,datatype2)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
                                     </select>
                                 </div>
                                 <div class="input-group col-md-9" ng-show="cmpVS">
                                     <span class="input-group-addon" id="basic-addon1">Value Set</span>
                                     <select ng-model="table1" class="form-control  col-md-1 input-sm" ng-change="setTable1(table1)" ng-disabled="!ig1">
-                                        <option ng-repeat="table in tables1" ng-disabled="disableSeg(table,table2)" ng-hide="hideSeg(table,table2)" value='{{table}}'> {{table.bindingIdentifier}}</option>
+                                        <option ng-repeat="table in tables1 track by table.id" ng-disabled="disableSeg(table,table2)" ng-hide="hideSeg(table,table2)" value='{{table}}'> {{table.bindingIdentifier}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -134,25 +134,25 @@
                                 <div class="input-group col-md-9" ng-show="cmpMsg">
                                     <span class="input-group-addon" id="basic-addon1">Message</span>
                                     <select ng-model="msg2" class="form-control" ng-change="setMsg2(msg2)" ng-disabled="!ig2">
-                                        <option ng-repeat="message in messages2" ng-disabled="disableMsg(message,msg1)" ng-hide="hideMsg(message,msg1)" value='{{message}}'> {{message.name}}</option>
+                                        <option ng-repeat="message in messages2  track by message.id" ng-disabled="disableMsg(message,msg1)" ng-hide="hideMsg(message,msg1)" value='{{message}}'> {{message.name}}</option>
                                     </select>
                                 </div>
                                 <div class="input-group col-md-9" ng-show="cmpSeg">
                                     <span class="input-group-addon" id="basic-addon1">Segment</span>
                                     <select ng-model="segment2" class="form-control" ng-change="setSegment2(segment2)" ng-disabled="!ig2">
-                                        <option ng-repeat="segment in segments2" ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{segment}}'> {{getLabel(segment)}}</option>
+                                        <option ng-repeat="segment in segments2  track by segment.id" ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{segment}}'> {{getLabel(segment)}}</option>
                                     </select>
                                 </div>
                                 <div class="input-group col-md-9" ng-show="cmpDT">
                                     <span class="input-group-addon" id="basic-addon1">Datatype</span>
                                     <select ng-model="datatype2" class="form-control" ng-change="setDatatype2(datatype2)" ng-disabled="!ig2">
-                                        <option ng-repeat="datatype in datatypes2" ng-disabled="disableSeg(datatype,datatype1)" ng-hide="hideSeg(datatype,datatype1)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
+                                        <option ng-repeat="datatype in datatypes2 track by datatype.id" ng-disabled="disableSeg(datatype,datatype1)" ng-hide="hideSeg(datatype,datatype1)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
                                     </select>
                                 </div>
                                 <div class="input-group col-md-9" ng-show="cmpVS">
                                     <span class="input-group-addon" id="basic-addon1">Value Set</span>
                                     <select ng-model="table2" class="form-control  col-md-1 input-sm" ng-change="setTable2(table2)" ng-disabled="!ig2">
-                                        <option ng-repeat="table in tables2" ng-disabled="disableSeg(table,table1)" ng-hide="hideSeg(table,table1)" value='{{table}}'> {{table.bindingIdentifier}}</option>
+                                        <option ng-repeat="table in tables2 track by table.id" ng-disabled="disableSeg(table,table1)" ng-hide="hideSeg(table,table1)" value='{{table}}'> {{table.bindingIdentifier}}</option>
                                     </select>
                                 </div>
                             </div>
