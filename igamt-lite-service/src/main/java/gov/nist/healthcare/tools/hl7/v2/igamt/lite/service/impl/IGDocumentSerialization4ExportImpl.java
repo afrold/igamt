@@ -1424,10 +1424,8 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
         elmField.addAttribute(new Attribute("Name", f.getName()));
         elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
 
-        if (f.getDatatype() != null && f.getDatatype().getExt() != null) {
-          String label = f.getDatatype().getExt().isEmpty() ? f.getDatatype().getName()
-              : f.getDatatype().getLabel();
-          elmField.addAttribute(new Attribute("Datatype", label));
+        if (f.getDatatype() != null && f.getDatatype().getName() != null) {
+          elmField.addAttribute(new Attribute("Datatype", f.getDatatype().getLabel()));
         }
         elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
         elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
