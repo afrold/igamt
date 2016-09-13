@@ -43,8 +43,11 @@ public class TableServiceImpl implements TableService {
 
   @Override
   public Table findById(String id) {
-    log.info("TableServiceImpl.findById=" + id);
-    return tableRepository.findOne(id);
+    if (id != null) {
+      log.info("TableServiceImpl.findById=" + id);
+      return tableRepository.findOne(id);
+    }
+    return null;
   }
 
   @Override
