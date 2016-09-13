@@ -258,7 +258,7 @@
                     </accordion-heading>
                     <div class="input-group">
                         <span class="input-group-addon">Selected Messages:</span>
-                        <span ng-repeat="event in eventList" class="label label-primary">{{event.name}}^{{event.parentStructId}}</span>
+                        <span ng-repeat="event in eventList" class="label label-primary">{{::event.name}}^{{::event.parentStructId}}</span>
 
                     </div>
                     <div class="row" style="margin-left:20px">
@@ -308,7 +308,7 @@
     </div>
     <div class="modal-body">
 
-        <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}}"  ? This operation is irreversible</p>
+        <p>Are you sure you want to delete the IG Document:"{{::igdocumentToDelete.metaData.title}}"  ? This operation is irreversible</p>
     </div>
     </div>
     <div class="modal-footer">
@@ -375,8 +375,8 @@
 </script>
 <script type="text/ng-template" id="RichTextCtrl.html">
     <div class="modal-header modal-wide">
-        <h3 class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
-            {{editorTarget.title}}</h3>
+        <h3 class="modal-title">{{::editorTarget.obj.position}} . {{::editorTarget.obj.name}} :
+            {{::editorTarget.title}}</h3>
     </div>
     <div class="modal-body">
         <div class="row">
@@ -400,13 +400,13 @@
 <script type="text/ng-template" id="InputTextCtrl.html">
     <div class="modal-header">
         <h3 ng-show="editorTarget.obj.type==='segmentRef'">
-            {{editorTarget.obj.position}}.{{segmentsMap[editorTarget.obj.ref].name}}:{{segmentsMap[editorTarget.obj.ref].description}}</h3>
+            {{::editorTarget.obj.position}}.{{::segmentsMap[editorTarget.obj.ref].name}}:{{::segmentsMap[editorTarget.obj.ref].description}}</h3>
 
-        <h3 ng-show="editorTarget.obj.type==='group'">{{editorTarget.obj.position}}.{{editorTarget.obj.name}}</h3>
+        <h3 ng-show="editorTarget.obj.type==='group'">{{::editorTarget.obj.position}}.{{::editorTarget.obj.name}}</h3>
 
         <h3 ng-show="editorTarget.obj.type !='segmentRef' && editorTarget.obj.type !='group'" class="modal-title">
-            {{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
-            {{editorTarget.title}}</h3>
+            {{::editorTarget.obj.position}} . {{::editorTarget.obj.name}} :
+            {{::editorTarget.title}}</h3>
     </div>
     <div class="modal-body">
         <form class="form-horizontal" novalidate>

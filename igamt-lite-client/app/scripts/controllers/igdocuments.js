@@ -1601,6 +1601,11 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
     $scope.warning = '';
     $scope.data = null;
 
+    $scope.fileSelected = function(){
+        return document.getElementById('csvValueSetFile').files.length != 0;
+    };
+
+
     $scope.uploadCSVFile = function() {
         $scope.loading = true;
 

@@ -269,7 +269,7 @@
     </div>
     <div class="modal-footer">
         <p style="color:red;">{{warning}}</p>
-        <button class="btn btn-raised btn-primary btn-sm" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="fileSelected()" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
         <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
     </div>
 </script>

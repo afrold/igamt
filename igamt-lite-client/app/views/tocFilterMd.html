@@ -181,7 +181,7 @@
                                     data-nodrag ng-click="editRoutSection('Datatypes')" confirm-click>{{ig.childSections.length+1}}.3.Datatypes {{filteredDatatypesList.length}}/{{datatypes.length}}</span>
                         </div>
 <!--                            <div ng-if="!collapsedata" data-nodrag ui-tree-handle style ="margin-left:30px;"> <label  ng-click="resetDatatypes()" ng-if="!collapsedata" >clear filter</label></div> -->
-                        <li ng-repeat="data in filteredDatatypesList | orderBy :'label'" ui-tree-node
+                        <li ng-repeat="data in filteredDatatypesList track by data.id | orderBy :'label'" ui-tree-node
                             ng-if="!collapsedata" data-type="datatype">
                             <div ui-tree-handle  data-nodrag  
                                  confirm-click
@@ -218,7 +218,7 @@
                         </div>
 
 <!--                     <div ng-if="!collapsemessage" data-nodrag ui-tree-handle style ="margin-left:30px;"> <label ng-click="resetTables()" ng-if="!collapsevalueSet" >clear filter</label></div> -->
-                        <li ng-repeat="table in filteredTablesList |  orderBy :'name'" ui-tree-node
+                        <li ng-repeat="table in filteredTablesList track by table.id |  orderBy :'name'" ui-tree-node
                             ng-if="!collapsevalueSet" data-type="table">
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click
