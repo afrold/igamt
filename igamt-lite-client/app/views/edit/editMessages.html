@@ -248,7 +248,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr ng-repeat="p in displayed track by p.id">
+                                                    <tr ng-repeat="p in displayed ">
                                                         <td class="col-md-2">
                                                             {{p.constraintTarget}}
                                                         </td>
@@ -323,13 +323,13 @@
                                             <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
                                             <span class="input-group-addon" id="basic-addon1">Version</span>
                                             <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
-                                                        <option ng-repeat="vr in versions track by $index" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</option>
+                                                        <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</option>
                                                     </select>
                                         </div>
                                         <div class="input-group col-md-2">
                                             <span class="input-group-addon" id="basic-addon1">Scope</span>
                                             <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
-                                                        <option ng-repeat="scope in scopes track by $index" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</option>
+                                                        <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</option>
                                                     </select>
                                         </div>
                                         <div class="input-group col-md-3">
@@ -453,7 +453,7 @@
             </a>
 
                 <select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%" class="form-control input-sm">
-                    <option ng-repeat="child in $root.segParent.children track by child.id"  ng-selected="node.obj.position===child.position"> {{child.position}}
+                    <option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position"> {{child.position}}
                 </select>
                 <select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%" class="form-control input-sm">
                     <option ng-repeat="segmentRef in tmpResults track by segmentRef.id" value="{{segmentRef}}"  ng-selected="node.obj.ref.ext===segmentRef.ext"> {{::getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}
@@ -480,7 +480,7 @@
                 </span>
 
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
-                    <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) track by $index">
+                    <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) ">
                         C({{constraint.trueUsage}}/{{constraint.falseUsage}})
                     </p>
                     <a ng-click="deletePredicateByPath(node.path, message)" class="point">
@@ -530,7 +530,7 @@
                     </a>
                 </div>
                 <div ng-show="countPredicate(node.path) !==0 && node.obj.usage==='C'">
-                    <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) track by constraint.id">
+                    <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true)">
                         <a ng-click="managePredicate(node, message)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
                     </div>
 
@@ -543,7 +543,7 @@
 
         <td class="col-md-1" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
             <div>
-                <div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) track by constraint.id">
+                <div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true)">
                     <a ng-click="manageConformanceStatement(node, message)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false"
                         tooltip-placement="left"></a>
                 </div>
@@ -588,7 +588,7 @@
                 <span class="label label-success label-icon">G</span>
                 <span ng-show="editableGrp===node.obj.id">
                 <select ng-show="editableGrp===node.obj.id" ng-model="position" ng-change="selectPos()"  style="width:15%" class="form-control input-sm">
-                <option ng-repeat="child in $root.segParent.children track by child.id"  ng-selected="node.obj.position===child.position"> {{child.position}}
+                <option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position"> {{child.position}}
             </select>
                  <input style="width:55%" class="form-control"  ng-model="grpName" type="text"/>
                  </span>
@@ -615,7 +615,7 @@
                 </span>
 
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
-                    <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) track by constraint.id">
+                    <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) ">
                         C({{constraint.trueUsage}}/{{constraint.falseUsage}})
                     </p>
                     <a ng-click="deletePredicateByPath(node.path, message)" class="point">
@@ -664,7 +664,7 @@
                     </a>
                 </div>
                 <div ng-show="countPredicate(node.path) !==0 && node.obj.usage==='C'">
-                    <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) track by constraint.id">
+                    <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) ">
                         <a ng-click="managePredicate(node, message)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" class="point" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger tooltip-animation="false"
                             tooltip-placement="left"></a>
                     </div>
@@ -714,10 +714,10 @@
         </td>
         <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
                  <span>{{::node.obj.usage}}</span>
-                <span ng-repeat="p in parentsMap[node.obj.id].predicates track by p.id | filter:{constraintTarget:node.obj.position + '[1]'}:true">
+                <span ng-repeat="p in parentsMap[node.obj.id].predicates  | filter:{constraintTarget:node.obj.position + '[1]'}:true">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
                 </span>
-                <span ng-repeat="p in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) track by p.id">
+                <span ng-repeat="p in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) ">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
                 </span>
          </td>
@@ -744,12 +744,12 @@
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
                  <div ng-if="viewSettings.tableReadonly">
-                    <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) track by constraint.id" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
+                    <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) " tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
                         tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                     </p>
                 </div>
                 <div ng-if="!viewSettings.tableReadonly">
-                    <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) track by constraint.id">
+                    <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) ">
                         <a ng-click="managePredicate(node, message)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
                     </div>
                     <div ng-hide="filteredConstraints.length || filteredSubConstraints.length || viewSettings.tableReadonly || node.obj.usage !=='C'">
@@ -768,13 +768,13 @@
         <td class="col-md-1" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
             <div>
                 <div ng-if="viewSettings.tableReadonly">
-                    <p ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) track by constraint.id" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)"
+                    <p ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) " tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)"
                         tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                     </p>
                 </div>
 
                 <div ng-if="!viewSettings.tableReadonly">
-                    <div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) track by constraint.id">
+                    <div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true) ">
                         <a ng-click="manageConformanceStatement(node, message)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false"
                             tooltip-placement="left"></a>
                     </div>
@@ -785,7 +785,7 @@
                     </div>
                 </div>
 
-                <p ng-repeat="constraint in parentsMap[node.obj.id].conformanceStatements track by constraint.id | filter:{constraintTarget:node.obj.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
+                <p ng-repeat="constraint in parentsMap[node.obj.id].conformanceStatements  | filter:{constraintTarget:node.obj.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
                     ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
@@ -821,10 +821,10 @@
         </td>
         <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
                  <span>{{::node.obj.usage}}</span>
-                <span ng-repeat="p in parentsMap[node.obj.id].predicates track by p.id | filter:{constraintTarget:node.obj.position + '[1]'}:true">
+                <span ng-repeat="p in parentsMap[node.obj.id].predicates  | filter:{constraintTarget:node.obj.position + '[1]'}:true">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
                 </span>
-                <span ng-repeat="p in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) track by p.id">
+                <span ng-repeat="p in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) ">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
                 </span>
          </td>
@@ -859,12 +859,12 @@
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="viewSettings.tableReadonly">
-                    <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) track by $index" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
+                    <p ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) " tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
                         tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                     </p>
                 </div>
                 <div ng-hide="viewSettings.tableReadonly">
-                    <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) track by $index">
+                    <div ng-repeat="constraint in filteredConstraints=( message.predicates | filter:{constraintTarget:node.path}:true) ">
                         <a ng-click="managePredicate(node, message)" tooltip-html="getPredicateAsString(constraint) " tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
                     </div>
                     <div ng-hide="filteredConstraints.length || filteredSubConstraints.length || viewSettings.tableReadonly || node.obj.usage !=='C'">
@@ -876,7 +876,7 @@
                     </div>
                 </div>
 
-                <p ng-repeat="constraint in filteredSubConstraints=( parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true) track by $index" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
+                <p ng-repeat="constraint in filteredSubConstraints=( parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true) " tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
                     ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
@@ -950,7 +950,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="p in displayed track by $index | filter: {constraintTarget: selectedNode.path}:true">
+                        <tr ng-repeat="p in displayed  | filter: {constraintTarget: selectedNode.path}:true">
                             <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                 <i ng-show="p.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper: 'clone'}" ng-model="p" jqyoui-draggable="{placeholder: 'keep',animate:true}"></i>
                             </td>
@@ -1642,7 +1642,7 @@
         <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
             <div>
                 <span ng-bind="node.obj.usage"></span>
-                <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) track by $index">
+                <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) ">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
                 </span>
             </div>
@@ -1664,14 +1664,14 @@
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) track by $index" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
+                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) " tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
                     tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
         <td class="col-md-1" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true) track by $index" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
+                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true) " tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
                     ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>

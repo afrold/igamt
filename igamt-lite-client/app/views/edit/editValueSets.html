@@ -369,7 +369,7 @@
 
                                                     <select ng-model="cmp.tableId" class="form-control" ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2" no-dirty-check>
                                                         <option value='-1'></option>
-                                                        <option ng-repeat="table in tables2 track by $index" ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{::table.bindingIdentifier}}</option>
+                                                        <option ng-repeat="table in tables2 " ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{::table.bindingIdentifier}}</option>
                                                     </select>
                                                 </div>
                                             </div>

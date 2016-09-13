@@ -303,7 +303,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr ng-repeat="c in displayed track by c.id">
+                                                                <tr ng-repeat="c in displayed ">
                                                                     <td class="col-md-1">
                                                                         {{c.constraintId}}
                                                                     </td>
@@ -351,7 +351,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr ng-repeat="p in displayed track by p.id">
+                                                                <tr ng-repeat="p in displayed">
                                                                     <td class="col-md-3">
                                                                         <span ng-bind="displayLocationForDatatype(datatype, p.constraintTarget)" />
                                                                     </td>
@@ -424,13 +424,13 @@
                                                     <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
                                                     <span class="input-group-addon" id="basic-addon1">Version</span>
                                                     <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
-                                                    <option ng-repeat="vr in versions track by $index" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
+                                                    <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-2">
                                                     <span class="input-group-addon" id="basic-addon1">Scope</span>
                                                     <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
-                                                    <option ng-repeat="scope in scopes track by $index" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
+                                                    <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
                                                 </select>
                                                 </div>
                                                 <div class="input-group col-md-3">
@@ -443,7 +443,7 @@
 
                                                     <select ng-model="cmp.datatypeId" class="form-control" ng-change="setDatatype2(cmp.datatypeId)" ng-disabled="!ig2" no-dirty-check>
                                                         <option value='-1'></option>
-                                                        <option ng-repeat="datatype in datatypes2 track by $index" ng-disabled="disableDT(datatype,datatype1)" ng-hide="hideDT(datatype,datatype1)" value='{{$index}}'> {{getLabel(datatype)}}</option>
+                                                        <option ng-repeat="datatype in datatypes2" ng-disabled="disableDT(datatype,datatype1)" ng-hide="hideDT(datatype,datatype1)" value='{{$index}}'> {{getLabel(datatype)}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -510,7 +510,7 @@
                                             </thead>
 
                                             <tbody>
-                                                <tr ng-repeat="ref in tmpReferences track by ref.id">
+                                                <tr ng-repeat="ref in tmpReferences">
                                                     <td st-ratio="5">{{$index + 1}}
                                                     </td>
                                                     <td st-ratio="40">
@@ -683,7 +683,7 @@
             </span>
 
             <div ng-show="node.usage === 'C' && countPredicate(node.position) !== 0">
-                <p ng-repeat="p in datatype.predicates track by p.id | filter:{constraintTarget:node.position + '[1]'}:true">
+                <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
                     C({{p.trueUsage}}/{{p.falseUsage}})
                 </p>
                 <a ng-click="deletePredicate(node.position, datatype)" class="point">
@@ -712,7 +712,7 @@
 
                     <div ng-show="editableDT===node.id">
                         <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
-                            <option ng-repeat="datatype in results track by datatype.id" value="{{datatype}}"
+                            <option ng-repeat="datatype in results" value="{{datatype}}"
                                     ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}}
                             </option>
                         </select>
@@ -755,7 +755,7 @@
                     </a>
                 </div>
                 <div ng-show="countPredicate(node.position) !== 0 && node.usage === 'C'">
-                    <p ng-repeat="p in datatype.predicates track by p.id | filter:{constraintTarget:node.position + '[1]'}:true">
+                    <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
                         <a ng-click="managePredicate(node)" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
                     </p>
                     <div ng-show="countPredicate(node.position) > 1">
@@ -771,7 +771,7 @@
                         <i class="fa fa-plus fa-fw"></i>
                     </a>
                 </div>
-                <p ng-repeat="c in datatype.conformanceStatements track by c.id | filter:{constraintTarget:node.position + '[1]'}:true">
+                <p ng-repeat="c in datatype.conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true">
                     <a ng-click="manageConformanceStatement(node)" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
                 </p>
             </div>
@@ -811,7 +811,7 @@
                 </span>
 
                 <div ng-if="node.usage === 'C' && countPredicate(node.position) !== 0">
-                    <p ng-repeat="p in datatype.predicates track by p.id | filter:{constraintTarget:node.position + '[1]'}:true">
+                    <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
                         C({{::p.trueUsage}}/{{p.falseUsage}})
                     </p>
                 </div>
@@ -838,12 +838,12 @@
             </div>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-            <p ng-repeat="p in datatype.predicates track by p.id | filter:{constraintTarget:node.position + '[1]'}:true">
+            <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </p>
         </td>
         <td class="col-md-2" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-            <p ng-repeat="c in datatype.conformanceStatements  track by c.id  | filter:{constraintTarget:node.position + '[1]'}:true">
+            <p ng-repeat="c in datatype.conformanceStatements    | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </p>
         </td>
@@ -877,7 +877,7 @@
             </span>
 
             <div ng-show="node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) !== 0">
-                <p ng-repeat="p in parentsMap[node.id].predicates track by p.id  | filter:{constraintTarget:node.position + '[1]'}:true">
+                <p ng-repeat="p in parentsMap[node.id].predicates   | filter:{constraintTarget:node.position + '[1]'}:true">
                     C({{::p.trueUsage}}/{{::p.falseUsage}})
                 </p>
             </div>
@@ -904,12 +904,12 @@
             </a>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-            <p ng-repeat="p in parentsMap[node.id].predicates  track by p.id  | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)"
+            <p ng-repeat="p in parentsMap[node.id].predicates    | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)"
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
         <td class="col-md-2" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-            <p ng-repeat="c in parentsMap[node.id].conformanceStatements  track by c.id   | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)"
+            <p ng-repeat="c in parentsMap[node.id].conformanceStatements     | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)"
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
@@ -944,7 +944,7 @@
             </span>
 
             <div ng-if="node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) !== 0">
-                <p ng-repeat="p in parentsMap[node.id].predicates  track by p.id   | filter:{constraintTarget:node.position + '[1]'}:true">
+                <p ng-repeat="p in parentsMap[node.id].predicates     | filter:{constraintTarget:node.position + '[1]'}:true">
                     C({{::p.trueUsage}}/{{::p.falseUsage}})
                 </p>
             </div>
@@ -969,12 +969,12 @@
             </a>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-            <p ng-repeat="p in parentsMap[node.id].predicates  track by p.id | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)"
+            <p ng-repeat="p in parentsMap[node.id].predicates   | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)"
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
         <td class="col-md-2" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-            <p ng-repeat="c in parentsMap[node.id].conformanceStatements  track by c.id | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)"
+            <p ng-repeat="c in parentsMap[node.id].conformanceStatements   | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)"
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
@@ -1063,7 +1063,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="p in displayed  track by p.id | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
+                        <tr ng-repeat="p in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
                             <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                 <i ng-show="p.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="p" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                             </td>
@@ -1371,7 +1371,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="c in displayed  track by c.id  | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
+                        <tr ng-repeat="c in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
                             <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                 <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                             </td>
@@ -1755,7 +1755,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="c in selectedTable.codes  track by c.id |filter:searchCodeValue|orderBy:predicate:reverse">
+                            <tr ng-repeat="c in selectedTable.codes   |filter:searchCodeValue|orderBy:predicate:reverse">
                                 <td ng-bind-html="c.value"></td>
                                 <td ng-bind-html="c.label"></td>
                                 <td ng-bind-html="c.codeSystem"></td>

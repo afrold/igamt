@@ -415,7 +415,7 @@
 
                                                     <select ng-model="cmp.segmentId" class="form-control" ng-change="setSegment2(cmp.segmentId)" ng-disabled="!ig2" no-dirty-check>
                                                         <option value='-1'></option>
-                                                        <option ng-repeat="segment in segments2 track by $index" ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{$index}}'> {{::getLabel(segment)}}</option>
+                                                        <option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{$index}}'> {{::getLabel(segment)}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -478,7 +478,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="ref in tmpReferences track by ref.id">
+                                                <tr ng-repeat="ref in tmpReferences">
                                                     <td st-ratio="5">{{$index + 1}} </td>
                                                     <td st-ratio="40">
                                                         <span ng-if="ref.type === 'group'" class="label label-success label-icon">G</span>
@@ -1480,7 +1480,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="p in displayed track by p.id | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
+                        <tr ng-repeat="p in displayed  | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
                             <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                 <i ng-if="p.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="p" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                             </td>
