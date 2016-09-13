@@ -313,29 +313,32 @@ angular.module('igl')
                 $scope.results = [];
                 $scope.tmpResults = [];
                 $scope.results = $scope.results.concat(filterFlavors($rootScope.igdocument.profile.segmentLibrary, segmentRef.obj.ref.name));
-                $scope.tmpResults = [].concat($scope.results);
-                SegmentLibrarySvc.findLibrariesByFlavorName(segmentRef.obj.ref.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
-                    if (libraries != null) {
-                        _.each(libraries, function(library) {
-                            $scope.results = $scope.results.concat(filterFlavors(library, segmentRef.obj.ref.name));
-
-                        });
-                    }
-
-                    $scope.results = _.uniq($scope.results, function(item, key, a) {
-                        return item.id;
-                    });
-
-                    $scope.tmpResults = [].concat($scope.results);
-                    console.log($scope.tmpResults);
-
-                    delay.resolve(true);
-                }, function(error) {
-                    $rootScope.msg().text = "Sorry could not load the segments";
-                    $rootScope.msg().type = error.data.type;
-                    $rootScope.msg().show = true;
-                    delay.reject(error);
+                $scope.results = _.uniq($scope.results, function(item, key, a) {
+                    return item.id;
                 });
+                $scope.tmpResults = [].concat($scope.results);
+//                SegmentLibrarySvc.findLibrariesByFlavorName(segmentRef.obj.ref.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
+//                    if (libraries != null) {
+//                        _.each(libraries, function(library) {
+//                            $scope.results = $scope.results.concat(filterFlavors(library, segmentRef.obj.ref.name));
+//
+//                        });
+//                    }
+//
+//                    $scope.results = _.uniq($scope.results, function(item, key, a) {
+//                        return item.id;
+//                    });
+//
+//                    $scope.tmpResults = [].concat($scope.results);
+//                    console.log($scope.tmpResults);
+//
+//                    delay.resolve(true);
+//                }, function(error) {
+//                    $rootScope.msg().text = "Sorry could not load the segments";
+//                    $rootScope.msg().type = error.data.type;
+//                    $rootScope.msg().show = true;
+//                    delay.reject(error);
+//                });
                 blockUI.stop();
                 return delay.promise;
 
