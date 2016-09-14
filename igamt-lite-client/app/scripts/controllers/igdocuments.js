@@ -1074,6 +1074,7 @@ angular.module('igl')
                             $rootScope.tmpReferences = [].concat($rootScope.references);
 
                             $rootScope.$emit("event:initEditArea");
+
                             blockUI.stop();
                         }, function(error) {
                             $scope.loadingSelection = false;
@@ -1090,6 +1091,11 @@ angular.module('igl')
                             blockUI.stop();
                         }
                     }, 100);
+
+                setTimeout(function(){
+                    $scope.$broadcast('reCalcViewDimensions');
+                    console.log("refreshed Slider!!");
+                }, 1000);
             }
         };
 
