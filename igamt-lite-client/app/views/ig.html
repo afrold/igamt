@@ -154,7 +154,7 @@
                     <div class="col-md-12">
                         <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
                             <label class="btn btn-raised btn-info btn-xs"
-                                   ng-click="selectedHL7Version=v r; loadTablesByVersion(vr)"
+                                   ng-click="selectedHL7Version=vr; loadTablesByVersion(vr)"
                                    ng-class="{ 'active':vr===selectedHL7Version}" ng-repeat="vr in hl7Versions">
                                 <input type="radio" ng-value="vr" ng-model="$parent.selectedHL7Version">{{vr}}</input>
                             </label>
