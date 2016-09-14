@@ -68,7 +68,7 @@ if (self === top) {
                                                 class="fa fa-pencil fa-fw"></i></span>
                             </button>
                             <button title="View IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-default" ng-click="view(row)">
-                                <span><i class="fa fa-search fa-fw"></i></span>
+                                <span><i class="fa fa-eye fa-fw"></i></span>
                             </button>
                             <button title="Create Copy of IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="clone(row);selectIGDocumentType('USER')">
                                 <span><i class="fa fa-plus fa-fw"></i></span>
@@ -98,7 +98,7 @@ if (self === top) {
         <div class="col-md-12" class="cp-tooltip">
             <h5>Conformance Profiles</h5>
             <ul class="cp-tooltip">
-                <li ng-repeat="msg in row.profile.messages.children">
+                <li ng-repeat="msg in row.profile.messages.children track by msg.id">
                     {{msg.name}}
                 </li>
             </ul>

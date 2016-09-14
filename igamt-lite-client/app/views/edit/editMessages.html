@@ -33,7 +33,7 @@
                         </span>
                     </div>
                     <div class="col-md-12" ng-controller="cmpMessageCtrl">
-                        <tabset>
+                        <tabset active="tabStatus.active">
                             <tab>
                                 <tab-heading>
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Conformance Profile MetaData
@@ -119,7 +119,7 @@
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
                                                 <span style="color:white;"> Conformance Profile Definition</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
-                                            <div class="panel-body">
+                                            <div class="igl-def-table-container">
                                                 <span class="pull-left">
                                                     <div style="" ng-dropdown-multiselect=""
                                                         options="viewSettings.columnOptions"
@@ -418,36 +418,26 @@
         <td class="col-md-2 col-fixed-250">
             <span>{{node.obj.event}}^{{node.obj.structID}}:{{node.obj.description}}</span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('usage')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('cardinality')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
+         </td>
+        <td class="col-md-1 col-fixed-130 emptyCol" ng-if="viewSettings.isVisibleColumn('valueSet')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('defText')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
+         </td>
     </tr>
 </script>
 
@@ -524,18 +514,14 @@
                                             </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
+         </td>
+        <td class="col-md-1 col-fixed-130 emptyCol" ng-if="viewSettings.isVisibleColumn('valueSet')">
+         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-class="{'has-error': node.obj.usage === 'C' && countPredicate(node.path) != 1}" ng-if="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="countPredicate(node.path)===0 && node.obj.usage==='C'">
@@ -570,8 +556,8 @@
                 </div>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('defText')">
+
         </td>
         <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
             <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', false)" class="point" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
@@ -658,18 +644,14 @@
                                             </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')" >
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
+         </td>
+        <td class="col-md-1 col-fixed-130 emptyCol" ng-if="viewSettings.isVisibleColumn('valueSet')">
+         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="countPredicate(node.path)===0 && node.obj.usage==='C'">
@@ -702,9 +684,8 @@
             </div>
         </td>
 
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('defText')">
+         </td>
 
         <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
 
@@ -740,11 +721,11 @@
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
                  <span>[{{::node.obj.min}},{{::node.obj.max}}]</span>
          </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-                 <span>[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
+        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+                 <span ng-if="datatypesMap[node.obj.datatype.id].components.length  == 0">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
          </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <span>{{::node.obj.confLength}}</span>
+        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+            <span ng-if="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
             <span class="point" ng-click="redirectDT(node.obj.datatype)">{{::getDatatypeLabel(node.obj.datatype)}}</span>
@@ -806,8 +787,10 @@
                 </p>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('defText')">
+            <a ng-if="node.obj.text !=='' && node.obj.text !==null" ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
+                <i class="fa fa-eye fa-fw" ></i>
+            </a>
         </td>
         <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
             <!--<p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment"-->
@@ -844,18 +827,15 @@
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
                 </span>
          </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
-            <div>
-                -
-            </div>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('cardinality')">
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>
+        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+            <div ng-if="datatypesMap[node.obj.datatype.id].components.length  == 0">
                 [{{::node.obj.minLength}},{{::node.obj.maxLength}}]
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div ng-bind="::node.obj.confLength">
+        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+            <div ng-if="datatypesMap[node.obj.datatype.id].components.length  == 0" ng-bind="::node.obj.confLength">
             </div>
         </td>
 
@@ -924,7 +904,9 @@
         </td>
 
         <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
+                 <a ng-if="node.obj.text !=='' && node.obj.text !==null" ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
+                    <i class="fa fa-eye fa-fw" ></i>
+                 </a>
         </td>
         <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
             <!--<p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment"-->
@@ -1552,36 +1534,26 @@
         <td class="col-md-2 col-fixed-250">
             <span>{{::node.obj.event}}^{{::node.obj.structID}}:{{::node.obj.description}}</span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
-            <div>-</div>
-        </td>
-        <td class="col-md-2" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-            <div>-</div>
-        </td>
-        <td class="col-md-3" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('usage')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('cardinality')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
+         </td>
+        <td class="col-md-1 col-fixed-130 emptyCol" ng-if="viewSettings.isVisibleColumn('valueSet')">
+         </td>
+        <td class="col-md-2 emptyCol" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
+         </td>
+        <td class="col-md-3 emptyCol" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('defText')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
+         </td>
     </tr>
 </script>
 <script type="text/ng-template" id="MessageSegmentRefReadTree.html">
@@ -1607,18 +1579,14 @@
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
             [{{::node.obj.min}}, {{::node.obj.max}}]
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
+         </td>
+        <td class="col-md-1 col-fixed-130 emptyCol" ng-if="viewSettings.isVisibleColumn('valueSet')">
+         </td>
         <td class="col-md-2" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
@@ -1633,15 +1601,14 @@
                 </p>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('defText')">
+         </td>
         <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
             <!--<p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment" ng-show="node.obj.comment != null && node.obj.comment != ''">-->
             <!--</p>-->
             <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
                 tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-search fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+                <i class="fa fa-eye fa-fw" ></i>
             </a>
         </td>
     </tr>
@@ -1700,7 +1667,7 @@
             <!--</p>-->
             <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
                 tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-search fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+                <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
             </a>
         </td>
     </tr>

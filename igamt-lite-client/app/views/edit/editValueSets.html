@@ -34,12 +34,12 @@
                     </div>
 
                     <div class="" ng-controller="cmpTableCtrl">
-                        <tabset>
+                        <tabset active="tabStatus.active">
                             <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Value Set MetaData
                                 </tab-heading>
-                                <div style="margin-top: 20px">
+                                <div class="igl-def-table-container" style="margin-top: 20px">
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIndentifier.$invalid}">
                                         <label class="col-md-2 control-label">Mapping Identifier*</label>
 
@@ -152,7 +152,7 @@
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Definition
                                 </tab-heading>
 
-                                <div class="el-def" style="margin-top: 20px">
+                                <div class="el-def igl-def-table-container" style="margin-top: 20px">
 
                                     <accordion>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
@@ -174,7 +174,7 @@
                                             <accordion-heading>
                                                 <span style="color:white;">Value Set Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>
                                             </accordion-heading>
-                                            <div class="panel-body">
+                                            <div class="igl-def-table-container">
                                     <div class="">
                                         <span class="pull-right">
 											<button title="Add new Value" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
