@@ -4,9 +4,7 @@
 
 angular.module('igl')
     .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI) {
-        $scope.init = function() {};
-        console.log("IN MESSAGES========");
-        console.log($rootScope.igdocument);
+
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
             isFirstOpen: true,
@@ -14,6 +12,25 @@ angular.module('igl')
             isThirdOpen: true,
             isFirstDisabled: false
         };
+        $scope.tabStatus = {
+            active: 1
+        };
+
+        $scope.init = function() {
+            $scope.accordStatus = {
+                isCustomHeaderOpen: false,
+                isFirstOpen: true,
+                isSecondOpen: true,
+                isThirdOpen: true,
+                isFirstDisabled: false
+            };
+            $scope.tabStatus = {
+                active: 1
+            };
+
+
+        };
+
         $scope.redirectSeg = function(segmentRef) {
             SegmentService.get(segmentRef.id).then(function(segment) {
                 var modalInstance = $modal.open({

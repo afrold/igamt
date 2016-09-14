@@ -10,6 +10,9 @@ angular.module('igl')
             isThirdOpen: true,
             isFirstDisabled: false
         };
+        $scope.tabStatus = {
+            active: 1
+        };
         $scope.editableDT = '';
         $scope.editableVS = '';
         $scope.readonly = false;
@@ -19,7 +22,20 @@ angular.module('igl')
         $scope.viewSettings = ViewSettings;
         $scope.selectedChildren = [];
         $scope.saving = false;
-        $scope.init = function() {};
+        $scope.init = function() {
+            $scope.accordStatus = {
+                isCustomHeaderOpen: false,
+                isFirstOpen: true,
+                isSecondOpen: false,
+                isThirdOpen: false,
+                isFirstDisabled: false
+            };
+
+            $scope.tabStatus = {
+                active: 1
+            };
+
+        };
 
         $scope.dtmSliderOptions = {
             ceil: 7,
@@ -46,7 +62,7 @@ angular.module('igl')
                 console.log("refreshed Slider!!");
             }, 1000);
         };
-
+        
         $scope.deleteComponent = function(componentToDelete, datatype) {
             var modalInstance = $modal.open({
                 templateUrl: 'DeleteComponent.html',

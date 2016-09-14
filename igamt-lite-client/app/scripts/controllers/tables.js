@@ -13,7 +13,13 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.reverse = false;
     $scope.selectedCodes=[];
     $scope.isDeltaCalled = false;
+    $scope.tabStatus = {
+        active: 1
+    };
     $scope.init = function() {
+        $scope.tabStatus = {
+            active: 1
+        };
         $scope.selectedCodes=[];
         $rootScope.$on('event:cloneTableFlavor', function(event, table) {
             $scope.copyTable(table);

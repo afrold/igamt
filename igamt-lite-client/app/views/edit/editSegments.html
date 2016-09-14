@@ -34,7 +34,7 @@
                         </span>
                     </div>
                     <div class="col-md-12" ng-controller="cmpSegmentCtrl as cmp">
-                        <tabset>
+                        <tabset active="tabStatus.active">
                             <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Segment MetaData
@@ -123,9 +123,8 @@
                                             <accordion-heading>
                                                 <span style="color:white;">Segment Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
                                             </accordion-heading>
-                                            <div class="panel-body" style="margin:5px 5px 5px 5px">
-                                                <div class="" >
-                                                <div class="pull-left">
+                                            <div class="" style="margin:5px 5px 5px 5px">
+                                                 <div class="pull-left">
                                                     <div ng-dropdown-multiselect=""
                                                         options="viewSettings.columnOptions"
                                                         selected-model="viewSettings.visibleColumns"
@@ -140,9 +139,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                                </div>
-                                                <div class="">
-                                                <div class="">
+                                                  <div class="igl-def-table-container">
                                                     <table id="treeTable" tt-table tt-params="segmentsParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                         <thead>
                                                             <tr class="tbl-header" style="">
@@ -176,8 +173,7 @@
                                                         </thead>
                                                         <tbody></tbody>
                                                     </table>
-                                                </div>
-                                                    </div>
+                                                     </div>
                                             </div>
                                             
                                         </div>
@@ -802,8 +798,8 @@
                                             </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div ng-controller="SegmentRowCtrl">
+        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-if="datatypesMap[node.datatype.id].components.length == 0" ng-controller="SegmentRowCtrl">
                 <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:45%" class="form-control"
                                                        name="minLength"
@@ -820,8 +816,8 @@
                                             </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div ng-controller="SegmentRowCtrl">
+        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-if="datatypesMap[node.datatype.id].components.length == 0" ng-controller="SegmentRowCtrl">
                 <span ng-form name="{{formName}}" class="form-inline">
                                             <input style="width:50%" class="form-control" type="text"
                                                    name="confLength"
@@ -952,11 +948,11 @@
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
             [{{::node.min}}, {{::node.max}}]
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            [{{::node.minLength}}, {{::node.maxLength}}]
+        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}" >
+           <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}}, {{::node.maxLength}}]</div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            {{::node.confLength}}
+        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}" >
+            <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> {{::node.confLength}} </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
             <span ng-click="redirectDT(node.datatype)">{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
@@ -1024,13 +1020,13 @@
                 -
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>
+        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 [{{::node.minLength}},{{::node.maxLength}}]
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div ng-bind="node.confLength">
+        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-bind="node.confLength" ng-if="datatypesMap[node.datatype.id].components.length == 0">
             </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
@@ -1108,13 +1104,13 @@
                 -
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>
+        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 [{{::node.minLength}},{{::node.maxLength}}]
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div ng-bind="node.confLength">
+        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-if="datatypesMap[node.datatype.id].components.length == 0" ng-bind="node.confLength">
             </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">

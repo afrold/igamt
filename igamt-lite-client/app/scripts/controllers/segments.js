@@ -4,7 +4,7 @@
 
 angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService, blockUI) {
     //        $scope.loading = false;
-    $scope.init = function() {};
+
     console.log("IN SEGMENTS========");
     $scope.accordStatus = {
         isCustomHeaderOpen: false,
@@ -13,6 +13,26 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         isThirdOpen: true,
         isFourthOpen: true,
         isFirstDisabled: false
+    };
+
+    $scope.tabStatus = {
+        active: 1
+    };
+
+    $scope.init = function() {
+
+        $scope.accordStatus = {
+            isCustomHeaderOpen: false,
+            isFirstOpen: true,
+            isSecondOpen: false,
+            isThirdOpen: false,
+            isFourthOpen: false,
+            isFirstDisabled: false
+        };
+
+        $scope.tabStatus = {
+            active: 1
+        };
     };
 
     $scope.editableDT = '';
@@ -154,26 +174,29 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             $scope.results = [];
             $scope.tmpResults = [];
             $scope.results = $scope.results.concat(filterFlavors($rootScope.igdocument.profile.datatypeLibrary, field.datatype.name));
-            $scope.tmpResults = [].concat($scope.results);
-            DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
-                if (libraries != null) {
-                    _.each(libraries, function(library) {
-                        $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
-                    });
-                }
-
-                $scope.results = _.uniq($scope.results, function(item, key, a) {
-                    return item.id;
-                });
-                $scope.tmpResults = [].concat($scope.results);
-
-                delay.resolve(true);
-            }, function(error) {
-                $rootScope.msg().text = "Sorry could not load the data types";
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
-                delay.reject(error);
+            $scope.results = _.uniq($scope.results, function(item, key, a) {
+                return item.id;
             });
+            $scope.tmpResults = [].concat($scope.results);
+//            DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
+//                if (libraries != null) {
+//                    _.each(libraries, function(library) {
+//                        $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
+//                    });
+//                }
+//
+//                $scope.results = _.uniq($scope.results, function(item, key, a) {
+//                    return item.id;
+//                });
+//                $scope.tmpResults = [].concat($scope.results);
+//
+//                delay.resolve(true);
+//            }, function(error) {
+//                $rootScope.msg().text = "Sorry could not load the data types";
+//                $rootScope.msg().type = error.data.type;
+//                $rootScope.msg().show = true;
+//                delay.reject(error);
+//            });
             return delay.promise;
         };
 
