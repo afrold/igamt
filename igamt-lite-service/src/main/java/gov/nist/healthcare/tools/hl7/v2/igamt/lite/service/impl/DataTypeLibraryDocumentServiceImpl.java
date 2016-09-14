@@ -135,11 +135,13 @@ public class DataTypeLibraryDocumentServiceImpl implements DatatypeLibraryDocume
   }
 
   @Override
-  public DatatypeLibraryDocument create(String name, String ext, SCOPE scope, String hl7Version,
+  public DatatypeLibraryDocument create(String name, String ext, SCOPE scope, String hl7Version,String description, String orgName,
       Long accountId) {
     DatatypeLibraryMetaData metaData = defaultMetadata();
     metaData.setName(name);
     metaData.setHl7Version(hl7Version);
+    metaData.setDescription(description);
+    metaData.setOrgName(orgName);
     metaData.setDatatypeLibId(UUID.randomUUID().toString());
     metaData.setDate(Constant.mdy.format(new Date()));
     metaData.setExt(ext);
@@ -249,10 +251,5 @@ public void delete(String dtLibId) {
     tableLibraryService.delete(dtlibDoc.getTableLibrary());
     datatypeLibraryDocumentRepository.delete(dtLibId);
 
-    
-    
   }
-
-
-
 }

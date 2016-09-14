@@ -152,7 +152,7 @@ span {
                         <form id="selectDtTypeForm" class="form-horizontal">
                             <div class="form-group">
                                 <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                                    <label class="btn btn-raised btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')">
+                                    <label class="btn btn-raised btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')" ng-if="false">
                                         <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse User's Data Type Librariess
                                     </label>
                                     <label class="btn btn-raised btn-warning btn-sm" ng-click="getDataTypeLibraryByScope('MASTER')" ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}">
@@ -160,10 +160,10 @@ span {
                                     </label>
                                 </div>
                                 <div class="pull-right" style="margin-right: 20px">
-                                    <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="openStandardDataypes('USER')">
+                                    <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="openStandardDataypes('USER')" ng-if="false">
                                         <i class="fa fa-plus"></i> Create USER Data Type Library
                                     </button>
-                                    <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="openStandardDataypes('MASTER')" ng-if="isAdmin()">
+                                    <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="openStandardDataypes('MASTER')" ng-if="isAdmin() ">
                                         <i class="fa fa-plus"></i> Create A MASTER Datatype Library
                                     </button>
                                     <!--<button type="button" class="btn btn-raised btn-primary btn-sm"-->
@@ -190,7 +190,7 @@ span {
                                             <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                                                 <th st-ratio="5">#</th>
                                                 <th st-ratio="10" st-sort-default="true">Name</th>
-                                                <th st-ratio="20">Owner</th>
+                                                <th st-ratio="20">steward</th>
                                                 <th st-ratio="25">Date Created</th>
                                                 <th st-ratio="40">Actions</th>
                                             </tr>
@@ -301,13 +301,7 @@ span {
                     </div>
                 </div>
                 <div class="form-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
-                    <label class="col-md-2 control-label" for="ext">Extension</label>
-                    <div class="col-md-10">
-                        <input type="text" name="identifier" disabled name="ext" class="form-control" ng-model="datatypeLibMetaDataCopy.ext" ng-change="setDirty()">
-                    </div>
-                </div>
-                <div class="form-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
-                    <label class="col-md-2 control-label" for="orgName">Owner</label>
+                    <label class="col-md-2 control-label" for="orgName">steward</label>
                     <div class="col-md-10">
                         <input type="text" name="orgName"  ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.orgName">
                     </div>
@@ -336,7 +330,7 @@ span {
                 <div ui-tree-handle data-nodrag context-menu="DataTypeLibraryOptions">
                     <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Datatypes: {{datatypes.length}}
                 </div>
-                <div ng-if="!collapsed" data-nodrag ui-tree-handle style="margin-bottom:5px;"> <span class="badge label-default" ng-click="resetLibFilter()" ng-if="!collapsed"> <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
+                <div ng-if="!collapsed" data-nodrag ui-tree-handle style="margin-bottom:5px;"> <span class="badge label-default" ng-click="resetLibFilter()" ng-if="!collapsed && filteringModeON"> <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsInLib">
@@ -371,7 +365,7 @@ span {
                 <div ui-tree-handle data-nodrag>
                     <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Datatypes
                 </div>
-                <div ng-if="!collapsed" data-nodrag ui-tree-handle style="margin-bottom:5px;"> <span class="badge label-default" ng-click="resetLibFilter()" ng-if="!collapsed"> <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
+                <div ng-if="!collapsed" data-nodrag ui-tree-handle style="margin-bottom:5px;"> <span class="badge label-default" ng-click="resetLibFilter()" ng-if="!collapsed&&filteringModeON"> <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;">
@@ -638,8 +632,8 @@ span {
                                 <input type="text" name="description" class="form-control col-xs-10" ng-model="standard.description" style="width : 350px; height : 30px;" />
                             </div>
 							<div class="row">
-                                <label class="control-label col-xs-2" for="Description">Owner</label>
-                                <input type="text" name="owner" class="form-control col-xs-10" ng-model="standard.orgName"  value="NIST" style="width : 350px; height : 30px;" />
+                                <label class="control-label col-xs-2" for="Description">steward</label>
+                                <input type="text" name="steward" class="form-control col-xs-10" ng-model="standard.orgName"  value="NIST" style="width : 350px; height : 30px;" />
                             </div>
                         </div>
                     </div>
@@ -1746,10 +1740,10 @@ span {
                                             <accordion-heading>
                                                 <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
-                                                <div ng-if="!viewSettings.tableReadonly && table.scope === 'USER'">
+                                                <div ng-if="!readOnly && table.scope === 'USER'">
                                                     <textarea froala="froalaEditorOptions" ng-model="table.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
                                                 </div>
-                                                <div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.scope === 'MASTER')">
+                                                <div ng-if="readOnly" || (table.scope === 'HL7STANDARD' || table.scope === 'MASTER')">
                                                     <div class="fr-view">
                                                         <div froala-view="table.defPreText"></div>
                                                     </div>
@@ -1879,10 +1873,10 @@ span {
                                             <span style="color:white;">Definition Post-Text </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>
                                         </accordion-heading>
                                         <div class="panel-body">
-                                            <div ng-if="!viewSettings.tableReadonly && table.scope === 'USER'">
+                                            <div ng-if="!readOnly && table.scope === 'USER'">
                                                 <textarea froala="froalaEditorOptions" ng-model="table.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
                                             </div>
-                                            <div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.scope === 'MASTER')">
+                                            <div ng-if="readOnly || (table.scope === 'HL7STANDARD' || table.scope === 'MASTER')">
                                                 <div class="fr-view">
                                                     <div froala-view="table.defPostText"></div>
                                                 </div>
@@ -2234,7 +2228,7 @@ span {
                                             <span style="color:white;">Definition Post-Text </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>
                                         </accordion-heading>
                                         <div class="panel-body">
-                                            <div ng-if="!viewSettings.tableReadonly && table.scope === 'USER'">
+                                            <div ng-if="!readOnly && table.scope === 'USER'">
                                                 <textarea froala="froalaEditorOptions" ng-model="table.defPostText" name="text" id="defPostText" disabled></textarea>
                                             </div>
                                             <div ng-if="readonly || (table.scope === 'HL7STANDARD' || table.scope === 'MASTER')">

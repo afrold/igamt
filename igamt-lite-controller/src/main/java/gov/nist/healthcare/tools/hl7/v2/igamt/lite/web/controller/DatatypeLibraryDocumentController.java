@@ -176,12 +176,12 @@ public class DatatypeLibraryDocumentController {
 		//String accountType=account.getAccountType();
 		//System.out.println(accountType);
 		if(scope.equals(scope.USER)){
-			return datatypeLibraryDocumentService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),
+			return datatypeLibraryDocumentService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),dtlcw.getDescription(),dtlcw.getOrgName(),
 					dtlcw.getAccountId());		
 			}
 		else if(hasRole("admin")&&scope.equals(scope.MASTER)){
-		return datatypeLibraryDocumentService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),
-				dtlcw.getAccountId());
+			return datatypeLibraryDocumentService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),dtlcw.getDescription(),dtlcw.getOrgName(),
+					dtlcw.getAccountId());		
 		}
 		else{
 			throw new LibrarySaveException();

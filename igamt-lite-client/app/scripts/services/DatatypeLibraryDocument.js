@@ -62,11 +62,13 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
     };
 
 
-    svc.create = function (hl7Version, scope, name, ext) {
+    svc.create = function (hl7Version, scope, name, ext,description, orgName) {
         var dtlcw = { "hl7Version": hl7Version,
             "scope": scope,
             "name": name,
             "ext": ext,
+            "description":description,
+            "orgName":orgName,
             "accountId": userInfoService.getAccountID()};
         return $http.post(
             'api/datatype-library-document/create', dtlcw).then(function (response) {

@@ -87,8 +87,12 @@ angular.module('igl').factory(
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
             if(datatype.scope==='MASTER'){
-            	newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
-            	newDatatype.hl7versions=$rootScope.igdocument.profile.metaData.hl7Version;
+            	//newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
+            	var temp=[];
+            	temp.push($rootScope.igdocument.profile.metaData.hl7Version);
+            	newDatatype.hl7versions=temp;
+            	newDatatype.hl7Version=$rootScope.igdocument.profile.metaData.hl7Version;
+            	
             }
 
 

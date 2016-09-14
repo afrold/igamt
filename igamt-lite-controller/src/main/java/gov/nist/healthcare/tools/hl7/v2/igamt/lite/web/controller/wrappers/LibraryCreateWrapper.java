@@ -23,6 +23,24 @@ public class LibraryCreateWrapper {
 	private String scope;
 
 	private String hl7Version;
+	private String description;
+	private String orgName;
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
 
 	private Long accountId;
 
