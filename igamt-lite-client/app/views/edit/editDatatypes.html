@@ -108,7 +108,7 @@
                                     </div>
                                 </div>
                             </tab>
-                            <tab ng-click="setDeltaToF()">
+                            <tab ng-click="setDeltaToF(); refreshSlider();">
                                 <tab-heading>
                                     <i class="fa fa-table" aria-hidden="true"></i> Data Type Definition
                                 </tab-heading>
@@ -133,7 +133,7 @@
 
                                         </div>
 
-                                        <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen" ng-click="refreshSlider();">
 
                                             <accordion-heading>
                                                 <span style="color:white;">Data Type Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
@@ -209,62 +209,49 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 0)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 0">R</Span>
-                                                                    <Span ng-hide="datatype.precisionOfDTM > 0">O</Span>
+                                                                    <Span ng-if="datatype.precisionOfDTM > 0">Required</Span>
+                                                                    <Span ng-hide="datatype.precisionOfDTM > 0">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 1)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 1">R</Span>
-                                                                    <Span ng-hide="datatype.precisionOfDTM > 1">O</Span>
+                                                                    <Span ng-if="datatype.precisionOfDTM > 1">Required</Span>
+                                                                    <Span ng-hide="datatype.precisionOfDTM > 1">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 2)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 2">R</Span>
-                                                                    <Span ng-hide="datatype.precisionOfDTM > 2">O</Span>
+                                                                    <Span ng-if="datatype.precisionOfDTM > 2">Required</Span>
+                                                                    <Span ng-hide="datatype.precisionOfDTM > 2">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 3)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 3">R</Span>
-                                                                    <Span ng-hide="datatype.precisionOfDTM > 3">O</Span>
+                                                                    <Span ng-if="datatype.precisionOfDTM > 3">Required</Span>
+                                                                    <Span ng-hide="datatype.precisionOfDTM > 3">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 4)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 4">R</Span>
-                                                                    <Span ng-hide="datatype.precisionOfDTM > 4">O</Span>
+                                                                    <Span ng-if="datatype.precisionOfDTM > 4">Required</Span>
+                                                                    <Span ng-hide="datatype.precisionOfDTM > 4">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 5)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 5">R</Span>
-                                                                    <Span ng-hide="datatype.precisionOfDTM > 5">O</Span>
+                                                                    <Span ng-if="datatype.precisionOfDTM > 5">Required</Span>
+                                                                    <Span ng-hide="datatype.precisionOfDTM > 5">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 6)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 6">R</Span>
-                                                                    <Span ng-hide="datatype.precisionOfDTM > 6">O</Span>
+                                                                    <Span ng-if="datatype.precisionOfDTM > 6">Required</Span>
+                                                                    <Span ng-hide="datatype.precisionOfDTM > 6">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.timeZoneOfDTM)}">
-                                                                    <Span ng-if="datatype.timeZoneOfDTM">R</Span>
-                                                                    <Span ng-hide="datatype.timeZoneOfDTM">O</Span>
+                                                                    <Span ng-if="datatype.timeZoneOfDTM">Required</Span>
+                                                                    <Span ng-hide="datatype.timeZoneOfDTM">Optional</Span>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'">
+                                                                <td class="col-md-7" colspan="7">
+                                                                    <rzslider rz-slider-options="dtmSliderOptions" rz-slider-model="datatype.precisionOfDTM"></rzslider>
+                                                                </td>
+                                                                <td class="col-md-1" align="center">
+                                                                    <input type="checkbox" ng-model="datatype.timeZoneOfDTM"/>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
-
-                                                    <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'" class="form-group control-group">
-                                                        <label class="col-md-2 control-label">Precision</label>
-
-                                                        <div class="controls col-md-10">
-                                                            <md-slider md-discrete ng-model="datatype.precisionOfDTM" step="1" min="0" max="7" aria-label="Precision Of DTM">
-                                                            </md-slider>
-
-                                                            <div ng-model="datatype.precisionOfDTM" class="slider shor slider-material-orange"></div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'" class="form-group control-group">
-                                                        <label class="col-md-2 control-label">Time Zone</label>
-
-                                                        <div class="controls col-md-10">
-                                                            <md-checkbox ng-model="datatype.timeZoneOfDTM" aria-label="TimeZone">
-                                                                <Span ng-if="datatype.timeZoneOfDTM">Time Zone Required</Span>
-                                                                <Span ng-hide="datatype.timeZoneOfDTM">Time Zone Optional</Span>
-                                                            </md-checkbox>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

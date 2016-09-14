@@ -34,7 +34,8 @@
     "angular-ui-notification": "^0.2.0",
     "angular-strap": "^2.3.9",
     "angular-object-diff": "~1.0.3",
-    "ng-tags-input": "~3.1.1"
+    "ng-tags-input": "~3.1.1",
+    "angularjs-slider" : "~5.4.0"
   },
   "devDependencies": {
     "angular-scenario": "1.5.8",

@@ -36,7 +36,8 @@ var app = angular
         'ngTagsInput',
         'nsPopover',
 //        'ngMaterial',
-        'pageslide-directive'
+        'pageslide-directive',
+        'rzModule'
       ]);
 
 var

@@ -20,6 +20,33 @@ angular.module('igl')
         $scope.selectedChildren = [];
         $scope.saving = false;
         $scope.init = function() {};
+
+        $scope.dtmSliderOptions = {
+            ceil: 7,
+            floor: 0,
+            showSelectionBar: true,
+            onChange: function(id) {
+                $scope.setDirty();
+            },
+            showTicks: true,
+            getTickColor: function (value) {
+                if (value < 3)
+                    return 'red';
+                if (value < 6)
+                    return 'orange';
+                if (value < 8)
+                    return 'yellow';
+                return '#2AE02A';
+            }
+        };
+        
+        $scope.refreshSlider = function(){
+            setTimeout(function(){
+                $scope.$broadcast('reCalcViewDimensions');
+                console.log("refreshed Slider!!");
+            }, 1000);
+        };
+
         $scope.deleteComponent = function(componentToDelete, datatype) {
             var modalInstance = $modal.open({
                 templateUrl: 'DeleteComponent.html',
