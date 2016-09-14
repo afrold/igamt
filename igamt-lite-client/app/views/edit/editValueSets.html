@@ -14,7 +14,7 @@
 <script type="text/ng-template" id="EditValueSets.html">
     <div ng-controller="TableListCtrl" ng-init="init()" class="container">
         <div ng-show="loadingSelection" style="text-align: center; padding-top:20px">
-            <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+            <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="table !== null" id="executionPanel">
@@ -189,7 +189,7 @@
                                         <input class="input-sm form group" name="items" id="items" type="number" ng-model="itemsByPage"/>
                                         </span>
 
-                                 <div class="table-responsive">
+                                 <div class="">
                                             <table st-safe-src="table.codes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
                                                 <thead>
                                 <tr>
@@ -317,65 +317,77 @@
                                             <accordion-heading>
                                                 <span style="color:white;"> Delta Configuration</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
                                             </accordion-heading>
-                                            <div class="row" align="center" style="margin-top:5px;margin-bottom:5px">
-                                                <div class="input-group col-md-3">
-                                                    <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
-                                                    <span class="input-group-addon" id="basic-addon1">Version</span>
 
-                                                    <select ng-model="version1" class="form-control" disabled>
-                                                    <option ng-selected="version1"> {{::version1}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-2">
-                                                    <span class="input-group-addon" id="basic-addon1">Scope</span>
-                                                    <select ng-model="scope1" class="form-control" disabled>
-                                                    <option ng-selected="scope1"> {{::scope1}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-3">
-                                                    <span class="input-group-addon" id="basic-addon1">IG Document</span>
-                                                    <select ng-model="ig1" class="form-control" disabled>
-                                                    <option ng-selected="ig1"> {{::ig1}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-4">
-                                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
-                                                    <select ng-model="table1" class="form-control" disabled>
-                                                    <option ng-selected="table1"> {{table1.bindingIdentifier}}</option>
-                                                </select>
-                                                </div>
-                                            </div>
-                                            <div class="row" align="center">
-                                                <div class="input-group col-md-3">
-                                                    <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
-                                                    <span class="input-group-addon" id="basic-addon1">Version</span>
-                                                    <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
-                                                    <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-2">
-                                                    <span class="input-group-addon" id="basic-addon1">Scope</span>
-                                                    <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
-                                                    <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-3">
-                                                    <span class="input-group-addon" id="basic-addon1">IG Document</span>
-                                                    <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
-                                                </div>
+                                            <table class="table table-stripped table-borderless table-condensed">
+                                                <thead>
+                                                <tr class="tbl-header">
+                                                    <th class="col-md-1"></th>
+                                                    <th class="col-md-2">HL7 Version</th>
+                                                    <th class="col-md-2">Scope</th>
+                                                    <th class="col-md-3">IG Document</th>
+                                                    <th class="col-md-4">Value Set</th>
+                                                </thead>
 
-                                                <div class="input-group col-md-4">
-                                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
+                                                <tbody>
 
-                                                    <select ng-model="cmp.tableId" class="form-control" ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2" no-dirty-check>
-                                                        <option value='-1'></option>
-                                                        <option ng-repeat="table in tables2 " ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{::table.bindingIdentifier}}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row" align="center">
+                                                <tr>
+                                                    <td class="col-md-1">
+                                                        <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <select ng-model="version1" class="form-control" disabled>
+                                                            <option ng-selected="version1"> {{::version1}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <select ng-model="scope1" class="form-control" disabled>
+                                                            <option ng-selected="scope1"> {{::scope1}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="col-md-3">
+                                                        <select ng-model="ig1" class="form-control" disabled>
+                                                            <option ng-selected="ig1"> {{::ig1}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="col-md-4">
+                                                        <select ng-model="table1" class="form-control" disabled>
+                                                            <option ng-selected="table1"> {{table1.bindingIdentifier}}</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
 
-                                                <button ng-click="cmpTable(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-raised btn-info btn-xs">
+                                                <tr>
+                                                    <td class="col-md-1">
+                                                        <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
+                                                            <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
+                                                            <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="col-md-3">
+                                                        <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
+
+                                                    </td>
+                                                    <td class="col-md-4">
+                                                        <select ng-model="cmp.tableId" class="form-control" ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2" no-dirty-check>
+                                                            <option value='-1'></option>
+                                                            <option ng-repeat="table in tables2 " ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{::table.bindingIdentifier}}</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+</tbody>
+
+                                                </table>
+                                            <div class="" align="center" style="margin-bottom:10px">
+
+                                                <button ng-click="cmpTable(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-raised btn-info btn-md">
                                                         <i class="fa fa-check"></i> Delta</button>
 
                                             </div>
@@ -387,7 +399,7 @@
                                             <div class="panel-body">
                                                 <table tt-table tt-params="dynamicVs_params" class=" table-marginless table-bordered table-condensed">
                                                     <thead>
-                                                        <tr>
+                                                        <tr class="tbl-header">
                                                             <th class="col-md-2">Name</th>
                                                             <th class="col-md-1">Content Definition</th>
                                                             <th class="col-md-1">Code System</th>
@@ -574,7 +586,7 @@
 
                                 <div class="el-def" style="margin-top: 20px">
                                     <div class="">
-                                        <div class="table-responsive">
+                                        <div class="">
                                             <table st-safe-src="table.codes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
 
 

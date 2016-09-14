@@ -35,41 +35,53 @@
                             </div>
                             <div class="row" align="center" style="margin-bottom:20px">
                                 <div class="col-md-1"><span class="label" style="background-color:#B5F7EC;color:black;">1</span></div>
-                                <div class="input-group col-md-3">
+                                <div class="col-md-3">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">Version</span>
                                     <select ng-model="version1" class="form-control" ng-change="setVersion1(version1)">
                                         <option ng-repeat="vr in versions" value='{{vr}}'> {{vr}}</option>
                                     </select>
+                                        </div>
                                 </div>
-                                <div class="input-group col-md-4">
+                                <div class="col-md-4">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">Scope</span>
                                     <select ng-model="scope1" class="form-control" ng-change="setScope1(scope1)">
                                         <option ng-repeat="scope in scopes" value='{{scope.name}}'> {{scope.alias}}</option>
                                     </select>
+                                        </div>
                                 </div>
-                                <div class="input-group col-md-4">
+                                <div class="col-md-4">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">IG Document</span>
                                     <select class="form-control" ng-disabled="!scope1 || !version1||igDisabled1" ng-options="ig as ig.title for ig in igList1 track by ig.id" ng-model="ig1" ng-change="setIG1(ig1)"></select>
                                 </div>
+                                    </div>
                             </div>
                             <div class="row" align="center">
                                 <div class="col-md-1"><span class="label" style="background-color:#EDE1AF;color:black;">2</span></div>
-                                <div class="input-group col-md-3">
+                                <div class="col-md-3">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">Version</span>
                                     <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)">
                                         <option ng-repeat="vr in versions" value='{{vr}}'> {{vr}}</option>
                                     </select>
+                                        </div>
                                 </div>
-                                <div class="input-group col-md-4">
+                                <div class="col-md-4">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">Scope</span>
                                     <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)">
                                         <option ng-repeat="scope in scopes" value='{{scope.name}}'> {{scope.alias}}</option>
                                     </select>
+                                        </div>
                                 </div>
-                                <div class="input-group col-md-4">
+                                <div class="col-md-4">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">IG Document</span>
                                     <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2"></select>
-                                </div>
+                                    </div>
+                                    </div>
                             </div>
                             <div class="row" style="padding-top:5px;padding-left:63%">
                                 <div class="col-md-4" align="right" ng-show="cmpMsg">
@@ -105,11 +117,13 @@
                                 </div>
                             </div>
                             <div class="row" align="center" style="margin-bottom:20px">
-                                <div class="input-group col-md-9" ng-show="cmpMsg">
+                                <div class="col-md-9" ng-show="cmpMsg">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">Message</span>
                                     <select ng-model="msg1" class="form-control" ng-change="setMsg1(msg1)" ng-disabled="!ig1">
                                         <option ng-repeat="message in messages1 track by message.id" ng-disabled="disableMsg(message,msg2)" ng-hide="hideMsg(message,msg2)" value='{{message}}'> {{message.name}}</option>
                                     </select>
+                                        </div>
                                 </div>
                                 <div class="input-group col-md-9" ng-show="cmpSeg">
                                     <span class="input-group-addon" id="basic-addon1">Segment</span>
@@ -117,11 +131,13 @@
                                         <option ng-repeat="segment in segments1 track by segment.id" ng-disabled="disableSeg(segment,segment2)" ng-hide="hideSeg(segment,segment2)" value='{{segment}}'> {{getLabel(segment)}}</option>
                                     </select>
                                 </div>
-                                <div class="input-group col-md-9" ng-show="cmpDT">
+                                <div class="col-md-9" ng-show="cmpDT">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">Datatype</span>
                                     <select ng-model="datatype1" class="form-control" ng-change="setDatatype1(datatype1)" ng-disabled="!ig1">
                                         <option ng-repeat="datatype in datatypes1 track by datatype.id" ng-disabled="disableSeg(datatype,datatype2)" ng-hide="hideSeg(datatype,datatype2)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
                                     </select>
+                                        </div>
                                 </div>
                                 <div class="input-group col-md-9" ng-show="cmpVS">
                                     <span class="input-group-addon" id="basic-addon1">Value Set</span>
@@ -131,29 +147,37 @@
                                 </div>
                             </div>
                             <div class="row" align="center" style="margin-bottom:20px">
-                                <div class="input-group col-md-9" ng-show="cmpMsg">
+                                <div class=" col-md-9" ng-show="cmpMsg">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">Message</span>
                                     <select ng-model="msg2" class="form-control" ng-change="setMsg2(msg2)" ng-disabled="!ig2">
                                         <option ng-repeat="message in messages2  track by message.id" ng-disabled="disableMsg(message,msg1)" ng-hide="hideMsg(message,msg1)" value='{{message}}'> {{message.name}}</option>
                                     </select>
+                                        </div>
                                 </div>
-                                <div class="input-group col-md-9" ng-show="cmpSeg">
+                                <div class="col-md-9" ng-show="cmpSeg">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">Segment</span>
                                     <select ng-model="segment2" class="form-control" ng-change="setSegment2(segment2)" ng-disabled="!ig2">
                                         <option ng-repeat="segment in segments2  track by segment.id" ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{segment}}'> {{getLabel(segment)}}</option>
                                     </select>
+                                        </div>
                                 </div>
-                                <div class="input-group col-md-9" ng-show="cmpDT">
+                                <div class="col-md-9" ng-show="cmpDT">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">Datatype</span>
                                     <select ng-model="datatype2" class="form-control" ng-change="setDatatype2(datatype2)" ng-disabled="!ig2">
                                         <option ng-repeat="datatype in datatypes2 track by datatype.id" ng-disabled="disableSeg(datatype,datatype1)" ng-hide="hideSeg(datatype,datatype1)" value='{{datatype}}'> {{getLabel(datatype)}}</option>
                                     </select>
+                                        </div>
                                 </div>
-                                <div class="input-group col-md-9" ng-show="cmpVS">
+                                <div class="col-md-9" ng-show="cmpVS">
+                                    <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">Value Set</span>
                                     <select ng-model="table2" class="form-control  col-md-1 input-sm" ng-change="setTable2(table2)" ng-disabled="!ig2">
                                         <option ng-repeat="table in tables2 track by table.id" ng-disabled="disableSeg(table,table1)" ng-hide="hideSeg(table,table1)" value='{{table}}'> {{table.bindingIdentifier}}</option>
                                     </select>
+                                        </div>
                                 </div>
                             </div>
 
@@ -173,7 +197,7 @@
                     <div class="panel-body" ng-hide="vsTemplate">
                         <table tt-table tt-params="dynamic_params" class=" table-marginless table-bordered table-condensed">
                             <thead>
-                                <tr>
+                                <tr class="tbl-header">
                                     <th class="col-xs-1" rowspan="2" style="width:14%;">Position</th>
                                     <th class="col-xs-2" rowspan="2" style="width:37%;">Name</th>
                                     <th class="col-xs-1" rowspan="2" style="width:2%">Usage</th>
@@ -183,7 +207,7 @@
                                     <th class="col-xs-1" rowspan="2" style="width:21%">Data Type</th>
                                     <th class="col-xs-1" rowspan="2" style="width:16%">Value Set</th>
                                 </tr>
-                                <tr>
+                                <tr class="tbl-header">
                                     <th class="col-xs-1 col-fixed-10" style="width:2%">min</th>
                                     <th class="col-xs-1 col-fixed-10" style="width:2%">max</th>
                                     <th class="col-xs-1 col-fixed-10" style="width:2%">min</th>
@@ -196,7 +220,7 @@
                     <div class="panel-body" ng-show="vsTemplate">
                         <table tt-table tt-params="valueSet_params" class=" table-marginless table-bordered table-condensed">
                             <thead>
-                                <tr>
+                                <tr class="tbl-header">
 
                                     <th class="col-xs-2">Name</th>
                                     <th class="col-xs-1">Content Definition</th>
