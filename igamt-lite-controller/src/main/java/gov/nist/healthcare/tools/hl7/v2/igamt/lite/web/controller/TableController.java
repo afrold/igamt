@@ -1,16 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.TableSaveException;
-
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +11,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.TableSaveException;
 
 @RestController
 @RequestMapping("/tables")
@@ -48,8 +48,8 @@ public class TableController extends CommonController {
   }
 
   @RequestMapping(value = "/save", method = RequestMethod.POST)
-  public Table save(@RequestBody Table table) throws TableSaveException,
-      ForbiddenOperationException {
+  public Table save(@RequestBody Table table)
+      throws TableSaveException, ForbiddenOperationException {
     if (!SCOPE.HL7STANDARD.equals(table.getScope())) {
       log.debug("table=" + table);
       log.debug("table.getId()=" + table.getId());
@@ -65,8 +65,8 @@ public class TableController extends CommonController {
   }
 
   @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
-  public boolean delete(@PathVariable("id") String tableId) throws ForbiddenOperationException,
-      DataNotFoundException {
+  public boolean delete(@PathVariable("id") String tableId)
+      throws ForbiddenOperationException, DataNotFoundException {
     Table table = findById(tableId);
     if (!SCOPE.HL7STANDARD.equals(table.getScope())) {
       log.info("Deleting table " + tableId);
@@ -78,9 +78,15 @@ public class TableController extends CommonController {
   }
 
   @RequestMapping(value = "/findAllByIds", method = RequestMethod.POST)
-  public List<Table> collect(@RequestBody Set<String> tableIds) {
+  public List<Table> findAllByIds(@RequestBody Set<String> tableIds) {
     return tableService.findAllByIds(tableIds);
   }
+
+  @RequestMapping(value = "/findShortAllByIds", method = RequestMethod.POST)
+  public List<Table> findShortAllByIds(@RequestBody Set<String> tableIds) {
+    return tableService.findShortAllByIds(tableIds);
+  }
+
 
   public Table findById(String id) throws DataNotFoundException {
     Table result = tableService.findById(id);

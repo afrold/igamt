@@ -18,16 +18,15 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-
 import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 
 @Service
 public interface IGDocumentService {
@@ -43,13 +42,15 @@ public interface IGDocumentService {
   public List<IGDocument> findAllPreloaded();
 
   public List<IGDocument> findByAccountId(Long accountId);
-  
+
   public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+
   public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);
 
-  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version);
-  
-  
+  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes,
+      String hl7Version);
+
+
   public IGDocument clone(IGDocument ig) throws CloneNotSupportedException;
 
   public IGDocument apply(IGDocument ig) throws IGDocumentSaveException;
@@ -98,8 +99,10 @@ public interface IGDocumentService {
 
   public IGDocument findById(String id);
 
-List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions);
+  List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions);
 
+
+  List<IGDocument> findAllByScope(IGDocumentScope scope);
 
   // TODO NEED TO REVIEW
 }

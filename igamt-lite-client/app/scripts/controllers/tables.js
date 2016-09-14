@@ -13,7 +13,13 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.reverse = false;
     $scope.selectedCodes=[];
     $scope.isDeltaCalled = false;
+    $scope.tabStatus = {
+        active: 1
+    };
     $scope.init = function() {
+        $scope.tabStatus = {
+            active: 1
+        };
         $scope.selectedCodes=[];
         $rootScope.$on('event:cloneTableFlavor', function(event, table) {
             $scope.copyTable(table);
@@ -58,6 +64,15 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             TableService.save(table).then(function(result) {
                 var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary.children);
                 TableService.merge($rootScope.tablesMap[result.id], result);
+                // remove unnecessary variables for toc
+                delete $rootScope.tablesMap[result.id].codes;
+                delete $rootScope.tablesMap[result.id].contentDefinition;
+                delete $rootScope.tablesMap[result.id].extensibility;
+                delete $rootScope.tablesMap[result.id].stability;
+                delete $rootScope.tablesMap[result.id].comment;
+                delete $rootScope.tablesMap[result.id].defPreText;
+                delete $rootScope.tablesMap[result.id].defPostText;
+
                 var newLink = TableService.getTableLink(result);
                 newLink.bindingIdentifier = bindingIdentifier;
                 TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function(link) {

@@ -151,7 +151,7 @@ public class TableLibraryServiceImpl implements TableLibraryService {
       for (TableLink link : tableLinks) {
         ids.add(link.getId());
       }
-      return tableRepository.findAllByIds(ids);
+      return tableRepository.findShortAllByIds(ids);
     }
     return new ArrayList<Table>(0);
   }

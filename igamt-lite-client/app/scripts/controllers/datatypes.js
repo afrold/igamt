@@ -10,6 +10,9 @@ angular.module('igl')
             isThirdOpen: true,
             isFirstDisabled: false
         };
+        $scope.tabStatus = {
+            active: 1
+        };
         $scope.editableDT = '';
         $scope.editableVS = '';
         $scope.readonly = false;
@@ -19,7 +22,20 @@ angular.module('igl')
         $scope.viewSettings = ViewSettings;
         $scope.selectedChildren = [];
         $scope.saving = false;
-        $scope.init = function() {};
+        $scope.init = function() {
+            $scope.accordStatus = {
+                isCustomHeaderOpen: false,
+                isFirstOpen: true,
+                isSecondOpen: false,
+                isThirdOpen: false,
+                isFirstDisabled: false
+            };
+
+            $scope.tabStatus = {
+                active: 1
+            };
+
+        };
         $scope.deleteComponent = function(componentToDelete, datatype) {
             var modalInstance = $modal.open({
                 templateUrl: 'DeleteComponent.html',
@@ -202,28 +218,44 @@ angular.module('igl')
                 $scope.results = [];
                 $scope.tmpResults = [];
                 $scope.results = $scope.results.concat(filterFlavors($rootScope.igdocument.profile.datatypeLibrary, field.datatype.name));
-                $scope.tmpResults = [].concat($scope.results);
-                DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
-                    if (libraries != null) {
-                        _.each(libraries, function(library) {
-                            $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
-                        });
-                    }
-
-                    $scope.results = _.uniq($scope.results, function(item, key, a) {
-                        return item.id;
-                    });
-                    $scope.tmpResults = [].concat($scope.results);
-
-                    delay.resolve(true);
-                }, function(error) {
-                    $rootScope.msg().text = "Sorry could not load the data types";
-                    $rootScope.msg().type = error.data.type;
-                    $rootScope.msg().show = true;
-                    delay.reject(error);
+                $scope.results = _.uniq($scope.results, function(item, key, a) {
+                    return item.id;
                 });
+                $scope.tmpResults = [].concat($scope.results);
+//                DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
+//                    if (libraries != null) {
+//                        _.each(libraries, function(library) {
+//                            $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
+//                        });
+//                    }
+//
+//                    $scope.results = _.uniq($scope.results, function(item, key, a) {
+//                        return item.id;
+//                    });
+//                    $scope.tmpResults = [].concat($scope.results);
+//
+//                    delay.resolve(true);
+//                }, function(error) {
+//                    $rootScope.msg().text = "Sorry could not load the data types";
+//                    $rootScope.msg().type = error.data.type;
+//                    $rootScope.msg().show = true;
+//                    delay.reject(error);
+//                });
                 return delay.promise;
             };
+
+//
+//            $scope.editDT = function(field) {
+//                $scope.editableDT = field.id;
+//
+//                $scope.results = [];
+//                angular.forEach($rootScope.igdocument.profile.datatypeLibrary.children ,function(dtLink){
+//                    if(dtLink.name&&dtLink.name===field.datatype.name&&field.datatype.id!==dtLink.id){
+//                        $scope.results.push(dtLink);
+//                    }
+//                });
+//            };
+//
 
 
             var filterFlavors = function(library, name) {

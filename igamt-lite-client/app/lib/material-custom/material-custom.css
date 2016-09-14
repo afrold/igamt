@@ -1,4 +1,4 @@
-/**/
+
 
 /*To get this list of colors inject jQuery at http://www.google.com/design/spec/style/color.html#color-color-palette*/
 
@@ -34,7 +34,7 @@
 /*})();*/
 
 
-/**/
+
 /*@font-face {*/
   /*font-family: 'Material-Design-Icons';*/
   /*src: url('../fonts/Material-Design-Icons.eot?3ocs8m');*/
@@ -48,7 +48,7 @@
   /*display: inline-block;*/
   /*font: normal normal normal 24px/1 'Material-Design-Icons';*/
   /*text-rendering: auto;*/
-  /* Better Font Rendering =========== */
+   /*Better Font Rendering =========== */
   /*-webkit-font-smoothing: antialiased;*/
   /*-moz-osx-font-smoothing: grayscale;*/
   /*transform: translate(0, 0);*/
@@ -270,7 +270,7 @@
 /*.mdi-inverse {*/
   /*color: #ffffff;*/
 /*}*/
-/* Start Icons */
+ /*Start Icons */
 /*.mdi-action-3d-rotation:before {*/
   /*content: "\e600";*/
 /*}*/

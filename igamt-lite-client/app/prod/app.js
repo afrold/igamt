@@ -35,7 +35,8 @@ var app = angular
         'ds.objectDiff',
         'ngTagsInput',
         'nsPopover',
-        'ngMaterial'
+//        'ngMaterial',
+        'pageslide-directive'
       ]);
 
 var
@@ -69,10 +70,10 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .when('/compare', {
             templateUrl: 'views/compare.html'
         })
-       .when('/datatypeLibrary', {
-           templateUrl: 'views/datatypeLibrary.html',
-           controller: 'DatatypeLibraryCtl'
-       })
+//        .when('/datatypeLibrary', {
+//            templateUrl: 'views/datatypeLibrary.html',
+//            controller: 'DatatypeLibraryCtl'
+//        })
         .when('/doc', {
             templateUrl: 'views/doc.html'
         })
