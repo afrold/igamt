@@ -1032,9 +1032,14 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $rootScope.currentData=$scope.table;
 
             $scope.Activate(table.id);
-           
-            $scope.editView = "EditTablesINLIB.html";
             
+           if(table.scope==='HL7STANDARD'){
+        	   $scope.editView = "EditTablesINLIBReadOnly.html";
+           }else if(table.status&&table.status==='PUBLISHED'){
+        	   $scope.editView = "EditTablesINLIBReadOnly.html";
+           }else{
+            $scope.editView = "EditTablesINLIB.html";
+           }
             //$scope.editView = "EditValueSetsInDtLib.html";
 
         }
@@ -1674,7 +1679,24 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             return temp;
 
         };
+        $scope.existingExtension=function(d,addedDatatypes){
+        	var version1= d.hl7versions.toString();
+    		console.log(addedDatatypes);
+        	$scope.exist=false;
+        	angular.forEach($scope.addedDatatypes,function(dt){
+            	var version2= dt.hl7versions.toString();
 
+        		console.log(dt.hl7versions);
+        		console.log(d.hl7versions);
+        		
+        		if(dt.id!==d.id && d.name===dt.name && dt.ext===d.ext && version1==version2){
+        			
+        			console.log("+++++++ found")
+        			$scope.exist=true;
+        		}
+        	});
+        	return $scope.exist;
+        };
 
         $scope.getDatatypeFromUnchanged= function(data1){
             var data= angular.copy(data1);
@@ -1687,9 +1709,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 version=versions[0];
             }
             var name= data.name;
-        DatatypeService.getOneStandard(name, version).then(function(result) {
+        DatatypeService.getOneStandard(name, version,versions).then(function(result) {
         	var masterDt= angular.copy(result);
         	masterDt.hl7versions= data.versions;
+        	//temporary fix
+        	if(masterDt.hl7versions.length&&masterDt.hl7versions.length>1){
+        		masterDt.hl7Version="[*]";
+        	}else if(masterDt.hl7versions.length&&masterDt.hl7versions.length==1){
+        		masterDt.hl7Version=result.hl7Version;
+        	}
+        	
             //result.versions= versions;
             $scope.AddDatatypeForMaster(masterDt);
         });
@@ -1697,69 +1726,80 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
 
+//        $scope.AddDatatypeForMaster = function(datatype) {
+//            $scope.max = 1;
+//            var dataTemps = [];
+//            var extesions = [];
+//            //$scope.max=1;
+//
+//            if ($scope.containDatatypeWithname(datatype)) {
+//                angular.forEach($scope.addedDatatypes, function(res) {
+//                    if (datatype.name === res.name) {
+//                        //dataTemps.push(res);
+//                        if (res.ext) {
+//                            extesions.push(res.ext);
+//                        }
+//
+//                    }
+//                });
+//
+//                var dataToAdd = angular.copy(datatype);
+//                dataToAdd.id = new ObjectId().toString();
+//                dataToAdd.status = 'UNPUBLISHED';
+//                dataToAdd.scope = 'MASTER';
+//                $scope.max = _.max(extesions);
+//                //dataToAdd.ext = parseInt($scope.max) + 1;
+//                $scope.addedDatatypes.push(dataToAdd);
+//
+//            } else {
+//                DatatypeService.getDataTypesByScopesAndVersion(["MASTER"], $scope.hl7Version).then(function(result) {
+//                    angular.forEach(result, function(res) {
+//
+//
+//                        if (datatype.name === res.name) {
+//                            dataTemps.push(res);
+//                            if (res.ext) {
+//                                extesions.push(res.ext);
+//                            }
+//
+//                        }
+//                    });
+//
+//                    console.log("Datatypes with the same name");
+//                    console.log(dataTemps);
+//                    if (dataTemps.length === 0) {
+//                        $scope.max = 1
+//                            //return ret;
+//                    } else {
+//                        console.log("extr==dwdwdwddw with the same name");
+//                        console.log(extesions);
+//                        $scope.max = _.max(extesions);
+//                        console.log($scope.max);
+//                    }
+//
+//
+//                    var dataToAdd = angular.copy(datatype);
+//                    dataToAdd.id = new ObjectId().toString();
+//                    dataToAdd.status = 'UNPUBLISHED';
+//                    dataToAdd.scope = 'MASTER';
+//                    //dataToAdd.ext = parseInt($scope.max);
+//                    $scope.addedDatatypes.push(dataToAdd);
+//
+//                });
+//
+//            }
+//        };
+
         $scope.AddDatatypeForMaster = function(datatype) {
-            $scope.max = 1;
-            var dataTemps = [];
-            var extesions = [];
-            //$scope.max=1;
 
-            if ($scope.containDatatypeWithname(datatype)) {
 
-                angular.forEach($scope.addedDatatypes, function(res) {
-                    if (datatype.name === res.name) {
-                        //dataTemps.push(res);
-                        if (res.ext) {
-                            extesions.push(res.ext);
-                        }
-
-                    }
-                });
 
                 var dataToAdd = angular.copy(datatype);
                 dataToAdd.id = new ObjectId().toString();
                 dataToAdd.status = 'UNPUBLISHED';
                 dataToAdd.scope = 'MASTER';
-                $scope.max = _.max(extesions);
-                dataToAdd.ext = parseInt($scope.max) + 1;
                 $scope.addedDatatypes.push(dataToAdd);
-
-            } else {
-                DatatypeService.getDataTypesByScopesAndVersion(["MASTER"], $scope.hl7Version).then(function(result) {
-                    angular.forEach(result, function(res) {
-
-
-                        if (datatype.name === res.name) {
-                            dataTemps.push(res);
-                            if (res.ext) {
-                                extesions.push(res.ext);
-                            }
-
-                        }
-                    });
-
-                    console.log("Datatypes with the same name");
-                    console.log(dataTemps);
-                    if (dataTemps.length === 0) {
-                        $scope.max = 1
-                            //return ret;
-                    } else {
-                        console.log("extr==dwdwdwddw with the same name");
-                        console.log(extesions);
-                        $scope.max = _.max(extesions);
-                        console.log($scope.max);
-                    }
-
-
-                    var dataToAdd = angular.copy(datatype);
-                    dataToAdd.id = new ObjectId().toString();
-                    dataToAdd.status = 'UNPUBLISHED';
-                    dataToAdd.scope = 'MASTER';
-                    dataToAdd.ext = parseInt($scope.max);
-                    $scope.addedDatatypes.push(dataToAdd);
-
-                });
-
-            }
+            
         };
 
 

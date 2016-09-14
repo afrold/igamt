@@ -39,7 +39,9 @@ public interface DatatypeService {
 
   List<Datatype> findByScope(String scope);
 
-Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+  Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+
+  Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
 
 
 }

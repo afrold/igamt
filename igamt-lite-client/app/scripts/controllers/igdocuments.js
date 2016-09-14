@@ -712,7 +712,7 @@ angular.module('igl')
 
         };
 
-        $scope.addCSVTables = function(selectedTableLibary) {
+        $rootScope.addCSVTables = function(selectedTableLibary) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddCSVTableOpenCtrl.html',
                 controller: 'AddCSVTableOpenCtrl',
@@ -726,7 +726,7 @@ angular.module('igl')
             modalInstance.result.then(function() {}, function() {});
         };
 
-        $scope.addPHINVADSTables = function(selectedTableLibary) {
+        $rootScope.addPHINVADSTables = function(selectedTableLibary) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddPHINVADSTableOpenCtrl.html',
                 controller: 'AddPHINVADSTableOpenCtrl',
@@ -740,7 +740,7 @@ angular.module('igl')
             modalInstance.result.then(function() {}, function() {});
         };
 
-        $scope.addHL7Table = function(selectedTableLibary, hl7Version) {
+        $rootScope.addHL7Table = function(selectedTableLibary, hl7Version) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddHL7TableOpenCtrl.html',
                 controller: 'AddHL7TableOpenCtrl',

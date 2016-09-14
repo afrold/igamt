@@ -29,7 +29,7 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
 
   private String label;
 
-  private String ext;
+  private String ext="";
 
   private String purposeAndUse = "";
 
@@ -73,7 +73,7 @@ private String description = "";
   }
 
   public String getExt() {
-    return ext;
+    return this.ext;
   }
 
   public void setExt(String ext) {

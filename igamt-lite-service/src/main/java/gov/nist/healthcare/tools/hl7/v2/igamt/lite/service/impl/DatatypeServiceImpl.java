@@ -116,4 +116,10 @@ public Datatype findByNameAndVersionAndScope(String name, String version,String 
 	return datatypeRepository.findByNameAndVersionAndScope(name,version, scope);
 }
 
+@Override
+public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope) {
+	// TODO Auto-generated method stub
+	return datatypeRepository.findByNameAndVersionsAndScope(name,versions, scope);
+}
+
 }

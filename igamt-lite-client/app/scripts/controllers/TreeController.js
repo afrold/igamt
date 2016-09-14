@@ -656,7 +656,7 @@ angular
                             $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
                         }
                     ],
-                    ['Import HL7 Flavors Datatype',
+                    ['Import HL7 Flavors Datatypes',
                      function($itemScope) {
                          $scope.addMasterDatatype($rootScope.igdocument.profile.metaData.hl7Version);
                      }
@@ -732,19 +732,19 @@ angular
                     ['Import HL7 Value Sets',
 
                         function($itemScope) {
-                            $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                            $rootScope.addHL7Table($scope.tableLibrary, "2.1");
                         }
                     ], 
 
                     ['Import from PHINVADs',
                         function($itemScope) {
-                            $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                            $scope.addPHINVADSTables($scope.tableLibrary);
                         }
                     ],
 
                     ['Import CSV file',
                         function($itemScope) {
-                            $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                            $scope.addCSVTables($scope.tableLibrary);
                         }
                     ]
 

@@ -205,11 +205,12 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
 
-            getOneStandard: function(name,version){
+            getOneStandard: function(name,version,versions){
                 var wrapper ={
                     name:name,
                     hl7Version :version,
-                    scope:"HL7STANDARD"
+                    scope:"HL7STANDARD",
+                    versions:versions
                 }
                 var delay = $q.defer();
                 $http.post('api/datatypes/findOneStrandard', angular.toJson(wrapper)).then(function(response) {

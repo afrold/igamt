@@ -16,7 +16,16 @@ public class ScopeAndNameAndVersionWrapper {
 	private String scope;
 
 	private String hl7Version;
+	private String[] versions;
 	
+
+	public String[] getVersions() {
+		return this.versions;
+	}
+
+	public void setVersions(String[] versions) {
+		this.versions = versions;
+	}
 
 	public String getScope() {
 		return scope;
@@ -39,4 +48,6 @@ public class ScopeAndNameAndVersionWrapper {
 	public void setHl7Version(String hl7Version) {
 		this.hl7Version = hl7Version;
 	}
+
+
 }

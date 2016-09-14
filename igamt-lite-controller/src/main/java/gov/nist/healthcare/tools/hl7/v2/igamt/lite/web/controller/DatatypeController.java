@@ -108,13 +108,35 @@ public class DatatypeController extends CommonController {
 	public Datatype findByNameAndVersionAndScope(@RequestBody ScopeAndNameAndVersionWrapper unchagedDatatype) {
 
 	    	    Datatype d =null;
+	    	    int max=1;
+	    	    List<Datatype> datatypes= new ArrayList<Datatype>();
 	    	    try {
 	    	      User u = userService.getCurrentUser();
 	    	      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
 	    	      if (account == null) {
 	    	        throw new UserAccountNotFoundException();
 	    	      }
+	    	  
 	    	      d = datatypeService.findByNameAndVersionAndScope(unchagedDatatype.getName(),unchagedDatatype.getHl7Version(),"HL7STANDARD");
+	    	      
+	    	      d.setExt(max+"");
+	    	
+
+	    	    	  Datatype temp =  datatypeService.findByNameAndVersionsAndScope(unchagedDatatype.getName(),unchagedDatatype.getVersions(),"MASTER");
+	    	    	  if(temp!=null){
+	    	    		  String tempext=temp.getExt();
+	    	    		  try {
+	    	    			 int extd=Integer.parseInt(d.getExt());
+	    	    		     int ext = Integer.parseInt(tempext);
+	    	    		     if(ext>=extd){
+	    	    		    	 d=temp;
+	    	    		    	 d.setExt((ext+1+""));
+	    	    		     }
+	    	    		} catch (NumberFormatException e) {
+
+	    	    		}
+	    	    	  }
+	    	      
 
 	    	      if (d==null) {
 	    	        throw new NotFoundException("Datatype not found for scopesAndVersion");

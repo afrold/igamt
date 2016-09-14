@@ -580,7 +580,22 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             // ////console.log("Change is " + $rootScope.changes[type][object.id][changeType]);
             $rootScope.recordChanged();
         };
-
+        $rootScope.addHL7Table = function(selectedTableLibary, hl7Version) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AddHL7TableOpenCtrl.html',
+                controller: 'AddHL7TableOpenCtrl',
+                windowClass: 'conformance-profiles-modal',
+                resolve: {
+                    selectedTableLibary: function() {
+                        return selectedTableLibary;
+                    },
+                    hl7Version: function() {
+                        return hl7Version;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {}, function() {});
+        };
 
         $rootScope.recordChange2 = function(type, id, attr, value) {
             // if($rootScope.changes[type] === undefined){

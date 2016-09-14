@@ -64,7 +64,7 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	    Query qry = Query.query(where);
 	    List<Datatype> datatypes = mongo.find(qry, Datatype.class);
 	    for (Datatype dt : datatypes){
-	    	if(dt.getScope().equals("HL7STANDARD")); 
+	    	if(dt.getScope().equals(scope)); 
 	    	return dt;
 	    }
 	    Datatype datatype = null;
@@ -74,6 +74,7 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	    
 	    
   }
+  
   
   @Override
   public Datatype findById(String id) {
@@ -104,6 +105,24 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
      List<Datatype> datatypes = mongo.find(qry, Datatype.class);
     return datatypes;
   }
+
+@Override
+public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope) {
+	Criteria where = Criteria.where("name").is(name);
+    where.andOperator(Criteria.where("hl7versions").is(versions));
+    //where.andOperator(Criteria.where("scope").is(scope));
+
+    Query qry = Query.query(where);
+    List<Datatype> datatypes = mongo.find(qry, Datatype.class);
+    for (Datatype dt : datatypes){
+    	if(dt.getScope().equals(scope)); 
+    	return dt;
+    }
+    Datatype datatype = null;
+    
+
+    return datatype;
+}
 
 
   // Query set4Brevis(Query qry) {
