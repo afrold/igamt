@@ -128,10 +128,37 @@ angular.module('igl')
 
             $scope.Posselected = true;
         };
-        $scope.getTableLabel=function(table){
-        	
-        	return table.bindingIdentifier;
-        }
+        
+                $scope.dtmSliderOptions = {
+                   ceil: 7,
+                    floor: 0,
+                    showSelectionBar: true,
+                    onChange: function(id) {
+                       $scope.setDirty();
+                   },
+                    showTicks: true,
+                    getTickColor: function (value) {
+                        if (value < 3)
+                            return 'red';
+                        if (value < 6)
+                            return 'orange';
+                       if (value < 8)
+                           return 'yellow';
+                        return '#2AE02A';
+                    }
+                };
+                
+               $scope.refreshSlider = function(){
+                    setTimeout(function(){
+                        $scope.$broadcast('reCalcViewDimensions');
+                        console.log("refreshed Slider!!");
+                   }, 1000);
+               };
+        
+        
+        
+        
+        
         $scope.initDatatypes = function() {
             // if($rootScope.datatypesParams!==undefined){
             //     $rootScope.datatypesParams.refresh();

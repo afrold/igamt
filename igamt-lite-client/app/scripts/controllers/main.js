@@ -2143,11 +2143,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $scope.init = function() {
-            // $http.get('api/igdocuments/config', {timeout: 60000}).then(function
-            // (response) {
-            // $rootScope.config = angular.fromJson(response.data);
-            // }, function (error) {
-            // });
+             $http.get('api/igdocuments/config', {timeout: 60000}).then(function
+             (response) {
+             $rootScope.config = angular.fromJson(response.data);
+             }, function (error) {
+             });
         };
 
         $scope.getFullName = function() {
@@ -2281,7 +2281,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         $rootScope.getTableLabel = function(table) {
             if (table && table != null) {
-                return $rootScope.getTableBindingIdentifier(table);
+                return $rootScope.bindingIdentifier;
             }
             return "";
         };
