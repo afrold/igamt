@@ -513,6 +513,9 @@ span {
          <button title="submit" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="addedDatatypes.length===0 ||exist"  ng-click="submit()" aria-hidden="false">
              <span><i class="fa fa-check fa-fw"></i> Submit</span>
                         </button>
+		 <button title="submit" type="button" class="btn btn-raised btn-sm btn-info"  ng-click="showEvolution()" ng-if="false">
+             <span><i class="fa fa-check fa-fw"></i> Show Datatypes Evolutions</span>
+                        </button>
                         </span>
                     </div>
 
@@ -630,6 +633,35 @@ span {
                                 <input type="text" name="Steward" class="form-control col-xs-10" ng-model="standard.orgName"  value="NIST" style="width : 350px; height : 30px;" />
                             </div>
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-raised btn-primary" type="submit" ng-disabled="standard.name==''" ng-click="ok()">Ok</button>
+                        <button class="btn btn-raised btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="evolution.html">
+    <div id="standard-datatypelibrary-dialog">
+        <div style="padding : 10px 10px 10px 10px;">
+            <div class="modal-header">
+                <h3 class="modal-title">HL7 Standard Datatypes Evolutions</h3>
+            </div>
+            		<div class="modal-body">
+     				<table>
+					<thead>
+						<th>#<th>
+						<th ng-repeat"v in vers">{{v}}<th>
+					<thead>
+					<tbody>
+					<tr ng-repeat="dt in unchanged">
+					<td></>
+					</tr>
+					</tbody>
+					</table>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-raised btn-primary" type="submit" ng-disabled="standard.name==''" ng-click="ok()">Ok</button>

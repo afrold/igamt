@@ -152,18 +152,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             });
         };
 
-
-        // function getDataTypeLibraryByScopesAndVersion(scopes, hl7Version) {
-        //     DatatypeLibraryDocumentSvc.getDataTypeLibraryDocumentByScopesAndVersion(scopes, hl7Version).then(function(data) {
-        //         $scope.datatypeStruct = data;
-        //         if (!$scope.datatypeStruct.scope) {
-        //             $scope.datatypeStruct.scope = scope;
-        //         }
-        //         //console.log("$scope.datatypeStruct.id=" + $scope.datatypeStruct.id + " $scope.datatypeStruct.scope=" + $scope.datatypeStruct.scope);
-        //     }).catch(function(error) {
-        //         //console.log(error);
-        //     });
-        // };
+        $scope.openEvolutionModal=function(){}
 
         $scope.saveMetaDataOfLibrary = function() {
             $scope.datatypeLibrary.metaData = angular.copy($scope.datatypeLibMetaDataCopy);
@@ -523,9 +512,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             });
 
                         });
-
-
-
                     }
 
                 }
@@ -1640,6 +1626,22 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 });
             });
         };
+        
+        
+        $scope.showEvolution = function(scope) {
+            var standardDatatypesInstance = $modal.open({
+                templateUrl: 'evolution.html',
+                controller: 'evolution',
+                size:'md',
+                resolve: {
+                    unchanged: function() {
+                        return $scope.AllUnchanged;
+                    }
+                }
+            }).result.then(function(unchanged) {
+            	
+            });
+        };
 
 
 
@@ -2075,6 +2077,21 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 
     });
 
+angular.module('igl').controller('evolution',
+	    function($scope, $rootScope, $modalInstance, $timeout, unchanged) {
+	
+			$scope.vrs=["#","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7","2.7.1","2.8","2.8.1","2.8.2"];
+			$scope.unchanged=unchanged;
+			
+	        $scope.ok = function() {
+	            $modalInstance.close(unchanged);
+	        };
+
+	        $scope.cancel = function() {
+	            $modalInstance.dismiss('cancel');
+	        };
+
+	    });
 angular.module('igl').controller('DatatypeListInstanceDlgCtl',
     function($scope, $rootScope, $modalInstance, hl7Version, datatypeLibsStruct, DatatypeLibrarySvc, DatatypeService) {
 

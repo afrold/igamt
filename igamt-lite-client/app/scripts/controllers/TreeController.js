@@ -737,13 +737,13 @@ angular
 
                     ['Import from PHINVADs',
                         function($itemScope) {
-                            $scope.addPHINVADSTables($scope.tableLibrary);
+                            $rootScope.addPHINVADSTables($scope.tableLibrary);
                         }
                     ],
 
                     ['Import CSV file',
                         function($itemScope) {
-                            $scope.addCSVTables($scope.tableLibrary);
+                            $rootScope.addCSVTables($scope.tableLibrary);
                         }
                     ]
 
