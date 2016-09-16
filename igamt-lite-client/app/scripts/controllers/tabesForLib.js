@@ -301,7 +301,7 @@ angular.module('igl').controller('TableModalCtrl', function($scope) {
     };
 });
 
-angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function($scope, $modalInstance, tableToDelete, $rootScope, TableService, TableLibrarySvc, CloneDeleteSvc) {
+angular.module('igl').controller('ConfirmValueSetDeleteCtrl1', function($scope, $modalInstance, tableToDelete, $rootScope, TableService, TableLibrarySvc, CloneDeleteSvc) {
     $scope.tableToDelete = tableToDelete;
     $scope.loading = false;
 

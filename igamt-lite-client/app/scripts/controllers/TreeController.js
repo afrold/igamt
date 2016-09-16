@@ -212,7 +212,6 @@ angular
                                 });
                                 return "";
                             }
-
                         }
                     }
 
@@ -1208,7 +1207,7 @@ angular
 
                 $scope.resetLibFilter = function() {
                     console.log("called");
-                    $scope.filteringModeON = false;
+                    $rootScope.filteringModeON = false;
 
                     $scope.datatypes.forEach(function(data, i) {
 

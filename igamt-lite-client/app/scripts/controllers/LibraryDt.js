@@ -70,7 +70,42 @@ angular.module('igl')
         $scope.openPredicateDialog = function(node) {
             if (node.usage == 'C') $scope.managePredicate(node);
         };
+        
+        $scope.save = function() {
+            var datatype = $scope.datatype;
+            var ext = datatype.ext;
 
+            DatatypeService.save(datatype).then(function(result) {
+                var oldLink = DatatypeLibrarySvc.findOneChild(result.id,$scope.datatypeLibrary.children);
+                var newLink = DatatypeService.getDatatypeLink(result);
+                newLink.ext = ext;
+                DatatypeLibrarySvc.updateChild($scope.datatypeLibrary.id, newLink).then(function(link) {
+                    DatatypeService.saveNewElements().then(function() {
+                        DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                        oldLink.ext = newLink.ext;
+                        oldLink.name = newLink.name;
+                        $scope.saving = false;
+                        cleanState();
+                    }, function(error) {
+                        $scope.saving = false;
+                        $rootScope.msg().text = "Sorry an error occured. Please try again";
+                        $rootScope.msg().type = "danger";
+                        $rootScope.msg().show = true;
+                    });
+                }, function(error) {
+                    $scope.saving = false;
+                    $rootScope.msg().text = "Sorry an error occured. Please try again";
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                });
+
+            }, function(error) {
+                $scope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+        };
 
         $scope.OtoX = function(message) {
             console.log(message);
@@ -238,6 +273,7 @@ angular.module('igl')
 
                 });
                 modalInstance.result.then(function() {
+                	console.log("EDITING")
                     $scope.editDataType(datatype);
                 });
 
@@ -485,6 +521,7 @@ angular.module('igl')
         };
 
         $scope.reset = function() {
+        	console.log("Called reset");
             blockUI.start();
             DatatypeService.reset();
             cleanState();
@@ -758,8 +795,25 @@ angular.module('igl')
 
             $rootScope.$emit("event:openDTDelta");
         };
+        
+        
+        $rootScope.$on('event:initDatatype', function(event) {
 
+                $scope.initt();
+            
+        });
+        
+        $scope.initt = function() {
+            $scope.isDeltaCalled = true;
+            $scope.dataList = [];
+           
+                if ($scope.dynamicDt_params) {
+                    $scope.showDelta = false;
+                    $scope.status.isFirstOpen = true;
+                    $scope.dynamicDt_params.refresh();
+                }
 
+        };
         $scope.cancel = function() {
             //TODO: remove changes from master ma
             angular.forEach($rootScope.datatype.components, function(child) {

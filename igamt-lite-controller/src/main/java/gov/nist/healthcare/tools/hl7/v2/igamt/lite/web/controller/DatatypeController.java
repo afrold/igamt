@@ -104,7 +104,7 @@ public class DatatypeController extends CommonController {
   }
   
 
-  @RequestMapping(value = "/findOneStrandard", method = RequestMethod.POST)
+  @RequestMapping(value = "/findOneStrandard", method = RequestMethod.POST,produces = "application/json")
 	public Datatype findByNameAndVersionAndScope(@RequestBody ScopeAndNameAndVersionWrapper unchagedDatatype) {
 
 	    	    Datatype d =null;
@@ -119,8 +119,10 @@ public class DatatypeController extends CommonController {
 	    	  
 	    	      d = datatypeService.findByNameAndVersionAndScope(unchagedDatatype.getName(),unchagedDatatype.getHl7Version(),"HL7STANDARD");
 	    	      
+	      	      if (d==null) {
+		    	        throw new NotFoundException("no standard d");
+		    	      }
 	    	      d.setExt(max+"");
-	    	
 
 	    	    	  Datatype temp =  datatypeService.findByNameAndVersionsAndScope(unchagedDatatype.getName(),unchagedDatatype.getVersions(),"MASTER");
 	    	    	  if(temp!=null){
@@ -136,11 +138,8 @@ public class DatatypeController extends CommonController {
 
 	    	    		}
 	    	    	  }
-	    	      
 
-	    	      if (d==null) {
-	    	        throw new NotFoundException("Datatype not found for scopesAndVersion");
-	    	      }
+	  
 	    	    } catch (Exception e) {
 	    	      log.error("", e);
 	    	    }
