@@ -582,7 +582,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 if (element.tables&&element.tables != null) {
                 	angular.forEach(element.tables, function(table){
                 		if ($rootScope.tablesMap[table.id] && $rootScope.tablesMap[table.id]) {
-                            if ($rootScope.tablesMap[table.id].status !== "PUBLISHED") {
+                            if ($rootScope.tablesMap[table.id].scope!=="HL7STANDARD" && $rootScope.tablesMap[table.id].status !== "PUBLISHED" ) {
                                 $scope.containUnpublished = true;
                                 console.log("Fouuund Unpublished");
                                 $scope.unpublishedTables.push({ table: table, location: element });
