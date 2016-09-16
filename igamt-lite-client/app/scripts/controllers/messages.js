@@ -2251,7 +2251,7 @@ angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, 
     $scope.selectedMessage = message;
     $scope.position = position;
     $scope.delete = function() {
-        for (var i = 0, len1 = $scope.selectedSegment.predicates.length; i < len1; i++) {
+        for (var i = 0, len1 = $scope.selectedMessage.predicates.length; i < len1; i++) {
             if ($scope.selectedMessage.predicates[i].constraintTarget.indexOf(position) === 0) {
                 $scope.selectedMessage.predicates.splice($scope.selectedMessage.predicates.indexOf($scope.selectedMessage.predicates[i]), 1);
                 $modalInstance.close();

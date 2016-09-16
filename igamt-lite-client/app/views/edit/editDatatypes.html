@@ -275,6 +275,7 @@
 
                                                     <span class="pull-right">
                                                         <button class="btn btn-raised btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
+                                                                type="button"
                                                                 ng-hide="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' ) || !datatype.components || datatype.components.length==0"><span><i
                                                                 class="fa fa-plus fa-fw">
                                                             &nbsp; </i>Add Conf.Statement</span></button>
@@ -322,6 +323,7 @@
 
                                                         <span class="pull-right">
                                                                 <button class="btn btn-raised btn-primary btn-xs" ng-click="managePredicate(null);"
+                                                                        type="button"
                                                                         ng-hide="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER') || !datatype.components || datatype.components.length == 0"><span><i
                                                                         class="fa fa-plus fa-fw">
                                                                     &nbsp; </i>Add Predicate</span></button>
@@ -1317,8 +1319,9 @@
         </form>
     </div>
     <div class="modal-footer">
-        <p ng-show="countPredicateForTemp() != 1" class="warning">Single Predicate allowed!</p>
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="countPredicateForTemp() != 1" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
+        <p ng-show="countPredicateForTemp() == 0" class="warning">Need a predicate</p>
+        <p ng-show="countPredicateForTemp() > 1" class="warning">Just a single predicate allowed</p>
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="countPredicateForTemp() > 1" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
         &nbsp; </i>Save</span></button>
         <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
