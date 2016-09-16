@@ -275,6 +275,7 @@
 
                                                     <span class="pull-right">
                                                         <button class="btn btn-raised btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
+                                                                type="button"
                                                                 ng-hide="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' ) || !datatype.components || datatype.components.length==0"><span><i
                                                                 class="fa fa-plus fa-fw">
                                                             &nbsp; </i>Add Conf.Statement</span></button>
@@ -322,6 +323,7 @@
 
                                                         <span class="pull-right">
                                                                 <button class="btn btn-raised btn-primary btn-xs" ng-click="managePredicate(null);"
+                                                                        type="button"
                                                                         ng-hide="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER') || !datatype.components || datatype.components.length == 0"><span><i
                                                                         class="fa fa-plus fa-fw">
                                                                     &nbsp; </i>Add Predicate</span></button>

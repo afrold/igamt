@@ -199,7 +199,7 @@
                                             <div class="panel-body">
                                                     <div class="col-md-12 igl-page-header">
                                                                 <span class="pull-right">
-                                                                    <button class="btn btn-raised btn-info btn-sm" ng-click="manageConformanceStatement(null);"
+                                                                    <button class="btn btn-raised btn-info btn-sm" ng-click="manageConformanceStatement(null);"  type="button"
                                                                             ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                                                                         <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Conf.Statement</span></button>
                                                                 </span>
@@ -242,7 +242,7 @@
                                                 <div class="col-md-12 igl-page-header">
                                                                     
                                                                     <span class="pull-right">
-                                                    <button class="btn btn-raised btn-info btn-sm" ng-click="managePredicate(null);"
+                                                    <button class="btn btn-raised btn-info btn-sm" ng-click="managePredicate(null);"  type="button"
                                                             ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                                                         <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Predicate</span></button>
                                                                     </span>
@@ -381,22 +381,22 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <select ng-model="version1" class="form-control" disabled>
-                                                            <option ng-selected="version1"> {{::version1}}</option>
+                                                            <option ng-selected="version1"> {{version1}}</option>
                                                         </select>
                                                     </td>
                                                     <td class="col-md-2">
                                                         <select ng-model="scope1" class="form-control" disabled>
-                                                            <option ng-selected="scope1"> {{::scope1}}</option>
+                                                            <option ng-selected="scope1"> {{scope1}}</option>
                                                         </select>
                                                     </td>
                                                     <td class="col-md-3">
                                                         <select ng-model="ig1" class="form-control" disabled>
-                                                            <option ng-selected="ig1"> {{::ig1}}</option>
+                                                            <option ng-selected="ig1"> {{ig1}}</option>
                                                         </select>
                                                     </td>
                                                     <td class="col-md-4">
                                                         <select ng-model="segment1" class="form-control" disabled>
-                                                            <option ng-selected="segment1"> {{::getLabel(segment1)}}</option>
+                                                            <option ng-selected="segment1"> {{getLabel(segment1)}}</option>
                                                         </select>
                                                     </td>
                                                 </tr>
@@ -407,12 +407,12 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
-                                                            <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</option>
+                                                            <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
                                                         </select>
                                                     </td>
                                                     <td class="col-md-2">
                                                         <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
-                                                            <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</option>
+                                                            <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
                                                         </select>
                                                     </td>
                                                     <td class="col-md-3">
@@ -421,7 +421,7 @@
                                                     <td class="col-md-4">
                                                         <select ng-model="cmp.segmentId" class="form-control" ng-change="setSegment2(cmp.segmentId)" ng-disabled="!ig2" no-dirty-check>
                                                             <option value='-1'></option>
-                                                            <option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{$index}}'> {{::getLabel(segment)}}</option>
+                                                            <option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{$index}}'> {{getLabel(segment)}}</option>
                                                         </select>
                                                     </td>
 
@@ -475,7 +475,7 @@
                             
                             <tab ng-click="setDeltaToF()">
                                 <tab-heading>
-                                    <i class="fa fa-link" aria-hidden="true"></i> Segment Cross-References <span class="badge">{{::references.length}}</span>
+                                    <i class="fa fa-link" aria-hidden="true"></i> Segment Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
                                     <div ng-if="references != null && references.length > 0">
@@ -603,36 +603,28 @@
             <span style="width:60%">{{::node.name}}:</span>
             <span ng-bind="node.description"></span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('usage')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('cardinality')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
+         </td>
+        <td class="col-md-1 col-fixed-130 emptyCol" ng-if="viewSettings.isVisibleColumn('valueSet')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
             <div>-</div>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 emptyCol" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
             <div>-</div>
         </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('defText')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
+         </td>
     </tr>
 </script>
 <script type="text/ng-template" id="SegmentReadTree.html">
@@ -644,36 +636,26 @@
             <span style="width:60%">{{::node.name}}:</span>
             <span ng-bind="node.description"></span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('usage')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('cardinality')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
+         </td>
+        <td class="col-md-1 col-fixed-130 emptyCol" ng-if="viewSettings.isVisibleColumn('valueSet')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('defText')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
+         </td>
     </tr>
 </script>
 <script type="text/ng-template" id="SegmentCaseReadTree.html">
@@ -682,41 +664,32 @@
             <span ng-if="node.type === 'case'" class="label label-dynamicCase label-icon">D</span>
             <span ng-bind="node.value"></span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('usage')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('cardinality')">
+         </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
             {{::getDatatypeLabel(datatypesMap[node.datatype])}}
         </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
-            <div>-</div>
-        </td>
+        <td class="col-md-1 col-fixed-130 emptyCol" ng-if="viewSettings.isVisibleColumn('valueSet')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
+         </td>
+        <td class="col-md-1 emptyCol col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
+         </td>
+        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
+         </td>
     </tr>
 </script>
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)" ng-class="{ 'new': isChildNew(node), 'selected': isChildSelected(node)}">
-        <td class="col-md-2 col-fixed-250" ng-controller="DatatypeRowCtrl">
+        <td class="col-md-2 col-fixed-250" ng-controller="SegmentRowCtrl">
             <a ng-if="editableField!==node.id" ng-click="editField(node)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
@@ -764,11 +737,13 @@
             </ng-form>
         </td>
         <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
-            <div class="form-inline">
-                <span ng-if="node.usage !=='C' || (node.usage==='C' && countPredicate(node.position)===0 )">
+                 <span ng-if="node.usage !=='C' || (node.usage==='C' && countPredicate(node.position)===0 )" ng-controller="DatatypeRowCtrl">
+                <ng-form name="{{formName}}" class="form-inline">
                     <select class="form-control input-sm" name="usage"
                             ng-change="setUsage(node);setCardinalities(node);openPredicateDialog(node);"
+                            ng-class="{ 'igl-has-error has-feedback' : {{formName}}.usage.$invalid}"
                             required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
+                    </ng-form>
                 </span>
                 <div ng-if="node.usage==='C' && countPredicate(node.position) !==0">
                     <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
@@ -778,8 +753,7 @@
                         <span title="Delete Predicate and Change Usage"><i class="fa fa-times fa-fw"></i></span>
                     </a>
                 </div>
-            </div>
-        </td>
+         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
             <div ng-controller="SegmentRowCtrl">
                 <span ng-form name="{{formName}}" class="form-inline">
