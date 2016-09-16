@@ -1737,8 +1737,9 @@
         </form>
     </div>
     <div class="modal-footer">
-        <p ng-if="countPredicateForTemp() != 1" class="warning">Single Predicate allowed!</p>
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="countPredicateForTemp() != 1" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
+        <p ng-show="countPredicateForTemp() == 0" class="warning">Need a predicate</p>
+        <p ng-show="countPredicateForTemp() > 1" class="warning">Just a single predicate allowed</p>
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="countPredicateForTemp() > 1" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
         &nbsp; </i>Save</span></button>
         <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
