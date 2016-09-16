@@ -378,6 +378,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         $scope.submit = function() {
+        	$rootScope.clearChanges();
             $scope.linksForData = [];
             $scope.linksForTables = [];
             angular.forEach($scope.addedDatatypes, function(data) {

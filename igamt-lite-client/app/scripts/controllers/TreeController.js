@@ -665,8 +665,18 @@ angular
                 $scope.DataTypeLibraryOptions = [
                     ['Import Datatypes',
                         function($itemScope) {
-                            $scope.addDatatypesFromTree();
-                            //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
+                    	
+                    	
+                    	 if ($rootScope.hasChanges()) {
+
+                             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	 $scope.addDatatypesFromTree();
+                             });
+                         } else {
+                        	 $scope.addDatatypesFromTree();
+                         }
+             
+                    	  //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
                         }
                     ]
                 ];
