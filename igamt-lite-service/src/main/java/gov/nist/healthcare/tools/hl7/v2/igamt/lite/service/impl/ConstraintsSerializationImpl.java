@@ -635,7 +635,7 @@ private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrar
     for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
       Segment s = segmentService.findById(sl.getId());
       ByID byID = new ByID();
-      byID.setByID(sl.getLabel());
+      byID.setByID(s.getLabel());
       if (s.getPredicates().size() > 0) {
         byID.setPredicates(s.getPredicates());
         byNameOrByIDs.add(byID);
@@ -647,7 +647,7 @@ private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrar
     for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
       Datatype d = datatypeService.findById(dl.getId());
       ByID byID = new ByID();
-      byID.setByID(dl.getLabel());
+      byID.setByID(d.getLabel());
       if (d.getPredicates().size() > 0) {
         byID.setPredicates(d.getPredicates());
         byNameOrByIDs.add(byID);

@@ -73,6 +73,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
@@ -2275,7 +2276,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					for (SegmentRefOrGroup seog : m.getChildren()) {
 						this.visit(seog, segmentsMap, datatypesMap, tablesMap, original);
 					}
-
 				}
 			}
 
@@ -2298,7 +2298,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			filteredProfile.setDatatypeLibrary(datatypes);
 			filteredProfile.setSegmentLibrary(segments);
 			filteredProfile.setMessages(messages);
-			filteredProfile.setTableLibrary(tables);
+			filteredProfile.setTableLibrary(original.getTableLibrary());
 
 			filteredProfiles.add(filteredProfile);
 		}
@@ -2340,7 +2340,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					}
 				}
 			}
-
 		} else {
 			Group g = (Group) seog;
 			for (SegmentRefOrGroup child : g.getChildren()) {
