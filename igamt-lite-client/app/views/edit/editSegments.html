@@ -396,7 +396,7 @@
                                                     </td>
                                                     <td class="col-md-4">
                                                         <select ng-model="segment1" class="form-control" disabled>
-                                                            <option ng-selected="segment1"> {{::getLabel(segment1)}}</option>
+                                                            <option ng-selected="segment1"> {{getLabel(segment1)}}</option>
                                                         </select>
                                                     </td>
                                                 </tr>
@@ -421,7 +421,7 @@
                                                     <td class="col-md-4">
                                                         <select ng-model="cmp.segmentId" class="form-control" ng-change="setSegment2(cmp.segmentId)" ng-disabled="!ig2" no-dirty-check>
                                                             <option value='-1'></option>
-                                                            <option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{$index}}'> {{::getLabel(segment)}}</option>
+                                                            <option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{$index}}'> {{getLabel(segment)}}</option>
                                                         </select>
                                                     </td>
 
@@ -695,7 +695,7 @@
             <div>-</div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            {{::getDatatypeLabel(datatypesMap[node.datatype])}}
+            {{getDatatypeLabel(datatypesMap[node.datatype])}}
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <div>-</div>
@@ -830,7 +830,7 @@
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')" class="form-inline">
             <a class="point" ng-if="editableDT!==node.id" ng-click="redirectDT(node.datatype)">
-        {{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+        {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
     </a>
             <a ng-if="editableDT!==node.id" ng-click="editDT(node)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -853,7 +853,7 @@
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-if="node.tables.length!==0">
                 <a class="point" ng-repeat="table in node.tables">
-                    <span ng-click="redirectVS(table)">{{::getTableLabel(tablesMap[table.id])}}</span>
+                    <span ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}</span>
                 </a>
                 <a ng-click="editVSModal(node)" class="point">
                     <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -955,11 +955,11 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> {{::node.confLength}} </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            <span ng-click="redirectDT(node.datatype)">{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
-            <a class="point" ng-if="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">{{::getTableLabel(tablesMap[table.id])}}
+            <a class="point" ng-if="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
 
 </a>
         </td>
@@ -1031,13 +1031,13 @@
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
             <div>
-                <span ng-click="redirectDT(node.datatype)">{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
+                <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
             </div>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <div>
                 <span ng-if="node.table !=undefined && node.table !=null">
-                    <a class="point" ng-if="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{::getTableLabel(tablesMap[table.id])}}
+                    <a class="point" ng-if="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
 </a>
                 </a>
                 </span>
@@ -1114,11 +1114,11 @@
             </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            <span ng-click="redirectDT(node.datatype)">{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
-            <a type="button" class="point" ng-if="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{::getTableLabel(tablesMap[table.id])}}
+            <a type="button" class="point" ng-if="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
 </a>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
@@ -1361,7 +1361,7 @@
                             <span>ValueSet ID: </span>
                                 <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
                                     <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">
-                                        {{::getTableLabel(tablesMap[table.id])}}
+                                        {{getTableLabel(tablesMap[table.id])}}
                                     </option>
                                 </select>
                                 <span style="color:red;" ng-if="isEmptyConstraintValueSet(newConstraint)">Empty valueset</span>
@@ -1964,7 +1964,7 @@
         <h3 class="modal-title">Delete Confirmation</h3>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want to delete Segment {{::getSegmentLabel(segToDelete)}} ? </p>
+        <p>Are you sure you want to delete Segment {{getSegmentLabel(segToDelete)}} ? </p>
     </div>
     </div>
     <div class="modal-footer">

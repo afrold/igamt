@@ -820,14 +820,14 @@
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
             <a ng-click="redirectDT(node.datatype)">
-                {{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+                {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </a>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <div>
                 <div ng-if="node.tables != undefined  && node.tables !== null">
                     <span ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">
-                        {{::getTableLabel(tablesMap[table.id])}}
+                        {{getTableLabel(tablesMap[table.id])}}
                     </span>
                 </div>
             </div>
@@ -885,13 +885,13 @@
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
             <div>
-                <a ng-click="redirectDT(node.datatype)" class="point">{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+                <a ng-click="redirectDT(node.datatype)" class="point">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                 </a>
             </div>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" class="point" ng-show="node.tables !== null && node.tables !== undefined">
-                {{::getTableLabel(tablesMap[table.id])}}
+                {{getTableLabel(tablesMap[table.id])}}
             </a>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
@@ -947,12 +947,12 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <a ng-click="redirectDT(node.datatype)">{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            <a ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </a>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" ng-if="node.tables !== null && node.tables !== undefined">
-                {{::getTableLabel(tablesMap[table.id])}}
+                {{getTableLabel(tablesMap[table.id])}}
             </a>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
@@ -1768,7 +1768,7 @@
 <script type="text/ng-template" id="SelectDatatypeFlavor.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
-            <span class="header4 pull-left">Datatype Selection: {{::getDatatypeLabel(currentDatatype)}}</span>
+            <span class="header4 pull-left">Datatype Selection: {{getDatatypeLabel(currentDatatype)}}</span>
         </div>
     </div>
     <div class="modal-body">
