@@ -506,7 +506,7 @@ public class Bootstrap implements InitializingBean {
   private void AddVersionsToDatatypes() {
     List<Datatype> dts = datatypeService.findAll();
     for (Datatype d : dts) {
-      if (d.getHl7versions() != null) {
+      if (d.getHl7versions() != null && d.getHl7versions().isEmpty()) {
         if (!d.getScope().equals(SCOPE.MASTER)) {
 
           d.getHl7versions().add(d.getHl7Version());
