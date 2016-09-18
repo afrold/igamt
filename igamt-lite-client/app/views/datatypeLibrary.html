@@ -281,12 +281,12 @@ span {
                 <span class="header4">Data Type Library Metadata</span>
                 <span class="pull-right">
 
-          <button type="button" class="btn btn-raised btn-sm btn-primary"
+          <button type="button" class="btn btn-raised btn-sm btn-success"
                ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="readOnly"
                 ng-click="saveMetaDataOfLibrary()">
 
-           <span><i class="fa fa-check fa-fw" ng-disabled="readOnly"></i> Save</span>
+           <span><i class="fa fa-check fa-fw" ng-hide="readOnly" ></i> Save</span>
                 </button>
                 <button title="Discard changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty||readOnly" ng-click="resetMetaDataOfLibrary()">
                     <span><i class="fa fa-times fa-fw"></i>Reset</span>
@@ -767,7 +767,7 @@ span {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="ref in references">
+                    <tr ng-repeat="ref in references track by $index ">
                         <td>
                             <span>
                             <span ng-show="ref.type === 'field'" class="label label-field label-icon">F</span>
@@ -1685,7 +1685,7 @@ span {
                                          </table>
                                     </div>
                                     <div ng-hide="references != null && references.length > 0">
-                                        <p>This value set is not being used in this ig document</p>
+                                        <p>This value set is not being used in this Library </p>
                                     </div>
                                 </div>
                             </tab>

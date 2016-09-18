@@ -907,7 +907,26 @@ angular
                         processEditTable(table);
                     }
                 };
+                
+                
+                function processEditTableInLib(table) {
+                    $scope.Activate(table.id);
+                    $rootScope.table = table;
+                    $scope.$emit('event:openTable', $rootScope.table);
+                };
 
+                $scope.editTableINLIB = function(table) {
+                    if ($rootScope.hasChanges()) {
+                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            processEditTableInLib(table);
+                        });
+                    } else {
+                        processEditTableInLib(table);
+                    }
+                };
+                
+                
+           
                 function processEditMessage(message) {
                     $scope.Activate(message.id);
                     $rootScope.message = message;
