@@ -205,12 +205,11 @@ angular
                                 $scope.updatePositions(parentSource.childSections);
                                 $scope.updatePositions(parentDest.childSections);
                                 SectionSvc.update($rootScope.igdocument.id, parentSource).then(function() {
-                                    return "";
+                                    SectionSvc.update($rootScope.igdocument.id, parentDest).then(function() {
+                                        return "";
+                                    });
                                 });
-                                SectionSvc.update($rootScope.igdocument.id, parentDest).then(function() {
-                                    return "";
-                                });
-                                return "";
+
                             }
 
                         }
@@ -1009,8 +1008,6 @@ angular
                         },
                         data: messagesMap
                     }
-
-
                     var promise = $http(req)
                         .success(function(data, status, headers, config) {
 
