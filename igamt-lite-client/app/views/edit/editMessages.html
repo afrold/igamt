@@ -455,14 +455,14 @@
                 <span id="segEditTree" class="label label-segment label-icon">S</span>
 
                 <a ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref)" class="point">
-                {{::getSegmentRefNodeName(node.obj)}}
+                {{getSegmentRefNodeName(node.obj)}}
             </a>
 
                 <select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%" class="form-control input-sm">
                     <option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position"> {{child.position}}
                 </select>
                 <select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%" class="form-control input-sm">
-                    <option ng-repeat="segmentRef in tmpResults track by segmentRef.id" value="{{segmentRef}}"  ng-selected="node.obj.ref.ext===segmentRef.ext"> {{::getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}
+                    <option ng-repeat="segmentRef in tmpResults track by segmentRef.id" value="{{segmentRef}}"  ng-selected="node.obj.ref.ext===segmentRef.ext"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}
                 </select>
                 <div align="center">
 
@@ -728,12 +728,12 @@
             <span ng-if="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{::getDatatypeLabel(node.obj.datatype)}}</span>
+            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}</span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <div>
                 <span ng-if="node.obj.tables !=undefined && node.obj.tables !=null">
-                    <a class="point" ng-repeat="table in node.obj.tables track by table.id" ng-click="redirectVS(table)">{{::getTableLabel(tablesMap[table.id])}}
+                    <a class="point" ng-repeat="table in node.obj.tables track by table.id" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
 </a>
 
                 </span>
@@ -800,7 +800,7 @@
 
             <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
                 tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-search fa-fw" ng-if="node.obj.comment !== '' && node.obj.comment !== null"></i>
+                <i class="fa fa-eye fa-fw" ng-if="node.obj.comment !== '' && node.obj.comment !== null"></i>
             </a>
 
         </td>
@@ -840,13 +840,13 @@
         </td>
 
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
-            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{::getDatatypeLabel(node.obj.datatype)}}</span>
+            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}</span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <div>
                 <span ng-show="node.obj.tables !=undefined && node.obj.tables !=null">
 
-                    <a class="point" ng-repeat="table in node.obj.tables track by table.id" ng-click="redirectVS(table)">{{::getTableLabel(tablesMap[table.id])}}
+                    <a class="point" ng-repeat="table in node.obj.tables track by table.id" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
 </a>
                 </span>
             </div>
@@ -915,7 +915,7 @@
             <!--</p>-->
             <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
                 tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-search fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+                <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
             </a>
         </td>
     </tr>
@@ -1218,8 +1218,9 @@
         </form>
     </div>
     <div class="modal-footer">
-        <p ng-show="countPredicateForTemp() != 1" class="warning">Single Predicate allowed!</p>
-        <button class="btn btn-raised btn-success btn-sm" ng-show="changed" ng-disabled="countPredicateForTemp() != 1" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+        <p ng-show="countPredicateForTemp() == 0" class="warning">Need a predicate</p>
+        <p ng-show="countPredicateForTemp() > 1" class="warning">Just a single predicate allowed</p>
+        <button class="btn btn-raised btn-primary btn-sm" ng-show="changed" ng-disabled="countPredicateForTemp() > 1" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
         <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
         <button class="btn btn-raised btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
     </div>
@@ -1567,7 +1568,7 @@
             <!--tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node.obj)" tooltip-trigger-->
             <!--tooltip-animation="false" tooltip-placement="left"-->
             <span>
-                {{::getSegmentLabel(segmentsMap[node.obj.ref.id])}}
+                {{getSegmentLabel(segmentsMap[node.obj.ref.id])}}
             </span>
         </td>
         <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
@@ -1838,7 +1839,7 @@
 <script type="text/ng-template" id="SelectSegmentFlavor.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
-            <span class="header4 pull-left">Segment Selection: {{::getSegmentLabel(currentSegment)}}</span>
+            <span class="header4 pull-left">Segment Selection: {{getSegmentLabel(currentSegment)}}</span>
         </div>
     </div>
     <div class="modal-body">
