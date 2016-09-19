@@ -205,13 +205,13 @@ angular
                                 $scope.updatePositions(parentSource.childSections);
                                 $scope.updatePositions(parentDest.childSections);
                                 SectionSvc.update($rootScope.igdocument.id, parentSource).then(function() {
-                                    return "";
+                                    SectionSvc.update($rootScope.igdocument.id, parentDest).then(function() {
+                                        return "";
+                                    });
                                 });
-                                SectionSvc.update($rootScope.igdocument.id, parentDest).then(function() {
-                                    return "";
-                                });
-                                return "";
+
                             }
+
                         }
                     }
 
@@ -341,8 +341,6 @@ angular
                 }
 
 
-
-
                 $scope.debug = function(childSections) {
                     console.log("DEBUG FNCT");
                     console.log(childSections);
@@ -352,7 +350,7 @@ angular
 
                 $scope.sectionOption = [
 
-                    ['add Section',
+                    ['Add Section',
                         function($itemScope) {
                             var newSection = {};
                             newSection.type = "section";
@@ -470,7 +468,7 @@ angular
 
                 $scope.igOptions = [
 
-                    ['add Section',
+                    ['Add Section',
                         function($itemScope) {
 
 
@@ -492,7 +490,7 @@ angular
 
                 $scope.SegmentOptions = [
 
-                    ['Create a Flavor',
+                    ['Create Flavor',
                         function($itemScope) {
 
 
@@ -518,7 +516,7 @@ angular
 
                 $scope.DataTypeOptions = [
 
-                    ['Create a Flavor',
+                    ['Create Flavor',
                         function($itemScope) {
 
 
@@ -542,7 +540,7 @@ angular
 
                 $scope.ValueSetOptions = [
 
-                    ['Create a Flavor',
+                    ['Create Flavor',
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -608,28 +606,63 @@ angular
 
                 $scope.MessagesRootOption = [
 
-                    ['Import Message', function($itemScope) {
-                        $scope.hl7Versions('ctx');
-                        //$scope.addMessageToIg($rootScope.igdocument.profile.metaData.hl7Version);
+                    ['Add Profile', function($itemScope) {
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	$scope.hl7Versions('ctx');
+                            });
+                        } else {
+                        	$scope.hl7Versions('ctx');
+                        }
+
                     }],
-                    null, ['Export', function($itemScope) {
-                        $scope.selectMessages($rootScope.igdocument);
+                    null, ['Export Profile', function($itemScope) {
+                    	
+                    	
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	 $scope.selectMessages($rootScope.igdocument);
+                            });
+                        } else {
+                        	 $scope.selectMessages($rootScope.igdocument);
+                        }
+                    	
+                    	
+                       
                     }]
                 ];
+ 
+                
 
                 $scope.ValueSetRootOptions = [
-                    ['Import Value Sets', function($itemScope) {
-                        $scope.addTable($rootScope.igdocument);
+                    ['Add Value Sets', function($itemScope) {
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	$scope.addTable($rootScope.igdocument);});
+                        } else {
+                        	$scope.addTable($rootScope.igdocument);                       
+                        	
+                        }
+                    	
+                        
                     }]
                 ];
 
                 $scope.DataTypeOptionsInLib = [
-                    ['Create a Copy',
+                    ['Copy',
                         function($itemScope) {
-                            console.log("create a copy=" + $itemScope);
-                            console.log($itemScope.data);
-                            $scope.copyDatatype($itemScope.data);
+                    	
+                        if ($rootScope.hasChanges()) {
 
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	 $scope.copyDatatype($itemScope.data);});
+                        } else {
+                        	 $scope.copyDatatype($itemScope.data);                       
+                        	
+                        }
                         }
                     ],
                     null, ['Delete',
@@ -642,41 +675,47 @@ angular
                 ];
 
                 $scope.addSegment = [
-                    ['Import Segment',
+                    ['Add HL7 Segment',
                         function($itemScope) {
-                            $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);
+                    	
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	
+                                $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);
+                                });
+                        } else {
+                        	
+                            $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);                        	
+                        }
+
                         }
                     ]
                 ];
 
                 $scope.addDatatype = [
-                    ['Import HL7 Datatype',
+                    ['Add HL7 Data Type',
                         function($itemScope) {
-                            $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
+                    	
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	 $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
+                            	
+                                });
+                        } else {
+                        	
+                        	 $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);                        }
+                           
                         }
-                    ],
-                    ['Import HL7 Flavors Datatypes',
-                     function($itemScope) {
-                         $scope.addMasterDatatype($rootScope.igdocument.profile.metaData.hl7Version);
-                     }
-                 ]
+                    ]
                 ];
 
                 $scope.DataTypeLibraryOptions = [
                     ['Import Datatypes',
                         function($itemScope) {
-                    	
-                    	
-                    	 if ($rootScope.hasChanges()) {
-
-                             $rootScope.openConfirmLeaveDlg().result.then(function() {
-                            	 $scope.addDatatypesFromTree();
-                             });
-                         } else {
-                        	 $scope.addDatatypesFromTree();
-                         }
-             
-                    	  //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
+                            $scope.addDatatypesFromTree();
+                            //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
                         }
                     ]
                 ];
@@ -684,7 +723,7 @@ angular
 
 
                 $scope.ValueSetAddOptionsINLIB = [
-                    ['Import Value Sets ',
+                    ['Add Value Sets ',
 
                         function($itemScope) {
                             //$scope.addDatatypesFromTree();
@@ -696,27 +735,70 @@ angular
                 $scope.addValueSets = [
 
 
-                    ['Import New Value Set',
+                    ['Add New Value Set',
                         function($itemScope) {
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                            	
+                                });
+                        } else {
+                        	
                             CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                           
+                        }
+                    	
                         }
                     ], 
-                    ['Import HL7 Value Sets',
+                    ['Add HL7 Value Sets',
 
                         function($itemScope) {
-                            $rootScope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                            	
+                                });
+                        } else {
+                        	
+                            $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                           
+                        }
+      	
                         }
                     ], 
 
-                    ['Import from PHINVADs',
+                    ['Add from PHINVADs',
                         function($itemScope) {
-                            $rootScope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                            	
+                                });
+                        } else {
+                        	
+                            $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                           
+                        }
                         }
                     ],
 
-                    ['Import CSV file',
+                    ['Add from CSV file',
                         function($itemScope) {
-                            $rootScope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                            	
+                                });
+                        } else {
+                        	
+                            $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                           
+                        }
+                    	
                         }
                     ]
 
@@ -724,39 +806,11 @@ angular
 
 
                 $scope.addValueSetsInTableLibrary = [
-                    // ['Import Value Sets',
-                    //     function($itemScope) {
-                    //         $scope.addTablesInLibrary();
-                    //     }
-                    // ]
-
-
-                    ['Import New Value Set',
+                    ['Import Value Sets',
                         function($itemScope) {
-                            CloneDeleteSvc.createNewTable('MASTER', $scope.tableLibrary);
-                            $scope.editTableINLIB($rootScope.table);
-
-                        }
-                    ], 
-                    ['Import HL7 Value Sets',
-
-                        function($itemScope) {
-                            $rootScope.addHL7Table($scope.tableLibrary, "2.1");
-                        }
-                    ], 
-
-                    ['Import from PHINVADs',
-                        function($itemScope) {
-                            $rootScope.addPHINVADSTables($scope.tableLibrary);
-                        }
-                    ],
-
-                    ['Import CSV file',
-                        function($itemScope) {
-                            $rootScope.addCSVTables($scope.tableLibrary);
+                            $scope.addTablesInLibrary();
                         }
                     ]
-
                 ];
 
                 function processEditSeg(seg) {
@@ -1028,9 +1082,6 @@ angular
                     return promise;
                 };
 
-
-
-
                 $scope.reOrderMessages = function() {
                     var messagesMap = [];
 
@@ -1051,8 +1102,6 @@ angular
                         },
                         data: messagesMap
                     }
-
-
                     var promise = $http(req)
                         .success(function(data, status, headers, config) {
 
@@ -1217,7 +1266,7 @@ angular
 
                 $scope.resetLibFilter = function() {
                     console.log("called");
-                    $rootScope.filteringModeON = false;
+                    $scope.filteringModeON = false;
 
                     $scope.datatypes.forEach(function(data, i) {
 
