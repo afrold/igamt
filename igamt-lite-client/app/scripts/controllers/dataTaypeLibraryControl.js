@@ -1328,12 +1328,12 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         function processEditDataType(data) {
             console.log("dialog not opened");
             $scope.Activate(data.id);
-            $rootScope.datatype = data;
-            $scope.dataype=data;
-            $scope.$emit('event:openDatatype', $rootScope.datatype);
+            $scope.datatype=data;
+            $scope.$emit('event:openDatatype', $scope.datatype);
         };
 
         $scope.editDatatype = function(data) {
+        	console.log(data);
         	if ($rootScope.hasChanges()) {
                 console.log("found changes");
 
@@ -1387,21 +1387,13 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $rootScope.Activate(datatype.id);
             $scope.editView = "EditDatatypesInLib.html";
             if (datatype && datatype != null) {
-                blockUI.start();
-                $timeout(
-                    function() {
-                        try{
-                        DatatypeService.getOne(datatype.id).then(function(result) {
-                        	$scope.datatype = angular.copy(result);
-                        	//$rootScope.datatype=$scope.datatype;
-                        	
+                			blockUI.start();
+                        	$scope.datatype = angular.copy(datatype);
                             $rootScope.$emit("event:initDatatype");
-
                             $rootScope.currentData = $scope.datatype;
-
-                            //$rootScope.datatype.ext = $rootScope.getDatatypeExtension($rootScope.datatype);
+                            $scope.editView = "EditDatatypesInLib.html";
                             $scope.loadingSelection = false;
-                            $rootScope.datatype["type"] = "datatype";
+                            $scope.datatype["type"] = "datatype";
                             $rootScope.tableWidth = null;
                             $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
                             $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 890);
@@ -1414,42 +1406,13 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             } catch (e) {
 
                             }
-                            $rootScope.references = [];
-                            $rootScope.tmpReferences = [].concat($rootScope.references);
-//                            angular.forEach($rootScope.segments, function(segment) {
-//                                if (segment && segment != null) {
-//                                    $rootScope.findDatatypeRefs($rootScope.datatype, segment, $rootScope.getSegmentLabel(segment));
-//                                }
-//                            });
-//                            angular.forEach($rootScope.datatypes, function(dt) {
-//                                if (dt && dt != null && dt.id !== $rootScope.datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt));
-//                            });
-
-                            $rootScope.tmpReferences = [].concat($rootScope.references);
+ 
 
                             $rootScope.$emit("event:initEditArea");
 
                             blockUI.stop();
-                        }, function(error) {
-                            $scope.loadingSelection = false;
-                            $rootScope.msg().text = error.data.text;
-                            $rootScope.msg().type = error.data.type;
-                            $rootScope.msg().show = true;
-                            blockUI.stop();
-                        });
-                        }catch(e){
-                            $scope.loadingSelection = false;
-                            $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
-                            $rootScope.msg().type = "danger";
-                            $rootScope.msg().show = true;
-                            blockUI.stop();
-                        }
-                    }, 100);
-
-                setTimeout(function(){
-                    $scope.$broadcast('reCalcViewDimensions');
-                    console.log("refreshed Slider!!");
-                }, 1000);
+                       
+                       
             }
         };
         
