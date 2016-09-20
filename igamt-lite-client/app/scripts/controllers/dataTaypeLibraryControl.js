@@ -1948,6 +1948,13 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }
             $scope.loadingSelection = true;
             blockUI.start();
+            $rootScope.references = [];
+            angular.forEach($scope.datatypes, function(dt) {
+            console.log(dt);
+            console.log($rootScope.getDatatypeLabel(dt));
+            $rootScope.findTableRefsINLIB(table, dt, $rootScope.getDatatypeLabel(dt));
+      });
+            
             try {
                 TableService.getOne(table.id).then(function (tbl) {
                     $rootScope.table = tbl;
@@ -1962,9 +1969,9 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                         }
                     }
                     $rootScope.references = [];
-                    angular.forEach($rootScope.datatypes, function (dt) {
-                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
-                    });
+//                    angular.forEach($scope.datatypes, function (dt) {
+//                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
+//                    });
                     $rootScope.tmpReferences = [].concat($rootScope.references);
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
