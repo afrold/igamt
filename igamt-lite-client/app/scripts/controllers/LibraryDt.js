@@ -80,18 +80,9 @@ angular.module('igl')
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
                 DatatypeLibrarySvc.updateChild($scope.datatypeLibrary.id, newLink).then(function(link) {
-                    DatatypeService.saveNewElements().then(function() {
-                        DatatypeService.merge($rootScope.datatypesMap[result.id], result);
-                        oldLink.ext = newLink.ext;
-                        oldLink.name = newLink.name;
-                        $scope.saving = false;
-                        cleanState();
-                    }, function(error) {
-                        $scope.saving = false;
-                        $rootScope.msg().text = "Sorry an error occured. Please try again";
-                        $rootScope.msg().type = "danger";
-                        $rootScope.msg().show = true;
-                    });
+                    $scope.saving = false;
+                    DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                    cleanState();
                 }, function(error) {
                     $scope.saving = false;
                     $rootScope.msg().text = "Sorry an error occured. Please try again";
@@ -523,7 +514,7 @@ angular.module('igl')
         $scope.reset = function() {
         	console.log("Called reset");
             blockUI.start();
-            DatatypeService.reset();
+            $scope.datatype = angular.copy($rootScope.datatypesMap[$scope.datatype.id]);
             cleanState();
             blockUI.stop();
         };

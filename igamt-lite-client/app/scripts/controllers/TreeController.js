@@ -806,12 +806,72 @@ angular
 
 
                 $scope.addValueSetsInTableLibrary = [
-                    ['Import Value Sets',
-                        function($itemScope) {
-                            $scope.addTablesInLibrary();
-                        }
-                    ]
-                ];
+
+                                                     ['Import New Value Set',
+                                                         function($itemScope) {
+                                                         if ($rootScope.hasChanges()) {
+
+                                                             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                                 CloneDeleteSvc.createNewTable('MASTER', $scope.tableLibrary);
+                                                                 $scope.editTableINLIB($rootScope.table);                                                             	
+                                                                 });
+                                                         } else {
+                                                         	
+                                                             CloneDeleteSvc.createNewTable('MASTER', $scope.tableLibrary);
+                                                             $scope.editTableINLIB($rootScope.table);                                                            
+                                                         }
+
+                                                         }
+                                                     ], 
+                                                     ['Import HL7 Value Sets',
+
+                                                         function($itemScope) {
+                                                             if ($rootScope.hasChanges()) {
+
+                                                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                                     $rootScope.addHL7Table($scope.tableLibrary, "2.1");                                                                 	
+                                                                     });
+                                                             } else {
+                                                             	
+                                                                 $rootScope.addHL7Table($scope.tableLibrary, "2.1");                                                                
+                                                             }
+                                                    	 
+                                                    	 
+
+                                                         }
+                                                     ], 
+
+                                                     ['Import from PHINVADs',
+                                                         function($itemScope) {
+                                                    	 
+                                                    	 
+                                                    	 if ($rootScope.hasChanges()) {
+
+                                                             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                                 $rootScope.addPHINVADSTables($scope.tableLibrary);
+                                                                 });
+                                                         } else {
+                                                         	
+                                                             $rootScope.addPHINVADSTables($scope.tableLibrary);
+                                                         }
+                                                         }
+                                                     ],
+
+                                                     ['Import CSV file',
+                                                         function($itemScope) {
+                                                    	 if ($rootScope.hasChanges()) {
+
+                                                             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                                 $rootScope.addCSVTables($scope.tableLibrary);           
+                                                                 });
+                                                         } else {
+                                                         	
+                                                             $rootScope.addCSVTables($scope.tableLibrary);                                                  
+                                                             }
+                                                         }
+                                                     ]
+
+                                              ];
 
                 function processEditSeg(seg) {
                     $scope.Activate(seg.id);
@@ -961,7 +1021,26 @@ angular
                         processEditTable(table);
                     }
                 };
+                
+                
+                function processEditTableInLib(table) {
+                    $scope.Activate(table.id);
+                    $rootScope.table = table;
+                    $scope.$emit('event:openTable', $rootScope.table);
+                };
 
+                $scope.editTableINLIB = function(table) {
+                    if ($rootScope.hasChanges()) {
+                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            processEditTableInLib(table);
+                        });
+                    } else {
+                        processEditTableInLib(table);
+                    }
+                };
+                
+                
+           
                 function processEditMessage(message) {
                     $scope.Activate(message.id);
                     $rootScope.message = message;

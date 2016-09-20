@@ -51,7 +51,7 @@ angular.module('igl').factory('DatatypeService',
                 return template;
             },
             getTemplate: function(node, root) {
-                if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
+                if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope==='MASTER'|| root.scope === null) {
                     return DatatypeService.getReadTemplate(node, root);
                 } else {
                     //console.log("INTO THE NODES ")
