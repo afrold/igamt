@@ -1263,7 +1263,30 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
         this.serializeOneGroup(elmMessage, (Group) srog, 0);
       }
     }
-
+//    List<Constraint> constraints =
+//			  findConstraints(i, d.getPredicates(), d.getConformanceStatements());
+//	  if (!constraints.isEmpty()) {
+//		  for (Constraint constraint : constraints) {
+//			  nu.xom.Element elmConstraint =
+//					  serializeConstraintToElement(constraint, d.getName() + ".");
+//			  elmComponent.appendChild(elmConstraint);
+//		  }
+//	  }
+    List<ConformanceStatement>	confromances= m.getConformanceStatements();
+    if(confromances!=null && !confromances.isEmpty()){
+    	for (Constraint constraint : confromances) {
+			  nu.xom.Element elmConstraint =serializeConstraintToElement(constraint, m.getName() + ".");
+			  elmMessage.appendChild(elmConstraint);
+		  }
+    }
+    List<Predicate> predicates = m.getPredicates();
+    if(predicates!=null && !predicates.isEmpty()){
+    	for (Constraint constraint : predicates) {
+			  nu.xom.Element elmConstraint =serializeConstraintToElement(constraint, m.getName() + ".");
+			  elmMessage.appendChild(elmConstraint);
+		  }
+    }
+    
     return elmMessage;
 
     // sect.appendChild(elmMessage);
@@ -1424,11 +1447,16 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
         elmField.addAttribute(new Attribute("Name", f.getName()));
         elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
 
-        if (f.getDatatype() != null && f.getDatatype().getExt() != null) {
-          String label = f.getDatatype().getExt().isEmpty() ? f.getDatatype().getName()
-              : f.getDatatype().getLabel();
-          elmField.addAttribute(new Attribute("Datatype", label));
-        }
+//        if (f.getDatatype() != null) {
+//          String label = f.getDatatype().getExt() == null || f.getDatatype().getExt().isEmpty() ? f.getDatatype().getName()
+//              : f.getDatatype().getLabel();
+        	if (f.getDatatype() != null) {
+				  Datatype data =datatypeService.findById(f.getDatatype().getId());
+				  if(data!=null){
+					  elmField.addAttribute(new Attribute("Datatype", data.getLabel()));
+				  }
+			  }
+        
         elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
         elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
         elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
@@ -1616,8 +1644,11 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 					  nu.xom.Element elmComponent = new nu.xom.Element("Component");
 					  elmComponent.addAttribute(new Attribute("Name", c.getName()));
 					  elmComponent.addAttribute(new Attribute("Usage", c.getUsage().toString()));
-					  if (c.getDatatype() != null && c.getDatatype().getLabel() != null) {
-						  elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype().getLabel()));
+					  if (c.getDatatype() != null) {
+						  Datatype data =datatypeService.findById(c.getDatatype().getId());
+						  if(data!=null){
+						  elmComponent.addAttribute(new Attribute("Datatype", data.getLabel()));
+						  }
 					  }
 					  elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
 					  if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
