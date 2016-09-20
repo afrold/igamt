@@ -1389,6 +1389,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             if (datatype && datatype != null) {
                 			blockUI.start();
                         	$scope.datatype = angular.copy(datatype);
+                        	$rootScope.datatype=datatype;
                             $rootScope.$emit("event:initDatatype");
                             $rootScope.currentData = $scope.datatype;
                             $scope.editView = "EditDatatypesInLib.html";
