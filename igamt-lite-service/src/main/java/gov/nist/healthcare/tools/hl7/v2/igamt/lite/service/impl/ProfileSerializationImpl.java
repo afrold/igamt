@@ -73,7 +73,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
@@ -322,14 +321,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element ss = new nu.xom.Element("Segments");
 		for (SegmentLink link : profile.getSegmentLibrary().getChildren()) {
 			Segment s = segmentService.findById(link.getId());
-			ss.appendChild(this.serializeSegment(link, s, profile.getTableLibrary(), profile.getDatatypeLibrary()));
+			ss.appendChild(this.serializeSegment(s, profile.getTableLibrary(), profile.getDatatypeLibrary()));
 		}
 		e.appendChild(ss);
 
 		nu.xom.Element ds = new nu.xom.Element("Datatypes");
 		for (DatatypeLink link : profile.getDatatypeLibrary().getChildren()) {
 			Datatype d = datatypeService.findById(link.getId());
-			ds.appendChild(this.serializeDatatypeForValidation(link, d, profile.getTableLibrary(),
+			ds.appendChild(this.serializeDatatypeForValidation(d, profile.getTableLibrary(),
 					profile.getDatatypeLibrary()));
 		}
 		e.appendChild(ds);
@@ -749,8 +748,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	private nu.xom.Element serializeSegmentRef(SegmentRef segmentRef, SegmentLibrary segments) {
+		Segment s = segmentService.findById(segmentRef.getRef().getId());
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
-		elmSegment.addAttribute(new Attribute("Ref", ExportUtil.str(segmentRef.getRef().getLabel())));
+		elmSegment.addAttribute(new Attribute("Ref", ExportUtil.str(s.getLabel())));
 		elmSegment.addAttribute(new Attribute("Usage", ExportUtil.str(segmentRef.getUsage().value())));
 		elmSegment.addAttribute(new Attribute("Min", ExportUtil.str(segmentRef.getMin() + "")));
 		elmSegment.addAttribute(new Attribute("Max", ExportUtil.str(segmentRef.getMax())));
@@ -1486,11 +1486,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return null;
 	}
 
-	private nu.xom.Element serializeSegment(SegmentLink sl, Segment s, TableLibrary tables, DatatypeLibrary datatypes) {
+	private nu.xom.Element serializeSegment(Segment s, TableLibrary tables, DatatypeLibrary datatypes) {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
-		elmSegment.addAttribute(new Attribute("ID", sl.getLabel()));
-		elmSegment.addAttribute(new Attribute("Name", ExportUtil.str(sl.getName())));
-		elmSegment.addAttribute(new Attribute("Label", ExportUtil.str(sl.getLabel())));
+		elmSegment.addAttribute(new Attribute("ID", s.getLabel()));
+		elmSegment.addAttribute(new Attribute("Name", ExportUtil.str(s.getName())));
+		elmSegment.addAttribute(new Attribute("Label", ExportUtil.str(s.getLabel())));
 		elmSegment.addAttribute(new Attribute("Description", ExportUtil.str(s.getDescription())));
 
 		if (s.getDynamicMapping() != null && s.getDynamicMapping().getMappings().size() > 0) {
@@ -1580,12 +1580,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return elmSegment;
 	}
 
-	private nu.xom.Element serializeDatatypeForValidation(DatatypeLink dl, Datatype d, TableLibrary tables,
+	private nu.xom.Element serializeDatatypeForValidation(Datatype d, TableLibrary tables,
 			DatatypeLibrary datatypes) {
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
-		elmDatatype.addAttribute(new Attribute("ID", ExportUtil.str(dl.getLabel())));
-		elmDatatype.addAttribute(new Attribute("Name", ExportUtil.str(dl.getName())));
-		elmDatatype.addAttribute(new Attribute("Label", ExportUtil.str(dl.getLabel())));
+		elmDatatype.addAttribute(new Attribute("ID", ExportUtil.str(d.getLabel())));
+		elmDatatype.addAttribute(new Attribute("Name", ExportUtil.str(d.getName())));
+		elmDatatype.addAttribute(new Attribute("Label", ExportUtil.str(d.getLabel())));
 		elmDatatype.addAttribute(new Attribute("Description", ExportUtil.str(d.getDescription())));
 
 		if (d.getComponents() != null) {
