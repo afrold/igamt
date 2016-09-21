@@ -71,12 +71,8 @@ public class PhinvadsWSCallService {
 			for (ValueSet vs : valueSets) {
 				Table table = new Table();
 
-				List<ValueSetVersion> vsvByVSOid = this.getService().getValueSetVersionsByValueSetOid(vs.getOid())
-						.getValueSetVersions();
-				ValueSetConceptResultDto vscByVSVid = this.getService()
-						.getValueSetConceptsByValueSetVersionId(vsvByVSOid.get(0).getId(), 1, 100000);
-				List<ValueSetConcept> valueSetConcepts = vscByVSVid.getValueSetConcepts();
-
+				List<ValueSetVersion> vsvByVSOid = this.getService().getValueSetVersionsByValueSetOid(vs.getOid()).getValueSetVersions();
+				
 				table.setBindingIdentifier(vs.getCode());
 				table.setDescription(vs.getDefinitionText());
 				table.setName(vs.getName());
@@ -93,6 +89,9 @@ public class PhinvadsWSCallService {
 				table.setComment(vsvByVSOid.get(0).getDescription());
 				table.setDate(vs.getStatusDate().toString());
 
+				ValueSetConceptResultDto vscByVSVid = this.getService().getValueSetConceptsByValueSetVersionId(vsvByVSOid.get(0).getId(), 1, 100000);
+				List<ValueSetConcept> valueSetConcepts = vscByVSVid.getValueSetConcepts();
+				
 				for (ValueSetConcept pcode : valueSetConcepts) {
 					Code code = new Code();
 					code.setCodeUsage("P");

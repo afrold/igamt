@@ -47,7 +47,7 @@ public class Constant {
   public final static DateFormat mdy = new SimpleDateFormat("MMMM dd, yyyy");
 
   public enum SCOPE {
-    HL7STANDARD, MASTER, USER,PRELOADED
+    HL7STANDARD, MASTER, USER, PRELOADED, PHINVADS
   };
   public enum QUANTUM {
     BREVIS, SUMMA

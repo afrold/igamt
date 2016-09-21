@@ -50,7 +50,7 @@ public class TableController extends CommonController {
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public Table save(@RequestBody Table table)
       throws TableSaveException, ForbiddenOperationException {
-    if (!SCOPE.HL7STANDARD.equals(table.getScope())) {
+    if (SCOPE.USER.equals(table.getScope())) {
       log.debug("table=" + table);
       log.debug("table.getId()=" + table.getId());
       log.info("Saving the " + table.getScope() + " table.");
@@ -68,7 +68,7 @@ public class TableController extends CommonController {
   public boolean delete(@PathVariable("id") String tableId)
       throws ForbiddenOperationException, DataNotFoundException {
     Table table = findById(tableId);
-    if (!SCOPE.HL7STANDARD.equals(table.getScope())) {
+    if (SCOPE.USER.equals(table.getScope())) {
       log.info("Deleting table " + tableId);
       tableService.delete(tableId);
       return true;
