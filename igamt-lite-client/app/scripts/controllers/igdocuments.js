@@ -706,9 +706,7 @@ angular.module('igl')
                     ids.push(result.id);
                 });
 
-
             });
-
 
         };
 
