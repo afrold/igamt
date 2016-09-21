@@ -108,6 +108,7 @@ public class Bootstrap implements InitializingBean {
     // dataCorrectionSectionPosition.resetSectionPositions();
     // new DataCorrection().updateValueSetForSegment();
     // new DataCorrection().updateValueSetsForDT();
+
     // addVersionAndScopetoPRELOADEDIG();
     // addVersionAndScopetoHL7IG();
 
@@ -116,6 +117,7 @@ public class Bootstrap implements InitializingBean {
     // AddVersionsToDatatypes();
     // addVersionAndScopetoUSERIG();
     // addScopeUserToOldClonedPRELOADEDIG();
+
     // changeTabletoTablesInNewHl7();
 
   }
