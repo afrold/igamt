@@ -816,6 +816,7 @@
                 <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
                     <option ng-repeat="datatype in results track by datatype.id" value="{{datatype}}" ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{::datatype.hl7Version}}
                     </option>
+                    <option ng-click="otherDT(node)" value=""> Other
                 </select>
             </div>
             <div align="center">
@@ -825,7 +826,7 @@
             </div>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
-            <div ng-if="node.tables.length!==0">
+            <div ng-if="node.tables.length!==0 && isAvailableDTForTable(datatypesMap[node.datatype.id])">
                 <a class="point" ng-repeat="table in node.tables">
                     <span ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}</span>
                 </a>
@@ -2026,21 +2027,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label" ng-class="{'igl-has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>
-                    <div class="controls col-md-9">
-                        <div class="form-inline">
-                            <input class="form-control" placeholder="Min Length" name="minLength" style="width:49%" id="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.minLength" required ng-minlength="0">
-                            <input class="form-control" type="text" placeholder="Max Length" style="width:50%" name="maxLength" id="maxLength" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.maxLength" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addFieldForm.confLength.$valid}">
-                    <label class="col-md-3 control-label">Conf Length</label>
-                    <div class="controls col-md-9">
-                        <input class="form-control" name="confLength" id="confLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.confLength">
-                    </div>
-                </div>
+                
                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !selectedDT()}">
                     <label class="col-md-3 control-label">Datatype*</label>
                     <div class="controls col-md-9">
@@ -2058,27 +2045,34 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group control-group" ng-if="selectedDT() && DT.components.length===0">
+                    <label class="col-md-3 control-label" ng-class="{'igl-has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>
+                    <div class="controls col-md-9">
+                        <div class="form-inline">
+                            <input class="form-control" placeholder="Min Length" name="minLength" style="width:49%" id="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.minLength" required ng-minlength="0">
+                            <input class="form-control" type="text" placeholder="Max Length" style="width:50%" name="maxLength" id="maxLength" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.maxLength" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addFieldForm.confLength.$valid}" ng-if="selectedDT() && DT.components.length===0">
+                    <label class="col-md-3 control-label">Conf Length</label>
+                    <div class="controls col-md-9">
+                        <input class="form-control" name="confLength" id="confLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.confLength">
+                    </div>
+                </div>
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label">ValueSet</label>
                     <div class="controls col-md-9">
-                        <input class="form-control" type="text" ng-model="searchVS.name" ng-hide="selectedVS()" />
-                        <li class="form-control" ng-show="selectedVS()">
-                            {{VS.name}}
-                            <button type="button" class="close" aria-label="Close" ng-click="unselectVS()">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </li>
-                        <div ng-if="searchVS.name && !selectedVS()">
-                            <li class="form-control" ng-class="{'active':isDTActive(valueSet.id)}" ng-click="selectVS(valueSet)" ng-repeat="valueSet in valueSets | filter:searchVS">
-                                {{valueSet.name}}
-                            </li>
-                        </div>
+                        <tags-input ng-model="vs" key-property="id" display-property="bindingIdentifier" placeholder="Select Value Sets" add-from-autocomplete-only="true" replace-spaces-with-dashes="false" on-tag-added="tagAdded($tag)" on-tag-removed="tagRemoved($tag)">
+                            <auto-complete source="loadVS($query)" min-length="0" load-on-focus="true" max-results-to-show="10"></auto-complete>
+                        </tags-input>
                     </div>
+                   
                 </div>
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label">Comment</label>
                     <div class="controls col-md-9">
-                        <textarea class="form-control" ng-model="newSegment.comment">
+                        <textarea class="form-control" ng-model="newField.comment">
                         </textarea>
                     </div>
                 </div>
@@ -2107,6 +2101,28 @@
         <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
         <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+    </div>
+</script>
+<script type="text/ng-template" id="otherDTModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Select Datatype for {{::field.type}} : {{::field.name}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="input-group">
+            <span class="input-group-addon" id="segment-basic-addon1"><i class="fa fa-search"></i> Search</span>
+            <input type="text" class="form-control input-lg" ng-model="newDt" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as getDtLabel(datatype) for datatype in datatypes|filter:{name:$viewValue} | limitTo:5" placeholder="Search By Name">
+        </div>
+    </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised bt-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
+                &nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-info btn-md" ng-click="addDT()" ng-disabled="!isInDts(newDt)"><span><i
+                    class="fa fa-check">
+                &nbsp; </i>Select</span>
         </button>
     </div>
 </script>
