@@ -112,8 +112,8 @@ public class Bootstrap implements InitializingBean {
     // addVersionAndScopetoHL7IG();
 
     /** to be runned one Time **/
-    CreateCollectionOfUnchanged();
-    AddVersionsToDatatypes();
+    // CreateCollectionOfUnchanged();
+    // AddVersionsToDatatypes();
     // addVersionAndScopetoUSERIG();
     // addScopeUserToOldClonedPRELOADEDIG();
     // changeTabletoTablesInNewHl7();
