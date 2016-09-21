@@ -73,6 +73,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
@@ -969,9 +970,24 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				elmField.addAttribute(new Attribute("Length", ExportUtil.str(f.getMaxLength())));
 			}
 		}
-		elmField.addAttribute(new Attribute("Datatype", ExportUtil.str(fieldDatatype.getName())));
-		if (f.getTable() != null)
-			elmField.addAttribute(new Attribute("Table", f.getTable().getBindingIdentifier()));
+		elmField.addAttribute(new Attribute("Datatype", ExportUtil.str(fieldDatatype.getName())));		
+		if (f.getTables() != null) {
+			if(f.getTables().size() > 0){
+				String bindingString = "";
+				for(TableLink tl:f.getTables()){
+					Table table = tableService.findById(tl.getId());
+					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+						bindingString = bindingString + table.getBindingIdentifier() + ":";
+				}
+				
+				if (!bindingString.equals(""))
+					elmField.addAttribute(new Attribute("Table", bindingString.substring(0,bindingString.length() - 1)));
+				
+			}
+		}
+		
+		
+		
 		if (f.getItemNo() != null && !f.getItemNo().equals(""))
 			elmField.addAttribute(new Attribute("ItemNo", ExportUtil.str(f.getItemNo())));
 
@@ -1026,18 +1042,37 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			elmField.addAttribute(new Attribute("MaxLength", ExportUtil.str(f.getMaxLength())));
 		if (f.getConfLength() != null && !f.getConfLength().equals(""))
 			elmField.addAttribute(new Attribute("ConfLength", ExportUtil.str(f.getConfLength())));
-		if (f.getTable() != null) {
-			Table table = tableService.findById(f.getTable().getId());
-			if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
-				elmField.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
-			if (f.getTable().getBindingStrength() != null && !f.getTable().getBindingStrength().equals(""))
-				elmField.addAttribute(
-						new Attribute("BindingStrength", ExportUtil.str(f.getTable().getBindingStrength())));
-			if (f.getTable().getBindingLocation() != null && !f.getTable().getBindingLocation().equals(""))
-				elmField.addAttribute(
-						new Attribute("BindingLocation", ExportUtil.str(f.getTable().getBindingLocation())));
-
+		
+		if (f.getTables() != null) {
+			if(f.getTables().size() > 0){
+				String bindingString = "";
+				String bindingStrength = "";
+				String bindingLocation = "";
+				for(TableLink tl:f.getTables()){
+					Table table = tableService.findById(tl.getId());
+					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+						bindingString = bindingString + table.getBindingIdentifier() + ":";
+				}
+				
+				if (!bindingString.equals(""))
+					elmField.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
+				if (!bindingStrength.equals("")){
+					elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
+				}
+					
+				if (!bindingLocation.equals("")){
+					elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
+				}else {
+					Datatype d = datatypeService.findById(f.getDatatype().getId());
+					if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
+						elmField.addAttribute(new Attribute("BindingLocation", "1"));
+					}
+				}
+				
+			}
 		}
+		
+		
 		elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 		elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
 		if (f.getItemNo() != null && !f.getItemNo().equals(""))
@@ -1123,9 +1158,21 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				elmComponent.addAttribute(new Attribute("Length", ExportUtil.str(c.getMaxLength())));
 			}
 		}
-		if (c.getTable() != null) {
-			elmComponent.addAttribute(new Attribute("Table", c.getTable().getBindingIdentifier()));
+		
+		if (c.getTables() != null) {
+			if(c.getTables().size() > 0){
+				String bindingString = "";
+				for(TableLink tl:c.getTables()){
+					Table table = tableService.findById(tl.getId());
+					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+						bindingString = bindingString + table.getBindingIdentifier() + ":";
+				}
+				
+				if (!bindingString.equals(""))
+					elmComponent.addAttribute(new Attribute("Table", bindingString.substring(0,bindingString.length() - 1)));				
+			}
 		}
+		
 
 		List<ConformanceStatement> componentConformanceStatements = this.findConformanceStatements(
 				fieldDatatype.getConformanceStatements(), c.getPosition() + "[1]", message.getConformanceStatements(),
@@ -1177,17 +1224,33 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			elmComponent.addAttribute(new Attribute("MaxLength", ExportUtil.str(c.getMaxLength())));
 		if (c.getConfLength() != null && !c.getConfLength().equals(""))
 			elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
-		if (c.getTable() != null) {
-			Table table = tableService.findById(c.getTable().getId());
-			if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
-				elmComponent.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
-			if (c.getTable().getBindingStrength() != null && !c.getTable().getBindingStrength().equals(""))
-				elmComponent.addAttribute(
-						new Attribute("BindingStrength", ExportUtil.str(c.getTable().getBindingStrength())));
-			if (c.getTable().getBindingLocation() != null && !c.getTable().getBindingLocation().equals(""))
-				elmComponent.addAttribute(
-						new Attribute("BindingLocation", ExportUtil.str(c.getTable().getBindingLocation())));
-
+		if (c.getTables() != null) {
+			if(c.getTables().size() > 0){
+				String bindingString = "";
+				String bindingStrength = "";
+				String bindingLocation = "";
+				for(TableLink tl:c.getTables()){
+					Table table = tableService.findById(tl.getId());
+					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+						bindingString = bindingString + table.getBindingIdentifier() + ":";
+				}
+				
+				if (!bindingString.equals(""))
+					elmComponent.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
+				if (!bindingStrength.equals("")){
+					elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
+				}
+					
+				if (!bindingLocation.equals("")){
+					elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
+				}else {
+					Datatype d = datatypeService.findById(c.getDatatype().getId());
+					if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
+						elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
+					}
+				}
+				
+			}
 		}
 		Predicate componentPredicate = this.findPredicate(fieldDatatype.getPredicates(), c.getPosition() + "[1]",
 				message.getPredicates(), componentPath);
@@ -1270,9 +1333,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				elmSubComponent.addAttribute(new Attribute("Length", ExportUtil.str(sc.getMaxLength())));
 			}
 		}
-		if (sc.getTable() != null) {
-			elmSubComponent.addAttribute(new Attribute("Table", sc.getTable().getBindingIdentifier()));
+		
+		if (sc.getTables() != null) {
+			if(sc.getTables().size() > 0){
+				String bindingString = "";
+				for(TableLink tl:sc.getTables()){
+					Table table = tableService.findById(tl.getId());
+					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+						bindingString = bindingString + table.getBindingIdentifier() + ":";
+				}
+				
+				if (!bindingString.equals(""))
+					elmSubComponent.addAttribute(new Attribute("Table", bindingString.substring(0,bindingString.length() - 1)));				
+			}
 		}
+		
+		
 
 		List<ConformanceStatement> subComponentConformanceStatements = this.findConformanceStatements(
 				componentDatatype.getConformanceStatements(), sc.getPosition() + "[1]",
@@ -1312,17 +1388,34 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			elmSubComponent.addAttribute(new Attribute("MaxLength", ExportUtil.str(sc.getMaxLength())));
 		if (sc.getConfLength() != null && !sc.getConfLength().equals(""))
 			elmSubComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(sc.getConfLength())));
-		if (sc.getTable() != null) {
-			Table table = tableService.findById(sc.getTable().getId());
-			if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
-				elmSubComponent.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
-			if (sc.getTable().getBindingStrength() != null && !sc.getTable().getBindingStrength().equals(""))
-				elmSubComponent.addAttribute(
-						new Attribute("BindingStrength", ExportUtil.str(sc.getTable().getBindingStrength())));
-			if (sc.getTable().getBindingLocation() != null && !sc.getTable().getBindingLocation().equals(""))
-				elmSubComponent.addAttribute(
-						new Attribute("BindingLocation", ExportUtil.str(sc.getTable().getBindingLocation())));
-
+		
+		if (sc.getTables() != null) {
+			if(sc.getTables().size() > 0){
+				String bindingString = "";
+				String bindingStrength = "";
+				String bindingLocation = "";
+				for(TableLink tl:sc.getTables()){
+					Table table = tableService.findById(tl.getId());
+					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+						bindingString = bindingString + table.getBindingIdentifier() + ":";
+				}
+				
+				if (!bindingString.equals(""))
+					elmSubComponent.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
+				if (!bindingStrength.equals("")){
+					elmSubComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
+				}
+					
+				if (!bindingLocation.equals("")){
+					elmSubComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
+				}else {
+					Datatype d = datatypeService.findById(sc.getDatatype().getId());
+					if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
+						elmSubComponent.addAttribute(new Attribute("BindingLocation", "1"));
+					}
+				}
+				
+			}
 		}
 
 		Predicate subComponentPredicate = this.findPredicate(componentDatatype.getPredicates(),
@@ -1446,23 +1539,33 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				elmField.addAttribute(new Attribute("MaxLength", ExportUtil.str(f.getMaxLength())));
 			if (f.getConfLength() != null && !f.getConfLength().equals(""))
 				elmField.addAttribute(new Attribute("ConfLength", ExportUtil.str(f.getConfLength())));
-			if (f.getTable() != null) {
-				Table table = tableService.findById(f.getTable().getId());
-				if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
-					elmField.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
-				if (f.getTable().getBindingStrength() != null && !f.getTable().getBindingStrength().equals("")){
-					elmField.addAttribute(new Attribute("BindingStrength", ExportUtil.str(f.getTable().getBindingStrength())));
-				}
-					
-				if (f.getTable().getBindingLocation() != null && !f.getTable().getBindingLocation().equals("")){
-					elmField.addAttribute(new Attribute("BindingLocation", ExportUtil.str(f.getTable().getBindingLocation())));
-				}else {
-					Datatype d = datatypeService.findById(f.getDatatype().getId());
-					if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
-						elmField.addAttribute(new Attribute("BindingLocation", "1"));
+			if (f.getTables() != null) {
+				if(f.getTables().size() > 0){
+					String bindingString = "";
+					String bindingStrength = "";
+					String bindingLocation = "";
+					for(TableLink tl:f.getTables()){
+						Table table = tableService.findById(tl.getId());
+						if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+							bindingString = bindingString + table.getBindingIdentifier() + ":";
 					}
-				}
 					
+					if (!bindingString.equals(""))
+						elmField.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
+					if (!bindingStrength.equals("")){
+						elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
+					}
+						
+					if (!bindingLocation.equals("")){
+						elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
+					}else {
+						Datatype d = datatypeService.findById(f.getDatatype().getId());
+						if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
+							elmField.addAttribute(new Attribute("BindingLocation", "1"));
+						}
+					}
+					
+				}
 			}
 
 			if (f.isHide())
@@ -1505,21 +1608,35 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					elmComponent.addAttribute(new Attribute("MaxLength", ExportUtil.str(c.getMaxLength())));
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
 					elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
-				if (c.getTable() != null) {
-					Table table = tableService.findById(c.getTable().getId());
-					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
-						elmComponent.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
-					if (c.getTable().getBindingStrength() != null && !c.getTable().getBindingStrength().equals(""))
-						elmComponent.addAttribute(new Attribute("BindingStrength", ExportUtil.str(c.getTable().getBindingStrength())));
-					if (c.getTable().getBindingLocation() != null && !c.getTable().getBindingLocation().equals("")){
-						elmComponent.addAttribute(new Attribute("BindingLocation", ExportUtil.str(c.getTable().getBindingLocation())));
-					}else {
-						Datatype childD = datatypeService.findById(c.getDatatype().getId());
-						if(childD != null && childD.getComponents() != null && childD.getComponents().size() > 0){
-							elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
+				if (c.getTables() != null) {
+					if(c.getTables().size() > 0){
+						String bindingString = "";
+						String bindingStrength = "";
+						String bindingLocation = "";
+						for(TableLink tl:c.getTables()){
+							Table table = tableService.findById(tl.getId());
+							if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+								bindingString = bindingString + table.getBindingIdentifier() + ":";
 						}
+						
+						if (!bindingString.equals(""))
+							elmComponent.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
+						if (!bindingStrength.equals("")){
+							elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
+						}
+							
+						if (!bindingLocation.equals("")){
+							elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
+						}else {
+							Datatype childD = datatypeService.findById(c.getDatatype().getId());
+							if(childD != null && childD.getComponents() != null && childD.getComponents().size() > 0){
+								elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
+							}
+						}
+						
 					}
 				}
+				
 				if (c.isHide())
 					elmComponent.addAttribute(new Attribute("Hide", "true"));
 
@@ -1556,17 +1673,34 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					elmComponent.addAttribute(new Attribute("MaxLength", ExportUtil.str(c.getMaxLength())));
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
 					elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
-				if (c.getTable() != null) {
-					Table table = tableService.findById(c.getTable().getId());
-					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
-						elmComponent.addAttribute(new Attribute("Binding", table.getBindingIdentifier()));
-					if (c.getTable().getBindingStrength() != null && !c.getTable().getBindingStrength().equals(""))
-						elmComponent.addAttribute(
-								new Attribute("BindingStrength", ExportUtil.str(c.getTable().getBindingStrength())));
-					if (c.getTable().getBindingLocation() != null && !c.getTable().getBindingLocation().equals(""))
-						elmComponent.addAttribute(
-								new Attribute("BindingLocation", ExportUtil.str(c.getTable().getBindingLocation())));
-
+				
+				if (c.getTables() != null) {
+					if(c.getTables().size() > 0){
+						String bindingString = "";
+						String bindingStrength = "";
+						String bindingLocation = "";
+						for(TableLink tl:c.getTables()){
+							Table table = tableService.findById(tl.getId());
+							if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+								bindingString = bindingString + table.getBindingIdentifier() + ":";
+						}
+						
+						if (!bindingString.equals(""))
+							elmComponent.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
+						if (!bindingStrength.equals("")){
+							elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
+						}
+							
+						if (!bindingLocation.equals("")){
+							elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
+						}else {
+							Datatype childD = datatypeService.findById(c.getDatatype().getId());
+							if(childD != null && childD.getComponents() != null && childD.getComponents().size() > 0){
+								elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
+							}
+						}
+						
+					}
 				}
 
 				Predicate componentPredicate = this.findPredicate(d.getPredicates(), c.getPosition() + "[1]", null,
@@ -2142,7 +2276,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					for (SegmentRefOrGroup seog : m.getChildren()) {
 						this.visit(seog, segmentsMap, datatypesMap, tablesMap, original);
 					}
-
 				}
 			}
 
@@ -2165,7 +2298,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			filteredProfile.setDatatypeLibrary(datatypes);
 			filteredProfile.setSegmentLibrary(segments);
 			filteredProfile.setMessages(messages);
-			filteredProfile.setTableLibrary(tables);
+			filteredProfile.setTableLibrary(original.getTableLibrary());
 
 			filteredProfiles.add(filteredProfile);
 		}
@@ -2183,8 +2316,13 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 			for (Field f : s.getFields()) {
 				this.addDatatype(f.getDatatype(), original, datatypesMap, tablesMap);
-				if (f.getTable() != null) {
-					tablesMap.put(f.getTable().getBindingIdentifier(), f.getTable());
+				
+				if(f.getTables() != null){
+					if(f.getTables().size() > 0){
+						for(TableLink tl : f.getTables()){
+							tablesMap.put(tl.getBindingIdentifier(), tl);	
+						}
+					}
 				}
 			}
 			
@@ -2202,7 +2340,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					}
 				}
 			}
-
 		} else {
 			Group g = (Group) seog;
 			for (SegmentRefOrGroup child : g.getChildren()) {
@@ -2219,8 +2356,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			Datatype d = datatypeService.findById(dl.getId());
 			for (Component c : d.getComponents()) {
 				this.addDatatype(c.getDatatype(), original, datatypesMap, tablesMap);
-				if (c.getTable() != null && !c.getTable().equals("")) {
-					tablesMap.put(c.getTable().getBindingIdentifier(), c.getTable());
+				if(c.getTables() != null){
+					if(c.getTables().size() > 0){
+						for(TableLink tl : c.getTables()){
+							tablesMap.put(tl.getBindingIdentifier(), tl);	
+						}
+					}
 				}
 			}
 		} else {

@@ -36,7 +36,8 @@ var app = angular
         'ngTagsInput',
         'nsPopover',
         'ngMaterial',
-        'pageslide-directive'
+        'pageslide-directive',
+        'rzModule'
     ]);
 
 var
@@ -72,10 +73,10 @@ app.config(function($routeProvider, RestangularProvider, $httpProvider, Keepaliv
         .when('/compare', {
             templateUrl: 'views/compare.html'
         })
-        // .when('/datatypeLibrary', {
-        //     templateUrl: 'views/datatypeLibrary.html',
-        //     controller: 'DatatypeLibraryCtl'
-        // })
+         .when('/datatypeLibrary', {
+             templateUrl: 'views/datatypeLibrary.html',
+             controller: 'DatatypeLibraryCtl'
+         })
         .when('/doc', {
             templateUrl: 'views/doc.html'
         })

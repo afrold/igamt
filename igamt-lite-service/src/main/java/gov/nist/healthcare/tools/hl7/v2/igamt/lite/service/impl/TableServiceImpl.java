@@ -43,8 +43,11 @@ public class TableServiceImpl implements TableService {
 
   @Override
   public Table findById(String id) {
-    log.info("TableServiceImpl.findById=" + id);
-    return tableRepository.findOne(id);
+    if (id != null) {
+      log.info("TableServiceImpl.findById=" + id);
+      return tableRepository.findOne(id);
+    }
+    return null;
   }
 
   @Override
@@ -84,6 +87,13 @@ public class TableServiceImpl implements TableService {
     // TODO Auto-generated method stub
     return tableRepository.findAllByIds(ids);
   }
+
+  @Override
+  public List<Table> findShortAllByIds(Set<String> ids) {
+    // TODO Auto-generated method stub
+    return tableRepository.findShortAllByIds(ids);
+  }
+
 
 
 }

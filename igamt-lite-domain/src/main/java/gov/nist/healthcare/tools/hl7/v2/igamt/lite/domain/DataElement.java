@@ -121,10 +121,12 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
     this.confLength = confLength;
   }
 
+  @Deprecated
   public TableLink getTable() {
     return table;
   }
 
+  @Deprecated 
   public void setTable(TableLink table) {
     this.table = table;
   }

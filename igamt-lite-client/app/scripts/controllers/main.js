@@ -580,7 +580,22 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             // ////console.log("Change is " + $rootScope.changes[type][object.id][changeType]);
             $rootScope.recordChanged();
         };
-
+        $rootScope.addHL7Table = function(selectedTableLibary, hl7Version) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AddHL7TableOpenCtrl.html',
+                controller: 'AddHL7TableOpenCtrl',
+                windowClass: 'conformance-profiles-modal',
+                resolve: {
+                    selectedTableLibary: function() {
+                        return selectedTableLibary;
+                    },
+                    hl7Version: function() {
+                        return hl7Version;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {}, function() {});
+        };
 
         $rootScope.recordChange2 = function(type, id, attr, value) {
             // if($rootScope.changes[type] === undefined){
@@ -906,6 +921,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         if (parent.path) {
                             s.path = parent.path + "." + element.position + "[1]";
                         }
+
+                        if($rootScope.segmentsMap[s.obj.ref.id] == undefined){
+                            throw new Error("Cannot find Segment[id=" + s.obj.ref.id + ", name= " + s.obj.ref.name + "]");
+                        }
                         s.obj.ref.ext = $rootScope.segmentsMap[s.obj.ref.id].ext;
                         s.obj.ref.label = $rootScope.getLabel(s.obj.ref.name, s.obj.ref.ext);
                         parent.children.push(s);
@@ -933,9 +952,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         f.obj = element;
                         f.path = parent.path + "." + element.position + "[1]";
                         f.children = [];
-                        console.log("====HEEEEREEEEEE");
-                        console.log(f.obj);
-                        console.log($rootScope.datatypesMap[f.obj.datatype.id]);
+                        var d = $rootScope.datatypesMap[f.obj.datatype.id];
+                        if(d === undefined){
+                            throw new Error("Cannot find Data Type[id=" + f.obj.datatype.id + ", name= " + f.obj.datatype.name + "]");
+                        }
                         f.obj.datatype.ext = $rootScope.datatypesMap[f.obj.datatype.id].ext;
                         f.obj.datatype.label = $rootScope.getLabel(f.obj.datatype.name, f.obj.datatype.ext);
                         // for (var i = 0; i < f.obj.tables.length; i++) {
@@ -961,7 +981,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         c.obj = element;
                         c.path = parent.path + "." + element.position + "[1]";
                         c.children = [];
-                        c.obj.datatype.ext = $rootScope.datatypesMap[c.obj.datatype.id].ext;
+                        var d = $rootScope.datatypesMap[c.obj.datatype.id];
+                        if(d === undefined){
+                            throw new Error("Cannot find Data Type[id=" + c.obj.datatype.id + ", name= " + c.obj.datatype.name + "]");
+                        }
+                        console.log('datatype id=' + c.obj.datatype.id);
+                        c.obj.datatype.ext = d.ext;
                         c.obj.datatype.label = $rootScope.getLabel(c.obj.datatype.name, c.obj.datatype.ext);
                         parent.children.push(c);
                         $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
@@ -1147,74 +1172,80 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $rootScope.findDatatypeRefs = function(datatype, obj, path) {
-            if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
-                if (obj.datatype.id === datatype.id) {
-                    var found = angular.copy(obj);
-                    found.path = path;
-                    $rootScope.references.push(found);
-                }
-                $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path);
-            } else if (angular.equals(obj.type, 'segment')) {
-                angular.forEach(obj.fields, function(field) {
-                    $rootScope.findDatatypeRefs(datatype, field, path + "-" + field.position);
-                });
-            } else if (angular.equals(obj.type, 'datatype')) {
-                if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
-                    angular.forEach(obj.components, function(component) {
-                        $rootScope.findDatatypeRefs(datatype, component, path + "." + component.position);
+            if(obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.datatype.id === datatype.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        $rootScope.references.push(found);
+                    }
+                    $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function (field) {
+                        $rootScope.findDatatypeRefs(datatype, field, path + "-" + field.position);
                     });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function (component) {
+                            $rootScope.findDatatypeRefs(datatype, component, path + "." + component.position);
+                        });
+                    }
                 }
             }
         };
 
         $rootScope.findSegmentRefs = function(segment, obj, path) {
-            if (angular.equals(obj.type, 'message') || angular.equals(obj.type, 'group')) {
-                angular.forEach(obj.children, function(child) {
-                    $rootScope.findSegmentRefs(segment, child, path + "." + child.position);
-                });
-            } else if (angular.equals(obj.type, 'segmentRef')) {
-                if (obj.ref.id === segment.id) {
-                    var found = angular.copy(obj);
-                    found.path = path;
-                    $rootScope.references.push(found);
+            if(obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'message') || angular.equals(obj.type, 'group')) {
+                    angular.forEach(obj.children, function (child) {
+                        $rootScope.findSegmentRefs(segment, child, path + "." + child.position);
+                    });
+                } else if (angular.equals(obj.type, 'segmentRef')) {
+                    if (obj.ref.id === segment.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        $rootScope.references.push(found);
+                    }
                 }
             }
         };
 
         $rootScope.findTableRefs = function(table, obj, path) {
-            if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
-                // if (obj.table != undefined) {
-                //     if (obj.table.id === table.id) {
-                //         var found = angular.copy(obj);
-                //         found.path = path;
-                //         $rootScope.references.push(found);
-                //     }
-                // }
-                if (obj.tables != undefined && obj.tables.length > 0) {
-                    angular.forEach(obj.tables, function(tableInside) {
+            if(obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    // if (obj.table != undefined) {
+                    //     if (obj.table.id === table.id) {
+                    //         var found = angular.copy(obj);
+                    //         found.path = path;
+                    //         $rootScope.references.push(found);
+                    //     }
+                    // }
+                    if (obj.tables != undefined && obj.tables.length > 0) {
+                        angular.forEach(obj.tables, function (tableInside) {
 
-                        if (tableInside.id === table.id) {
-                            var found = angular.copy(obj);
-                            found.path = path;
-                            $rootScope.references.push(found);
+                            if (tableInside.id === table.id) {
+                                var found = angular.copy(obj);
+                                found.path = path;
+                                $rootScope.references.push(found);
 
-                        }
+                            }
+                        });
+
+
+                    }
+
+
+                    $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function (field) {
+                        $rootScope.findTableRefs(table, field, path + "-" + field.position);
                     });
-
-
-                }
-
-
-                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
-            } else if (angular.equals(obj.type, 'segment')) {
-                angular.forEach(obj.fields, function(field) {
-                    $rootScope.findTableRefs(table, field, path + "-" + field.position);
-                });
-            } else if (angular.equals(obj.type, 'datatype')) {
-                if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
-                    angular.forEach(obj.components, function(component) {
-                        $rootScope.findTableRefs(table, component, path + "." + component.position);
-                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function (component) {
+                            $rootScope.findTableRefs(table, component, path + "." + component.position);
+                        });
+                    }
                 }
             }
         };
@@ -2112,11 +2143,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $scope.init = function() {
-            // $http.get('api/igdocuments/config', {timeout: 60000}).then(function
-            // (response) {
-            // $rootScope.config = angular.fromJson(response.data);
-            // }, function (error) {
-            // });
+             $http.get('api/igdocuments/config', {timeout: 60000}).then(function
+             (response) {
+             $rootScope.config = angular.fromJson(response.data);
+             }, function (error) {
+             });
         };
 
         $scope.getFullName = function() {
@@ -2250,7 +2281,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         $rootScope.getTableLabel = function(table) {
             if (table && table != null) {
-                return $rootScope.getTableBindingIdentifier(table);
+                return $rootScope.bindingIdentifier;
             }
             return "";
         };
@@ -2437,7 +2468,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
         $rootScope.addedTables = [];
         $scope.continue();
     };
-
+    
     $scope.error = null;
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
@@ -2445,6 +2476,12 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
 
     $scope.save = function() {
         var data = $rootScope.currentData;
+        if($rootScope.libraryDoc&&$rootScope.libraryDoc!=null){
+        	if(data.datatypeLibId&&data.date){
+        		 DatatypeLibrarySvc.saveMetaData($rootScope.libraryDoc.datatypeLibrary.id, data);
+        	}
+        	
+        }
         var section = { id: data.id, sectionTitle: data.sectionTitle, sectionDescription: data.sectionDescription, sectionPosition: data.sectionPosition, sectionContents: data.sectionContents };
         ////console.log(data);
 
@@ -2571,27 +2608,29 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
         } else if (data.type && data.type === "datatype") {
             var datatype = $rootScope.datatype;
             var ext = datatype.ext;
-            if (datatype.libIds == undefined) datatype.libIds = [];
-            if (datatype.libIds.indexOf($rootScope.igdocument.profile.datatypeLibrary.id) == -1) {
-                datatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
-            }
+            var libId="";
+            var children=[];
             DatatypeService.save(datatype).then(function(result) {
-                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary.children);
+            	if($rootScope.libraryDoc && $rootScope.libraryDoc!== null){
+            		libId= $rootScope.libraryDoc.datatypeLibrary.id;
+            		children=$rootScope.libraryDoc.datatypeLibrary.children; 
+            		
+            	}
+            	else if($rootScope.igdocument&&$rootScope.igdocument!==null){
+            		libId= $rootScope.igdocument.profile.datatypeLibrary.id;
+            		children = $rootScope.igdocument.profile.datatypeLibrary.children;
+            	}
+                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, children);
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
-                DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function(link) {
-                    DatatypeService.saveNewElements().then(function() {
+                DatatypeLibrarySvc.updateChild(libId, newLink).then(function(link) {
                         DatatypeService.merge($rootScope.datatypesMap[result.id], result);
                         if (oldLink && oldLink != null) {
                             oldLink.ext = newLink.ext;
                             oldLink.name = newLink.name;
                         }
                         $scope.continue();
-                    }, function(error) {
-                        $rootScope.msg().text = "Sorry an error occured. Please try again";
-                        $rootScope.msg().type = "danger";
-                        $rootScope.msg().show = true;
-                    });
+
                 }, function(error) {
                     $rootScope.msg().text = "Sorry an error occured. Please try again";
                     $rootScope.msg().type = "danger";
@@ -2606,18 +2645,26 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
 
 
         } else if (data.type && data.type === "table") {
+        	
             var table = $rootScope.table;
+            var libId="";
+            var children=[];
             var bindingIdentifier = table.bindingIdentifier;
-            if (table.libIds == undefined) table.libIds = [];
-            if (table.libIds.indexOf($rootScope.igdocument.profile.tableLibrary.id) == -1) {
-                table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
-            }
+        	if($rootScope.libraryDoc && $rootScope.libraryDoc!== null){
+        		libId= $rootScope.libraryDoc.tableLibrary.id;
+        		children=$rootScope.libraryDoc.tableLibrary.children; 
+        		
+        	}
+        	else if($rootScope.igdocument&&$rootScope.igdocument!==null){
+        		libId= $rootScope.igdocument.profile.tableLibrary.id;
+        		children = $rootScope.igdocument.profile.tableLibrary.children;
+        	}
             TableService.save(table).then(function(result) {
-                var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary.children);
+                var oldLink = TableLibrarySvc.findOneChild(result.id,children);
                 TableService.merge($rootScope.tablesMap[result.id], result);
                 var newLink = TableService.getTableLink(result);
                 newLink.bindingIdentifier = bindingIdentifier;
-                TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function(link) {
+                TableLibrarySvc.updateChild(libId, newLink).then(function(link) {
                     if (oldLink && oldLink != null) oldLink.bindingIdentifier = link.bindingIdentifier;
                     $rootScope.msg().text = "tableSaved";
                     $rootScope.msg().type = "success";

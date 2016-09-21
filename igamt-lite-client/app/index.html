@@ -8,7 +8,6 @@
 
     <meta name="robots" content="none"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
@@ -22,14 +21,16 @@
                       }
     </style>
 
-    <link rel="" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="lib/material-custom/bootstrap-material-design.min.css" />
     <link rel="stylesheet" href="lib/material-custom/ripples.min.css" />
+
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
     <link rel="stylesheet" href="bower_components/sass-bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_editor.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_editor.pkgd.min.css" />
@@ -54,6 +55,7 @@
     <link rel="stylesheet" href="bower_components/angular-ui-notification/dist/angular-ui-notification.css" />
     <link rel="stylesheet" href="bower_components/angular-object-diff/dist/angular-object-diff.css" />
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
+    <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -64,7 +66,7 @@
     <link rel="stylesheet" href="styles/dialog.css"/>
     <!-- endbuild -->
 
-    <link rel="stylesheet" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css"/>
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css"/>
     <link rel="stylesheet" href="lib/igamt.css"/>
@@ -78,8 +80,8 @@
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/table.css">
     <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
-    <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <style>
         body {
@@ -97,6 +99,7 @@
         li.drop-upload form input {
             margin-left: 0;
         }
+
 
     </style>
     <script type="text/javascript">
@@ -132,10 +135,11 @@
         <div ng-view></div>
 
     </div>
-
     <div ng-include="'views/footer.html'"></div>
     <div ng-include="'views/templates.html'"></div>
  	<div ng-include="'views/edit/editDatatypes.html'"></div>
+ 	<div ng-include="'views/edit/editDatatypeInLibrary.html'"></div>
+ 	
     <ng-include src="'views/edit/editDocument.html'"></ng-include>
     <ng-include src="'views/edit/editSegments.html'"></ng-include>
     <ng-include src="'views/edit/editMessages.html'"></ng-include>
@@ -160,10 +164,9 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-messages/angular-messages.js"></script>
-    <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -220,6 +223,7 @@
     <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
     <script src="bower_components/angular-object-diff/dist/angular-object-diff.js"></script>
     <script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
+    <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js scripts/modules.js -->
@@ -337,6 +341,7 @@
     <script src="scripts/controllers/EditSectionsCtl.js"></script>
     <script src="scripts/controllers/ErrorsCtrl.js"></script>
     <script src="scripts/controllers/FilteringCtl.js"></script>
+    <script src="scripts/controllers/LibraryDt.js"></script>
     <script src="scripts/controllers/MastermapCtl.js"></script>
     <script src="scripts/controllers/ToCCtl.js"></script>
     <script src="scripts/controllers/TreeController.js"></script>
@@ -358,6 +363,7 @@
     <script src="scripts/controllers/registerResetPassword.js"></script>
     <script src="scripts/controllers/registration.js"></script>
     <script src="scripts/controllers/segments.js"></script>
+    <script src="scripts/controllers/tabesForLib.js"></script>
     <script src="scripts/controllers/tables.js"></script>
     <script src="scripts/controllers/tablesINLIB.js"></script>
     <!-- endbuild -->

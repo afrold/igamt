@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
+    .controller('IGDocumentListCtrl', function(TableService,$scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
 
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
@@ -712,7 +712,7 @@ angular.module('igl')
 
         };
 
-        $scope.addCSVTables = function(selectedTableLibary) {
+        $rootScope.addCSVTables = function(selectedTableLibary) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddCSVTableOpenCtrl.html',
                 controller: 'AddCSVTableOpenCtrl',
@@ -726,7 +726,7 @@ angular.module('igl')
             modalInstance.result.then(function() {}, function() {});
         };
 
-        $scope.addPHINVADSTables = function(selectedTableLibary) {
+        $rootScope.addPHINVADSTables = function(selectedTableLibary) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddPHINVADSTableOpenCtrl.html',
                 controller: 'AddPHINVADSTableOpenCtrl',
@@ -740,7 +740,7 @@ angular.module('igl')
             modalInstance.result.then(function() {}, function() {});
         };
 
-        $scope.addHL7Table = function(selectedTableLibary, hl7Version) {
+        $rootScope.addHL7Table = function(selectedTableLibary, hl7Version) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddHL7TableOpenCtrl.html',
                 controller: 'AddHL7TableOpenCtrl',
@@ -773,6 +773,36 @@ angular.module('igl')
                     resolve: {
                         hl7Version: function() {
                             return $scope.hl7Version;
+                        },
+                        datatypes: function() {
+                            console.log("datatypes");
+                            console.log(result);
+
+                            return result;
+                        }
+                    }
+                }).result.then(function(results) {
+                    var ids = [];
+                    angular.forEach(results, function(result) {
+                        ids.push(result.id);
+                    });
+                });
+            });
+        };
+        
+        $scope.addMasterDatatype = function() {
+        	console.log("=========version=======");
+            var scopes = ['MASTER'];
+
+            DatatypeService.getPublishedMaster($rootScope.igdocument.profile.metaData.hl7Version).then(function(result) {
+                var addDatatypeInstance = $modal.open({
+                    templateUrl: 'AddDatatypeDlg.html',
+                    controller: 'AddDatatypeDlgCtl',
+                    size: 'lg',
+                    windowClass: 'flavor-modal-window',
+                    resolve: {
+                        hl7Version: function() {
+                            return $rootScope.igdocument.profile.metaData.hl7Version;
                         },
                         datatypes: function() {
                             console.log("datatypes");
@@ -923,42 +953,50 @@ angular.module('igl')
                 blockUI.start();
                 $timeout(
                     function() {
-                        SegmentService.get(segment.id).then(function(result) {
-                            $rootScope.segment = angular.copy(segment);
-                            $rootScope.$emit("event:initSegment");
+                        try {
+                            SegmentService.get(segment.id).then(function (result) {
+                                $rootScope.segment = angular.copy(segment);
+                                $rootScope.$emit("event:initSegment");
 
-                            $rootScope.currentData = $rootScope.segment;
-                            $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
-                            $rootScope.segment["type"] = "segment";
-                            $rootScope.tableWidth = null;
-                            $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                            $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                            $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                            $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                            $scope.loadingSelection = false;
-                            try {
-                                if ($scope.segmentsParams)
-                                    $scope.segmentsParams.refresh();
-                            } catch (e) {
+                                $rootScope.currentData = $rootScope.segment;
+                                $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
+                                $rootScope.segment["type"] = "segment";
+                                $rootScope.tableWidth = null;
+                                $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                                $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                                $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                                $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                                $scope.loadingSelection = false;
+                                try {
+                                    if ($scope.segmentsParams)
+                                        $scope.segmentsParams.refresh();
+                                } catch (e) {
 
-                            }
+                                }
 
-                            $rootScope.references = [];
-                            angular.forEach($rootScope.igdocument.profile.messages.children, function(message) {
-                                $rootScope.findSegmentRefs($rootScope.segment, message, message.name);
+                                $rootScope.references = [];
+                                angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
+                                    $rootScope.findSegmentRefs($rootScope.segment, message, message.name);
+                                });
+                                $rootScope.tmpReferences = [].concat($rootScope.references);
+
+                                $scope.loadingSelection = false;
+                                $rootScope.$emit("event:initEditArea");
+                                blockUI.stop();
+                            }, function (error) {
+                                $scope.loadingSelection = false;
+                                $rootScope.msg().text = error.data.text;
+                                $rootScope.msg().type = error.data.type;
+                                $rootScope.msg().show = true;
+                                blockUI.stop();
                             });
-                            $rootScope.tmpReferences = [].concat($rootScope.references);
-
+                        }catch(e){
                             $scope.loadingSelection = false;
-                            $rootScope.$emit("event:initEditArea");
-                            blockUI.stop();
-                        }, function(error) {
-                            $scope.loadingSelection = false;
-                            $rootScope.msg().text = error.data.text;
-                            $rootScope.msg().type = error.data.type;
+                            $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                            $rootScope.msg().type = "danger";
                             $rootScope.msg().show = true;
                             blockUI.stop();
-                        });
+                        }
                     }, 100);
             }
         };
@@ -1000,6 +1038,7 @@ angular.module('igl')
                 blockUI.start();
                 $timeout(
                     function() {
+                        try{
                         DatatypeService.getOne(datatype.id).then(function(result) {
                             $rootScope.datatype = angular.copy(result);
                             $rootScope.$emit("event:initDatatype");
@@ -1035,6 +1074,7 @@ angular.module('igl')
                             $rootScope.tmpReferences = [].concat($rootScope.references);
 
                             $rootScope.$emit("event:initEditArea");
+
                             blockUI.stop();
                         }, function(error) {
                             $scope.loadingSelection = false;
@@ -1043,7 +1083,19 @@ angular.module('igl')
                             $rootScope.msg().show = true;
                             blockUI.stop();
                         });
+                        }catch(e){
+                            $scope.loadingSelection = false;
+                            $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                            $rootScope.msg().type = "danger";
+                            $rootScope.msg().show = true;
+                            blockUI.stop();
+                        }
                     }, 100);
+
+                setTimeout(function(){
+                    $scope.$broadcast('reCalcViewDimensions');
+                    console.log("refreshed Slider!!");
+                }, 1000);
             }
         };
 
@@ -1054,42 +1106,48 @@ angular.module('igl')
             blockUI.start();
             $timeout(
                 function() {
-                    $rootScope.originalMessage = message;
-                    $rootScope.message = angular.copy(message);
-                    $rootScope.currentData = $rootScope.message;
-                    $rootScope.processMessageTree($rootScope.message);
-                    $rootScope.tableWidth = null;
-                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 630);
-                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
-                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
-                    $scope.loadingSelection = false;
                     try {
-                        if ($scope.messagesParams)
-                            $scope.messagesParams.refresh();
-                    } catch (e) {
+                        $rootScope.originalMessage = message;
+                        $rootScope.message = angular.copy(message);
+                        $rootScope.currentData = $rootScope.message;
+                        $rootScope.processMessageTree($rootScope.message);
+                        $rootScope.tableWidth = null;
+                        $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                        $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                        $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                        $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                        $scope.loadingSelection = false;
+                        try {
+                            if ($scope.messagesParams)
+                                $scope.messagesParams.refresh();
+                        } catch (e) {
 
+                        }
+                        $rootScope.$emit("event:initEditArea");
+                        blockUI.stop();
+                    }catch(e){
+                        $scope.loadingSelection = false;
+                        $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                        $rootScope.msg().type = "danger";
+                        $rootScope.msg().show = true;
+                        blockUI.stop();
                     }
-                    $rootScope.$emit("event:initEditArea");
-                    blockUI.stop();
                 }, 100);
         };
 
         $scope.selectTable = function(t) {
             $rootScope.Activate(t.id);
             var table = angular.copy(t);
-
             if ($scope.viewSettings.tableReadonly || table.scope !== 'USER') {
                 $rootScope.subview = "ReadValueSets.html";
             } else {
                 $rootScope.subview = "EditValueSets.html";
             }
-
             $scope.loadingSelection = true;
             blockUI.start();
-            $timeout(
-                function() {
-                    $rootScope.table = table;
+            try {
+                TableService.getOne(table.id).then(function (tbl) {
+                    $rootScope.table = tbl;
                     $rootScope.$emit("event:initTable");
                     $rootScope.currentData = $rootScope.table;
                     $rootScope.codeSystems = [];
@@ -1101,17 +1159,58 @@ angular.module('igl')
                         }
                     }
                     $rootScope.references = [];
-                    angular.forEach($rootScope.segments, function(segment) {
+                    angular.forEach($rootScope.segments, function (segment) {
                         $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment));
                     });
-                    angular.forEach($rootScope.datatypes, function(dt) {
+                    angular.forEach($rootScope.datatypes, function (dt) {
                         $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
                     });
                     $rootScope.tmpReferences = [].concat($rootScope.references);
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
                     blockUI.stop();
-                }, 100);
+                }, function (errr) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = errr.data.text;
+                    $rootScope.msg().type = errr.data.type;
+                    $rootScope.msg().show = true;
+                    blockUI.stop();
+                });
+            }catch(e){
+                $scope.loadingSelection = false;
+                $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                blockUI.stop();
+            }
+
+//            $timeout(
+//                function() {
+//                    $rootScope.table = table;
+//                    $rootScope.$emit("event:initTable");
+//                    $rootScope.currentData = $rootScope.table;
+//                    $rootScope.codeSystems = [];
+//                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
+//                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+//                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+//                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+//                            }
+//                        }
+//                    }
+//                    $rootScope.references = [];
+//                    angular.forEach($rootScope.segments, function(segment) {
+//                        $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment));
+//                    });
+//                    angular.forEach($rootScope.datatypes, function(dt) {
+//                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
+//                    });
+//                    $rootScope.tmpReferences = [].concat($rootScope.references);
+//                    $scope.loadingSelection = false;
+//                    $rootScope.$emit("event:initEditArea");
+//                    blockUI.stop();
+//                }, 100);
+
+
         };
 
         $scope.selectSection = function(section) {
@@ -1125,12 +1224,20 @@ angular.module('igl')
 
             $timeout(
                 function() {
+                    try{
                     $rootScope.section = angular.copy(section);
                     $rootScope.currentData = $rootScope.section;
                     $rootScope.originalSection = section;
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
                     blockUI.stop();
+                    }catch(e){
+                        $scope.loadingSelection = false;
+                        $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                        $rootScope.msg().type = "danger";
+                        $rootScope.msg().show = true;
+                        blockUI.stop();
+                    }
                 }, 100);
         };
 
@@ -1527,67 +1634,83 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
     $scope.loading = false;
     $scope.selectedTableLibary = selectedTableLibary;
     $scope.importedTable = null;
+    $scope.warning = '';
     $scope.data = null;
+
+    $scope.fileSelected = function(){
+        return document.getElementById('csvValueSetFile').files.length != 0;
+    };
+
 
     $scope.uploadCSVFile = function() {
         $scope.loading = true;
-        var f = document.getElementById('file').files[0];
-        var reader = new FileReader();
-        reader.onloadend = function(e) {
-            $scope.data = Papa.parse(e.target.result);
-            var index = 0;
-            $scope.importedTable = {};
-            $scope.importedTable.scope = 'USER';
-            $scope.importedTable.codes = [];
-            $scope.importedTable.libIds = [];
-            angular.forEach($scope.data.data, function(row) {
-                index = index + 1;
 
-                if (index > 1 && index < 11) {
-                    switch (row[0]) {
-                        case 'Mapping Identifier':
-                            $scope.importedTable.bindingIdentifier = row[1];
-                            break;
-                        case 'Name':
-                            $scope.importedTable.name = row[1];
-                            break;
-                        case 'Description':
-                            $scope.importedTable.description = row[1];
-                            break;
-                        case 'OID':
-                            $scope.importedTable.oid = row[1];
-                            break;
-                        case 'Version':
-                            $scope.importedTable.version = row[1];
-                            break;
-                        case 'Extensibility':
-                            $scope.importedTable.extensibility = row[1];
-                            break;
-                        case 'Stability':
-                            $scope.importedTable.stability = row[1];
-                            break;
-                        case 'Content Definition':
-                            $scope.importedTable.contentDefinition = row[1];
-                            break;
-                        case 'Comment':
-                            $scope.importedTable.comment = row[1];
+        if(document.getElementById('csvValueSetFile').files.length == 0){
+            $scope.warning = 'No file selected';
+        }else {
+            var f = document.getElementById('csvValueSetFile').files[0];
+            var reader = new FileReader();
+            reader.onloadend = function(e) {
+                $scope.data = Papa.parse(e.target.result);
+                var index = 0;
+                $scope.importedTable = {};
+                $scope.importedTable.scope = 'USER';
+                $scope.importedTable.codes = [];
+                $scope.importedTable.libIds = [];
+                angular.forEach($scope.data.data, function(row) {
+                    index = index + 1;
+
+                    if (index > 1 && index < 11) {
+                        if(row[1] != ''){
+                            switch (row[0]) {
+                                case 'Mapping Identifier':
+                                    $scope.importedTable.bindingIdentifier = row[1];
+                                    break;
+                                case 'Name':
+                                    $scope.importedTable.name = row[1];
+                                    break;
+                                case 'Description':
+                                    $scope.importedTable.description = row[1];
+                                    break;
+                                case 'OID':
+                                    $scope.importedTable.oid = row[1];
+                                    break;
+                                case 'Version':
+                                    $scope.importedTable.version = row[1];
+                                    break;
+                                case 'Extensibility':
+                                    $scope.importedTable.extensibility = row[1];
+                                    break;
+                                case 'Stability':
+                                    $scope.importedTable.stability = row[1];
+                                    break;
+                                case 'Content Definition':
+                                    $scope.importedTable.contentDefinition = row[1];
+                                    break;
+                                case 'Comment':
+                                    $scope.importedTable.comment = row[1];
+                            }
+                        }
+                    } else if (index > 13) {
+
+                        var code = {};
+                        code.value = row[0];
+                        code.label = row[1];
+                        code.codeSystem = row[2];
+                        code.codeUsage = row[3];
+                        code.comments = row[4];
+
+                        if(code.value != null && code.value != "") $scope.importedTable.codes.push(code);
                     }
-                } else if (index > 13) {
+                });
 
-                    var code = {};
-                    code.value = row[0];
-                    code.label = row[1];
-                    code.codeSystem = row[2];
-                    code.codeUsage = row[3];
-                    code.comments = row[4];
+                $scope.save();
+            };
 
-                    $scope.importedTable.codes.push(code);
-                }
-            });
+            reader.readAsBinaryString(f);
+        }
 
-            $scope.save();
-        };
-        reader.readAsBinaryString(f);
+
         $scope.loading = false;
     };
 
@@ -1599,25 +1722,16 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
     $scope.save = function() {
         $scope.importedTable.bindingIdentifier = $rootScope.createNewFlavorName($scope.importedTable.bindingIdentifier);
         $scope.importedTable.libIds.push($scope.selectedTableLibary.id);
-        var newLink = angular.fromJson({
-            id: $scope.importedTable.id,
-            bindingIdentifier: $scope.importedTable.bindingIdentifier
-        });
 
-        $scope.selectedTableLibary.children.push(newLink);
-
-        var addedTable = $scope.importedTable;
-        $rootScope.tables.splice(0, 0, addedTable);
-        $rootScope.tablesMap[addedTable.id] = addedTable;
-        TableService.save(addedTable).then(function(result) {
+        TableService.save($scope.importedTable).then(function (result) {
             var newTable = result;
-            TableLibrarySvc.addChild($scope.selectedTableLibary.id, newLink).then(function(link) {
-                if ($scope.editForm) {
-                    $scope.editForm.$setPristine();
-                    $scope.editForm.$dirty = false;
-                }
+            console.log(newTable);
+            var newLink = {};
+            newLink.bindingIdentifier = newTable.bindingIdentifier;
+            newLink.id = newTable.id;
 
-                $scope.selectedTableLibary.children.splice(0, 0, link);
+            TableLibrarySvc.addChild($scope.selectedTableLibary.id, newLink).then(function (link) {
+                $scope.selectedTableLibary.children.splice(0, 0, newLink);
                 $rootScope.tables.splice(0, 0, newTable);
                 $rootScope.table = newTable;
                 $rootScope.tablesMap[newTable.id] = newTable;
@@ -1629,20 +1743,13 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
                     $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
                 }
                 $rootScope.$broadcast('event:openTable', newTable);
-
-                $rootScope.clearChanges();
-                $rootScope.msg().text = "tableSaved";
-                $rootScope.msg().type = "success";
-                $rootScope.msg().show = true;
-
-            }, function(error) {
-                $scope.saving = false;
+            }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
             });
-        }, function(error) {
-            $scope.saving = false;
+
+        }, function (error) {
             $rootScope.msg().text = error.data.text;
             $rootScope.msg().type = error.data.type;
             $rootScope.msg().show = true;
@@ -1773,9 +1880,18 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
         //$scope.hl7Version = hl7Version;
         //$scope.hl7Datatypes = datatypes;
+		$scope.masterDatatypes=[];
+		$scope.newDts=[];
+		
         var secretEmptyKey = '[$empty$]'
 
         $scope.hl7Datatypes = datatypes.filter(function(current) {
+            return $rootScope.datatypes.filter(function(current_b) {
+                return current_b.id == current.id;
+            }).length == 0
+        });
+        
+        $scope.masterDatatypes = datatypes.filter(function(current) {
             return $rootScope.datatypes.filter(function(current_b) {
                 return current_b.id == current.id;
             }).length == 0
@@ -1850,6 +1966,51 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             $modalInstance.dismiss('cancel');
         };
     });
+
+angular.module('igl').controller('AddMasterDatatypes',
+	    function($scope, $rootScope, $modalInstance, datatypes, DatatypeLibrarySvc, DatatypeService) {
+		$scope.version= $rootScope.igdocument.profile.metaData.hl7Version;
+		$scope.scopes=["MASTER"];
+		$scope.masterDatatypes=[];
+		$scope.newDts=[];
+		DatatypeService.getPublishedMaster().then(function(result){
+			$scope.masterDatatypes=result;
+			
+		});
+		
+		
+
+	        $scope.ok = function() {
+	            var newLink = angular.fromJson({
+	                id: $scope.newDatatype.id,
+	                name: $scope.newDatatype.name
+	            });
+
+	            DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function(link) {
+	                $rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
+	                $rootScope.datatypes.splice(0, 0, $scope.newDatatype);
+	                $rootScope.datatype = $scope.newDatatype;
+	                $rootScope.datatypesMap[$scope.newDatatype.id] = $scope.newDatatype;
+	                $rootScope.processElement($scope.newDatatype);
+	                $rootScope.filteredDatatypesList.push($scope.newDatatype);
+	                $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
+	                $rootScope.$broadcast('event:openDatatype', $scope.newDatatype);
+	                $rootScope.msg().text = "datatypeAdded";
+	                $rootScope.msg().type = "success";
+	                $rootScope.msg().show = true;
+	                $modalInstance.close(datatypes);
+	            }, function(error) {
+	                $rootScope.saving = false;
+	                $rootScope.msg().text = error.data.text;
+	                $rootScope.msg().type = error.data.type;
+	                $rootScope.msg().show = true;
+	            });
+	        };
+
+	        $scope.cancel = function() {
+	            $modalInstance.dismiss('cancel');
+	        };
+	    });
 
 
 angular.module('igl').controller('AddSegmentDlgCtl',

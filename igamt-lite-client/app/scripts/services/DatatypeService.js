@@ -51,7 +51,7 @@ angular.module('igl').factory('DatatypeService',
                 return template;
             },
             getTemplate: function(node, root) {
-                if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
+                if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope==='MASTER'|| root.scope === null) {
                     return DatatypeService.getReadTemplate(node, root);
                 } else {
                     //console.log("INTO THE NODES ")
@@ -82,11 +82,11 @@ angular.module('igl').factory('DatatypeService',
             },
 
             getReadTemplateINLIB: function(node, root) {
-                return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentReadTreeINLIB.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentReadTreeINLIB.html' : '';
+                return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentReadTreeINLIB2.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentReadTreeINLIB2.html' : '';
             },
 
             getEditTemplateINLIB: function(node, root) {
-                return node.type === 'Datatype' ? 'DatatypeEditTreeINLIB.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentEditTreeINLIB.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentEditTreeINLIB.html' : '';
+                return node.type === 'Datatype' ? 'DatatypeEditTreeINLIB2.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentEditTreeINLIB2.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentEditTreeINLIB2.html' : '';
             },
 
 
@@ -199,6 +199,36 @@ angular.module('igl').factory('DatatypeService',
                 $http.post('api/datatypes/findByIds', ids).then(function(response) {
                     var datatypes = angular.fromJson(response.data);
                     delay.resolve(datatypes);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+
+            getOneStandard: function(name,version,versions){
+                var wrapper ={
+                    name:name,
+                    hl7Version :version,
+                    scope:"HL7STANDARD",
+                    versions:versions
+                }
+                var delay = $q.defer();
+                $http.post('api/datatypes/findOneStrandard', angular.toJson(wrapper)).then(function(response) {
+                    console.log(response);
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            getPublishedMaster: function(hl7Version){
+                var delay = $q.defer();
+
+                $http.post('api/datatypes/findPublished',hl7Version).then(function(response) {
+                    console.log(response);
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
                 }, function(error) {
                     delay.reject(error);
                 });

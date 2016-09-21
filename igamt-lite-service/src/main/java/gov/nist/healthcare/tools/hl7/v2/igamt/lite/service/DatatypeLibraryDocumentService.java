@@ -36,7 +36,7 @@ public interface DatatypeLibraryDocumentService {
 
   List<DatatypeLibraryDocument> findByAccountId(Long accountId, String hl7Version);
 
-  DatatypeLibraryDocument create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
+  DatatypeLibraryDocument create(String name, String ext, SCOPE scope, String hl7Version, String description, String orgName, Long accountId);
 
   List<String> findHl7Versions();
 
@@ -57,7 +57,7 @@ public interface DatatypeLibraryDocumentService {
 
   void delete(String dtLibId);
 
-List<DatatypeLibraryDocument> findByScope(SCOPE scope);
+  List<DatatypeLibraryDocument> findByScope(SCOPE scope);
 
   
 
