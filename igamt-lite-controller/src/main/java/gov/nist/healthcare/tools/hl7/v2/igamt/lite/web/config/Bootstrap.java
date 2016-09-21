@@ -102,10 +102,12 @@ public class Bootstrap implements InitializingBean {
     // new DataCorrection().updateValueSetForSegment();
     // new DataCorrection().updateValueSetsForDT();
     // Note: Run The next four lines just one time and then comment them.
-    // addVersionAndScopetoPRELOADEDIG();
-    // addVersionAndScopetoHL7IG();
-    // addVersionAndScopetoUSERIG();
-    // addScopeUserToOldClonedPRELOADEDIG();
+//     addVersionAndScopetoPRELOADEDIG();
+//     addVersionAndScopetoHL7IG();
+//     addVersionAndScopetoUSERIG();
+//     addScopeUserToOldClonedPRELOADEDIG();
+	  
+	  
     // changeTabletoTablesInNewHl7();
 
   }

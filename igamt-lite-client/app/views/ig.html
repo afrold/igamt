@@ -375,7 +375,7 @@
                             <!--<p>HL7 Version:{{hl7Version}}</p>-->
                             <div class="input-group">
                                 <span class="input-group-addon" id="datatype-basic-addon1"><i class="fa fa-search"></i> Search</span>
-                                <input type="text" class="form-control input-lg" ng-model="newDatatype" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as datatype.name for datatype in hl7Datatypes|filter:$viewValue" placeholder="Search By Name">
+                                <input type="text" class="form-control input-lg" ng-model="newDatatype" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as datatype.name for datatype in hl7Datatypes|filter:{name:$viewValue}|limitTo:5" placeholder="Search By Name">
                             </div>
                         </div>
                     </div>
@@ -415,7 +415,7 @@
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="segment-basic-addon1"><i class="fa fa-search"></i> Search</span>
-                                <input type="text" class="form-control input-lg" ng-model="newSegment" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="segment as segment.name for segment in hl7Segments|filter:$viewValue" placeholder="Search By Name">
+                                <input type="text" class="form-control input-lg" ng-model="newSegment" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="segment as segment.name for segment in hl7Segments|filter:{name:$viewValue}| limitTo:5" placeholder="Search By Name">
                             </div>
                         </div>
                     </div>
