@@ -29,15 +29,24 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
 
   private String label;
 
-  private String ext;
+  private String ext="";
 
   private String purposeAndUse = "";
 
   protected List<Component> components = new ArrayList<Component>();
 
   private String name = "";
+  private List<String> hl7versions=new ArrayList<String>(); 
 
-  private String description = "";
+  public List<String> getHl7versions() {
+	return hl7versions;
+}
+
+public void setHl7versions(List<String> hl7versions) {
+	this.hl7versions = hl7versions;
+}
+
+private String description = "";
 
   protected String comment = "";
 
@@ -46,6 +55,7 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   protected String defPreText= "";
   
   protected String defPostText = "";
+  
   
   protected int precisionOfDTM = 3;
   protected boolean timeZoneOfDTM = false;
@@ -63,7 +73,7 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   }
 
   public String getExt() {
-    return ext;
+    return this.ext;
   }
 
   public void setExt(String ext) {
@@ -221,8 +231,28 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
     }
     return x;
   }
+  
+  public boolean isIdentique(Datatype d){
+	if(!this.getName().equals(d.getName())) {
+		return false;
+	}
+	else if (d.getComponents().size()!=this.getComponents().size()){
+		return false;
+	}else{
+		for(int i= 0; i < d.getComponents().size(); i++){
+			if(!this.getComponents().get(i).isIdentique(d.getComponents().get(i))){
+			return false;
+			}
+			
+		}
+		return true;
+	} 
+	
+	
+  }
+  
 
-  @Override
+@Override
   public int hashCode() {
     return new HashCodeBuilder(17, 31).append(id).toHashCode();
   }

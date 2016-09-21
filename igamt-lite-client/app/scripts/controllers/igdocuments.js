@@ -706,13 +706,11 @@ angular.module('igl')
                     ids.push(result.id);
                 });
 
-
             });
-
 
         };
 
-        $scope.addCSVTables = function(selectedTableLibary) {
+        $rootScope.addCSVTables = function(selectedTableLibary) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddCSVTableOpenCtrl.html',
                 controller: 'AddCSVTableOpenCtrl',
@@ -726,7 +724,7 @@ angular.module('igl')
             modalInstance.result.then(function() {}, function() {});
         };
 
-        $scope.addPHINVADSTables = function(selectedTableLibary) {
+        $rootScope.addPHINVADSTables = function(selectedTableLibary) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddPHINVADSTableOpenCtrl.html',
                 controller: 'AddPHINVADSTableOpenCtrl',
@@ -740,7 +738,7 @@ angular.module('igl')
             modalInstance.result.then(function() {}, function() {});
         };
 
-        $scope.addHL7Table = function(selectedTableLibary, hl7Version) {
+        $rootScope.addHL7Table = function(selectedTableLibary, hl7Version) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddHL7TableOpenCtrl.html',
                 controller: 'AddHL7TableOpenCtrl',
@@ -773,6 +771,36 @@ angular.module('igl')
                     resolve: {
                         hl7Version: function() {
                             return $scope.hl7Version;
+                        },
+                        datatypes: function() {
+                            console.log("datatypes");
+                            console.log(result);
+
+                            return result;
+                        }
+                    }
+                }).result.then(function(results) {
+                    var ids = [];
+                    angular.forEach(results, function(result) {
+                        ids.push(result.id);
+                    });
+                });
+            });
+        };
+        
+        $scope.addMasterDatatype = function() {
+        	console.log("=========version=======");
+            var scopes = ['MASTER'];
+
+            DatatypeService.getPublishedMaster($rootScope.igdocument.profile.metaData.hl7Version).then(function(result) {
+                var addDatatypeInstance = $modal.open({
+                    templateUrl: 'AddDatatypeDlg.html',
+                    controller: 'AddDatatypeDlgCtl',
+                    size: 'lg',
+                    windowClass: 'flavor-modal-window',
+                    resolve: {
+                        hl7Version: function() {
+                            return $rootScope.igdocument.profile.metaData.hl7Version;
                         },
                         datatypes: function() {
                             console.log("datatypes");
@@ -1850,9 +1878,18 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
         //$scope.hl7Version = hl7Version;
         //$scope.hl7Datatypes = datatypes;
+		$scope.masterDatatypes=[];
+		$scope.newDts=[];
+		
         var secretEmptyKey = '[$empty$]'
 
         $scope.hl7Datatypes = datatypes.filter(function(current) {
+            return $rootScope.datatypes.filter(function(current_b) {
+                return current_b.id == current.id;
+            }).length == 0
+        });
+        
+        $scope.masterDatatypes = datatypes.filter(function(current) {
             return $rootScope.datatypes.filter(function(current_b) {
                 return current_b.id == current.id;
             }).length == 0
@@ -1927,6 +1964,51 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             $modalInstance.dismiss('cancel');
         };
     });
+
+angular.module('igl').controller('AddMasterDatatypes',
+	    function($scope, $rootScope, $modalInstance, datatypes, DatatypeLibrarySvc, DatatypeService) {
+		$scope.version= $rootScope.igdocument.profile.metaData.hl7Version;
+		$scope.scopes=["MASTER"];
+		$scope.masterDatatypes=[];
+		$scope.newDts=[];
+		DatatypeService.getPublishedMaster().then(function(result){
+			$scope.masterDatatypes=result;
+			
+		});
+		
+		
+
+	        $scope.ok = function() {
+	            var newLink = angular.fromJson({
+	                id: $scope.newDatatype.id,
+	                name: $scope.newDatatype.name
+	            });
+
+	            DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function(link) {
+	                $rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
+	                $rootScope.datatypes.splice(0, 0, $scope.newDatatype);
+	                $rootScope.datatype = $scope.newDatatype;
+	                $rootScope.datatypesMap[$scope.newDatatype.id] = $scope.newDatatype;
+	                $rootScope.processElement($scope.newDatatype);
+	                $rootScope.filteredDatatypesList.push($scope.newDatatype);
+	                $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
+	                $rootScope.$broadcast('event:openDatatype', $scope.newDatatype);
+	                $rootScope.msg().text = "datatypeAdded";
+	                $rootScope.msg().type = "success";
+	                $rootScope.msg().show = true;
+	                $modalInstance.close(datatypes);
+	            }, function(error) {
+	                $rootScope.saving = false;
+	                $rootScope.msg().text = error.data.text;
+	                $rootScope.msg().type = error.data.type;
+	                $rootScope.msg().show = true;
+	            });
+	        };
+
+	        $scope.cancel = function() {
+	            $modalInstance.dismiss('cancel');
+	        };
+	    });
 
 
 angular.module('igl').controller('AddSegmentDlgCtl',

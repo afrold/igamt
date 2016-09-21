@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
@@ -240,8 +241,16 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
           ids.add(link.getId());
         }
         List<Datatype> datatypes = datatypeRepository.findUserDatatypesByIds(ids);
-        if (datatypes != null)
-          datatypeRepository.delete(datatypes);
+  
+        if (datatypes != null){
+        	for(Datatype dt : datatypes){
+        		if(!dt.getStatus().equals(STATUS.PUBLISHED)){
+        			datatypeRepository.delete(dt);
+        		}
+        	}
+          
+          
+        }
       }
       if (library.getId() != null)
         datatypeLibraryRepository.delete(library);

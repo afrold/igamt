@@ -71,10 +71,10 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .when('/compare', {
             templateUrl: 'views/compare.html'
         })
-//        .when('/datatypeLibrary', {
-//            templateUrl: 'views/datatypeLibrary.html',
-//            controller: 'DatatypeLibraryCtl'
-//        })
+        .when('/datatypeLibrary', {
+            templateUrl: 'views/datatypeLibrary.html',
+            controller: 'DatatypeLibraryCtl'
+        })
         .when('/doc', {
             templateUrl: 'views/doc.html'
         })
@@ -403,6 +403,8 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
 //console.log("event:loginConfirmed 1");
         if($location.path() === '/compare'){
             $location.url('/compare');
+        }else if($location.path() === '/datatypeLibrary'){
+            $location.url('/datatypeLibrary');
         }else {
             $location.url('/ig');
         }
