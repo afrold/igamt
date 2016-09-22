@@ -322,7 +322,7 @@
                                                                 <tr ng-repeat="cc in segment.coConstraints.constraints">
                                                                     <td class="col-md-1" ng-repeat="col in segment.coConstraints.columnList">
                                                                         <input ng-if="col.constraintType === 'v'" class="form-control" ng-model="cc.values[col.columnPosition].value" ng-change="recordChange()" type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
-                                                                        <select ng-if="col.constraintType === 'vs'" ng-model="cc.values[col.columnPosition].value" class="form-control" ng-change="recordChange()" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" ng-options="link.id as tablesMap[link.id].bindingIdentifier for link in igdocument.profile.tableLibrary.children">
+                                                                        <select ng-if="col.constraintType === 'vs'" ng-model="cc.values[col.columnPosition].value" class="form-control" ng-change="recordChange()" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" ng-options="link.id as tablesMap[link.id].bindingIdentifier+'-'+ tablesMap[link.id].description for link in igdocument.profile.tableLibrary.children | orderBy:'bindingIdentifier'">
                                                                             <option value="">N/A</option>
                                                                         </select>
                                                                     </td>
