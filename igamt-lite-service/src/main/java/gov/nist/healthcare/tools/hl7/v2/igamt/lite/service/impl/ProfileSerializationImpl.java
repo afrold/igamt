@@ -2175,7 +2175,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		filteredProfile.setDatatypeLibrary(datatypes);
 		filteredProfile.setSegmentLibrary(segments);
 		filteredProfile.setMessages(messages);
-		filteredProfile.setTableLibrary(tables);
+		filteredProfile.setTableLibrary(original.getTableLibrary());
 
 		return this.serializeProfileGazelleToZip(filteredProfile);
 	}
@@ -2236,7 +2236,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		filteredProfile.setDatatypeLibrary(datatypes);
 		filteredProfile.setSegmentLibrary(segments);
 		filteredProfile.setMessages(messages);
-		filteredProfile.setTableLibrary(tables);
+		filteredProfile.setTableLibrary(original.getTableLibrary());
 
 		return this.serializeProfileToZip(filteredProfile, metadata);
 	}
