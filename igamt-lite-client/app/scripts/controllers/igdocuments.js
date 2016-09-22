@@ -1771,8 +1771,19 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
     $scope.selectedTableLibary = selectedTableLibary;
     $scope.searchText = '';
     $scope.hl7Tables = null;
-    $scope.phinvadsTables = null;
+    $scope.preloadedPhinvadsTables = [];
+    $scope.phinvadsTables = [];
     $scope.selectedTables = [];
+
+    $scope.loadPhinvads = function () {
+        $scope.loading = true;
+        return $http.get('api/igdocuments/PHINVADS/tables', {
+            timeout: 600000
+        }).then(function(response) {
+            $scope.preloadedPhinvadsTables = response.data;
+            $scope.loading = false;
+        });
+    };
 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
@@ -1787,21 +1798,23 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
             $scope.phinvadsTables = response.data;
             $scope.loading = false;
         });
-    }
+    };
+
+    $scope.isAlreadyIn = function(table) {
+        if ($rootScope.tablesMap[table.id] == null) return false;
+        return true;
+    };
+
+    $scope.isAlreadySelected = function(table) {
+        var index = _.findIndex($scope.selectedTables, function(child) {
+            return child.id === table.id;
+        });
+        if (index == -1) return false;
+        return true;
+    };
 
     $scope.addTable = function(table) {
-        var newTable = angular.copy(table);
-        newTable.id = new ObjectId().toString();
-        newTable.participants = [];
-        newTable.bindingIdentifier = table.bindingIdentifier;
-        newTable.scope = 'USER';
-
-        if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
-            for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
-                newTable.codes[i].id = new ObjectId().toString();
-            }
-        }
-        $scope.selectedTables.push(newTable);
+        $scope.selectedTables.push(table);
     };
 
     $scope.deleteTable = function(table) {
@@ -1809,37 +1822,24 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
         if (index > -1) $scope.selectedTables.splice(index, 1);
     };
 
-    $scope.isDuplicatedID = function(table) {
-        for (var i = 0, len1 = $rootScope.tables.length; i < len1; i++) {
-            if (table.bindingIdentifier == $rootScope.tables[i].bindingIdentifier) return true;
-        }
-        return false;
-    };
-
-
     $scope.save = function() {
         var childrenLinks = [];
         for (var i = 0; i < $scope.selectedTables.length; i++) {
-            $scope.selectedTables[i].libIds.push($scope.selectedTableLibary.id);
+            $http.get('api/tables/' + $scope.selectedTables[i].id, {
+                timeout: 600000
+            }).then(function(response) {
+                var addedTable = response.data;
+                $rootScope.tables.splice(0, 0, addedTable);
+                $rootScope.tablesMap[addedTable.id] = addedTable;
+            });
+
             var newLink = angular.fromJson({
                 id: $scope.selectedTables[i].id,
                 bindingIdentifier: $scope.selectedTables[i].bindingIdentifier
             });
             $scope.selectedTableLibary.children.push(newLink);
             childrenLinks.push(newLink);
-            var addedTable = $scope.selectedTables[i];
-            $rootScope.tables.splice(0, 0, addedTable);
-            $rootScope.tablesMap[addedTable.id] = addedTable;
-            TableService.save(addedTable).then(function(result) {}, function(error) {
-                $scope.saving = false;
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
-            });
-
         }
-
-
         TableLibrarySvc.addChildren($scope.selectedTableLibary.id, childrenLinks).then(function(link) {
 
             if ($scope.editForm) {
@@ -1862,14 +1862,8 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
         $modalInstance.dismiss('cancel');
     };
 
-    function positionElements(chidren) {
-        var sorted = _.sortBy(chidren, "sectionPosition");
-        var start = sorted[0].sectionPosition;
-        _.each(sorted, function(sortee) {
-            sortee.sectionPosition = start++;
-        });
-        return sorted;
-    }
+
+    $scope.loadPhinvads();
 });
 
 

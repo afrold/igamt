@@ -1233,6 +1233,8 @@ angular
                         return 'MAS';
                     } else if (leaf.scope === 'PRELOADED') {
                         return 'PRL';
+                    } else if (leaf.scope === 'PHINVADS') {
+                        return 'PVS';
                     } else {
                         return "";
 
