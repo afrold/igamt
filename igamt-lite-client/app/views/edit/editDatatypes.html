@@ -40,14 +40,21 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Data Type MetaData
                                 </tab-heading>
                                 <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-if="datatype.scope!=='MASTER'">
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="name" class="form-control" ng-model="datatype.name" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}" ng-hide="datatype.scope === 'HL7STANDARD'">
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-if="datatype.scope==='MASTER'">
+                                        <label class="col-md-2 control-label">Name*</label>
+
+                                        <div class="controls col-md-10">
+                                            <input type="text" disabled name="name" class="form-control" ng-model="datatype.label" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}" ng-hide="datatype.scope === 'HL7STANDARD'||datatype.scope==='MASTER'">
                                         <label class="col-md-2 control-label">Extension</label>
 
                                         <div class="controls col-md-10">
@@ -56,10 +63,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
-                                        <label class="col-md-2 control-label">Hl7 Version </label>
+                                        <label class="col-md-2 control-label">Hl7 Versions </label>
 
                                         <div class="controls col-md-10">
-                                            <input type="text" disabled name="hl7version" id="hl7Version" class="form-control" ng-model="datatype.hl7Version" required aria-describedby="helpBlock2">
+                                            <input type="text" disabled name="hl7version" id="hl7Version" class="form-control" ng-model="datatype.hl7versions" required aria-describedby="helpBlock2">
                                         </div>
                                     </div>
 
@@ -822,14 +829,14 @@
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
             <a ng-click="redirectDT(node.datatype)">
-                {{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+                {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </a>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <div>
                 <div ng-if="node.tables != undefined  && node.tables !== null">
                     <span ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">
-                        {{::getTableLabel(tablesMap[table.id])}}
+                        {{getTableLabel(tablesMap[table.id])}}
                     </span>
                 </div>
             </div>
@@ -887,13 +894,13 @@
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
             <div>
-                <a ng-click="redirectDT(node.datatype)" class="point">{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+                <a ng-click="redirectDT(node.datatype)" class="point">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                 </a>
             </div>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" class="point" ng-show="node.tables !== null && node.tables !== undefined">
-                {{::getTableLabel(tablesMap[table.id])}}
+                {{getTableLabel(tablesMap[table.id])}}
             </a>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
@@ -949,12 +956,12 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <a ng-click="redirectDT(node.datatype)">{{::getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            <a ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </a>
         </td>
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" ng-if="node.tables !== null && node.tables !== undefined">
-                {{::getTableLabel(tablesMap[table.id])}}
+                {{getTableLabel(tablesMap[table.id])}}
             </a>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
@@ -1771,7 +1778,7 @@
 <script type="text/ng-template" id="SelectDatatypeFlavor.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
-            <span class="header4 pull-left">Datatype Selection: {{::getDatatypeLabel(currentDatatype)}}</span>
+            <span class="header4 pull-left">Datatype Selection: {{getDatatypeLabel(currentDatatype)}}</span>
         </div>
     </div>
     <div class="modal-body">

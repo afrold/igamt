@@ -17,10 +17,13 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopeAndNameAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeDeleteException;
@@ -99,7 +102,79 @@ public class DatatypeController extends CommonController {
     }
     return datatypes;
   }
+  
 
+  @RequestMapping(value = "/findOneStrandard", method = RequestMethod.POST,produces = "application/json")
+	public Datatype findByNameAndVersionAndScope(@RequestBody ScopeAndNameAndVersionWrapper unchagedDatatype) {
+
+	    	    Datatype d =null;
+	    	    int max=1;
+	    	    List<Datatype> datatypes= new ArrayList<Datatype>();
+	    	    try {
+	    	      User u = userService.getCurrentUser();
+	    	      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+	    	      if (account == null) {
+	    	        throw new UserAccountNotFoundException();
+	    	      }
+	    	  
+	    	      d = datatypeService.findByNameAndVersionAndScope(unchagedDatatype.getName(),unchagedDatatype.getHl7Version(),"HL7STANDARD");
+	    	      
+	      	      if (d==null) {
+		    	        throw new NotFoundException("no standard d");
+		    	      }
+	    	      d.setExt(max+"");
+
+	    	    	  Datatype temp =  datatypeService.findByNameAndVersionsAndScope(unchagedDatatype.getName(),unchagedDatatype.getVersions(),"MASTER");
+	    	    	  if(temp!=null){
+	    	    		  String tempext=temp.getExt();
+	    	    		  try {
+	    	    			 int extd=Integer.parseInt(d.getExt());
+	    	    		     int ext = Integer.parseInt(tempext);
+	    	    		     if(ext>=extd){
+	    	    		    	 d=temp;
+	    	    		    	 d.setExt((ext+1+""));
+	    	    		     }
+	    	    		} catch (NumberFormatException e) {
+
+	    	    		}
+	    	    	  }
+
+	  
+	    	    } catch (Exception e) {
+	    	      log.error("", e);
+	    	    }
+	    	    return d;
+	   }
+  @RequestMapping(value = "/findPublished", method = RequestMethod.POST)
+	public List<Datatype> findPublishedMaster(@RequestBody String version) {
+	  			List<Datatype> published=new ArrayList<Datatype>();
+	    	    try {
+	    	      User u = userService.getCurrentUser();
+	    	      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+	    	      if (account == null) {
+	    	        throw new UserAccountNotFoundException();
+	    	      }
+	    	      List<Datatype> master = datatypeService.findByScope("MASTER");
+	    	      for(Datatype dt : master){
+	    	    	  if(dt.getStatus().equals(STATUS.PUBLISHED)){
+	    	    		  for(String v : dt.getHl7versions()){
+	    	    			  if(v.equals(version)){
+	    	    				  published.add(dt);
+	    	    				  
+	    	    			  }
+	    	    		  }
+	    	    		  
+	    	    		  
+	    	    	  }
+	    	      }
+	    	      
+	    	    }catch (Exception e) {
+		    	      log.error("", e);
+		    	    }
+	    	    return published;
+	   }
+    
+	    
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public Datatype save(@RequestBody Datatype datatype) throws DatatypeSaveException,
       ForbiddenOperationException {

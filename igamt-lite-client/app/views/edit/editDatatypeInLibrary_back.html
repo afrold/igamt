@@ -13,18 +13,20 @@
 </script>
 <script type="text/ng-template" id="EditDatatypesInLib.html">
     <div ng-controller="DatatypesInLib" ng-init="initDatatypes()" class="container">
-
-        <div>
+        <div ng-show="loadingSelection" style="text-align: center;">
+            <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
+        </div>
+        <div ng-show="!loadingSelection">
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
 <label for="publish" style="margin : 0 10px 0 0">
-         <input name="publish" id ="publish" type="checkbox" ng-click="publishDatatype(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'"  ng-disabled="editForm.$dirty||datatype.status === 'PUBLISHED'"|| readOnly" style="margin-right : 8px"/>Published</label>
+         <input type="checkbox" ng-click="publishDatatype(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'"  ng-disabled="datatype.status === 'PUBLISHED'"|| readOnly" style="margin-right : 8px"/>Published</label>
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                 ng-disabled="editForm.$invalid||!editForm.$dirty||readOnly||datatype.status === 'PUBLISHED'"
-                 ng-click="save()">
+                 ng-disabled="!editForm.$dirty||readOnly||datatype.status === 'PUBLISHED'"
+                 ng-click="saveDatatype(datatype)">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty||readOnly||datatype.status === 'PUBLISHED'" ng-click="reset()">
@@ -43,7 +45,7 @@
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
-                                            <input type="text" disabled name="name" id="name" class="form-control" ng-model="datatype.name" required>
+                                            <input type="text" disabled name="name" class="form-control" ng-model="datatype.name" required>
                                         </div>
                                     </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}" ng-hide="datatype.scope === 'HL7STANDARD'">
@@ -51,7 +53,7 @@
 
                                         <div class="controls col-md-10">
                                             <input type="text" ng-change="recordChanged()" ng-disabled="readOnly ||  datatype.status === 'PUBLISHED'" name="ext" id="ext" class="form-control" ng-model="datatype.ext" required aria-describedby="helpBlock2">
-                                            <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', datatypes)">Extension already used</span>
+                                            <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', datatypeLibrary.children)">Extension already used</span>
                                         </div>
                                     </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
@@ -62,7 +64,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback':editForm.description.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.description.$invalid}">
                                         <label class="col-md-2 control-label">Description</label>
 
                                         <div class="controls col-md-10">
@@ -114,6 +116,8 @@
 
                                 <div class="el-def" style="margin-top: 5px">
                                     <accordion>
+
+
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFifthOpen">
                                             <accordion-heading>
                                                 <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
@@ -160,7 +164,7 @@
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">Data Type
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">Concept Domain
+                                                                <th class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">Value Set
                                                                 </th>
                                                                 <th class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
                                                                     Predicate
@@ -273,7 +277,7 @@
                                                     <span class="pull-right">
                                                         <button class="btn btn-raised btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
                                                                 ng-hide="readOnly || (datatype.scope==='HL7STANDARD' || datatype.status==='PUBLISHED' ) || !datatype.components || datatype.components.length==0"><span><i
-                                                                class="fa fa-plus fa-fw" type="button">
+                                                                class="fa fa-plus fa-fw">
                                                             &nbsp; </i>Add Conf.Statement</span></button>
                                                     </span>
                                                 </div>
@@ -548,7 +552,7 @@
         <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.tables.length!==0">
                 <a class="point" ng-repeat="table in node.tables track by table.id">
-                    <span ng-click="redirectVS(table)"> {{table.bindingIdentifier}}</span>
+                    <span ng-click="redirectVS(table)"> tablesMap[table.id]</span>
                 </a>
                 <a ng-click="editVSModal(node)" class="point">
                     <span><i class="fa fa-pencil fa-fw"></i></span>

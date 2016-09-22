@@ -17,8 +17,19 @@ public class MetaData implements java.io.Serializable, Cloneable {
   private String hl7Version;
 
   private String date;
+  
+  private String description=""; 
+  
 
-  private String ext;
+  public String getDescription() {
+	return description;
+}
+
+public void setDescription(String description) {
+	this.description = description;
+}
+
+private String ext;
 
   public String getName() {
     return name;
