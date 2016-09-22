@@ -106,7 +106,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
 		ValueSet vs = null;
 		ValueSetVersion vsv = null;
-		if (valueSets != null) {
+		if (valueSets != null && valueSets.size() > 0) {
 			vs = valueSets.get(0);
 			vsv = this.getService().getValueSetVersionsByValueSetOid(vs.getOid()).getValueSetVersions().get(0);
 			log.info("Successfully got the metadata from PHINVADS web service for " + oid);
