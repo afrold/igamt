@@ -88,7 +88,15 @@
                 </div>
             </div>
             <div class="modal-body">
-
+                <!--<div class="col-md-12">
+                        <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                            <label class="btn btn-raised btn-info btn-xs"
+                                   ng-click="loadIGDocumentsByVersion(hl7Version)"
+                                   ng-class="{ 'active':vr===selectedHL7Version}" ng-repeat="vr in hl7Versions">
+                                <input type="radio" ng-value="vr" ng-model="hl7Version">{{vr}}</input>
+                            </label>
+                        </div>
+                </div>-->
                 <div class="col-md-12">
                     <div ng-show="clickSource === 'btn'" ng-class="{'igl-has-error has-feedback' : hl7VersionsDlgForm.hl7Version.$invalid}">
                         <label class="col-md-2 control-label" style="text-align: left">HL7 Version*:</label>
@@ -191,6 +199,7 @@
                                         <thead>
                                             <tr class="tbl-header">
                                                 <td class="" style="width:300px">Struct ID</td>
+                                                <td class="" style="width:300px">Event ID</td>
                                                 <td class="" style="width:600px">Description</td>
                                             </tr>
                                         </thead>
@@ -210,10 +219,12 @@
     </script>
     <script type="text/ng-template" id="MessageEventsNode.html">
         <tr tt-node is-branch="node.type === 'message'">
+             <td class=""  style="width:300px;color:black"><span ng-bind="::node.name" ng-show="node.type === 'message'" style="margin-left : 7px;"></span></td>
             <td class="" style="width:300px;color:black">
 
-                <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-change="trackSelections(bool, node)"></input><span ng-bind="::node.name" style="margin-left : 7px;"></span>
+                <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-change="trackSelections(bool, node)"></input><span ng-show="node.type === 'event'" ng-bind="::node.name" style="margin-left : 7px;"></span>
             </td>
+           
             <td class="" style="width:585px;color:black"" ng-bind="::node.description"></td>
         
     </tr>
