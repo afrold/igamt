@@ -82,7 +82,7 @@ public class PhinvadsWSCallService {
 				table.setExtensibility(Extensibility.Closed);
 				table.setId(null);
 				table.setLibIds(new HashSet<String>());
-				table.setScope(SCOPE.USER);
+				table.setScope(SCOPE.PHINVADS);
 				table.setStability(Stability.Static);
 				table.setStatus(STATUS.UNPUBLISHED);
 				table.setType(Constant.TABLE);

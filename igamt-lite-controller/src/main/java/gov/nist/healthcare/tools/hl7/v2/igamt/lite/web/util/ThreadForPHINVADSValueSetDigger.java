@@ -28,9 +28,9 @@ public class ThreadForPHINVADSValueSetDigger extends Thread {
         
         timer = new Timer();
         Calendar date = Calendar.getInstance();
-        date.set(Calendar.AM_PM, Calendar.PM);
-        date.set(Calendar.HOUR, 5);
-        date.set(Calendar.MINUTE, 26);
+        date.set(Calendar.AM_PM, Calendar.AM);
+        date.set(Calendar.HOUR, 3);
+        date.set(Calendar.MINUTE, 0);
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
         

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimerTask;
 
 import org.slf4j.Logger;
@@ -73,17 +74,13 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 	public void run() {
 		log.info("PHINVADSValueSetDigger started at " + new Date());
 
-		List<String> oids = new ArrayList<String>();
-		if (!mongoOps.collectionExists("oid-list-phinvads")) mongoOps.createCollection("oid-list-phinvads");
-		DBCollection coll1 = mongoOps.getCollection("oid-list-phinvads");
-		DBCursor cur1 = coll1.find();
-		while (cur1.hasNext()) {
-			DBObject source = cur1.next();
-			oids.add(source.get("oid").toString());
-		}
-
-		for (String oid : oids) {
-			this.tableSaveOrUpdate(oid);
+		List<ValueSet> vss = this.service.getAllValueSets().getValueSets();
+		log.info(vss.size() + " value sets' info has been found!");
+		int count = 0;
+		for(ValueSet vs : vss){
+			count++;
+			log.info("########" + count + "/" + vss.size()  + "########");
+			this.tableSaveOrUpdate(vs.getOid());
 		}
 		log.info("PHINVADSValueSetDigger ended at " + new Date());
 	}
@@ -213,5 +210,17 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
 	public void setService(VocabService service) {
 		this.service = service;
+	}
+
+	public List<Table> findAllpreloadedPHINVADSTables() {
+		List<Table> tables = new ArrayList<Table>();
+		tables = mongoOps.find(Query.query(Criteria.where("scope").is(Constant.SCOPE.PHINVADS)), Table.class);
+		
+		for(Table t: tables){
+			t.setCodes(null);
+		}
+		
+		
+		return tables;
 	}
 }

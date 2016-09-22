@@ -93,6 +93,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.Scope
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
 import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfilePreLib;
 
 @RestController
@@ -759,6 +760,13 @@ public class IGDocumentController extends CommonController {
     return result;
   }
 
+  @RequestMapping(value = "/PHINVADS/tables", method = RequestMethod.GET, produces = "application/json")
+  public List<Table> findAllPreloadedPHINVADSTables() throws MalformedURLException {
+	    log.info("Fetching all Tables for preloaded PHINVADS");
+	    return new TimerTaskForPHINVADSValueSetDigger().findAllpreloadedPHINVADSTables();
+   }
+  
+  
   @RequestMapping(value = "/{searchText}/PHINVADS/tables", method = RequestMethod.GET,
       produces = "application/json")
   public Set<Table> findPHINVADSTables(@PathVariable("searchText") String searchText)
