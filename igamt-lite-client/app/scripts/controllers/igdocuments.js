@@ -1633,12 +1633,16 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
     $scope.selectedTableLibary = selectedTableLibary;
     $scope.importedTable = null;
     $scope.warning = '';
+    $scope.selectedFileName = null;
     $scope.data = null;
+    $scope.isFileSelected = false;
+    $scope.isFileValid = false;
 
-    $scope.fileSelected = function(){
-        return document.getElementById('csvValueSetFile').files.length != 0;
+    $scope.selectedFile = function (files) {
+        $scope.isFileSelected = true;
+        $scope.selectedFileName = files[0].name;
+        console.log(files);
     };
-
 
     $scope.uploadCSVFile = function() {
         $scope.loading = true;

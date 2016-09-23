@@ -498,9 +498,10 @@
             <div class="form-group">
                 <div class="col-sm-12">
                     <label for="csvValueSetFile" class="custom-file-upload">
-                            <i class="fa fa-cloud-upload"></i> Choose CSV File
-                        </label>
-                    <input id="csvValueSetFile" type="file" name="csvValueSetFile" />
+                        <i class="fa fa-cloud-upload"></i> Choose CSV File
+                    </label>
+                    <input id="csvValueSetFile" accept=".csv" onchange="angular.element(this).scope().selectedFile(this.files)" type="file" name="csvValueSetFile" />
+                    <span>{{::selectedFileName}}</span>
                 </div>
             </div>
 
@@ -523,7 +524,7 @@
     </div>
     <div class="modal-footer">
         <p style="color:red;">{{warning}}</p>
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="fileSelected()" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="isFileSelected && isFileValid" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
         <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
     </div>
 </script>
