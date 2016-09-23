@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,18 +26,9 @@ public class ThreadForPHINVADSValueSetDigger extends Thread {
     @Override
     public void run() {
         super.run();
-        
         timer = new Timer();
-        Calendar date = Calendar.getInstance();
-        date.set(Calendar.AM_PM, Calendar.AM);
-        date.set(Calendar.HOUR, 3);
-        date.set(Calendar.MINUTE, 0);
-        date.set(Calendar.SECOND, 0);
-        date.set(Calendar.MILLISECOND, 0);
-        
-        
-        timer.schedule(task, date.getTime());
-        
+        long period = 24 * 60 * 60 * 1000;
+        timer.schedule(task, getNextRunTime(), period);
         while (!finishing()) {
             try {
                 Thread.sleep(10);
@@ -44,7 +36,26 @@ public class ThreadForPHINVADSValueSetDigger extends Thread {
                 break;
             }
         }
-        
         timer.cancel();
+    }
+    
+    
+    private Date getNextRunTime()
+    {
+       Calendar startTime = Calendar.getInstance();
+       Calendar now = Calendar.getInstance();
+       startTime.set(Calendar.HOUR_OF_DAY, 3);
+       startTime.set(Calendar.MINUTE, 0);
+       startTime.set(Calendar.SECOND, 0);
+       startTime.set(Calendar.MILLISECOND, 0);
+       
+       System.out.println("####START##" + startTime.getTime());
+       System.out.println("####NOW##" + now.getTime());
+
+       if(startTime.before(now) || startTime.equals(now)){
+          startTime.add(Calendar.DATE, 1);
+       }
+       System.out.println("#######" + startTime.getTime());
+       return startTime.getTime();
     }
 }

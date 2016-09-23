@@ -120,7 +120,7 @@ public class Bootstrap implements InitializingBean {
     // addVersionAndScopetoUSERIG();
     // addScopeUserToOldClonedPRELOADEDIG();
     // changeTabletoTablesInNewHl7();
-	modifiyCodeUsage();
+//	modifiyCodeUsage();
 
   }
 
