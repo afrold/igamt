@@ -40,7 +40,7 @@
 						</goals>
 						<!-- Optional configuration which provides for running any npm command -->
 						<configuration>
-							<arguments>install --no-bin-links</arguments>
+							<arguments>install</arguments>
 						</configuration>
 					</execution>
 
