@@ -30,8 +30,17 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
   private Integer min;
 
   private String max;
+  private String added;
 
-  public String getItemNo() {
+  public String getAdded() {
+	return added;
+}
+
+public void setAdded(String added) {
+	this.added = added;
+}
+
+public String getItemNo() {
     return itemNo;
   }
 
