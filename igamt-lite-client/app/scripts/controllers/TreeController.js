@@ -8,8 +8,9 @@ angular
             'CloneDeleteSvc',
             'FilteringSvc',
             'SectionSvc',
+            '$cookies',
 
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc) {
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc, $cookies) {
 
                 $scope.collapsedata = false;
                 $scope.collapsePcs=true;
@@ -34,7 +35,24 @@ angular
                     // if($rootScope.references.length===0){
                         return "Delete"
                     // }else return "Show References"
-                } 
+                };
+
+                $scope.exportCSVForTable = function (table){
+                    console.log(table);
+
+                    var form = document.createElement("form");
+
+                    form.action = $rootScope.api('api/tables/exportCSV/' + table.id);
+                    form.method = "POST";
+                    form.target = "_target";
+                    var csrfInput = document.createElement("input");
+                    csrfInput.name = "X-XSRF-TOKEN";
+                    csrfInput.value = $cookies['XSRF-TOKEN'];
+                    form.appendChild(csrfInput);
+                    form.style.display = 'none';
+                    document.body.appendChild(form);
+                    form.submit();
+                };
 
                 $rootScope.switcherDatatypeLibrary = function() {
 
@@ -549,6 +567,12 @@ angular
                             } else {
                                 CloneDeleteSvc.copyTable($itemScope.table);
                             }
+                        }
+                    ],
+                    null, ['Export CSV',
+                        function($itemScope) {
+                            $scope.exportCSVForTable($itemScope.table);
+
                         }
                     ],
                     null, ['Delete',
