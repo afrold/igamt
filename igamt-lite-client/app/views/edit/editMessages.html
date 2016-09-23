@@ -462,7 +462,7 @@
                     <option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position"> {{child.position}}
                 </select>
                 <select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%" class="form-control input-sm">
-                    <option ng-repeat="segmentRef in tmpResults" value="{{segmentRef}}"  ng-selected="node.obj.ref.ext===segmentRef.ext"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}
+                    <option ng-repeat="segmentRef in tmpResults" value="{{segmentRef}}"  ng-selected="node.obj.ref.id===segmentRef.id"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}
                 </select>
                 <div align="center">
 

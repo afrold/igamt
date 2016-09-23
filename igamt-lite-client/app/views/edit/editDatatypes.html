@@ -719,7 +719,7 @@
                             <option ng-repeat="datatype in results" value="{{datatype}}"
                                     ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}}
                             </option>
-                            <option ng-click="otherDT(node)" value=""> Others
+                            <!--<option ng-click="otherDT(node)" value=""> Others-->
                         </select>
                     </div>
                     <a ng-show="editableDT!==node.id" ng-click="editDT(node)" class="point">
