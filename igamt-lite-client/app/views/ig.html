@@ -88,7 +88,15 @@
                 </div>
             </div>
             <div class="modal-body">
-
+                <!--<div class="col-md-12">
+                        <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                            <label class="btn btn-raised btn-info btn-xs"
+                                   ng-click="loadIGDocumentsByVersion(hl7Version)"
+                                   ng-class="{ 'active':vr===selectedHL7Version}" ng-repeat="vr in hl7Versions">
+                                <input type="radio" ng-value="vr" ng-model="hl7Version">{{vr}}</input>
+                            </label>
+                        </div>
+                </div>-->
                 <div class="col-md-12">
                     <div ng-show="clickSource === 'btn'" ng-class="{'igl-has-error has-feedback' : hl7VersionsDlgForm.hl7Version.$invalid}">
                         <label class="col-md-2 control-label" style="text-align: left">HL7 Version*:</label>
@@ -191,6 +199,7 @@
                                         <thead>
                                             <tr class="tbl-header">
                                                 <td class="" style="width:300px">Struct ID</td>
+                                                <td class="" style="width:300px">Event ID</td>
                                                 <td class="" style="width:600px">Description</td>
                                             </tr>
                                         </thead>
@@ -210,10 +219,12 @@
     </script>
     <script type="text/ng-template" id="MessageEventsNode.html">
         <tr tt-node is-branch="node.type === 'message'">
+             <td class=""  style="width:300px;color:black"><span ng-bind="::node.name" ng-show="node.type === 'message'" style="margin-left : 7px;"></span></td>
             <td class="" style="width:300px;color:black">
 
-                <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-change="trackSelections(bool, node)"></input><span ng-bind="::node.name" style="margin-left : 7px;"></span>
+                <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-change="trackSelections(bool, node)"></input><span ng-show="node.type === 'event'" ng-bind="::node.name" style="margin-left : 7px;"></span>
             </td>
+           
             <td class="" style="width:585px;color:black"" ng-bind="::node.description"></td>
         
     </tr>
@@ -487,9 +498,11 @@
             <div class="form-group">
                 <div class="col-sm-12">
                     <label for="csvValueSetFile" class="custom-file-upload">
-                            <i class="fa fa-cloud-upload"></i> Choose CSV File
-                        </label>
-                    <input id="csvValueSetFile" type="file" name="csvValueSetFile" />
+                        <i class="fa fa-cloud-upload"></i> Choose CSV File
+                    </label>
+                    <input id="csvValueSetFile" accept=".csv" onchange="angular.element(this).scope().validateForSelectedFile(this.files)" type="file" name="csvValueSetFile" />
+                    <div id="csvFileName"></div>
+                    <div id="errorMessageForCSV"></div>
                 </div>
             </div>
 
@@ -511,8 +524,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <p style="color:red;">{{warning}}</p>
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="fileSelected()" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+        <button id="csvSaveButton" class="btn btn-raised btn-primary btn-sm" ng-click="save()" disabled><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
         <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
     </div>
 </script>

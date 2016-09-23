@@ -10,6 +10,8 @@ public class ServletContextListenerForPHINVADSValueSetDigger implements ServletC
     public void contextInitialized(ServletContextEvent sce) {
         if ((myThread == null) || (!myThread.isAlive())) {
             myThread = new ThreadForPHINVADSValueSetDigger(new TimerTaskForPHINVADSValueSetDigger());
+            System.out.println("!!!!!!!!!" + "THREAD Created!");
+            
             myThread.start();
         }
     }

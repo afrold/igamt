@@ -8,6 +8,7 @@
 	<description>Igamt-lite tool</description>
 	<packaging>pom</packaging>
 	<modules>
+		<module>igamt-lite-client</module>
 		<module>igamt-lite-domain</module>
 		<module>igamt-lite-repo</module>
 		<module>igamt-lite-service</module>
