@@ -226,30 +226,23 @@
                                                             <input type="checkbox" ng-model="c.selected" ng-change="addOrRemoveValue(c)">
                                                         </td>
                                                         <td class="col-md-2">
-                                                            <div ng-show="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">
-                                                                <input type="text" style="width: 100%" name="Value" ng-change="setDirty()" class="form-control-warning" ng-model="c.value" />
-                                                                <span style="color:red">Duplicated</span>
-                                                            </div>
-                                                            <div ng-hide="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">
-                                                                <input type="text" style="width: 100%" name="Value" ng-change="setDirty()" class="form-control" ng-model="c.value" />
+                                                            <div>
+                                                                <input type="text" style="width: 100%" name="Value" ng-change="setDirty()" ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'value', 'codeSystem' , table.codes), 'form-control': !isDuplicatedTwoContexts(c,'value', 'codeSystem' , table.codes)}" ng-model="c.value" />
+                                                                <span ng-if="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)" style="color:red">Duplicated</span>
                                                             </div>
                                                         </td>
 
                                                         <td class="col-md-3">
-                                                            <div ng-show="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)">
-                                                                <input type="text" style="width: 100%" name="Label" ng-change="setDirty()" class="form-control-warning" ng-model="c.label" />
-                                                                <span style="color:red">Duplicated</span>
-                                                            </div>
-
-                                                            <div ng-hide="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)">
-                                                                <input type="text" style="width: 100%" name="Label" ng-change="setDirty()" class="form-control" ng-model="c.label" />
+                                                            <div>
+                                                                <input type="text" style="width: 100%" name="Label" ng-change="setDirty()" ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes), 'form-control': !isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)}"  ng-model="c.label" />
+                                                                <span ng-if="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)" style="color:red">Duplicated</span>
                                                             </div>
                                                         </td>
 
                                                         <td class="col-md-2">
                                                             <div ng-show="!c.codeSystem || c.codeSystem === ''">
                                                                 <select class="form-control-warning" ng-change="setDirty()" ng-model="c.codeSystem" ng-options="cs for cs in codeSystems">
-														</select>
+														        </select>
                                                                 <span style="color:red">Missing CodeSystem</span>
                                                             </div>
                                                             <div ng-hide="!c.codeSystem || c.codeSystem === ''">

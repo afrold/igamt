@@ -149,11 +149,13 @@ angular.module('igl').controller(
             }
             return rval;
         };
+
         $scope.eventList = [];
 
         $scope.trackSelections = function(bool, event) {
             // console.log("event");
             // console.log(event);
+            console.log(bool);
 
 
 
@@ -181,6 +183,13 @@ angular.module('igl').controller(
                 }
             }
             $scope.okDisabled = messageEvents.length === 0;
+        };
+        $scope.isChecked = function(node) {
+            if ($scope.eventList.indexOf(node) !== -1) {
+                return true;
+            } else {
+                return false;
+            }
         };
 
 
