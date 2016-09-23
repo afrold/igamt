@@ -1632,84 +1632,104 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
     $scope.loading = false;
     $scope.selectedTableLibary = selectedTableLibary;
     $scope.importedTable = null;
-    $scope.warning = '';
+    $scope.selectedFileName = null;
     $scope.data = null;
+    $scope.isInValild = false;
+    $scope.erorrMessages = [];
+    $scope.validateForSelectedFile = function (files) {
+        $scope.isInValild = false;
+        var f = document.getElementById('csvValueSetFile').files[0];
+        var reader = new FileReader();
+        reader.onloadend = function(e) {
+            $scope.data = Papa.parse(e.target.result);
 
-    $scope.fileSelected = function(){
-        return document.getElementById('csvValueSetFile').files.length != 0;
-    };
-
-
-    $scope.uploadCSVFile = function() {
-        $scope.loading = true;
-
-        if(document.getElementById('csvValueSetFile').files.length == 0){
-            $scope.warning = 'No file selected';
-        }else {
-            var f = document.getElementById('csvValueSetFile').files[0];
-            var reader = new FileReader();
-            reader.onloadend = function(e) {
-                $scope.data = Papa.parse(e.target.result);
-                var index = 0;
-                $scope.importedTable = {};
-                $scope.importedTable.scope = 'USER';
-                $scope.importedTable.codes = [];
-                $scope.importedTable.libIds = [];
-                angular.forEach($scope.data.data, function(row) {
-                    index = index + 1;
-
-                    if (index > 1 && index < 11) {
-                        if(row[1] != ''){
-                            switch (row[0]) {
-                                case 'Mapping Identifier':
-                                    $scope.importedTable.bindingIdentifier = row[1];
-                                    break;
-                                case 'Name':
-                                    $scope.importedTable.name = row[1];
-                                    break;
-                                case 'Description':
-                                    $scope.importedTable.description = row[1];
-                                    break;
-                                case 'OID':
-                                    $scope.importedTable.oid = row[1];
-                                    break;
-                                case 'Version':
-                                    $scope.importedTable.version = row[1];
-                                    break;
-                                case 'Extensibility':
-                                    $scope.importedTable.extensibility = row[1];
-                                    break;
-                                case 'Stability':
-                                    $scope.importedTable.stability = row[1];
-                                    break;
-                                case 'Content Definition':
-                                    $scope.importedTable.contentDefinition = row[1];
-                                    break;
-                                case 'Comment':
-                                    $scope.importedTable.comment = row[1];
-                            }
-                        }
-                    } else if (index > 13) {
-
-                        var code = {};
-                        code.value = row[0];
-                        code.label = row[1];
-                        code.codeSystem = row[2];
-                        code.codeUsage = row[3];
-                        code.comments = row[4];
-
-                        if(code.value != null && code.value != "") $scope.importedTable.codes.push(code);
-                    }
+            if($scope.data.errors.length > 0){
+                $scope.isInValild = true;
+                angular.forEach($scope.data.errors, function(e) {
+                    $scope.erorrMessages.push(e.message);
                 });
+            }
 
-                $scope.save();
-            };
+            var index = 0;
+            $scope.importedTable = {};
+            $scope.importedTable.scope = 'USER';
+            $scope.importedTable.codes = [];
+            $scope.importedTable.libIds = [];
+            angular.forEach($scope.data.data, function(row) {
+                index = index + 1;
 
-            reader.readAsBinaryString(f);
-        }
+                if (index > 1 && index < 11) {
+                    if(row[1] != ''){
+                        switch (row[0]) {
+                            case 'Mapping Identifier':
+                                $scope.importedTable.bindingIdentifier = row[1];
+                                break;
+                            case 'Name':
+                                $scope.importedTable.name = row[1];
+                                break;
+                            case 'Description':
+                                $scope.importedTable.description = row[1];
+                                break;
+                            case 'OID':
+                                $scope.importedTable.oid = row[1];
+                                break;
+                            case 'Version':
+                                $scope.importedTable.version = row[1];
+                                break;
+                            case 'Extensibility':
+                                $scope.importedTable.extensibility = row[1];
+                                break;
+                            case 'Stability':
+                                $scope.importedTable.stability = row[1];
+                                break;
+                            case 'Content Definition':
+                                $scope.importedTable.contentDefinition = row[1];
+                                break;
+                            case 'Comment':
+                                $scope.importedTable.comment = row[1];
+                        }
+                    }
+                } else if (index > 13) {
 
+                    var code = {};
+                    code.value = row[0];
+                    code.label = row[1];
+                    code.codeSystem = row[2];
+                    code.codeUsage = row[3];
+                    code.comments = row[4];
 
-        $scope.loading = false;
+                    if(code.value != null && code.value != "") $scope.importedTable.codes.push(code);
+                }
+            });
+
+            if($scope.importedTable.bindingIdentifier == null || $scope.importedTable.bindingIdentifier ==''){
+                $scope.isInValild = true;
+                $scope.erorrMessages.push('No Binding Identifier');
+            }
+
+            if($scope.importedTable.name == null || $scope.importedTable.name ==''){
+                $scope.isInValild = true;
+                $scope.erorrMessages.push('No Name');
+            }
+
+            var errorElm = $("#errorMessageForCSV");
+            var csvSaveButton = $("#csvSaveButton");
+            errorElm.empty();
+
+            if($scope.isInValild) {
+                errorElm.append('<span>' + files[0].name + ' is invalid!</span>');
+                angular.forEach($scope.erorrMessages, function(e) {
+                    errorElm.append("<li>" + e + "</li>");
+                    csvSaveButton.prop('disabled', true);
+                });
+            }else {
+                errorElm.append('<span>' + files[0].name + ' is valid!</span>');
+                csvSaveButton.prop('disabled', false);
+            }
+
+        };
+
+        reader.readAsBinaryString(f);
     };
 
     $scope.cancel = function() {
@@ -1723,7 +1743,6 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
 
         TableService.save($scope.importedTable).then(function (result) {
             var newTable = result;
-            console.log(newTable);
             var newLink = {};
             newLink.bindingIdentifier = newTable.bindingIdentifier;
             newLink.id = newTable.id;
