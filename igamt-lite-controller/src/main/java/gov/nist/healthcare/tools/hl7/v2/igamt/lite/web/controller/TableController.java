@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.common.net.MediaType;
-
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
@@ -32,6 +30,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.TableCSVGenerator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.TableSaveException;
@@ -94,8 +93,7 @@ public class TableController extends CommonController {
 	  log.info("Export table " + tableId);
 	  Table table = findById(tableId);
       
-      InputStream content = IOUtils.toInputStream("AAAA", "UTF-8");
-//      content = igDocumentExport.exportAsZip(d);
+      InputStream content = IOUtils.toInputStream(new TableCSVGenerator().generate(table), "UTF-8");
       response.setContentType("text/xml");
       response.setHeader("Content-disposition", "attachment;filename=" + table.getBindingIdentifier() + "-" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".csv");
       FileCopyUtils.copy(content, response.getOutputStream());
