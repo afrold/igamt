@@ -109,7 +109,7 @@
 		<xsl:choose>
 			<xsl:when test="count(MessageDisplay) &gt; 0">
 				<xsl:apply-templates select="MessageDisplay">
-					<xsl:sort select="@position" data-type="number"></xsl:sort>
+					<xsl:sort select="@position"></xsl:sort>
 				</xsl:apply-templates>
 			</xsl:when>
 			<xsl:when test="count(Segment) &gt; 0">

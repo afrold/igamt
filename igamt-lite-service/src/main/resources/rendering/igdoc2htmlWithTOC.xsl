@@ -463,6 +463,45 @@
 				<xsl:value-of select="@Comment" />
 			</td>
 		</tr>
+		
+		<xsl:if test="count(./Constraint) &gt; 0">
+			<xsl:choose>
+				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
+					<xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
+						<p>
+							<strong>
+								<u>Conformance statements</u>
+							</strong>
+							<table width="100%" border="1" cellspacing="0" cellpadding="1">
+								<xsl:call-template name="csheader"></xsl:call-template>
+								<tbody>
+									<xsl:for-each select="./Constraint[@Type='cs']">
+										<xsl:sort select="@Position" data-type="number"></xsl:sort>
+										<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
+									</xsl:for-each>
+								</tbody>
+							</table>
+						</p>
+					</xsl:if>
+					<xsl:if test="count(./Constraint[@Type='pre']) &gt; 0">
+						<p>
+							<strong>
+								<u>Conditional predicates</u>
+							</strong>
+							<table width="100%" border="1" cellspacing="0" cellpadding="1">
+								<xsl:call-template name="preheader"></xsl:call-template>
+								<tbody>
+									<xsl:for-each select="./Constraint[@Type='pre']">
+										<xsl:sort select="@Position" data-type="number"></xsl:sort>
+										<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
+									</xsl:for-each>
+								</tbody>
+							</table>
+						</p>
+					</xsl:if>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:if>
 	</xsl:template>
 
 
