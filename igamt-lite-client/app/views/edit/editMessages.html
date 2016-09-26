@@ -1243,7 +1243,7 @@
         <form role="form">
             <div class="table-responsive">
                 <div class="page-header">
-                    <span class="header5">List of conformance statments</span>
+                    <span class="header5">List of conformance statements</span>
                 </div>
                 <table st-table="displayed" st-safe-src="tempComformanceStatements" class="table table-striped table-bordered">
                     <thead>
@@ -1526,12 +1526,10 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-raised btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
-        &nbsp; </i>Save</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-        &nbsp; </i>Close</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-        &nbsp; </i>Close</span></button>
+        <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        &nbsp; </i>Cancel</span></button>
+        <button type="button" class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
+            &nbsp; </i>Save</span></button>
     </div>
 </script>
 <script type="text/ng-template" id="MessageReadTree.html">

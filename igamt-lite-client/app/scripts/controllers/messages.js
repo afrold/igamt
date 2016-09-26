@@ -631,6 +631,7 @@ angular.module('igl')
                 templateUrl: 'ConformanceStatementMessageCtrl.html',
                 controller: 'ConformanceStatementMessageCtrl',
                 windowClass: 'app-modal-window',
+                keyboard:false,
                 resolve: {
                     selectedMessage: function() {
                         return message;
