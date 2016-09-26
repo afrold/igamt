@@ -693,7 +693,7 @@ angular.module('igl')
             var addSegmentInstance = $modal.open({
                 templateUrl: 'AddSegmentDlg.html',
                 controller: 'AddSegmentDlgCtl',
-                windowClass: 'flavor-modal-window',
+                windowClass: 'conformance-profiles-modal',
                 resolve: {
                     hl7Version: function() {
                         return $scope.hl7Version;
