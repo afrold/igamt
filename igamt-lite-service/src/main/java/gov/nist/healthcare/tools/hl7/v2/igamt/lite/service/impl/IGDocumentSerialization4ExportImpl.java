@@ -1651,8 +1651,20 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 			  // we want
 			  // here?
 			  elmDatatype.addAttribute(new Attribute("id", d.getId()));
-
-
+			    List<ConformanceStatement>	confromances= d.getConformanceStatements();
+			    if(confromances!=null && !confromances.isEmpty()){
+			    	for (Constraint constraint : confromances) {
+						  nu.xom.Element elmConstraint =serializeConstraintToElement(constraint, d.getName() + ".");
+						  elmDatatype.appendChild(elmConstraint);
+					  }
+			    }
+			    List<Predicate> predicates = d.getPredicates();
+			    if(predicates!=null && !predicates.isEmpty()){
+			    	for (Constraint constraint : predicates) {
+						  nu.xom.Element elmConstraint =serializeConstraintToElement(constraint, d.getName() + ".");
+						  elmDatatype.appendChild(elmConstraint);
+					  }
+			    }
 			  if (d.getComponents() != null) {
 				  //
 				  // Map<Integer, Component> components = new HashMap<Integer, Component>();
@@ -1711,15 +1723,6 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 						  elmComponent.addAttribute(new Attribute("Binding", temp));
 					  }
 
-					  List<Constraint> constraints =
-							  findConstraints(i, d.getPredicates(), d.getConformanceStatements());
-					  if (!constraints.isEmpty()) {
-						  for (Constraint constraint : constraints) {
-							  nu.xom.Element elmConstraint =
-									  serializeConstraintToElement(constraint, d.getName() + ".");
-							  elmComponent.appendChild(elmConstraint);
-						  }
-					  }
 					  elmDatatype.appendChild(elmComponent);
 				  }
 				  if (d.getComponents().size() == 0) {
@@ -1743,6 +1746,8 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 				  if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()) {
 					  elmDatatype.appendChild(this.serializeRichtext("UsageNote", d.getUsageNote()));
 				  }
+				
+				  
 			  }
 		  }
 	  }
