@@ -116,6 +116,28 @@ public class SegmentController extends CommonController {
     }
 
   }
+  @RequestMapping(value = "/saveSegs", method = RequestMethod.POST)
+  public List<Segment> save(@RequestBody List<Segment> segments) throws SegmentSaveException,
+      ForbiddenOperationException {
+	  List<Segment> segs=new ArrayList<Segment>();
+	  for(Segment seg:segments){
+		  if (!SCOPE.HL7STANDARD.equals(seg.getScope())) {
+		      log.debug("segment=" + seg);
+		      log.debug("segment.getId()=" + seg.getId());
+		      log.info("Saving the " + seg.getScope() + " segment.");
+		      seg.setDate(DateUtils.getCurrentTime());
+		      Segment saved = segmentService.save(seg);
+		      log.debug("saved.getId()=" + saved.getId());
+		      log.debug("saved.getScope()=" + saved.getScope());
+		      segs.add(seg);
+		    } else {
+		      throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");
+		    }
+	  }
+	  return segs;
+    
+
+  }
 
   @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
   public boolean delete(@PathVariable("id") String segId) throws ForbiddenOperationException,
