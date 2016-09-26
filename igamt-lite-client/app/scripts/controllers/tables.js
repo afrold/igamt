@@ -47,6 +47,27 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         $rootScope.$emit("event:openVSDelta");
     };
 
+    $scope.AddBindingForValueSet = function (table) {
+        var modalInstance = $modal.open({
+            templateUrl: 'AddBindingForValueSet.html',
+            controller: 'AddBindingForValueSet',
+            windowClass: 'conformance-profiles-modal',
+            resolve: {
+                table: function() {
+                    return table;
+                }
+            }
+        });
+        modalInstance.result.then(function() {}, function() {});
+    };
+
+    $scope.findTableLinkByTableId = function (tables, id) {
+        for (var i = 0; i < tables.length; i++) {
+            if(tables[i].id == id) return tables[i];
+
+        }
+        return null;
+    };
 
     $scope.save = function() {
 
@@ -687,4 +708,12 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
     };
 
 
+});
+
+angular.module('igl').controller('AddBindingForValueSet', function($scope, $modalInstance, $rootScope, table) {
+    $scope.table = table;
+    $scope.bindingTargetType = 'SEGMENT';
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
 });
