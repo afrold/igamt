@@ -1239,6 +1239,7 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 
     nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
     elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
+    elmMessage.addAttribute(new Attribute("position", String.valueOf(m.getPosition())));
     elmMessage.addAttribute(new Attribute("Name", m.getName() + ""));
     elmMessage.addAttribute(new Attribute("Type", m.getMessageType()));
     elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
