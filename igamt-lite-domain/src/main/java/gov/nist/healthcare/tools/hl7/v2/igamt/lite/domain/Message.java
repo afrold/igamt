@@ -335,19 +335,8 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
 
   @Override
   public int compareTo(Message o) {
-    int x =
-        String.CASE_INSENSITIVE_ORDER.compare(
-            this.getMessageType() != null && this.getEvent() != null ? this.getMessageType()
-                + this.getEvent() : "",
-            o.getMessageType() != null && this.getEvent() != null ? o.getMessageType()
-                + this.getEvent() : "");
-    if (x == 0) {
-      x =
-          (this.getMessageType() != null && this.getEvent() != null ? this.getMessageType()
-              + this.getEvent() : "").compareTo(o.getMessageType() != null
-              && this.getEvent() != null ? o.getMessageType() + o.getEvent() : "");
-    }
-    return x;
+	 
+    return this.position-o.getPosition();
   }
 
   public String getMessageID() {
