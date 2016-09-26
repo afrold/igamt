@@ -4,54 +4,72 @@
 	<artifactId>igl-client</artifactId>
 	<name>igamt-lite-client</name>
 	<description>igamt-lite client</description>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 	<parent>
 		<groupId>gov.nist.healthcare.tools.hl7.v2.igamt.lite</groupId>
 		<artifactId>igamt-lite</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<build>
-		<finalName>igl-client</finalName>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<configuration>
-						<wtpmanifest>true</wtpmanifest>
-						<wtpapplicationxml>true</wtpapplicationxml>
-						<wtpversion>2.0</wtpversion>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.0</version>
-					<configuration>
-						<autoVersionSubmodules>true</autoVersionSubmodules>
-					</configuration>
-				</plugin>
-				<plugin>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1.1</version>
-					<configuration>
-						<failOnMissingWebXml>false</failOnMissingWebXml>
-						<webResources>
-							<resource>
-								<!-- this is relative to the pom.xml directory -->
-								<directory>dist</directory>
-							</resource>
-						</webResources>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+		<plugins>
+
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<!-- NB! Set <version> to the latest released version of frontend-maven-plugin, 
+					like in README.md -->
+				<version>1.0</version>
+
+				<executions>
+
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>v5.3.0</nodeVersion>
+							<npmVersion>3.9.5</npmVersion>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<!-- Optional configuration which provides for running any npm command -->
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+
+					<!-- <execution> <id>npm run build</id> <goals> <goal>npm</goal> </goals> 
+						<configuration> <arguments>install</arguments> </configuration> </execution> -->
+					<execution>
+						<id>bower install</id>
+						<goals>
+							<goal>bower</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>grunt build</id>
+						<goals>
+							<goal>grunt</goal>
+						</goals>
+						<configuration>
+							<arguments>build</arguments>
+						</configuration>
+					</execution>
+					<!-- <execution> <id>javascript tests</id> <goals> <goal>karma</goal> 
+						</goals> <configuration> <karmaConfPath>src/test/javascript/karma.conf.ci.js</karmaConfPath> 
+						</configuration> </execution> -->
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 </project>

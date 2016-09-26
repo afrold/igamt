@@ -26,6 +26,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -43,6 +44,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
@@ -108,19 +110,42 @@ public class Bootstrap implements InitializingBean {
     // dataCorrectionSectionPosition.resetSectionPositions();
     // new DataCorrection().updateValueSetForSegment();
     // new DataCorrection().updateValueSetsForDT();
+
     // addVersionAndScopetoPRELOADEDIG();
     // addVersionAndScopetoHL7IG();
 
     /** to be runned one Time **/
-    CreateCollectionOfUnchanged();
-    AddVersionsToDatatypes();
+    // CreateCollectionOfUnchanged();
+    // AddVersionsToDatatypes();
     // addVersionAndScopetoUSERIG();
     // addScopeUserToOldClonedPRELOADEDIG();
     // changeTabletoTablesInNewHl7();
+//	modifiyCodeUsage();
 
   }
 
-  private void changeTabletoTablesInNewHl7() {
+  private void modifiyCodeUsage() {
+	  List<Table> allTables = tableService.findAll();
+	  
+	  for(Table t : allTables){
+		  boolean isChanged = false;
+		  for(Code c:t.getCodes()){
+			  if(c.getCodeUsage() == null){
+				  c.setCodeUsage("P");
+				  isChanged = true;
+			  }else if(!c.getCodeUsage().equals("R") && !c.getCodeUsage().equals("P") && !c.getCodeUsage().equals("E")){
+				  c.setCodeUsage("P");
+				  isChanged = true;
+			  }
+		  }
+		  if(isChanged) {
+			  tableService.save(t);
+			  logger.info("Table " + t.getId() + " has been updated by the codeusage issue.");
+		  }
+	  }
+  }
+
+private void changeTabletoTablesInNewHl7() {
     List<String> hl7Versions = new ArrayList<String>();
     hl7Versions.add("2.7.1");
     hl7Versions.add("2.8");

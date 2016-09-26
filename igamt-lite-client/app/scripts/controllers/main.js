@@ -985,7 +985,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         if(d === undefined){
                             throw new Error("Cannot find Data Type[id=" + c.obj.datatype.id + ", name= " + c.obj.datatype.name + "]");
                         }
-                        console.log('datatype id=' + c.obj.datatype.id);
                         c.obj.datatype.ext = d.ext;
                         c.obj.datatype.label = $rootScope.getLabel(c.obj.datatype.name, c.obj.datatype.ext);
                         parent.children.push(c);
@@ -2273,6 +2272,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return "";
         };
+        
         $rootScope.hasSameVersion = function(element) {
 
             return element.hl7Version;
@@ -2280,8 +2280,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         $rootScope.getTableLabel = function(table) {
-            if (table && table != null) {
-                return $rootScope.bindingIdentifier;
+            if (table && table.bindingIdentifier) {
+                return table.bindingIdentifier;
             }
             return "";
         };

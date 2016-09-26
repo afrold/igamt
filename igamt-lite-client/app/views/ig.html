@@ -88,7 +88,15 @@
                 </div>
             </div>
             <div class="modal-body">
-
+                <!--<div class="col-md-12">
+                        <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                            <label class="btn btn-raised btn-info btn-xs"
+                                   ng-click="loadIGDocumentsByVersion(hl7Version)"
+                                   ng-class="{ 'active':vr===selectedHL7Version}" ng-repeat="vr in hl7Versions">
+                                <input type="radio" ng-value="vr" ng-model="hl7Version">{{vr}}</input>
+                            </label>
+                        </div>
+                </div>-->
                 <div class="col-md-12">
                     <div ng-show="clickSource === 'btn'" ng-class="{'igl-has-error has-feedback' : hl7VersionsDlgForm.hl7Version.$invalid}">
                         <label class="col-md-2 control-label" style="text-align: left">HL7 Version*:</label>
@@ -176,11 +184,12 @@
                         <accordion-heading>
                             <span style="color:white;"> List of Events*</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i>
                         </accordion-heading>
-                        <div class="input-group">
-                            <span class="input-group-addon">Selected Messages:</span>
-                            <span ng-repeat="event in eventList" class="label label-primary">{{event.name}}^{{event.parentStructId}}</span>
-
-                        </div>
+                        <div class="row" style="overflow-x:scroll;margin-left:20px">
+                             <div class="input-group">
+                                <span class="input-group-addon">Selected Messages:</span>
+                                <span ng-repeat="event in eventList" class="label label-primary">{{event.name}}^{{event.parentStructId}} <i class="fa fa-times" aria-hidden="true" ng-click="trackSelections(false, event)"></i></span>
+                            </div>
+                        </div>                      
                         <div class="row" style="margin-left:20px">
                             <div ng-show="loading" style="text-align:center">
                                 <i class="fa fa-spinner fa-pulse fa-2x"></i>
@@ -191,6 +200,7 @@
                                         <thead>
                                             <tr class="tbl-header">
                                                 <td class="" style="width:300px">Struct ID</td>
+                                                <td class="" style="width:300px">Event ID</td>
                                                 <td class="" style="width:600px">Description</td>
                                             </tr>
                                         </thead>
@@ -210,10 +220,12 @@
     </script>
     <script type="text/ng-template" id="MessageEventsNode.html">
         <tr tt-node is-branch="node.type === 'message'">
+             <td class=""  style="width:300px;color:black"><span ng-bind="::node.name" ng-show="node.type === 'message'" style="margin-left : 7px;"></span></td>
             <td class="" style="width:300px;color:black">
 
-                <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-change="trackSelections(bool, node)"></input><span ng-bind="::node.name" style="margin-left : 7px;"></span>
+                <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-checked="isChecked(node)" ng-click="trackSelections(bool, node)"></input><span ng-show="node.type === 'event'" ng-bind="::node.name" style="margin-left : 7px;"></span>
             </td>
+           
             <td class="" style="width:585px;color:black"" ng-bind="::node.description"></td>
         
     </tr>
@@ -448,7 +460,6 @@
                                 <th>Binding Identifier</th>
                                 <th>Name</th>
                                 <th>HL7 Version</th>
-                                <th>oid</th>
                                 <th/>
                             </tr>
                         </thead>
@@ -457,7 +468,6 @@
                                 <td>{{table.bindingIdentifier}}</td>
                                 <td>{{table.name}}</td>
                                 <td>{{table.hl7Version}}</td>
-                                <td>{{table.oid}}</td>
                                 <td><a class="pointer" ng-click="deleteTable(table)"><i
                                             class="fa fa-times fa-fw"></i></a></td>
                             </tr>
@@ -489,9 +499,11 @@
             <div class="form-group">
                 <div class="col-sm-12">
                     <label for="csvValueSetFile" class="custom-file-upload">
-                            <i class="fa fa-cloud-upload"></i> Choose CSV File
-                        </label>
-                    <input id="csvValueSetFile" type="file" name="csvValueSetFile" />
+                        <i class="fa fa-cloud-upload"></i> Choose CSV File
+                    </label>
+                    <input id="csvValueSetFile" accept=".csv" onchange="angular.element(this).scope().validateForSelectedFile(this.files)" type="file" name="csvValueSetFile" />
+                    <div id="csvFileName"></div>
+                    <div id="errorMessageForCSV"></div>
                 </div>
             </div>
 
@@ -513,8 +525,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <p style="color:red;">{{warning}}</p>
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="fileSelected()" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
+        <button id="csvSaveButton" class="btn btn-raised btn-primary btn-sm" ng-click="save()" disabled><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
         <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
     </div>
 </script>
@@ -527,76 +538,67 @@
         </div>
     </div>
     <div class="modal-body">
-        <form class="form-horizontal" novalidate>
-            <div class="form-group">
-                <div class="col-sm-11">
-                    <input type="text" name="searchText" ng-model="searchText" class="form-control" placeholder="Type Criteria">
-                </div>
-                <div class="col-sm-1">
-                    <a ng-click="searchPhinvads(searchText)" class="point">
-                        <span><i class="fa fa-search fa-fw"></i></span>
-                    </a>
-                </div>
-            </div>
+        <div ng-show="loading" style="text-align:center">
+            <i class="fa fa-spinner fa-pulse fa-2x"></i>
+        </div>
 
-            <div class="col-md-6">
-                <div ng-show="loading" style="text-align:center">
-                    <i class="fa fa-spinner fa-pulse fa-2x"></i>
-                </div>
-                <div ng-show="!loading && phinvadsTables" class="igl-table">
-                    <h5>{{phinvadsTables.length}} tables found!</h5>
-                    <table ng-show="phinvadsTables.length > 0" class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                        <thead>
-                            <tr>
-                                <th>Binding Identifier</th>
-                                <th>Name</th>
-                                <th/>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="table in phinvadsTables | orderBy:'bindingIdentifier' |  filter:search:strict">
-                                <td>{{table.bindingIdentifier}}</td>
-                                <td>{{table.name}}</td>
-                                <td><a class="pointer" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="col-md-6">
+            <div class="igl-table">
+                <h5>Preloaded PHINVADs Tables</h5>
+                <table st-safe-src="preloadedPhinvadsTables" st-table="displayCollection" class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                    <thead>
+                    <tr>
+                        <th colspan="3">
+                            <input st-search placeholder="Search" class="input-sm form-control" type="search" />
+                        </th>
+                    </tr>
+                    <tr>
+                        <th st-sort="bindingIdentifier">Binding Identifier</th>
+                        <th>Name</th>
+                        <th/>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="table in displayCollection">
+                        <td>{{::table.bindingIdentifier}}</td>
+                        <td>{{::table.name}}</td>
+                        <td>
+                            <a ng-if="!isAlreadyIn(table) && !isAlreadySelected(table)" class="pointer" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
+                            <span ng-if="isAlreadyIn(table)">Added</span>
+                            <span ng-if="isAlreadySelected(table)">Selected</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tr style="float:center !important;">
+                        <td colspan="6" class="text-center" style="float:center !important;">
+                            <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <div class="col-md-6" ng-show="selectedTables.length > 0">
-                <div class="igl-table">
-                    <h5>Selected tables</h5>
-                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                        <thead>
-                            <tr>
-                                <th class="col-sm-7">Binding Identifier</th>
-                                <th class="col-sm-2">Name</th>
-                                <th class="col-sm-2">oid</th>
-                                <th class="col-sm-1" />
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="table in selectedTables">
-                                <td class="col-sm-7" ng-class="{'has-error': isDuplicatedID(table)}">
-                                    <textarea rows="3" class="form-control" ng-model="table.bindingIdentifier" />
-                                    <div ng-show="isDuplicatedID(table)">
-                                        <p class="warning">Duplicated ID</p>
-                                    </div>
-                                </td>
-                                <td class="col-sm-2">
-                                    <textarea rows="3" disabled class="form-control" ng-model="table.name" />
-                                </td>
-                                <td class="col-sm-2">
-                                    <textarea rows="3" disabled class="form-control" ng-model="table.oid" />
-                                </td>
-                                <td class="col-sm-1"><a class="pointer" ng-click="deleteTable(table)"><i class="fa fa-times fa-fw"></i></a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="igl-table">
+                <h5>Selected tables</h5>
+                <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                    <thead>
+                    <tr>
+                        <th>Binding Identifier</th>
+                        <th>Name</th>
+                        <th/>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="table in selectedTables">
+                        <td>{{::table.bindingIdentifier}}</td>
+                        <td>{{::table.name}}</td>
+                        <td><a class="pointer" ng-click="deleteTable(table)"><i class="fa fa-times fa-fw"></i></a></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-        </form>
+        </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-raised btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="save()"><span><i
@@ -621,7 +623,8 @@
                             <!--<p>HL7 Version:{{hl7Version}}</p>-->
                             <div class="input-group">
                                 <span class="input-group-addon" id="datatype-basic-addon1"><i class="fa fa-search"></i> Search</span>
-                                <input type="text" class="form-control input-sm" ng-model="newDatatype" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as datatype.label for datatype in hl7Datatypes|filter:$viewValue" placeholder="Search By Name">
+
+                                <input type="text" class="form-control input-lg" ng-model="newDatatype" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as datatype.name for datatype in hl7Datatypes|filter:{name:$viewValue}|limitTo:5" placeholder="Search By Name">
 
                             </div>
 
@@ -683,7 +686,7 @@
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="segment-basic-addon1"><i class="fa fa-search"></i> Search</span>
-                                <input type="text" class="form-control input-lg" ng-model="newSegment" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="segment as segment.name for segment in hl7Segments|filter:$viewValue" placeholder="Search By Name">
+                                <input type="text" class="form-control input-lg" ng-model="newSegment" data-limit="15" data-animation="am-flip-x" data-auto-select="true" typeahead="segment as segment.name for segment in hl7Segments|filter:{name:$viewValue}| limitTo:5" placeholder="Search By Name">
                             </div>
                         </div>
                     </div>
