@@ -1,12 +1,21 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +30,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.TableCSVGenerator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.TableSaveException;
@@ -77,6 +87,18 @@ public class TableController extends CommonController {
     }
   }
 
+  @RequestMapping(value = "/exportCSV/{id}", method = RequestMethod.POST,
+	      produces = "text/xml", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
+	  public void exportCSV(@PathVariable("id") String tableId, HttpServletRequest request, HttpServletResponse response) throws DataNotFoundException, IOException {
+	  log.info("Export table " + tableId);
+	  Table table = findById(tableId);
+      
+      InputStream content = IOUtils.toInputStream(new TableCSVGenerator().generate(table), "UTF-8");
+      response.setContentType("text/xml");
+      response.setHeader("Content-disposition", "attachment;filename=" + table.getBindingIdentifier() + "-" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".csv");
+      FileCopyUtils.copy(content, response.getOutputStream());
+  }
+  
   @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
   public boolean delete(@PathVariable("id") String tableId)
       throws ForbiddenOperationException, DataNotFoundException {
