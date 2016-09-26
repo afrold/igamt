@@ -688,8 +688,9 @@
                         </div>
                     </div>
                 </div>-->
+                 <form class="form-horizontal" novalidate>
                 <div class="modal-body">
-                            <form class="form-horizontal" novalidate>
+                           
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
@@ -768,15 +769,16 @@
                                                     </div>
                                     </div>
                                 </div>
-                            </form>
+                           
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>
                         Cancel
                     </button>
-                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="addSeg.$invalid || !isInSegs(newSegment)"><i class="fa fa-check"></i>Add
+                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedSegments.length===0"><i class="fa fa-check"></i>Add
                     </button>
                 </div>
+                 </form>
             <!--</form>-->
         </div>
     </div>
