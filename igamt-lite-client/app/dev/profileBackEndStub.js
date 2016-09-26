@@ -86,7 +86,11 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     });
 
-    $httpBackend.whenGET('api/accounts/cuser').respond(function (method, url, data, headers) {
+    $httpBackend.whenPOST('api/profileComponent/findAll').respond(function (method, url, data, headers) {
+        return [200, [], {}];
+    });
+	
+	$httpBackend.whenGET('api/accounts/cuser').respond(function (method, url, data, headers) {
         return [200, {}, {}];
     });
 
