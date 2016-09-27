@@ -969,8 +969,8 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 
   private nu.xom.Element serializeTable(TableLink tl, String prefix, Integer position) {
     Table t = tableService.findById(tl.getId());
-    nu.xom.Element sect = new nu.xom.Element("Section");
     if(t!=null) {
+    nu.xom.Element sect = new nu.xom.Element("Section");
       sect.addAttribute(new Attribute("id", t.getId()));
       sect.addAttribute(new Attribute("prefix", prefix));
       sect.addAttribute(new Attribute("position", String.valueOf(position)));
@@ -1017,8 +1017,11 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
         }
       }
       sect.appendChild(elmTableDefinition);
+      return sect;
+    } else {
+      logger.error("ValueSet serialization: No table found with id "+tl.getId());
+      return null;
     }
-    return sect;
   }
 
 
@@ -1074,8 +1077,6 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
         }
       }
 
-    } else {
-      logger.error("ValueSet serialization: No table found with id "+tl.getId());
     }
     return elmTableDefinition;
   }
@@ -1820,16 +1821,18 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
   @Override
   public nu.xom.Document serializeDatatypeLibraryDocumentToDoc(DatatypeLibraryDocument datatypeLibraryDocument) {
     //Create the root node (datatype library document node) that will contain the datatype and value sets libraries
-    Element datatypeLibraryDocumentNode = new nu.xom.Element("DatatypeLibraryDocument");
+    nu.xom.Element datatypeLibraryDocumentNode = new nu.xom.Element("ConformanceProfile");
     //Add the metadatas to the datatype library document node
     //TODO check if it shouldn't be a DatatypeLibraryDocumentMetaData object in the model
     DatatypeLibraryMetaData datatypeLibraryMetadata = datatypeLibraryDocument.getMetaData();
-    datatypeLibraryDocumentNode.addAttribute(new Attribute("Name", datatypeLibraryMetadata.getName() == null ? "" : datatypeLibraryMetadata.getName()));
-    datatypeLibraryDocumentNode.addAttribute(new Attribute("Date", datatypeLibraryMetadata.getDate() == null ? "" : datatypeLibraryMetadata.getDate()));
-    datatypeLibraryDocumentNode.addAttribute(new Attribute("Description", datatypeLibraryMetadata.getDescription() == null ? "" : datatypeLibraryMetadata.getDescription()));
-    datatypeLibraryDocumentNode.addAttribute(new Attribute("OrgName", datatypeLibraryMetadata.getOrgName() == null ? "" : datatypeLibraryMetadata.getOrgName()));
-    datatypeLibraryDocumentNode.addAttribute(new Attribute("Version", datatypeLibraryMetadata.getVersion() == null ? "" : datatypeLibraryMetadata.getVersion()));
     datatypeLibraryDocumentNode.addAttribute(new Attribute("Hl7Version", datatypeLibraryMetadata.getHl7Version() == null ? "" : datatypeLibraryMetadata.getHl7Version()));
+    nu.xom.Element metaDataNode = new nu.xom.Element("MetaData");
+    metaDataNode.addAttribute(new Attribute("Name", datatypeLibraryMetadata.getName() == null ? "" : datatypeLibraryMetadata.getName()));
+    metaDataNode.addAttribute(new Attribute("OrgName", datatypeLibraryMetadata.getOrgName() == null ? "" : datatypeLibraryMetadata.getOrgName()));
+    metaDataNode.addAttribute(new Attribute("Version", datatypeLibraryMetadata.getVersion() == null ? "" : datatypeLibraryMetadata.getVersion()));
+    metaDataNode.addAttribute(new Attribute("Date", datatypeLibraryMetadata.getDate() == null ? "" : datatypeLibraryMetadata.getDate()));
+    metaDataNode.addAttribute(new Attribute("Ext", datatypeLibraryMetadata.getExt() == null ? "" : datatypeLibraryMetadata.getExt()));
+    datatypeLibraryDocumentNode.appendChild(metaDataNode);
     //Create the datatype library node that will contain the datatype nodes
     Element datatypeLibraryNode = new nu.xom.Element("Datatypes");
     //Fetch all the Datatypes and create a node for each of them
@@ -1845,11 +1848,14 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
     Element tableLibraryNode = new nu.xom.Element("ValueSets");
     //Fetch all the Value sets and create a node for each of them
     List<TableLink> tableLinkList = new ArrayList<>(datatypeLibraryDocument.getTableLibrary().getChildren());
+    Collections.sort(tableLinkList);
     for(TableLink tableLink : tableLinkList){
       //Serialize the value set
       Element tableLinkNode = serializeTable(tableLink,"",tableLinkList.indexOf(tableLink));
       //Add the value set node to the children of the value sets library node
-      tableLibraryNode.appendChild(tableLinkNode);
+      if(tableLinkNode!=null) {
+        tableLibraryNode.appendChild(tableLinkNode);
+      }
     }
     //Add the datatypes to the root node
     datatypeLibraryDocumentNode.appendChild(datatypeLibraryNode);

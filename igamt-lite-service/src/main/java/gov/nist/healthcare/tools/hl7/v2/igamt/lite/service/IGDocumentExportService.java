@@ -74,8 +74,6 @@ public interface IGDocumentExportService {
   
   InputStream exportAsDocxSections(IGDocument ig);
 
-  InputStream exportAsXmlDatatypeLibraryDocument(DatatypeLibraryDocument datatypeLibraryDocument);
-
   InputStream exportAsHtmlDatatypeLibraryDocument(DatatypeLibraryDocument datatypeLibraryDocument);
 
   InputStream exportAsDocxDatatypeLibraryDocument(DatatypeLibraryDocument datatypeLibraryDocument);

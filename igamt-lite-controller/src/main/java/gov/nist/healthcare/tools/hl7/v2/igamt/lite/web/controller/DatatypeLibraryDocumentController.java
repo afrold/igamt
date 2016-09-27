@@ -234,11 +234,18 @@ public class DatatypeLibraryDocumentController {
 		return result;
 	}
 
-	@RequestMapping(value = "/{libId}/export/xml", method = RequestMethod.POST,produces = "application/xml")
-	public InputStream export(@PathVariable String libId) {
-		log.debug("Exporting the library to XML");
+	@RequestMapping(value = "/{libId}/export/html", method = RequestMethod.POST,produces = "application/html")
+	public InputStream exportXml(@PathVariable String libId) {
+		log.debug("Exporting the library to HTML");
 		DatatypeLibraryDocument lib = datatypeLibraryDocumentService.findById(libId);
-		return igDocumentExportService.exportAsXmlDatatypeLibraryDocument(lib);
+		return igDocumentExportService.exportAsHtmlDatatypeLibraryDocument(lib);
+	}
+
+	@RequestMapping(value = "/{libId}/export/docx", method = RequestMethod.POST,produces = "application/html")
+	public InputStream exportDocx(@PathVariable String libId) {
+		log.debug("Exporting the library to Word");
+		DatatypeLibraryDocument lib = datatypeLibraryDocumentService.findById(libId);
+		return igDocumentExportService.exportAsDocxDatatypeLibraryDocument(lib);
 	}
 
 }
