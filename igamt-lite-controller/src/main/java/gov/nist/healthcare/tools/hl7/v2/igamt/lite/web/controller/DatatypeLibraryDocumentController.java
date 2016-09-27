@@ -1,10 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 import org.slf4j.Logger;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +42,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.Scope
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/datatype-library-document")
@@ -234,18 +237,31 @@ public class DatatypeLibraryDocumentController {
 		return result;
 	}
 
-	@RequestMapping(value = "/{libId}/export/html", method = RequestMethod.POST,produces = "application/html")
-	public InputStream exportXml(@PathVariable String libId) {
-		log.debug("Exporting the library to HTML");
-		DatatypeLibraryDocument lib = datatypeLibraryDocumentService.findById(libId);
-		return igDocumentExportService.exportAsHtmlDatatypeLibraryDocument(lib);
+	private String escapeSpace(String str) {
+		return str.replaceAll(" ", "-");
 	}
 
-	@RequestMapping(value = "/{libId}/export/docx", method = RequestMethod.POST,produces = "application/html")
-	public InputStream exportDocx(@PathVariable String libId) {
+	@RequestMapping(value = "/{libId}/export/html", method = RequestMethod.POST,produces = "text/html")
+	public void exportXml(@PathVariable String libId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		log.debug("Exporting the library to HTML");
+		DatatypeLibraryDocument lib = datatypeLibraryDocumentService.findById(libId);
+		InputStream content = igDocumentExportService.exportAsHtmlDatatypeLibraryDocument(lib);
+		response.setContentType("text/html");
+		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(lib.getMetaData().getName()) + "-" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/{libId}/export/docx", method = RequestMethod.POST,produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+	public void exportDocx(@PathVariable String libId, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		log.debug("Exporting the library to Word");
 		DatatypeLibraryDocument lib = datatypeLibraryDocumentService.findById(libId);
-		return igDocumentExportService.exportAsDocxDatatypeLibraryDocument(lib);
+		InputStream content = igDocumentExportService.exportAsDocxDatatypeLibraryDocument(lib);
+		response
+				.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		response.setHeader("Content-disposition",
+				"attachment;filename=" + escapeSpace(lib.getMetaData().getName()) + "-"
+						+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 }
