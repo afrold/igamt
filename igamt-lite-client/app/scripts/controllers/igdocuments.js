@@ -758,31 +758,35 @@ angular.module('igl')
         $scope.addDatatypes = function(hl7Version) {
             var scopes = ['HL7STANDARD'];
 
-            DatatypeService.getDataTypesByScopesAndVersion(scopes, $scope.hl7Version).then(function(result) {
-                console.log("result");
-                console.log(result);
+            DatatypeService.getDataTypesByScopesAndVersion(scopes, $scope.hl7Version).then(function(datatypes) {
+                DatatypeService.getPublishedMaster($rootScope.igdocument.profile.metaData.hl7Version).then(function(master) {
+                    console.log("master");
+                    console.log(master);
 
-                console.log("addDatatype scopes=" + scopes.length);
-                var addDatatypeInstance = $modal.open({
-                    templateUrl: 'AddDatatypeDlg.html',
-                    controller: 'AddDatatypeDlgCtl',
-                    size: 'lg',
-                    windowClass: 'flavor-modal-window',
-                    resolve: {
-                        hl7Version: function() {
-                            return $scope.hl7Version;
-                        },
-                        datatypes: function() {
-                            console.log("datatypes");
-                            console.log(result);
+                    console.log("addDatatype scopes=" + scopes.length);
+                    var addDatatypeInstance = $modal.open({
+                        templateUrl: 'AddDatatypeDlg.html',
+                        controller: 'AddDatatypeDlgCtl',
+                        size: 'lg',
+                        windowClass: 'conformance-profiles-modal',
+                        resolve: {
+                            hl7Version: function() {
+                                return $scope.hl7Version;
+                            },
+                            datatypes: function() {
 
-                            return result;
+                                return datatypes;
+                            },
+                            masterDatatypes: function() {
+
+                                return master;
+                            }
                         }
-                    }
-                }).result.then(function(results) {
-                    var ids = [];
-                    angular.forEach(results, function(result) {
-                        ids.push(result.id);
+                    }).result.then(function(results) {
+                        var ids = [];
+                        angular.forEach(results, function(result) {
+                            ids.push(result.id);
+                        });
                     });
                 });
             });
@@ -1887,12 +1891,120 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
 
 
 angular.module('igl').controller('AddDatatypeDlgCtl',
-    function($scope, $rootScope, $modalInstance, hl7Version, datatypes, DatatypeLibrarySvc, DatatypeService) {
+    function($scope, $rootScope, $modalInstance, hl7Version, datatypes, masterDatatypes, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService) {
 
         //$scope.hl7Version = hl7Version;
-        //$scope.hl7Datatypes = datatypes;
-        $scope.masterDatatypes = [];
+        //$scope.hl7Datatypes = datatypes;        
+
         $scope.newDts = [];
+        $scope.checkedExt = true;
+        $scope.NocheckedExt = true;
+        $scope.masterDatatypes = [];
+        $scope.masterDts = masterDatatypes;
+        for (var i = 0; i < $scope.masterDts.length; i++) {
+            if (!$rootScope.datatypesMap[$scope.masterDts[i].id]) {
+                $scope.masterDatatypes.push($scope.masterDts[i]);
+            }
+        }
+
+        $scope.selectedDatatypes = [];
+
+        $scope.addDt = function(datatype) {
+            console.log(datatype);
+            $scope.selectedDatatypes.push(datatype);
+
+        };
+        $scope.checkExist = function(datatype) {
+
+            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+                if ($scope.selectedDatatypes[i].id === datatype.id) {
+                    return true;
+                }
+            }
+            for (var i = 0; i < $rootScope.datatypes.length; i++) {
+                if ($rootScope.datatypes[i].id === datatype.id) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        $scope.checkExt = function(datatype) {
+            $scope.checkedExt = true;
+            $scope.NocheckedExt = true;
+            if (datatype.ext === "") {
+                $scope.NocheckedExt = false;
+                return $scope.NocheckedExt;
+            }
+            for (var i = 0; i < $rootScope.datatypes.length; i++) {
+                if ($rootScope.datatypes[i].name === datatype.name && $rootScope.datatypes[i].ext === datatype.ext) {
+                    $scope.checkedExt = false;
+                    return $scope.checkedExt;
+                }
+            }
+            console.log($scope.selectedDatatypes.indexOf(datatype));
+            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+                if ($scope.selectedDatatypes.indexOf(datatype) !== i) {
+                    if ($scope.selectedDatatypes[i].name === datatype.name && $scope.selectedDatatypes[i].ext === datatype.ext) {
+                        $scope.checkedExt = false;
+                        return $scope.checkedExt;
+                    }
+                }
+
+            }
+
+            return $scope.checkedExt;
+        };
+        $scope.addDtFlv = function(datatype) {
+            var newDatatype = angular.copy(datatype, {});
+
+            newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
+            newDatatype.scope = 'USER';
+            newDatatype.participants = [];
+            newDatatype.id = null;
+            newDatatype.libIds = [];
+            newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
+            if (datatype.scope === 'MASTER') {
+                //newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
+                var temp = [];
+                temp.push($rootScope.igdocument.profile.metaData.hl7Version);
+                newDatatype.hl7versions = temp;
+                newDatatype.hl7Version = $rootScope.igdocument.profile.metaData.hl7Version;
+
+            }
+
+
+            if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
+                for (var i = 0; i < newDatatype.components.length; i++) {
+                    newDatatype.components[i].id = new ObjectId().toString();
+                }
+            }
+
+            var predicates = newDatatype['predicates'];
+            if (predicates != undefined && predicates != null && predicates.length != 0) {
+                angular.forEach(predicates, function(predicate) {
+                    predicate.id = new ObjectId().toString();
+                });
+            }
+
+            var conformanceStatements = newDatatype['conformanceStatements'];
+            if (conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0) {
+                angular.forEach(conformanceStatements, function(conformanceStatement) {
+                    conformanceStatement.id = new ObjectId().toString();
+                });
+            }
+            $scope.selectedDatatypes.push(newDatatype);
+        }
+        $scope.deleteDt = function(segment) {
+            var index = $scope.selectedDatatypes.indexOf(segment);
+            if (index > -1) $scope.selectedDatatypes.splice(segment, 1);
+        };
+
+
+
+
+
+
+
 
         var secretEmptyKey = '[$empty$]'
 
@@ -1902,11 +2014,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             }).length == 0
         });
 
-        $scope.masterDatatypes = datatypes.filter(function(current) {
-            return $rootScope.datatypes.filter(function(current_b) {
-                return current_b.id == current.id;
-            }).length == 0
-        });
+
         $scope.dtComparator = function(datatype, viewValue) {
             if (datatype) {
                 console.log(datatype.name);
@@ -1947,30 +2055,109 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
 
         $scope.ok = function() {
-            var newLink = angular.fromJson({
-                id: $scope.newDatatype.id,
-                name: $scope.newDatatype.name
-            });
 
-            DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function(link) {
-                $rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
-                $rootScope.datatypes.splice(0, 0, $scope.newDatatype);
-                $rootScope.datatype = $scope.newDatatype;
-                $rootScope.datatypesMap[$scope.newDatatype.id] = $scope.newDatatype;
-                $rootScope.processElement($scope.newDatatype);
-                $rootScope.filteredDatatypesList.push($scope.newDatatype);
-                $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
-                $rootScope.$broadcast('event:openDatatype', $scope.newDatatype);
-                $rootScope.msg().text = "datatypeAdded";
-                $rootScope.msg().type = "success";
-                $rootScope.msg().show = true;
-                $modalInstance.close(datatypes);
+
+            $scope.selectFlv = [];
+            var newLinks = [];
+            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+                if ($scope.selectedDatatypes[i].scope === 'USER') {
+                    $scope.selectFlv.push($scope.selectedDatatypes[i]);
+                } else {
+                    newLinks.push({
+                        id: $scope.selectedDatatypes[i].id,
+                        name: $scope.selectedDatatypes[i].name
+                    })
+                }
+            }
+            $rootScope.usedDtLink = [];
+            $rootScope.usedVsLink = [];
+            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+                $rootScope.fillMaps($scope.selectedDatatypes[i]);
+            }
+            DatatypeService.saves($scope.selectFlv).then(function(result) {
+                for (var i = 0; i < result.length; i++) {
+                    newLinks.push({
+                        id: result[i].id,
+                        name: result[i].name,
+                        ext: result[i].ext
+                    })
+                }
+                DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, newLinks).then(function(link) {
+                    for (var i = 0; i < newLinks.length; i++) {
+                        $rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLinks[i]);
+                    }
+                    for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+                        $rootScope.datatypes.splice(0, 0, $scope.selectedDatatypes[i]);
+                    }
+                    for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+                        $rootScope.datatypesMap[$scope.selectedDatatypes[i].id] = $scope.selectedDatatypes[i];
+                    }
+                    var usedDtId1 = _.map($rootScope.usedDtLink, function(num, key) {
+                        return num.id;
+                    });
+
+                    DatatypeService.get(usedDtId1).then(function(datatypes) {
+                        for (var j = 0; j < datatypes.length; j++) {
+                            if (!$rootScope.datatypesMap[datatypes[j].id]) {
+
+                                $rootScope.datatypesMap[datatypes[j].id] = datatypes[j];
+                                $rootScope.datatypes.push(datatypes[j]);
+                                $rootScope.processElement(datatypes[j]);
+                            }
+                        }
+
+                        var usedVsId = _.map($rootScope.usedVsLink, function(num, key) {
+                            return num.id;
+                        });
+                        console.log("$rootScope.usedVsLink");
+
+                        console.log($rootScope.usedVsLink);
+                        var newTablesLink = _.difference($rootScope.usedVsLink, $rootScope.igdocument.profile.tableLibrary.children);
+                        console.log(newTablesLink);
+
+                        TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, newTablesLink).then(function() {
+                            $rootScope.igdocument.profile.tableLibrary.children = _.union(newTablesLink, $rootScope.igdocument.profile.tableLibrary.children);
+
+                            TableService.get(usedVsId).then(function(tables) {
+                                for (var j = 0; j < tables.length; j++) {
+                                    if (!$rootScope.tablesMap[tables[j].id]) {
+                                        $rootScope.tablesMap[tables[j].id] = tables[j];
+                                        $rootScope.tables.push(tables[j]);
+                                        $rootScope.processElement(tables[j]);
+
+                                    }
+                                }
+
+                                for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+                                    $rootScope.processElement($scope.selectedDatatypes[i]);
+                                }
+                                //$rootScope.processElement($scope.newSegment);
+
+                            });
+                        });
+
+
+                    });
+
+
+                    //$rootScope.processElement($scope.newDatatype);
+                    // $rootScope.filteredDatatypesList.push($scope.newDatatype);
+                    // $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
+                    // $rootScope.$broadcast('event:openDatatype', $scope.newDatatype);
+                    $rootScope.msg().text = "datatypeAdded";
+                    $rootScope.msg().type = "success";
+                    $rootScope.msg().show = true;
+                    $modalInstance.close(datatypes);
+                });
+
             }, function(error) {
                 $rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
             });
+
+
         };
 
         $scope.cancel = function() {
@@ -2028,6 +2215,8 @@ angular.module('igl').controller('AddSegmentDlgCtl',
     function($scope, $rootScope, $modalInstance, hl7Version, $http, SegmentService, SegmentLibrarySvc, DatatypeService, DatatypeLibrarySvc, TableService, TableLibrarySvc, IgDocumentService) {
 
         $scope.selectedSegments = [];
+        $scope.checkedExt = true;
+        $scope.NocheckedExt = true;
 
         $scope.addseg = function(segment) {
             $scope.selectedSegments.push(segment);
@@ -2244,7 +2433,6 @@ angular.module('igl').controller('AddSegmentDlgCtl',
             console.log(newLinks);
             $rootScope.usedDtLink = [];
             $rootScope.usedVsLink = [];
-            $rootScope.fillMaps($scope.newSegment);
             for (var i = 0; i < $scope.selectedSegments.length; i++) {
                 $rootScope.fillMaps($scope.selectedSegments[i]);
             }
