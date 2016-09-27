@@ -1,10 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,8 @@ public class DatatypeLibraryDocumentController {
 	UnchangedDataRepository unchangedDatatype;
 	@Autowired
 	AccountRepository accountRepository;
+	@Autowired
+	IGDocumentExportService igDocumentExportService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public List<DatatypeLibraryDocument> getDatatypeLibraries() {
@@ -228,6 +232,13 @@ public class DatatypeLibraryDocumentController {
 		
 		
 		return result;
+	}
+
+	@RequestMapping(value = "/{libId}/export/xml", method = RequestMethod.POST,produces = "text/xml")
+	public InputStream export(@PathVariable String libId) {
+		log.debug("Exporting the library to XML");
+		DatatypeLibraryDocument lib = datatypeLibraryDocumentService.findById(libId);
+		return igDocumentExportService.exportAsXmlDatatypeLibraryDocument(lib);
 	}
 
 }

@@ -33,6 +33,7 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,27 +44,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
@@ -1825,6 +1805,52 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
   public InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  @Override
+  public String serializeDatatypeLibraryDocumentToXML(DatatypeLibraryDocument datatypeLibraryDocument) {
+    nu.xom.Document doc = serializeDatatypeLibraryDocumentToDoc(datatypeLibraryDocument);
+    return doc.toXML();
+  }
+
+  @Override
+  public nu.xom.Document serializeDatatypeLibraryDocumentToDoc(DatatypeLibraryDocument datatypeLibraryDocument) {
+    //Create the root node (datatype library document node) that will contain the datatype and value sets libraries
+    Element datatypeLibraryDocumentNode = new nu.xom.Element("DatatypeLibraryDocument");
+    //Add the metadatas to the datatype library document node
+    //TODO check if it shouldn't be a DatatypeLibraryDocumentMetaData object in the model
+    DatatypeLibraryMetaData datatypeLibraryMetadata = datatypeLibraryDocument.getMetaData();
+    datatypeLibraryDocumentNode.addAttribute(new Attribute("Name", datatypeLibraryMetadata.getName() == null ? "" : datatypeLibraryMetadata.getName()));
+    datatypeLibraryDocumentNode.addAttribute(new Attribute("Date", datatypeLibraryMetadata.getDate() == null ? "" : datatypeLibraryMetadata.getDate()));
+    datatypeLibraryDocumentNode.addAttribute(new Attribute("Description", datatypeLibraryMetadata.getDescription() == null ? "" : datatypeLibraryMetadata.getDescription()));
+    datatypeLibraryDocumentNode.addAttribute(new Attribute("OrgName", datatypeLibraryMetadata.getOrgName() == null ? "" : datatypeLibraryMetadata.getOrgName()));
+    datatypeLibraryDocumentNode.addAttribute(new Attribute("Version", datatypeLibraryMetadata.getVersion() == null ? "" : datatypeLibraryMetadata.getVersion()));
+    datatypeLibraryDocumentNode.addAttribute(new Attribute("Hl7Version", datatypeLibraryMetadata.getHl7Version() == null ? "" : datatypeLibraryMetadata.getHl7Version()));
+    //Create the datatype library node that will contain the datatype nodes
+    Element datatypeLibraryNode = new nu.xom.Element("DatatypeLibrary");
+    //Fetch all the Datatypes and create a node for each of them
+    for(DatatypeLink dataTypeLink : datatypeLibraryDocument.getDatatypeLibrary().getChildren()){
+      //Serialize the datatype
+      Element dataTypeNode = serializeOneDatatype(dataTypeLink);
+      //Add the datatype node to the children of the datatype library node
+      datatypeLibraryNode.appendChild(dataTypeNode);
+    }
+    //Create the value sets library node that will contain the value set nodes
+    Element tableLibraryNode = new nu.xom.Element("TableLibrary");
+    //Fetch all the Value sets and create a node for each of them
+    for(TableLink tableLink : datatypeLibraryDocument.getTableLibrary().getChildren()){
+      //Serialize the value set
+      Element tableLinkNode = serializeOneTable(tableLink);
+      //Add the value set node to the children of the value sets library node
+      tableLibraryNode.appendChild(tableLinkNode);
+    }
+    //Add the datatypes to the root node
+    datatypeLibraryDocumentNode.appendChild(datatypeLibraryNode);
+    //Add the value sets to the root node
+    datatypeLibraryDocumentNode.appendChild(tableLibraryNode);
+    //Create the document with the root node
+    nu.xom.Document doc = new nu.xom.Document(datatypeLibraryDocumentNode);
+    return doc;
   }
 
   @Override
