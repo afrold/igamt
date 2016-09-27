@@ -186,7 +186,7 @@
 					</xsl:for-each>
 				</tbody>
 			</table>
-				<xsl:if test="count(./Constraint) &gt; 0">
+	<xsl:if test="count(./Constraint) &gt; 0">
 			<xsl:choose>
 				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
 					<xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
@@ -224,7 +224,6 @@
 				</xsl:when>
 			</xsl:choose>
 		</xsl:if>
-			
 		</p>
 		<xsl:value-of disable-output-escaping="yes"
 			select="./Text[@Type='UsageNote']" />
@@ -543,10 +542,10 @@
 			</table>
 		</p>
 
-		<xsl:if test="count(Component//Constraint) &gt; 0">
+		<xsl:if test="count(./Constraint) &gt; 0">
 			<xsl:choose>
 				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
-					<xsl:if test="count(Component//Constraint[@Type='cs']) &gt; 0">
+					<xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
 						<p>
 							<strong>
 								<u>Conformance statements</u>
@@ -554,7 +553,7 @@
 							<table width="100%" border="1" cellspacing="0" cellpadding="1">
 								<xsl:call-template name="csheader"></xsl:call-template>
 								<tbody>
-									<xsl:for-each select="Component/Constraint[@Type='cs']">
+									<xsl:for-each select="./Constraint[@Type='cs']">
 										<xsl:sort select="@Position" data-type="number"></xsl:sort>
 										<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
 									</xsl:for-each>
@@ -562,7 +561,7 @@
 							</table>
 						</p>
 					</xsl:if>
-					<xsl:if test="count(Component//Constraint[@Type='pre']) &gt; 0">
+					<xsl:if test="count(./Constraint[@Type='pre']) &gt; 0">
 						<p>
 							<strong>
 								<u>Conditional predicates</u>
@@ -570,7 +569,7 @@
 							<table width="100%" border="1" cellspacing="0" cellpadding="1">
 								<xsl:call-template name="preheader"></xsl:call-template>
 								<tbody>
-									<xsl:for-each select="Component/Constraint[@Type='pre']">
+									<xsl:for-each select="./Constraint[@Type='pre']">
 										<xsl:sort select="@Position" data-type="number"></xsl:sort>
 										<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
 									</xsl:for-each>
@@ -997,5 +996,3 @@
 		<xsl:value-of disable-output-escaping="yes" select="SectionContent" />
 	</xsl:template>
 </xsl:stylesheet>
-
-
