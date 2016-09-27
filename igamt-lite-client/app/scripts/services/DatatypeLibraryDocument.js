@@ -102,7 +102,7 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
     svc.exportAs = function(dataTypeLibraryDocumentId, format) {
             blockUI.start();
             var form = document.createElement("form");
-            form.action = $rootScope.api('api/datatype-library-document/' + dataTypeLibraryId + '/export/' + format);
+            form.action = $rootScope.api('api/datatype-library-document/' + dataTypeLibraryDocumentId + '/export/' + format);
             form.method = "POST";
             form.target = "_target";
             var csrfInput = document.createElement("input");

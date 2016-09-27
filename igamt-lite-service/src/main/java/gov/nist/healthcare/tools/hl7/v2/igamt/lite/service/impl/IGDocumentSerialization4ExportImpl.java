@@ -970,52 +970,54 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
   private nu.xom.Element serializeTable(TableLink tl, String prefix, Integer position) {
     Table t = tableService.findById(tl.getId());
     nu.xom.Element sect = new nu.xom.Element("Section");
-    sect.addAttribute(new Attribute("id", t.getId()));
-    sect.addAttribute(new Attribute("prefix", prefix));
-    sect.addAttribute(new Attribute("position", String.valueOf(position)));
-    sect.addAttribute(new Attribute("h", String.valueOf(3)));
-    sect.addAttribute(
-        new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
+    if(t!=null) {
+      sect.addAttribute(new Attribute("id", t.getId()));
+      sect.addAttribute(new Attribute("prefix", prefix));
+      sect.addAttribute(new Attribute("position", String.valueOf(position)));
+      sect.addAttribute(new Attribute("h", String.valueOf(3)));
+      sect.addAttribute(
+              new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
 
-    nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
-    elmTableDefinition.addAttribute(
-        new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
-    elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
-        (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
-    elmTableDefinition
-        .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
-    elmTableDefinition.addAttribute(
-        new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
-    elmTableDefinition.addAttribute(
-        new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
-    elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
-    elmTableDefinition.addAttribute(
-        new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
-    elmTableDefinition.addAttribute(new Attribute("Extensibility",
-        (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
-    elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
-        (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
-    elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
-    elmTableDefinition.addAttribute(new Attribute("position", ""));
-    elmTableDefinition.addAttribute(new Attribute("prefix", prefix));
+      nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
+      elmTableDefinition.addAttribute(
+              new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
+      elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+              (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+      elmTableDefinition
+              .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
+      elmTableDefinition.addAttribute(
+              new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
+      elmTableDefinition.addAttribute(
+              new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
+      elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
+      elmTableDefinition.addAttribute(
+              new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
+      elmTableDefinition.addAttribute(new Attribute("Extensibility",
+              (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
+      elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
+              (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
+      elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
+      elmTableDefinition.addAttribute(new Attribute("position", ""));
+      elmTableDefinition.addAttribute(new Attribute("prefix", prefix));
 
-    if (t.getCodes() != null) {
-      for (Code c : t.getCodes()) {
-        nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
-        elmTableElement
-            .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
-        elmTableElement
-            .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
-        elmTableElement.addAttribute(
-            new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
-        elmTableElement.addAttribute(
-            new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
-        elmTableElement.addAttribute(
-            new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
-        elmTableDefinition.appendChild(elmTableElement);
+      if (t.getCodes() != null) {
+        for (Code c : t.getCodes()) {
+          nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
+          elmTableElement
+                  .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
+          elmTableElement
+                  .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
+          elmTableElement.addAttribute(
+                  new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
+          elmTableElement.addAttribute(
+                  new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
+          elmTableElement.addAttribute(
+                  new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
+          elmTableDefinition.appendChild(elmTableElement);
+        }
       }
+      sect.appendChild(elmTableDefinition);
     }
-    sect.appendChild(elmTableDefinition);
     return sect;
   }
 
@@ -1072,6 +1074,8 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
         }
       }
 
+    } else {
+      logger.error("ValueSet serialization: No table found with id "+tl.getId());
     }
     return elmTableDefinition;
   }
@@ -1827,20 +1831,23 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
     datatypeLibraryDocumentNode.addAttribute(new Attribute("Version", datatypeLibraryMetadata.getVersion() == null ? "" : datatypeLibraryMetadata.getVersion()));
     datatypeLibraryDocumentNode.addAttribute(new Attribute("Hl7Version", datatypeLibraryMetadata.getHl7Version() == null ? "" : datatypeLibraryMetadata.getHl7Version()));
     //Create the datatype library node that will contain the datatype nodes
-    Element datatypeLibraryNode = new nu.xom.Element("DatatypeLibrary");
+    Element datatypeLibraryNode = new nu.xom.Element("Datatypes");
     //Fetch all the Datatypes and create a node for each of them
-    for(DatatypeLink dataTypeLink : datatypeLibraryDocument.getDatatypeLibrary().getChildren()){
+    List<DatatypeLink> datattypeLinkList = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
+    Collections.sort(datattypeLinkList);
+    for(DatatypeLink dataTypeLink : datattypeLinkList){
       //Serialize the datatype
-      Element dataTypeNode = serializeOneDatatype(dataTypeLink);
+      Element dataTypeNode = serializeDatatype(dataTypeLink, datatypeLibraryDocument.getTableLibrary(), datatypeLibraryDocument.getDatatypeLibrary(), "", datattypeLinkList.indexOf(dataTypeLink));
       //Add the datatype node to the children of the datatype library node
       datatypeLibraryNode.appendChild(dataTypeNode);
     }
     //Create the value sets library node that will contain the value set nodes
-    Element tableLibraryNode = new nu.xom.Element("TableLibrary");
+    Element tableLibraryNode = new nu.xom.Element("ValueSets");
     //Fetch all the Value sets and create a node for each of them
-    for(TableLink tableLink : datatypeLibraryDocument.getTableLibrary().getChildren()){
+    List<TableLink> tableLinkList = new ArrayList<>(datatypeLibraryDocument.getTableLibrary().getChildren());
+    for(TableLink tableLink : tableLinkList){
       //Serialize the value set
-      Element tableLinkNode = serializeOneTable(tableLink);
+      Element tableLinkNode = serializeTable(tableLink,"",tableLinkList.indexOf(tableLink));
       //Add the value set node to the children of the value sets library node
       tableLibraryNode.appendChild(tableLinkNode);
     }

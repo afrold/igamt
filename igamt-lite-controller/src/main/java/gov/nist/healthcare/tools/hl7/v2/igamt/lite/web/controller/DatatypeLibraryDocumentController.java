@@ -234,7 +234,7 @@ public class DatatypeLibraryDocumentController {
 		return result;
 	}
 
-	@RequestMapping(value = "/{libId}/export/xml", method = RequestMethod.POST,produces = "text/xml")
+	@RequestMapping(value = "/{libId}/export/xml", method = RequestMethod.POST,produces = "application/xml")
 	public InputStream export(@PathVariable String libId) {
 		log.debug("Exporting the library to XML");
 		DatatypeLibraryDocument lib = datatypeLibraryDocumentService.findById(libId);
