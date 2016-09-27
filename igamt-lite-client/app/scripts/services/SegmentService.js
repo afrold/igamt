@@ -271,6 +271,28 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                 });
             }
             $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
+        },
+
+        addNewTableBinding: function(segmentId, fieldId, newTableLink){
+            var delay = $q.defer();
+            $http.post('api/segments/addNewTableBinding/' + segmentId +"/" + fieldId , newTableLink).then(function(response) {
+                var saveResponse = angular.fromJson(response.data);
+                delay.resolve(saveResponse);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+
+        updateTableBinding: function(segmentId, fieldId, newTableLink, key){
+            var delay = $q.defer();
+            $http.post('api/segments/updateTableBinding/' + segmentId +"/" + fieldId + "/" + key , newTableLink).then(function(response) {
+                var saveResponse = angular.fromJson(response.data);
+                delay.resolve(saveResponse);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
         }
     };
     return SegmentService;

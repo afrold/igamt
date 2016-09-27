@@ -487,7 +487,7 @@
                                             </td>
                                         </tr>
                                         </tbody>
-                                        <tr ng-if="displayReferences.length > 10">
+                                        <tr ng-if="references.length > 10">
                                             <td colspan="9" class="text-center">
                                                 <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
                                             </td>
@@ -751,7 +751,7 @@
                                             </td>
                                         </tr>
                                         </tbody>
-                                        <tr ng-if="displayReferences.length > 10">
+                                        <tr ng-if="references.length > 10">
                                             <td colspan="9" class="text-center">
                                                 <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
                                             </td>
@@ -929,11 +929,11 @@
     <div class="modal-body">
         <span class="pull-right">
             <div class="btn-group btn-group-sm" data-toggle="buttons">
-                <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'SEGMENT';init();" ng-class="{'active':bindingTargetType === 'SEGMENT'}">
-                    <input type="radio" ng-value="SEGMENT">To Segment
+                <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'SEGMENT'; init();" ng-class="{'active':bindingTargetType === 'SEGMENT'}">
+                    <input type="radio" ng-value="SEGMENT" ng-model="bindingTargetType">To Segment
                 </label>
-                <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'DATATYPE';init();" ng-class="{'active':bindingTargetType === 'DATATYPE'}">
-                    <input type="radio" ng-value="DATATYPE">To Datatype
+                <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'DATATYPE'; init();" ng-class="{'active':bindingTargetType === 'DATATYPE'}">
+                    <input type="radio" ng-value="DATATYPE" ng-model="bindingTargetType">To Datatype
                 </label>
             </div>
         </span>
@@ -1015,9 +1015,9 @@
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-raised btn-info btn-sm" ng-disabled="selectedFieldForBinding == null" ng-click="save()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span>
-        </button>
         <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-info btn-sm" ng-disabled="pathForBinding == null" ng-click="save(bindingTargetType)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span>
         </button>
     </div>
 </script>

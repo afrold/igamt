@@ -11,26 +11,6 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopeAndNameAndVersionWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeDeleteException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,6 +26,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopeAndNameAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeDeleteException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -109,7 +109,6 @@ public class DatatypeController extends CommonController {
 
 	    	    Datatype d =null;
 	    	    int max=1;
-	    	    List<Datatype> datatypes= new ArrayList<Datatype>();
 	    	    try {
 	    	      User u = userService.getCurrentUser();
 	    	      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
@@ -191,8 +190,49 @@ public class DatatypeController extends CommonController {
       throw new ForbiddenOperationException("FORBIDDEN_SAVE_DATATYPE");
     }
   }
+  
+  @RequestMapping(value = "/addNewTableBinding/{datatypeId}/{componentId}", method = RequestMethod.POST)
+  public Datatype addNewTableBinding(@PathVariable("datatypeId") String datatypeId, @PathVariable("componentId") String componentId, @RequestBody TableLink newTableLink) throws DatatypeSaveException, ForbiddenOperationException, DataNotFoundException {
+	  Datatype datatype = this.datatypeService.findById(datatypeId);
+	  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
+		  datatype.setDate(DateUtils.getCurrentTime());
+		  datatype.getComponents().get(this.indexOfComponent(componentId, datatype)).getTables().add(newTableLink);
+		  Datatype saved = datatypeService.save(datatype);
+		  return saved;
+	  } else {
+		  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
+	  }
+  }
+  
+  @RequestMapping(value = "/updateTableBinding/{datatypeId}/{componentId}/{key}", method = RequestMethod.POST)
+  public Datatype updateTableBinding(@PathVariable("datatypeId") String datatypeId, @PathVariable("componentId") String componentId, @PathVariable("key") String key, @RequestBody TableLink newTableLink) throws DatatypeSaveException, ForbiddenOperationException, DataNotFoundException {
+	  Datatype datatype = this.datatypeService.findById(datatypeId);
+	  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
+		  datatype.setDate(DateUtils.getCurrentTime());
+		  Component targetComponent = datatype.getComponents().get(this.indexOfComponent(componentId, datatype));
+		  targetComponent.getTables().add(newTableLink);
+		  this.deleteTable(targetComponent, key);
+		  Datatype saved = datatypeService.save(datatype);
+		  return saved;
+	  } else {
+		  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
+	  }
+  }
 
-  @RequestMapping(value = "/saveAll", method = RequestMethod.POST)
+  private void deleteTable(Component targetComponent, String key) throws DataNotFoundException {
+	  TableLink found = null;
+	  for(TableLink tl:targetComponent.getTables()){
+		  if(tl.getId().equals(key)) found = tl;
+	  }
+	  if(found != null){
+		  targetComponent.getTables().remove(found);
+	  }else {
+		  throw new DataNotFoundException("tableLinkNotFound");
+	  }
+	
+}
+
+@RequestMapping(value = "/saveAll", method = RequestMethod.POST)
   public void saveAll(@RequestBody List<Datatype> datatypes) throws DatatypeSaveException {
     log.info("Saving " + datatypes.size() + " datatypes.");
     Iterator<Datatype> it = datatypes.iterator();
@@ -240,4 +280,12 @@ public class DatatypeController extends CommonController {
     return result;
   }
 
+  private int indexOfComponent(String id, Datatype d) throws DataNotFoundException {
+	  int index = 0;
+	  for(Component c:d.getComponents()){
+		  if(id.equals(c.getId())) return index;
+		  index = index + 1;
+	  }
+	  throw new DataNotFoundException("fieldNotFound");
+  }
 }

@@ -372,6 +372,28 @@ angular.module('igl').factory('DatatypeService',
                     });
                 }
                 $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
+            },
+
+            addNewTableBinding: function(datatypeId, componentId, newTableLink){
+                var delay = $q.defer();
+                $http.post('api/datatypes/addNewTableBinding/' + datatypeId +"/" + componentId , newTableLink).then(function(response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    delay.resolve(saveResponse);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+
+            updateTableBinding: function(datatypeId, componentId, newTableLink, key){
+                var delay = $q.defer();
+                $http.post('api/datatypes/updateTableBinding/' + datatypeId +"/" + componentId + "/" + key, newTableLink).then(function(response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    delay.resolve(saveResponse);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
         };
