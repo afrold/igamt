@@ -47,6 +47,20 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         $rootScope.$emit("event:openVSDelta");
     };
 
+    $scope.changeTableLink = function(tableLink) {
+        tableLink.isChanged = true;
+
+        var t = $rootScope.tablesMap[tableLink.id];
+
+        if(t == null){
+            tableLink.bindingIdentifier = null;
+            tableLink.bindingLocation = null;
+            tableLink.bindingStrength = null;
+        }else {
+            tableLink.bindingIdentifier = t.bindingIdentifier;
+        }
+    };
+
     $scope.AddBindingForValueSet = function (table) {
         var modalInstance = $modal.open({
             templateUrl: 'AddBindingForValueSet.html',
@@ -59,14 +73,6 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             }
         });
         modalInstance.result.then(function() {}, function() {});
-    };
-
-    $scope.findTableLinkByTableId = function (tables, id) {
-        for (var i = 0; i < tables.length; i++) {
-            if(tables[i].id == id) return tables[i];
-
-        }
-        return null;
     };
 
     $scope.save = function() {
@@ -712,7 +718,84 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
 
 angular.module('igl').controller('AddBindingForValueSet', function($scope, $modalInstance, $rootScope, table) {
     $scope.table = table;
+    $scope.selectedSegmentForBinding = null;
+    $scope.selectedFieldForBinding = null;
+    $scope.selectedDatatypeForBinding = null;
+    $scope.selectedComponentForBinding = null;
+    $scope.selectedBindingLocation = null;
+    $scope.selectedBindingStrength = null;
+    $scope.pathForBinding = null;
     $scope.bindingTargetType = 'SEGMENT';
+
+    $scope.init = function (){
+        $scope.selectedSegmentForBinding = null;
+        $scope.selectedFieldForBinding = null;
+        $scope.selectedDatatypeForBinding = null;
+        $scope.selectedComponentForBinding = null;
+        $scope.selectedBindingLocation = null;
+        $scope.selectedBindingStrength = null;
+        $scope.pathForBinding = null;
+    };
+
+    $scope.changeTarget = function (){
+        if($scope.bindingTargetType == 'SEGMENT') $scope.bindingTargetType = 'DATATYPE';
+        if($scope.bindingTargetType == 'DATATYPE') $scope.bindingTargetType = 'SEGMENT';
+    };
+
+    $scope.selectSegment = function(){
+        $scope.selectedFieldForBinding = null;
+
+        if($scope.selectedSegmentForBinding != null && $scope.selectedFieldForBinding != null) {
+            $scope.pathForBinding = $rootScope.getSegmentLabel($scope.selectedSegmentForBinding) + '-' + $scope.selectedFieldForBinding.position;
+        }
+    };
+
+    $scope.selectField = function(){
+        if($scope.selectedSegmentForBinding != null && $scope.selectedFieldForBinding != null) {
+            $scope.pathForBinding = $rootScope.getSegmentLabel($scope.selectedSegmentForBinding) + '-' + $scope.selectedFieldForBinding.position;
+        }
+    };
+
+    $scope.selectDatatype = function(){
+        $scope.selectedComponentForBinding = null;
+
+        if($scope.selectedDatatypeForBinding != null && $scope.selectedComponentForBinding != null) {
+            $scope.pathForBinding = $rootScope.getDatatypeLabel($scope.selectedDatatypeForBinding) + '-' + $scope.selectedComponentForBinding.position;
+        }
+    };
+
+    $scope.selectComponent = function(){
+        if($scope.selectedDatatypeForBinding != null && $scope.selectedComponentForBinding != null) {
+            $scope.pathForBinding = $rootScope.getDatatypeLabel($scope.selectedDatatypeForBinding) + '-' + $scope.selectedComponentForBinding.position;
+        }
+    };
+
+    $scope.save = function (){
+        var tableLink = {};
+        tableLink.id = $scope.table.id;
+        tableLink.bindingIdentifier = $scope.table.bindingIdentifier;
+        tableLink.bindingLocation = $scope.selectedBindingLocation;
+        tableLink.bindingStrength = $scope.selectedBindingStrength;
+        tableLink.isChanged = true;
+        tableLink.isNew = true;
+
+        if($scope.bindingTargetType = 'SEGMENT'){
+            var ref = angular.copy($scope.selectedFieldForBinding);
+            ref.path = $scope.pathForBinding;
+            ref.target = angular.copy($scope.selectedSegmentForBinding);
+            ref.tableLink = angular.copy(tableLink);
+            $rootScope.references.push(ref);
+        }else {
+            var ref = angular.copy($scope.selectedComponentForBinding);
+            ref.path = $scope.pathForBinding;
+            ref.target = angular.copy($scope.selectedDatatypeForBinding);
+            ref.tableLink = angular.copy(tableLink);
+            $rootScope.references.push(ref);
+        }
+
+        $modalInstance.dismiss('cancel');
+    };
+
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
