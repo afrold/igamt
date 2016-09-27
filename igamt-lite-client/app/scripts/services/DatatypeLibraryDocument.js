@@ -99,6 +99,13 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
             });
     };
     
+    svc.getMatrix = function () {
+        
+        return $http.post(
+            'api/datatype-library-document/getMatrix').then(function (response) {
+                return angular.fromJson(response.data)
+            });
+    };
     
     return svc;
 });

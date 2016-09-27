@@ -852,12 +852,12 @@ angular
                                                          if ($rootScope.hasChanges()) {
 
                                                              $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                                 CloneDeleteSvc.createNewTable('MASTER', $scope.tableLibrary);
+                                                                 CloneDeleteSvc.createNewTable($scope.tableLibrary.scope, $scope.tableLibrary);
                                                                  $scope.editTableINLIB($rootScope.table);                                                             	
                                                                  });
                                                          } else {
                                                          	
-                                                             CloneDeleteSvc.createNewTable('MASTER', $scope.tableLibrary);
+                                                             CloneDeleteSvc.createNewTable($scope.tableLibrary.scope, $scope.tableLibrary);
                                                              $scope.editTableINLIB($rootScope.table);                                                            
                                                          }
 

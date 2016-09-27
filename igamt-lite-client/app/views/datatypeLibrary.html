@@ -153,7 +153,7 @@ span {
                         <form id="selectDtTypeForm" class="form-horizontal">
                             <div class="form-group">
                                 <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                                    <label class="btn btn-raised btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')" ng-if="false">
+                                    <label class="btn btn-raised btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')" >
                                         <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse User's Data Type Libraries
                                     </label>
                                     <label class="btn btn-raised btn-warning btn-sm" ng-click="getDataTypeLibraryByScope('MASTER')" ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}">
@@ -161,11 +161,11 @@ span {
                                     </label>
                                 </div>
                                 <div class="pull-right" style="margin-right: 20px">
-                                    <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="openStandardDataypes('USER')" ng-if="false">
+                                    <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="openStandardDataypes('USER')">
                                         <i class="fa fa-plus"></i> Create USER Data Type Library
                                     </button>
                                     <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="openStandardDataypes('MASTER')" ng-if="isAdmin() ">
-                                        <i class="fa fa-plus"></i> Create A MASTER Datatype Library
+                                        <i class="fa fa-plus"></i> Create  MASTER Datatype Library
                                     </button>
                                     <!--<button type="button" class="btn btn-raised btn-primary btn-sm"-->
                                     <!--ng-click="openStandardDataypes('MASTER')">-->
@@ -176,7 +176,8 @@ span {
                         </form>
                     </div>
                 </div>
-                <div>
+                <div> 
+                <button class="btn btn-info" ng-click="showEvolution()"> <i class="fa fa-line-chart" aria-hidden="true"> Show Standard Datatypes Evolution</i></button>
                     <div class="row">
                         <div class="col-md-12">
                             <form>
@@ -665,21 +666,20 @@ span {
                 <h3 class="modal-title">HL7 Standard Datatypes Evolutions</h3>
             </div>
             		<div class="modal-body">
-     				<table>
-					<thead>
-						<th>#<th>
-						<th ng-repeat"v in vers">{{v}}<th>
-					<thead>
+     				<table class="table-bordered table-fix-header table-condensed igl-list-table">
+					<thead class="tbl-header">
+						<th ng-repeat="v in vrs">{{v}}</th>
+					</thead>
 					<tbody>
-					<tr ng-repeat="dt in unchanged">
-					<td></>
+					<tr ng-repeat="dt in matrix">
+						<td>{{dt.name}}</td>
+						<td style="background-color:{{getColor(dt.links[va])}}" ng-repeat = 'va in adjusted'><span>{{dt.links[va]}}</span></td>
 					</tr>
 					</tbody>
 					</table>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-raised btn-primary" type="submit" ng-disabled="standard.name==''" ng-click="ok()">Ok</button>
-                        <button class="btn btn-raised btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                        <button class="btn btn-raised btn-primary" type="button"  ng-click="ok()">close</button>
                     </div>
                 </form>
             </div>

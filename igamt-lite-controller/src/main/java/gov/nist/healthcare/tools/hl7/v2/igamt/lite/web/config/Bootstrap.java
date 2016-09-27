@@ -32,6 +32,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -48,6 +49,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
@@ -70,7 +72,8 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   ProfileService profileService;
-
+  @Autowired
+  DatatypeMatrixRepository matrix;
   @Autowired
   IGDocumentService documentService;
   @Autowired
@@ -113,15 +116,14 @@ public class Bootstrap implements InitializingBean {
 
     // addVersionAndScopetoPRELOADEDIG();
     // addVersionAndScopetoHL7IG();
-
     /** to be runned one Time **/
-    // CreateCollectionOfUnchanged();
-    // AddVersionsToDatatypes();
+//     CreateCollectionOfUnchanged();
+//     AddVersionsToDatatypes();
     // addVersionAndScopetoUSERIG();
     // addScopeUserToOldClonedPRELOADEDIG();
     // changeTabletoTablesInNewHl7();
 //	modifiyCodeUsage();
-
+	  //Colorate();
   }
 
   private void modifiyCodeUsage() {
@@ -288,7 +290,6 @@ private void changeTabletoTablesInNewHl7() {
     for (Entry<String, ArrayList<List<String>>> e : DatatypeMap.entrySet()) {
       String name = e.getKey();
       ArrayList<List<String>> values = e.getValue();
-
       for (List<String> versions : values) {
         UnchangedDataType unchanged = new UnchangedDataType();
         unchanged.setName(name);
@@ -296,9 +297,30 @@ private void changeTabletoTablesInNewHl7() {
         unchangedData.insert(unchanged);
       }
 
-
     }
   }
+  
+  public void Colorate() {
+	    addAllVersions();
+
+	    for (Entry<String, ArrayList<List<String>>> e : DatatypeMap.entrySet()) {
+	      String name = e.getKey();
+	      DatatypeMatrix dt= new DatatypeMatrix();
+	      dt.setName(name);
+	      HashMap<String, Integer> links = new HashMap<String, Integer>();
+	      
+	      ArrayList<List<String>> values = e.getValue();
+	     for (int i=0; i<values.size(); i++){
+	    	 for(String version : values.get(i)){
+	    		 
+	    		 links.put(version.replace(".",""), i);
+	    	 }
+	     }
+	     dt.setLinks(links);
+	     matrix.insert(dt);
+	    }
+	  }
+
 
 
   // NOTE:ADD version to preloaded segs,dts,vs
@@ -541,5 +563,6 @@ private void changeTabletoTablesInNewHl7() {
       }
     }
   }
+  
 
 }

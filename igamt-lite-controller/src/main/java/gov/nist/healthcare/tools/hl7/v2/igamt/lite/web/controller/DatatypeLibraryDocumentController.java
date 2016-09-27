@@ -25,9 +25,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
@@ -50,6 +52,8 @@ public class DatatypeLibraryDocumentController {
 
 	@Autowired
 	private DatatypeLibraryDocumentService datatypeLibraryDocumentService;
+	@Autowired
+	private DatatypeMatrixRepository matrix;
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -230,4 +234,20 @@ public class DatatypeLibraryDocumentController {
 		return result;
 	}
 
+	@RequestMapping(value = "/getMatrix", method = RequestMethod.POST)
+	public List<DatatypeMatrix> getMatrix() throws LibrarySaveException {
+		List<DatatypeMatrix> result = new ArrayList<DatatypeMatrix>();
+
+		List <DatatypeMatrix> temp=matrix.findAll();
+		
+		for(DatatypeMatrix data: temp){
+			if(!data.getName().contains("_")){
+				
+				result.add(data);				
+			}
+		}
+		
+		
+		return result;
+	}
 }
