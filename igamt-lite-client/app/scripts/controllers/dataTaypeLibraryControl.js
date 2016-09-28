@@ -2,7 +2,7 @@
  * http://usejsdoc.org/
  */
 angular.module('igl').controller('DatatypeLibraryCtl',
-    function($scope, $http, $rootScope, $q, $modal, $timeout, TableService, ngTreetableParams, DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc,IGDocumentSvc, TableService, ViewSettings, userInfoService, blockUI) {
+    function($scope, $http, $rootScope, $q, $modal, $timeout, TableService, ngTreetableParams, DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc,IGDocumentSvc, TableService, ViewSettings, userInfoService, blockUI,CompareService) {
         //  $scope.initLibrary();
 
         $rootScope.filteringModeON = false;
@@ -139,8 +139,47 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     		}else if (index ===10){
     			return "#778899";
     		}	
-
     	}	
+    	$scope.selectCell=function(dt, version){
+    		if($scope.selectedRow1 && $scope.selectedVersion1){
+        		$scope.selectedRow2=dt;
+        		$scope.selectedVersion2=version;
+        		var versions1=[];
+        		versions1.push($scope.selectedVersion1);
+        		var versions2=[];
+        		versions2.push($scope.selectedVersion2);
+                DatatypeService.getOneStandard($scope.selectedRow1.name, $scope.selectedVersion1,versions1).then(function(result1) {
+                	$scope.cmp1=result1;
+                    DatatypeService.getOneStandard($scope.selectedRow2.name, $scope.selectedVersion2,versions2).then(function(result2) {
+                    	$scope.cmp2=result2;
+                    	
+                    	
+                        $scope.loadingSelection = true;
+                        $scope.dtChanged = false;
+                        $scope.vsTemplate = false;
+                        $scope.dataList = CompareService.cmpDatatype(JSON.stringify($scope.cmp1), JSON.stringify($scope.cmp2), [], [], [], []);
+                        console.log("hg==========");
+                        $scope.loadingSelection = false;
+                        if ($scope.dynamicDt_params) {
+                            console.log($scope.dataList);
+                            $scope.showDelta = true;
+                            $scope.dynamicDt_params.refresh();
+                        }
+                    });
+                });
+        		
+    		}else{
+    			$scope.selectedRow1=dt;
+    			$scope.selectedVersion1=version;
+    		}
+    	}
+    	$scope.isSelected1=function(dt,version){
+    		return $scope.selectedRow1===dt&& $scope.selectedVersion1===version ;
+
+    	}
+    	$scope.isSelected2=function(dt, version){
+    		return $scope.selectedRow2===dt&& $scope.selectedVersion2===version ;
+    	}
     	
         $scope.datatypeSource = null;
         $scope.tableSource = null;
@@ -228,6 +267,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
             $scope.editView = "LibraryMetaData.html";
 
+        }
+
+        $scope.exportAs = function(dataTypeLibraryDocumentId,format){
+            DatatypeLibraryDocumentSvc.exportAs(dataTypeLibraryDocumentId,format);
         }
 
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
@@ -352,7 +395,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 }
             },
             getTemplate: function(node) {
-                return 'tree_nodeInLib';
+                return 'tree_node';
             }
         });
         $scope.cmpDatatype = function(datatype1, datatype2) {

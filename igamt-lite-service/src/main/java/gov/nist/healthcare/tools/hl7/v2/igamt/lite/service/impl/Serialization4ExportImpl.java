@@ -22,10 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -33,6 +31,7 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,27 +42,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
@@ -81,8 +59,8 @@ import nu.xom.Element;
 import nu.xom.Serializer;
 
 @Service
-public class IGDocumentSerialization4ExportImpl implements IGDocumentSerialization {
-  Logger logger = LoggerFactory.getLogger(IGDocumentSerialization4ExportImpl.class);
+public class Serialization4ExportImpl implements IGDocumentSerialization {
+  Logger logger = LoggerFactory.getLogger(Serialization4ExportImpl.class);
 
   @Autowired
   private DatatypeService datatypeService;
@@ -989,54 +967,59 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 
   private nu.xom.Element serializeTable(TableLink tl, String prefix, Integer position) {
     Table t = tableService.findById(tl.getId());
+    if(t!=null) {
     nu.xom.Element sect = new nu.xom.Element("Section");
-    sect.addAttribute(new Attribute("id", t.getId()));
-    sect.addAttribute(new Attribute("prefix", prefix));
-    sect.addAttribute(new Attribute("position", String.valueOf(position)));
-    sect.addAttribute(new Attribute("h", String.valueOf(3)));
-    sect.addAttribute(
-        new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
+      sect.addAttribute(new Attribute("id", t.getId()));
+      sect.addAttribute(new Attribute("prefix", prefix));
+      sect.addAttribute(new Attribute("position", String.valueOf(position)));
+      sect.addAttribute(new Attribute("h", String.valueOf(3)));
+      sect.addAttribute(
+              new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
 
-    nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
-    elmTableDefinition.addAttribute(
-        new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
-    elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
-        (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
-    elmTableDefinition
-        .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
-    elmTableDefinition.addAttribute(
-        new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
-    elmTableDefinition.addAttribute(
-        new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
-    elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
-    elmTableDefinition.addAttribute(
-        new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
-    elmTableDefinition.addAttribute(new Attribute("Extensibility",
-        (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
-    elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
-        (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
-    elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
-    elmTableDefinition.addAttribute(new Attribute("position", ""));
-    elmTableDefinition.addAttribute(new Attribute("prefix", prefix));
+      nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
+      elmTableDefinition.addAttribute(
+              new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
+      elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+              (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+      elmTableDefinition
+              .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
+      elmTableDefinition.addAttribute(
+              new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
+      elmTableDefinition.addAttribute(
+              new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
+      elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
+      elmTableDefinition.addAttribute(
+              new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
+      elmTableDefinition.addAttribute(new Attribute("Extensibility",
+              (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
+      elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
+              (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
+      elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
+      elmTableDefinition.addAttribute(new Attribute("position", ""));
+      elmTableDefinition.addAttribute(new Attribute("prefix", prefix));
 
-    if (t.getCodes() != null) {
-      for (Code c : t.getCodes()) {
-        nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
-        elmTableElement
-            .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
-        elmTableElement
-            .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
-        elmTableElement.addAttribute(
-            new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
-        elmTableElement.addAttribute(
-            new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
-        elmTableElement.addAttribute(
-            new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
-        elmTableDefinition.appendChild(elmTableElement);
+      if (t.getCodes() != null) {
+        for (Code c : t.getCodes()) {
+          nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
+          elmTableElement
+                  .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
+          elmTableElement
+                  .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
+          elmTableElement.addAttribute(
+                  new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
+          elmTableElement.addAttribute(
+                  new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
+          elmTableElement.addAttribute(
+                  new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
+          elmTableDefinition.appendChild(elmTableElement);
+        }
       }
+      sect.appendChild(elmTableDefinition);
+      return sect;
+    } else {
+      logger.error("ValueSet serialization: No table found with id "+tl.getId());
+      return null;
     }
-    sect.appendChild(elmTableDefinition);
-    return sect;
   }
 
 
@@ -1750,6 +1733,7 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
 				
 				  
 			  }
+
 		  }
 	  }
 	  return elmDatatype;
@@ -1868,6 +1852,94 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
   public InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  @Override
+  public String serializeDatatypeLibraryDocumentToXML(DatatypeLibraryDocument datatypeLibraryDocument) {
+    nu.xom.Document doc = serializeDatatypeLibraryDocumentToDoc(datatypeLibraryDocument);
+    return doc.toXML();
+  }
+
+  @Override
+  public nu.xom.Document serializeDatatypeLibraryDocumentToDoc(DatatypeLibraryDocument datatypeLibraryDocument) {
+    //Create the root node (datatype library document node) that will contain the datatype and value sets libraries
+    nu.xom.Element datatypeLibraryDocumentNode = new nu.xom.Element("ConformanceProfile");
+    //Add the metadatas to the datatype library document node
+    //TODO check if it shouldn't be a DatatypeLibraryDocumentMetaData object in the model
+    DatatypeLibraryMetaData datatypeLibraryMetadata = datatypeLibraryDocument.getMetaData();
+    datatypeLibraryDocumentNode.addAttribute(new Attribute("Hl7Version", datatypeLibraryMetadata.getHl7Version() == null ? "" : datatypeLibraryMetadata.getHl7Version()));
+    nu.xom.Element metaDataNode = new nu.xom.Element("MetaData");
+    metaDataNode.addAttribute(new Attribute("Name", datatypeLibraryMetadata.getName() == null ? "" : datatypeLibraryMetadata.getName()));
+    metaDataNode.addAttribute(new Attribute("OrgName", datatypeLibraryMetadata.getOrgName() == null ? "" : datatypeLibraryMetadata.getOrgName()));
+    metaDataNode.addAttribute(new Attribute("Version", datatypeLibraryMetadata.getVersion() == null ? "" : datatypeLibraryMetadata.getVersion()));
+    metaDataNode.addAttribute(new Attribute("Date", datatypeLibraryMetadata.getDate() == null ? "" : datatypeLibraryMetadata.getDate()));
+    metaDataNode.addAttribute(new Attribute("Ext", datatypeLibraryMetadata.getExt() == null ? "" : datatypeLibraryMetadata.getExt()));
+    datatypeLibraryDocumentNode.appendChild(metaDataNode);
+    //Create the datatype library node that will contain the datatype nodes
+    //Element datatypeLibraryNode = new nu.xom.Element("Datatypes");
+    Element datatypeLibraryNode = new nu.xom.Element("Section");
+    //Add attributes to the datatypeLibraryNode
+    datatypeLibraryNode.addAttribute(new Attribute("id", datatypeLibraryDocument.getDatatypeLibrary().getId()));
+    datatypeLibraryNode.addAttribute(new Attribute("position",
+            String.valueOf(datatypeLibraryDocument.getDatatypeLibrary().getSectionPosition())));
+    if(datatypeLibraryDocument.getSectionPosition()!=null&&datatypeLibraryDocument.getDatatypeLibrary().getSectionPosition()!=null) {
+      String prefix = String.valueOf(datatypeLibraryDocument.getSectionPosition() + 1) + "."
+              + String.valueOf(datatypeLibraryDocument.getDatatypeLibrary().getSectionPosition() + 1);
+      datatypeLibraryNode.addAttribute(new Attribute("prefix", prefix));
+    }
+    datatypeLibraryNode.addAttribute(new Attribute("h", String.valueOf(2)));
+    datatypeLibraryNode.addAttribute(new Attribute("title", "Datatypes"));
+    //Fetch all the Datatypes and create a node for each of them
+    List<DatatypeLink> datattypeLinkList = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
+    Collections.sort(datattypeLinkList);
+    for(DatatypeLink dataTypeLink : datattypeLinkList){
+      //Serialize the datatype
+      Element dataTypeNode = serializeDatatype(dataTypeLink, datatypeLibraryDocument.getTableLibrary(), datatypeLibraryDocument.getDatatypeLibrary(), "", datattypeLinkList.indexOf(dataTypeLink));
+      Datatype datatype = datatypeService.findById(dataTypeLink.getId());
+      if(datatype.getScope().equals(Constant.SCOPE.MASTER)){
+        dataTypeNode.addAttribute(new Attribute("scope","MASTER"));
+      }
+      //Add the datatype node to the children of the datatype library node
+      datatypeLibraryNode.appendChild(dataTypeNode);
+    }
+    //Create the value sets library node that will contain the value set nodes
+    //Element tableLibraryNode = new nu.xom.Element("ValueSets");
+    Element tableLibraryNode = new nu.xom.Element("Section");
+    tableLibraryNode.addAttribute(new Attribute("id", datatypeLibraryDocument.getTableLibrary().getId()));
+    tableLibraryNode.addAttribute(
+            new Attribute("position", String.valueOf(datatypeLibraryDocument.getTableLibrary().getSectionPosition())));
+    if(datatypeLibraryDocument.getSectionPosition()!=null&&datatypeLibraryDocument.getTableLibrary().getSectionPosition()!=null) {
+      String prefix = String.valueOf(datatypeLibraryDocument.getSectionPosition() + 1) + "."
+              + String.valueOf(datatypeLibraryDocument.getTableLibrary().getSectionPosition() + 1);
+      tableLibraryNode.addAttribute(new Attribute("prefix", prefix));
+    }
+    tableLibraryNode.addAttribute(new Attribute("h", String.valueOf(2)));
+    tableLibraryNode.addAttribute(new Attribute("title", "Value Sets"));
+    if (datatypeLibraryDocument.getTableLibrary().getSectionContents() != null
+            && !datatypeLibraryDocument.getTableLibrary().getSectionContents().isEmpty()) {
+      nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
+      sectCont.appendChild(
+              "<div class=\"fr-view\">" + datatypeLibraryDocument.getTableLibrary().getSectionContents() + "</div>");
+      tableLibraryNode.appendChild(sectCont);
+    }
+    //Fetch all the Value sets and create a node for each of them
+    List<TableLink> tableLinkList = new ArrayList<>(datatypeLibraryDocument.getTableLibrary().getChildren());
+    Collections.sort(tableLinkList);
+    for(TableLink tableLink : tableLinkList){
+      //Serialize the value set
+      Element tableLinkNode = serializeTable(tableLink,"",tableLinkList.indexOf(tableLink));
+      //Add the value set node to the children of the value sets library node
+      if(tableLinkNode!=null) {
+        tableLibraryNode.appendChild(tableLinkNode);
+      }
+    }
+    //Add the datatypes to the root node
+    datatypeLibraryDocumentNode.appendChild(datatypeLibraryNode);
+    //Add the value sets to the root node
+    datatypeLibraryDocumentNode.appendChild(tableLibraryNode);
+    //Create the document with the root node
+    nu.xom.Document doc = new nu.xom.Document(datatypeLibraryDocumentNode);
+    return doc;
   }
 
   @Override

@@ -1,4 +1,4 @@
-angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http, $httpBackend, userInfoService) {
+angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http, $httpBackend, userInfoService, blockUI, $rootScope, $cookies) {
 
     var svc = this;
     var dtLibStruct = function (scope, children) {
@@ -98,6 +98,22 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
                 return angular.fromJson(response.data)
             });
     };
+
+    svc.exportAs = function(dataTypeLibraryDocumentId, format) {
+            blockUI.start();
+            var form = document.createElement("form");
+            form.action = $rootScope.api('api/datatype-library-document/' + dataTypeLibraryDocumentId + '/export/' + format);
+            form.method = "POST";
+            form.target = "_target";
+            var csrfInput = document.createElement("input");
+            csrfInput.name = "X-XSRF-TOKEN";
+            csrfInput.value = $cookies['XSRF-TOKEN'];
+            form.appendChild(csrfInput);
+            form.style.display = 'none';
+            document.body.appendChild(form);
+            form.submit();
+            blockUI.stop();
+        };
     
     svc.getMatrix = function () {
         

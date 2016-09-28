@@ -50,7 +50,12 @@ if (self === top) {
     height: 500px;
     overflow: scroll;
 }
-
+.selected1{
+background-color:yellow !important;
+}
+.selected2{
+background-color:black !important;
+}
 
 /* } */
 
@@ -82,7 +87,9 @@ if (self === top) {
 .messageContent {
     font-size: 16;
 }
-
+.colorated{
+background-color:{{getColor(dt.links[va])}};
+}
 .messageSubContent {
     font-size: 12px;
     margin-left: 45px;
@@ -248,8 +255,8 @@ span {
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu igl-menu" role="menu">
-                        <li><a class="point" ng-click="exportAs('docx')">As WORD()</a></li>
-                        <li><a class="point" ng-click="exportAs('html')">As HTML</a></li>
+                        <li><a class="point" ng-click="exportAs(libraryDoc.id,'docx')">As WORD()</a></li>
+                        <li><a class="point" ng-click="exportAs(libraryDoc.id,'html')">As HTML</a></li>
                     </ul>
                 </div>
                 </span>
@@ -316,12 +323,12 @@ span {
 					<tbody class="scrollit">
 					<tr ng-repeat="dt in matrix | orderBy: 'name'">
 						<td class="tbl-header">{{dt.name}}</td>
-						<td style="background-color:{{getColor(dt.links[va])}}" ng-repeat = 'va in adjusted'><span></span></td>
+						<td style="background-color:{{getColor(dt.links[va])}}" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1])}"  ng-repeat = 'va in adjusted' ng-click="selectCell(dt,vrs[$index+1])"><span></span></td>
 					</tr>
 					</tbody>
 					</table>
-                                </div>
                             </div>
+                       </div>
         </div>
         
          <div class="col-md-6">
