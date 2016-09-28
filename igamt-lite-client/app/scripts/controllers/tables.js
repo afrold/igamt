@@ -30,7 +30,25 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         blockUI.start();
         cleanState();
         $rootScope.table = angular.copy($rootScope.tablesMap[$rootScope.table.id]);
+
+        $rootScope.references = [];
+        angular.forEach($rootScope.segments, function (segment) {
+            $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
+        });
+        angular.forEach($rootScope.datatypes, function (dt) {
+            $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt),dt);
+        });
+
         blockUI.stop();
+    };
+
+    $scope.isBindingChanged = function () {
+        for (var i = 0; i < $rootScope.references.length; i++) {
+            var ref = $rootScope.references[i];
+
+            if(ref.tableLink.isChanged) return true;
+        }
+        return false;
     };
 
     var cleanState = function() {
@@ -78,7 +96,6 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     };
 
     $scope.save = function() {
-
         if ($rootScope.table.scope === 'USER') {
             $scope.saving = true;
             var table = $rootScope.table;
@@ -124,7 +141,10 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                 $rootScope.msg().show = true;
             });
         }
+        $scope.saveBinding();
+    };
 
+    $scope.saveBinding = function () {
         var datatypeUpdateParameterList = [];
         var segmentUpdateParameterList = [];
 

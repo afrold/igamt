@@ -513,6 +513,16 @@
                 <div class="row" style="margin-left:0px; margin-right: 20px">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span>
+                        <span class="pull-right">
+						<button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                                ng-disabled="!isBindingChanged()"
+                                ng-click="saveBinding()">
+							<span><i class="fa fa-check fa-fw"></i> Save</span>
+                        </button>
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!isBindingChanged()" ng-click="reset()">
+							<span><i class="fa fa-times fa-fw"></i> Reset</span>
+						</button>
+                        </span>
                     </div>
 
                     <div class="">
@@ -766,7 +776,6 @@
         </div>
     </div>
 </script>
-
 
 <script type="text/ng-template" id="ConfirmValueSetDeleteCtrl.html">
     <div class="modal-header">
