@@ -105,6 +105,43 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         }
 
+    	$scope.vrs=["#","2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7","2.7.1","2.8","2.8.1","2.8.2"];			
+    	$scope.adjusted=["21","22","23","231","24","25","251","26","27","271","28","281","282"];			
+
+    			
+    	DatatypeLibraryDocumentSvc.getMatrix().then(function(result){
+    			$scope.matrix= result;	
+    	});
+    	
+    	$scope.getColor= function(index){
+    		if(index===undefined){
+    			return "";
+    		}else if(index===0){
+    			return "#008B8B";
+    		}else if (index ===1){
+    			return "#B8860B";
+    		}else if (index ===2){
+    			return "#6495ED";
+    		}else if (index ===3){
+    			return "#9932CC";
+    		}else if (index ===4){
+    			return "#8FBC8F";
+    		}else if (index ===5){
+    			return "#2F4F4F";
+    		}else if (index ===6){
+    			return "#FF1493";
+    		}else if (index ===7){
+    			return "#FFD700";
+    		}else if (index ===8){
+    			return "#4B0082";
+    		}else if (index ===9){
+    			return "#FFB6C1";
+    		}else if (index ===10){
+    			return "#778899";
+    		}	
+
+    	}	
+    	
         $scope.datatypeSource = null;
         $scope.tableSource = null;
 
@@ -116,9 +153,15 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             if (value === 1) {
                 $scope.DTLibList = false;
                 $scope.DTLibDetails = true;
-            } else {
+                $scope.evolution=false;
+            } else if(value===0) {
                 $scope.DTLibList = true;
                 $scope.DTLibDetails = false;
+                $scope.evolution=false;
+            }else{
+            	$scope.evolution=true;
+            	 $scope.DTLibList = false;
+                 $scope.DTLibDetails = false;
             }
         };
 
@@ -285,7 +328,51 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.addedItem.libIds.push($scope.datatypeLibrary.id);
             $scope.addedDatatypes.push($scope.addedItem);
         };
+        
+        $scope.dynamicDt_params = new ngTreetableParams({
+            getNodes: function(parent) {
+                if ($scope.dataList !== undefined) {
 
+                    //return parent ? parent.fields : $scope.test;
+                    if (parent) {
+                        if (parent.fields) {
+                            return parent.fields;
+                        } else if (parent.components) {
+                            return parent.components;
+                        } else if (parent.segments) {
+                            return parent.segments;
+                        } else if (parent.codes) {
+                            return parent.codes;
+                        }
+
+                    } else {
+                        return $scope.dataList;
+                    }
+
+                }
+            },
+            getTemplate: function(node) {
+                return 'tree_nodeInLib';
+            }
+        });
+        $scope.cmpDatatype = function(datatype1, datatype2) {
+
+            $scope.loadingSelection = true;
+            $scope.dtChanged = false;
+            $scope.vsTemplate = false;
+            $scope.dataList = CompareService.cmpDatatype(JSON.stringify(datatype1), JSON.stringify(datatype2), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+            console.log("hg==========");
+            console.log($scope.dataList);
+            $scope.loadingSelection = false;
+            if ($scope.dynamicDt_params) {
+                console.log($scope.dataList);
+                $scope.showDelta = true;
+                $scope.status.isSecondOpen = true;
+                $scope.dynamicDt_params.refresh();
+            }
+
+        };
+        
         $scope.selectOneToAdd = function(data) {
             if (data.clone) {
 
@@ -340,7 +427,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         };
 
-
+        
         $scope.submitAsynch = function(datatype) {
             var delay = $q.defer();
             var newLink = {};
@@ -1262,6 +1349,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             });
             modalInstance.result.then(function(datatypeLibraryDocument) {
                 DatatypeLibraryDocumentSvc.delete(datatypeLibraryDocument.id).then(function(result) {
+                	$scope.datatypeLibrary=null;
                     var idxP = _.findIndex($scope.datatypeLibsStruct, function(child) {
                         return child.id === datatypeLibrary.id;
                     });
@@ -1601,9 +1689,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             var standardDatatypesInstance = $modal.open({
                 templateUrl: 'evolution.html',
                 controller: 'evolution',
-                size:'lg',
-                windowClass: 'app-modal-window'
-
+                size:'lg'
 
             }).result.then(function() {
             	
@@ -2069,9 +2155,7 @@ angular.module('igl').controller('evolution',
 			return "#FFB6C1";
 		}else if (index ===10){
 			return "#778899";
-		}
-			
-			
+		}	
 
 	}	
 	

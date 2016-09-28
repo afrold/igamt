@@ -154,7 +154,7 @@ span {
                             <div class="form-group">
                                 <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
                                     <label class="btn btn-raised btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')" >
-                                        <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse User's Data Type Libraries
+                                        <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse My Data Type Libraries
                                     </label>
                                     <label class="btn btn-raised btn-warning btn-sm" ng-click="getDataTypeLibraryByScope('MASTER')" ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}">
                                         <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse Master Data Type Libraries
@@ -162,10 +162,10 @@ span {
                                 </div>
                                 <div class="pull-right" style="margin-right: 20px">
                                     <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="openStandardDataypes('USER')">
-                                        <i class="fa fa-plus"></i> Create USER Data Type Library
+                                        <i class="fa fa-plus"></i>Create New Datatype Library
                                     </button>
                                     <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="openStandardDataypes('MASTER')" ng-if="isAdmin() ">
-                                        <i class="fa fa-plus"></i> Create  MASTER Datatype Library
+                                        <i class="fa fa-plus"></i>Create MASTER Datatype Library
                                     </button>
                                     <!--<button type="button" class="btn btn-raised btn-primary btn-sm"-->
                                     <!--ng-click="openStandardDataypes('MASTER')">-->
@@ -235,10 +235,27 @@ span {
                 <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Datatype Library</span>
             </tab-heading>
             <div>
-                <div class="row">
+               <div class="row">
+            <div class="col-md-12">
+                <span class="pull-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-raised btn-info btn-sm"><span><i
+                            class="fa fa-download fa-fw"></i> Export</span>
+                    </button>
+                    <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu igl-menu" role="menu">
+                        <li><a class="point" ng-click="exportAs('docx')">As WORD()</a></li>
+                        <li><a class="point" ng-click="exportAs('html')">As HTML</a></li>
+                    </ul>
                 </div>
-                <div>
-                    <br/>
+                </span>
+            </div>
+            </div>
+
                     <div class="row">
                         <div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right: 6px">
                             <button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">
@@ -273,8 +290,77 @@ span {
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
+        </tab>
+        <tab heading= "Datatypes Evolution" active="evolution" select="selectDTLibTab(2)">
+        <div style="margin-top:10px">
+        <div><br/></div>
+        
+        <div class="col-md-6">
+        
+                             <div class="panel panel-primary">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading panel-heading-collapsable">
+                                    <i class="glyphicon glyphicon-list"></i> Datatype Evolution
+                                    <button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right" style="margin: 0px" ng-click="hideToc = !hideToc">
+                                        <i class="fa fa-caret-left"></i>
+                                    </button>
+                                </div>
+                                <div class="panel-body toc-container">
+                     <table class="table-bordered table-fix-header table-condensed igl-list-table container col-md-12">
+						<thead >
+							<tr class="tbl-header">
+								<th ng-repeat="v in vrs">{{v}}</th>
+							</tr>
+					</thead>
+					<tbody class="scrollit">
+					<tr ng-repeat="dt in matrix | orderBy: 'name'">
+						<td class="tbl-header">{{dt.name}}</td>
+						<td style="background-color:{{getColor(dt.links[va])}}" ng-repeat = 'va in adjusted'><span></span></td>
+					</tr>
+					</tbody>
+					</table>
+                                </div>
+                            </div>
+        </div>
+        
+         <div class="col-md-6">
+                             <div class="panel panel-primary">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading panel-heading-collapsable">
+                                    <i class="glyphicon glyphicon-list"></i> Delta
+                                    <button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right" style="margin: 0px" ng-click="hideToc = !hideToc">
+                                        <i class="fa fa-caret-left"></i>
+                                    </button>
+                                </div>
+                                <div class="panel-body ">
+                                    <div class="panel-body">
+                    <table tt-table tt-params="dynamicDt_params" class=" table-marginless table-bordered table-condensed">
+                        <thead>
+                        <tr class="tbl-header">
+                            <th class="col-md-1" rowspan="2" style="width:14%;">Position</th>
+                            <th class="col-md-2" rowspan="2" style="width:37%;">Name</th>
+                            <th class="col-md-1" rowspan="2" style="width:2%">Usage</th>
+                            <th class="col-md-1" colspan="2" style="width:4%">Cardinality</th>
+                            <th class="col-md-1" colspan="2" style="width:4%">Length</th>
+                            <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
+                            <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
+                            <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
+                        </tr>
+                        <tr class="tbl-header">
+                            <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
+                            <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
+                            <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
+                            <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                                </div>
+                            </div>
+        </div>
+        </div>
         </tab>
     </tabset>
         </div>
