@@ -881,6 +881,14 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
         $scope.pathForBinding = null;
     };
 
+    $scope.checkDuplicated = function(path){
+        for (var i = 0; i < $rootScope.references.length; i++) {
+            var ref = $rootScope.references[i];
+            if(ref.path == path) return true;
+        }
+        return false;
+    };
+
     $scope.selectSegment = function(){
         $scope.selectedFieldForBinding = null;
         $scope.pathForBinding = null;
