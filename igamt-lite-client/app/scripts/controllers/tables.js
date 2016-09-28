@@ -891,34 +891,10 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
 
     $scope.selectSegment = function(){
         $scope.selectedFieldForBinding = null;
-        $scope.pathForBinding = null;
-
-        if($scope.selectedSegmentForBinding != null && $scope.selectedFieldForBinding != null) {
-            $scope.pathForBinding = $rootScope.getSegmentLabel($scope.selectedSegmentForBinding) + '-' + $scope.selectedFieldForBinding.position;
-        }
-    };
-
-    $scope.selectField = function(){
-        $scope.pathForBinding = null;
-        if($scope.selectedSegmentForBinding != null && $scope.selectedFieldForBinding != null) {
-            $scope.pathForBinding = $rootScope.getSegmentLabel($scope.selectedSegmentForBinding) + '-' + $scope.selectedFieldForBinding.position;
-        }
     };
 
     $scope.selectDatatype = function(){
         $scope.selectedComponentForBinding = null;
-        $scope.pathForBinding = null;
-
-        if($scope.selectedDatatypeForBinding != null && $scope.selectedComponentForBinding != null) {
-            $scope.pathForBinding = $rootScope.getDatatypeLabel($scope.selectedDatatypeForBinding) + '-' + $scope.selectedComponentForBinding.position;
-        }
-    };
-
-    $scope.selectComponent = function(){
-        $scope.pathForBinding = null;
-        if($scope.selectedDatatypeForBinding != null && $scope.selectedComponentForBinding != null) {
-            $scope.pathForBinding = $rootScope.getDatatypeLabel($scope.selectedDatatypeForBinding) + '-' + $scope.selectedComponentForBinding.position;
-        }
     };
 
     $scope.save = function (bindingTargetType){
@@ -931,12 +907,18 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
         tableLink.isNew = true;
 
         if(bindingTargetType == 'SEGMENT'){
+            $scope.selectedFieldForBinding = JSON.parse($scope.selectedFieldForBinding);
+            $scope.pathForBinding = $rootScope.getSegmentLabel($scope.selectedSegmentForBinding) + '-' + $scope.selectedFieldForBinding.position;
+
             var ref = angular.copy($scope.selectedFieldForBinding);
             ref.path = $scope.pathForBinding;
             ref.target = angular.copy($scope.selectedSegmentForBinding);
             ref.tableLink = angular.copy(tableLink);
             $rootScope.references.push(ref);
         }else {
+            $scope.selectedComponentForBinding = JSON.parse($scope.selectedComponentForBinding);
+            $scope.pathForBinding = $rootScope.getDatatypeLabel($scope.selectedDatatypeForBinding) + '-' + $scope.selectedComponentForBinding.position;
+
             var ref = angular.copy($scope.selectedComponentForBinding);
             ref.path = $scope.pathForBinding;
             ref.target = angular.copy($scope.selectedDatatypeForBinding);

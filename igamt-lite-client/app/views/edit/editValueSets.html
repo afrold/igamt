@@ -954,7 +954,7 @@
                             <select ng-model='selectedSegmentForBinding' class="form-control" ng-change="selectSegment();" ng-options="seg as getSegmentLabel(seg) for seg in segments | filter:{ scope : 'USER' }" />
                         </td>
                         <td class="col-md-3">
-                            <select ng-show='selectedSegmentForBinding != null' ng-model='selectedFieldForBinding' class="form-control" ng-change="selectField();">
+                            <select ng-show='selectedSegmentForBinding != null' ng-model='selectedFieldForBinding' class="form-control">
                                 <option ng-repeat="f in selectedSegmentForBinding.fields | orderBy:'+position'" value="{{f}}" ng-disabled="checkDuplicated(getSegmentLabel(selectedSegmentForBinding) + '-' + f.position)">
                                     {{::f.position}}. {{::f.name}}
                                 </option>
@@ -995,7 +995,7 @@
                         <select ng-model='selectedDatatypeForBinding' class="form-control" ng-change="selectDatatype();" ng-options="dt as getDatatypeLabel(dt) for dt in datatypes | filter:{ scope : 'USER' }" />
                     </td>
                     <td class="col-md-3">
-                        <select ng-show='selectedDatatypeForBinding != null' ng-model='selectedComponentForBinding' class="form-control" ng-change="selectComponent();">
+                        <select ng-show='selectedDatatypeForBinding != null' ng-model='selectedComponentForBinding' class="form-control">
                             <option ng-repeat="c in selectedDatatypeForBinding.components | orderBy:'+position'" value="{{c}}" ng-disabled="checkDuplicated(getDatatypeLabel(selectedDatatypeForBinding) + '.' + c.position)">
                                 {{::c.position}}. {{::c.name}}
                             </option>
@@ -1025,7 +1025,7 @@
     <div class="modal-footer">
         <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-info btn-sm" ng-disabled="pathForBinding == null" ng-click="save(bindingTargetType)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span>
+        <button class="btn btn-raised btn-info btn-sm" ng-disabled="selectedComponentForBinding == null && selectedFieldForBinding == null" ng-click="save(bindingTargetType)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span>
         </button>
     </div>
 </script>
