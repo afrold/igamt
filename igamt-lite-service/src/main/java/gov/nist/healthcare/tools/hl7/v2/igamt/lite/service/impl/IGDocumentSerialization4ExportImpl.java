@@ -1834,18 +1834,60 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
     metaDataNode.addAttribute(new Attribute("Ext", datatypeLibraryMetadata.getExt() == null ? "" : datatypeLibraryMetadata.getExt()));
     datatypeLibraryDocumentNode.appendChild(metaDataNode);
     //Create the datatype library node that will contain the datatype nodes
-    Element datatypeLibraryNode = new nu.xom.Element("Datatypes");
+    //Element datatypeLibraryNode = new nu.xom.Element("Datatypes");
+    Element datatypeLibraryNode = new nu.xom.Element("Section");
+    //Add attributes to the datatypeLibraryNode
+    datatypeLibraryNode.addAttribute(new Attribute("id", datatypeLibraryDocument.getDatatypeLibrary().getId()));
+    datatypeLibraryNode.addAttribute(new Attribute("position",
+            String.valueOf(datatypeLibraryDocument.getDatatypeLibrary().getSectionPosition())));
+    if(datatypeLibraryDocument.getSectionPosition()!=null&&datatypeLibraryDocument.getDatatypeLibrary().getSectionPosition()!=null) {
+      String prefix = String.valueOf(datatypeLibraryDocument.getSectionPosition() + 1) + "."
+              + String.valueOf(datatypeLibraryDocument.getDatatypeLibrary().getSectionPosition() + 1);
+      datatypeLibraryNode.addAttribute(new Attribute("prefix", prefix));
+    }
+    datatypeLibraryNode.addAttribute(new Attribute("h", String.valueOf(2)));
+    if (datatypeLibraryDocument.getDatatypeLibrary().getSectionTitle() != null) {
+      datatypeLibraryNode.addAttribute(new Attribute("title", datatypeLibraryDocument.getDatatypeLibrary().getSectionTitle()));
+    } else {
+      datatypeLibraryNode.addAttribute(new Attribute("title", ""));
+    }
     //Fetch all the Datatypes and create a node for each of them
     List<DatatypeLink> datattypeLinkList = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
     Collections.sort(datattypeLinkList);
     for(DatatypeLink dataTypeLink : datattypeLinkList){
       //Serialize the datatype
       Element dataTypeNode = serializeDatatype(dataTypeLink, datatypeLibraryDocument.getTableLibrary(), datatypeLibraryDocument.getDatatypeLibrary(), "", datattypeLinkList.indexOf(dataTypeLink));
+      Datatype datatype = datatypeService.findById(dataTypeLink.getId());
+      if(datatype.getScope().equals(Constant.SCOPE.MASTER)){
+        datatypeLibraryNode.addAttribute(new Attribute("SCOPE","MASTER"));
+      }
       //Add the datatype node to the children of the datatype library node
       datatypeLibraryNode.appendChild(dataTypeNode);
     }
     //Create the value sets library node that will contain the value set nodes
-    Element tableLibraryNode = new nu.xom.Element("ValueSets");
+    //Element tableLibraryNode = new nu.xom.Element("ValueSets");
+    Element tableLibraryNode = new nu.xom.Element("Section");
+    tableLibraryNode.addAttribute(new Attribute("id", datatypeLibraryDocument.getTableLibrary().getId()));
+    tableLibraryNode.addAttribute(
+            new Attribute("position", String.valueOf(datatypeLibraryDocument.getTableLibrary().getSectionPosition())));
+    if(datatypeLibraryDocument.getSectionPosition()!=null&&datatypeLibraryDocument.getTableLibrary().getSectionPosition()!=null) {
+      String prefix = String.valueOf(datatypeLibraryDocument.getSectionPosition() + 1) + "."
+              + String.valueOf(datatypeLibraryDocument.getTableLibrary().getSectionPosition() + 1);
+      tableLibraryNode.addAttribute(new Attribute("prefix", prefix));
+    }
+    tableLibraryNode.addAttribute(new Attribute("h", String.valueOf(2)));
+    if (datatypeLibraryDocument.getTableLibrary().getSectionTitle() != null) {
+      tableLibraryNode.addAttribute(new Attribute("title", datatypeLibraryDocument.getTableLibrary().getSectionTitle()));
+    } else {
+      tableLibraryNode.addAttribute(new Attribute("title", ""));
+    }
+    if (datatypeLibraryDocument.getTableLibrary().getSectionContents() != null
+            && !datatypeLibraryDocument.getTableLibrary().getSectionContents().isEmpty()) {
+      nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
+      sectCont.appendChild(
+              "<div class=\"fr-view\">" + datatypeLibraryDocument.getTableLibrary().getSectionContents() + "</div>");
+      tableLibraryNode.appendChild(sectCont);
+    }
     //Fetch all the Value sets and create a node for each of them
     List<TableLink> tableLinkList = new ArrayList<>(datatypeLibraryDocument.getTableLibrary().getChildren());
     Collections.sort(tableLinkList);
