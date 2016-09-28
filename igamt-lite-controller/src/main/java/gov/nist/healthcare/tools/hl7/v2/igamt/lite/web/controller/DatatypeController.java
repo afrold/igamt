@@ -191,7 +191,7 @@ public class DatatypeController extends CommonController {
       throw new ForbiddenOperationException("FORBIDDEN_SAVE_DATATYPE");
     }
   }
-  
+
   @RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
   public void updateTableBinding(@RequestBody List<BindingParametersForDatatype> bindingParametersList) throws DatatypeSaveException, ForbiddenOperationException, DataNotFoundException {
 	  for(BindingParametersForDatatype paras : bindingParametersList){
@@ -222,6 +222,29 @@ public class DatatypeController extends CommonController {
 	  }
 	
 }
+
+  @RequestMapping(value = "/saveDts", method = RequestMethod.POST)
+  public List<Datatype> save(@RequestBody List<Datatype> datatypes) throws DatatypeSaveException,
+      ForbiddenOperationException {
+	  List<Datatype> dts=new ArrayList<Datatype>();
+	  for(Datatype datatype:datatypes){
+		  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
+		      log.debug("datatype=" + datatype);
+		      log.debug("datatype.getId()=" + datatype.getId());
+		      log.info("Saving the " + datatype.getScope() + " datatype.");
+		      datatype.setDate(DateUtils.getCurrentTime());
+		      Datatype saved = datatypeService.save(datatype);
+		      log.debug("saved.getId()=" + saved.getId());
+		      log.debug("saved.getScope()=" + saved.getScope());
+		      dts.add(datatype);
+		    } else {
+		      throw new ForbiddenOperationException("FORBIDDEN_SAVE_DATATYPE");
+		    }
+	  }
+	  return dts;
+    
+
+  }
 
 @RequestMapping(value = "/saveAll", method = RequestMethod.POST)
   public void saveAll(@RequestBody List<Datatype> datatypes) throws DatatypeSaveException {
