@@ -39,6 +39,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopeAndNameAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
@@ -60,6 +61,9 @@ public class DatatypeController extends CommonController {
 
   @Autowired
   private DatatypeService datatypeService;
+  
+  @Autowired
+  private TableService tableService;
 
   @Autowired
   UserService userService;
@@ -199,7 +203,11 @@ public class DatatypeController extends CommonController {
 		  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
 			  datatype.setDate(DateUtils.getCurrentTime());
 			  Component targetComponent = datatype.getComponents().get(this.indexOfComponent(paras.getComponentId(), datatype));
-			  targetComponent.getTables().add(paras.getTableLink());
+			  TableLink tableLink = paras.getTableLink();
+			  if(tableLink != null && tableLink.getBindingIdentifier() != null && !tableLink.getBindingIdentifier().equals("")) {
+				  tableLink.setBindingIdentifier(tableService.findById(tableLink.getId()).getBindingIdentifier());
+				  targetComponent.getTables().add(paras.getTableLink());
+			  }
 			  if(paras.getKey() != null){
 				  this.deleteTable(targetComponent, paras.getKey());  
 			  }
