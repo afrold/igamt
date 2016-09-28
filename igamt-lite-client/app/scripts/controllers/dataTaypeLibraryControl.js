@@ -138,7 +138,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.getDataTypeLibraryByScope = function(scope) {
 
             $scope.datatypeLibsStruct = [];
-            DatatypeLibraryDocumentSvc.getDataTypeLibraryDocumentByScopeForAll(scope).then(function(data) {
+            DatatypeLibraryDocumentSvc.getDataTypeLibraryDocumentByScope(scope).then(function(data) {
                 $scope.datatypeLibsStruct = [];
                 angular.forEach(data.data, function(lib) {
                     $scope.datatypeLibsStruct.push(lib);
@@ -1021,11 +1021,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.copyTableINLIB = function(table) {
             var newTable = angular.copy(table);
             newTable.participants = [];
-            newTable.scope = 'MASTER';
+            newTable.scope = $scope.tableLibrary.scope;
             newTable.status = "UNPUBLISHED";
             newTable.id = null;
             newTable.libIds = [];
-            newTable.libIds.push($scope.tableLibrary.id);
             newTable.bindingIdentifier = $scope.createNewExtension(table.bindingIdentifier);
 
 
@@ -1602,7 +1601,9 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             var standardDatatypesInstance = $modal.open({
                 templateUrl: 'evolution.html',
                 controller: 'evolution',
-                size:'md',
+                size:'lg',
+                windowClass: 'app-modal-window'
+
 
             }).result.then(function() {
             	

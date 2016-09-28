@@ -586,22 +586,27 @@ angular
 
                 $scope.ValueSetOptionsINLIB = [
 
+                                               ['Create Flavor',
+                                                   function($itemScope) {
+                                                       if ($rootScope.hasChanges()) {
+                                                           $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                        	   console.log($scope.tableLibrary);
+                                                               CloneDeleteSvc.copyTableINLIB($itemScope.table, $scope.tableLibrary);
+                                                           });
+                                                       } else {
+                                                           CloneDeleteSvc.copyTableINLIB($itemScope.table,$scope.tableLibrary);
+                                                       }
+                                                   }
+                                               ],
+                                               null, ['Delete',
+                                                   function($itemScope) {
+                                                       CloneDeleteSvc.deleteValueSet($itemScope.table);
 
-                                          ['Copy',
-                                              function($itemScope) {
-                                  
-                                                      $scope.copyTableINLIB($itemScope.table,$scope.tableLibrary.id);
-                                                  
-                                              }
-                                          ],
-                                          null, ['Delete',
-                                              function($itemScope) {
-                                                 $scope.deleteValueSetINLIB($itemScope.table);
+                                                   }
+                                               ]
 
-                                              }
-                                          ]
-
-                                      ];
+                                           ];
+               
 
                 $scope.MessagesOption = [
 

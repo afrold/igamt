@@ -177,7 +177,7 @@ span {
                     </div>
                 </div>
                 <div> 
-                <button class="btn btn-info" ng-click="showEvolution()"> <i class="fa fa-line-chart" aria-hidden="true"> Show Standard Datatypes Evolution</i></button>
+                <button class="btn btn-primary" ng-click="showEvolution()"> <i class="fa fa-line-chart" aria-hidden="true"> Show HL7 Datatypes Evolution</i></button>
                     <div class="row">
                         <div class="col-md-12">
                             <form>
@@ -663,22 +663,24 @@ span {
     <div id="standard-datatypelibrary-dialog">
         <div style="padding : 10px 10px 10px 10px;">
             <div class="modal-header">
-                <h3 class="modal-title">HL7 Standard Datatypes Evolutions</h3>
+                <h3 class="modal-title">HL7 Standard Datatypes Evolution</h3>
             </div>
-            		<div class="modal-body">
-     				<table class="table-bordered table-fix-header table-condensed igl-list-table">
-					<thead class="tbl-header">
+            		<div class="modal-body container">
+     				<table class="table-bordered table-fix-header table-condensed igl-list-table container col-md-12">
+					<thead >
+						<tr class="tbl-header">
 						<th ng-repeat="v in vrs">{{v}}</th>
+						</tr>
 					</thead>
-					<tbody>
-					<tr ng-repeat="dt in matrix">
-						<td>{{dt.name}}</td>
-						<td style="background-color:{{getColor(dt.links[va])}}" ng-repeat = 'va in adjusted'><span>{{dt.links[va]}}</span></td>
+					<tbody class="scrollit">
+					<tr ng-repeat="dt in matrix | orderBy: 'name'">
+						<td class="tbl-header">{{dt.name}}</td>
+						<td style="background-color:{{getColor(dt.links[va])}}" ng-repeat = 'va in adjusted'><span></span></td>
 					</tr>
 					</tbody>
 					</table>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer ">
                         <button class="btn btn-raised btn-primary" type="button"  ng-click="ok()">close</button>
                     </div>
                 </form>
