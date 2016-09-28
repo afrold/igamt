@@ -1561,6 +1561,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
             name: ""
         },
         hide: false,
+        added:"yes",
         id: "",
         itemNo: "",
         max: "",

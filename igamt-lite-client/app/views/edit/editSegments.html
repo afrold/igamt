@@ -814,9 +814,9 @@
             </a>
             <div ng-if="editableDT===node.id">
                 <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
-                    <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{::datatype.hl7Version}}
+                    <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.id===datatype.id"> {{getDatatypeLabel(datatype)}} {{::datatype.hl7Version}}
                     </option>
-                    <option ng-click="otherDT(node)" value=""> Others
+                    <option ng-click="otherDT(node)" value="" ng-if="node.added==='yes'"> Others
                 </select>
             </div>
             <div align="center">
@@ -1429,12 +1429,11 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-raised btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-plus fa-fw">
-        &nbsp; </i>Save</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+
+        <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Close</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-        &nbsp; </i>Close</span></button>
+        <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
+            &nbsp; </i>Save</span></button>
     </div>
 </script>
 <script type="text/ng-template" id="PredicateSegmentCtrl.html">
@@ -1740,12 +1739,11 @@
     <div class="modal-footer">
         <p ng-show="countPredicateForTemp() == 0" class="warning">Need a predicate</p>
         <p ng-show="countPredicateForTemp() > 1" class="warning">Just a single predicate allowed</p>
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="countPredicateForTemp() > 1" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
-        &nbsp; </i>Save</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-        &nbsp; </i>Close</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-        &nbsp; </i>Close</span></button>
+
+        <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        &nbsp; </i>Cancel</span></button>
+        <button class="btn btn-raised btn-success btn-sm" ng-disabled="countPredicateForTemp() > 1" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
+            &nbsp; </i>Save</span></button>
     </div>
 </script>
 <script type="text/ng-template" id="DynamicMappingCtrl.html">

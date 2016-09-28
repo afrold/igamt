@@ -1209,40 +1209,29 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         };
 
-        $rootScope.findTableRefs = function(table, obj, path) {
+        $rootScope.findTableRefs = function(table, obj, path, target) {
             if(obj != null && obj != undefined) {
                 if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
-                    // if (obj.table != undefined) {
-                    //     if (obj.table.id === table.id) {
-                    //         var found = angular.copy(obj);
-                    //         found.path = path;
-                    //         $rootScope.references.push(found);
-                    //     }
-                    // }
                     if (obj.tables != undefined && obj.tables.length > 0) {
                         angular.forEach(obj.tables, function (tableInside) {
-
                             if (tableInside.id === table.id) {
                                 var found = angular.copy(obj);
                                 found.path = path;
+                                found.target = angular.copy(target);
+                                found.tableLink = angular.copy(tableInside);
                                 $rootScope.references.push(found);
-
                             }
                         });
-
-
                     }
-
-
-                    $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
+                    // $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
                 } else if (angular.equals(obj.type, 'segment')) {
                     angular.forEach(obj.fields, function (field) {
-                        $rootScope.findTableRefs(table, field, path + "-" + field.position);
+                        $rootScope.findTableRefs(table, field, path + "-" + field.position, target);
                     });
                 } else if (angular.equals(obj.type, 'datatype')) {
                     if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                         angular.forEach(obj.components, function (component) {
-                            $rootScope.findTableRefs(table, component, path + "." + component.position);
+                            $rootScope.findTableRefs(table, component, path + "." + component.position, target);
                         });
                     }
                 }

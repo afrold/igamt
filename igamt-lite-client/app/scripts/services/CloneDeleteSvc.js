@@ -362,10 +362,10 @@ angular.module('igl').factory(
         svc.deleteValueSet = function (table) {
                  $rootScope.references = [];
                 angular.forEach($rootScope.segments, function (segment) {
-                    $rootScope.findTableRefs(table, segment, $rootScope.getSegmentLabel(segment));
+                    $rootScope.findTableRefs(table, segment, $rootScope.getSegmentLabel(segment),segment);
                 });
                 angular.forEach($rootScope.datatypes, function (dt) {
-                    $rootScope.findTableRefs(table, dt, $rootScope.getDatatypeLabel(dt));
+                    $rootScope.findTableRefs(table, dt, $rootScope.getDatatypeLabel(dt),dt);
                 });
 
                 if ($rootScope.references != null && $rootScope.references.length > 0) {

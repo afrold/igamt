@@ -86,7 +86,7 @@ color:white;
                                 <div ui-tree-handle context-menu="MessagesOption" style="margin-left:30px;">
                                     <span class="glyphicon glyphicon-move"></span> <span data-nodrag style="font-weight: normal;" confirm-click ng-class="{selected : msg.id===activeModel}" ng-click="editMessage(msg)">
                   {{updateMessagePositions(ig.profile.messages.children)}}
-                  [{{msg.position}}]  {{msg.name}}-{{msg.description}}
+                  [{{msg.position}}]  {{msg.name}}-{{msg.identifier}}-{{msg.description}}
                   </span>
                                 </div>
                             </li>
