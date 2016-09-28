@@ -319,7 +319,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
 	public InputStream exportAsHtmlDatatypeLibraryDocument(DatatypeLibraryDocument datatypeLibraryDocument){
 		if (datatypeLibraryDocument != null) {
-			return exportAsHtmlFromXsl(igDocumentSerializationService.serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument), "/rendering/igdoc2htmlWithTOC.xsl");
+			return exportAsHtmlFromXsl(igDocumentSerializationService.serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument), "/rendering/datatypeLibraryDoc2html.xsl");
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -327,7 +327,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
 	public InputStream exportAsDocxDatatypeLibraryDocument(DatatypeLibraryDocument datatypeLibraryDocument){
 		if (datatypeLibraryDocument != null) {
-			return exportAsDocxFromXml(igDocumentSerializationService.serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument), "/rendering/igdoc2htmlWithTOC.xsl", true);
+			return exportAsDocxFromXml(igDocumentSerializationService.serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument), "/rendering/datatypeLibraryDoc2html.xsl", true);
 		} else {
 			return new NullInputStream(1L);
 		}

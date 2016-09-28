@@ -189,6 +189,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         }
 
+        $scope.exportAs = function(dataTypeLibraryDocumentId,format){
+            DatatypeLibraryDocumentSvc.exportAs(dataTypeLibraryDocumentId,format);
+        }
+
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
         	$rootScope.libraryDoc= datatypeLibraryDocument;
 

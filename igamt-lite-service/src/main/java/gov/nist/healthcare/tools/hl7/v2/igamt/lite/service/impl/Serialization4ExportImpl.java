@@ -22,10 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -61,8 +59,8 @@ import nu.xom.Element;
 import nu.xom.Serializer;
 
 @Service
-public class IGDocumentSerialization4ExportImpl implements IGDocumentSerialization {
-  Logger logger = LoggerFactory.getLogger(IGDocumentSerialization4ExportImpl.class);
+public class Serialization4ExportImpl implements IGDocumentSerialization {
+  Logger logger = LoggerFactory.getLogger(Serialization4ExportImpl.class);
 
   @Autowired
   private DatatypeService datatypeService;
@@ -1859,7 +1857,7 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
       Element dataTypeNode = serializeDatatype(dataTypeLink, datatypeLibraryDocument.getTableLibrary(), datatypeLibraryDocument.getDatatypeLibrary(), "", datattypeLinkList.indexOf(dataTypeLink));
       Datatype datatype = datatypeService.findById(dataTypeLink.getId());
       if(datatype.getScope().equals(Constant.SCOPE.MASTER)){
-        datatypeLibraryNode.addAttribute(new Attribute("SCOPE","MASTER"));
+        dataTypeNode.addAttribute(new Attribute("scope","MASTER"));
       }
       //Add the datatype node to the children of the datatype library node
       datatypeLibraryNode.appendChild(dataTypeNode);
