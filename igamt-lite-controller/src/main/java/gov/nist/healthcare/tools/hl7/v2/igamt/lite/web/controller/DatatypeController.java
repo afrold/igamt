@@ -19,6 +19,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
@@ -29,6 +30,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundExc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 import java.util.ArrayList;
@@ -190,6 +192,28 @@ public class DatatypeController extends CommonController {
     } else {
       throw new ForbiddenOperationException("FORBIDDEN_SAVE_DATATYPE");
     }
+  }
+  @RequestMapping(value = "/saveDts", method = RequestMethod.POST)
+  public List<Datatype> save(@RequestBody List<Datatype> datatypes) throws DatatypeSaveException,
+      ForbiddenOperationException {
+	  List<Datatype> dts=new ArrayList<Datatype>();
+	  for(Datatype datatype:datatypes){
+		  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
+		      log.debug("datatype=" + datatype);
+		      log.debug("datatype.getId()=" + datatype.getId());
+		      log.info("Saving the " + datatype.getScope() + " datatype.");
+		      datatype.setDate(DateUtils.getCurrentTime());
+		      Datatype saved = datatypeService.save(datatype);
+		      log.debug("saved.getId()=" + saved.getId());
+		      log.debug("saved.getScope()=" + saved.getScope());
+		      dts.add(datatype);
+		    } else {
+		      throw new ForbiddenOperationException("FORBIDDEN_SAVE_DATATYPE");
+		    }
+	  }
+	  return dts;
+    
+
   }
 
   @RequestMapping(value = "/saveAll", method = RequestMethod.POST)

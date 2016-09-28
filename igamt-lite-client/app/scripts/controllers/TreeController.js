@@ -737,23 +737,7 @@ angular
                         	 $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);                        }
                            
                         }
-                    ],
-                    ['Import HL7 Flavors Datatypes',
-                                          function($itemScope) {
-                    	
-                    	if ($rootScope.hasChanges()) {
-
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                $scope.addMasterDatatype($rootScope.igdocument.profile.metaData.hl7Version);
-                            	
-                                });
-                        } else {
-                        	
-                            $scope.addMasterDatatype($rootScope.igdocument.profile.metaData.hl7Version);
-                           
-                        }
-                                          }
-                                     ]
+                    ]
                 ];
 
                 $scope.DataTypeLibraryOptions = [
