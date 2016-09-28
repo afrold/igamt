@@ -1994,9 +1994,9 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             }
             $scope.selectedDatatypes.push(newDatatype);
         }
-        $scope.deleteDt = function(segment) {
-            var index = $scope.selectedDatatypes.indexOf(segment);
-            if (index > -1) $scope.selectedDatatypes.splice(segment, 1);
+        $scope.deleteDt = function(datatype) {
+            var index = $scope.selectedDatatypes.indexOf(datatype);
+            if (index > -1) $scope.selectedDatatypes.splice(index, 1);
         };
 
 
@@ -2290,7 +2290,7 @@ angular.module('igl').controller('AddSegmentDlgCtl',
         }
         $scope.deleteSeg = function(segment) {
             var index = $scope.selectedSegments.indexOf(segment);
-            if (index > -1) $scope.selectedSegments.splice(segment, 1);
+            if (index > -1) $scope.selectedSegments.splice(index, 1);
         };
 
         var listHL7Versions = function() {
