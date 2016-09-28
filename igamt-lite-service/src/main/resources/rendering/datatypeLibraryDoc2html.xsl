@@ -577,7 +577,7 @@
 							Length
 						</th>
 						<th>
-							Value Set
+							Concept Domain
 						</th>
 						<th>
 							Comment
@@ -757,7 +757,7 @@
 							Length
 						</th>
 						<th>
-							Value set
+							Concept Domain
 						</th>
 						<th>
 							Comment

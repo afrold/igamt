@@ -1844,11 +1844,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
       datatypeLibraryNode.addAttribute(new Attribute("prefix", prefix));
     }
     datatypeLibraryNode.addAttribute(new Attribute("h", String.valueOf(2)));
-    if (datatypeLibraryDocument.getDatatypeLibrary().getSectionTitle() != null) {
-      datatypeLibraryNode.addAttribute(new Attribute("title", datatypeLibraryDocument.getDatatypeLibrary().getSectionTitle()));
-    } else {
-      datatypeLibraryNode.addAttribute(new Attribute("title", ""));
-    }
+    datatypeLibraryNode.addAttribute(new Attribute("title", "Datatypes"));
     //Fetch all the Datatypes and create a node for each of them
     List<DatatypeLink> datattypeLinkList = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
     Collections.sort(datattypeLinkList);
@@ -1874,11 +1870,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
       tableLibraryNode.addAttribute(new Attribute("prefix", prefix));
     }
     tableLibraryNode.addAttribute(new Attribute("h", String.valueOf(2)));
-    if (datatypeLibraryDocument.getTableLibrary().getSectionTitle() != null) {
-      tableLibraryNode.addAttribute(new Attribute("title", datatypeLibraryDocument.getTableLibrary().getSectionTitle()));
-    } else {
-      tableLibraryNode.addAttribute(new Attribute("title", ""));
-    }
+    tableLibraryNode.addAttribute(new Attribute("title", "Value Sets"));
     if (datatypeLibraryDocument.getTableLibrary().getSectionContents() != null
             && !datatypeLibraryDocument.getTableLibrary().getSectionContents().isEmpty()) {
       nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
