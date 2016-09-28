@@ -31,6 +31,7 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.BindingParametersForDatatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
@@ -191,31 +192,21 @@ public class DatatypeController extends CommonController {
     }
   }
   
-  @RequestMapping(value = "/addNewTableBinding/{datatypeId}/{componentId}", method = RequestMethod.POST)
-  public Datatype addNewTableBinding(@PathVariable("datatypeId") String datatypeId, @PathVariable("componentId") String componentId, @RequestBody TableLink newTableLink) throws DatatypeSaveException, ForbiddenOperationException, DataNotFoundException {
-	  Datatype datatype = this.datatypeService.findById(datatypeId);
-	  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
-		  datatype.setDate(DateUtils.getCurrentTime());
-		  datatype.getComponents().get(this.indexOfComponent(componentId, datatype)).getTables().add(newTableLink);
-		  Datatype saved = datatypeService.save(datatype);
-		  return saved;
-	  } else {
-		  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
-	  }
-  }
-  
-  @RequestMapping(value = "/updateTableBinding/{datatypeId}/{componentId}/{key}", method = RequestMethod.POST)
-  public Datatype updateTableBinding(@PathVariable("datatypeId") String datatypeId, @PathVariable("componentId") String componentId, @PathVariable("key") String key, @RequestBody TableLink newTableLink) throws DatatypeSaveException, ForbiddenOperationException, DataNotFoundException {
-	  Datatype datatype = this.datatypeService.findById(datatypeId);
-	  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
-		  datatype.setDate(DateUtils.getCurrentTime());
-		  Component targetComponent = datatype.getComponents().get(this.indexOfComponent(componentId, datatype));
-		  targetComponent.getTables().add(newTableLink);
-		  this.deleteTable(targetComponent, key);
-		  Datatype saved = datatypeService.save(datatype);
-		  return saved;
-	  } else {
-		  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
+  @RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
+  public void updateTableBinding(@RequestBody List<BindingParametersForDatatype> bindingParametersList) throws DatatypeSaveException, ForbiddenOperationException, DataNotFoundException {
+	  for(BindingParametersForDatatype paras : bindingParametersList){
+		  Datatype datatype = this.datatypeService.findById(paras.getDatatypeId());
+		  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
+			  datatype.setDate(DateUtils.getCurrentTime());
+			  Component targetComponent = datatype.getComponents().get(this.indexOfComponent(paras.getComponentId(), datatype));
+			  targetComponent.getTables().add(paras.getTableLink());
+			  if(paras.getKey() != null){
+				  this.deleteTable(targetComponent, paras.getKey());  
+			  }
+			  datatypeService.save(datatype);
+		  } else {
+			  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
+		  }
 	  }
   }
 

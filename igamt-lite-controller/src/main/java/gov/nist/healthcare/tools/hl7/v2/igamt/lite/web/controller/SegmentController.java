@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.BindingParametersForSegment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -114,32 +115,21 @@ public class SegmentController extends CommonController {
 
   }
   
-  
-  @RequestMapping(value = "/addNewTableBinding/{segmentId}/{fieldId}", method = RequestMethod.POST)
-  public Segment addNewTableBinding(@PathVariable("segmentId") String segmentId, @PathVariable("fieldId") String fieldId, @RequestBody TableLink newTableLink) throws SegmentSaveException, ForbiddenOperationException, DataNotFoundException {
-	  Segment segment = this.segmentService.findById(segmentId);
-	  if (!SCOPE.HL7STANDARD.equals(segment.getScope())) {
-		  segment.setDate(DateUtils.getCurrentTime());
-		  segment.getFields().get(this.indexOfField(fieldId, segment)).getTables().add(newTableLink);
-		  Segment saved = segmentService.save(segment);
-		  return saved;
-	  } else {
-		  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
-	  }
-  }
-  
-  @RequestMapping(value = "/updateTableBinding/{segmentId}/{fieldId}/{key}", method = RequestMethod.POST)
-  public Segment updateTableBinding(@PathVariable("segmentId") String segmentId, @PathVariable("fieldId") String fieldId, @PathVariable("key") String key, @RequestBody TableLink newTableLink) throws SegmentSaveException, ForbiddenOperationException, DataNotFoundException {
-	  Segment segment = this.segmentService.findById(segmentId);
-	  if (!SCOPE.HL7STANDARD.equals(segment.getScope())) {
-		  segment.setDate(DateUtils.getCurrentTime());
-		  Field targetField = segment.getFields().get(this.indexOfField(fieldId, segment));
-		  targetField.getTables().add(newTableLink);
-		  this.deleteTable(targetField, key);
-		  Segment saved = segmentService.save(segment);
-		  return saved;
-	  } else {
-		  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
+  @RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
+  public void updateTableBinding(@RequestBody List<BindingParametersForSegment> bindingParametersList) throws SegmentSaveException, ForbiddenOperationException, DataNotFoundException {
+	  for(BindingParametersForSegment paras : bindingParametersList){
+		  Segment segment = this.segmentService.findById(paras.getSegmentId());
+		  if (!SCOPE.HL7STANDARD.equals(segment.getScope())) {
+			  segment.setDate(DateUtils.getCurrentTime());
+			  Field targetField = segment.getFields().get(this.indexOfField(paras.getFieldId(), segment));
+			  targetField.getTables().add(paras.getTableLink());
+			  if(paras.getKey() != null){
+				  this.deleteTable(targetField, paras.getKey());  
+			  }
+			  segmentService.save(segment);
+		  } else {
+			  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
+		  }
 	  }
   }
   
