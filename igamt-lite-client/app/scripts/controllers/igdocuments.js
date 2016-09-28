@@ -1161,11 +1161,11 @@ angular.module('igl')
                         }
                     }
                     $rootScope.references = [];
-                    angular.forEach($rootScope.segments, function (segment) {
+                    angular.forEach($rootScope.segments, function(segment) {
                         $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
                     });
-                    angular.forEach($rootScope.datatypes, function (dt) {
-                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt),dt);
+                    angular.forEach($rootScope.datatypes, function(dt) {
+                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
                     });
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
@@ -1954,12 +1954,12 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             return $scope.checkedExt;
         };
         $scope.addDtFlv = function(datatype) {
-            var newDatatype = angular.copy(datatype, {});
+            var newDatatype = angular.copy(datatype);
 
             newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
             newDatatype.scope = 'USER';
             newDatatype.participants = [];
-            newDatatype.id = null;
+            newDatatype.id = new ObjectId().toString();;
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
             if (datatype.scope === 'MASTER') {
@@ -1992,6 +1992,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
                 });
             }
             $scope.selectedDatatypes.push(newDatatype);
+            console.log($scope.selectedDatatypes)
         }
         $scope.deleteDt = function(datatype) {
             var index = $scope.selectedDatatypes.indexOf(datatype);
@@ -2054,8 +2055,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
 
         $scope.ok = function() {
-
-
+            console.log($scope.selectedDatatypes);
             $scope.selectFlv = [];
             var newLinks = [];
             for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
