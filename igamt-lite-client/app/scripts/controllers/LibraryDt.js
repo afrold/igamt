@@ -98,6 +98,48 @@ angular.module('igl')
             });
         };
 
+
+        $scope.confirmPublish = function(datatypeCopy) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmDatatypePublishCtl.html',
+                controller: 'ConfirmDatatypePublishCtl',
+                resolve: {
+                    datatypeToPublish: function() {
+                        return datatypeCopy;
+                    }
+                }
+            });
+            modalInstance.result.then(function(datatypeCopy) {
+                if ($rootScope.datatypesParams) {
+                    $rootScope.datatypesParams.refresh();
+                }
+                $scope.save();
+            });
+        };
+        
+
+        $scope.abortPublish = function(datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AbortPublishCtl.html',
+                controller: 'AbortPublishCtl',
+                resolve: {
+                    datatypeToPublish: function() {
+                        return datatype;
+                    },
+                    unpublishedDatatypes: function() {
+                        return $scope.unpublishedDatatypes;
+                    },
+                    unpublishedTables: function() {
+                        return $scope.unpublishedTables;
+                    }
+
+                }
+            });
+
+        };
+        
+        
+        
         $scope.OtoX = function(message) {
             console.log(message);
             var modalInstance = $modal.open({

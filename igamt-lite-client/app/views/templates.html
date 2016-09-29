@@ -151,7 +151,7 @@
 <script type="text/ng-template" id="AddHL7TableOpenCtrl.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
-            <span class="header4">Import HL7 Tables</span>
+            <span class="header4">Add HL7 Tables</span>
         </div>
     </div>
         <div class="modal-body">
@@ -174,7 +174,7 @@
                             <h5>Tables for {{source}} {{selectedHL7Version}}</h5>
                             <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                                 <thead>
-                                <tr>
+                                <tr class="tbl-header">
                                     <th>Binding Identifier</th>
                                     <th>Name</th>
                                     <th/>
@@ -205,7 +205,7 @@
                     <h5>Selected tables</h5>
                     <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                         <thead>
-                            <tr>
+                            <tr class="tbl-header">
                                 <th>Binding Identifier</th>
                                 <th>Name</th>
                                 <th>HL7 Version</th>
@@ -242,7 +242,7 @@
 <script type="text/ng-template" id="AddCSVTableOpenCtrl.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
-            <span class="header4">Import CSV file</span>
+            <span class="header4">Add ValueSet From CSV file</span>
         </div>
     </div>
     <div class="modal-body">
@@ -261,7 +261,7 @@
                 <li style="color:blue;">Download 'ValueSet Empty Form (Excel)'</li>
                 <li style="color:blue;">Edit sheets using MS Excel</li>
                 <li style="color:blue;">Save as CSV file</li>
-                <li style="color:blue;">Import CSV file</li>
+                <li style="color:blue;">Upload CSV file</li>
             </ol>
 
             <p style="color:blue;">Files</p>
@@ -274,15 +274,15 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-raised btn-primary btn-sm" ng-click="uploadCSVFile()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
         <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+        <button class="btn btn-raised btn-success btn-sm" ng-click="uploadCSVFile()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
     </div>
 </script>
 
 <script type="text/ng-template" id="AddPHINVADSTableOpenCtrl.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
-            <span class="header4">Import PHINVADs Tables</span>
+            <span class="header4">Add PHINVADs Tables</span>
         </div>
     </div>
     <div class="modal-body">
@@ -644,4 +644,208 @@
             &nbsp; </i>Close</span>
         </button>
     </div>
+</script>
+<script type="text/ng-template" id="tree_node">
+    <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined)">
+        <td class="col-md-1" style="width:14%">
+            <span ng-bind="node.position.element"></span>
+        </td>
+        <td class="col-md-2" style="width:37%">
+            <table class=" table-borderless" ng-show="(node.label.element && (node.ext.element||node.ext.element===null) )||(node.label.element && !node.ext)">
+                <tr>
+                    <td class="col-sm-1">
+                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment  label-icon lb-sm">S</span>
+                        <span ng-show="node.type.element==='segment'" class="label label-segment  label-icon lb-sm">S</span>
+                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
+                        <span ng-show="node.type.element==='component'" class="label label-component label-icon lb-sm">C</span>
+                        <span ng-bind="node.label.element"></span><span ng-show="node.description.element">:<span ng-bind="node.description.element"></span></span>
+                    </td>
+                </tr>
+            </table>
+            <table class=" table-borderless" ng-show="(node.label.element1 && node.label.element2) || (node.label.element && (node.ext.element1 || node.ext.element2))">
+                <tr style="background-color:#B5F7EC">
+                    <td class="col-sm-1">
+                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment label-icon lb-sm" align="center">S</span>
+                        <span ng-show="node.type.element==='segment'" class="label label-segment label-icon lb-sm" align="center">S</span>
+                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
+                        <span ng-show="node.type.element==='component'" class="label label-component label-icon lb-sm">C</span>
+                        <span ng-show="node.type.element1==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element1==='segmentRef'" class="label label-segment label-icon lb-sm">S</span>
+                        <span ng-bind="node.label.element"></span>
+                        <span ng-bind="node.label.element1"></span>
+                        <span ng-show="node.ext.element1|| node.ext.element">_
+                        <span ng-show="node.ext.element1" ng-bind="node.ext.element1"></span>
+                        <span ng-show="node.ext.element" ng-bind="node.ext.element"></span>
+                        </span>
+                        <span ng-show="node.description">:
+                        <span ng-show="node.description.element1" ng-bind="node.description.element1"></span>
+                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
+                        </span>
+                    </td>
+                </tr>
+                <tr style="background-color:#EDE1AF">
+                    <td class="col-sm-1">
+                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment label-icon lb-sm" align="center">S</span>
+                        <span ng-show="node.type.element==='segment'" class="label label-segment label-icon lb-sm" align="center">S</span>
+                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
+                        <span ng-show="node.type.element==='component'" class="label label-component label-icon lb-sm">C</span>
+                        <span ng-show="node.type.element2==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element2==='segmentRef'" class="label label-segment label-icon  lb-sm">S</span>
+                        <span ng-show="node.type.element2==='segment'" class="label label-segment label-icon  lb-sm">S</span>
+                        <span ng-bind="node.label.element"></span>
+                        <span ng-bind="node.label.element2"></span>
+                        <span ng-show="node.ext.element2||node.ext.element">_
+                        <span ng-show="node.ext.element2" ng-bind="node.ext.element2"></span>
+                        <span ng-show="node.ext.element" ng-bind="node.ext.element"></span>
+                        </span>
+                        <span ng-show="node.description">:
+                        <span ng-show="node.description.element2" ng-bind="node.description.element2"></span>
+                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1" ng-show="node.usage" style="width:2%">
+            <div align="center">
+                <table class=" table-borderless">
+                    <tr>
+                        <td class="col-md-1" style="background-color:#B5F7EC">
+                            <div align="center"> <span ng-bind="node.usage.element1"></span></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-1" style="background-color:#EDE1AF">
+                            <div align="center"> <span ng-bind="node.usage.element2"></span></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td class="col-md-1" ng-show="!node.usage" style="width:2%">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-md-1" ng-show="node.minCard" style="width:2%">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.minCard.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.minCard.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1 c" ng-show="!node.minCard" style="width:2%">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-md-1" ng-show="node.maxCard" style="width:2%">
+            <table class="table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.maxCard.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.maxCard.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1" ng-show="!node.maxCard" style="width:2%">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-md-1" ng-show="node.minLength" style="width:2%">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.minLength.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.minLength.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1" ng-show="!node.minLength" style="width:2%">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-md-1" ng-show="node.maxLength" style="width:2%">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.maxLength.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.maxLength.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1" ng-show="!node.maxLength" style="width:2%">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-md-1 col-fixed-20" ng-show="node.confLength" style="width:2%">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.confLength.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.confLength.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1" ng-show="!node.confLength" style="width:2%">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-md-1 col-fixed-20" ng-show="node.datatype" style="width:21%">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.datatype.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.datatype.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1" ng-show="!node.datatype" style="width:21%">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-md-1" ng-show="node.valueset" style="width:16%">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.valueset.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.valueset.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1" ng-show="!node.valueset" style="width:16%">
+            <div align="center"> - </div>
+        </td>
+    </tr>
 </script>
