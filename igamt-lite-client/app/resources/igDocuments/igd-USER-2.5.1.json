@@ -4,6 +4,7 @@
   "accountId" : null,
   "comment" : "",
   "usageNote" : "",
+  "shareParticipants":[{"username": "Test"}],
   "metaData" : {
     "name" : null,
     "orgName" : "NIST",

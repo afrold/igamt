@@ -1124,15 +1124,15 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 		var modalInstance = $modal.open({
 			templateUrl: 'ShareIGDocumentModal.html'
 			, controller: 'ShareIGDocumentCtrl'
-//			, resolve: {
-//				igdocumentToOpen: function () {
-//					return igdocument;
-//				}
-//			}
+			, resolve: {
+				igdocumentSelected: function () {
+					return igdocument;
+				}
+			}
 		});
 		modalInstance.result.then(function (igdocument) {
 			$rootScope.clearChanges();
-//			$scope.openIGDocument(igdocument);
+			//			$scope.openIGDocument(igdocument);
 		}, function () {});
 	};
 });
@@ -1977,13 +1977,27 @@ angular.module('igl').controller('AddSegmentDlgCtl', function ($scope, $rootScop
 		$modalInstance.dismiss('cancel');
 	};
 });
-
-angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modalInstance) {
-	
+angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modalInstance, $http, igdocumentSelected) {
+	$scope.igdocumentSelected = igdocumentSelected;
 	$scope.ok = function () {
 		$modalInstance.dismiss('ok');
 	};
 	$scope.cancel = function () {
 		$modalInstance.dismiss('cancel');
+	};
+	$scope.tags = [];
+	$scope.selectedItem = {
+		selected: "Read Only"
+	};
+	$scope.itemArray = ["Read Only"];
+	$scope.loadUsernames = function ($query) {
+		return $http.get('api/usernames', {
+			cache: true
+		}).then(function (response) {
+			var users = response.data;
+			return users.filter(function (user) {
+				return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
+			});
+		});
 	};
 });
