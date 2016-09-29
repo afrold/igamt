@@ -1138,7 +1138,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 		$http.get('api/usernames').then(function (response) {
 			var userList = response.data;
 			userList = userList.filter(function(user) {
-				return user;
+				return igdocument.shareParticipants.indexOf(user) === -1;
 			});
 			var modalInstance = $modal.open({
 				templateUrl: 'ShareIGDocumentModal.html'
