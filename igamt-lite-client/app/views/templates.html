@@ -1001,7 +1001,6 @@
                                 </span>
                             <span ng-show="newConstraint.contraintType == 'one of list values'">
                         <input class="form-control"
-                               ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
                                ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
                         <span style="color:red;"
                               ng-show="isEmptyConstraintValue(newConstraint)">Empty list of values</span>
@@ -1309,9 +1308,7 @@
                                 <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                 </span>
                             <span ng-show="newConstraint.contraintType == 'one of list values'">
-                                    <input class="form-control"
-                                           ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                                           ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)"
+                                    <input class="form-control" ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)"
                                            type="text"/>
                                     <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
                                 </span>

@@ -1284,7 +1284,7 @@
                                     <span style="color:red;" ng-if="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                 </span>
                                 <span ng-if="newConstraint.contraintType == 'one of list values'">
-                            <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
+                            <input class="form-control" ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
                             <span style="color:red;" ng-if="isEmptyConstraintValue(newConstraint)">Empty list value</span>
                                 </span>
                                 <span ng-if="newConstraint.contraintType == 'formatted value'">
@@ -1579,7 +1579,7 @@
                                     <span style="color:red;" ng-if="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                 </span>
                                 <span ng-if="newConstraint.contraintType == 'one of list values'">
-                        <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
+                        <input class="form-control" ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
                         <span style="color:red;" ng-if="isEmptyConstraintValue(newConstraint)">Empty list of values</span>
                                 </span>
                                 <span ng-if="newConstraint.contraintType == 'formatted value'">
