@@ -12,13 +12,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +48,10 @@ public interface IGDocumentSerialization {
   String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary);
 
   Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary);
+
+  String serializeDatatypeLibraryDocumentToXML(DatatypeLibraryDocument datatypeLibraryDocument);
+
+  Document serializeDatatypeLibraryDocumentToDoc(DatatypeLibraryDocument datatypeLibraryDocument);
 
   String serializeDatatypeToXML(DatatypeLink dl);
 

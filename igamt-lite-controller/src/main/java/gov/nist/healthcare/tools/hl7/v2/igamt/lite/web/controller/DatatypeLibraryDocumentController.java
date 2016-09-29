@@ -1,16 +1,18 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +27,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
@@ -41,6 +45,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibrarySaveExce
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/datatype-library-document")
 public class DatatypeLibraryDocumentController {
@@ -51,11 +58,15 @@ public class DatatypeLibraryDocumentController {
 	@Autowired
 	private DatatypeLibraryDocumentService datatypeLibraryDocumentService;
 	@Autowired
+	private DatatypeMatrixRepository matrix;
+	@Autowired
 	UserService userService;
 	@Autowired
 	UnchangedDataRepository unchangedDatatype;
 	@Autowired
 	AccountRepository accountRepository;
+	@Autowired
+	IGDocumentExportService igDocumentExportService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public List<DatatypeLibraryDocument> getDatatypeLibraries() {
@@ -228,6 +239,50 @@ public class DatatypeLibraryDocumentController {
 		
 		
 		return result;
+	}
+
+	@RequestMapping(value = "/getMatrix", method = RequestMethod.POST)
+	public List<DatatypeMatrix> getMatrix() throws LibrarySaveException {
+		List<DatatypeMatrix> result = new ArrayList<DatatypeMatrix>();
+
+		List <DatatypeMatrix> temp=matrix.findAll();
+		
+		for(DatatypeMatrix data: temp){
+			if(!data.getName().contains("_")){
+				
+				result.add(data);				
+			}
+		}
+		
+		
+		return result;
+	}
+
+	private String escapeSpace(String str) {
+		return str.replaceAll(" ", "-");
+	}
+
+	@RequestMapping(value = "/{libId}/export/html", method = RequestMethod.POST,produces = "text/html")
+	public void exportXml(@PathVariable String libId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		log.debug("Exporting the library to HTML");
+		DatatypeLibraryDocument lib = datatypeLibraryDocumentService.findById(libId);
+		InputStream content = igDocumentExportService.exportAsHtmlDatatypeLibraryDocument(lib);
+		response.setContentType("text/html");
+		response.setHeader("Content-disposition", "attachment;filename=" + escapeSpace(lib.getMetaData().getName()) + "-" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/{libId}/export/docx", method = RequestMethod.POST,produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+	public void exportDocx(@PathVariable String libId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		log.debug("Exporting the library to Word");
+		DatatypeLibraryDocument lib = datatypeLibraryDocumentService.findById(libId);
+		InputStream content = igDocumentExportService.exportAsDocxDatatypeLibraryDocument(lib);
+		response
+				.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		response.setHeader("Content-disposition",
+				"attachment;filename=" + escapeSpace(lib.getMetaData().getName()) + "-"
+						+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 }
