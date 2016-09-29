@@ -1301,7 +1301,7 @@ public class IGDocumentController extends CommonController {
    * @return
    * @throws IGDocumentException
    */
-  @RequestMapping(value = "/{id}/unshareself", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/selfUnshare", method = RequestMethod.POST,
       produces = "application/json")
   public boolean unshareIgDocument(@PathVariable("id") String id,
       @RequestParam("participantId") Long participantId) throws IGDocumentException {
