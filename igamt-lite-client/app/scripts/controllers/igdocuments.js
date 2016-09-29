@@ -1162,12 +1162,11 @@ angular.module('igl')
                     }
                     $rootScope.references = [];
                     angular.forEach($rootScope.segments, function(segment) {
-                        $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment));
+                        $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
                     });
                     angular.forEach($rootScope.datatypes, function(dt) {
-                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
+                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
                     });
-                    $rootScope.tmpReferences = [].concat($rootScope.references);
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
                     blockUI.stop();
@@ -1955,12 +1954,12 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             return $scope.checkedExt;
         };
         $scope.addDtFlv = function(datatype) {
-            var newDatatype = angular.copy(datatype, {});
+            var newDatatype = angular.copy(datatype);
 
             newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
             newDatatype.scope = 'USER';
             newDatatype.participants = [];
-            newDatatype.id = null;
+            newDatatype.id = new ObjectId().toString();;
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
             if (datatype.scope === 'MASTER') {
@@ -1993,10 +1992,11 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
                 });
             }
             $scope.selectedDatatypes.push(newDatatype);
+            console.log($scope.selectedDatatypes)
         }
-        $scope.deleteDt = function(segment) {
-            var index = $scope.selectedDatatypes.indexOf(segment);
-            if (index > -1) $scope.selectedDatatypes.splice(segment, 1);
+        $scope.deleteDt = function(datatype) {
+            var index = $scope.selectedDatatypes.indexOf(datatype);
+            if (index > -1) $scope.selectedDatatypes.splice(index, 1);
         };
 
 
@@ -2055,8 +2055,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
 
         $scope.ok = function() {
-
-
+            console.log($scope.selectedDatatypes);
             $scope.selectFlv = [];
             var newLinks = [];
             for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
@@ -2290,7 +2289,7 @@ angular.module('igl').controller('AddSegmentDlgCtl',
         }
         $scope.deleteSeg = function(segment) {
             var index = $scope.selectedSegments.indexOf(segment);
-            if (index > -1) $scope.selectedSegments.splice(segment, 1);
+            if (index > -1) $scope.selectedSegments.splice(index, 1);
         };
 
         var listHL7Versions = function() {
