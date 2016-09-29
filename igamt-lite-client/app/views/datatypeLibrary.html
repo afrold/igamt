@@ -47,14 +47,14 @@ if (self === top) {
 /* font-size: 18px; */
 
 .scrollit {
-    height: 500px;
-    overflow: scroll;
+    height: 500px !important;
+    overflow: scroll !important;
 }
 .selected1{
-background-color:yellow !important;
+background-color:#B5F7EC !important;
 }
 .selected2{
-background-color:black !important;
+background-color:#EDE1AF !important;
 }
 
 /* } */
@@ -71,6 +71,12 @@ background-color:black !important;
 .treeSubSection {
     font-size: 14px;
 }
+.grey{
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+0,000000+2,000000+2&0.65+99,0.65+99 */
+background-color : #d2d2d2 !important;
+
+
+}
 
 .treeUnderSubSection {
     font-size: 13px;
@@ -86,9 +92,6 @@ background-color:black !important;
 
 .messageContent {
     font-size: 16;
-}
-.colorated{
-background-color:{{getColor(dt.links[va])}};
 }
 .messageSubContent {
     font-size: 12px;
@@ -152,7 +155,7 @@ span {
     <tabset>
         <tab active="DTLibList" select="selectDTLibTab(0)">
             <tab-heading>
-                <i class="fa fa-file-text-o fa-fw"></i> DatatypeLibrary List
+                <i class="fa fa-file-text-o fa-fw"></i> Data Type Library List
             </tab-heading>
             <div>
                 <div class="row">
@@ -184,8 +187,7 @@ span {
                     </div>
                 </div>
                 <div> 
-                <button class="btn btn-primary" ng-click="showEvolution()"> <i class="fa fa-line-chart" aria-hidden="true"> Show HL7 Datatypes Evolution</i></button>
-                    <div class="row">
+                       <div class="row">
                         <div class="col-md-12">
                             <form>
                                 <div class="form-group">
@@ -238,8 +240,8 @@ span {
         </tab>
         <tab active="DTLibDetails" select="selectDTLibTab(1)" ng-show="datatypeLibrary">
             <tab-heading>
-                <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Datatype Library</span>
-                <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Datatype Library</span>
+                <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Data Type Library</span>
+                <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Data Type Library</span>
             </tab-heading>
             <div>
                <div class="row">
@@ -299,22 +301,18 @@ span {
                     </div>
             </div>
         </tab>
-        <tab heading= "Datatypes Evolution" active="evolution" select="selectDTLibTab(2)">
-        <div style="margin-top:10px">
-        <div><br/></div>
-        
+        <tab heading= "Data Types Evolution" active="evolution" select="selectDTLibTab(2)">
+        <div style="margin-top:10px">        
         <div class="col-md-6">
         
                              <div class="panel panel-primary">
                                 <!-- Default panel contents -->
                                 <div class="panel-heading panel-heading-collapsable">
-                                    <i class="glyphicon glyphicon-list"></i> Datatype Evolution
-                                    <button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right" style="margin: 0px" ng-click="hideToc = !hideToc">
-                                        <i class="fa fa-caret-left"></i>
-                                    </button>
-                                </div>
-                                <div class="panel-body toc-container">
-                     <table class="table-bordered table-fix-header table-condensed igl-list-table container col-md-12">
+                                    <i class="fa fa-bar-chart" aria-hidden="true"></i>Data Type Evolution By HL7 version
+                                	</div>
+                                	<div class="panel-body" style="padding:0px;">
+                              	<div class="">
+                     <table class="table table-bordered table-fix-header table-condensed igl-list-table col-md-12 ">
 						<thead >
 							<tr class="tbl-header">
 								<th ng-repeat="v in vrs">{{v}}</th>
@@ -322,12 +320,13 @@ span {
 					</thead>
 					<tbody class="scrollit">
 					<tr ng-repeat="dt in matrix | orderBy: 'name'">
-						<td class="tbl-header">{{dt.name}}</td>
-						<td  ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1])}"  ng-repeat = 'va in adjusted' ng-click="selectCell(dt,vrs[$index+1])"><span>{{dt.links[va]}}</span></td>
+						<td class="tbl-header"><strong>{{dt.name}}</strong></td>
+						<td ng-disabled="true" style="color:{{getColor(dt.links[va])}}" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1]), 'grey':!dt.links[va]&& dt.links[va]!==0}"  ng-repeat = 'va in adjusted' ng-click="selectCell(dt,vrs[$index+1])"><strong>{{dt.links[va]}}</strong></td>
 					</tr>
 					</tbody>
 					</table>
                             </div>
+                       </div>
                        </div>
         </div>
         
@@ -335,10 +334,7 @@ span {
                              <div class="panel panel-primary">
                                 <!-- Default panel contents -->
                                 <div class="panel-heading panel-heading-collapsable">
-                                    <i class="glyphicon glyphicon-list"></i> Delta
-                                    <button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right" style="margin: 0px" ng-click="hideToc = !hideToc">
-                                        <i class="fa fa-caret-left"></i>
-                                    </button>
+                                    Delta
                                 </div>
                                 <div class="panel-body ">
                                     <div class="panel-body">
@@ -361,7 +357,7 @@ span {
                             <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
                         </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody ng-if="selectedVersion2&& selectedVersion1"></tbody>
                     </table>
                 </div>
                                 </div>
@@ -620,9 +616,6 @@ span {
 
          <button title="submit" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="addedDatatypes.length===0 ||exist"  ng-click="submit()" aria-hidden="false">
              <span><i class="fa fa-check fa-fw"></i> Submit</span>
-                        </button>
-		 <button title="submit" type="button" class="btn btn-raised btn-sm btn-info"  ng-click="showEvolution()" ng-if="false">
-             <span><i class="fa fa-check fa-fw"></i> Show Datatypes Evolutions</span>
                         </button>
                         </span>
                     </div>
