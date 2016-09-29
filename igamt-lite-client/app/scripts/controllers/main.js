@@ -1266,6 +1266,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 return '[0-2](\\.(0|[1-9][0-9]*))*';
             } else if (format === 'Alphanumeric') {
                 return '^[a-zA-Z0-9]*$';
+            } else if (format === 'Positive Integer') {
+                return '^[1-9]\d*$';
             }
 
             return format;
