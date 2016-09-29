@@ -4,8 +4,19 @@ public class BindingParametersForSegment {
 	private String segmentId;
 	private String fieldId;
 	private TableLink tableLink;
+	private DatatypeLink datatypeLink;
 	private String key;
 	
+	
+	
+	public DatatypeLink getDatatypeLink() {
+		return datatypeLink;
+	}
+
+	public void setDatatypeLink(DatatypeLink datatypeLink) {
+		this.datatypeLink = datatypeLink;
+	}
+
 	public String getSegmentId() {
 		return segmentId;
 	}

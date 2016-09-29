@@ -439,7 +439,9 @@
                                                 <span ng-if="ref.type === 'component'" class="label label-component label-icon">C</span>
                                             </td>
                                             <td st-ratio="15">
-                                                {{::ref.path}}
+                                                <a ng-if="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.path}}</a>
+                                                <a ng-if="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.path}}</a>
+                                                
                                             </td>
                                             <td st-ratio="15">
                                                 {{::ref.name}}
@@ -448,8 +450,9 @@
                                                 {{::ref.usage}}
                                             </td>
                                             <td st-ratio="10">
-                                                {{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}
+                                                <a ng-click="redirectDT(ref.datatype)">{{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}</a>
                                             </td>
+                                            
                                             <td st-ratio="20">
                                                 <span ng-if="ref.target.scope !== 'USER'">
                                                     {{::tablesMap[ref.tableLink.id].bindingIdentifier}}-{{::tablesMap[ref.tableLink.id].description}}
