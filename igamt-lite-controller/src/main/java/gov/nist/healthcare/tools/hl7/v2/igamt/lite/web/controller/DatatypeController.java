@@ -36,6 +36,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
@@ -227,6 +228,38 @@ public class DatatypeController extends CommonController {
 		  targetComponent.getTables().remove(found);
 	  }else {
 		  throw new DataNotFoundException("tableLinkNotFound");
+	  }
+	
+}
+  @RequestMapping(value = "/updateDatatypeBinding", method = RequestMethod.POST)
+  public void updateDatatypeBinding(@RequestBody List<BindingParametersForDatatype> bindingParametersList) throws DatatypeSaveException, ForbiddenOperationException, DataNotFoundException {
+	  for(BindingParametersForDatatype paras : bindingParametersList){
+		  Datatype datatype = this.datatypeService.findById(paras.getDatatypeId());
+		  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
+			  datatype.setDate(DateUtils.getCurrentTime());
+			  Component targetComponent = datatype.getComponents().get(this.indexOfComponent(paras.getComponentId(), datatype));
+			  TableLink tableLink = paras.getTableLink();
+			  DatatypeLink datatypeLink=paras.getDatatypeLink();
+			  
+			  if(datatypeLink != null) {
+				  targetComponent.setDatatype(datatypeLink);
+			  }
+			  
+			  datatypeService.save(datatype);
+		  } else {
+			  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
+		  }
+	  }
+  }
+
+  private void deleteDatatype(Component targetComponent, String key) throws DataNotFoundException {
+	  DatatypeLink found = null;
+	  if(targetComponent.getDatatype().getId().equals(key)) found = targetComponent.getDatatype();
+	  
+	  if(found != null){
+		  targetComponent.setDatatype(null);;
+	  }else {
+		  throw new DataNotFoundException("datatypeLinkNotFound");
 	  }
 	
 }

@@ -1066,11 +1066,11 @@ angular.module('igl')
                                 $rootScope.tmpReferences = [].concat($rootScope.references);
                                 angular.forEach($rootScope.segments, function(segment) {
                                     if (segment && segment != null) {
-                                        $rootScope.findDatatypeRefs($rootScope.datatype, segment, $rootScope.getSegmentLabel(segment));
+                                        $rootScope.findDatatypeRefs($rootScope.datatype, segment, $rootScope.getSegmentLabel(segment), segment);
                                     }
                                 });
                                 angular.forEach($rootScope.datatypes, function(dt) {
-                                    if (dt && dt != null && dt.id !== $rootScope.datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt));
+                                    if (dt && dt != null && dt.id !== $rootScope.datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt), dt);
                                 });
 
                                 $rootScope.tmpReferences = [].concat($rootScope.references);

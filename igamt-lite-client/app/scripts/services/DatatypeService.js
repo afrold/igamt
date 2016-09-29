@@ -393,9 +393,18 @@ angular.module('igl').factory('DatatypeService',
                 $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
             },
 
-            updateTableBinding: function(datatypeUpdateParameterList){
+            updateTableBinding: function(datatypeUpdateParameterList) {
                 var delay = $q.defer();
                 $http.post('api/datatypes/updateTableBinding/', datatypeUpdateParameterList).then(function(response) {
+                    delay.resolve(true);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            updateDatatypeBinding: function(datatypeUpdateParameterList) {
+                var delay = $q.defer();
+                $http.post('api/datatypes/updateDatatypeBinding/', datatypeUpdateParameterList).then(function(response) {
                     delay.resolve(true);
                 }, function(error) {
                     delay.reject(error);

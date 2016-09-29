@@ -243,11 +243,7 @@
 				<xsl:value-of select="@Description" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@Min" />
-				..
-				<xsl:value-of select="@Max" />
-				]
+				<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>
 			</td>
 			<td>
 				<xsl:value-of select="@Usage" />
@@ -426,18 +422,10 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@Min" />
-				..
-				<xsl:value-of select="@Max" />
-				]
+				<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@MinLength" />
-				..
-				<xsl:value-of select="@MaxLength" />
-				]
+				<xsl:value-of select="concat('[', @MinLength, '..', @MaxLength, ']')"></xsl:value-of>
 			</td>
 			<td>
 				<xsl:value-of select="@Binding" />
@@ -510,9 +498,6 @@
 							Element name
 						</th>
 						<th>
-							Conf length
-						</th>
-						<th>
 							Data type
 						</th>
 						<th>
@@ -520,6 +505,9 @@
 						</th>
 						<th>
 							Length
+						</th>
+						<th>
+							Conf length
 						</th>
 						<th>
 							Value set
@@ -587,11 +575,7 @@
 				<xsl:if test="count(./Text[@Type='Text']) &gt; 0">
 					<p>
 						<strong>
-							<xsl:value-of disable-output-escaping="yes" select="../@Name" />
-							-
-							<xsl:value-of disable-output-escaping="yes" select="@Position" />
-							:
-							<xsl:value-of disable-output-escaping="yes" select="@Name" />
+							<xsl:value-of disable-output-escaping="yes" select="concat(../@Name, '-', @Position, ':', @Name)" />
 						</strong>
 						<xsl:value-of disable-output-escaping="yes"
 							select="./Text[@Type='Text']" />
@@ -630,20 +614,16 @@
 				<xsl:value-of select="@Name" />
 			</td>
 			<td>
-				<xsl:value-of select="@ConfLength" />
-			</td>
-			<td>
 				<xsl:value-of select="@Datatype" />
 			</td>
 			<td>
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@MinLength" />
-				..
-				<xsl:value-of select="@MaxLength" />
-				]
+			<xsl:value-of select="concat('[', @MinLength, '..', @MaxLength, ']')"></xsl:value-of>
+			</td>
+			<td>
+				<xsl:value-of select="@ConfLength" />
 			</td>
 			<td>
 				<xsl:value-of disable-output-escaping="yes" select="@Binding" />
