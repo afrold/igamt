@@ -171,9 +171,10 @@ public class IGDocumentController extends CommonController {
         return preloaded();
       } else if ("USER".equalsIgnoreCase(type)) {
         return userIGDocuments();
+      } else if ("SHARED".equalsIgnoreCase(type)) {
+        return sharedIGDocument();
       }
       throw new IGDocumentListException("Unknown IG document type");
-
     } catch (RuntimeException e) {
       throw new IGDocumentListException(e);
     } catch (Exception e) {
@@ -1261,12 +1262,28 @@ public class IGDocumentController extends CommonController {
         igDocument.getMetaData().getTitle());
   }
 
+  /**
+   * Share multiple participants
+   * 
+   * @param id
+   * @param participants
+   * @return
+   * @throws IGDocumentException
+   */
   @RequestMapping(value = "/{id}/share", method = RequestMethod.POST, produces = "application/json")
   public boolean shareIgDocument(@PathVariable("id") String id, @RequestBody Set<Long> participants)
       throws IGDocumentException {
     log.info("Sharing id document with id=" + id + " with partipants=" + participants);
     try {
+      User u = userService.getCurrentUser();
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (account == null)
+        throw new UserAccountNotFoundException();
       IGDocument d = this.findIGDocument(id);
+      if (d.getAccountId() == null || !d.getAccountId().equals(account.getId())) {
+        throw new IGDocumentException(
+            "You do not have the right privilege to share this IG Document");
+      }
       d.getShareParticipants().addAll(participants);
       igDocumentService.save(d);
       return true;
@@ -1276,10 +1293,47 @@ public class IGDocumentController extends CommonController {
     }
   }
 
-  @RequestMapping(value = "/findSharedIgDocuments", method = RequestMethod.GET,
+  /**
+   * Unshare one participant
+   * 
+   * @param id
+   * @param participantId
+   * @return
+   * @throws IGDocumentException
+   */
+  @RequestMapping(value = "/{id}/unshareself", method = RequestMethod.POST,
       produces = "application/json")
-  public List<IGDocument> shareIgDocument() throws IGDocumentException {
-    log.info("Getting List of shared Ig Document");
+  public boolean unshareIgDocument(@PathVariable("id") String id,
+      @RequestParam("participantId") Long participantId) throws IGDocumentException {
+    log.info("Unsharing id document with id=" + id + " with partipant=" + participantId);
+    try {
+      User u = userService.getCurrentUser();
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (account == null)
+        throw new UserAccountNotFoundException();
+      IGDocument d = this.findIGDocument(id);
+      if (d.getAccountId() != null && participantId != d.getAccountId()) { // owner should not be
+                                                                           // removed
+        if (d.getAccountId().equals(account.getId()) || account.getId().equals(participantId)) {
+          d.getShareParticipants().remove(participantId);
+        } else {
+          throw new IGDocumentException("You do not have the right to share this ig document");
+        }
+      } else {
+        throw new IGDocumentException("You do not have the right to share this ig document");
+      }
+      igDocumentService.save(d);
+      return true;
+    } catch (Exception e) {
+      log.error("", e);
+      throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
+    }
+  }
+
+
+
+  private List<IGDocument> sharedIGDocument() throws IGDocumentException {
+    log.info("Getting List of shared Ig Documents");
     try {
       User u = userService.getCurrentUser();
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
@@ -1292,6 +1346,5 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
     }
   }
-
 
 }

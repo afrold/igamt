@@ -154,6 +154,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return userInfoService.isAdmin();
         };
 
+
+        $scope.getAccountID = function(accountId) {
+            return userInfoService.getAccountID();
+        };
+
+
         $scope.getRoleAsString = function() {
             if ($scope.isAuthor() === true) {
                 return 'author';

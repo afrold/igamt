@@ -24,12 +24,17 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 	$rootScope.usageF = false;
 	$scope.nodeReady = true;
 	$scope.igDocumentTypes = [{
-		name: "Browse Existing Preloaded Implementation Guides"
+		name: "Preloaded Implementation Guides"
 		, type: 'PRELOADED'
         }, {
-		name: "Access My implementation guides"
+		name: "My Implementation Guides"
 		, type: 'USER'
-        }];
+        },
+        {
+            name: "Shared Implementation Guides"
+            , type: 'SHARED'
+        },
+    ];
 	$scope.loadingIGDocument = false;
 	$scope.toEditIGDocumentId = null;
 	$scope.verificationResult = null;
