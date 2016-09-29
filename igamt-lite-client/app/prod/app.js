@@ -35,8 +35,9 @@ var app = angular
         'ds.objectDiff',
         'ngTagsInput',
         'nsPopover',
-        'ngMaterial',
-        'pageslide-directive'
+//        'ngMaterial',
+        'pageslide-directive',
+        'rzModule'
       ]);
 
 var
@@ -50,7 +51,7 @@ var
     spinner,
 
 //The list of messages we don't want to displat
-    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded', 'igDocumentNotSaved', 'igDocumentSaved', 'uploadImageFailed'];
+    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded', 'igDocumentNotSaved', 'igDocumentSaved', 'uploadImageFailed','fullNameNotFound','fullNameFound'];
 
 //the message to be shown to the user
 var msg = {};
@@ -70,10 +71,10 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .when('/compare', {
             templateUrl: 'views/compare.html'
         })
-//        .when('/datatypeLibrary', {
-//            templateUrl: 'views/datatypeLibrary.html',
-//            controller: 'DatatypeLibraryCtl'
-//        })
+        .when('/datatypeLibrary', {
+            templateUrl: 'views/datatypeLibrary.html',
+            controller: 'DatatypeLibraryCtl'
+        })
         .when('/doc', {
             templateUrl: 'views/doc.html'
         })
@@ -402,6 +403,8 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
 //console.log("event:loginConfirmed 1");
         if($location.path() === '/compare'){
             $location.url('/compare');
+        }else if($location.path() === '/datatypeLibrary'){
+            $location.url('/datatypeLibrary');
         }else {
             $location.url('/ig');
         }

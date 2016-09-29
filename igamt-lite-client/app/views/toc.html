@@ -82,11 +82,11 @@ color:white;
                                 <span style="font-size:14px;" context-menu="MessagesRootOption" ng-class="{selected :activeModel ==='Conformance Profiles'}" ng-click="editRoutSection('Conformance Profiles');" confirm-click data-nodrag>
                   {{ig.childSections.length+1}}.1.Conformance Profiles </span>
                             </div>
-                            <li ng-repeat="msg in ig.profile.messages.children track by $index" ui-tree-node ng-if="!collapsemessage" data-type="message">
+                            <li ng-repeat="msg in ig.profile.messages.children" ui-tree-node ng-if="!collapsemessage" data-type="message">
                                 <div ui-tree-handle context-menu="MessagesOption" style="margin-left:30px;">
                                     <span class="glyphicon glyphicon-move"></span> <span data-nodrag style="font-weight: normal;" confirm-click ng-class="{selected : msg.id===activeModel}" ng-click="editMessage(msg)">
                   {{updateMessagePositions(ig.profile.messages.children)}}
-                  [{{msg.position}}]  {{msg.name}}-{{msg.description}}
+                  [{{msg.position}}]  {{msg.name}}-{{msg.identifier}}-{{msg.description}}
                   </span>
                                 </div>
                             </li>
@@ -159,11 +159,11 @@ color:white;
                                 <span ng-class="{selected :activeModel ==='Value Sets'}" confirm-click data-nodrag ng-click="editRoutSection('Value Sets')">{{ig.childSections.length+1}}.4.Value Sets
                                     </span>
                             </div>
-                            <li ng-repeat="table in tables|orderBy :'bindingIdentifier'" ui-tree-node ng-if="!collapsevalueSet" data-type="table">
+                            <li ng-repeat="table in tables |orderBy :'bindingIdentifier'" ui-tree-node ng-if="!collapsevalueSet" data-type="table">
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="ValueSetOptions" style="margin-left:30px;">
                                     <span data-nodrag style="font-weight:normal;" ng-class="{selected : table.id===activeModel}" confirm-click ng-click="editTable(table)">
                                      <span class="badge" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL'}" >  {{getScopeLabel(table)}} {{hasSameVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}} 
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL','label-PVS':getScopeLabel(table)==='PVS'}" >  {{getScopeLabel(table)}} {{hasSameVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
                                     </span>
                                 </div>
                             </li>

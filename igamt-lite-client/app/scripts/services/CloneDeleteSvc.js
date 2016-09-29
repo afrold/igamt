@@ -79,12 +79,21 @@ angular.module('igl').factory(
 
         svc.copyDatatype = function (datatype) {
             var newDatatype = angular.copy(datatype, {});
+
             newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
             newDatatype.scope = 'USER';
             newDatatype.participants = [];
             newDatatype.id = null;
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
+            if(datatype.scope==='MASTER'){
+            	//newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
+            	var temp=[];
+            	temp.push($rootScope.igdocument.profile.metaData.hl7Version);
+            	newDatatype.hl7versions=temp;
+            	newDatatype.hl7Version=$rootScope.igdocument.profile.metaData.hl7Version;
+            	
+            }
 
 
             if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
@@ -187,46 +196,53 @@ angular.module('igl').factory(
         };
 
         svc.copyTable = function (table) {
-            var newTable = angular.copy(table);
-            newTable.participants = [];
-            newTable.scope = 'USER';
-            newTable.id = null;
-            newTable.libIds = [];
-            newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
-            newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
+            TableService.getOne(table.id).then(function(newTable){
+                newTable.participants = [];
+                newTable.scope = 'USER';
+                newTable.id = null;
+                newTable.libIds = [];
+                newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+                newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
 
-            if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
-                for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
-                    newTable.codes[i].id = new ObjectId().toString();
+                if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
+                    for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
+                        newTable.codes[i].id = new ObjectId().toString();
+                    }
                 }
-            }
 
-            TableService.save(newTable).then(function (result) {
-                newTable = result;
-                var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary.children));
-                newLink.bindingIdentifier = newTable.bindingIdentifier;
-                newLink.id = newTable.id;
+                TableService.save(newTable).then(function (result) {
+                    newTable = result;
+                    var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary.children));
+                    newLink.bindingIdentifier = newTable.bindingIdentifier;
+                    newLink.id = newTable.id;
 
-                TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                    $rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newLink);
-                    $rootScope.tables.splice(0, 0, newTable);
-                    $rootScope.table = newTable;
-                    $rootScope.tablesMap[newTable.id] = newTable;
+                    TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
+                        $rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newLink);
+                        $rootScope.tables.splice(0, 0, newTable);
+                        $rootScope.table = newTable;
+                        $rootScope.tablesMap[newTable.id] = newTable;
 
-                    $rootScope.codeSystems = [];
+                        $rootScope.codeSystems = [];
 
-                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
-                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
-                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
-                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+                        for (var i = 0; i < $rootScope.table.codes.length; i++) {
+                            if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+                                if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+                                    $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+                                }
                             }
                         }
-                    }
-                    if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
-                        $rootScope.filteredTablesList.push(newTable);
-                        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-                    }
-                    $rootScope.$broadcast('event:openTable', newTable);
+                        if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+                            $rootScope.filteredTablesList.push(newTable);
+                            $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+                        }
+                        $rootScope.$broadcast('event:openTable', newTable);
+
+                    }, function (error) {
+                        $rootScope.msg().text = error.data.text;
+                        $rootScope.msg().type = error.data.type;
+                        $rootScope.msg().show = true;
+                    });
+
 
                 }, function (error) {
                     $rootScope.msg().text = error.data.text;
@@ -234,22 +250,23 @@ angular.module('igl').factory(
                     $rootScope.msg().show = true;
                 });
 
-
-            }, function (error) {
+            }, function(error){
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
                 $rootScope.msg().show = true;
             });
         };
 
-        svc.copyTableINLIB = function (table, libId) {
+        svc.copyTableINLIB = function (table, tableLibrary) {
+        	console.log(tableLibrary);
             var newTable = angular.copy(table);
             newTable.participants = [];
-            newTable.scope = 'MASTER';
+            newTable.scope = tableLibrary.scope;
+            newTable.status = "UNPUBLISHED";
             newTable.id = null;
             newTable.libIds = [];
-            newTable.libIds.push(libId);
-            newTable.bindingIdentifier = $rootScope.createNewExtension(newTable.bindingIdentifier);
+            
+            newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 10000000) + 1);
 
             if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
                 for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
@@ -259,12 +276,12 @@ angular.module('igl').factory(
 
             TableService.save(newTable).then(function (result) {
                 newTable = result;
-                var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary.children));
+                var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id,tableLibrary.children));
                 newLink.bindingIdentifier = newTable.bindingIdentifier;
                 newLink.id = newTable.id;
 
-                TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                    $rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newLink);
+                TableLibrarySvc.addChild(tableLibrary.id, newLink).then(function (link) {
+                    tableLibrary.children.splice(0, 0, newLink);
                     $rootScope.tables.splice(0, 0, newTable);
                     $rootScope.table = newTable;
                     $rootScope.tablesMap[newTable.id] = newTable;
@@ -278,10 +295,10 @@ angular.module('igl').factory(
                             }
                         }
                     }
-                    if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
-                        $rootScope.filteredTablesList.push(newTable);
-                        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-                    }
+//                    if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+//                        $rootScope.filteredTablesList.push(newTable);
+//                        $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+//                    }
                     $rootScope.$broadcast('event:openTable', newTable);
 
                 }, function (error) {
@@ -347,10 +364,10 @@ angular.module('igl').factory(
         svc.deleteValueSet = function (table) {
                  $rootScope.references = [];
                 angular.forEach($rootScope.segments, function (segment) {
-                    $rootScope.findTableRefs(table, segment, $rootScope.getSegmentLabel(segment));
+                    $rootScope.findTableRefs(table, segment, $rootScope.getSegmentLabel(segment),segment);
                 });
                 angular.forEach($rootScope.datatypes, function (dt) {
-                    $rootScope.findTableRefs(table, dt, $rootScope.getDatatypeLabel(dt));
+                    $rootScope.findTableRefs(table, dt, $rootScope.getDatatypeLabel(dt),dt);
                 });
 
                 if ($rootScope.references != null && $rootScope.references.length > 0) {

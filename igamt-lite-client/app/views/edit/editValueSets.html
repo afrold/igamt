@@ -14,7 +14,7 @@
 <script type="text/ng-template" id="EditValueSets.html">
     <div ng-controller="TableListCtrl" ng-init="init()" class="container">
         <div ng-show="loadingSelection" style="text-align: center; padding-top:20px">
-            <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+            <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="table !== null" id="executionPanel">
@@ -34,12 +34,12 @@
                     </div>
 
                     <div class="" ng-controller="cmpTableCtrl">
-                        <tabset>
+                        <tabset active="tabStatus.active">
                             <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Value Set MetaData
                                 </tab-heading>
-                                <div style="margin-top: 20px">
+                                <div class="igl-def-table-container" style="margin-top: 20px">
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIndentifier.$invalid}">
                                         <label class="col-md-2 control-label">Mapping Identifier*</label>
 
@@ -146,12 +146,13 @@
                                     </div>
                                 </div>
                             </tab>
-                            <tab ng-click="setDeltaToF()">
+
+                            <tab   ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Definition
                                 </tab-heading>
 
-                                <div class="el-def" style="margin-top: 20px">
+                                <div class="el-def igl-def-table-container" style="margin-top: 20px">
 
                                     <accordion>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
@@ -173,7 +174,7 @@
                                             <accordion-heading>
                                                 <span style="color:white;">Value Set Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>
                                             </accordion-heading>
-                                            <div class="panel-body">
+                                            <div class="igl-def-table-container">
                                     <div class="">
                                         <span class="pull-right">
 											<button title="Add new Value" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
@@ -188,7 +189,7 @@
                                         <input class="input-sm form group" name="items" id="items" type="number" ng-model="itemsByPage"/>
                                         </span>
 
-                                 <div class="table-responsive">
+                                 <div class="">
                                             <table st-safe-src="table.codes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
                                                 <thead>
                                 <tr>
@@ -225,30 +226,23 @@
                                                             <input type="checkbox" ng-model="c.selected" ng-change="addOrRemoveValue(c)">
                                                         </td>
                                                         <td class="col-md-2">
-                                                            <div ng-show="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">
-                                                                <input type="text" style="width: 100%" name="Value" ng-change="setDirty()" class="form-control-warning" ng-model="c.value" />
-                                                                <span style="color:red">Duplicated</span>
-                                                            </div>
-                                                            <div ng-hide="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">
-                                                                <input type="text" style="width: 100%" name="Value" ng-change="setDirty()" class="form-control" ng-model="c.value" />
+                                                            <div>
+                                                                <input type="text" style="width: 100%" name="Value" ng-change="setDirty()" ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'value', 'codeSystem' , table.codes), 'form-control': !isDuplicatedTwoContexts(c,'value', 'codeSystem' , table.codes)}" ng-model="c.value" />
+                                                                <span ng-if="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)" style="color:red">Duplicated</span>
                                                             </div>
                                                         </td>
 
                                                         <td class="col-md-3">
-                                                            <div ng-show="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)">
-                                                                <input type="text" style="width: 100%" name="Label" ng-change="setDirty()" class="form-control-warning" ng-model="c.label" />
-                                                                <span style="color:red">Duplicated</span>
-                                                            </div>
-
-                                                            <div ng-hide="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)">
-                                                                <input type="text" style="width: 100%" name="Label" ng-change="setDirty()" class="form-control" ng-model="c.label" />
+                                                            <div>
+                                                                <input type="text" style="width: 100%" name="Label" ng-change="setDirty()" ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes), 'form-control': !isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)}"  ng-model="c.label" />
+                                                                <span ng-if="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)" style="color:red">Duplicated</span>
                                                             </div>
                                                         </td>
 
                                                         <td class="col-md-2">
                                                             <div ng-show="!c.codeSystem || c.codeSystem === ''">
                                                                 <select class="form-control-warning" ng-change="setDirty()" ng-model="c.codeSystem" ng-options="cs for cs in codeSystems">
-														</select>
+														        </select>
                                                                 <span style="color:red">Missing CodeSystem</span>
                                                             </div>
                                                             <div ng-hide="!c.codeSystem || c.codeSystem === ''">
@@ -316,65 +310,77 @@
                                             <accordion-heading>
                                                 <span style="color:white;"> Delta Configuration</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
                                             </accordion-heading>
-                                            <div class="row" align="center" style="margin-top:5px;margin-bottom:5px">
-                                                <div class="input-group col-md-3">
-                                                    <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
-                                                    <span class="input-group-addon" id="basic-addon1">Version</span>
 
-                                                    <select ng-model="version1" class="form-control" disabled>
-                                                    <option ng-selected="version1"> {{version1}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-2">
-                                                    <span class="input-group-addon" id="basic-addon1">Scope</span>
-                                                    <select ng-model="scope1" class="form-control" disabled>
-                                                    <option ng-selected="scope1"> {{scope1}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-3">
-                                                    <span class="input-group-addon" id="basic-addon1">IG Document</span>
-                                                    <select ng-model="ig1" class="form-control" disabled>
-                                                    <option ng-selected="ig1"> {{ig1}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-4">
-                                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
-                                                    <select ng-model="table1" class="form-control" disabled>
-                                                    <option ng-selected="table1"> {{table1.bindingIdentifier}}</option>
-                                                </select>
-                                                </div>
-                                            </div>
-                                            <div class="row" align="center">
-                                                <div class="input-group col-md-3">
-                                                    <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
-                                                    <span class="input-group-addon" id="basic-addon1">Version</span>
-                                                    <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
-                                                    <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-2">
-                                                    <span class="input-group-addon" id="basic-addon1">Scope</span>
-                                                    <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
-                                                    <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="input-group col-md-3">
-                                                    <span class="input-group-addon" id="basic-addon1">IG Document</span>
-                                                    <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
-                                                </div>
+                                            <table class="table table-stripped table-borderless table-condensed">
+                                                <thead>
+                                                <tr class="tbl-header">
+                                                    <th class="col-md-1"></th>
+                                                    <th class="col-md-2">HL7 Version</th>
+                                                    <th class="col-md-2">Scope</th>
+                                                    <th class="col-md-3">IG Document</th>
+                                                    <th class="col-md-4">Value Set</th>
+                                                </thead>
 
-                                                <div class="input-group col-md-4">
-                                                    <span class="input-group-addon" id="basic-addon1">Value Set</span>
+                                                <tbody>
 
-                                                    <select ng-model="cmp.tableId" class="form-control" ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2" no-dirty-check>
-                                                        <option value='-1'></option>
-                                                        <option ng-repeat="table in tables2 track by $index" ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{table.bindingIdentifier}}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row" align="center">
+                                                <tr>
+                                                    <td class="col-md-1">
+                                                        <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <select ng-model="version1" class="form-control" disabled>
+                                                            <option ng-selected="version1"> {{::version1}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <select ng-model="scope1" class="form-control" disabled>
+                                                            <option ng-selected="scope1"> {{::scope1}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="col-md-3">
+                                                        <select ng-model="ig1" class="form-control" disabled>
+                                                            <option ng-selected="ig1"> {{::ig1}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="col-md-4">
+                                                        <select ng-model="table1" class="form-control" disabled>
+                                                            <option ng-selected="table1"> {{table1.bindingIdentifier}}</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
 
-                                                <button ng-click="cmpTable(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-raised btn-info btn-xs">
+                                                <tr>
+                                                    <td class="col-md-1">
+                                                        <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
+                                                            <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
+                                                            <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="col-md-3">
+                                                        <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
+
+                                                    </td>
+                                                    <td class="col-md-4">
+                                                        <select ng-model="cmp.tableId" class="form-control" ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2" no-dirty-check>
+                                                            <option value='-1'></option>
+                                                            <option ng-repeat="table in tables2 " ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{::table.bindingIdentifier}}</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+</tbody>
+
+                                                </table>
+                                            <div class="" align="center" style="margin-bottom:10px">
+
+                                                <button ng-click="cmpTable(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-raised btn-info btn-md">
                                                         <i class="fa fa-check"></i> Delta</button>
 
                                             </div>
@@ -386,7 +392,7 @@
                                             <div class="panel-body">
                                                 <table tt-table tt-params="dynamicVs_params" class=" table-marginless table-bordered table-condensed">
                                                     <thead>
-                                                        <tr>
+                                                        <tr class="tbl-header">
                                                             <th class="col-md-2">Name</th>
                                                             <th class="col-md-1">Content Definition</th>
                                                             <th class="col-md-1">Code System</th>
@@ -409,48 +415,84 @@
                                     <i class="fa fa-link" aria-hidden="true"></i> Value Set Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
-                                    <div ng-show="references != null && references.length > 0">
-                                        <table st-table="tmpReferences" st-safe-src="references" class="table table-striped table-bordered table-condensed">
-                                            <thead>
-
-                                                <tr class="tbl-header">
-                                                    <td st-ratio="5">#</td>
-                                                    <th st-ratio="40" st-sort="path">Reference Path</th>
-                                                    <th st-ratio="55" st-sort="name">Reference Name</th>
-                                                </tr>
-
-                                            </thead>
-
-                                            <tbody>
-                                                <tr ng-repeat="ref in tmpReferences">
-                                                    <td st-ratio="5">{{$index + 1}}
-                                                        <span ng-show="ref.type === 'group'" class="label label-success label-icon">G</span>
-                                                        <span ng-show="ref.type === 'segmentRef'" class="label label-segment label-icon">S</span>
-                                                        <span ng-show="ref.type === 'field'" class="label label-field label-icon">F</span>
-                                                        <span ng-show="ref.type === 'component'" class="label label-component label-icon">C</span>
-                                                        <span ng-show="ref.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
-
-
-                                                    </td>
-                                                    <td st-ratio="40">
-
-                                                        {{ref.path}}
-                                                    </td>
-                                                    <td st-ratio="55">
-                                                        {{ref.name}}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                                 <tr>
-                                                    <td colspan="3" class="text-center">
-                                                        <div st-pagination="" st-items-by-page="15" st-displayed-pages="15"></div>
-                                                    </td>
-                                                </tr>
-                                         </table>
-                                    </div>
-                                    <div ng-hide="references != null && references.length > 0">
-                                        <p>This value set is not being used in this ig document</p>
-                                    </div>
+                                    <span class="pull-right">
+                                        <button ng-click="AddBindingForValueSet(table)" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> Add Binding</button>
+                                    </span>
+                                    <table st-safe-src="references" st-table="displayReferences" class="table table-striped table-bordered table-condensed">
+                                        <thead>
+                                        <tr class="tbl-header">
+                                            <td st-ratio="5">#</td>
+                                            <th st-ratio="15">Path</th>
+                                            <th st-ratio="15">Name</th>
+                                            <th st-ratio="10">Usage</th>
+                                            <th st-ratio="10">DataType</th>
+                                            <th st-ratio="20">Value Set</th>
+                                            <th st-ratio="10">Binding Location</th>
+                                            <th st-ratio="10">Binding Strength</th>
+                                            <th st-ratio="5">Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="ref in displayReferences">
+                                            <td st-ratio="5">{{$index + 1}}
+                                                <span ng-if="ref.type === 'field'" class="label label-field label-icon">F</span>
+                                                <span ng-if="ref.type === 'component'" class="label label-component label-icon">C</span>
+                                            </td>
+                                            <td st-ratio="15">
+                                                {{::ref.path}}
+                                            </td>
+                                            <td st-ratio="15">
+                                                {{::ref.name}}
+                                            </td>
+                                            <td st-ratio="10">
+                                                {{::ref.usage}}
+                                            </td>
+                                            <td st-ratio="10">
+                                                {{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}
+                                            </td>
+                                            <td st-ratio="20">
+                                                <span ng-if="ref.target.scope !== 'USER'">
+                                                    {{::tablesMap[ref.tableLink.id].bindingIdentifier}}-{{::tablesMap[ref.tableLink.id].description}}
+                                                </span>
+                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.id">
+                                                    <option value="">No Value Set</option>
+                                                    <option ng-repeat="t in tables |orderBy:'+bindingIdentifier'" value="{{t.id}}">
+                                                        {{::t.bindingIdentifier}}-{{::t.description}}
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td st-ratio="10">
+                                                <span ng-if="ref.target.scope !== 'USER'">
+                                                    {{::ref.tableLink.bindingLocation}}
+                                                </span>
+                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.bindingLocation">
+                                                    <option ng-repeat="component in datatypesMap[ref.datatype.id].components |orderBy:'+position'" value="{{component.position}}">
+                                                        {{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}.{{::component.position}} ({{::component.name}})
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td st-ratio="10">
+                                                <span ng-if="ref.target.scope !== 'USER'">
+                                                    {{::ref.tableLink.bindingStrength}}
+                                                </span>
+                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.bindingStrength">
+                                                    <option value="R">Required</option>
+                                                    <option value="S">Suggested</option>
+                                                    <option value="U">Undermined</option>
+                                                </select>
+                                            </td>
+                                            <td st-ratio="5">
+                                                <span ng-if="ref.tableLink.isNew">New</span>
+                                                <span ng-if="!ref.tableLink.isNew && ref.tableLink.isChanged">Changed</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        <tr ng-if="references.length > 10">
+                                            <td colspan="9" class="text-center">
+                                                <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </tab>
                         </tabset>
@@ -471,6 +513,16 @@
                 <div class="row" style="margin-left:0px; margin-right: 20px">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span>
+                        <span class="pull-right">
+						<button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                                ng-disabled="!isBindingChanged()"
+                                ng-click="saveBinding()">
+							<span><i class="fa fa-check fa-fw"></i> Save</span>
+                        </button>
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!isBindingChanged()" ng-click="reset()">
+							<span><i class="fa fa-times fa-fw"></i> Reset</span>
+						</button>
+                        </span>
                     </div>
 
                     <div class="">
@@ -571,60 +623,61 @@
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Definition
                                 </tab-heading>
 
+
                                 <div class="el-def" style="margin-top: 20px">
                                     <div class="">
-                                        <div class="table-responsive">
+                                        <div class="">
                                             <table st-safe-src="table.codes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
 
 
                                                 <thead>
-                                                    <tr class="tbl-header">
-                                                        <th st-sort="value" class="col-md-2">Value</th>
-                                                        <th st-sort="label" class="col-md-3">Description</th>
-                                                        <th class="col-md-2">CodeSystem</th>
-                                                        <th class="col-md-1">Usage</th>
-                                                        <th class="col-md-3">Comments</th>
-                                                        <th class="col-md-1">Action</th>
-                                                    </tr>
+                                                <tr class="tbl-header">
+                                                    <th st-sort="value" class="col-md-2">Value</th>
+                                                    <th st-sort="label" class="col-md-3">Description</th>
+                                                    <th class="col-md-2">CodeSystem</th>
+                                                    <th class="col-md-1">Usage</th>
+                                                    <th class="col-md-3">Comments</th>
+                                                    <th class="col-md-1">Action</th>
+                                                </tr>
 
-                                                    <tr>
-                                                        <th>
-                                                            <input st-search="'value'" placeholder="search for value" class="input-sm form-control" type="search" />
-                                                        </th>
-                                                        <th>
-                                                            <input st-search="'label'" placeholder="search for description" class="input-sm form-control" type="search" />
-                                                        </th>
-                                                        <th>
-                                                        </th>
-                                                        <th>
-                                                        </th>
-                                                        <th>
-                                                        </th>
-                                                    </tr>
+                                                <tr>
+                                                    <th>
+                                                        <input st-search="'value'" placeholder="search for value" class="input-sm form-control" type="search" />
+                                                    </th>
+                                                    <th>
+                                                        <input st-search="'label'" placeholder="search for description" class="input-sm form-control" type="search" />
+                                                    </th>
+                                                    <th>
+                                                    </th>
+                                                    <th>
+                                                    </th>
+                                                    <th>
+                                                    </th>
+                                                </tr>
                                                 </thead>
 
                                                 <tbody>
-                                                    <tr ng-repeat="c in displayCollection">
-                                                        <td class="col-md-2">
-                                                            <span>{{c.value}}</span>
-                                                        </td>
+                                                <tr ng-repeat="c in displayCollection">
+                                                    <td class="col-md-2">
+                                                        <span>{{c.value}}</span>
+                                                    </td>
 
-                                                        <td class="col-md-3">
-                                                            <span>{{c.label}}</span>
-                                                        </td>
+                                                    <td class="col-md-3">
+                                                        <span>{{c.label}}</span>
+                                                    </td>
 
-                                                        <td class="col-md-2">
-                                                            <span>{{c.codeSystem}}</span>
-                                                        </td>
-                                                        <td class="col-md-1">
-                                                            <span>{{c.codeUsage}}</span>
-                                                        </td>
-                                                        <td class="col-md-3">
-                                                            <span>{{c.comments}}</span>
-                                                        </td>
-                                                        <td class="col-md-1">
-                                                        </td>
-                                                    </tr>
+                                                    <td class="col-md-2">
+                                                        <span>{{c.codeSystem}}</span>
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                        <span>{{c.codeUsage}}</span>
+                                                    </td>
+                                                    <td class="col-md-3">
+                                                        <span>{{c.comments}}</span>
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                    </td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -636,47 +689,84 @@
                                     <i class="fa fa-link" aria-hidden="true"></i> Value Set Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
-                                    <div ng-show="references != null && references.length > 0">
-                                        <table st-table="tmpReferences" st-safe-src="references" class="table table-striped table-bordered table-condensed">
-                                            <thead>
-
-                                                <tr class="tbl-header">
-                                                    <td st-ratio="5">#</td>
-                                                    <th st-ratio="40" st-sort="path">Reference Path</th>
-                                                    <th st-ratio="55" st-sort="name">Reference Name</th>
-                                                </tr>
-
-                                            </thead>
-
-                                            <tbody>
-                                                <tr ng-repeat="ref in tmpReferences">
-                                                    <td st-ratio="5">{{$index + 1}}
-
-
-
-                                                    </td>
-                                                    <td st-ratio="40">
-                                                        <span ng-show="ref.type === 'group'" class="label label-success label-icon">G</span>
-                                                        <span ng-show="ref.type === 'segmentRef'" class="label label-segment label-icon">S</span>
-                                                        <span ng-show="ref.type === 'field'" class="label label-field label-icon">F</span>
-                                                        <span ng-show="ref.type === 'component'" class="label label-component label-icon">C</span>
-                                                        <span ng-show="ref.type === 'subcomponent'" class="label label-sub-component label-icon">S</span> {{ref.path}}
-                                                    </td>
-                                                    <td st-ratio="55">
-                                                        {{ref.name}}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                                 <tr>
-                                                    <td colspan="3" class="text-center">
-                                                        <div st-pagination="" st-items-by-page="15" st-displayed-pages="15"></div>
-                                                    </td>
-                                                </tr>
-                                         </table>
-                                    </div>
-                                    <div ng-hide="references != null && references.length > 0" style="text-align:center">
-                                        <p>This table is not being used in this ig document</p>
-                                    </div>
+                                    <span class="pull-right">
+                                        <button ng-click="AddBindingForValueSet(table)" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> Add Binding</button>
+                                    </span>
+                                    <table st-safe-src="references" st-table="displayReferences" class="table table-striped table-bordered table-condensed">
+                                        <thead>
+                                        <tr class="tbl-header">
+                                            <td st-ratio="5">#</td>
+                                            <th st-ratio="15">Path</th>
+                                            <th st-ratio="15">Name</th>
+                                            <th st-ratio="10">Usage</th>
+                                            <th st-ratio="10">DataType</th>
+                                            <th st-ratio="20">Value Set</th>
+                                            <th st-ratio="10">Binding Location</th>
+                                            <th st-ratio="10">Binding Strength</th>
+                                            <th st-ratio="5">Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="ref in displayReferences">
+                                            <td st-ratio="5">{{$index + 1}}
+                                                <span ng-if="ref.type === 'field'" class="label label-field label-icon">F</span>
+                                                <span ng-if="ref.type === 'component'" class="label label-component label-icon">C</span>
+                                            </td>
+                                            <td st-ratio="15">
+                                                {{::ref.path}}
+                                            </td>
+                                            <td st-ratio="15">
+                                                {{::ref.name}}
+                                            </td>
+                                            <td st-ratio="10">
+                                                {{::ref.usage}}
+                                            </td>
+                                            <td st-ratio="10">
+                                                {{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}
+                                            </td>
+                                            <td st-ratio="20">
+                                                <span ng-if="ref.target.scope !== 'USER'">
+                                                    {{::tablesMap[ref.tableLink.id].bindingIdentifier}}-{{::tablesMap[ref.tableLink.id].description}}
+                                                </span>
+                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.id">
+                                                    <option value="">No Value Set</option>
+                                                    <option ng-repeat="t in tables |orderBy:'+bindingIdentifier'" value="{{t.id}}">
+                                                        {{::t.bindingIdentifier}}-{{::t.description}}
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td st-ratio="10">
+                                                <span ng-if="ref.target.scope !== 'USER'">
+                                                    {{::ref.tableLink.bindingLocation}}
+                                                </span>
+                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.bindingLocation">
+                                                    <option ng-repeat="component in datatypesMap[ref.datatype.id].components |orderBy:'+position'" value="{{component.position}}">
+                                                        {{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}.{{::component.position}} ({{::component.name}})
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td st-ratio="10">
+                                                <span ng-if="ref.target.scope !== 'USER'">
+                                                    {{::ref.tableLink.bindingStrength}}
+                                                </span>
+                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.bindingStrength">
+                                                    <option value="R">Required</option>
+                                                    <option value="S">Suggested</option>
+                                                    <option value="U">Undermined</option>
+                                                </select>
+                                            </td>
+                                            <td st-ratio="5">
+                                                <span ng-if="ref.tableLink.isNew">New</span>
+                                                <span ng-if="!ref.tableLink.isNew && ref.tableLink.isChanged">Changed</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        <tr ng-if="references.length > 10">
+                                            <td colspan="9" class="text-center">
+                                                <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </tab>
                         </tabset>
@@ -686,7 +776,6 @@
         </div>
     </div>
 </script>
-
 
 <script type="text/ng-template" id="ConfirmValueSetDeleteCtrl.html">
     <div class="modal-header">
@@ -723,15 +812,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="ref in references">
+                    <tr ng-repeat="ref in references track by $index">
                         <td>
                             <span>
                                               <img style="width:15px; height:15px"
                                                    ng-src="images/{{ref.type}}.png">
                                              <span style="width:60%"
                                                    name="name"
-                                                   ng-bind="ref.name"></span>
-                            <span ng-bind="ref.description"></span>
+                                                   ng-bind="::ref.name"></span>
+                            <span ng-bind="::ref.description"></span>
                             </span>
 
                         </td>
@@ -752,23 +841,23 @@
 <script type="text/ng-template" id="valueSet_node">
     <tr tt-node is-branch="node.codes!==undefined">
         <td class="col-md-2">
-            <table class=" table-borderless" ng-show="node.label.element && node.description.element">
+            <table class=" table-borderless" ng-if="node.label.element && node.description.element">
                 <tr>
                     <td class="col-sm-1">
 
-                        <span ng-bind="node.label.element"></span><span ng-show="node.description.element">:<span ng-bind="node.description.element"></span></span>
+                        <span ng-bind="node.label.element"></span><span ng-if="node.description.element">:<span ng-bind="node.description.element"></span></span>
                     </td>
                 </tr>
             </table>
-            <table class=" table-borderless" ng-show="(node.label.element1 && node.label.element2)|| (node.description.element1 && node.description.element2)">
+            <table class=" table-borderless" ng-if="(node.label.element1 && node.label.element2)|| (node.description.element1 && node.description.element2)">
                 <tr style="background-color:#B5F7EC">
                     <td class="col-sm-1">
                         <span ng-bind="node.label.element"></span>
                         <span ng-bind="node.label.element1"></span>
 
-                        <span ng-show="node.description">:
-                        <span ng-show="node.description.element1" ng-bind="node.description.element1"></span>
-                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
+                        <span ng-if="node.description">:
+                        <span ng-if="node.description.element1" ng-bind="node.description.element1"></span>
+                        <span ng-if="node.description.element" ng-bind="node.description.element"></span>
                         </span>
                     </td>
                 </tr>
@@ -777,15 +866,15 @@
                         <span ng-bind="node.label.element"></span>
                         <span ng-bind="node.label.element2"></span>
 
-                        <span ng-show="node.description">:
-                        <span ng-show="node.description.element2" ng-bind="node.description.element2"></span>
-                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
+                        <span ng-if="node.description">:
+                        <span ng-if="node.description.element2" ng-bind="node.description.element2"></span>
+                        <span ng-if="node.description.element" ng-bind="node.description.element"></span>
                         </span>
                     </td>
                 </tr>
             </table>
         </td>
-        <td class="col-md-1" ng-show="node.contentDefinition">
+        <td class="col-md-1" ng-if="node.contentDefinition">
             <div align="center">
                 <table class=" table-borderless">
                     <tr>
@@ -801,10 +890,10 @@
                 </table>
             </div>
         </td>
-        <td class="col-md-1" ng-show="!node.contentDefinition">
+        <td class="col-md-1" ng-if="!node.contentDefinition">
             <div align="center"> - </div>
         </td>
-        <td class="col-md-1" ng-show="node.codeSystem">
+        <td class="col-md-1" ng-if="node.codeSystem">
             <table class=" table-borderless">
                 <tr>
                     <td class="col-md-1" style="background-color:#B5F7EC">
@@ -818,10 +907,10 @@
                 </tr>
             </table>
         </td>
-        <td class="col-md-1" ng-show="!node.codeSystem">
+        <td class="col-md-1" ng-if="!node.codeSystem">
             <div align="center"> - </div>
         </td>
-        <td class="col-md-1" ng-show="node.codeUsage">
+        <td class="col-md-1" ng-if="node.codeUsage">
             <table class="table-borderless">
                 <tr>
                     <td class="col-md-1" style="background-color:#B5F7EC">
@@ -835,9 +924,117 @@
                 </tr>
             </table>
         </td>
-        <td class="col-md-1" ng-show="!node.codeUsage">
+        <td class="col-md-1" ng-if="!node.codeUsage">
             <div align="center"> - </div>
         </td>
 
     </tr>
+</script>
+
+<script type="text/ng-template" id="AddBindingForValueSet.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Add Binding for Value Set : {{::table.bindingIdentifier}}</h3>
+    </div>
+    <div class="modal-body">
+        <span class="pull-right">
+            <div class="btn-group btn-group-sm" data-toggle="buttons">
+                <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'SEGMENT'; init();" ng-class="{'active':bindingTargetType === 'SEGMENT'}">
+                    <input type="radio" ng-value="SEGMENT" ng-model="bindingTargetType">To Segment
+                </label>
+                <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'DATATYPE'; init();" ng-class="{'active':bindingTargetType === 'DATATYPE'}">
+                    <input type="radio" ng-value="DATATYPE" ng-model="bindingTargetType">To Datatype
+                </label>
+            </div>
+        </span>
+
+        <div ng-show="bindingTargetType === 'SEGMENT'">
+            <table class="table table-striped table-bordered table-condensed">
+                <thead>
+                    <tr class="tbl-header">
+                        <th class="col-md-3">Segment</th>
+                        <th class="col-md-3">Field</th>
+                        <th class="col-md-3">Binding Location</th>
+                        <th class="col-md-3">Binding Strength</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-md-3">
+                            <select ng-model='selectedSegmentForBinding' class="form-control" ng-change="selectSegment();" ng-options="seg as getSegmentLabel(seg) for seg in segments | filter:{ scope : 'USER' }" />
+                        </td>
+                        <td class="col-md-3">
+                            <select ng-show='selectedSegmentForBinding != null' ng-model='selectedFieldForBinding' class="form-control">
+                                <option ng-repeat="f in selectedSegmentForBinding.fields | orderBy:'+position'" value="{{f}}" ng-disabled="checkDuplicated(getSegmentLabel(selectedSegmentForBinding) + '-' + f.position)">
+                                    {{::f.position}}. {{::f.name}}
+                                </option>
+                            </select>
+                        </td>
+                        <td class="col-md-3">
+                            <select ng-show="selectedFieldForBinding != null" class="form-control" ng-model="selectedBindingLocation">
+                                <option ng-repeat="component in datatypesMap[selectedFieldForBinding.datatype.id].components |orderBy:'+position'" value="{{component.position}}">
+                                    {{::getDatatypeLabel(datatypesMap[selectedFieldForBinding.datatype.id])}}.{{::component.position}} ({{::component.name}})
+                                </option>
+                            </select>
+                        </td>
+                        <td class="col-md-3">
+                            <select ng-show="selectedFieldForBinding != null" class="form-control" ng-model="selectedBindingStrength">
+                                <option value="R">Required</option>
+                                <option value="S">Suggested</option>
+                                <option value="U">Undermined</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-show="bindingTargetType === 'DATATYPE'">
+            <table class="table table-striped table-bordered table-condensed">
+                <thead>
+                <tr class="tbl-header">
+                    <th class="col-md-3">Datatype</th>
+                    <th class="col-md-3">Component</th>
+                    <th class="col-md-3">Binding Location</th>
+                    <th class="col-md-3">Binding Strength</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="col-md-3">
+                        <select ng-model='selectedDatatypeForBinding' class="form-control" ng-change="selectDatatype();" ng-options="dt as getDatatypeLabel(dt) for dt in datatypes | filter:{ scope : 'USER' }" />
+                    </td>
+                    <td class="col-md-3">
+                        <select ng-show='selectedDatatypeForBinding != null' ng-model='selectedComponentForBinding' class="form-control">
+                            <option ng-repeat="c in selectedDatatypeForBinding.components | orderBy:'+position'" value="{{c}}" ng-disabled="checkDuplicated(getDatatypeLabel(selectedDatatypeForBinding) + '.' + c.position)">
+                                {{::c.position}}. {{::c.name}}
+                            </option>
+                        </select>
+                    </td>
+                    <td class="col-md-3">
+                        <select ng-show="selectedComponentForBinding != null" class="form-control" ng-model="selectedBindingLocation">
+                            <option ng-repeat="component in datatypesMap[selectedFieldForBinding.datatype.id].components |orderBy:'+position'" value="{{component.position}}">
+                                {{::getDatatypeLabel(datatypesMap[selectedFieldForBinding.datatype.id])}}.{{::component.position}} ({{::component.name}})
+                            </option>
+                        </select>
+                    </td>
+                    <td class="col-md-3">
+                        <select ng-show="selectedComponentForBinding != null" class="form-control" ng-model="selectedBindingStrength">
+                            <option value="R">Required</option>
+                            <option value="S">Suggested</option>
+                            <option value="U">Undermined</option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-info btn-sm" ng-disabled="selectedComponentForBinding == null && selectedFieldForBinding == null" ng-click="save(bindingTargetType)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span>
+        </button>
+    </div>
 </script>

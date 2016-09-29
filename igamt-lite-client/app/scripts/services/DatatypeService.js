@@ -23,7 +23,7 @@ angular.module('igl').factory('DatatypeService',
                 }
                 return children;
             },
-            getDatatypeNodesInLib:function(parent, root) {
+            getDatatypeNodesInLib: function(parent, root) {
                 console.log(root);
                 var children = [];
                 if (parent && parent != null) {
@@ -44,14 +44,14 @@ angular.module('igl').factory('DatatypeService',
                 return children;
             },
 
-                // body...
-            
+            // body...
+
             getParent: function(child) {
                 var template = $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
                 return template;
             },
             getTemplate: function(node, root) {
-                if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
+                if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === 'MASTER' || root.scope === null) {
                     return DatatypeService.getReadTemplate(node, root);
                 } else {
                     //console.log("INTO THE NODES ")
@@ -71,7 +71,7 @@ angular.module('igl').factory('DatatypeService',
 
 
             getTemplateINLIB: function(node, root) {
-                if ($rootScope.readOnly || root != null && root.scope === 'HL7STANDARD' || root.scope === null||root != null && root.status === 'PUBLISHED' ) {
+                if ($rootScope.readOnly || root != null && root.scope === 'HL7STANDARD' || root.scope === null || root != null && root.status === 'PUBLISHED') {
                     return DatatypeService.getReadTemplateINLIB(node, root);
                 } else {
                     //console.log("INTO THE NODES ")
@@ -82,11 +82,11 @@ angular.module('igl').factory('DatatypeService',
             },
 
             getReadTemplateINLIB: function(node, root) {
-                return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentReadTreeINLIB.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentReadTreeINLIB.html' : '';
+                return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentReadTreeINLIB2.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentReadTreeINLIB2.html' : '';
             },
 
             getEditTemplateINLIB: function(node, root) {
-                return node.type === 'Datatype' ? 'DatatypeEditTreeINLIB.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentEditTreeINLIB.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentEditTreeINLIB.html' : '';
+                return node.type === 'Datatype' ? 'DatatypeEditTreeINLIB2.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeComponentEditTreeINLIB2.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node, root) ? 'DatatypeSubComponentEditTreeINLIB2.html' : '';
             },
 
 
@@ -151,6 +151,25 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
+            saves: function(datatypes) {
+                var delay = $q.defer();
+                for (var i = 0; i < datatypes.length; i++) {
+                    datatypes[i].accountId = userInfoService.getAccountID();
+                }
+
+                $http.post('api/datatypes/saveDts', datatypes).then(function(response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    for (var i = 0; i < datatypes.length; i++) {
+                        datatypes[i].date = saveResponse[i].date;
+                        datatypes[i].version = saveResponse[i].version;
+                    }
+
+                    delay.resolve(saveResponse);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
             saveAll: function(datatypes) {
                 var delay = $q.defer();
                 $http.post('api/datatypes/saveAll', datatypes).then(function(response) {
@@ -183,12 +202,12 @@ angular.module('igl').factory('DatatypeService',
             getOneDatatype: function(id) {
                 var delay = $q.defer();
 
-                    $http.get('api/datatypes/' + id).then(function(response) {
-                        var datatype = angular.fromJson(response.data);
-                        delay.resolve(datatype);
-                    }, function(error) {
-                        delay.reject(error);
-                    });
+                $http.get('api/datatypes/' + id).then(function(response) {
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
+                }, function(error) {
+                    delay.reject(error);
+                });
 
                 return delay.promise;
             },
@@ -204,7 +223,37 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
-            getDataTypesByScopesAndVersion : function(scopes, hl7Version) {
+
+            getOneStandard: function(name, version, versions) {
+                var wrapper = {
+                    name: name,
+                    hl7Version: version,
+                    scope: "HL7STANDARD",
+                    versions: versions
+                }
+                var delay = $q.defer();
+                $http.post('api/datatypes/findOneStrandard', angular.toJson(wrapper)).then(function(response) {
+                    console.log(response);
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            getPublishedMaster: function(hl7Version) {
+                var delay = $q.defer();
+
+                $http.post('api/datatypes/findPublished', hl7Version).then(function(response) {
+                    console.log(response);
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            getDataTypesByScopesAndVersion: function(scopes, hl7Version) {
                 //console.log("datatypes/findByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
                 var scopesAndVersion = {
                     "scopes": scopes,
@@ -219,25 +268,25 @@ angular.module('igl').factory('DatatypeService',
             },
             merge: function(to, from) {
                 to = angular.extend(to, from);
-//                to.name = from.name;
-//                to.ext = from.ext;
-//                to.label = from.label;
-//                to.description = from.description;
-//                to.status = from.status;
-//                to.comment = from.comment;
-//                to.usageNote = from.usageNote;
-//                to.scope = from.scope;
-//                to.hl7Version = from.hl7Version;
-//                to.accountId = from.accountId;
-//                to.participants = from.participants;
-//                to.libId = from.libId;
-//                to.predicates = from.predicates;
-//                to.conformanceStatements = from.conformanceStatements;
-//                to.sectionPosition = from.sectionPosition;
-//                to.components = from.components;
-//                to.version = from.version;
-//                to.date = from.date;
-//                to.purposeAndUse = from.purposeAndUse;
+                //                to.name = from.name;
+                //                to.ext = from.ext;
+                //                to.label = from.label;
+                //                to.description = from.description;
+                //                to.status = from.status;
+                //                to.comment = from.comment;
+                //                to.usageNote = from.usageNote;
+                //                to.scope = from.scope;
+                //                to.hl7Version = from.hl7Version;
+                //                to.accountId = from.accountId;
+                //                to.participants = from.participants;
+                //                to.libId = from.libId;
+                //                to.predicates = from.predicates;
+                //                to.conformanceStatements = from.conformanceStatements;
+                //                to.sectionPosition = from.sectionPosition;
+                //                to.components = from.components;
+                //                to.version = from.version;
+                //                to.date = from.date;
+                //                to.purposeAndUse = from.purposeAndUse;
                 return to;
             },
             findFlavors: function(name, scope, hl7Version) {
@@ -342,6 +391,16 @@ angular.module('igl').factory('DatatypeService',
                     });
                 }
                 $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
+            },
+
+            updateTableBinding: function(datatypeUpdateParameterList){
+                var delay = $q.defer();
+                $http.post('api/datatypes/updateTableBinding/', datatypeUpdateParameterList).then(function(response) {
+                    delay.resolve(true);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
         };

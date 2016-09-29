@@ -77,8 +77,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PhinvadsWSCallService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
@@ -91,6 +93,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.Scope
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
 import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfilePreLib;
 
 @RestController
@@ -110,7 +113,8 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   UserService userService;
-
+  @Autowired
+  ProfileService profileService;
   @Autowired
   AccountRepository accountRepository;
   @Autowired
@@ -756,6 +760,13 @@ public class IGDocumentController extends CommonController {
     return result;
   }
 
+  @RequestMapping(value = "/PHINVADS/tables", method = RequestMethod.GET, produces = "application/json")
+  public List<Table> findAllPreloadedPHINVADSTables() throws MalformedURLException {
+	    log.info("Fetching all Tables for preloaded PHINVADS");
+	    return new TimerTaskForPHINVADSValueSetDigger().findAllpreloadedPHINVADSTables();
+   }
+  
+  
   @RequestMapping(value = "/{searchText}/PHINVADS/tables", method = RequestMethod.GET,
       produces = "application/json")
   public Set<Table> findPHINVADSTables(@PathVariable("searchText") String searchText)
@@ -1070,10 +1081,8 @@ public class IGDocumentController extends CommonController {
   @RequestMapping(value = "/{id}/reorderMessages", method = RequestMethod.POST)
   public String reorderMessages(@PathVariable("id") String id,
       @RequestBody Set<MessageMap> messages)
-      throws IOException, IGDocumentNotFoundException, IGDocumentException {
+      throws IOException, IGDocumentNotFoundException, IGDocumentException, ProfileException {
 
-    System.out.println(id);
-    System.out.println();
     IGDocument d = igDocumentService.findOne(id);
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
@@ -1085,6 +1094,7 @@ public class IGDocumentController extends CommonController {
       for (MessageMap x : messages) {
         if (m.getId().equals(x.getId())) {
           m.setPosition(x.getPosition());
+          messageService.save(m);
         }
       }
     }
@@ -1096,6 +1106,7 @@ public class IGDocumentController extends CommonController {
     sortedSet.addAll(sortedList);
     msgs.setChildren(sortedSet);
     p.setMessages(msgs);
+    profileService.save(p);
     d.setProfile(p);
     igDocumentService.save(d);
     return null;
@@ -1178,6 +1189,12 @@ public class IGDocumentController extends CommonController {
     }
     p.setMessages(msgs);
     d.setProfile(p);
+    try {
+		profileService.save(p);
+	} catch (ProfileException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     igDocumentService.save(d);
     return null;
   }

@@ -3,6 +3,7 @@ angular.module('igl').controller(
     function($scope, $rootScope, $modal, $log, $http, $httpBackend, userInfoService) {
 
         $rootScope.clickSource = {};
+        $scope.selectedHL7Version = "";
 
         $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
 
@@ -102,6 +103,7 @@ angular.module('igl').controller(
 
         $scope.hl7Versions = hl7Versions;
         $scope.hl7Version = hl7Version;
+        $scope.selectedHL7Version = hl7Version;
         $scope.okDisabled = true;
         $scope.messageIds = [];
         $scope.messageEvents = [];
@@ -129,6 +131,9 @@ angular.module('igl').controller(
 
         $scope.loadIGDocumentsByVersion = function() {
             $scope.loading = true;
+            $scope.eventList = [];
+            $scope.selectedHL7Version = hl7Version;
+            messageEvents = [];
             $timeout(function() {
                 if ($scope.messageEventsParams)
                     $scope.messageEventsParams.refresh();
@@ -144,11 +149,13 @@ angular.module('igl').controller(
             }
             return rval;
         };
+
         $scope.eventList = [];
 
         $scope.trackSelections = function(bool, event) {
             // console.log("event");
             // console.log(event);
+            console.log(bool);
 
 
 
@@ -176,6 +183,13 @@ angular.module('igl').controller(
                 }
             }
             $scope.okDisabled = messageEvents.length === 0;
+        };
+        $scope.isChecked = function(node) {
+            if ($scope.eventList.indexOf(node) !== -1) {
+                return true;
+            } else {
+                return false;
+            }
         };
 
 
@@ -282,7 +296,7 @@ angular.module('igl').controller(
                 for (var i = 0; i < result.length; i++) {
                     console.log("result[i]==========");
                     console.log(result[i]);
-                    result[i].id = new ObjectId().toString();
+                    //result[i].id = new ObjectId().toString();
                     $rootScope.igdocument.profile.messages.children.push(result[i]);
                     $rootScope.messagesMap[result[i].id] = result[i];
                     $rootScope.fillMaps(result[i]);

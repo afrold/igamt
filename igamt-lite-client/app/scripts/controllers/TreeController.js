@@ -8,8 +8,9 @@ angular
             'CloneDeleteSvc',
             'FilteringSvc',
             'SectionSvc',
+            '$cookies',
 
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc) {
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc, $cookies) {
 
                 $scope.collapsedata = false;
                 $scope.collapsePcs=true;
@@ -34,7 +35,24 @@ angular
                     // if($rootScope.references.length===0){
                         return "Delete"
                     // }else return "Show References"
-                } 
+                };
+
+                $scope.exportCSVForTable = function (table){
+                    console.log(table);
+
+                    var form = document.createElement("form");
+
+                    form.action = $rootScope.api('api/tables/exportCSV/' + table.id);
+                    form.method = "POST";
+                    form.target = "_target";
+                    var csrfInput = document.createElement("input");
+                    csrfInput.name = "X-XSRF-TOKEN";
+                    csrfInput.value = $cookies['XSRF-TOKEN'];
+                    form.appendChild(csrfInput);
+                    form.style.display = 'none';
+                    document.body.appendChild(form);
+                    form.submit();
+                };
 
                 $rootScope.switcherDatatypeLibrary = function() {
 
@@ -205,12 +223,11 @@ angular
                                 $scope.updatePositions(parentSource.childSections);
                                 $scope.updatePositions(parentDest.childSections);
                                 SectionSvc.update($rootScope.igdocument.id, parentSource).then(function() {
-                                    return "";
+                                    SectionSvc.update($rootScope.igdocument.id, parentDest).then(function() {
+                                        return "";
+                                    });
                                 });
-                                SectionSvc.update($rootScope.igdocument.id, parentDest).then(function() {
-                                    return "";
-                                });
-                                return "";
+
                             }
 
                         }
@@ -340,8 +357,6 @@ angular
                     }
                     return clone;
                 }
-
-
 
 
                 $scope.debug = function(childSections) {
@@ -554,6 +569,12 @@ angular
                             }
                         }
                     ],
+                    null, ['Export CSV',
+                        function($itemScope) {
+                            $scope.exportCSVForTable($itemScope.table);
+
+                        }
+                    ],
                     null, ['Delete',
                         function($itemScope) {
                             CloneDeleteSvc.deleteValueSet($itemScope.table);
@@ -565,22 +586,27 @@ angular
 
                 $scope.ValueSetOptionsINLIB = [
 
+                                               ['Create Flavor',
+                                                   function($itemScope) {
+                                                       if ($rootScope.hasChanges()) {
+                                                           $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                        	   console.log($scope.tableLibrary);
+                                                               CloneDeleteSvc.copyTableINLIB($itemScope.table, $scope.tableLibrary);
+                                                           });
+                                                       } else {
+                                                           CloneDeleteSvc.copyTableINLIB($itemScope.table,$scope.tableLibrary);
+                                                       }
+                                                   }
+                                               ],
+                                               null, ['Delete',
+                                                   function($itemScope) {
+                                                       CloneDeleteSvc.deleteValueSet($itemScope.table);
 
-                                          ['Copy',
-                                              function($itemScope) {
-                                  
-                                                      $scope.copyTableINLIB($itemScope.table,$scope.tableLibrary.id);
-                                                  
-                                              }
-                                          ],
-                                          null, ['Delete',
-                                              function($itemScope) {
-                                                 $scope.deleteValueSetINLIB($itemScope.table);
+                                                   }
+                                               ]
 
-                                              }
-                                          ]
-
-                                      ];
+                                           ];
+               
 
                 $scope.MessagesOption = [
 
@@ -610,27 +636,62 @@ angular
                 $scope.MessagesRootOption = [
 
                     ['Add Profile', function($itemScope) {
-                        $scope.hl7Versions('ctx');
-                        //$scope.addMessageToIg($rootScope.igdocument.profile.metaData.hl7Version);
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	$scope.hl7Versions('ctx');
+                            });
+                        } else {
+                        	$scope.hl7Versions('ctx');
+                        }
+
                     }],
                     null, ['Export Profile', function($itemScope) {
-                        $scope.selectMessages($rootScope.igdocument);
+                    	
+                    	
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	 $scope.selectMessages($rootScope.igdocument);
+                            });
+                        } else {
+                        	 $scope.selectMessages($rootScope.igdocument);
+                        }
+                    	
+                    	
+                       
                     }]
                 ];
+ 
+                
 
                 $scope.ValueSetRootOptions = [
                     ['Add Value Sets', function($itemScope) {
-                        $scope.addTable($rootScope.igdocument);
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	$scope.addTable($rootScope.igdocument);});
+                        } else {
+                        	$scope.addTable($rootScope.igdocument);                       
+                        	
+                        }
+                    	
+                        
                     }]
                 ];
 
                 $scope.DataTypeOptionsInLib = [
                     ['Copy',
                         function($itemScope) {
-                            console.log("create a copy=" + $itemScope);
-                            console.log($itemScope.data);
-                            $scope.copyDatatype($itemScope.data);
+                    	
+                        if ($rootScope.hasChanges()) {
 
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	 $scope.copyDatatype($itemScope.data);});
+                        } else {
+                        	 $scope.copyDatatype($itemScope.data);                       
+                        	
+                        }
                         }
                     ],
                     null, ['Delete',
@@ -645,7 +706,18 @@ angular
                 $scope.addSegment = [
                     ['Add HL7 Segment',
                         function($itemScope) {
-                            $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);
+                    	
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	
+                                $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);
+                                });
+                        } else {
+                        	
+                            $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);                        	
+                        }
+
                         }
                     ]
                 ];
@@ -653,7 +725,17 @@ angular
                 $scope.addDatatype = [
                     ['Add HL7 Data Type',
                         function($itemScope) {
-                            $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
+                    	
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	 $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
+                            	
+                                });
+                        } else {
+                        	
+                        	 $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);                        }
+                           
                         }
                     ]
                 ];
@@ -684,25 +766,68 @@ angular
 
                     ['Add New Value Set',
                         function($itemScope) {
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                            	
+                                });
+                        } else {
+                        	
                             CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                           
+                        }
+                    	
                         }
                     ], 
                     ['Add HL7 Value Sets',
 
                         function($itemScope) {
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                            	
+                                });
+                        } else {
+                        	
                             $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                           
+                        }
+      	
                         }
                     ], 
 
                     ['Add from PHINVADs',
                         function($itemScope) {
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                            	
+                                });
+                        } else {
+                        	
                             $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                           
+                        }
                         }
                     ],
 
                     ['Add from CSV file',
                         function($itemScope) {
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                            	
+                                });
+                        } else {
+                        	
                             $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                           
+                        }
+                    	
                         }
                     ]
 
@@ -710,12 +835,72 @@ angular
 
 
                 $scope.addValueSetsInTableLibrary = [
-                    ['Import Value Sets',
-                        function($itemScope) {
-                            $scope.addTablesInLibrary();
-                        }
-                    ]
-                ];
+
+                                                     ['Import New Value Set',
+                                                         function($itemScope) {
+                                                         if ($rootScope.hasChanges()) {
+
+                                                             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                                 CloneDeleteSvc.createNewTable($scope.tableLibrary.scope, $scope.tableLibrary);
+                                                                 $scope.editTableINLIB($rootScope.table);                                                             	
+                                                                 });
+                                                         } else {
+                                                         	
+                                                             CloneDeleteSvc.createNewTable($scope.tableLibrary.scope, $scope.tableLibrary);
+                                                             $scope.editTableINLIB($rootScope.table);                                                            
+                                                         }
+
+                                                         }
+                                                     ], 
+                                                     ['Import HL7 Value Sets',
+
+                                                         function($itemScope) {
+                                                             if ($rootScope.hasChanges()) {
+
+                                                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                                     $rootScope.addHL7Table($scope.tableLibrary, "2.1");                                                                 	
+                                                                     });
+                                                             } else {
+                                                             	
+                                                                 $rootScope.addHL7Table($scope.tableLibrary, "2.1");                                                                
+                                                             }
+                                                    	 
+                                                    	 
+
+                                                         }
+                                                     ], 
+
+                                                     ['Import from PHINVADs',
+                                                         function($itemScope) {
+                                                    	 
+                                                    	 
+                                                    	 if ($rootScope.hasChanges()) {
+
+                                                             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                                 $rootScope.addPHINVADSTables($scope.tableLibrary);
+                                                                 });
+                                                         } else {
+                                                         	
+                                                             $rootScope.addPHINVADSTables($scope.tableLibrary);
+                                                         }
+                                                         }
+                                                     ],
+
+                                                     ['Import CSV file',
+                                                         function($itemScope) {
+                                                    	 if ($rootScope.hasChanges()) {
+
+                                                             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                                 $rootScope.addCSVTables($scope.tableLibrary);           
+                                                                 });
+                                                         } else {
+                                                         	
+                                                             $rootScope.addCSVTables($scope.tableLibrary);                                                  
+                                                             }
+                                                         }
+                                                     ]
+
+                                              ];
 
                 function processEditSeg(seg) {
                     $scope.Activate(seg.id);
@@ -865,7 +1050,26 @@ angular
                         processEditTable(table);
                     }
                 };
+                
+                
+                function processEditTableInLib(table) {
+                    $scope.Activate(table.id);
+                    $rootScope.table = table;
+                    $scope.$emit('event:openTable', $rootScope.table);
+                };
 
+                $scope.editTableINLIB = function(table) {
+                    if ($rootScope.hasChanges()) {
+                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            processEditTableInLib(table);
+                        });
+                    } else {
+                        processEditTableInLib(table);
+                    }
+                };
+                
+                
+           
                 function processEditMessage(message) {
                     $scope.Activate(message.id);
                     $rootScope.message = message;
@@ -986,9 +1190,6 @@ angular
                     return promise;
                 };
 
-
-
-
                 $scope.reOrderMessages = function() {
                     var messagesMap = [];
 
@@ -1009,8 +1210,6 @@ angular
                         },
                         data: messagesMap
                     }
-
-
                     var promise = $http(req)
                         .success(function(data, status, headers, config) {
 
@@ -1047,6 +1246,8 @@ angular
                         return 'MAS';
                     } else if (leaf.scope === 'PRELOADED') {
                         return 'PRL';
+                    } else if (leaf.scope === 'PHINVADS') {
+                        return 'PVS';
                     } else {
                         return "";
 

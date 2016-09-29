@@ -26,13 +26,16 @@
                     </tr>
                     <tr class="tbl-header" style="">
                         <th st-ratio="5"></th>
-                        <th st-sort="fullName" st-ratio="20">
+                        <th st-sort="fullName" st-ratio="15">
                             <div msg key='account.fullName'></div>
                         </th>
-                        <th st-sort="email" st-ratio="20">
+                        <th st-sort="email" st-ratio="15">
                             <div msg key='account.email'></div>
                         </th>
-                        <th st-sort="employer" st-ratio="20">
+                        <th st-sort="username" st-ratio="15">
+                            <div msg key='account.username'></div>
+                        </th>
+                        <th st-sort="employer" st-ratio="15">
                             <div msg key='account.employer'></div>
                         </th>
                         <th st-sort="title" st-ratio="20">
@@ -50,10 +53,11 @@
                                    ng-checked="account != null && row == account"
                                    type="radio">
                             </td>
-                        <td ng-bind="row.fullName" st-ratio="20"></td>
-                        <td ng-bind="row.email" st-ratio="20"></td>
+                        <td ng-bind="row.fullName" st-ratio="15"></td>
+                        <td ng-bind="row.email" st-ratio="15"></td>
+                        <td ng-bind="row.username" st-ratio="15"></td>
                         <!--<td ng-bind="row.phone" st-ratio="10"></td>-->
-                        <td ng-bind="row.employer" st-ratio="20"></td>
+                        <td ng-bind="row.employer" st-ratio="15"></td>
                         <td ng-bind="row.title" st-ratio="20"></td>
                         <!--<td ng-bind="row.juridiction" st-ratio="10"></td>-->
                         <td st-ratio="15">
@@ -71,12 +75,6 @@
                     </tfoot>
                 </table>
             </div>
-
-
-
-
-
-
 
         </div>
     </div>

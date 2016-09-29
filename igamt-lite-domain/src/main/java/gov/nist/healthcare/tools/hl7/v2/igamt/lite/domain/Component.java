@@ -11,7 +11,7 @@ public class Component extends DataElement implements Cloneable {
   private static final long serialVersionUID = 1L;
 
   private String id;
-
+  
   public Component() {
     super();
     this.type = Constant.COMPONENT;
@@ -92,4 +92,14 @@ public class Component extends DataElement implements Cloneable {
     Component rhs = (Component) obj;
     return new EqualsBuilder().append(id, rhs.id).isEquals();
   }
+
+public boolean isIdentique(Component c) {
+	if(c.getUsage()!=this.getUsage()){
+		return false;
+	}
+	if(!c.getDatatype().getName().equals(this.datatype.getName())){
+		return false;
+	}
+	return true;
+}
 }

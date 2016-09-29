@@ -10,6 +10,9 @@ angular.module('igl')
             isThirdOpen: true,
             isFirstDisabled: false
         };
+        $scope.tabStatus = {
+            active: 1
+        };
         $scope.editableDT = '';
         $scope.editableVS = '';
         $scope.readonly = false;
@@ -19,7 +22,47 @@ angular.module('igl')
         $scope.viewSettings = ViewSettings;
         $scope.selectedChildren = [];
         $scope.saving = false;
-        $scope.init = function() {};
+        $scope.init = function() {
+            $scope.accordStatus = {
+                isCustomHeaderOpen: false,
+                isFirstOpen: true,
+                isSecondOpen: false,
+                isThirdOpen: false,
+                isFirstDisabled: false
+            };
+
+            $scope.tabStatus = {
+                active: 1
+            };
+
+        };
+
+        $scope.dtmSliderOptions = {
+            ceil: 7,
+            floor: 0,
+            showSelectionBar: true,
+            onChange: function(id) {
+                $scope.setDirty();
+            },
+            showTicks: true,
+            getTickColor: function(value) {
+                if (value < 3)
+                    return 'red';
+                if (value < 6)
+                    return 'orange';
+                if (value < 8)
+                    return 'yellow';
+                return '#2AE02A';
+            }
+        };
+
+        $scope.refreshSlider = function() {
+            setTimeout(function() {
+                $scope.$broadcast('reCalcViewDimensions');
+                console.log("refreshed Slider!!");
+            }, 1000);
+        };
+
         $scope.deleteComponent = function(componentToDelete, datatype) {
             var modalInstance = $modal.open({
                 templateUrl: 'DeleteComponent.html',
@@ -134,24 +177,56 @@ angular.module('igl')
 
 
         $scope.selectDT = function(field, datatype) {
-            $scope.DTselected = true;
-            blockUI.start();
-            field.datatype.ext = JSON.parse(datatype).ext;
-            field.datatype.id = JSON.parse(datatype).id;
-            field.datatype.label = JSON.parse(datatype).label;
-            field.datatype.name = JSON.parse(datatype).name;
-            console.log(field);
-            $scope.setDirty();
-            // $rootScope.processElement(field);
+            if (datatype) {
+                $scope.DTselected = true;
+                blockUI.start();
+                field.datatype.ext = JSON.parse(datatype).ext;
+                field.datatype.id = JSON.parse(datatype).id;
+                field.datatype.label = JSON.parse(datatype).label;
+                field.datatype.name = JSON.parse(datatype).name;
+                console.log(field);
+                $scope.setDirty();
+                // $rootScope.processElement(field);
 
-            if ($scope.datatypesParams)
-                $scope.datatypesParams.refresh();
-            $scope.editableDT = '';
-            $scope.DTselected = false;
-            blockUI.stop();
+                if ($scope.datatypesParams)
+                    $scope.datatypesParams.refresh();
+                $scope.editableDT = '';
+                $scope.DTselected = false;
+                blockUI.stop();
+            } else {
+                $scope.otherDT(field);
+            }
+
 
 
         };
+        $scope.otherDT = function(field) {
+            var modalInstance = $modal.open({
+                templateUrl: 'otherDTModal.html',
+                controller: 'otherDTCtrl',
+                windowClass: 'edit-VS-modal',
+                resolve: {
+
+                    datatypes: function() {
+                        return $rootScope.datatypes;
+                    },
+
+                    field: function() {
+                        return field;
+                    }
+
+                }
+            });
+            modalInstance.result.then(function(field) {
+                $scope.setDirty();
+                $scope.editableDT = '';
+                if ($scope.datatypesParams) {
+                    $scope.datatypesParams.refresh();
+                }
+            });
+
+        };
+
         // $scope.applyDT = function(field, datatype) {
         //     blockUI.start();
         //     field.datatype.ext = JSON.parse(datatype).ext;
@@ -202,28 +277,44 @@ angular.module('igl')
                 $scope.results = [];
                 $scope.tmpResults = [];
                 $scope.results = $scope.results.concat(filterFlavors($rootScope.igdocument.profile.datatypeLibrary, field.datatype.name));
-                $scope.tmpResults = [].concat($scope.results);
-                DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
-                    if (libraries != null) {
-                        _.each(libraries, function(library) {
-                            $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
-                        });
-                    }
-
-                    $scope.results = _.uniq($scope.results, function(item, key, a) {
-                        return item.id;
-                    });
-                    $scope.tmpResults = [].concat($scope.results);
-
-                    delay.resolve(true);
-                }, function(error) {
-                    $rootScope.msg().text = "Sorry could not load the data types";
-                    $rootScope.msg().type = error.data.type;
-                    $rootScope.msg().show = true;
-                    delay.reject(error);
+                $scope.results = _.uniq($scope.results, function(item, key, a) {
+                    return item.id;
                 });
+                $scope.tmpResults = [].concat($scope.results);
+                //                DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
+                //                    if (libraries != null) {
+                //                        _.each(libraries, function(library) {
+                //                            $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
+                //                        });
+                //                    }
+                //
+                //                    $scope.results = _.uniq($scope.results, function(item, key, a) {
+                //                        return item.id;
+                //                    });
+                //                    $scope.tmpResults = [].concat($scope.results);
+                //
+                //                    delay.resolve(true);
+                //                }, function(error) {
+                //                    $rootScope.msg().text = "Sorry could not load the data types";
+                //                    $rootScope.msg().type = error.data.type;
+                //                    $rootScope.msg().show = true;
+                //                    delay.reject(error);
+                //                });
                 return delay.promise;
             };
+
+            //
+            //            $scope.editDT = function(field) {
+            //                $scope.editableDT = field.id;
+            //
+            //                $scope.results = [];
+            //                angular.forEach($rootScope.igdocument.profile.datatypeLibrary.children ,function(dtLink){
+            //                    if(dtLink.name&&dtLink.name===field.datatype.name&&field.datatype.id!==dtLink.id){
+            //                        $scope.results.push(dtLink);
+            //                    }
+            //                });
+            //            };
+            //
 
 
             var filterFlavors = function(library, name) {

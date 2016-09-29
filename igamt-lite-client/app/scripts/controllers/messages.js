@@ -4,9 +4,7 @@
 
 angular.module('igl')
     .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI) {
-        $scope.init = function() {};
-        console.log("IN MESSAGES========");
-        console.log($rootScope.igdocument);
+
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
             isFirstOpen: true,
@@ -14,6 +12,25 @@ angular.module('igl')
             isThirdOpen: true,
             isFirstDisabled: false
         };
+        $scope.tabStatus = {
+            active: 1
+        };
+
+        $scope.init = function() {
+            $scope.accordStatus = {
+                isCustomHeaderOpen: false,
+                isFirstOpen: true,
+                isSecondOpen: true,
+                isThirdOpen: true,
+                isFirstDisabled: false
+            };
+            $scope.tabStatus = {
+                active: 1
+            };
+
+
+        };
+
         $scope.redirectSeg = function(segmentRef) {
             SegmentService.get(segmentRef.id).then(function(segment) {
                 var modalInstance = $modal.open({
@@ -313,29 +330,32 @@ angular.module('igl')
                 $scope.results = [];
                 $scope.tmpResults = [];
                 $scope.results = $scope.results.concat(filterFlavors($rootScope.igdocument.profile.segmentLibrary, segmentRef.obj.ref.name));
-                $scope.tmpResults = [].concat($scope.results);
-                SegmentLibrarySvc.findLibrariesByFlavorName(segmentRef.obj.ref.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
-                    if (libraries != null) {
-                        _.each(libraries, function(library) {
-                            $scope.results = $scope.results.concat(filterFlavors(library, segmentRef.obj.ref.name));
-
-                        });
-                    }
-
-                    $scope.results = _.uniq($scope.results, function(item, key, a) {
-                        return item.id;
-                    });
-
-                    $scope.tmpResults = [].concat($scope.results);
-                    console.log($scope.tmpResults);
-
-                    delay.resolve(true);
-                }, function(error) {
-                    $rootScope.msg().text = "Sorry could not load the segments";
-                    $rootScope.msg().type = error.data.type;
-                    $rootScope.msg().show = true;
-                    delay.reject(error);
+                $scope.results = _.uniq($scope.results, function(item, key, a) {
+                    return item.id;
                 });
+                $scope.tmpResults = [].concat($scope.results);
+                //                SegmentLibrarySvc.findLibrariesByFlavorName(segmentRef.obj.ref.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
+                //                    if (libraries != null) {
+                //                        _.each(libraries, function(library) {
+                //                            $scope.results = $scope.results.concat(filterFlavors(library, segmentRef.obj.ref.name));
+                //
+                //                        });
+                //                    }
+                //
+                //                    $scope.results = _.uniq($scope.results, function(item, key, a) {
+                //                        return item.id;
+                //                    });
+                //
+                //                    $scope.tmpResults = [].concat($scope.results);
+                //                    console.log($scope.tmpResults);
+                //
+                //                    delay.resolve(true);
+                //                }, function(error) {
+                //                    $rootScope.msg().text = "Sorry could not load the segments";
+                //                    $rootScope.msg().type = error.data.type;
+                //                    $rootScope.msg().show = true;
+                //                    delay.reject(error);
+                //                });
                 blockUI.stop();
                 return delay.promise;
 
@@ -611,6 +631,7 @@ angular.module('igl')
                 templateUrl: 'ConformanceStatementMessageCtrl.html',
                 controller: 'ConformanceStatementMessageCtrl',
                 windowClass: 'app-modal-window',
+                keyboard:false,
                 resolve: {
                     selectedMessage: function() {
                         return message;
@@ -1628,7 +1649,11 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
     //console.log(place);
 
 
-
+    // $scope.segmentss = result.filter(function(current) {
+    //     return segments.filter(function(current_b) {
+    //         return current_b.id == current.id;
+    //     }).length == 0
+    // });
 
     $scope.newSegment = {
         accountId: null,
@@ -1680,6 +1705,16 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
         }
 
     }, true);
+    $scope.isInSegs = function(segment) {
+        console.log(segment);
+        console.log(segments.indexOf(segment));
+        if (segment && segments.indexOf(segment) === -1) {
+            return false;
+        } else {
+            return true;
+        }
+
+    };
     $scope.selectUsage = function(usage) {
         console.log(usage);
         if (usage === 'X' || usage === 'W') {
@@ -2231,7 +2266,7 @@ angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, 
     $scope.selectedMessage = message;
     $scope.position = position;
     $scope.delete = function() {
-        for (var i = 0, len1 = $scope.selectedSegment.predicates.length; i < len1; i++) {
+        for (var i = 0, len1 = $scope.selectedMessage.predicates.length; i < len1; i++) {
             if ($scope.selectedMessage.predicates[i].constraintTarget.indexOf(position) === 0) {
                 $scope.selectedMessage.predicates.splice($scope.selectedMessage.predicates.indexOf($scope.selectedMessage.predicates[i]), 1);
                 $modalInstance.close();
