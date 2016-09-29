@@ -94,7 +94,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.selectDatatype(datatype); // Should we open in a dialog ??
         });
         
-        $scope.$on('event:openTable', function(event, table) {
+        $scope.$on('event:openTableInLib', function(event, table) {
             $scope.selectTable(table); // Should we open in a dialog ??
         });
 
@@ -2094,7 +2094,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             try {
                 TableService.getOne(table.id).then(function (tbl) {
                     $rootScope.table = tbl;
-                    $rootScope.$emit("event:initTable");
+                    $rootScope.$emit("event:initTableInLib");
                     $rootScope.currentData = $rootScope.table;
                     $rootScope.codeSystems = [];
                     for (var i = 0; i < $rootScope.table.codes.length; i++) {
