@@ -403,7 +403,7 @@
 <script type="text/ng-template" id="AddHL7TableOpenCtrl.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
-            <span class="header4">Import HL7 Tables</span>
+            <span class="header4">Add HL7 Tables</span>
         </div>
     </div>
         <div class="modal-body">
@@ -426,7 +426,7 @@
                             <h5>Tables for {{source}} {{selectedHL7Version}}</h5>
                             <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                                 <thead>
-                                <tr>
+                                <tr class="tbl-header">
                                     <th>Binding Identifier</th>
                                     <th>Name</th>
                                     <th/>
@@ -492,7 +492,7 @@
 <script type="text/ng-template" id="AddCSVTableOpenCtrl.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
-            <span class="header4">Import CSV file</span>
+            <span class="header4">Add ValueSet From CSV file</span>
         </div>
     </div>
     <div class="modal-body">
@@ -513,7 +513,7 @@
                 <li style="color:blue;">Download 'ValueSet Empty Form (Excel)'</li>
                 <li style="color:blue;">Edit sheets using MS Excel</li>
                 <li style="color:blue;">Save as CSV file</li>
-                <li style="color:blue;">Import CSV file</li>
+                <li style="color:blue;">Upload CSV file</li>
             </ol>
 
             <p style="color:blue;">Files</p>
@@ -526,8 +526,8 @@
         </form>
     </div>
     <div class="modal-footer">
+        <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
         <button id="csvSaveButton" class="btn btn-raised btn-primary btn-sm" ng-click="save()" disabled><span><i class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
     </div>
 </script>
 
@@ -535,7 +535,7 @@
 <script type="text/ng-template" id="AddPHINVADSTableOpenCtrl.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">
-            <span class="header4">Import PHINVADs Tables</span>
+            <span class="header4">Add PHINVADs Tables</span>
         </div>
     </div>
     <div class="modal-body">
@@ -615,12 +615,12 @@
    
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Import Data Type</h3>
+                <h3 class="modal-title">Add Data Type</h3>
             </div>
             <form name="addDT">
                 <div class="modal-body">
-                            <div class="container" style="margin-bottom: 20px;margin-top: 20px">
-                                    <div class="row">
+                            <div class="container" style="margin-bottom: 20px;margin-top: 10px">
+                                    <div class="row" style="padding-top:10px">
                                        <tabset>
                                             <tab>
                                                 <tab-heading>HL7 Datatypes</tab-heading> 
@@ -669,7 +669,7 @@
                                                         <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                                                             <input ng-model="search.name" class="form-control" placeholder="by name">
                                                             <thead>
-                                                            <tr>
+                                                            <tr class="tbl-header">
                                                                 
                                                                 <th>Name</th>
                                                                 <th>As is</th>
@@ -702,7 +702,7 @@
 
                                         <div class="col-md-6" ng-show="selectedDatatypes.length> 0">
                                                         <div class="igl-table">
-                                                            <h5>Selected Datatypes</h5>
+                                                            <h5>Selected Data Types</h5>
                                                             <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                                                                 <thead>
                                                                     <tr>
@@ -749,7 +749,7 @@
     <div>
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Import Segment</h3>
+                <h3 class="modal-title">Add Segment</h3>
             </div>
 
             <!--<form name="addSeg" id="addSeg">-->
