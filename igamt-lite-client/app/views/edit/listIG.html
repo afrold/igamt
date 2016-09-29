@@ -46,7 +46,7 @@
 						<th st-ratio="10" st-sort="cp">#Conformance Profiles</th>
 						<th st-ratio="10" st-sort="metaData.hl7Version">HL7 Version</th>
 						<th st-ratio="10" st-sort="metaData.date">Date</th>
-						<th st-ratio="5">Participants</th>
+						<th st-ratio="5" ng-if="igDocumentConfig.selectedType === 'USER'">Participants</th>
 						<th st-ratio="20">Actions</th>
 					</tr>
 				</thead>
@@ -57,7 +57,7 @@
 						<td st-ratio="10" st-sort="cp"><span style="margin-left:5px ;    color: white !important;" class="badge" ns-popover ns-popover-template="templateRow.html" ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="right|top" ns-popover-timeout="0">{{row.profile.messages.children.length}} </span></td>
 						<td st-ratio="10" ng-bind="row.profile.metaData.hl7Version"></td>
 						<td st-ratio="10" ng-bind="row.metaData.date"></td>
-						<td st-ratio="5"><span style="margin-left:5px ;    color: white !important;" class="badge" ns-popover ns-popover-template="shareRowTemplate.html" ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="right|top" ns-popover-timeout="0">{{row.shareParticipants.length}} </span></td>
+						<td st-ratio="5" ng-if="igDocumentConfig.selectedType === 'USER'"><span style="margin-left:5px ;    color: white !important;" class="badge" ns-popover ns-popover-template="shareRowTemplate.html" ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="right|top" ns-popover-timeout="0">{{row.shareParticipants.length}} </span></td>
 						<td st-ratio="20">
 							<button ng-show="igDocumentConfig.selectedType === 'USER'" title="Edit IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-primary" ng-click="edit(row)"> <span><i
                                                 class="fa fa-pencil fa-fw"></i></span> </button>

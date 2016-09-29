@@ -6,16 +6,17 @@ public class ShareParticipant {
 	private String fullname;
 	private Long id;
 	
-	public ShareParticipant(String username, String fullname) {
+	public ShareParticipant() {
 		super();
-		this.username = username;
-		this.fullname = fullname;
+		this.username = null;
+		this.fullname = null;
+		this.id = null;
 	}
 
-	public ShareParticipant( Long id, String username, String fullname) {
+	public ShareParticipant(Long id) {
 		super();
-		this.username = username;
-		this.fullname = fullname;
+		this.username = null;
+		this.fullname = null;
 		this.id = id;
 	}
 

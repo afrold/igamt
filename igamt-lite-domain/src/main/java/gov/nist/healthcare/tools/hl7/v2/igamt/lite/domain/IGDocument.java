@@ -33,7 +33,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 
 	private Set<Section> childSections = new HashSet<Section>();
 
-	private Set<Long> shareParticipants = new HashSet();
+	private Set<Long> shareParticipantIds = new HashSet<Long>();
 
 
 	private void addSection(Section s) {
@@ -348,11 +348,11 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 	}
 
 	public Set<Long> getShareParticipants() {
-		return shareParticipants;
+		return shareParticipantIds;
 	}
 
-	public void setShareParticipants(Set<Long> shareParticipants) {
-		this.shareParticipants = shareParticipants;
+	public void setShareParticipants(Set<Long> shareParticipantIds) {
+		this.shareParticipantIds = shareParticipantIds;
 	}
 
 }
