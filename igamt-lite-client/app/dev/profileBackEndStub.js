@@ -21,13 +21,25 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 	});
 	$httpBackend.whenGET('api/usernames').respond(function (method, url, data, headers) {
 		return [200, [{
-			"id": 1
-			, "username": "woorion"
-			, "fullname": "Jungyub Woo"
+			"username": "woorion",
+			"fullname": "Jungyub Woo",
+			"id": 44
 		}, {
-			"id": 2
-			, "username": "nist"
-			, "fullname": "nist"
+			"username": "nist",
+			"fullname": "nist",
+			"id": 45
+		},
+					  {
+			"username": "test",
+			"fullname": "test",
+			"id": 46
+		}], {}];
+	});
+	$httpBackend.whenGET('api/shareparticipants?ids=44').respond(function (method, url, data, headers) {
+		return [200, [{
+			"username": "woorion",
+			"fullname": "Jungyub Woo",
+			"id": 44
 		}], {}];
 	});
 	$httpBackend.whenGET('api/shortaccounts?filter=accountType::author').respond(function (method, url, data, headers) {
@@ -39,42 +51,42 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 	});
 	$httpBackend.whenPOST('api/accounts/1/userpasswordchange').respond(function (method, url, data, headers) {
 		return [200, {
-			type: 'success'
-			, text: 'accountPasswordReset'
-			, resourceId: '1'
-			, manualHandle: "false"
+			type: 'success',
+			text: 'accountPasswordReset',
+			resourceId: '1',
+			manualHandle: "false"
 		}, {}];
 	});
 	$httpBackend.whenPOST('api/accounts/2/userpasswordchange').respond(function (method, url, data, headers) {
 		return [200, {
-			type: 'success'
-			, text: 'invalidPassword'
-			, resourceId: '2'
-			, manualHandle: "false"
+			type: 'success',
+			text: 'invalidPassword',
+			resourceId: '2',
+			manualHandle: "false"
 		}, {}];
 	});
 	$httpBackend.whenPOST('api/accounts/1/approveaccount').respond(function (method, url, data, headers) {
 		return [200, {
-			type: 'success'
-			, text: 'accountApproved'
-			, resourceId: '1'
-			, manualHandle: "false"
+			type: 'success',
+			text: 'accountApproved',
+			resourceId: '1',
+			manualHandle: "false"
 		}, {}];
 	});
 	$httpBackend.whenPOST('api/accounts/2/approveaccount').respond(function (method, url, data, headers) {
 		return [200, {
-			type: 'success'
-			, text: 'accountIsNotPending'
-			, resourceId: '2'
-			, manualHandle: "false"
+			type: 'success',
+			text: 'accountIsNotPending',
+			resourceId: '2',
+			manualHandle: "false"
 		}, {}];
 	});
 	$httpBackend.whenPOST('api/accounts/1/suspendaccount').respond(function (method, url, data, headers) {
 		return [200, {
-			type: 'success'
-			, text: 'accountSuspended'
-			, resourceId: '1'
-			, manualHandle: "false"
+			type: 'success',
+			text: 'accountSuspended',
+			resourceId: '1',
+			manualHandle: "false"
 		}, {}];
 	});
 	// clone and set id to 3
@@ -306,8 +318,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 			//              request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
 			request.send(null);
 			d = angular.fromJson(request.response);
-		}
-		else {
+		} else {
 			request.open('GET', '../../resources/datatypes/dtLib-2.5.1-HL7STANDARD.json', false);
 			request.send(null);
 			d = angular.fromJson(request.response);

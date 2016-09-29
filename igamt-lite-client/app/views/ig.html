@@ -649,7 +649,7 @@
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i> Cancel </button>
-				<button class="btn btn-raised btn-primary" type="button" ng-click="ok()"><i class="fa fa-check"></i>Share </button>
+				<button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="tags.length === 0"><i class="fa fa-check"></i>Share </button>
 			</div>
 		</div>
 	</div>

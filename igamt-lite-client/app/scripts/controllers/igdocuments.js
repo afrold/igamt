@@ -384,7 +384,16 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 							$scope.messagesParams = $scope.getMessageParams();
 							$scope.loadIgDocumentMetaData();
 							$rootScope.filteredTablesList = angular.copy($rootScope.tables);
-							$scope.loadPc().then(function () {}, function () {});
+							// Find share participants
+							$http.get('api/shareparticipants', {params: {ids: $rootScope.igdocument.shareParticipants}})
+					.then(
+						function (response) {
+							$rootScope.igdocument.shareParticipants = response.data;
+						}, function (error) {
+							console.log(error);
+						}
+					);
+//							$scope.loadPc().then(function () {}, function () {});
 						}, function () {});
 					}, function () {});
 				}, function () {});
@@ -1123,6 +1132,9 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 	$scope.shareModal = function (igdocument) {
 		$http.get('api/usernames').then(function (response) {
 			var userList = response.data;
+			userList = userList.filter(function(user) {
+				return user;
+			});
 			var modalInstance = $modal.open({
 				templateUrl: 'ShareIGDocumentModal.html'
 				, controller: 'ShareIGDocumentCtrl'
@@ -1989,6 +2001,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
 	$scope.igdocumentSelected = igdocumentSelected;
 	$scope.userList = userList;
 	$scope.ok = function () {
+		
 		$modalInstance.dismiss('ok');
 	};
 	$scope.cancel = function () {

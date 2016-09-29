@@ -4,11 +4,7 @@
 	, "accountId": null
 	, "comment": ""
 	, "usageNote": ""
-	, "shareParticipants": [{
-		"id": 2
-		, "username": "nist"
-		, "fullname": "nist"
-		}]
+	, "shareParticipants": [44]
 	, "metaData": {
 		"name": null
 		, "orgName": "NIST"
