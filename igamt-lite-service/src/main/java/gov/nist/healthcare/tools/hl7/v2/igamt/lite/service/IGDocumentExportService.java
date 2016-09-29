@@ -18,10 +18,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,7 +72,11 @@ public interface IGDocumentExportService {
   
   InputStream exportAsHtmlSections(IGDocument ig);
   
-  InputStream exportAsDocxSections(IGDocument ig); 
+  InputStream exportAsDocxSections(IGDocument ig);
+
+  InputStream exportAsHtmlDatatypeLibraryDocument(DatatypeLibraryDocument datatypeLibraryDocument);
+
+  InputStream exportAsDocxDatatypeLibraryDocument(DatatypeLibraryDocument datatypeLibraryDocument);
 
 
 }
