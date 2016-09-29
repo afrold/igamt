@@ -21,10 +21,12 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 	});
 	$httpBackend.whenGET('api/usernames').respond(function (method, url, data, headers) {
 		return [200, [{
-			"username": "woorion"
+			"id": 1
+			, "username": "woorion"
 			, "fullname": "Jungyub Woo"
 		}, {
-			"username": "nist"
+			"id": 2
+			, "username": "nist"
 			, "fullname": "nist"
 		}], {}];
 	});

@@ -1,10 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -35,7 +33,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 
 	private Set<Section> childSections = new HashSet<Section>();
 
-	private ArrayList<User> shareParticipants = new ArrayList<>();
+	private Set<Long> shareParticipants = new HashSet();
 
 
 	private void addSection(Section s) {
@@ -349,11 +347,11 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 		this.scope = scope;
 	}
 
-	public ArrayList<User> getShareParticipants() {
+	public Set<Long> getShareParticipants() {
 		return shareParticipants;
 	}
 
-	public void setShareParticipants(ArrayList<User> shareParticipants) {
+	public void setShareParticipants(Set<Long> shareParticipants) {
 		this.shareParticipants = shareParticipants;
 	}
 

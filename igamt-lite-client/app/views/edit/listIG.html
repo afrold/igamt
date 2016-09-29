@@ -7,8 +7,7 @@
 	if (self === top) {
 		var antiClickjack = document.getElementById("antiClickjack");
 		antiClickjack.parentNode.removeChild(antiClickjack);
-	}
-	else {
+	} else {
 		top.location = self.location;
 	}
 </script>
@@ -47,7 +46,7 @@
 						<th st-ratio="10" st-sort="cp">#Conformance Profiles</th>
 						<th st-ratio="10" st-sort="metaData.hl7Version">HL7 Version</th>
 						<th st-ratio="10" st-sort="metaData.date">Date</th>
-						<th st-ratio="5">Shared</th>
+						<th st-ratio="5">Participants</th>
 						<th st-ratio="20">Actions</th>
 					</tr>
 				</thead>
@@ -87,7 +86,7 @@
 		<div class="col-md-12" class="cp-tooltip" ng-if="row.shareParticipants.length > 0">
 			<h5>Shared with</h5>
 			<ul class="cp-tooltip">
-				<li ng-repeat="participant in row.shareParticipants track by participant"> {{participant.username}} </li>
+				<li ng-repeat="participant in row.shareParticipants track by participant"> {{participant.username}} ({{participant.fullname}}) </li>
 			</ul>
 			<br/> </div>
 		<div class="col-md-12" class="cp-tooltip" ng-if="row.shareParticipants.length === 0">

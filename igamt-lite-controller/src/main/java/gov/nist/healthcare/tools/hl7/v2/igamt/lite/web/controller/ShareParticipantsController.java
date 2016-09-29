@@ -29,7 +29,7 @@ public class ShareParticipantsController {
 
 		    for (Account acc : accountRepository.findAll()) {
 		      if (!acc.isEntityDisabled()) {
-		    	  users.add(new ShareParticipant(acc.getUsername(), acc.getFullName()));
+		    	  users.add(new ShareParticipant(acc.getId(), acc.getUsername(), acc.getFullName()));
 		      }
 		    }
 

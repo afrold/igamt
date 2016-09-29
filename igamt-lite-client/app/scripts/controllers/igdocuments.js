@@ -1121,19 +1121,27 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 		return '';
 	};
 	$scope.shareModal = function (igdocument) {
-		var modalInstance = $modal.open({
-			templateUrl: 'ShareIGDocumentModal.html'
-			, controller: 'ShareIGDocumentCtrl'
-			, resolve: {
-				igdocumentSelected: function () {
-					return igdocument;
+		$http.get('api/usernames').then(function (response) {
+			var userList = response.data;
+			var modalInstance = $modal.open({
+				templateUrl: 'ShareIGDocumentModal.html'
+				, controller: 'ShareIGDocumentCtrl'
+				, resolve: {
+					igdocumentSelected: function () {
+						return igdocument;
+					}
+					, userList: function () {
+						return userList;
+					}
 				}
-			}
+			});
+			modalInstance.result.then(function (igdocument) {
+				$rootScope.clearChanges();
+				//			$scope.openIGDocument(igdocument);
+			}, function () {});
+		}, function (error) {
+			console.log(error);
 		});
-		modalInstance.result.then(function (igdocument) {
-			$rootScope.clearChanges();
-			//			$scope.openIGDocument(igdocument);
-		}, function () {});
 	};
 });
 angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes, $rootScope, $http) {
@@ -1977,8 +1985,9 @@ angular.module('igl').controller('AddSegmentDlgCtl', function ($scope, $rootScop
 		$modalInstance.dismiss('cancel');
 	};
 });
-angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modalInstance, $http, igdocumentSelected) {
+angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modalInstance, $http, igdocumentSelected, userList) {
 	$scope.igdocumentSelected = igdocumentSelected;
+	$scope.userList = userList;
 	$scope.ok = function () {
 		$modalInstance.dismiss('ok');
 	};
@@ -1990,14 +1999,11 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
 		selected: "Read Only"
 	};
 	$scope.itemArray = ["Read Only"];
+	
+	$scope.tags = [];
 	$scope.loadUsernames = function ($query) {
-		return $http.get('api/usernames', {
-			cache: true
-		}).then(function (response) {
-			var users = response.data;
-			return users.filter(function (user) {
-				return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
-			});
+		return userList.filter(function (user) {
+			return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
 		});
 	};
 });

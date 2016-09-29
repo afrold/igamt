@@ -614,38 +614,36 @@
 </script>
 <script type="text/ng-template" id="ShareIGDocumentModal.html">
 	<div>
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3 class="modal-title">Share IG Document</h3> </div>
-			<div class="modal-body">
-				<div class="container" style="margin-bottom: 20px;margin-top: 20px">
-					<div class="row flavor-seach-box" ng-if="igdocumentSelected.shareParticipants.length > 0">
-						<h5>Shared with</h5>
-						<div class="table-responsive">
-							<table class="table">
-								<tbody>
-									<tr ng-repeat="participant in igdocumentSelected.shareParticipants">
-										<td>{{participant.username}}</td>
-										<td><a href="">Unshare</a></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+		<div class="modal-header">
+			<h3 class="modal-title">Share IG Document</h3> </div>
+		<div class="modal-body">
+			<div class="container" style="margin-bottom: 20px;margin-top: 20px">
+				<div class="row" ng-if="igdocumentSelected.shareParticipants.length > 0">
+					<h5>Shared with</h5>
+					<div class="table-responsive">
+						<table class="table">
+							<tbody>
+								<tr ng-repeat="participant in igdocumentSelected.shareParticipants">
+									<td>{{participant.username}}</td>
+									<td><a href="">Unshare</a></td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<div class="row flavor-seach-box">
-						<div class="col-md-8">
-							<tags-input ng-model="tags" display-property="name" placeholder="Find username" replace-spaces-with-dashes="false" class="ti-input-lg">
-								<auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="my-custom-template"></auto-complete>
-							</tags-input>
-						</div>
-						<div class="col-md-4">
-							<ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
-								<ui-select-match>{{$select.selected}}</ui-select-match>
-								<ui-select-choices repeat="item in itemArray | filter: $select.search">
-									<div ng-bind-html="item | highlight: $select.search"></div>
-								</ui-select-choices>
-							</ui-select>
-						</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8">
+						<tags-input ng-model="tags" key-property="id" display-property="username" placeholder="Find user" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">
+							<auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
+						</tags-input>
+					</div>
+					<div class="col-md-4">
+						<ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
+							<ui-select-match>{{$select.selected}}</ui-select-match>
+							<ui-select-choices repeat="item in itemArray | filter: $select.search">
+								<div ng-bind-html="item | highlight: $select.search"></div>
+							</ui-select-choices>
+						</ui-select>
 					</div>
 				</div>
 			</div>
@@ -656,7 +654,15 @@
 		</div>
 	</div>
 </script>
-<script type="text/ng-template" id="my-custom-template">
-	<div class="share_left-panel"> <img ng-src="https://s11.postimg.org/ppmsxvppv/1475012808_user.png" /> </div>
-	<div class="share_right-panel"><span>{{data.name}}</span></div>
+
+<script type="text/ng-template" id="autocomplete-template">
+	<div class="autocomplete-template">
+		<div class="share_left-panel">
+			<img ng-src="https://s11.postimg.org/ppmsxvppv/1475012808_user.png" />
+		</div>
+	</div>
+	<div class="share_right-panel">
+		<span ng-bind-html="$highlight($getDisplayText())"></span>
+		<span>({{data.fullname}})</span>
+	</div>
 </script>

@@ -7,8 +7,7 @@
 	if (self === top) {
 		var antiClickjack = document.getElementById("antiClickjack");
 		antiClickjack.parentNode.removeChild(antiClickjack);
-	}
-	else {
+	} else {
 		top.location = self.location;
 	}
 </script>
@@ -83,7 +82,10 @@
 				</div>
 			</div>
 			<div ng-class="{'col-md-9': !hideToc,'col-md-12': hideToc}">
-				<div ng-if="igdocument.shareParticipants.length > 0"> Shared with: <span ng-repeat="participant in igdocument.shareParticipants" style="font-weight: bold;">{{participant.username}}</span> </div>
+				<div ng-if="igdocument.shareParticipants.length > 0">
+					<span style="font-style: italic;">Shared with: </span>
+					<span ng-repeat="participant in igdocument.shareParticipants" style="font-weight: bold;" class="badge">{{participant.username}}</span>
+				</div>
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-right"></i> </button> <i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </div>
