@@ -772,15 +772,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             } else {
                 prefix = 'Default';
             }
-            var maxIDNum = Number(0);
-            angular.forEach($rootScope.conformanceStatementIdList, function(id) {
-                if (id != null) {
-                    var tempID = parseInt(id.replace(prefix + "-", ""));
 
-                    if (tempID > maxIDNum) maxIDNum = tempID;
-                }
-            });
-            return prefix + "-" + (maxIDNum + 1);
+            return $rootScope.createNewFlavorName(prefix);
         };
 
         $rootScope.usedSegsLink = [];
