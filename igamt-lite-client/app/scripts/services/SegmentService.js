@@ -273,9 +273,18 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
             $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
         },
 
-        updateTableBinding: function(segmentUpdateParameterList){
+        updateTableBinding: function(segmentUpdateParameterList) {
             var delay = $q.defer();
             $http.post('api/segments/updateTableBinding/', segmentUpdateParameterList).then(function(response) {
+                delay.resolve(true);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+        updateDatatypeBinding: function(segmentUpdateParameterList) {
+            var delay = $q.defer();
+            $http.post('api/segments/updateDatatypeBinding/', segmentUpdateParameterList).then(function(response) {
                 delay.resolve(true);
             }, function(error) {
                 delay.reject(error);
