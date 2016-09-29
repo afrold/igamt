@@ -454,11 +454,11 @@ angular.module('igl').factory(
             $rootScope.references = [];
             angular.forEach($rootScope.segments, function (segment) {
                 if(segment && segment != null) {
-                    $rootScope.findDatatypeRefs(datatype, segment, $rootScope.getSegmentLabel(segment));
+                    $rootScope.findDatatypeRefs(datatype, segment, $rootScope.getSegmentLabel(segment),segment);
                 }
             });
             angular.forEach($rootScope.datatypes, function (dt) {
-                if (dt && dt != null && dt.id !== datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt));
+                if (dt && dt != null && dt.id !== datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt),dt);
             });
             if ($rootScope.references != null && $rootScope.references.length > 0) {
                 abortDatatypeDelete(datatype);
