@@ -89,7 +89,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         //$scope.accountId =userInfoService.accountId;
 
         $rootScope.readOnly = false;
-        $scope.$on('event:openDatatype', function(event, datatype) {
+        $scope.$on('event:openDatatypeInLib', function(event, datatype) {
 
             $scope.selectDatatype(datatype); // Should we open in a dialog ??
         });
@@ -1457,7 +1457,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             console.log("dialog not opened");
             $scope.Activate(data.id);
             $scope.datatype=data;
-            $scope.$emit('event:openDatatype', $scope.datatype);
+            $scope.$emit('event:openDatatypeInLib', $scope.datatype);
         };
 
         $scope.editDatatype = function(data) {
@@ -1518,7 +1518,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 			blockUI.start();
                         	$scope.datatype = angular.copy(datatype);
                         	$rootScope.datatype=datatype;
-                            $rootScope.$emit("event:initDatatype");
+                            $rootScope.$emit("event:openDatatypeInLib");
                             $rootScope.currentData = $scope.datatype;
                             $scope.editView = "EditDatatypesInLib.html";
                             $scope.loadingSelection = false;

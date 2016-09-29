@@ -323,7 +323,7 @@ span {
 					<tbody class="scrollit">
 					<tr ng-repeat="dt in matrix | orderBy: 'name'">
 						<td class="tbl-header">{{dt.name}}</td>
-						<td style="background-color:{{getColor(dt.links[va])}}" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1])}"  ng-repeat = 'va in adjusted' ng-click="selectCell(dt,vrs[$index+1])"><span></span></td>
+						<td  ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1])}"  ng-repeat = 'va in adjusted' ng-click="selectCell(dt,vrs[$index+1])"><span>{{dt.links[va]}}</span></td>
 					</tr>
 					</tbody>
 					</table>
@@ -768,7 +768,7 @@ span {
 					<tbody class="scrollit">
 					<tr ng-repeat="dt in matrix | orderBy: 'name'">
 						<td class="tbl-header">{{dt.name}}</td>
-						<td style="background-color:{{getColor(dt.links[va])}}" ng-repeat = 'va in adjusted'><span></span></td>
+						<td ng-repeat = 'va in adjusted'><span>{{dt.links[va])}}</span></td>
 					</tr>
 					</tbody>
 					</table>
