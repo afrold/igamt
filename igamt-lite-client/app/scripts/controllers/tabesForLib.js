@@ -1,8 +1,5 @@
-/**
- * Created by Jungyub on 4/01/15.
- */
 
-angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc, blockUI) {
+angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc, blockUI, SegmentService, DatatypeService) {
     $scope.readonly = false;
     $scope.codeSysEditMode = false;
     $scope.codeSysForm = {};
@@ -11,10 +8,16 @@ angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $root
     $scope.params = null;
     $scope.predicate = 'value';
     $scope.reverse = false;
-    $scope.selectedCodes=[];
+    $scope.selectedCodes = [];
     $scope.isDeltaCalled = false;
+    $scope.tabStatus = {
+        active: 1
+    };
     $scope.init = function() {
-        $scope.selectedCodes=[];
+        $scope.tabStatus = {
+            active: 1
+        };
+        $scope.selectedCodes = [];
         $rootScope.$on('event:cloneTableFlavor', function(event, table) {
             $scope.copyTable(table);
         });
@@ -24,7 +27,72 @@ angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $root
         blockUI.start();
         cleanState();
         $rootScope.table = angular.copy($rootScope.tablesMap[$rootScope.table.id]);
+
+        $rootScope.references = [];
+        angular.forEach($rootScope.segments, function(segment) {
+            $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
+        });
+        angular.forEach($rootScope.datatypes, function(dt) {
+            $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
+        });
+
         blockUI.stop();
+    };
+    $scope.redirectSeg = function(segmentRef) {
+        SegmentService.get(segmentRef.id).then(function(segment) {
+            var modalInstance = $modal.open({
+                templateUrl: 'redirectCtrl.html',
+                controller: 'redirectCtrl',
+                size: 'md',
+                resolve: {
+                    destination: function() {
+                        return segment;
+                    }
+                }
+
+
+
+            });
+            modalInstance.result.then(function() {
+                $rootScope.editSeg(segment);
+            });
+
+
+
+        });
+    };
+    $scope.redirectDT = function(datatype) {
+        console.log(datatype);
+        DatatypeService.getOne(datatype.id).then(function(datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'redirectCtrl.html',
+                controller: 'redirectCtrl',
+                size: 'md',
+                resolve: {
+                    destination: function() {
+                        return datatype;
+                    }
+                }
+
+
+
+            });
+            modalInstance.result.then(function() {
+                $rootScope.editDataType(datatype);
+            });
+
+
+
+        });
+    };
+
+    $scope.isBindingChanged = function() {
+        for (var i = 0; i < $rootScope.references.length; i++) {
+            var ref = $rootScope.references[i];
+
+            if (ref.tableLink.isChanged) return true;
+        }
+        return false;
     };
 
     var cleanState = function() {
@@ -41,10 +109,38 @@ angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $root
         $rootScope.$emit("event:openVSDelta");
     };
 
+    $scope.changeTableLink = function(tableLink) {
+        tableLink.isChanged = true;
+
+        var t = $rootScope.tablesMap[tableLink.id];
+
+        if (t == null) {
+            tableLink.bindingIdentifier = null;
+            tableLink.bindingLocation = null;
+            tableLink.bindingStrength = null;
+        } else {
+            tableLink.bindingIdentifier = t.bindingIdentifier;
+        }
+    };
+
+    $scope.AddBindingForValueSet = function(table) {
+        var modalInstance = $modal.open({
+            templateUrl: 'AddBindingForValueSetINLIB.html',
+            controller: 'AddBindingForValueSet',
+            windowClass: 'conformance-profiles-modal',
+            resolve: {
+                table: function() {
+                    return table;
+                }
+            }
+        });
+        modalInstance.result.then(function() {
+            $scope.setDirty();
+        });
+    };
 
     $scope.save = function() {
-
-        if ($rootScope.table.scope === 'MASTER') {
+        if ($rootScope.table.status === 'UNPUBLISHED' ||$rootScope.table.scope === 'HL7STANDARD' ) {
             $scope.saving = true;
             var table = $rootScope.table;
             var bindingIdentifier = table.bindingIdentifier;
@@ -58,11 +154,20 @@ angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $root
             TableService.save(table).then(function(result) {
                 var oldLink = TableLibrarySvc.findOneChild(result.id, $scope.tableLibrary.children);
                 TableService.merge($rootScope.tablesMap[result.id], result);
+                // remove unnecessary variables for toc
+                delete $rootScope.tablesMap[result.id].codes;
+                delete $rootScope.tablesMap[result.id].contentDefinition;
+                delete $rootScope.tablesMap[result.id].extensibility;
+                delete $rootScope.tablesMap[result.id].stability;
+                delete $rootScope.tablesMap[result.id].comment;
+                delete $rootScope.tablesMap[result.id].defPreText;
+                delete $rootScope.tablesMap[result.id].defPostText;
+
                 var newLink = TableService.getTableLink(result);
                 newLink.bindingIdentifier = bindingIdentifier;
                 TableLibrarySvc.updateChild($scope.tableLibrary.id, newLink).then(function(link) {
                     oldLink.bindingIdentifier = link.bindingIdentifier;
-                    oldLink.ext=link.ext;
+                    oldLink.ext = link.ext;
                     cleanState();
                     $rootScope.msg().text = "tableSaved";
                     $rootScope.msg().type = "success";
@@ -80,6 +185,159 @@ angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $root
                 $rootScope.msg().show = true;
             });
         }
+        $scope.saveBinding();
+    };
+
+    $scope.saveBinding = function() {
+        var datatypeUpdateParameterList = [];
+        var segmentUpdateParameterList = [];
+
+        for (var q = 0; q < $rootScope.references.length; q++) {
+            var ref = $rootScope.references[q];
+            if (ref.tableLink.isNew) {
+                if (ref.type == 'component') {
+                    var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
+                    ref.tableLink.isNew = null;
+                    ref.tableLink.isChanged = null;
+                    var newTableLink = angular.copy(ref.tableLink);
+                    var targetComponent = angular.copy(ref);
+                    targetComponent.target = null;
+                    targetComponent.path = null;
+                    targetComponent.tableLink = null;
+
+                    var toBeUpdateComponent = _.find(targetDatatype.components, function(component) {
+                        return component.position == targetComponent.position;
+                    });
+                    if (toBeUpdateComponent) toBeUpdateComponent.tables.push(newTableLink);
+                    $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
+                    var oldDatatype = _.find($rootScope.datatypes, function(dt) {
+                        return dt.id == targetDatatype.id;
+                    });
+                    var index = $rootScope.datatypes.indexOf(oldDatatype);
+                    if (index > -1) $rootScope.datatypes[index] = targetDatatype;
+
+                    var datatypeUpdateParameter = {};
+                    datatypeUpdateParameter.datatypeId = targetDatatype.id;
+                    datatypeUpdateParameter.componentId = targetComponent.id;
+                    datatypeUpdateParameter.tableLink = newTableLink;
+                    datatypeUpdateParameterList.push(datatypeUpdateParameter);
+                } else if (ref.type == 'field') {
+                    var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
+                    ref.tableLink.isNew = null;
+                    ref.tableLink.isChanged = null;
+                    var newTableLink = angular.copy(ref.tableLink);
+                    var targetField = angular.copy(ref);
+                    targetField.target = null;
+                    targetField.path = null;
+                    targetField.tableLink = null;
+
+                    var toBeUpdateField = _.find(targetSegment.fields, function(field) {
+                        return field.position == targetField.position;
+                    });
+                    if (toBeUpdateField) toBeUpdateField.tables.push(newTableLink);
+                    $rootScope.segmentsMap[targetSegment.id] = targetSegment;
+                    var oldSegment = _.find($rootScope.segments, function(seg) {
+                        return seg.id == targetSegment.id;
+                    });
+                    var index = $rootScope.segments.indexOf(oldSegment);
+                    if (index > -1) $rootScope.segments[index] = targetSegment;
+
+                    var segmentUpdateParameter = {};
+                    segmentUpdateParameter.segmentId = targetSegment.id;
+                    segmentUpdateParameter.fieldId = targetField.id;
+                    segmentUpdateParameter.tableLink = newTableLink;
+                    segmentUpdateParameterList.push(segmentUpdateParameter);
+                }
+            } else if (ref.tableLink.isChanged) {
+                if (ref.type == 'component') {
+                    var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
+                    ref.tableLink.isNew = null;
+                    ref.tableLink.isChanged = null;
+                    var newTableLink = angular.copy(ref.tableLink);
+                    var targetComponent = angular.copy(ref);
+                    targetComponent.target = null;
+                    targetComponent.path = null;
+                    targetComponent.tableLink = null;
+
+                    var toBeUpdateComponent = _.find(targetDatatype.components, function(component) {
+                        return component.position == targetComponent.position;
+                    });
+                    if (toBeUpdateComponent) {
+                        for (var i = 0; i < toBeUpdateComponent.tables.length; i++) {
+                            if (toBeUpdateComponent.tables[i].id == $rootScope.table.id) {
+                                toBeUpdateComponent.tables[i] = newTableLink;
+                            }
+                        }
+                    }
+                    $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
+                    var oldDatatype = _.find($rootScope.datatypes, function(dt) {
+                        return dt.id == targetDatatype.id;
+                    });
+                    var index = $rootScope.datatypes.indexOf(oldDatatype);
+                    if (index > -1) $rootScope.datatypes[index] = targetDatatype;
+
+                    var datatypeUpdateParameter = {};
+                    datatypeUpdateParameter.datatypeId = targetDatatype.id;
+                    datatypeUpdateParameter.componentId = targetComponent.id;
+                    datatypeUpdateParameter.tableLink = newTableLink;
+                    datatypeUpdateParameter.key = $rootScope.table.id;
+                    datatypeUpdateParameterList.push(datatypeUpdateParameter);
+                } else if (ref.type == 'field') {
+                    var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
+                    ref.tableLink.isNew = null;
+                    ref.tableLink.isChanged = null;
+                    var newTableLink = angular.copy(ref.tableLink);
+                    var targetField = angular.copy(ref);
+                    targetField.target = null;
+                    targetField.path = null;
+                    targetField.tableLink = null;
+
+                    var toBeUpdateField = _.find(targetSegment.fields, function(field) {
+                        return field.position == targetField.position;
+                    });
+                    if (toBeUpdateField) {
+                        for (var i = 0; i < toBeUpdateField.tables.length; i++) {
+                            if (toBeUpdateField.tables[i].id == $rootScope.table.id) {
+                                toBeUpdateField.tables[i] = newTableLink;
+                            }
+                        }
+                    }
+                    $rootScope.segmentsMap[targetSegment.id] = targetSegment;
+                    var oldSegment = _.find($rootScope.segments, function(seg) {
+                        return seg.id == targetSegment.id;
+                    });
+                    var index = $rootScope.segments.indexOf(oldSegment);
+                    if (index > -1) $rootScope.segments[index] = targetSegment;
+
+                    var segmentUpdateParameter = {};
+                    segmentUpdateParameter.segmentId = targetSegment.id;
+                    segmentUpdateParameter.fieldId = targetField.id;
+                    segmentUpdateParameter.tableLink = newTableLink;
+                    segmentUpdateParameter.key = $rootScope.table.id;
+                    segmentUpdateParameterList.push(segmentUpdateParameter);
+                }
+            }
+        }
+
+        SegmentService.updateTableBinding(segmentUpdateParameterList).then(function(result) {}, function(error) {
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+        });
+
+        DatatypeService.updateTableBinding(datatypeUpdateParameterList).then(function(result) {}, function(error) {
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+        });
+
+        $rootScope.references = [];
+        angular.forEach($rootScope.segments, function(segment) {
+            $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
+        });
+        angular.forEach($rootScope.datatypes, function(dt) {
+            $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
+        });
     };
 
 
@@ -150,61 +408,57 @@ angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $root
         }
         $scope.setDirty();
     };
-    $rootScope.checkAll=false;
-    $scope.ProcessChecking= function(checkAll){
+    $rootScope.checkAll = false;
+    $scope.ProcessChecking = function(checkAll) {
 
 
         console.log("here");
-        if(checkAll){
+        if (checkAll) {
             $scope.checkAllValues();
-        }else{
+        } else {
             $scope.uncheckAllValues();
         }
 
     }
-    $scope.addOrRemoveValue= function(c){
-        if(c.selected===true){
+    $scope.addOrRemoveValue = function(c) {
+        if (c.selected === true) {
             $scope.selectedCodes.push(c);
-        }else if (c.selected===false){
-             var index = $scope.selectedCodes.indexOf(c);
-                if (index > -1) {
-                    $scope.selectedCodes.splice(index, 1);
-                }
+        } else if (c.selected === false) {
+            var index = $scope.selectedCodes.indexOf(c);
+            if (index > -1) {
+                $scope.selectedCodes.splice(index, 1);
+            }
         }
 
 
     }
-    $scope.deleteSlectedValues= function(){
+    $scope.deleteSlectedValues = function() {
         console.log()
         console.log("deleting");
-        $rootScope.table.codes=_.difference($rootScope.table.codes,$scope.selectedCodes);
-         $scope.selectedCodes=[];
+        $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
+        $scope.selectedCodes = [];
     }
-    $scope.checkAllValues= function(){
-        angular.forEach($rootScope.table.codes, function(c){
-            c.selected=true;
+    $scope.checkAllValues = function() {
+        angular.forEach($rootScope.table.codes, function(c) {
+            c.selected = true;
             $scope.selectedCodes.push(c);
         });
     }
-    $scope.uncheckAllValues= function(){
+    $scope.uncheckAllValues = function() {
         console.log("deleting");
-         //console.log($rootScope.displayCollection);
-        angular.forEach($rootScope.table.codes, function(c){
-            if(c.selected&&c.selected===true){
-               c.selected=false;
+        //console.log($rootScope.displayCollection);
+        angular.forEach($rootScope.table.codes, function(c) {
+            if (c.selected && c.selected === true) {
+                c.selected = false;
             }
         });
-        $scope.selectedCodes=[];
+        $scope.selectedCodes = [];
     }
     $scope.deleteValue = function(value) {
-        // if (!$scope.isNewValueThenDelete(value.id)) {
-        //     $rootScope.recordChangeForEdit2('value', "delete", value.id, 'id', value.id);
-        // }
         console.log($scope.selectedCodes);
         $rootScope.table.codes.splice($rootScope.table.codes.indexOf(value), 1);
         $scope.setDirty();
     };
-
     $scope.isNewValueThenDelete = function(id) {
         if ($rootScope.isNewObject('value', 'add', id)) {
             if ($rootScope.changes['value'] !== undefined && $rootScope.changes['value']['add'] !== undefined) {
@@ -301,7 +555,7 @@ angular.module('igl').controller('TableModalCtrl', function($scope) {
     };
 });
 
-angular.module('igl').controller('ConfirmValueSetDeleteCtrl1', function($scope, $modalInstance, tableToDelete, $rootScope, TableService, TableLibrarySvc, CloneDeleteSvc) {
+angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function($scope, $modalInstance, tableToDelete, $rootScope, TableService, TableLibrarySvc, CloneDeleteSvc) {
     $scope.tableToDelete = tableToDelete;
     $scope.loading = false;
 
@@ -327,8 +581,8 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl1', function($scope, 
     //        // We must delete from two collections.
     //        var index = $rootScope.tables.indexOf(tableToDelete);
     //        $rootScope.tables.splice(index, 1);
-    //        var index = $scope.tableLibrary.children.indexOf($scope.tableToDelete);
-    //        if (index > -1) $scope.tableLibrary.children.splice(index, 1);
+    //        var index = $rootScope.igdocument.profile.tableLibrary.children.indexOf($scope.tableToDelete);
+    //        if (index > -1) $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
     //        $rootScope.tablesMap[tableToDelete.id] = undefined;
     //
     //        $rootScope.generalInfo.type = 'info';
@@ -351,9 +605,9 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl1', function($scope, 
     //                    // We must delete from two collections.
     //                    var index = $rootScope.tables.indexOf($scope.tableToDelete);
     //                    $rootScope.tables.splice(index, 1);
-    //                    var tmp = TableLibrarySvc.findOneChiletd($scope.tableToDelete.id, $scope.tableLibrary.children);
-    //                    index = $scope.tableLibrary.children.indexOf(tmp);
-    //                    $scope.tableLibrary.children.splice(index, 1);
+    //                    var tmp = TableLibrarySvc.findOneChiletd($scope.tableToDelete.id, $rootScope.igdocument.profile.tableLibrary.children);
+    //                    index = $rootScope.igdocument.profile.tableLibrary.children.indexOf(tmp);
+    //                    $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
     //                    $rootScope.tablesMap[$scope.tableToDelete.id] = null;
     //                    $rootScope.references = [];
     //                    if ($rootScope.table === $scope.tableToDelete) {
@@ -444,3 +698,307 @@ angular.module('igl').controller('ValueSetReferencesCtrl', function($scope, $mod
     };
 });
 
+
+//angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, ObjectDiff, orderByFilter, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, CompareService) {
+//    var ctrl = this;
+//    this.tableId = -1;
+//    $scope.vsChanged = false;
+//    $scope.variable = false;
+//    $scope.isDeltaCalled = false;
+//
+//    $scope.setDeltaToF = function() {
+//        console.log("HEEEEEERREEEEE");
+//        $scope.isDeltaCalled = false;
+//    }
+//
+//
+//
+//    $scope.scopes = [{
+//        name: "USER",
+//        alias: "My IG"
+//    }, {
+//        name: "HL7STANDARD",
+//        alias: "Base HL7"
+//    }];
+//    var listHL7Versions = function() {
+//        return $http.get('api/igdocuments/findVersions', {
+//            timeout: 60000
+//        }).then(function(response) {
+//            var hl7Versions = [];
+//            var length = response.data.length;
+//            for (var i = 0; i < length; i++) {
+//                hl7Versions.push(response.data[i]);
+//            }
+//            return hl7Versions;
+//        });
+//    };
+//    $scope.status = {
+//        isCustomHeaderOpen: false,
+//        isFirstOpen: true,
+//        isSecondOpen: true,
+//        isFirstDisabled: false
+//    };
+//
+//    $scope.initt = function() {
+////        $scope.isDeltaCalled = true;
+////        $scope.dataList = [];
+////        listHL7Versions().then(function(versions) {
+////            $scope.versions = versions;
+////            $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
+////            $scope.scope1 = "USER";
+////            $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
+////            $scope.table1 = angular.copy($rootScope.table);
+////            ctrl.tableId = -1;
+////            $scope.variable = !$scope.variable;
+////            $scope.tables = null;
+////            //$scope.setIG2($scope.ig2);
+////            $scope.version2 = angular.copy($scope.version1);
+////            //$scope.status.isFirstOpen = true;
+////            $scope.scope2 = "HL7STANDARD";
+////            if ($scope.dynamicVs_params) {
+////                $scope.showDelta = false;
+////                $scope.status.isFirstOpen = true;
+////                $scope.dynamicVs_params.refresh();
+////            }
+////        });
+//
+//
+//
+//    };
+//
+//    $scope.$on('event:loginConfirmed', function(event) {
+//        $scope.initt();
+//    });
+//
+//    //$scope.initt();
+//
+//    $rootScope.$on('event:initTable', function(event) {
+//        if ($scope.isDeltaCalled) {
+//            $scope.initt();
+//        }
+//    });
+//
+//    $rootScope.$on('event:openVSDelta', function(event) {
+//        $scope.initt();
+//    });
+//
+//
+//
+//    $scope.setVersion2 = function(vr) {
+//        $scope.version2 = vr;
+//
+//    };
+//    $scope.setScope2 = function(scope) {
+//
+//        $scope.scope2 = scope;
+//    };
+//
+//    $scope.$watchGroup(['table1', 'table2'], function() {
+//        $scope.vsChanged = true;
+//        //$scope.segment1 = angular.copy($rootScope.activeSegment);
+//
+//
+//    }, true);
+//    $scope.$watchGroup(['version2', 'scope2', 'variable'], function() {
+//        $scope.igList2 = [];
+//        $scope.tables2 = [];
+//        $scope.ig2 = "";
+//        if ($scope.scope2 && $scope.version2) {
+//            IgDocumentService.getIgDocumentsByScopesAndVersion([$scope.scope2], $scope.version2).then(function(result) {
+//                if (result) {
+//                    if ($scope.scope2 === "HL7STANDARD") {
+//                        $scope.igDisabled2 = true;
+//                        $scope.ig2 = {
+//                            id: result[0].id,
+//                            title: result[0].metaData.title
+//                        };
+//                        $scope.igList2.push($scope.ig2);
+//
+//                        $scope.setIG2($scope.ig2);
+//                    } else {
+//                        $scope.igDisabled2 = false;
+//                        for (var i = 0; i < result.length; i++) {
+//                            $scope.igList2.push({
+//                                id: result[i].id,
+//                                title: result[i].metaData.title,
+//                            });
+//                        }
+//                    }
+//                }
+//            });
+//
+//        }
+//
+//    }, true);
+//    $scope.setTable2 = function(table) {
+//        if (table === -1) {
+//            $scope.table2 = {};
+//        } else {
+//            $scope.table2 = $scope.tables2[table];
+//
+//        }
+//    };
+//    $scope.setIG2 = function(ig) {
+//        if (ig) {
+//            IgDocumentService.getOne(ig.id).then(function(igDoc) {
+//                SegmentLibrarySvc.getSegmentsByLibrary(igDoc.profile.segmentLibrary.id).then(function(segments) {
+//                    DatatypeLibrarySvc.getDatatypesByLibrary(igDoc.profile.datatypeLibrary.id).then(function(datatypes) {
+//                        TableLibrarySvc.getTablesByLibrary(igDoc.profile.tableLibrary.id).then(function(tables) {
+//                            $scope.tables2 = [];
+//                            $scope.table2 = "";
+//                            if (igDoc) {
+//                                //$scope.segList2 = angular.copy(segments);
+//                                //$scope.segList2 = orderByFilter($scope.segList2, 'name');
+//                                //$scope.dtList2 = angular.copy(datatypes);
+//                                $scope.tableList2 = angular.copy(tables);
+//                                //$scope.messages2 = orderByFilter(igDoc.profile.messages.children, 'name');
+//                                //$scope.segments2 = orderByFilter(segments, 'name');
+//                                //$scope.datatypes2 = orderByFilter(datatypes, 'name');
+//                                $scope.tables2 = orderByFilter(tables, 'bindingIdentifier');
+//                            }
+//                        });
+//                    });
+//                });
+//
+//            });
+//
+//            //$scope.messages2 = ($scope.findIGbyID(JSON.parse(ig).id)).profile.messages.children;
+//
+//        }
+//
+//    };
+//
+//    $scope.hideVS = function(vs1, vs2) {
+//
+//        if (vs2) {
+//            return !(vs1.name === vs2.name);
+//        } else {
+//            return false;
+//        }
+//    };
+//    $scope.disableVS = function(vs1, vs2) {
+//
+//        if (vs2) {
+//            return (vs1.id === vs2.id);
+//        } else {
+//            return false;
+//        }
+//    };
+//
+//
+//
+//
+//    $scope.dynamicVs_params = new ngTreetableParams({
+//        getNodes: function(parent) {
+//            if ($scope.dataList !== undefined) {
+//                if (parent) {
+//                    if (parent.codes) {
+//                        return parent.codes;
+//                    }
+//
+//                } else {
+//                    return $scope.dataList;
+//                }
+//
+//            }
+//        },
+//        getTemplate: function(node) {
+//            $scope.vsTemplate = true;
+//            return 'valueSet_node';
+//        }
+//    });
+//    $scope.cmpTable = function(table1, table2) {
+//
+//        $scope.loadingSelection = true;
+//        $scope.vsChanged = false;
+//        $scope.vsTemplate = false;
+//        $scope.dataList = CompareService.cmpValueSet(JSON.stringify(table1), JSON.stringify(table2));
+//        console.log("hg==========");
+//        console.log($scope.dataList);
+//        $scope.loadingSelection = false;
+//        if ($scope.dynamicVs_params) {
+//            console.log($scope.dataList);
+//            $scope.showDelta = true;
+//            $scope.status.isSecondOpen = true;
+//            $scope.dynamicVs_params.refresh();
+//        }
+//
+//    };
+//
+//
+//});
+
+angular.module('igl').controller('AddBindingForValueSet', function($scope, $modalInstance, $rootScope, table) {
+    console.log($rootScope.references);
+    $scope.table = table;
+    $scope.selectedSegmentForBinding = null;
+    $scope.selectedFieldForBinding = null;
+    $scope.selectedDatatypeForBinding = null;
+    $scope.selectedComponentForBinding = null;
+    $scope.selectedBindingLocation = null;
+    $scope.selectedBindingStrength = null;
+    $scope.pathForBinding = null;
+    $scope.bindingTargetType = 'SEGMENT';
+
+    $scope.init = function() {
+        $scope.selectedSegmentForBinding = null;
+        $scope.selectedFieldForBinding = null;
+        $scope.selectedDatatypeForBinding = null;
+        $scope.selectedComponentForBinding = null;
+        $scope.selectedBindingLocation = null;
+        $scope.selectedBindingStrength = null;
+        $scope.pathForBinding = null;
+    };
+
+    $scope.checkDuplicated = function(path) {
+        for (var i = 0; i < $rootScope.references.length; i++) {
+            var ref = $rootScope.references[i];
+            if (ref.path == path) return true;
+        }
+        return false;
+    };
+
+    $scope.selectSegment = function() {
+        $scope.selectedFieldForBinding = null;
+    };
+
+    $scope.selectDatatype = function() {
+        $scope.selectedComponentForBinding = null;
+    };
+
+    $scope.save = function(bindingTargetType) {
+        var tableLink = {};
+        tableLink.id = $scope.table.id;
+        tableLink.bindingIdentifier = $scope.table.bindingIdentifier;
+        tableLink.bindingLocation = $scope.selectedBindingLocation;
+        tableLink.bindingStrength = $scope.selectedBindingStrength;
+        tableLink.isChanged = true;
+        tableLink.isNew = true;
+
+        if (bindingTargetType == 'SEGMENT') {
+            $scope.selectedFieldForBinding = JSON.parse($scope.selectedFieldForBinding);
+            $scope.pathForBinding = $rootScope.getSegmentLabel($scope.selectedSegmentForBinding) + '-' + $scope.selectedFieldForBinding.position;
+
+            var ref = angular.copy($scope.selectedFieldForBinding);
+            ref.path = $scope.pathForBinding;
+            ref.target = angular.copy($scope.selectedSegmentForBinding);
+            ref.tableLink = angular.copy(tableLink);
+            $rootScope.references.push(ref);
+        } else {
+            $scope.selectedComponentForBinding = JSON.parse($scope.selectedComponentForBinding);
+            $scope.pathForBinding = $rootScope.getDatatypeLabel($scope.selectedDatatypeForBinding) + '-' + $scope.selectedComponentForBinding.position;
+
+            var ref = angular.copy($scope.selectedComponentForBinding);
+            ref.path = $scope.pathForBinding;
+            ref.target = angular.copy($scope.selectedDatatypeForBinding);
+            ref.tableLink = angular.copy(tableLink);
+            $rootScope.references.push(ref);
+        }
+
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
