@@ -1488,12 +1488,12 @@ public class IGDocumentSerialization4ExportImpl implements IGDocumentSerializati
           th.appendChild(sl.getName() + "-" + ccc.getField().getPosition());
           tr.appendChild(th);
         }
-        nu.xom.Element th = new nu.xom.Element("th");
-        th.appendChild("Description");
-        tr.appendChild(th);
-        th = new nu.xom.Element("th");
-        th.appendChild("Comments");
-        tr.appendChild(th);
+        nu.xom.Element thd = new nu.xom.Element("th");
+        thd.appendChild("Description");
+        tr.appendChild(thd);
+        nu.xom.Element thc = new nu.xom.Element("th");
+        thc.appendChild("Comments");
+        tr.appendChild(thc);
         thead.appendChild(tr);
         htmlTable.appendChild(thead);
 
