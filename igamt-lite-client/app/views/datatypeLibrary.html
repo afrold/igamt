@@ -1489,14 +1489,12 @@ span {
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span>
                         <span class="pull-right">
-						<input type="checkbox" ng-click="confirmPublishTable(table)" ng-model="table.status" ng-true-value="'PUBLISHED'"  disabled  style="margin-right : 8px"/>Published</label>
-
 						<button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-								ng-disabled="editForm.$invalid || !editForm.$dirty"
-                	 			ng-click="save()">
+                                ng-disabled="!isBindingChanged()"
+                                ng-click="saveBindingForValueSet()">
 							<span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
-                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" disabled ng-click="reset()">
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!isBindingChanged()" ng-click="reset()">
 							<span><i class="fa fa-times fa-fw"></i> Reset</span>
 						</button>
                         </span>
