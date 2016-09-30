@@ -1137,8 +1137,14 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 	$scope.shareModal = function (igdocument) {
 		$http.get('api/usernames').then(function (response) {
 			var userList = response.data;
-			userList = userList.filter(function(user) {
-				return igdocument.shareParticipants.indexOf(user) === -1;
+			var filteredUserList = userList.filter(function(user) {
+                var isPresent = false;
+                for(var i = 0; i < igdocument.shareParticipants.length; i++) {
+                    if(igdocument.shareParticipants[i].id == user.id) {
+                        isPresent = true;
+                    }
+                }
+                if(!isPresent) return user;
 			});
 			var modalInstance = $modal.open({
 				templateUrl: 'ShareIGDocumentModal.html'
@@ -1148,7 +1154,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 						return igdocument;
 					}
 					, userList: function () {
-						return userList;
+						return filteredUserList;
 					}
 				}
 			});
