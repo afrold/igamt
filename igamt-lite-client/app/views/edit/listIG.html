@@ -58,7 +58,7 @@
 						<td st-ratio="10" ng-bind="row.profile.metaData.hl7Version"></td>
 						<td st-ratio="10" ng-bind="row.metaData.date"></td>
 						<td st-ratio="5" ng-if="igDocumentConfig.selectedType === 'USER' || igDocumentConfig.selectedType === 'SHARED'">
-							<span style="margin-left:5px ;    color: white !important;" class="badge">{{row.shareParticipants.length}} </span>
+							<span style="margin-left:5px ;    color: white !important;" class="badge">{{row.shareParticipantIds.length}} </span>
 						</td>
 						<td st-ratio="20">
 							<button ng-if="igDocumentConfig.selectedType === 'USER'" title="Edit IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-primary" ng-click="edit(row)"> <span><i

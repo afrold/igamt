@@ -151,7 +151,7 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     List<IGDocument> igdocuments = mongo.find(query, IGDocument.class);
     List<IGDocument> igdocumentsShareWithParticipantsId = new ArrayList<IGDocument>();
     for(IGDocument doc : igdocuments) {
-    	for(Long id : doc.getShareParticipants()) {
+    	for(Long id : doc.getShareParticipantIds()) {
     		if(id==participantId) {
     			igdocumentsShareWithParticipantsId.add(doc);
     		}

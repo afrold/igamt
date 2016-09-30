@@ -1284,7 +1284,7 @@ public class IGDocumentController extends CommonController {
         throw new IGDocumentException(
             "You do not have the right privilege to share this IG Document");
       }
-      d.getShareParticipants().addAll(participants);
+      d.getShareParticipantIds().addAll(participants);
       igDocumentService.save(d);
       return true;
     } catch (Exception e) {
@@ -1315,7 +1315,7 @@ public class IGDocumentController extends CommonController {
       if (d.getAccountId() != null && participantId != d.getAccountId()) { // owner should not be
                                                                            // removed
         if (d.getAccountId().equals(account.getId()) || account.getId().equals(participantId)) {
-          d.getShareParticipants().remove(participantId);
+          d.getShareParticipantIds().remove(participantId);
         } else {
           throw new IGDocumentException("You do not have the right to share this ig document");
         }
