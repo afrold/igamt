@@ -27,6 +27,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -73,7 +74,7 @@ public class TableController extends CommonController {
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public Table save(@RequestBody Table table)
       throws TableSaveException, ForbiddenOperationException {
-    if (SCOPE.USER.equals(table.getScope())) {
+    if (SCOPE.USER.equals(table.getScope())||(SCOPE.MASTER.equals(table.getScope())&&table.getStatus().equals(STATUS.UNPUBLISHED))) {
       log.debug("table=" + table);
       log.debug("table.getId()=" + table.getId());
       log.info("Saving the " + table.getScope() + " table.");

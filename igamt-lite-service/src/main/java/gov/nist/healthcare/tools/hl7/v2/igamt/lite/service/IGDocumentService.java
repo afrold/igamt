@@ -41,6 +41,8 @@ public interface IGDocumentService {
 
   public List<IGDocument> findAllPreloaded();
 
+  public List<IGDocument> findAllUser();
+
   public List<IGDocument> findByAccountId(Long accountId);
 
   public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);

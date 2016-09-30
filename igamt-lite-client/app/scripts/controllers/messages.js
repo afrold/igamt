@@ -631,6 +631,7 @@ angular.module('igl')
                 templateUrl: 'ConformanceStatementMessageCtrl.html',
                 controller: 'ConformanceStatementMessageCtrl',
                 windowClass: 'app-modal-window',
+                keyboard: false,
                 resolve: {
                     selectedMessage: function() {
                         return message;
@@ -2251,6 +2252,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         $scope.loadingSelection = false;
         $rootScope.deltaMsgList = CompareService.cmpMessage(JSON.stringify(msg1), msg2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
         //$scope.dataList = result;
+        console.log($rootScope.deltaMsgList);
 
         if ($scope.dynamicMsg_params) {
             console.log($rootScope.deltaMsgList);

@@ -88,6 +88,13 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     return igDocuments;
   }
 
+  @Override
+  public List<IGDocument> findAllUser() {
+    List<IGDocument> igDocuments = documentRepository.findUser();
+    log.info("igDocuments=" + igDocuments.size());
+    return igDocuments;
+  }
+
 
   @Override
   public List<IGDocument> findByAccountId(Long accountId) {

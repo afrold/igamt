@@ -586,22 +586,29 @@ angular
 
                 $scope.ValueSetOptionsINLIB = [
 
+                                               ['Create Flavor',
+                                                   function($itemScope) {
+                                                       if ($rootScope.hasChanges()) {
+                                                           $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                        	   console.log($scope.tableLibrary);
+                                                        	   console.log("table in lib");
+                                                               CloneDeleteSvc.copyTableINLIB($itemScope.table, $scope.tableLibrary);
+                                                           });
+                                                       } else {
+                                                    	   console.log("table in lib");
+                                                           CloneDeleteSvc.copyTableINLIB($itemScope.table,$scope.tableLibrary);
+                                                       }
+                                                   }
+                                               ],
+                                               null, ['Delete',
+                                                   function($itemScope) {
+                                                       CloneDeleteSvc.deleteValueSet($itemScope.table);
 
-                                          ['Copy',
-                                              function($itemScope) {
-                                  
-                                                      $scope.copyTableINLIB($itemScope.table,$scope.tableLibrary.id);
-                                                  
-                                              }
-                                          ],
-                                          null, ['Delete',
-                                              function($itemScope) {
-                                                 $scope.deleteValueSetINLIB($itemScope.table);
+                                                   }
+                                               ]
 
-                                              }
-                                          ]
-
-                                      ];
+                                           ];
+               
 
                 $scope.MessagesOption = [
 
@@ -732,23 +739,7 @@ angular
                         	 $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);                        }
                            
                         }
-                    ],
-                    ['Import HL7 Flavors Datatypes',
-                                          function($itemScope) {
-                    	
-                    	if ($rootScope.hasChanges()) {
-
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                $scope.addMasterDatatype($rootScope.igdocument.profile.metaData.hl7Version);
-                            	
-                                });
-                        } else {
-                        	
-                            $scope.addMasterDatatype($rootScope.igdocument.profile.metaData.hl7Version);
-                           
-                        }
-                                          }
-                                     ]
+                    ]
                 ];
 
                 $scope.DataTypeLibraryOptions = [
@@ -852,12 +843,12 @@ angular
                                                          if ($rootScope.hasChanges()) {
 
                                                              $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                                 CloneDeleteSvc.createNewTable('MASTER', $scope.tableLibrary);
+                                                                 CloneDeleteSvc.createNewTable($scope.tableLibrary.scope, $scope.tableLibrary);
                                                                  $scope.editTableINLIB($rootScope.table);                                                             	
                                                                  });
                                                          } else {
                                                          	
-                                                             CloneDeleteSvc.createNewTable('MASTER', $scope.tableLibrary);
+                                                             CloneDeleteSvc.createNewTable($scope.tableLibrary.scope, $scope.tableLibrary);
                                                              $scope.editTableINLIB($rootScope.table);                                                            
                                                          }
 
