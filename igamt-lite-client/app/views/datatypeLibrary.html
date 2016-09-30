@@ -439,7 +439,7 @@ span {
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsInLib">
                            <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data);" title="Filter By This Data Type" /> <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}</span>
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}</span>
                         </div>
                     </li>
@@ -452,7 +452,7 @@ span {
                         <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)">
                            <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}{{displayVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
                             </span>
                         </div>
                     </li>
@@ -474,7 +474,7 @@ span {
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;">
                             <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data)" title="Filter By This Datatype" /> <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}</span>
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}</span>
                         </div>
                     </li>
@@ -487,7 +487,7 @@ span {
                         <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)">
                             <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}{{displayVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
                             </span>
                         </div>
                     </li>
@@ -960,11 +960,6 @@ span {
         <p>You cannot publish this datatype since it contains unpublished elements </p>
         <div ng-show="unpublishedDatatypes.length>0">
             <h4>Datatype<h4>
-
-
-
-      
-
         <div class="igl-table" ng-show="unpublishedDatatypes.length>0">
             <table class="table table-striped table-condensed table-bordered">
                 <thead>
@@ -2322,7 +2317,7 @@ span {
     <div class="modal-body">
 		<span class="pull-right">
             <div class="btn-group btn-group-sm" data-toggle="buttons">
-                <label  class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'SEGMENT'; init();" ng-class="{'active':bindingTargetType === 'SEGMENT'}">
+                <label  ng-if ="false" class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'SEGMENT'; init();" ng-class="{'active':bindingTargetType === 'SEGMENT'}">
                     <input type="radio" ng-value="SEGMENT" ng-model="bindingTargetType">To Segment
                 </label>
                 <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'DATATYPE'; init();" ng-class="{'active':bindingTargetType === 'DATATYPE'}">

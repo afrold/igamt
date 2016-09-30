@@ -140,7 +140,8 @@ angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $root
     };
 
     $scope.save = function() {
-        if ($rootScope.table.status === 'UNPUBLISHED' ||$rootScope.table.scope === 'HL7STANDARD' ) {
+    	console.log("Calling save");
+        if ($rootScope.table.status === 'UNPUBLISHED' || $rootScope.table.scope !== 'HL7STANDARD' ) {
             $scope.saving = true;
             var table = $rootScope.table;
             var bindingIdentifier = table.bindingIdentifier;
@@ -319,11 +320,6 @@ angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $root
             }
         }
 
-        SegmentService.updateTableBinding(segmentUpdateParameterList).then(function(result) {}, function(error) {
-            $rootScope.msg().text = error.data.text;
-            $rootScope.msg().type = error.data.type;
-            $rootScope.msg().show = true;
-        });
 
         DatatypeService.updateTableBinding(datatypeUpdateParameterList).then(function(result) {}, function(error) {
             $rootScope.msg().text = error.data.text;

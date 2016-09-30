@@ -1576,7 +1576,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         
         $scope.copyDatatype = function(datatypeCopy) {
         	
-        	$scope.lastExt="1";
+        	//$scope.lastExt="1";
+        	//$scope.lastExt
             var newDatatype = angular.copy(datatypeCopy);
             
             $scope.getLastExtesion(datatypeCopy);
@@ -1584,6 +1585,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             newDatatype.id = null;
             newDatatype.status = 'UNPUBLISHED';
             newDatatype.scope = $scope.datatypeLibrary.scope;
+            newDatatype.ext=datatypeCopy.ext+"_"+(Math.floor(Math.random() * 10000000) + 1);
             DatatypeService.save(newDatatype).then(function(savedDatatype) {
                 newDatatype = savedDatatype;
                 $rootScope.datatypesMap[savedDatatype.id] = savedDatatype;
@@ -1929,9 +1931,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             });
             
         }
-
-
-
         $scope.AddDatatypeForMaster = function(datatype) {
 
 
@@ -1944,7 +1943,14 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             
         };
 
-
+        $scope.displayVersion= function(element){
+        	
+        	if(element.scope&&element.scope!=='MASTER'){
+        		return element.hl7Version;
+        	}else{
+        		return "[*]";
+        	}
+        };
         $scope.setLibrary = function(library) {
             DatatypeLibrarySvc.getDatatypesByLibrary(JSON.parse(library).id).then(function(result) {
                 var dts = [];
