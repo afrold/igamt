@@ -72,7 +72,7 @@ angular.module('igl')
         };
         
         $scope.save = function() {
-            var datatype = $scope.datatype;
+            var datatype = $rootScope.datatype;
             var ext = datatype.ext;
 
             DatatypeService.save(datatype).then(function(result) {
@@ -556,7 +556,7 @@ angular.module('igl')
         $scope.reset = function() {
         	console.log("Called reset");
             blockUI.start();
-            $scope.datatype = angular.copy($rootScope.datatypesMap[$scope.datatype.id]);
+            $rootScope.datatype = angular.copy($rootScope.datatypesMap[$scope.datatype.id]);
             cleanState();
             blockUI.stop();
         };
@@ -830,19 +830,14 @@ angular.module('igl')
         };
         
         
-        $rootScope.$on('event:initDatatype', function(event) {
+        $rootScope.$on('event:initDatatypeInLib', function(event) {
 
                 $scope.initt();
             
         });
         
-        $scope.initt = function() {
-            $scope.isDeltaCalled = true;
-            $scope.dataList = [];
-           
+        $scope.initt = function() {       
                 if ($scope.dynamicDt_params) {
-                    $scope.showDelta = false;
-                    $scope.status.isFirstOpen = true;
                     $scope.dynamicDt_params.refresh();
                 }
 
@@ -911,13 +906,6 @@ angular.module('igl')
             });
 
         };
-
-        //        $scope.$watch(function(){
-        //            return $rootScope.datatype;
-        //        }, function() {
-        //            $rootScope.recordChanged();
-        //        }, true);
-
 
     });
 

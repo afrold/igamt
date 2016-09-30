@@ -327,7 +327,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
 	public InputStream exportAsDocxDatatypeLibraryDocument(DatatypeLibraryDocument datatypeLibraryDocument){
 		if (datatypeLibraryDocument != null) {
-			return exportAsDocxFromXml(igDocumentSerializationService.serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument), "/rendering/datatypeLibraryDoc2html.xsl", true);
+			return exportAsDocxFromXml(igDocumentSerializationService.serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument), "/rendering/datatypeLibraryDoc2html.xsl", false);
 		} else {
 			return new NullInputStream(1L);
 		}
