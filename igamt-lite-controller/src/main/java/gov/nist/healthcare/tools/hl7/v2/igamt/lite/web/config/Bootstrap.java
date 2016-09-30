@@ -49,6 +49,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -122,11 +123,14 @@ public class Bootstrap implements InitializingBean {
     // addVersionAndScopetoUSERIG();
     // addScopeUserToOldClonedPRELOADEDIG();
     // changeTabletoTablesInNewHl7();
-//	modifiyCodeUsage();
+	modifyCodeUsage();
+	modifyFieldUsage();
+	modifyComponentUsage();
+	//[NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need to write a code for the message.
 	  //Colorate();
   }
-
-  private void modifiyCodeUsage() {
+  
+  private void modifyCodeUsage() {
 	  List<Table> allTables = tableService.findAll();
 	  
 	  for(Table t : allTables){
@@ -143,6 +147,42 @@ public class Bootstrap implements InitializingBean {
 		  if(isChanged) {
 			  tableService.save(t);
 			  logger.info("Table " + t.getId() + " has been updated by the codeusage issue.");
+		  }
+	  }
+  }
+  
+  private void modifyFieldUsage() {
+	  List<Segment> allSegments = segmentService.findAll();
+	  
+	  for(Segment s : allSegments){
+		  boolean isChanged = false;
+		  for(Field f:s.getFields()){
+			  if(f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W) ) {
+				  f.setUsage(Usage.X);
+				  isChanged = true;
+			  }
+		  }
+		  if(isChanged) {
+			  segmentService.save(s);
+			  logger.info("Segment " + s.getId() + " has been updated by the usage W/B issue.");
+		  }
+	  }
+  }
+  
+  private void modifyComponentUsage() {
+	  List<Datatype> allDatatypes = datatypeService.findAll();
+	  
+	  for(Datatype d : allDatatypes){
+		  boolean isChanged = false;
+		  for(Component c:d.getComponents()){
+			  if(c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W) ) {
+				  c.setUsage(Usage.X);
+				  isChanged = true;
+			  }
+		  }
+		  if(isChanged) {
+			  datatypeService.save(d);
+			  logger.info("Datatype " + d.getId() + " has been updated by the usage W/B issue.");
 		  }
 	  }
   }
