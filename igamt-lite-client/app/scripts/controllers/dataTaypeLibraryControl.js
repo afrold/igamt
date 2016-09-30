@@ -140,45 +140,112 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     			return "#778899";
     		}	
     	}	
-    	$scope.selectCell=function(dt, version){
-    		if($scope.selectedRow1 && $scope.selectedVersion1){
-        		$scope.selectedRow2=dt;
-        		$scope.selectedVersion2=version;
+//    	$scope.selectCell=function(dt, version){
+//    		if($scope.selectedRow1 && $scope.selectedVersion1){
+//        		$scope.selectedRow2=dt;
+//        		$scope.selectedVersion2=version;
+//        		var versions1=[];
+//        		versions1.push($scope.selectedVersion1);
+//        		var versions2=[];
+//        		versions2.push($scope.selectedVersion2);
+//                DatatypeService.getOneStandard($scope.selectedRow1.name, $scope.selectedVersion1,versions1).then(function(result1) {
+//                	$scope.cmp1=result1;
+//                    DatatypeService.getOneStandard($scope.selectedRow2.name, $scope.selectedVersion2,versions2).then(function(result2) {
+//                    	$scope.cmp2=result2;
+//                    	
+//                    	
+//                        $scope.loadingSelection = true;
+//                        $scope.dtChanged = false;
+//                        $scope.vsTemplate = false;
+//                        $scope.dataList = CompareService.cmpDatatype(JSON.stringify($scope.cmp1), JSON.stringify($scope.cmp2), [], [], [], []);
+//                        console.log("hg==========");
+//                        $scope.loadingSelection = false;
+//                        if ($scope.dynamicDt_params) {
+//                            console.log($scope.dataList);
+//                            $scope.showDelta = true;
+//                            $scope.dynamicDt_params.refresh();
+//                        }
+//                    });
+//                });
+//        		
+//    		}else{
+//    			$scope.selectedRow1=dt;
+//    			$scope.selectedVersion1=version;
+//    		}
+//    	}
+    	$scope.isSelected1=function(dt,version){
+    		return $scope.selectedRow===dt&& $scope.selectedVersion1===version ;
+
+    	}
+    	$scope.isSelected2=function(dt, version){
+    		return $scope.selectedRow===dt&& $scope.selectedVersion2===version ;
+    	}
+    	
+    	$scope.selectedVersion1=null;
+    	$scope.selectedVersion2=null;
+    	$scope.selectCell=function(dt,version){
+    		var vr=version.split('.').join("");
+    		
+    		console.log(version);
+    		console.log(vr);
+    		console.log(dt.links);
+    		if(dt.links[vr]!==undefined){
+    			$scope.selectCellAfterCheck(dt,version);
+    		}else{
+    			console.log("no version");
+    		}
+    		
+    	}
+    	
+    	$scope.selectCellAfterCheck=function(dt,version){
+    	if($scope.selectedRow && dt===$scope.selectedRow){
+    		if($scope.selectedVersion1!==null){
+    			if($scope.selectedVersion1&&$scope.selectedVersion1=== version){
+    				$scope.selectedVersion1=null;	
+    				}else if($scope.selectedVersion2!==null &&$scope.selectedVersion2=== version){
+    					$scope.selectedVersion2=null;
+    				}else{
+    					$scope.selectedVersion2=version;
+    				}
+    			}else{
+    				$scope.selectedVersion1=version;
+    			}
+    		
+    	}else if($scope.selectedRow && dt!==$scope.selectedRow ||!$scope.selectedRow){
+    		$scope.selectedRow=dt;
+    		$scope.selectedVersion2=null;
+    		$scope.selectedVersion1=version;
+    	}
+    		
+    		if($scope.selectedRow !==null &&$scope.selectedVersion2!==null &&$scope.selectedVersion1!==null ){
+    			
         		var versions1=[];
         		versions1.push($scope.selectedVersion1);
         		var versions2=[];
         		versions2.push($scope.selectedVersion2);
-                DatatypeService.getOneStandard($scope.selectedRow1.name, $scope.selectedVersion1,versions1).then(function(result1) {
-                	$scope.cmp1=result1;
-                    DatatypeService.getOneStandard($scope.selectedRow2.name, $scope.selectedVersion2,versions2).then(function(result2) {
-                    	$scope.cmp2=result2;
-                    	
-                    	
-                        $scope.loadingSelection = true;
-                        $scope.dtChanged = false;
-                        $scope.vsTemplate = false;
-                        $scope.dataList = CompareService.cmpDatatype(JSON.stringify($scope.cmp1), JSON.stringify($scope.cmp2), [], [], [], []);
-                        console.log("hg==========");
-                        $scope.loadingSelection = false;
-                        if ($scope.dynamicDt_params) {
-                            console.log($scope.dataList);
-                            $scope.showDelta = true;
-                            $scope.dynamicDt_params.refresh();
-                        }
-                    });
-                });
         		
-    		}else{
-    			$scope.selectedRow1=dt;
-    			$scope.selectedVersion1=version;
+              DatatypeService.getOneStandard($scope.selectedRow.name, $scope.selectedVersion1,versions1).then(function(result1) {
+            	$scope.cmp1=result1;
+                DatatypeService.getOneStandard($scope.selectedRow.name, $scope.selectedVersion2,versions2).then(function(result2) {
+                	$scope.cmp2=result2;
+                	
+                	
+                    $scope.loadingSelection = true;
+                    $scope.dtChanged = false;
+                    $scope.vsTemplate = false;
+                    $scope.dataList = CompareService.cmpDatatype(JSON.stringify($scope.cmp1), JSON.stringify($scope.cmp2), [], [], [], []);
+                    console.log("hg==========");
+                    $scope.loadingSelection = false;
+                    if ($scope.dynamicDt_params) {
+                        console.log($scope.dataList);
+                        $scope.showDelta = true;
+                        $scope.dynamicDt_params.refresh();
+                    }
+                });
+            });
+        		
+    			
     		}
-    	}
-    	$scope.isSelected1=function(dt,version){
-    		return $scope.selectedRow1===dt&& $scope.selectedVersion1===version ;
-
-    	}
-    	$scope.isSelected2=function(dt, version){
-    		return $scope.selectedRow2===dt&& $scope.selectedVersion2===version ;
     	}
     	
         $scope.datatypeSource = null;
@@ -1567,7 +1634,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 $scope.datatypes.push(newDatatype);
                 $scope.datatypes = _.uniq($scope.datatypes);
                 DatatypeLibrarySvc.save($scope.datatypeLibrary);
-                
 
             });
         };

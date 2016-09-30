@@ -228,7 +228,6 @@ angular.module('igl').factory('CompareService',
 
                         }
                     };
-                    console.log(fields[i].datatype.ext);
                     if (fields[i].datatype.ext === "") {
                         fields[i].datatype.ext = null;
                     }
@@ -266,7 +265,8 @@ angular.module('igl').factory('CompareService',
                             };
                         }
                         if (childArray.value.type.value === "field" || childArray.value.type.value === "component" || childArray.value.type.value === "datatype") {
-
+                            console.log("++++++++++++++++++++");
+                            console.log(childArray);
                             if (childArray.value.name.changed === "primitive change") {
                                 result.label = {
                                     element1: childArray.value.name.removed,
@@ -283,23 +283,12 @@ angular.module('igl').factory('CompareService',
 
                                 };
                             }
-                            // console.log("-----------------------");
-                            // console.log(childArray);
                             if (childArray.value.ext && childArray.value.ext.changed === "primitive change") {
-                                // console.log("++++++++++++++++++++");
-                                // console.log(childArray);
-                                if ((childArray.value.ext.removed === "" && childArray.value.ext.added === null) || (childArray.value.ext.removed === null && childArray.value.ext.added === "")) {
-                                    result.ext = {
-                                        element: ""
-                                    }
-                                } else {
-                                    result.ext = {
-                                        element1: childArray.value.ext.removed,
-                                        element2: childArray.value.ext.added
+                                result.ext = {
+                                    element1: childArray.value.ext.removed,
+                                    element2: childArray.value.name.added
 
-                                    };
-                                }
-
+                                };
 
                             }
 

@@ -412,7 +412,6 @@
     </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="MessageEditTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-md-2 col-fixed-250">
@@ -440,7 +439,6 @@
          </td>
     </tr>
 </script>
-
 <script type="text/ng-template" id="MessageSegmentRefEditTree.html">
 
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
@@ -572,7 +570,6 @@
         </td>
     </tr>
 </script>
-
 <script type="text/ng-template" id="MessageGroupEditTree.html">
 
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) && (node.obj.usage==='R' ||node.obj.usage==='C' ||node.obj.usage==='RE' ) && $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
@@ -703,7 +700,6 @@
         </td>
     </tr>
 </script>
-
 <script type="text/ng-template" id="MessageFieldViewTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
         <td class="col-md-2 col-fixed-250">
@@ -810,7 +806,6 @@
         </td>
     </tr>
 </script>
-
 <script type="text/ng-template" id="MessageComponentViewTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
         <td class="col-md-2 col-fixed-250">
@@ -924,7 +919,6 @@
         </td>
     </tr>
 </script>
-
 <script type="text/ng-template" id="PredicateMessageCtrl.html">
     <div class="modal-header">
         <div ng-show="selectedNode.obj.type==='segmentRef'">
@@ -1080,7 +1074,6 @@
                                 </span>
                                 <span ng-show="newConstraint.contraintType == 'one of list values'">
                         <input class="form-control"
-                               ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
                                ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
                         <span style="color:red;"
                               ng-show="isEmptyConstraintValue(newConstraint)">Empty list of values</span>
@@ -1250,9 +1243,7 @@
                         <tr class="tbl-header">
                             <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
                             <th st-sort="constraintId" class="col-md-2">ID</th>
-                            <th class="col-md-8">Desciption (
-                                <input type="checkbox" ng-model="viewAssertion"> view assertion )
-                            </th>
+                            <th class="col-md-8">Description (<input type="checkbox" ng-model="viewAssertion"> view assertion)</th>
                             <th class="col-md-1"></th>
                         </tr>
                     </thead>
@@ -1262,14 +1253,12 @@
                                 <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                             </td>
                             <td class="col-md-2">
-                                <input class="form-control form-control-short80" ng-model="c.constraintId" ng-change="setChanged(); targetId = c.constraintId;" type="text" ng-readonly="targetId !== c.constraintId" />
-                                <i class="fa fa-pencil" ng-hide="targetId == c.constraintId" ng-click="targetId = c.constraintId; conformanceStatementIdList.splice(conformanceStatementIdList.indexOf(c.constraintId), 1);"></i>
-                                <i class="fa fa-paper-plane" ng-hide="targetId != c.constraintId || conformanceStatementIdList.indexOf(c.constraintId) != -1" ng-click="conformanceStatementIdList.push(c.constraintId); targetId = ''"></i>
-                                <span style="color:red" ng-show="conformanceStatementIdList.indexOf(c.constraintId) != -1 && targetId == c.constraintId">Duplicated ID</span>
+                                <input class="form-control" ng-model="c.constraintId" ng-change="setChanged();" type="text" />
+                                <span style="color:red;" ng-show="isEmptyConstraintID(c)">ID Empty</span>
                             </td>
                             <td class="col-md-8">
                                 <input class="form-control" ng-model="c.description" ng-change="setChanged()" type="text" />
-                                <span ng-show="viewAssertion">{{c.assertion}}</span>
+                                <textarea ng-show="viewAssertion" class="form-control" ng-model="c.assertion" ng-change="setChanged()" />
                             </td>
                             <td class="col-md-1" align="center">
                                 <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatement(c)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
@@ -1312,12 +1301,8 @@
                                     <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                                 </td>
                                 <td class="col-md-2">
-                                    <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint) || isDuplicatedConstraintID(newConstraint, targetPlainId)}" ng-model="newConstraint.constraintId" ng-change="targetPlainId = newConstraint.constraintId;"
-                                        type="text" ng-readonly="targetPlainId !== newConstraint.constraintId" />
-                                    <i class="fa fa-pencil" ng-hide="targetPlainId == newConstraint.constraintId" ng-click="targetPlainId = newConstraint.constraintId;"></i>
-                                    <i class="fa fa-paper-plane" ng-hide="targetPlainId != newConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1" ng-click="conformanceStatementIdList.push(newConstraint.constraintId); targetPlainId = ''"></i>
+                                    <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text"/>
                                     <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
-                                    <span style="color:red;" ng-show="isDuplicatedConstraintID(newConstraint, targetPlainId)">ID Duplicated</span>
                                 </td>
                                 <td class="col-md-8">
                                     <input class="form-control" ng-model="newConstraint.freeText" type="text" />
@@ -1347,12 +1332,8 @@
                                     <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                                 </td>
                                 <td class="col-md-2">
-                                    <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint) || isDuplicatedConstraintID(newConstraint, targetPlainId)}" ng-model="newConstraint.constraintId" ng-change="targetPlainId = newConstraint.constraintId;"
-                                        type="text" ng-readonly="targetPlainId !== newConstraint.constraintId" />
-                                    <i class="fa fa-pencil" ng-hide="targetPlainId == newConstraint.constraintId" ng-click="targetPlainId = newConstraint.constraintId;"></i>
-                                    <i class="fa fa-paper-plane" ng-hide="targetPlainId != newConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1" ng-click="conformanceStatementIdList.push(newConstraint.constraintId); targetPlainId = ''"></i>
+                                    <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text"/>
                                     <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
-                                    <span style="color:red;" ng-show="isDuplicatedConstraintID(newConstraint, targetPlainId)">ID Duplicated</span>
                                 </td>
                                 <td class="col-md-2">
                                     <span>{{newConstraint.location_1}}</span>
@@ -1390,7 +1371,6 @@
                                     </span>
                                     <span ng-show="newConstraint.contraintType == 'one of list values'">
                             <input class="form-control"
-                                   ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
                                    ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)"
                                    type="text"/>
                             <span style="color:red;"
@@ -1472,12 +1452,8 @@
                                     <button class="btn btn-raised btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                                 </td>
                                 <td class="col-md-2">
-                                    <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyComplexConstraintID(newComplexConstraintId) || isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId)}" ng-model="newComplexConstraintId" ng-change="targetComplexId = newComplexConstraintId;"
-                                        type="text" ng-readonly="targetComplexId !== newComplexConstraintId" />
-                                    <i class="fa fa-pencil" ng-hide="targetComplexId == newComplexConstraintId" ng-click="targetComplexId = newComplexConstraintId;"></i>
-                                    <i class="fa fa-paper-plane" ng-hide="targetComplexId != newComplexConstraintId || conformanceStatementIdList.indexOf(newComplexConstraintId) != -1" ng-click="conformanceStatementIdList.push(newComplexConstraintId); targetComplexId = ''"></i>
-                                    <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
-                                    <span style="color:red;" ng-show="isDuplicatedConstraintID(newConstraint, targetPlainId)">ID Duplicated</span>
+                                    <input class="form-control" ng-class="{'form-control-invalid': isEmptyComplexConstraintID(newComplexConstraintId)}" ng-model="newComplexConstraintId" type="text"/>
+                                    <span style="color:red;" ng-show="isEmptyComplexConstraintID(newComplexConstraintId)">ID Empty</span>
                                 </td>
                                 <td class="col-md-2">
                                     <select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
@@ -1901,7 +1877,6 @@
         </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="ConfirmMessageDeleteCtrl.html">
     <div class="modal-header modal-wide">
         <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Delete Confirmation
@@ -1935,7 +1910,6 @@
         </button>
     </div>
 </script>
-
 <script type="text/ng-template" id="OtoX.html">
     <div class="modal-header">
         <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Change Usage O to X Confirmation
@@ -1952,7 +1926,6 @@
         </button>
     </div>
 </script>
-
 <script type="text/ng-template" id="redirectCtrl.html">
     <div class="modal-header">
         <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Confirmation
@@ -1972,8 +1945,6 @@
         </button>
     </div>
 </script>
-
-
 <script type="text/ng-template" id="tree_node">
     <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined)">
         <td class="col-md-1" style="width:14%">

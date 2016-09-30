@@ -772,15 +772,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             } else {
                 prefix = 'Default';
             }
-            var maxIDNum = Number(0);
-            angular.forEach($rootScope.conformanceStatementIdList, function(id) {
-                if (id != null) {
-                    var tempID = parseInt(id.replace(prefix + "-", ""));
 
-                    if (tempID > maxIDNum) maxIDNum = tempID;
-                }
-            });
-            return prefix + "-" + (maxIDNum + 1);
+            return $rootScope.createNewFlavorName(prefix);
         };
 
         $rootScope.usedSegsLink = [];
@@ -1275,6 +1268,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 return '[0-2](\\.(0|[1-9][0-9]*))*';
             } else if (format === 'Alphanumeric') {
                 return '^[a-zA-Z0-9]*$';
+            } else if (format === 'Positive Integer') {
+                return '^[1-9]\d*$';
             }
 
             return format;
