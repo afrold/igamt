@@ -32,6 +32,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.BindingParametersForSegment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
@@ -140,6 +141,33 @@ public class SegmentController extends CommonController {
 		  }
 	  }
   }
+  @RequestMapping(value = "/updateDatatypeBinding", method = RequestMethod.POST)
+  public void updateDatatypeBinding(@RequestBody List<BindingParametersForSegment> bindingParametersList) throws SegmentSaveException, ForbiddenOperationException, DataNotFoundException {
+	  for(BindingParametersForSegment paras : bindingParametersList){
+		  Segment segment = this.segmentService.findById(paras.getSegmentId());
+		  if (!SCOPE.HL7STANDARD.equals(segment.getScope())) {
+			  segment.setDate(DateUtils.getCurrentTime());
+			  Field targetField = segment.getFields().get(this.indexOfField(paras.getFieldId(), segment));
+			  DatatypeLink datatypeLink=paras.getDatatypeLink();
+			  if(datatypeLink != null) {
+				  targetField.setDatatype(datatypeLink);
+			  }
+			  segmentService.save(segment);
+		  } else {
+			  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
+		  }
+	  }
+  }
+  private void deleteDatatype(Field targetField, String key) throws DataNotFoundException {
+	  DatatypeLink found = null;
+	  if(targetField.getDatatype().getId().equals(key)) found = targetField.getDatatype();
+	  
+	  if(found != null){
+		  targetField.setDatatype(null);;
+	  }else {
+		  throw new DataNotFoundException("datatypeLinkNotFound");
+	  }
+}
   
   private void deleteTable(Field targetField, String key) throws DataNotFoundException {
 	  TableLink found = null;

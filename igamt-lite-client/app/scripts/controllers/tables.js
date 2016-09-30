@@ -11,7 +11,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.params = null;
     $scope.predicate = 'value';
     $scope.reverse = false;
-    $scope.selectedCodes=[];
+    $scope.selectedCodes = [];
     $scope.isDeltaCalled = false;
     $scope.tabStatus = {
         active: 1
@@ -20,7 +20,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         $scope.tabStatus = {
             active: 1
         };
-        $scope.selectedCodes=[];
+        $scope.selectedCodes = [];
         $rootScope.$on('event:cloneTableFlavor', function(event, table) {
             $scope.copyTable(table);
         });
@@ -32,21 +32,68 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         $rootScope.table = angular.copy($rootScope.tablesMap[$rootScope.table.id]);
 
         $rootScope.references = [];
-        angular.forEach($rootScope.segments, function (segment) {
+        angular.forEach($rootScope.segments, function(segment) {
             $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
         });
-        angular.forEach($rootScope.datatypes, function (dt) {
-            $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt),dt);
+        angular.forEach($rootScope.datatypes, function(dt) {
+            $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
         });
 
         blockUI.stop();
     };
+    $scope.redirectSeg = function(segmentRef) {
+        SegmentService.get(segmentRef.id).then(function(segment) {
+            var modalInstance = $modal.open({
+                templateUrl: 'redirectCtrl.html',
+                controller: 'redirectCtrl',
+                size: 'md',
+                resolve: {
+                    destination: function() {
+                        return segment;
+                    }
+                }
 
-    $scope.isBindingChanged = function () {
+
+
+            });
+            modalInstance.result.then(function() {
+                $rootScope.editSeg(segment);
+            });
+
+
+
+        });
+    };
+    $scope.redirectDT = function(datatype) {
+        console.log(datatype);
+        DatatypeService.getOne(datatype.id).then(function(datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'redirectCtrl.html',
+                controller: 'redirectCtrl',
+                size: 'md',
+                resolve: {
+                    destination: function() {
+                        return datatype;
+                    }
+                }
+
+
+
+            });
+            modalInstance.result.then(function() {
+                $rootScope.editDataType(datatype);
+            });
+
+
+
+        });
+    };
+
+    $scope.isBindingChanged = function() {
         for (var i = 0; i < $rootScope.references.length; i++) {
             var ref = $rootScope.references[i];
 
-            if(ref.tableLink.isChanged) return true;
+            if (ref.tableLink.isChanged) return true;
         }
         return false;
     };
@@ -70,16 +117,16 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
         var t = $rootScope.tablesMap[tableLink.id];
 
-        if(t == null){
+        if (t == null) {
             tableLink.bindingIdentifier = null;
             tableLink.bindingLocation = null;
             tableLink.bindingStrength = null;
-        }else {
+        } else {
             tableLink.bindingIdentifier = t.bindingIdentifier;
         }
     };
 
-    $scope.AddBindingForValueSet = function (table) {
+    $scope.AddBindingForValueSet = function(table) {
         var modalInstance = $modal.open({
             templateUrl: 'AddBindingForValueSet.html',
             controller: 'AddBindingForValueSet',
@@ -123,7 +170,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                 newLink.bindingIdentifier = bindingIdentifier;
                 TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function(link) {
                     oldLink.bindingIdentifier = link.bindingIdentifier;
-                    oldLink.ext=link.ext;
+                    oldLink.ext = link.ext;
                     cleanState();
                     $rootScope.msg().text = "tableSaved";
                     $rootScope.msg().type = "success";
@@ -144,59 +191,13 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         $scope.saveBinding();
     };
 
-    $scope.saveBinding = function () {
+    $scope.saveBinding = function() {
         var datatypeUpdateParameterList = [];
         var segmentUpdateParameterList = [];
 
         for (var q = 0; q < $rootScope.references.length; q++) {
             var ref = $rootScope.references[q];
-            if(ref.tableLink.isNew) {
-                if(ref.type == 'component'){
-                    var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
-                    ref.tableLink.isNew = null;
-                    ref.tableLink.isChanged = null;
-                    var newTableLink = angular.copy(ref.tableLink);
-                    var targetComponent = angular.copy(ref);
-                    targetComponent.target = null;
-                    targetComponent.path = null;
-                    targetComponent.tableLink = null;
-
-                    var toBeUpdateComponent = _.find(targetDatatype.components, function(component){ return component.position == targetComponent.position; });
-                    if(toBeUpdateComponent) toBeUpdateComponent.tables.push(newTableLink);
-                    $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
-                    var oldDatatype = _.find($rootScope.datatypes, function(dt){ return dt.id == targetDatatype.id; });
-                    var index = $rootScope.datatypes.indexOf(oldDatatype);
-                    if(index > -1) $rootScope.datatypes[index] = targetDatatype;
-
-                    var datatypeUpdateParameter = {};
-                    datatypeUpdateParameter.datatypeId = targetDatatype.id;
-                    datatypeUpdateParameter.componentId = targetComponent.id;
-                    datatypeUpdateParameter.tableLink = newTableLink;
-                    datatypeUpdateParameterList.push(datatypeUpdateParameter);
-                }else if(ref.type == 'field'){
-                    var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
-                    ref.tableLink.isNew = null;
-                    ref.tableLink.isChanged = null;
-                    var newTableLink = angular.copy(ref.tableLink);
-                    var targetField = angular.copy(ref);
-                    targetField.target = null;
-                    targetField.path = null;
-                    targetField.tableLink = null;
-
-                    var toBeUpdateField = _.find(targetSegment.fields, function(field){ return field.position == targetField.position; });
-                    if(toBeUpdateField) toBeUpdateField.tables.push(newTableLink);
-                    $rootScope.segmentsMap[targetSegment.id] = targetSegment;
-                    var oldSegment = _.find($rootScope.segments, function(seg){ return seg.id == targetSegment.id; });
-                    var index = $rootScope.segments.indexOf(oldSegment);
-                    if(index > -1) $rootScope.segments[index] = targetSegment;
-
-                    var segmentUpdateParameter = {};
-                    segmentUpdateParameter.segmentId = targetSegment.id;
-                    segmentUpdateParameter.fieldId = targetField.id;
-                    segmentUpdateParameter.tableLink = newTableLink;
-                    segmentUpdateParameterList.push(segmentUpdateParameter);
-                }
-            }else if(ref.tableLink.isChanged) {
+            if (ref.tableLink.isNew) {
                 if (ref.type == 'component') {
                     var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
                     ref.tableLink.isNew = null;
@@ -207,7 +208,61 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                     targetComponent.path = null;
                     targetComponent.tableLink = null;
 
-                    var toBeUpdateComponent = _.find(targetDatatype.components, function (component) {
+                    var toBeUpdateComponent = _.find(targetDatatype.components, function(component) {
+                        return component.position == targetComponent.position;
+                    });
+                    if (toBeUpdateComponent) toBeUpdateComponent.tables.push(newTableLink);
+                    $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
+                    var oldDatatype = _.find($rootScope.datatypes, function(dt) {
+                        return dt.id == targetDatatype.id;
+                    });
+                    var index = $rootScope.datatypes.indexOf(oldDatatype);
+                    if (index > -1) $rootScope.datatypes[index] = targetDatatype;
+
+                    var datatypeUpdateParameter = {};
+                    datatypeUpdateParameter.datatypeId = targetDatatype.id;
+                    datatypeUpdateParameter.componentId = targetComponent.id;
+                    datatypeUpdateParameter.tableLink = newTableLink;
+                    datatypeUpdateParameterList.push(datatypeUpdateParameter);
+                } else if (ref.type == 'field') {
+                    var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
+                    ref.tableLink.isNew = null;
+                    ref.tableLink.isChanged = null;
+                    var newTableLink = angular.copy(ref.tableLink);
+                    var targetField = angular.copy(ref);
+                    targetField.target = null;
+                    targetField.path = null;
+                    targetField.tableLink = null;
+
+                    var toBeUpdateField = _.find(targetSegment.fields, function(field) {
+                        return field.position == targetField.position;
+                    });
+                    if (toBeUpdateField) toBeUpdateField.tables.push(newTableLink);
+                    $rootScope.segmentsMap[targetSegment.id] = targetSegment;
+                    var oldSegment = _.find($rootScope.segments, function(seg) {
+                        return seg.id == targetSegment.id;
+                    });
+                    var index = $rootScope.segments.indexOf(oldSegment);
+                    if (index > -1) $rootScope.segments[index] = targetSegment;
+
+                    var segmentUpdateParameter = {};
+                    segmentUpdateParameter.segmentId = targetSegment.id;
+                    segmentUpdateParameter.fieldId = targetField.id;
+                    segmentUpdateParameter.tableLink = newTableLink;
+                    segmentUpdateParameterList.push(segmentUpdateParameter);
+                }
+            } else if (ref.tableLink.isChanged) {
+                if (ref.type == 'component') {
+                    var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
+                    ref.tableLink.isNew = null;
+                    ref.tableLink.isChanged = null;
+                    var newTableLink = angular.copy(ref.tableLink);
+                    var targetComponent = angular.copy(ref);
+                    targetComponent.target = null;
+                    targetComponent.path = null;
+                    targetComponent.tableLink = null;
+
+                    var toBeUpdateComponent = _.find(targetDatatype.components, function(component) {
                         return component.position == targetComponent.position;
                     });
                     if (toBeUpdateComponent) {
@@ -218,7 +273,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                         }
                     }
                     $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
-                    var oldDatatype = _.find($rootScope.datatypes, function (dt) {
+                    var oldDatatype = _.find($rootScope.datatypes, function(dt) {
                         return dt.id == targetDatatype.id;
                     });
                     var index = $rootScope.datatypes.indexOf(oldDatatype);
@@ -240,7 +295,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                     targetField.path = null;
                     targetField.tableLink = null;
 
-                    var toBeUpdateField = _.find(targetSegment.fields, function (field) {
+                    var toBeUpdateField = _.find(targetSegment.fields, function(field) {
                         return field.position == targetField.position;
                     });
                     if (toBeUpdateField) {
@@ -251,7 +306,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                         }
                     }
                     $rootScope.segmentsMap[targetSegment.id] = targetSegment;
-                    var oldSegment = _.find($rootScope.segments, function (seg) {
+                    var oldSegment = _.find($rootScope.segments, function(seg) {
                         return seg.id == targetSegment.id;
                     });
                     var index = $rootScope.segments.indexOf(oldSegment);
@@ -267,24 +322,24 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             }
         }
 
-        SegmentService.updateTableBinding(segmentUpdateParameterList).then(function (result) {}, function (error) {
+        SegmentService.updateTableBinding(segmentUpdateParameterList).then(function(result) {}, function(error) {
             $rootScope.msg().text = error.data.text;
             $rootScope.msg().type = error.data.type;
             $rootScope.msg().show = true;
         });
 
-        DatatypeService.updateTableBinding(datatypeUpdateParameterList).then(function (result) {}, function (error) {
+        DatatypeService.updateTableBinding(datatypeUpdateParameterList).then(function(result) {}, function(error) {
             $rootScope.msg().text = error.data.text;
             $rootScope.msg().type = error.data.type;
             $rootScope.msg().show = true;
         });
 
         $rootScope.references = [];
-        angular.forEach($rootScope.segments, function (segment) {
+        angular.forEach($rootScope.segments, function(segment) {
             $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
         });
-        angular.forEach($rootScope.datatypes, function (dt) {
-            $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt),dt);
+        angular.forEach($rootScope.datatypes, function(dt) {
+            $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
         });
     };
 
@@ -356,51 +411,51 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         }
         $scope.setDirty();
     };
-    $rootScope.checkAll=false;
-    $scope.ProcessChecking= function(checkAll){
+    $rootScope.checkAll = false;
+    $scope.ProcessChecking = function(checkAll) {
 
 
         console.log("here");
-        if(checkAll){
+        if (checkAll) {
             $scope.checkAllValues();
-        }else{
+        } else {
             $scope.uncheckAllValues();
         }
 
     }
-    $scope.addOrRemoveValue= function(c){
-        if(c.selected===true){
+    $scope.addOrRemoveValue = function(c) {
+        if (c.selected === true) {
             $scope.selectedCodes.push(c);
-        }else if (c.selected===false){
-             var index = $scope.selectedCodes.indexOf(c);
-                if (index > -1) {
-                    $scope.selectedCodes.splice(index, 1);
-                }
+        } else if (c.selected === false) {
+            var index = $scope.selectedCodes.indexOf(c);
+            if (index > -1) {
+                $scope.selectedCodes.splice(index, 1);
+            }
         }
 
 
     }
-    $scope.deleteSlectedValues= function(){
+    $scope.deleteSlectedValues = function() {
         console.log()
         console.log("deleting");
-        $rootScope.table.codes=_.difference($rootScope.table.codes,$scope.selectedCodes);
-         $scope.selectedCodes=[];
+        $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
+        $scope.selectedCodes = [];
     }
-    $scope.checkAllValues= function(){
-        angular.forEach($rootScope.table.codes, function(c){
-            c.selected=true;
+    $scope.checkAllValues = function() {
+        angular.forEach($rootScope.table.codes, function(c) {
+            c.selected = true;
             $scope.selectedCodes.push(c);
         });
     }
-    $scope.uncheckAllValues= function(){
+    $scope.uncheckAllValues = function() {
         console.log("deleting");
-         //console.log($rootScope.displayCollection);
-        angular.forEach($rootScope.table.codes, function(c){
-            if(c.selected&&c.selected===true){
-               c.selected=false;
+        //console.log($rootScope.displayCollection);
+        angular.forEach($rootScope.table.codes, function(c) {
+            if (c.selected && c.selected === true) {
+                c.selected = false;
             }
         });
-        $scope.selectedCodes=[];
+        $scope.selectedCodes = [];
     }
     $scope.deleteValue = function(value) {
         // if (!$scope.isNewValueThenDelete(value.id)) {
@@ -881,6 +936,7 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
 });
 
 angular.module('igl').controller('AddBindingForValueSet', function($scope, $modalInstance, $rootScope, table) {
+    console.log($rootScope.references);
     $scope.table = table;
     $scope.selectedSegmentForBinding = null;
     $scope.selectedFieldForBinding = null;
@@ -891,7 +947,7 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
     $scope.pathForBinding = null;
     $scope.bindingTargetType = 'SEGMENT';
 
-    $scope.init = function (){
+    $scope.init = function() {
         $scope.selectedSegmentForBinding = null;
         $scope.selectedFieldForBinding = null;
         $scope.selectedDatatypeForBinding = null;
@@ -901,23 +957,23 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
         $scope.pathForBinding = null;
     };
 
-    $scope.checkDuplicated = function(path){
+    $scope.checkDuplicated = function(path) {
         for (var i = 0; i < $rootScope.references.length; i++) {
             var ref = $rootScope.references[i];
-            if(ref.path == path) return true;
+            if (ref.path == path) return true;
         }
         return false;
     };
 
-    $scope.selectSegment = function(){
+    $scope.selectSegment = function() {
         $scope.selectedFieldForBinding = null;
     };
 
-    $scope.selectDatatype = function(){
+    $scope.selectDatatype = function() {
         $scope.selectedComponentForBinding = null;
     };
 
-    $scope.save = function (bindingTargetType){
+    $scope.save = function(bindingTargetType) {
         var tableLink = {};
         tableLink.id = $scope.table.id;
         tableLink.bindingIdentifier = $scope.table.bindingIdentifier;
@@ -926,7 +982,7 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
         tableLink.isChanged = true;
         tableLink.isNew = true;
 
-        if(bindingTargetType == 'SEGMENT'){
+        if (bindingTargetType == 'SEGMENT') {
             $scope.selectedFieldForBinding = JSON.parse($scope.selectedFieldForBinding);
             $scope.pathForBinding = $rootScope.getSegmentLabel($scope.selectedSegmentForBinding) + '-' + $scope.selectedFieldForBinding.position;
 
@@ -935,7 +991,7 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
             ref.target = angular.copy($scope.selectedSegmentForBinding);
             ref.tableLink = angular.copy(tableLink);
             $rootScope.references.push(ref);
-        }else {
+        } else {
             $scope.selectedComponentForBinding = JSON.parse($scope.selectedComponentForBinding);
             $scope.pathForBinding = $rootScope.getDatatypeLabel($scope.selectedDatatypeForBinding) + '-' + $scope.selectedComponentForBinding.position;
 

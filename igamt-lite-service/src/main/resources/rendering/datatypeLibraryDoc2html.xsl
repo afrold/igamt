@@ -6,6 +6,7 @@
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		indent="yes" />
 	<xsl:param name="inlineConstraints" select="'false'"></xsl:param>
+	<xsl:param name="includeTOC" select="'true'"></xsl:param>
 
 	<xsl:template match="/">
 
@@ -18,23 +19,116 @@
 					html {
 					font-family: 'Arial Narrow',
 					sans-serif;
+					}
+
+					#sidebar {
+					float:left;
+					width:30%;
+					background:#F0F0F0;
+					overflow: auto;
+					max-height: 100vh;
+					font-family:
+					'Arial Narrow',
+					sans-serif;
+					margin-top: 1px;
+					margin-bottom: 1px;
+					/*
+					border-right: 2px
+					solid
+					black;
+					*/
+					}
+					/* unvisited link */
+					#sidebar a:link {
+					color: #000066;
+					margin-top:
+					1px;
+					margin-bottom: 1px;
+					/* margin-right: 150px;
+					margin-left: 80px;
+					*/
+					}
+
+					/* visited link */
+					#sidebar a:visited {
+					color:
+					green;
+					margin-top: 1px;
+					margin-bottom: 1px;
+					}
+
+					/* mouse over link */
+					#sidebar a:hover {
+					color: hotpink;
+					margin-top:
+					1px;
+					margin-bottom:
+					1px;
+					}
+
+					/* selected link */
+					#sidebar a:active {
+					color: blue;
+					margin-top:
+					1px;
+					margin-bottom: 1px;
+					}
+					#main {
+					float:right;
+					width:70%;
+					overflow:
+					auto;
+					max-height: 100vh;
+					}
+					#notoc {
+					float:right;
 					width:100%;
 					overflow:
 					auto;
 					max-height: 100vh;
 					}
+					.divh1{
+					padding-left: 15px;
+					}
+					.divh2 {
+					padding-left: 30px;
+					}
+					.divh3 {
+					padding-left: 45px;
+					}
+					.divh4 {
+					padding-left: 60px;
+					}
+					.divh5 {
+					padding-left:
+					75px;
+					}
+					.divh6 {
+					padding-left:
+					90px;
+					}
+					.hidden {
+					display: none;
+					}
+					.unhidden {
+					display:
+					block;
+					}
+					.btn {
+					float:right;
+					}
+					.masterDatatypeLabel {
+					color:red;
+					}
 				</style>
 				<style type="text/css">
 
 					/*!
-					* froala_editor v2.2.1
-					(https://www.froala.com/wysiwyg-editor)
+					* froala_editor v2.2.1 (https://www.froala.com/wysiwyg-editor)
 					*
-					License
-					https://froala.com/wysiwyg-editor/terms/
+					License https://froala.com/wysiwyg-editor/terms/
 					* Copyright
-					2014-2016 Froala
-					Labs
+					2014-2016 Froala Labs
 					*/
 					.clearfix::after{clear:both;display:block;content:""}.fr-view
 					table{border:0;border-collapse:collapse;empty-cells:show;max-width:100%}.fr-view
@@ -98,12 +192,136 @@
 			</head>
 
 			<body style="font-family:Arial Narrow, Arial, sans-serif;">
-				<xsl:call-template name="dispProfileContent" />
-				<xsl:call-template name="dispSect" />
+				<xsl:if test="$includeTOC='true'">
+					<div id="sidebar">
+						<h1>TABLE OF CONTENT</h1>
+						<br />
+						<xsl:call-template name="tocSect" />
+					</div>
+					<div id="main">
+						<xsl:apply-templates select="ConformanceProfile/MetaData" />
+						<hr></hr>
+						<a name="top"></a>
+						<xsl:call-template name="dispSect" />
+					</div>
+					<script type="text/javascript">
+						<xsl:text disable-output-escaping="yes">
+					function unhide(divID, btnID) {
+					var oLimit = document.querySelector("#sidebar");
+					var divs = document.querySelectorAll("div");
+					for (var i = 0; i &lt; divs.length; i++) {
+					if (divs[i].id == divID) {
+					divs[i].className = (divs[i].className=='hidden')?'unhidden':'hidden';
+					}
+					}
+					document.getElementById(btnID).innerHTML = ((document.getElementById(divID).className=='hidden')? "[Show]":"[Hide]");
+					}</xsl:text>
+					</script>
+				</xsl:if>
+				<xsl:if test="normalize-space($includeTOC) = 'false'">
+					<div id="notoc">
+						<xsl:call-template name="dispSect" />
+					</div>
+				</xsl:if>
 			</body>
 		</html>
 	</xsl:template>
 
+	<xsl:template name="dispInfoSect" mode="disp">
+		<xsl:if test="name() = 'Section'">
+			<a id="{@id}" name="{@id}">
+				<u>
+					<xsl:choose>
+						<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'true'">
+							<xsl:element name="{concat('h', @h)}">
+								<xsl:if test="@prefix != ''">
+								<xsl:value-of select="@prefix" />
+								-
+								</xsl:if>
+								<xsl:if test="@scope = 'MASTER'">
+									<xsl:element name="span">
+										<xsl:attribute name="class"><xsl:text>masterDatatypeLabel</xsl:text></xsl:attribute>
+										<xsl:text>MAS</xsl:text>
+									</xsl:element>
+									<xsl:element name="span">
+										<xsl:text> - </xsl:text>
+									</xsl:element>
+								</xsl:if>
+								<xsl:value-of select="@title" />
+							</xsl:element>
+						</xsl:when>
+						<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
+							<xsl:element name="h6">
+								<xsl:value-of select="@prefix" />
+								-
+								<xsl:value-of select="@title" />
+							</xsl:element>
+						</xsl:when>
+						<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'false'">
+							<xsl:element name="{concat('h', @h)}">
+								<xsl:value-of select="@title" />
+							</xsl:element>
+						</xsl:when>
+						<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
+							<xsl:element name="h6">
+								<xsl:value-of select="@prefix" />
+								-
+								<xsl:value-of select="@title" />
+							</xsl:element>
+						</xsl:when>
+					</xsl:choose>
+				</u>
+			</a>
+			<br />
+			<xsl:call-template name="dispSectContent" />
+			<xsl:call-template name="dispProfileContent" />
+
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="MetaData">
+		<p style="text-align:center">
+			<xsl:element name="img">
+				<xsl:attribute name="src">
+					<xsl:text>http://hit-2015.nist.gov/docs/hl7Logo.png</xsl:text>
+				</xsl:attribute>
+			</xsl:element>
+		</p>
+		<p style="font-size:250%; text-align:center">
+			<strong>
+				<xsl:value-of select="@Name"></xsl:value-of>
+			</strong>
+		</p>
+		<br></br>
+		<p style="font-size:200%; text-align:center">
+			<xsl:value-of select="@Subtitle"></xsl:value-of>
+		</p>
+		<br></br>
+		<p style="font-size:100%; text-align:center">
+			<xsl:value-of select="@Date"></xsl:value-of>
+		</p>
+		<br></br>
+		<br></br>
+		<p style="font-size:100%; text-align:center">
+			<xsl:text>HL7 version </xsl:text>
+			<xsl:value-of select="@HL7Version"></xsl:value-of>
+		</p>
+		<br></br>
+		<p style="font-size:80%; text-align:center">
+			<xsl:text>Document version </xsl:text>
+			<xsl:value-of select="@DocumentVersion"></xsl:value-of>
+		</p>
+		<br></br>
+		<p style="font-size:80%; text-align:center">
+			<xsl:value-of select="@OrgName"></xsl:value-of>
+		</p>
+		<p style="font-size:62.5; text-align:center">
+		</p>
+	</xsl:template>
+
+	<xsl:template name="dispSectContent">
+		<xsl:value-of disable-output-escaping="yes" select="SectionContent" />
+	</xsl:template>
 
 	<xsl:template name="dispProfileContent">
 		<xsl:choose>
@@ -136,14 +354,66 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template name="dispSect">
+		<!-- &#xA0; -->
+		<xsl:call-template name="dispInfoSect" />
+		<xsl:for-each select="*">
+			<xsl:sort select="@position" data-type="number"></xsl:sort>
+			<xsl:call-template name="dispSect" />
+		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template name="tocInfoSect">
+		<xsl:if test="name() = 'Section'">
+			<a href="#{@id}">
+				<xsl:attribute name="class"><xsl:value-of select="concat('divh', @h)" /></xsl:attribute>
+				<xsl:if test="@prefix != ''">
+					<xsl:value-of select="@prefix" />
+					-
+				</xsl:if>
+				<xsl:if test="@scope = 'MASTER'">
+					<xsl:element name="span">
+						<xsl:attribute name="class"><xsl:text>masterDatatypeLabel</xsl:text></xsl:attribute>
+						<xsl:text>MAS</xsl:text>
+					</xsl:element>
+					<xsl:element name="span">
+						<xsl:text> - </xsl:text>
+					</xsl:element>
+				</xsl:if>
+				<xsl:value-of select="@title" />
+				<xsl:choose>
+					<xsl:when test="count(Section) &gt; 0">
+						<xsl:element name="a">
+							<xsl:attribute name="href">javascript:unhide('<xsl:value-of
+								select="concat(@id, '_toc')" />', '<xsl:value-of
+								select="concat(@id, '_btn')" />');</xsl:attribute>
+							<xsl:element name="div">
+								<xsl:attribute name="id"><xsl:value-of
+									select="concat(@id, '_btn')" /></xsl:attribute>
+								<xsl:attribute name="class">unhidden btn</xsl:attribute>
+								[Hide]
+							</xsl:element>
+						</xsl:element>
+					</xsl:when>
+				</xsl:choose>
+			</a>
+			<br></br>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="tocSect">
+		<xsl:call-template name="tocInfoSect" />
+		<xsl:element name="div">
+			<xsl:attribute name="id"><xsl:value-of select="concat(@id, '_toc')" /></xsl:attribute>
+			<xsl:attribute name="class">unhidden</xsl:attribute>
+			<xsl:for-each select="*">
+				<xsl:sort select="@position" data-type="number"></xsl:sort>
+				<xsl:call-template name="tocSect" />
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
+
 	<xsl:template match="MessageDisplay">
-		<br></br>
-		<h3>
-			<xsl:value-of select="@Label" />
-			-
-			<xsl:value-of select="@Description" />
-		</h3>
-		<br></br>
 		<xsl:value-of select="@Comment" />
 		<p>
 			<table width="100%" border="1" cellspacing="0" cellpadding="1">
@@ -186,7 +456,7 @@
 					</xsl:for-each>
 				</tbody>
 			</table>
-	<xsl:if test="count(./Constraint) &gt; 0">
+		<xsl:if test="count(./Constraint) &gt; 0">
 			<xsl:choose>
 				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
 					<xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
@@ -243,7 +513,11 @@
 				<xsl:value-of select="@Description" />
 			</td>
 			<td>
-				<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>
+				[
+				<xsl:value-of select="@Min" />
+				..
+				<xsl:value-of select="@Max" />
+				]
 			</td>
 			<td>
 				<xsl:value-of select="@Usage" />
@@ -255,26 +529,23 @@
 	</xsl:template>
 
 
-	<xsl:template match="Segment">
-		<h3>
-			<xsl:value-of select="@Label" />
+	<xsl:template match="Segment" mode="toc">
+		<a href="#{@ID}">
+			<br></br>
+			<xsl:value-of select="@Name" />
 			-
 			<xsl:value-of select="@Description" />
-		</h3>
-		<br></br>
+		</a>
+	</xsl:template>
 
+	<xsl:template match="Segment">
 		<xsl:value-of select="@Comment"></xsl:value-of>
-		<br></br>
 		<xsl:if test="count(./Text[@Type='Text1']) &gt; 0">
-			<h4>
-				Pre-definition:
-			</h4>
 			<p>
 				<xsl:value-of disable-output-escaping="yes"
 					select="./Text[@Type='Text1']" />
 			</p>
 		</xsl:if>
-		<h4>Segment Definition</h4>
 		<p>
 			<table width="100%" border="1" cellspacing="0" cellpadding="1">
 				<col style="width:5%"></col>
@@ -306,7 +577,7 @@
 							Length
 						</th>
 						<th>
-							Value Set
+							Concept Domain
 						</th>
 						<th>
 							Comment
@@ -363,46 +634,29 @@
 				</xsl:if>
 			</xsl:when>
 		</xsl:choose>
-		<!-- <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text2']" 
-			/> -->
 
-		<xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
-			<h4>
-				post-definition:
-			</h4>
-			<p>
-				<xsl:value-of disable-output-escaping="yes"
-					select="./Text[@Type='Text2']" />
-			</p>
-		</xsl:if>
-		<xsl:if test="count(./Field/Text[@Type='Text']) &gt; 0">
-			<h4>Fields Definition Texts</h4>
-			<xsl:for-each select="Field">
-				<xsl:sort select="@Position" data-type="number"></xsl:sort>
-				<xsl:if test="count(Text) &gt; 0">
-					<p>
-						<b>
-							<xsl:value-of select="../@Name" />
-							-
-							<xsl:value-of select="./@Position" />
-							:
-							&#160;
-							<xsl:value-of select="./@Name" />
-						</b>
-						<xsl:value-of disable-output-escaping="yes"
-							select="./Text[@Type='Text']" />
-					</p>
-				</xsl:if>
-			</xsl:for-each>
-		</xsl:if>
-		<xsl:if test="count(coconstraints/table) &gt; 0">
-			<p>
-				<strong>
-					<u>Co-constraints</u>
-				</strong>
-				<xsl:copy-of select="coconstraints/table" />
-			</p>
-		</xsl:if>
+		<xsl:value-of disable-output-escaping="yes"
+			select="./Text[@Type='Text2']" />
+
+		<xsl:for-each select="Field">
+			<xsl:sort select="@Position" data-type="number"></xsl:sort>
+			<xsl:if test="count(Text) &gt; 0">
+				<p>
+					<b>
+						<xsl:value-of select="../@Name" />
+						-
+						<xsl:value-of select="./@Position" />
+						&#160;
+						<xsl:value-of select="./@Name" />
+						(
+						<xsl:value-of select="./@Datatype" />
+						)
+					</b>
+					<xsl:value-of disable-output-escaping="yes"
+						select="./Text[@Type='Text']" />
+				</p>
+			</xsl:if>
+		</xsl:for-each>
 		<br></br>
 	</xsl:template>
 
@@ -422,10 +676,18 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>
+				[
+				<xsl:value-of select="@Min" />
+				..
+				<xsl:value-of select="@Max" />
+				]
 			</td>
 			<td>
-				<xsl:value-of select="concat('[', @MinLength, '..', @MaxLength, ']')"></xsl:value-of>
+				[
+				<xsl:value-of select="@MinLength" />
+				..
+				<xsl:value-of select="@MaxLength" />
+				]
 			</td>
 			<td>
 				<xsl:value-of select="@Binding" />
@@ -441,19 +703,16 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="SingleValueSetBreak">
-		<br></br>
-		<xsl:value-of select="@Value" />
-	</xsl:template>
-
-	<xsl:template match="Datatype">
-		<br></br>
-		<h3>
+	<xsl:template match="Datatype" mode="toc">
+		<a href="#{@ID}">
+			<br></br>
 			<xsl:value-of select="@Label" />
 			-
 			<xsl:value-of select="@Description" />
-		</h3>
+		</a>
+	</xsl:template>
 
+	<xsl:template match="Datatype">
 		<xsl:if test="count(Text[@Type='PurposeAndUse']) &gt; 0">
 			<p>
 				<xsl:value-of disable-output-escaping="yes"
@@ -462,23 +721,11 @@
 		</xsl:if>
 		<xsl:value-of select="@Comment"></xsl:value-of>
 		<xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
-			<h4>Usage Note </h4>
 			<p>
 				<xsl:value-of disable-output-escaping="yes"
 					select="Text[@Type='UsageNote']" />
 			</p>
 		</xsl:if>
-
-		<xsl:if test="count(./Text[@Type='Text1']) &gt; 0">
-			<h4>
-				pre-definition:
-			</h4>
-			<p>
-				<xsl:value-of disable-output-escaping="yes"
-					select="./Text[@Type='Text1']" />
-			</p>
-		</xsl:if>
-		<h4>Datatype Definition</h4>
 		<p>
 			<table width="100%" border="1" cellspacing="0" cellpadding="0">
 				<col style="width:5%"></col>
@@ -498,6 +745,9 @@
 							Element name
 						</th>
 						<th>
+							Conf length
+						</th>
+						<th>
 							Data type
 						</th>
 						<th>
@@ -507,10 +757,7 @@
 							Length
 						</th>
 						<th>
-							Conf length
-						</th>
-						<th>
-							Value set
+							Concept Domain
 						</th>
 						<th>
 							Comment
@@ -530,7 +777,7 @@
 			</table>
 		</p>
 
-		<xsl:if test="count(./Constraint) &gt; 0">
+	<xsl:if test="count(./Constraint) &gt; 0">
 			<xsl:choose>
 				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
 					<xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
@@ -599,8 +846,6 @@
 					select="./Text[@Type='Text2']" />
 			</p>
 		</xsl:if>
-
-
 	</xsl:template>
 
 	<xsl:template name="component">
@@ -614,19 +859,23 @@
 				<xsl:value-of select="@Name" />
 			</td>
 			<td>
+				<xsl:value-of select="@ConfLength" />
+			</td>
+			<td>
 				<xsl:value-of select="@Datatype" />
 			</td>
 			<td>
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-			<xsl:value-of select="concat('[', @MinLength, '..', @MaxLength, ']')"></xsl:value-of>
+				[
+				<xsl:value-of select="@MinLength" />
+				..
+				<xsl:value-of select="@MaxLength" />
+				]
 			</td>
 			<td>
-				<xsl:value-of select="@ConfLength" />
-			</td>
-			<td>
-				<xsl:value-of disable-output-escaping="yes" select="@Binding" />
+				<xsl:value-of select="@Binding" />
 			</td>
 			<td>
 				<xsl:value-of select="@Comment" />
@@ -640,49 +889,33 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ValueSetDefinition">
-		<br></br>
-		<h3>
+	<xsl:template match="ValueSetDefinition" mode="toc">
+		<a href="#{@Id}">
+			<br></br>
 			<xsl:value-of select="@BindingIdentifier" />
 			-
 			<xsl:value-of select="@Description" />
-		</h3>
-		<xsl:if test="count(./Text[@Type='Text1']) &gt; 0">
-			<h4>
-				pre-definition:
-			</h4>
-			<p>
-				<xsl:value-of disable-output-escaping="yes"
-					select="./Text[@Type='Text1']" />
-			</p>
-		</xsl:if>
+		</a>
+	</xsl:template>
 
-
+	<xsl:template match="ValueSetDefinition">
 		<xsl:if test="@Stability != ''">
-			<p>
-				<xsl:text>Stability: </xsl:text>
-				<xsl:value-of select="@Stability"></xsl:value-of>
+			<p><xsl:text>Stability: </xsl:text>
+			<xsl:value-of select="@Stability"></xsl:value-of>
 			</p>
 		</xsl:if>
 		<xsl:if test="@Extensibility != ''">
-			<p>
-				<xsl:text>Extensibility: </xsl:text>
-				<xsl:value-of select="@Extensibility"></xsl:value-of>
-			</p>
+			<p><xsl:text>Extensibility: </xsl:text>
+			<xsl:value-of select="@Extensibility"></xsl:value-of></p>
 		</xsl:if>
 		<xsl:if test="@ContentDefinition != ''">
-			<p>
-				<xsl:text>Content Definition: </xsl:text>
-				<xsl:value-of select="@ContentDefinition"></xsl:value-of>
-			</p>
+			<p><xsl:text>Content Definition: </xsl:text>
+			<xsl:value-of select="@ContentDefinition"></xsl:value-of></p>
 		</xsl:if>
 		<xsl:if test="@Oid != ''">
-			<p>
-				<xsl:text>Oid: </xsl:text>
-				<xsl:value-of select="@Oid"></xsl:value-of>
-			</p>
+			<p><xsl:text>Oid: </xsl:text>
+			<xsl:value-of select="@Oid"></xsl:value-of></p>
 		</xsl:if>
-		<h4>Value Set Definition</h4>
 		<table width="100%" border="1" cellspacing="0" cellpadding="0">
 			<col style="width:15%"></col>
 			<col style="width:15%"></col>
@@ -714,18 +947,6 @@
 				</xsl:for-each>
 			</tbody>
 		</table>
-
-
-
-		<xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
-			<h4>
-				post-definition:
-			</h4>
-			<p>
-				<xsl:value-of disable-output-escaping="yes"
-					select="./Text[@Type='Text2']" />
-			</p>
-		</xsl:if>
 		<!-- <br></br> -->
 	</xsl:template>
 
@@ -941,38 +1162,6 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template name="dispSect">
-		<xsl:call-template name="dispInfoSect" />
-		<xsl:for-each select="*">
-			<xsl:sort select="@position" data-type="number"></xsl:sort>
-			<xsl:call-template name="dispSect" />
-		</xsl:for-each>
-	</xsl:template>
-
-	<xsl:template name="dispInfoSect" mode="disp">
-		<xsl:if test="name() = 'Section'">
-			<a id="{@id}" name="{@id}">
-				<u>
-					<xsl:choose>
-						<xsl:when test="@h &lt; 7">
-							<xsl:element name="{concat('h', @h)}">
-								<xsl:value-of select="@title" />
-							</xsl:element>
-						</xsl:when>
-						<xsl:when test="@h &gt; 7">
-							<xsl:element name="h6">
-								<xsl:value-of select="@title" />
-							</xsl:element>
-						</xsl:when>
-					</xsl:choose>
-				</u>
-			</a>
-			<br />
-			<xsl:call-template name="dispSectContent" />
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template name="dispSectContent">
-		<xsl:value-of disable-output-escaping="yes" select="SectionContent" />
-	</xsl:template>
 </xsl:stylesheet>
+
+

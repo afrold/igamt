@@ -4,7 +4,16 @@ public class BindingParametersForDatatype {
 	private String datatypeId;
 	private String componentId;
 	private TableLink tableLink;
+	private DatatypeLink datatypeLink;
 	private String key;
+
+	public DatatypeLink getDatatypeLink() {
+		return datatypeLink;
+	}
+
+	public void setDatatypeLink(DatatypeLink datatypeLink) {
+		this.datatypeLink = datatypeLink;
+	}
 
 	public TableLink getTableLink() {
 		return tableLink;

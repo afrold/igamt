@@ -18,25 +18,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -330,6 +312,22 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 	public InputStream exportAsDocxSections(IGDocument ig) {
 		if (ig != null) {
 			return exportAsDocxFromXml(igDocumentSerializationService.serializeSectionsToXML(ig), "/rendering/xml2html.xsl", true);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream exportAsHtmlDatatypeLibraryDocument(DatatypeLibraryDocument datatypeLibraryDocument){
+		if (datatypeLibraryDocument != null) {
+			return exportAsHtmlFromXsl(igDocumentSerializationService.serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument), "/rendering/datatypeLibraryDoc2html.xsl");
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream exportAsDocxDatatypeLibraryDocument(DatatypeLibraryDocument datatypeLibraryDocument){
+		if (datatypeLibraryDocument != null) {
+			return exportAsDocxFromXml(igDocumentSerializationService.serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument), "/rendering/datatypeLibraryDoc2html.xsl", false);
 		} else {
 			return new NullInputStream(1L);
 		}
