@@ -392,7 +392,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 							// Find share participants
 							if($rootScope.igdocument.shareParticipantIds.length > 0) {
 								$http.get('api/shareparticipants', {params: {ids: $rootScope.igdocument.shareParticipantIds}})
-							}
 					.then(
 						function (response) {
 							$rootScope.igdocument.shareParticipants = response.data;
@@ -400,6 +399,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 							console.log(error);
 						}
 					);
+							}
 //							$scope.loadPc().then(function () {}, function () {});
 						}, function () {});
 					}, function () {});
@@ -2018,8 +2018,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
 		var idsTab = $scope.tags.map(function(user) {
 			return user.id;
 		});
-		$http.post('api/igdocuments/' + igdocumentSelected.id + '/share', idsTab).then(function (response) {
-			$scope.igdocumentSelected.shareParticipantIds.push(idsTab);
+		$http.post('api/igdocuments/' + igdocumentSelected.id + '/share', idsTab).then(function (response) {\
             $modalInstance.dismiss('ok');
 		}, function (error) {
 			$scope.error = error.data;
