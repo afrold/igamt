@@ -135,13 +135,22 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
   @Override
   public List<IGDocument> findByParticipantId(Long participantId) {
     Criteria accountCreteria = Criteria.where("scope").is(IGDocumentScope.USER)
-        .andOperator(Criteria.where("accountId").ne(participantId));
-    Criteria participantsCr =
-        Criteria.where("shareParticipants").all(Collections.singleton(participantId));
+        .andOperator(Criteria.where("accountId").ne(participantId), Criteria.where("shareParticipantIds").exists(true));
+//    Criteria participantsCr =
+//        Criteria.where("shareParticipantIds").all(Collections.singleton(participantId));
+//    		Criteria.where("shareParticipantIds").exists(true);
     BasicQuery query =
-        new BasicQuery(accountCreteria.getCriteriaObject(), participantsCr.getCriteriaObject());
+        new BasicQuery(accountCreteria.getCriteriaObject()); // , participantsCr.getCriteriaObject());
     List<IGDocument> igdocuments = mongo.find(query, IGDocument.class);
-    return igdocuments;
+    List<IGDocument> igdocumentsShareWithParticipantsId = new ArrayList<IGDocument>();
+    for(IGDocument doc : igdocuments) {
+    	for(Long id : doc.getShareParticipants()) {
+    		if(id==participantId) {
+    			igdocumentsShareWithParticipantsId.add(doc);
+    		}
+    	}
+    }
+    return igdocumentsShareWithParticipantsId;
   }
 
 }

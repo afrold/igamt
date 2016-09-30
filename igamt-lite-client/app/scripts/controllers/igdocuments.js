@@ -390,8 +390,8 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 							$scope.loadIgDocumentMetaData();
 							$rootScope.filteredTablesList = angular.copy($rootScope.tables);
 							// Find share participants
-							if($rootScope.igdocument.shareParticipants.length > 0) {
-								$http.get('api/shareparticipants', {params: {ids: $rootScope.igdocument.shareParticipants}})
+							if($rootScope.igdocument.shareParticipantIds.length > 0) {
+								$http.get('api/shareparticipants', {params: {ids: $rootScope.igdocument.shareParticipantIds}})
 							}
 					.then(
 						function (response) {
@@ -2019,6 +2019,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
 			return user.id;
 		});
 		$http.post('api/igdocuments/' + igdocumentSelected.id + '/share', idsTab).then(function (response) {
+			$scope.igdocumentSelected.shareParticipantIds.push(idsTab);
             $modalInstance.dismiss('ok');
 		}, function (error) {
 			$scope.error = error.data;

@@ -80,7 +80,7 @@
 				</div>
 			</div>
 			<div ng-class="{'col-md-9': !hideToc,'col-md-12': hideToc}">
-				<div ng-if="igdocument.shareParticipants.length > 0" style="margin-bottom: 10px;">
+				<div ng-show="igdocument.shareParticipants.length > 0" style="margin-bottom: 10px;">
 					<span style="font-style: italic;">Shared with: </span>
 					<span ng-repeat="participant in igdocument.shareParticipants" style="font-weight: bold; margin-right: 5px;" class="badge" ns-popover ns-popover-template="sharePopover.html" ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="top" ns-popover-timeout="0">{{participant.username}}</span>
 				</div>
