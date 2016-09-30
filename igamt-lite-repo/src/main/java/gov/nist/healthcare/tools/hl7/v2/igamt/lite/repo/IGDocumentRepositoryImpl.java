@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -136,6 +137,27 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     Criteria where = Criteria.where("scope").is(scope);
     Query qry = Query.query(where);
     return mongo.find(qry, IGDocument.class);
+  }
+
+  @Override
+  public List<IGDocument> findByParticipantId(Long participantId) {
+    Criteria accountCreteria = Criteria.where("scope").is(IGDocumentScope.USER)
+        .andOperator(Criteria.where("accountId").ne(participantId), Criteria.where("shareParticipantIds").exists(true));
+//    Criteria participantsCr =
+//        Criteria.where("shareParticipantIds").all(Collections.singleton(participantId));
+//    		Criteria.where("shareParticipantIds").exists(true);
+    BasicQuery query =
+        new BasicQuery(accountCreteria.getCriteriaObject()); // , participantsCr.getCriteriaObject());
+    List<IGDocument> igdocuments = mongo.find(query, IGDocument.class);
+    List<IGDocument> igdocumentsShareWithParticipantsId = new ArrayList<IGDocument>();
+    for(IGDocument doc : igdocuments) {
+    	for(Long id : doc.getShareParticipants()) {
+    		if(id==participantId) {
+    			igdocumentsShareWithParticipantsId.add(doc);
+    		}
+    	}
+    }
+    return igdocumentsShareWithParticipantsId;
   }
 
 }
