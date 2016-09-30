@@ -69,6 +69,7 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 
   @Override
   public IGDocument findOne(String id) {
+	    log.info("IGDocumentServiceImpl.findOne=" + id);
     IGDocument ig = documentRepository.findOne(id);
     return ig;
   }
@@ -143,7 +144,7 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 
   @Override
   public IGDocument findById(String id) {
-    log.info("DataypeServiceImpl.findById=" + id);
+    log.info("IGDocumentServiceImpl.findById=" + id);
     IGDocument igDocument;
     igDocument = documentRepository.findOne(id);
     return igDocument;
