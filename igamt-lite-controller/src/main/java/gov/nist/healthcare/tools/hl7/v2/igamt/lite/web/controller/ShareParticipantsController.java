@@ -45,7 +45,7 @@ public class ShareParticipantsController {
 	/**
 	 * Get participants by ID
 	 */
-	@RequestMapping(value = "/shareparticipants", method = RequestMethod.GET, consumes = "application/json")
+	@RequestMapping(value = "/shareparticipants", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<ShareParticipant> getParticipantsListById(@RequestParam(value="ids") List<Long> ids) {
 
 		List<ShareParticipant> users = new ArrayList<ShareParticipant>();

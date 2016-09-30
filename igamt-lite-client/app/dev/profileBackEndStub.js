@@ -46,6 +46,9 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
             "id": 46
 		}], {}];
     });
+	$httpBackend.whenPOST(new RegExp('api/.*/share')).respond(function (method, url, data, headers) {
+        return [200, [], {}];
+    });
     $httpBackend.whenGET('api/shortaccounts?filter=accountType::author').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/shortaccounts.json', false);
