@@ -427,7 +427,7 @@ angular.module('igl')
 
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);
 								// Find share participants
-								if($rootScope.igdocument.shareParticipantIds.length > 0) {
+								if($rootScope.igdocument.shareParticipantIds && $rootScope.igdocument.shareParticipantIds.length > 0) {
 									$http.get('api/shareparticipants', {params: {ids: $rootScope.igdocument.shareParticipantIds}})
 									.then(
 										function (response) {
@@ -1268,9 +1268,11 @@ angular.module('igl')
 				var userList = response.data;
 				var filteredUserList = userList.filter(function(user) {
 					var isPresent = false;
-					for(var i = 0; i < igdocument.shareParticipants.length; i++) {
-						if(igdocument.shareParticipants[i].id == user.id) {
-							isPresent = true;
+					if(igdocument.shareParticipants) {
+						for(var i = 0; i < igdocument.shareParticipants.length; i++) {
+							if(igdocument.shareParticipants[i].id == user.id) {
+								isPresent = true;
+							}
 						}
 					}
 					if(!isPresent) return user;

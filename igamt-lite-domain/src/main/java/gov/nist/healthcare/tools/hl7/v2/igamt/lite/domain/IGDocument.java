@@ -347,12 +347,11 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 		this.scope = scope;
 	}
 
-	public Set<Long> getShareParticipants() {
+	public Set<Long> getShareParticipantIds() {
 		return shareParticipantIds;
 	}
 
-	public void setShareParticipants(Set<Long> shareParticipantIds) {
+	public void setShareParticipantIds(Set<Long> shareParticipantIds) {
 		this.shareParticipantIds = shareParticipantIds;
 	}
-
 }
