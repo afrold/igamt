@@ -2012,8 +2012,11 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
 	$scope.igdocumentSelected = igdocumentSelected;
 	$scope.userList = userList;
 	$scope.ok = function () {
-		
-		$modalInstance.dismiss('ok');
+		$http.post('api/' + igdocumentSelected.id + '/share', $scope.tags).then(function (response) {
+            $modalInstance.dismiss('ok');
+		}, function (error) {
+			console.log(error);
+		});
 	};
 	$scope.cancel = function () {
 		$modalInstance.dismiss('cancel');
