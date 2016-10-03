@@ -2592,8 +2592,14 @@ angular.module('igl').controller('AddSegmentDlgCtl',
     });
 
 angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modalInstance, $http, igdocumentSelected, userList) {
-	$scope.igdocumentSelected = igdocumentSelected;
-	$scope.userList = userList;
+    var filterList = function(userList){
+        return  userList.filter(function (user) {
+            return user.id != igdocumentSelected.accountId && igdocumentSelected.shareParticipantIds.indexOf(user.id) <= -1 ;
+        });
+    }
+
+    $scope.igdocumentSelected = igdocumentSelected;
+	$scope.userList = filterList(userList);
 	$scope.error = "";
 	$scope.ok = function () {
 		var idsTab = $scope.tags.map(function(user) {
@@ -2628,4 +2634,6 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
 			return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
 		});
 	};
+
+
 });
