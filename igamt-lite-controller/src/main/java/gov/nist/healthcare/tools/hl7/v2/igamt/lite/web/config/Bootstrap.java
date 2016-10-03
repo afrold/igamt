@@ -118,76 +118,78 @@ public class Bootstrap implements InitializingBean {
     // addVersionAndScopetoPRELOADEDIG();
     // addVersionAndScopetoHL7IG();
     /** to be runned one Time **/
-//     CreateCollectionOfUnchanged();
-//     AddVersionsToDatatypes();
+    // CreateCollectionOfUnchanged();
+    // AddVersionsToDatatypes();
     // addVersionAndScopetoUSERIG();
     // addScopeUserToOldClonedPRELOADEDIG();
     // changeTabletoTablesInNewHl7();
-	modifyCodeUsage();
-	modifyFieldUsage();
-	modifyComponentUsage();
-	//[NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need to write a code for the message.
-	  //Colorate();
-  }
-  
-  private void modifyCodeUsage() {
-	  List<Table> allTables = tableService.findAll();
-	  
-	  for(Table t : allTables){
-		  boolean isChanged = false;
-		  for(Code c:t.getCodes()){
-			  if(c.getCodeUsage() == null){
-				  c.setCodeUsage("P");
-				  isChanged = true;
-			  }else if(!c.getCodeUsage().equals("R") && !c.getCodeUsage().equals("P") && !c.getCodeUsage().equals("E")){
-				  c.setCodeUsage("P");
-				  isChanged = true;
-			  }
-		  }
-		  if(isChanged) {
-			  tableService.save(t);
-			  logger.info("Table " + t.getId() + " has been updated by the codeusage issue.");
-		  }
-	  }
-  }
-  
-  private void modifyFieldUsage() {
-	  List<Segment> allSegments = segmentService.findAll();
-	  
-	  for(Segment s : allSegments){
-		  boolean isChanged = false;
-		  for(Field f:s.getFields()){
-			  if(f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W) ) {
-				  f.setUsage(Usage.X);
-				  isChanged = true;
-			  }
-		  }
-		  if(isChanged) {
-			  segmentService.save(s);
-			  logger.info("Segment " + s.getId() + " has been updated by the usage W/B issue.");
-		  }
-	  }
-  }
-  
-  private void modifyComponentUsage() {
-	  List<Datatype> allDatatypes = datatypeService.findAll();
-	  
-	  for(Datatype d : allDatatypes){
-		  boolean isChanged = false;
-		  for(Component c:d.getComponents()){
-			  if(c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W) ) {
-				  c.setUsage(Usage.X);
-				  isChanged = true;
-			  }
-		  }
-		  if(isChanged) {
-			  datatypeService.save(d);
-			  logger.info("Datatype " + d.getId() + " has been updated by the usage W/B issue.");
-		  }
-	  }
+    modifyCodeUsage();
+    modifyFieldUsage();
+    modifyComponentUsage();
+    // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
+    // to write a code for the message.
+    Colorate();
   }
 
-private void changeTabletoTablesInNewHl7() {
+  private void modifyCodeUsage() {
+    List<Table> allTables = tableService.findAll();
+
+    for (Table t : allTables) {
+      boolean isChanged = false;
+      for (Code c : t.getCodes()) {
+        if (c.getCodeUsage() == null) {
+          c.setCodeUsage("P");
+          isChanged = true;
+        } else if (!c.getCodeUsage().equals("R") && !c.getCodeUsage().equals("P")
+            && !c.getCodeUsage().equals("E")) {
+          c.setCodeUsage("P");
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        tableService.save(t);
+        logger.info("Table " + t.getId() + " has been updated by the codeusage issue.");
+      }
+    }
+  }
+
+  private void modifyFieldUsage() {
+    List<Segment> allSegments = segmentService.findAll();
+
+    for (Segment s : allSegments) {
+      boolean isChanged = false;
+      for (Field f : s.getFields()) {
+        if (f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)) {
+          f.setUsage(Usage.X);
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        segmentService.save(s);
+        logger.info("Segment " + s.getId() + " has been updated by the usage W/B issue.");
+      }
+    }
+  }
+
+  private void modifyComponentUsage() {
+    List<Datatype> allDatatypes = datatypeService.findAll();
+
+    for (Datatype d : allDatatypes) {
+      boolean isChanged = false;
+      for (Component c : d.getComponents()) {
+        if (c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)) {
+          c.setUsage(Usage.X);
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        datatypeService.save(d);
+        logger.info("Datatype " + d.getId() + " has been updated by the usage W/B issue.");
+      }
+    }
+  }
+
+  private void changeTabletoTablesInNewHl7() {
     List<String> hl7Versions = new ArrayList<String>();
     hl7Versions.add("2.7.1");
     hl7Versions.add("2.8");
@@ -339,27 +341,27 @@ private void changeTabletoTablesInNewHl7() {
 
     }
   }
-  
-  public void Colorate() {
-	    addAllVersions();
 
-	    for (Entry<String, ArrayList<List<String>>> e : DatatypeMap.entrySet()) {
-	      String name = e.getKey();
-	      DatatypeMatrix dt= new DatatypeMatrix();
-	      dt.setName(name);
-	      HashMap<String, Integer> links = new HashMap<String, Integer>();
-	      
-	      ArrayList<List<String>> values = e.getValue();
-	     for (int i=0; i<values.size(); i++){
-	    	 for(String version : values.get(i)){
-	    		 
-	    		 links.put(version.replace(".",""), i);
-	    	 }
-	     }
-	     dt.setLinks(links);
-	     matrix.insert(dt);
-	    }
-	  }
+  public void Colorate() {
+    addAllVersions();
+
+    for (Entry<String, ArrayList<List<String>>> e : DatatypeMap.entrySet()) {
+      String name = e.getKey();
+      DatatypeMatrix dt = new DatatypeMatrix();
+      dt.setName(name);
+      HashMap<String, Integer> links = new HashMap<String, Integer>();
+
+      ArrayList<List<String>> values = e.getValue();
+      for (int i = 0; i < values.size(); i++) {
+        for (String version : values.get(i)) {
+
+          links.put(version.replace(".", ""), i);
+        }
+      }
+      dt.setLinks(links);
+      matrix.insert(dt);
+    }
+  }
 
 
 
@@ -603,6 +605,6 @@ private void changeTabletoTablesInNewHl7() {
       }
     }
   }
-  
+
 
 }
