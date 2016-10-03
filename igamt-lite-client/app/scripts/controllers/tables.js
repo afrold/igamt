@@ -792,7 +792,7 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
     $scope.selectedBindingLocation = null;
     $scope.selectedBindingStrength = null;
     $scope.pathForBinding = null;
-    $scope.bindingTargetType = 'SEGMENT';
+    $scope.bindingTargetType = 'DATATYPE';
 
     $scope.init = function() {
         $scope.selectedSegmentForBinding = null;
