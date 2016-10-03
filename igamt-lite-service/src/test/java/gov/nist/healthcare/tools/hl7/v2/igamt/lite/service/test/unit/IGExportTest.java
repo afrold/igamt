@@ -82,9 +82,6 @@ public class IGExportTest {
 	public void setUp() throws Exception {
 		igs = igService.findAll();
 		ig = igs.get(0);
-//		ig = igService.findOne("57ade9c884ae90ce1261bd59");
-		ig = igService.findOne("56cdc90a3004684518f4ad87");
-
 
 		//    sl = (SegmentLink) ig.getProfile().getSegmentLibrary().getChildren().toArray()[0];
 		//    dl = (DatatypeLink) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
@@ -119,6 +116,7 @@ public class IGExportTest {
 	@Test
 	public void testCallIGExportXml() {
 		try {
+			assertNotNull(ig);
 			content = igExport.exportAsXmlDisplay(ig);
 			assertNotNull(content);
 			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
