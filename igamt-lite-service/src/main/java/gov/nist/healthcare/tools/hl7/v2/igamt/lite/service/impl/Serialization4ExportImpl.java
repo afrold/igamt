@@ -12,6 +12,43 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsColumn;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,8 +68,13 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import nu.xom.Attribute;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.Serializer;
+
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -42,21 +84,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsColumn;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import nu.xom.Attribute;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Serializer;
+import com.mongodb.gridfs.GridFSDBFile;
 
 @Service
 public class Serialization4ExportImpl implements IGDocumentSerialization {
@@ -70,6 +98,9 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
   @Autowired
   private TableService tableService;
+  
+  @Autowired
+  private FileStorageService fileStorageService;
 
 
   public File serializeProfileToFile(Profile profile) throws UnsupportedEncodingException {
@@ -1364,6 +1395,31 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
     Elements elements4 = doc.select("h4");
     elements4.tagName("p").attr("style",
         "display: block;font-size: 10.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
+
+    for (org.jsoup.nodes.Element elementImg : doc.select("img")){
+      try {
+        String filename = elementImg.attr("src").substring(elementImg.attr("src").indexOf("name=")+5);
+        fileStorageService.findOneByFilename(filename);
+        String ext = FilenameUtils.getExtension(filename);
+
+        GridFSDBFile dbFile = fileStorageService.findOneByFilename(filename);
+        if (dbFile != null) {
+          InputStream imgis = dbFile.getInputStream();
+
+          String imgEnc = Base64.encodeBase64String(IOUtils.toByteArray(imgis));
+          String texEncImg = "data:image/" + ext + ";base64," + imgEnc;
+
+          logger.debug("=======>>>>>>>>");
+          logger.debug(dbFile.getContentType());
+          logger.debug(dbFile.getFilename());
+          logger.debug(ext);
+          logger.debug(texEncImg);
+          elementImg.attr("src", texEncImg);
+        }
+      } catch (IOException e) {
+        e.printStackTrace(); //If error, we leave the original document as is. 
+      } 
+    }
     return "<div class=\"fr-view\">" + doc.html() + "</div>";
   }
 
