@@ -193,4 +193,12 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     return igDocuments;
   }
 
+  @Override
+  public List<IGDocument> findSharedIgDocuments(Long participantId) {
+    List<IGDocument> igDocuments = documentRepository.findByParticipantId(participantId);
+    log.info("igDocuments=" + igDocuments.size());
+    return igDocuments;
+  }
+
+
 }
