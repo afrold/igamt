@@ -3,10 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.prelib.converte
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 
 import com.mongodb.BasicDBList;
@@ -46,10 +44,10 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
       dt.setDescription((String) source.get(DESCRIPTION));
       dt.setComment(readString(source, COMMENT));
       dt.setUsageNote(readString(source, USAGE_NOTE));
-      dt.setScope(source.get(SCOPE_) != null ? Constant.SCOPE.valueOf((String) source.get(SCOPE_))
-          : null);
-      dt.setStatus(source.get(STATUS_) != null ? Constant.STATUS.valueOf((String) source
-          .get(STATUS_)) : null);
+      dt.setScope(
+          source.get(SCOPE_) != null ? Constant.SCOPE.valueOf((String) source.get(SCOPE_)) : null);
+      dt.setStatus(source.get(STATUS_) != null
+          ? Constant.STATUS.valueOf((String) source.get(STATUS_)) : null);
       dt.setHl7Version((String) source.get(HL7_VERSION));
 
       BasicDBList libIds = (BasicDBList) source.get(LIB_IDS);
@@ -130,10 +128,10 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
     p.setDescription((String) source.get(DESCRIPTION));
     p.setAssertion(((String) source.get(ASSERTION)));
     p.setReference(reference(((DBObject) source.get(REFERENCE))));
-    p.setFalseUsage(source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source
-        .get(FALSE_USAGE))) : null);
-    p.setTrueUsage(source.get(TRUE_USAGE) != null ? Usage.valueOf(((String) source.get(TRUE_USAGE)))
-        : null);
+    p.setFalseUsage(
+        source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source.get(FALSE_USAGE))) : null);
+    p.setTrueUsage(
+        source.get(TRUE_USAGE) != null ? Usage.valueOf(((String) source.get(TRUE_USAGE))) : null);
     return p;
   }
 
@@ -147,7 +145,7 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
     c.setMaxLength((String) source.get(MAX_LENGTH));
     c.setConfLength(getConfLength(source));
     c.setPosition((Integer) source.get(POSITION));
-    c.setTable((tableLink((DBObject) source.get(Constant.TABLE))));
+    c.setTables((tableLinks((BasicDBList) source.get(Constant.TABLES))));
     c.setUsage(Usage.valueOf((String) source.get(USAGE)));
     c.setDatatype((datatypeLink((DBObject) source.get(Constant.DATATYPE))));
     return c;
@@ -173,4 +171,15 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
 
     return tl;
   }
+
+  private List<TableLink> tableLinks(BasicDBList sourceList) {
+    if (sourceList == null)
+      return null;
+    List<TableLink> links = new ArrayList<TableLink>();
+    for (Object libIdObj : sourceList) {
+      links.add(tableLink((DBObject) libIdObj));
+    }
+    return links;
+  }
+
 }

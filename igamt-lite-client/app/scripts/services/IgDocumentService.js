@@ -27,7 +27,7 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
             var form = document.createElement("form");
             form.action = $rootScope.api('api/igdocuments/' + igDocument.id + '/export/' + format);
             form.method = "POST";
-            form.target = "_target";
+            form.target = "_blank";
             var csrfInput = document.createElement("input");
             csrfInput.name = "X-XSRF-TOKEN";
             csrfInput.value = $cookies['XSRF-TOKEN'];

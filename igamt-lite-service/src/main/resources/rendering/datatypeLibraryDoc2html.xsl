@@ -777,10 +777,10 @@
 			</table>
 		</p>
 
-		<xsl:if test="count(Component//Constraint) &gt; 0">
+	<xsl:if test="count(./Constraint) &gt; 0">
 			<xsl:choose>
 				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
-					<xsl:if test="count(Component//Constraint[@Type='cs']) &gt; 0">
+					<xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
 						<p>
 							<strong>
 								<u>Conformance statements</u>
@@ -788,7 +788,7 @@
 							<table width="100%" border="1" cellspacing="0" cellpadding="1">
 								<xsl:call-template name="csheader"></xsl:call-template>
 								<tbody>
-									<xsl:for-each select="Component/Constraint[@Type='cs']">
+									<xsl:for-each select="./Constraint[@Type='cs']">
 										<xsl:sort select="@Position" data-type="number"></xsl:sort>
 										<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
 									</xsl:for-each>
@@ -796,7 +796,7 @@
 							</table>
 						</p>
 					</xsl:if>
-					<xsl:if test="count(Component//Constraint[@Type='pre']) &gt; 0">
+					<xsl:if test="count(./Constraint[@Type='pre']) &gt; 0">
 						<p>
 							<strong>
 								<u>Conditional predicates</u>
@@ -804,7 +804,7 @@
 							<table width="100%" border="1" cellspacing="0" cellpadding="1">
 								<xsl:call-template name="preheader"></xsl:call-template>
 								<tbody>
-									<xsl:for-each select="Component/Constraint[@Type='pre']">
+									<xsl:for-each select="./Constraint[@Type='pre']">
 										<xsl:sort select="@Position" data-type="number"></xsl:sort>
 										<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
 									</xsl:for-each>
@@ -815,9 +815,25 @@
 				</xsl:when>
 			</xsl:choose>
 		</xsl:if>
-
-		<xsl:for-each select="Component">
-			<xsl:sort select="@Position" data-type="number"></xsl:sort>
+		<xsl:if test="count(./Component/Text[@Type='Text']) &gt; 0">
+			<h4>Components Definition Texts</h4>
+			<xsl:for-each select="Component">
+				<xsl:sort select="@Position" data-type="number"></xsl:sort>
+				<xsl:if test="count(./Text[@Type='Text']) &gt; 0">
+					<p>
+						<strong>
+							<xsl:value-of disable-output-escaping="yes" select="concat(../@Name, '-', @Position, ':', @Name)" />
+						</strong>
+						<xsl:value-of disable-output-escaping="yes"
+							select="./Text[@Type='Text']" />
+					</p>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:if>
+		<xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
+			<h4>
+				post-definition:
+			</h4>
 				<xsl:if test="count(./Text[@Type='Text']) &gt; 0">
 					<p>
 						<u><xsl:value-of select="./Text[@Type='Name']" />: </u>
@@ -825,7 +841,11 @@
 							select="./Text[@Type='Text']" />
 					</p>
 				</xsl:if>
-		</xsl:for-each>
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="./Text[@Type='Text2']" />
+			</p>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="component">

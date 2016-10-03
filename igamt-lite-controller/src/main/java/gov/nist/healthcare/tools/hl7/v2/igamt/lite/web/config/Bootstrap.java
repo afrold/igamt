@@ -30,8 +30,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
@@ -41,14 +39,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -117,78 +114,119 @@ public class Bootstrap implements InitializingBean {
     // addVersionAndScopetoPRELOADEDIG();
     // addVersionAndScopetoHL7IG();
     /** to be runned one Time **/
-//     CreateCollectionOfUnchanged();
-//     AddVersionsToDatatypes();
+    // CreateCollectionOfUnchanged();
+    // AddVersionsToDatatypes();
     // addVersionAndScopetoUSERIG();
     // addScopeUserToOldClonedPRELOADEDIG();
     // changeTabletoTablesInNewHl7();
-//	modifiyCodeUsage();
-	  //Colorate();
+    modifyCodeUsage();
+    modifyFieldUsage();
+    modifyComponentUsage();
+    // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
+    // to write a code for the message.
+    Colorate();
   }
 
-  private void modifiyCodeUsage() {
-	  List<Table> allTables = tableService.findAll();
-	  
-	  for(Table t : allTables){
-		  boolean isChanged = false;
-		  for(Code c:t.getCodes()){
-			  if(c.getCodeUsage() == null){
-				  c.setCodeUsage("P");
-				  isChanged = true;
-			  }else if(!c.getCodeUsage().equals("R") && !c.getCodeUsage().equals("P") && !c.getCodeUsage().equals("E")){
-				  c.setCodeUsage("P");
-				  isChanged = true;
-			  }
-		  }
-		  if(isChanged) {
-			  tableService.save(t);
-			  logger.info("Table " + t.getId() + " has been updated by the codeusage issue.");
-		  }
-	  }
-  }
+  private void modifyCodeUsage() {
+    List<Table> allTables = tableService.findAll();
 
-private void changeTabletoTablesInNewHl7() {
-    List<String> hl7Versions = new ArrayList<String>();
-    hl7Versions.add("2.7.1");
-    hl7Versions.add("2.8");
-    hl7Versions.add("2.8.1");
-    hl7Versions.add("2.8.2");
-    List<IGDocument> igDocuments =
-        documentService.findByScopeAndVersionsInIg(IGDocumentScope.HL7STANDARD, hl7Versions);
-    for (IGDocument igd : igDocuments) {
-      Set<String> usedSegsId = new HashSet<String>();
-      SegmentLibrary segmentLib = igd.getProfile().getSegmentLibrary();
-      for (SegmentLink segLink : segmentLib.getChildren()) {
-        usedSegsId.add(segLink.getId());
-      }
-      List<Segment> usedSegs = segmentService.findByIds(usedSegsId);
-      for (Segment usedSeg : usedSegs) {
-        for (Field fld : usedSeg.getFields()) {
-          if (fld.getTable() != null) {
-            fld.getTables().add(fld.getTable());
-            System.out.println("Field Table Added=" + fld.getTable());
-          }
+    for (Table t : allTables) {
+      boolean isChanged = false;
+      for (Code c : t.getCodes()) {
+        if (c.getCodeUsage() == null) {
+          c.setCodeUsage("P");
+          isChanged = true;
+        } else if (!c.getCodeUsage().equals("R") && !c.getCodeUsage().equals("P")
+            && !c.getCodeUsage().equals("E")) {
+          c.setCodeUsage("P");
+          isChanged = true;
         }
       }
-      segmentService.save(usedSegs);
-      Set<String> usedDtsId = new HashSet<String>();
-      DatatypeLibrary datatypeLib = igd.getProfile().getDatatypeLibrary();
-      for (DatatypeLink dtLink : datatypeLib.getChildren()) {
-        usedSegsId.add(dtLink.getId());
+      if (isChanged) {
+        tableService.save(t);
+        logger.info("Table " + t.getId() + " has been updated by the codeusage issue.");
       }
-      List<Datatype> usedDts = datatypeService.findByIds(usedDtsId);
-      for (Datatype usedDt : usedDts) {
-        for (Component comp : usedDt.getComponents()) {
-          if (comp.getTable() != null) {
-            comp.getTables().add(comp.getTable());
-            System.out.println("Component Table Added=" + comp.getTable());
-          }
-        }
-      }
-      datatypeService.save(usedDts);
     }
-
   }
+
+  private void modifyFieldUsage() {
+    List<Segment> allSegments = segmentService.findAll();
+
+    for (Segment s : allSegments) {
+      boolean isChanged = false;
+      for (Field f : s.getFields()) {
+        if (f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)) {
+          f.setUsage(Usage.X);
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        segmentService.save(s);
+        logger.info("Segment " + s.getId() + " has been updated by the usage W/B issue.");
+      }
+    }
+  }
+
+  private void modifyComponentUsage() {
+    List<Datatype> allDatatypes = datatypeService.findAll();
+
+    for (Datatype d : allDatatypes) {
+      boolean isChanged = false;
+      for (Component c : d.getComponents()) {
+        if (c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)) {
+          c.setUsage(Usage.X);
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        datatypeService.save(d);
+        logger.info("Datatype " + d.getId() + " has been updated by the usage W/B issue.");
+      }
+    }
+  }
+
+  // private void changeTabletoTablesInNewHl7() {
+  // List<String> hl7Versions = new ArrayList<String>();
+  // hl7Versions.add("2.7.1");
+  // hl7Versions.add("2.8");
+  // hl7Versions.add("2.8.1");
+  // hl7Versions.add("2.8.2");
+  // List<IGDocument> igDocuments =
+  // documentService.findByScopeAndVersionsInIg(IGDocumentScope.HL7STANDARD, hl7Versions);
+  // for (IGDocument igd : igDocuments) {
+  // Set<String> usedSegsId = new HashSet<String>();
+  // SegmentLibrary segmentLib = igd.getProfile().getSegmentLibrary();
+  // for (SegmentLink segLink : segmentLib.getChildren()) {
+  // usedSegsId.add(segLink.getId());
+  // }
+  // List<Segment> usedSegs = segmentService.findByIds(usedSegsId);
+  // for (Segment usedSeg : usedSegs) {
+  // for (Field fld : usedSeg.getFields()) {
+  // if (fld.getTable() != null) {
+  // fld.getTables().add(fld.getTable());
+  // System.out.println("Field Table Added=" + fld.getTable());
+  // }
+  // }
+  // }
+  // segmentService.save(usedSegs);
+  // Set<String> usedDtsId = new HashSet<String>();
+  // DatatypeLibrary datatypeLib = igd.getProfile().getDatatypeLibrary();
+  // for (DatatypeLink dtLink : datatypeLib.getChildren()) {
+  // usedSegsId.add(dtLink.getId());
+  // }
+  // List<Datatype> usedDts = datatypeService.findByIds(usedDtsId);
+  // for (Datatype usedDt : usedDts) {
+  // for (Component comp : usedDt.getComponents()) {
+  // if (comp.getTable() != null) {
+  // comp.getTables().add(comp.getTable());
+  // System.out.println("Component Table Added=" + comp.getTable());
+  // }
+  // }
+  // }
+  // datatypeService.save(usedDts);
+  // }
+  //
+  // }
 
   private void loadPreloadedIGDocuments() throws Exception {
     IGDocument d = new IGDocument();
@@ -299,27 +337,27 @@ private void changeTabletoTablesInNewHl7() {
 
     }
   }
-  
-  public void Colorate() {
-	    addAllVersions();
 
-	    for (Entry<String, ArrayList<List<String>>> e : DatatypeMap.entrySet()) {
-	      String name = e.getKey();
-	      DatatypeMatrix dt= new DatatypeMatrix();
-	      dt.setName(name);
-	      HashMap<String, Integer> links = new HashMap<String, Integer>();
-	      
-	      ArrayList<List<String>> values = e.getValue();
-	     for (int i=0; i<values.size(); i++){
-	    	 for(String version : values.get(i)){
-	    		 
-	    		 links.put(version.replace(".",""), i);
-	    	 }
-	     }
-	     dt.setLinks(links);
-	     matrix.insert(dt);
-	    }
-	  }
+  public void Colorate() {
+    addAllVersions();
+
+    for (Entry<String, ArrayList<List<String>>> e : DatatypeMap.entrySet()) {
+      String name = e.getKey();
+      DatatypeMatrix dt = new DatatypeMatrix();
+      dt.setName(name);
+      HashMap<String, Integer> links = new HashMap<String, Integer>();
+
+      ArrayList<List<String>> values = e.getValue();
+      for (int i = 0; i < values.size(); i++) {
+        for (String version : values.get(i)) {
+
+          links.put(version.replace(".", ""), i);
+        }
+      }
+      dt.setLinks(links);
+      matrix.insert(dt);
+    }
+  }
 
 
 
@@ -563,6 +601,6 @@ private void changeTabletoTablesInNewHl7() {
       }
     }
   }
-  
+
 
 }
