@@ -165,16 +165,16 @@
                                                         <th class="col-md-2 col-fixed-250">
                                                             Name
                                                         </th>
-                                                        <th class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+                                                        <th class="col-md-1 col-fixed-80">
                                                             Usage
                                                             <button type="button" ng-show="(message.scope === 'USER') && !viewSettings.tableReadonly && (message.children.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(message)">O to X
                                                                                         </button>
                                                         </th>
-                                                        <th class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">Cardinality
+                                                        <th class="col-md-1 col-fixed-100">Cardinality
                                                         </th>
-                                                        <th class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">Length
+                                                        <th class="col-md-1 col-fixed-100">Length
                                                         </th>
-                                                        <th class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">ConfLength
+                                                        <th class="col-md-1 col-fixed-80">ConfLength
                                                         </th>
                                                         <th class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">Data Type
                                                         </th>
@@ -418,13 +418,13 @@
         <td class="col-md-2 col-fixed-250">
             <span>{{node.obj.event}}^{{node.obj.structID}}:{{node.obj.description}}</span>
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80 emptyCol">
          </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('cardinality')">
+        <td class="col-md-1 col-fixed-100 emptyCol">
          </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+        <td class="col-md-1 col-fixed-100 emptyCol">
          </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+        <td class="col-md-1 col-fixed-80 emptyCol">
          </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
          </td>
@@ -478,7 +478,7 @@
 
 
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <div>
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
                     <select class="form-control input-sm" name="usage" ng-change="setDirty();openPredicateDialog(node);" required
@@ -496,7 +496,7 @@
             </div>
         </td>
 
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
+        <td class="col-md-1 col-fixed-100">
             <div ng-controller="MessageRowCtrl">
                 <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:45%" class="form-control"
@@ -514,9 +514,9 @@
                                             </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+        <td class="col-md-1 col-fixed-100 emptyCol">
          </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+        <td class="col-md-1 col-fixed-80 emptyCol">
          </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
          </td>
@@ -612,7 +612,7 @@
             </ng-form>
 
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <div>
 
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
@@ -630,7 +630,7 @@
                 </div>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
+        <td class="col-md-1 col-fixed-100">
             <div ng-controller="MessageRowCtrl" class="form-inline">
                 <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="form-control"
@@ -648,9 +648,9 @@
                                             </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')" >
+        <td class="col-md-1 col-fixed-100 emptyCol">
          </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+        <td class="col-md-1 col-fixed-80 emptyCol">
          </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
          </td>
@@ -713,7 +713,7 @@
 
             <span tooltip-html="getFieldNodeName(node.obj)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node.obj)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
                  <span>{{::node.obj.usage}}</span>
                 <span ng-repeat="p in parentsMap[node.obj.id].predicates  | filter:{constraintTarget:node.obj.position + '[1]'}:true">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
@@ -722,13 +722,13 @@
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
                 </span>
          </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
+        <td class="col-md-1 col-fixed-100">
                  <span>[{{::node.obj.min}},{{::node.obj.max}}]</span>
          </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
                  <span ng-if="datatypesMap[node.obj.datatype.id].components.length  == 0">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
          </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
             <span ng-if="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
@@ -822,7 +822,7 @@
                 </span>
             </span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
                  <span>{{::node.obj.usage}}</span>
                 <span ng-repeat="p in parentsMap[node.obj.id].predicates  | filter:{constraintTarget:node.obj.position + '[1]'}:true">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
@@ -831,14 +831,14 @@
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
                 </span>
          </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('cardinality')">
+        <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
             <div ng-if="datatypesMap[node.obj.datatype.id].components.length  == 0">
                 [{{::node.obj.minLength}},{{::node.obj.maxLength}}]
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
             <div ng-if="datatypesMap[node.obj.datatype.id].components.length  == 0" ng-bind="::node.obj.confLength">
             </div>
         </td>
@@ -1537,13 +1537,13 @@
         <td class="col-md-2 col-fixed-250">
             <span>{{::node.obj.event}}^{{::node.obj.structID}}:{{::node.obj.description}}</span>
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80 emptyCol">
          </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('cardinality')">
+        <td class="col-md-1 col-fixed-100 emptyCol">
          </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+        <td class="col-md-1 col-fixed-100 emptyCol">
          </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+        <td class="col-md-1 col-fixed-80 emptyCol">
          </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
          </td>
@@ -1573,18 +1573,18 @@
                 {{getSegmentLabel(segmentsMap[node.obj.ref.id])}}
             </span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <span ng-bind="node.obj.usage"></span>
             <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
             </span>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
+        <td class="col-md-1 col-fixed-100">
             [{{::node.obj.min}}, {{::node.obj.max}}]
         </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+        <td class="col-md-1 col-fixed-100 emptyCol">
          </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+        <td class="col-md-1 col-fixed-80 emptyCol">
          </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
          </td>
@@ -1625,7 +1625,7 @@
             <span ng-bind="::getGroupNodeName(node.obj)"></span>
             </span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <div>
                 <span ng-bind="node.obj.usage"></span>
                 <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) ">
@@ -1633,13 +1633,13 @@
                 </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('cardinality')">
+        <td class="col-md-1 col-fixed-100">
             [{{::node.obj.min}}, {{::node.obj.max}}]
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
+        <td class="col-md-1 col-fixed-100">
             <div>-</div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
+        <td class="col-md-1 col-fixed-80">
             <div>-</div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
