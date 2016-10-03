@@ -397,9 +397,13 @@ public class IGDocumentController extends CommonController {
         if (f.getDatatype() != null && f.getDatatype().getId() != null
             && datatypeIdChangeMap.containsKey(f.getDatatype().getId()))
           f.getDatatype().setId(datatypeIdChangeMap.get(f.getDatatype().getId()));
-        if (f.getTable() != null && f.getTable().getId() != null
-            && tableIdChangeMap.containsKey(f.getTable().getId()))
-          f.getTable().setId(tableIdChangeMap.get(f.getTable().getId()));
+        if (f.getTables() != null && !f.getTables().isEmpty()) {
+          for (TableLink tableLink : f.getTables()) {
+            if (tableLink != null && tableLink.getId() != null
+                && tableIdChangeMap.containsKey(tableLink.getId()))
+              tableLink.setId(tableIdChangeMap.get(tableLink.getId()));
+          }
+        }
       }
 
       for (Mapping map : s.getDynamicMapping().getMappings()) {
@@ -417,9 +421,13 @@ public class IGDocumentController extends CommonController {
         if (c.getDatatype() != null && c.getDatatype().getId() != null
             && datatypeIdChangeMap.containsKey(c.getDatatype().getId()))
           c.getDatatype().setId(datatypeIdChangeMap.get(c.getDatatype().getId()));
-        if (c.getTable() != null && c.getTable().getId() != null
-            && tableIdChangeMap.containsKey(c.getTable().getId()))
-          c.getTable().setId(tableIdChangeMap.get(c.getTable().getId()));
+        if (c.getTables() != null && !c.getTables().isEmpty()) {
+          for (TableLink tableLink : c.getTables()) {
+            if (tableLink != null && tableLink.getId() != null
+                && tableIdChangeMap.containsKey(tableLink))
+              tableLink.setId(tableIdChangeMap.get(tableLink.getId()));
+          }
+        }
       }
       datatypeService.save(d);
     }

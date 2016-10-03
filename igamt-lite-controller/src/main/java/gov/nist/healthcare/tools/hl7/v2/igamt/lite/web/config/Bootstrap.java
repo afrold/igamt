@@ -30,8 +30,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
@@ -41,8 +39,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
@@ -189,48 +185,48 @@ public class Bootstrap implements InitializingBean {
     }
   }
 
-  private void changeTabletoTablesInNewHl7() {
-    List<String> hl7Versions = new ArrayList<String>();
-    hl7Versions.add("2.7.1");
-    hl7Versions.add("2.8");
-    hl7Versions.add("2.8.1");
-    hl7Versions.add("2.8.2");
-    List<IGDocument> igDocuments =
-        documentService.findByScopeAndVersionsInIg(IGDocumentScope.HL7STANDARD, hl7Versions);
-    for (IGDocument igd : igDocuments) {
-      Set<String> usedSegsId = new HashSet<String>();
-      SegmentLibrary segmentLib = igd.getProfile().getSegmentLibrary();
-      for (SegmentLink segLink : segmentLib.getChildren()) {
-        usedSegsId.add(segLink.getId());
-      }
-      List<Segment> usedSegs = segmentService.findByIds(usedSegsId);
-      for (Segment usedSeg : usedSegs) {
-        for (Field fld : usedSeg.getFields()) {
-          if (fld.getTable() != null) {
-            fld.getTables().add(fld.getTable());
-            System.out.println("Field Table Added=" + fld.getTable());
-          }
-        }
-      }
-      segmentService.save(usedSegs);
-      Set<String> usedDtsId = new HashSet<String>();
-      DatatypeLibrary datatypeLib = igd.getProfile().getDatatypeLibrary();
-      for (DatatypeLink dtLink : datatypeLib.getChildren()) {
-        usedSegsId.add(dtLink.getId());
-      }
-      List<Datatype> usedDts = datatypeService.findByIds(usedDtsId);
-      for (Datatype usedDt : usedDts) {
-        for (Component comp : usedDt.getComponents()) {
-          if (comp.getTable() != null) {
-            comp.getTables().add(comp.getTable());
-            System.out.println("Component Table Added=" + comp.getTable());
-          }
-        }
-      }
-      datatypeService.save(usedDts);
-    }
-
-  }
+  // private void changeTabletoTablesInNewHl7() {
+  // List<String> hl7Versions = new ArrayList<String>();
+  // hl7Versions.add("2.7.1");
+  // hl7Versions.add("2.8");
+  // hl7Versions.add("2.8.1");
+  // hl7Versions.add("2.8.2");
+  // List<IGDocument> igDocuments =
+  // documentService.findByScopeAndVersionsInIg(IGDocumentScope.HL7STANDARD, hl7Versions);
+  // for (IGDocument igd : igDocuments) {
+  // Set<String> usedSegsId = new HashSet<String>();
+  // SegmentLibrary segmentLib = igd.getProfile().getSegmentLibrary();
+  // for (SegmentLink segLink : segmentLib.getChildren()) {
+  // usedSegsId.add(segLink.getId());
+  // }
+  // List<Segment> usedSegs = segmentService.findByIds(usedSegsId);
+  // for (Segment usedSeg : usedSegs) {
+  // for (Field fld : usedSeg.getFields()) {
+  // if (fld.getTable() != null) {
+  // fld.getTables().add(fld.getTable());
+  // System.out.println("Field Table Added=" + fld.getTable());
+  // }
+  // }
+  // }
+  // segmentService.save(usedSegs);
+  // Set<String> usedDtsId = new HashSet<String>();
+  // DatatypeLibrary datatypeLib = igd.getProfile().getDatatypeLibrary();
+  // for (DatatypeLink dtLink : datatypeLib.getChildren()) {
+  // usedSegsId.add(dtLink.getId());
+  // }
+  // List<Datatype> usedDts = datatypeService.findByIds(usedDtsId);
+  // for (Datatype usedDt : usedDts) {
+  // for (Component comp : usedDt.getComponents()) {
+  // if (comp.getTable() != null) {
+  // comp.getTables().add(comp.getTable());
+  // System.out.println("Component Table Added=" + comp.getTable());
+  // }
+  // }
+  // }
+  // datatypeService.save(usedDts);
+  // }
+  //
+  // }
 
   private void loadPreloadedIGDocuments() throws Exception {
     IGDocument d = new IGDocument();

@@ -18,19 +18,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -54,8 +41,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import nu.xom.Attribute;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.NullInputStream;
@@ -91,10 +76,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.tidy.Tidy;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import nu.xom.Attribute;
+
 @Service
 public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
   Logger logger = LoggerFactory.getLogger(DatatypeLibraryExportImpl.class);
-  
+
   @Autowired
   private DatatypeLibraryService datatypeLibraryService;
 
@@ -109,9 +110,9 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
 
   @Override
   public InputStream exportAsXml(DatatypeLibrary dtl) throws IOException {
-    
+
     nu.xom.Element e = new nu.xom.Element("DatatypeLibrary");
-    for (DatatypeLink dl : dtl.getChildren()){
+    for (DatatypeLink dl : dtl.getChildren()) {
       e.appendChild(serializeOneDatatype(dl));
     }
     nu.xom.Document doc = new nu.xom.Document(e);
@@ -135,19 +136,19 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
     // TODO Auto-generated method stub
     return null;
   }
-  
+
   private nu.xom.Element serializeOneDatatype(DatatypeLink dl) {
     Datatype d = datatypeService.findById(dl.getId());
 
     nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
     elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
     elmDatatype.addAttribute(new Attribute("Name", d.getName()));
-    elmDatatype.addAttribute(new Attribute("Label", d.getExt() == null || d.getExt().isEmpty() ? d
-        .getName() : d.getLabel() + " - " + d.getDescription()));
+    elmDatatype.addAttribute(new Attribute("Label", d.getExt() == null || d.getExt().isEmpty()
+        ? d.getName() : d.getLabel() + " - " + d.getDescription()));
     elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));
     elmDatatype.addAttribute(new Attribute("Comment", d.getComment()));
-    elmDatatype.addAttribute(new Attribute("Hl7Version", d.getHl7Version() == null ? "" : d
-        .getHl7Version())); 
+    elmDatatype.addAttribute(
+        new Attribute("Hl7Version", d.getHl7Version() == null ? "" : d.getHl7Version()));
 
 
     elmDatatype.addAttribute(new Attribute("id", d.getId()));
@@ -170,9 +171,9 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
         elmComponent.addAttribute(new Attribute("Name", c.getName()));
         elmComponent.addAttribute(new Attribute("Usage", c.getUsage().toString()));
         if (c.getDatatype() != null && datatypeService.findById(c.getDatatype().getId()) != null
-            && datatypeService.findById(c.getDatatype().getId()) .getLabel() != null) {
-          elmComponent.addAttribute(new Attribute("Datatype", datatypeService.findById(c.getDatatype().getId())
-              .getLabel()));
+            && datatypeService.findById(c.getDatatype().getId()).getLabel() != null) {
+          elmComponent.addAttribute(new Attribute("Datatype",
+              datatypeService.findById(c.getDatatype().getId()).getLabel()));
         }
         elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
         if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
@@ -187,16 +188,9 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
           elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
         }
 
-        if (c.getTable() != null && c.getTable().getBindingIdentifier() != null)
-          if (tableService.findById(c.getTable().getId()) != null) {
-            elmComponent.addAttribute(new Attribute("Binding", tableService.findById(
-                c.getTable().getId()).getBindingIdentifier()
-                + ""));
-          } else {
-            logger.warn("Value set not found in library " + c.getTable());
-            elmComponent
-                .addAttribute(new Attribute("Binding", c.getTable().getBindingIdentifier()));
-          }
+        if (c.getTables() != null && !c.getTables().isEmpty()) {
+          elmComponent.addAttribute(new Attribute("Binding", tablesToString(c.getTables())));
+        }
 
         List<Constraint> constraints =
             findConstraints(i, d.getPredicates(), d.getConformanceStatements());
@@ -218,7 +212,7 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
     }
     return elmDatatype;
   }
-  
+
   private nu.xom.Element serializeRichtext(String attribute, String richtext) {
     nu.xom.Element elmText1 = new nu.xom.Element("Text");
     elmText1.addAttribute(new Attribute("Type", attribute));
@@ -230,8 +224,8 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
       List<ConformanceStatement> conformanceStatements) {
     List<Constraint> constraints = new ArrayList<>();
     for (Predicate pre : predicates) {
-      if (target == Integer.parseInt(pre.getConstraintTarget().substring(0,
-          pre.getConstraintTarget().indexOf('[')))) {
+      if (target == Integer.parseInt(
+          pre.getConstraintTarget().substring(0, pre.getConstraintTarget().indexOf('[')))) {
         constraints.add(pre);
       }
     }
@@ -246,25 +240,26 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
 
   private nu.xom.Element serializeConstraintToElement(Constraint constraint, String locationName) {
     nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
-    elmConstraint.addAttribute(new Attribute("Id", constraint.getConstraintId() == null ? ""
-        : constraint.getConstraintId()));
+    elmConstraint.addAttribute(new Attribute("Id",
+        constraint.getConstraintId() == null ? "" : constraint.getConstraintId()));
     elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()
         .substring(0, constraint.getConstraintTarget().indexOf('['))));
     elmConstraint.addAttribute(new Attribute("LocationName", locationName));
     elmConstraint.appendChild(constraint.getDescription());
     if (constraint instanceof Predicate) {
       elmConstraint.addAttribute(new Attribute("Type", "pre"));
-      elmConstraint.addAttribute(new Attribute("Usage", "C("
-          + ((Predicate) constraint).getTrueUsage() + "/"
-          + ((Predicate) constraint).getFalseUsage() + ")"));
+      elmConstraint
+          .addAttribute(new Attribute("Usage", "C(" + ((Predicate) constraint).getTrueUsage() + "/"
+              + ((Predicate) constraint).getFalseUsage() + ")"));
     } else if (constraint instanceof ConformanceStatement) {
       elmConstraint.addAttribute(new Attribute("Type", "cs"));
-      elmConstraint.addAttribute(new Attribute("Classification", constraint
-          .getConstraintClassification() == null ? "" : constraint.getConstraintClassification()));
+      elmConstraint.addAttribute(
+          new Attribute("Classification", constraint.getConstraintClassification() == null ? ""
+              : constraint.getConstraintClassification()));
     }
     return elmConstraint;
-  }  
-  
+  }
+
   private InputStream exportAsXml(String xmlString) {
     // Note: inlineConstraint can be true or false
 
@@ -281,7 +276,7 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
       return new NullInputStream(1L);
     }
   }
-  
+
   private InputStream exportAsHtmlFromXsl(String xmlString, String xslPath) {
     try {
       File tmpHtmlFile = File.createTempFile("temp", ".html");
@@ -292,8 +287,7 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
       FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
 
       TransformerFactory factoryTf = TransformerFactory.newInstance();
-      Source xslt =
-          new StreamSource(this.getClass().getResourceAsStream(xslPath));
+      Source xslt = new StreamSource(this.getClass().getResourceAsStream(xslPath));
       Transformer transformer;
 
       // Apply XSL transformation on xml file to generate html
@@ -305,9 +299,9 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
       e.printStackTrace();
       return new NullInputStream(1L);
     }
-  }  
+  }
 
-  public InputStream exportAsDocxFromXml(String xmlString , String xmlPath, Boolean includeToc) {
+  public InputStream exportAsDocxFromXml(String xmlString, String xmlPath, Boolean includeToc) {
     // Note: inlineConstraint can be true or false
     try {
       File tmpHtmlFile = File.createTempFile("temp", ".html");
@@ -317,8 +311,7 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
       FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
 
       TransformerFactory factoryTf = TransformerFactory.newInstance();
-      Source xslt =
-          new StreamSource(this.getClass().getResourceAsStream(xmlPath));
+      Source xslt = new StreamSource(this.getClass().getResourceAsStream(xmlPath));
       Transformer transformer;
 
       // Apply XSL transformation on xml file to generate html
@@ -327,15 +320,14 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
 
       String html = FileUtils.readFileToString(tmpHtmlFile);
 
-      WordprocessingMLPackage wordMLPackage =
-          WordprocessingMLPackage.load(this.getClass().getResourceAsStream(
-              "/rendering/lri_template.dotx"));
+      WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage
+          .load(this.getClass().getResourceAsStream("/rendering/lri_template.dotx"));
 
       ObjectFactory factory = Context.getWmlObjectFactory();
 
-//      createCoverPageForDocx4j(igdoc, wordMLPackage, factory); TODO Implement cover page
+      // createCoverPageForDocx4j(igdoc, wordMLPackage, factory); TODO Implement cover page
 
-      if (includeToc){
+      if (includeToc) {
         createTableOfContentForDocx4j(wordMLPackage, factory);
       }
 
@@ -392,6 +384,7 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
       return new NullInputStream(1L);
     }
   }
+
   private void createTableOfContentForDocx4j(WordprocessingMLPackage wordMLPackage,
       ObjectFactory factory) {
     P paragraphForTOC = factory.createP();
@@ -429,8 +422,8 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
       // ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml"/>
       CTOverride override;
       override = ctm.getOverrideContentType().get(new URI("/word/document.xml"));
-      override
-          .setContentType(org.docx4j.openpackaging.contenttype.ContentTypes.WORDPROCESSINGML_DOCUMENT);
+      override.setContentType(
+          org.docx4j.openpackaging.contenttype.ContentTypes.WORDPROCESSINGML_DOCUMENT);
 
       // Create settings part, and init content
       DocumentSettingsPart dsp = new DocumentSettingsPart();
@@ -449,11 +442,10 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
       rel.setTargetMode("External");
       rp.addRelationship(rel); // addRelationship sets the rel's @Id
 
-      settings
-          .setAttachedTemplate((CTRel) XmlUtils
-              .unmarshalString(
-                  "<w:attachedTemplate xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\""
-                      + rel.getId() + "\"/>", Context.jc, CTRel.class));
+      settings.setAttachedTemplate((CTRel) XmlUtils.unmarshalString(
+          "<w:attachedTemplate xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\""
+              + rel.getId() + "\"/>",
+          Context.jc, CTRel.class));
 
     } catch (URISyntaxException | JAXBException | Docx4JException e1) {
       e1.printStackTrace();
@@ -498,4 +490,19 @@ public class DatatypeLibraryExportImpl implements DatatypeLibraryExportService {
       wordMLPackage.getMainDocumentPart().addParagraphOfText("Error in rich text");
     }
   }
+
+  private String tablesToString(List<TableLink> tables) {
+    String res = "";
+    if (tables != null && !tables.isEmpty()) {
+      for (TableLink link : tables) {
+        Table tbl = tableService.findById(link.getId());
+        if (tbl != null) {
+          res =
+              "".equals(res) ? tbl.getBindingIdentifier() : res + " " + tbl.getBindingIdentifier();
+        }
+      }
+    }
+    return res;
+  }
+
 }
