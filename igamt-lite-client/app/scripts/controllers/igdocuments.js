@@ -2592,14 +2592,24 @@ angular.module('igl').controller('AddSegmentDlgCtl',
     });
 
 angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modalInstance, $http, igdocumentSelected, userList) {
-	$scope.igdocumentSelected = igdocumentSelected;
-	$scope.userList = userList;
+    var filterList = function(userList){
+        return  userList.filter(function (user) {
+            return user.id != igdocumentSelected.accountId && igdocumentSelected.shareParticipantIds.indexOf(user.id) <= -1 ;
+        });
+    }
+
+    $scope.igdocumentSelected = igdocumentSelected;
+	$scope.userList = filterList(userList);
 	$scope.error = "";
 	$scope.ok = function () {
 		var idsTab = $scope.tags.map(function(user) {
 			return user.id;
 		});
 		$http.post('api/igdocuments/' + igdocumentSelected.id + '/share', idsTab).then(function (response) {
+            if(!igdocumentSelected.shareParticipantIds) {
+                igdocumentSelected.shareParticipantIds = [];
+            }
+            igdocumentSelected.shareParticipantIds.concat(idsTab);
             $modalInstance.dismiss('ok');
 		}, function (error) {
 			$scope.error = error.data;
@@ -2621,4 +2631,6 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
 			return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
 		});
 	};
+
+
 });
