@@ -1799,6 +1799,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
     $scope.save = function() {
         $scope.importedTable.bindingIdentifier = $rootScope.createNewFlavorName($scope.importedTable.bindingIdentifier);
         $scope.importedTable.libIds.push($scope.selectedTableLibary.id);
+        $scope.importedTable.newTable = true;
 
         TableService.save($scope.importedTable).then(function(result) {
             var newTable = result;
@@ -2696,17 +2697,21 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalI
     }
 
     $scope.igdocumentSelected = igdocumentSelected;
-    $scope.userList = filterList(userList);
-    $scope.error = "";
-    $scope.ok = function() {
-        var idsTab = $scope.tags.map(function(user) {
-            return user.id;
-        });
-        $http.post('api/igdocuments/' + igdocumentSelected.id + '/share', idsTab).then(function(response) {
-            if (!igdocumentSelected.shareParticipantIds) {
-                igdocumentSelected.shareParticipantIds = [];
-            }
-            igdocumentSelected.shareParticipantIds.concat(idsTab);
+
+	$scope.userList = filterList(userList);
+	$scope.error = "";
+	$scope.ok = function () {
+		var idsTab = $scope.tags.map(function(user) {
+			return user.id;
+		});
+		$http.post('api/igdocuments/' + igdocumentSelected.id + '/share', idsTab).then(function (response) {
+			if(igdocumentSelected.shareParticipantIds) {
+				igdocumentSelected.shareParticipantIds = igdocumentSelected.shareParticipantIds.concat(idsTab);
+				igdocumentSelected.shareParticipants = igdocumentSelected.shareParticipants.concat($scope.tags);
+			} else {
+				igdocumentSelected.shareParticipantIds = idsTab;
+				igdocumentSelected.shareParticipants = $scope.tags;
+			}
             $modalInstance.dismiss('ok');
         }, function(error) {
             $scope.error = error.data;
