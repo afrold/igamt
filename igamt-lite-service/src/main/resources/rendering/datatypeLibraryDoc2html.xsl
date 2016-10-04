@@ -513,11 +513,13 @@
 				<xsl:value-of select="@Description" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@Min" />
-				..
-				<xsl:value-of select="@Max" />
-				]
+				<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+					[
+					<xsl:value-of select="@Min" />
+					..
+					<xsl:value-of select="@Max" />
+					]
+				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="@Usage" />
@@ -676,18 +678,22 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@Min" />
-				..
-				<xsl:value-of select="@Max" />
-				]
+				<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+					[
+					<xsl:value-of select="@Min" />
+					..
+					<xsl:value-of select="@Max" />
+					]
+				</xsl:if>
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@MinLength" />
-				..
-				<xsl:value-of select="@MaxLength" />
-				]
+				<xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+					[
+					<xsl:value-of select="@MinLength" />
+					..
+					<xsl:value-of select="@MaxLength" />
+					]
+				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="@Binding" />
@@ -868,11 +874,13 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@MinLength" />
-				..
-				<xsl:value-of select="@MaxLength" />
-				]
+				<xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+					[
+					<xsl:value-of select="@MinLength" />
+					..
+					<xsl:value-of select="@MaxLength" />
+					]
+				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="@Binding" />
