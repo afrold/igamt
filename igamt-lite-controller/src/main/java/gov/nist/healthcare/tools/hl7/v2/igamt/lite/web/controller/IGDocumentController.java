@@ -539,7 +539,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("text/xml");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -554,7 +554,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -569,7 +569,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -587,7 +587,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -605,7 +605,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -621,7 +621,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -653,7 +653,7 @@ public class IGDocumentController extends CommonController {
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -693,7 +693,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
