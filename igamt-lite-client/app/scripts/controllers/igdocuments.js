@@ -1790,6 +1790,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
     $scope.save = function() {
         $scope.importedTable.bindingIdentifier = $rootScope.createNewFlavorName($scope.importedTable.bindingIdentifier);
         $scope.importedTable.libIds.push($scope.selectedTableLibary.id);
+        $scope.importedTable.newTable = true;
 
         TableService.save($scope.importedTable).then(function(result) {
             var newTable = result;

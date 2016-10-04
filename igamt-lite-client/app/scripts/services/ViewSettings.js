@@ -5,10 +5,6 @@
 angular.module('igl').factory('ViewSettings',
     ['StorageService', function (StorageService) {
         var columnOptions = [
-            { id: "usage", label: "Usage"},
-            { id: "cardinality", label: "Cardinality"},
-            { id: "length", label: "Length"},
-            { id: "confLength", label: "Conf. Length"},
             { id: "datatype", label: "Datatype"},
             { id: "valueSet", label: "Value Set"},
             { id: "predicate", label: "Predicate"},
