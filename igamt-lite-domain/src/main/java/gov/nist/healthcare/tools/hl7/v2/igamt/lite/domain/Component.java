@@ -56,7 +56,7 @@ public class Component extends DataElement implements Cloneable {
     clonedObj.setMinLength(minLength);
     clonedObj.setName(name);
     clonedObj.setPosition(position);
-
+    
     clonedObj.setTables(new ArrayList<TableLink>());
     for(TableLink tl:this.tables){
     	clonedObj.getTables().add(tl.clone());
