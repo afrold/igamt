@@ -1208,9 +1208,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     });
                 } else if (angular.equals(obj.type, 'segmentRef')) {
                     if (obj.ref.id === segment.id) {
-                        var segmentLabel = $rootScope.getSegmentLabel(segment);
                         var found = angular.copy(obj);
-                        found.path = path + '.' + segmentLabel;
+                        found.path = path + '.' + segment.name;
                         found.positionPath = positionPath + '.' + obj.position;
                         found.target = angular.copy(target);
                         found.segmentLink = angular.copy(obj.ref);

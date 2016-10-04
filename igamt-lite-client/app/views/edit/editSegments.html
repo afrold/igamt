@@ -509,7 +509,11 @@
                                                     {{::ref.usage}}
                                                 </td>
                                                 <td st-ratio="20">
-                                                    {{::getDatatypeLabel(segmentsMap[ref.segmentLink.id])}}
+                                                    <select class="form-control" ng-change="changeSegmentLink(ref.segmentLink)" ng-model="ref.segmentLink.id">
+                                                        <option ng-repeat="seg in segments |orderBy:'+name'" ng-hide="seg.name != segment.name" value="{{seg.id}}">
+                                                            {{::getSegmentLabel(seg)}}
+                                                        </option>
+                                                    </select>
                                                 </td>
                                                 <td st-ratio="5">
                                                     <span ng-if="ref.segmentLink.isNew">New</span>
@@ -518,7 +522,7 @@
 
                                             </tr>
                                             </tbody>
-                                            <tr>
+                                            <tr ng-show="references.length > 15">
                                                 <td colspan="6" class="text-center">
                                                     <div st-pagination="" st-items-by-page="15" st-displayed-pages="15"></div>
                                                 </td>
@@ -529,42 +533,6 @@
                                         <p>This Segment is not being used in this ig document</p>
                                     </div>
 
-                                </div>
-
-
-
-                                <div class="el-def" style="margin-top:20px">
-                                    <div ng-if="references != null && references.length > 0">
-                                        <table st-table="tmpReferences" st-safe-src="references" class="table table-striped table-bordered table-condensed">
-                                            <thead>
-                                                <tr class="tbl-header">
-                                                    <td st-ratio="5">#</td>
-                                                    <th st-ratio="40" st-sort="path">Reference Path</th>
-                                                    <th st-ratio="55" st-sort="name">Reference Name</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="ref in tmpReferences">
-                                                    <td st-ratio="5">{{$index + 1}} </td>
-                                                    <td st-ratio="40">
-                                                        <span ng-if="ref.type === 'group'" class="label label-success label-icon">G</span>
-                                                        <span ng-if="ref.type === 'segmentRef'" class="label label-segment label-icon">S</span> {{::ref.path}}
-                                                    </td>
-                                                    <td st-ratio="55">
-                                                        {{::ref.name}}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                                 <tr>
-                                                    <td colspan="3" class="text-center">
-                                                        <div st-pagination="" st-items-by-page="15" st-displayed-pages="15"></div>
-                                                    </td>
-                                                </tr>
-                                         </table>
-                                    </div>
-                                    <div ng-hide="references != null && references.length > 0" style="text-align:center">
-                                        <p>This segment is not being used in this ig document</p>
-                                    </div>
                                 </div>
                             </tab>
                         </tabset>
@@ -2198,6 +2166,43 @@
         <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
         <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="AddBindingForSegment.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Add Binding for Segment : {{::getSegmentLabel(segment)}}</h3>
+    </div>
+    <div class="modal-body">
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+            <tr class="tbl-header">
+                <th class="col-md-4">Message</th>
+                <th class="col-md-8">SegmentRef</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <select ng-model='selectedMessageForBinding' class="form-control" ng-change="selectMessage();" ng-options="msg as msg.name + '-' + msg.identifier for msg in messages.children" />
+                </td>
+                <td class="col-md-8">
+                    <select ng-show='selectedMessageForBinding != null' ng-model='selectedSegRefForBinding' class="form-control">
+                        <option ng-repeat="ref in segRefsList" value="{{ref}}" ng-disabled="checkDuplicated(ref.positionPath);">
+                            {{::ref.path}}({{::ref.positionPath}})
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-info btn-sm" ng-disabled="selectedSegRefForBinding == null" ng-click="save()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span>
         </button>
     </div>
 </script>
