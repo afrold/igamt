@@ -1194,16 +1194,26 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         };
 
-        $rootScope.findSegmentRefs = function(segment, obj, path) {
+        $rootScope.findSegmentRefs = function(segment, obj, path, positionPath, target) {
             if (obj != null && obj != undefined) {
-                if (angular.equals(obj.type, 'message') || angular.equals(obj.type, 'group')) {
+                if (angular.equals(obj.type, 'message')) {
                     angular.forEach(obj.children, function(child) {
-                        $rootScope.findSegmentRefs(segment, child, path + "." + child.position);
+                        $rootScope.findSegmentRefs(segment, child, obj.name + '-' + obj.identifier, obj.name + '-' + obj.identifier, target);
+                    });
+                } else if (angular.equals(obj.type, 'group')){
+                    angular.forEach(obj.children, function(child) {
+                        var groupNames = obj.name.split(".");
+                        var groupName = groupNames[groupNames.length - 1];
+                        $rootScope.findSegmentRefs(segment, child, path + '.' + groupName, positionPath + '.' + obj.position, target);
                     });
                 } else if (angular.equals(obj.type, 'segmentRef')) {
                     if (obj.ref.id === segment.id) {
+                        var segmentLabel = $rootScope.getSegmentLabel(segment);
                         var found = angular.copy(obj);
-                        found.path = path;
+                        found.path = path + '.' + segmentLabel;
+                        found.positionPath = positionPath + '.' + obj.position;
+                        found.target = angular.copy(target);
+                        found.segmentLink = angular.copy(obj.ref);
                         $rootScope.references.push(found);
                     }
                 }

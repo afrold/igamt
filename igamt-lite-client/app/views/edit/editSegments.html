@@ -478,6 +478,62 @@
                                     <i class="fa fa-link" aria-hidden="true"></i> Segment Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
+                                    <span class="pull-right">
+                                        <button ng-click="AddBindingForSegment(segment)" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> Add Binding</button>
+                                    </span>
+                                    <div ng-if="references != null && references.length > 0">
+                                        <table st-table="tmpReferences" st-safe-src="references" class="table table-striped table-bordered table-condensed">
+                                            <thead>
+                                            <tr class="tbl-header">
+                                                <td st-ratio="5">#</td>
+                                                <th st-ratio="20">Position Path</th>
+                                                <th st-ratio="40">Path</th>
+                                                <th st-ratio="10">Usage</th>
+                                                <th st-ratio="20">Segment</th>
+                                                <th st-ratio="5">Status</th>
+                                            </tr>
+
+                                            </thead>
+
+                                            <tbody>
+                                            <tr ng-repeat="ref in tmpReferences">
+                                                <td st-ratio="5">{{$index + 1}}
+                                                </td>
+                                                <td st-ratio="20">
+                                                    <span ng-bind="ref.positionPath"></span>
+                                                </td>
+                                                <td st-ratio="40">
+                                                    <span ng-bind="ref.path"></span>
+                                                </td>
+                                                <td st-ratio="10">
+                                                    {{::ref.usage}}
+                                                </td>
+                                                <td st-ratio="20">
+                                                    {{::getDatatypeLabel(segmentsMap[ref.segmentLink.id])}}
+                                                </td>
+                                                <td st-ratio="5">
+                                                    <span ng-if="ref.segmentLink.isNew">New</span>
+                                                    <span ng-if="!ref.segmentLink.isNew && ref.segmentLink.isChanged">Changed</span>
+                                                </td>
+
+                                            </tr>
+                                            </tbody>
+                                            <tr>
+                                                <td colspan="6" class="text-center">
+                                                    <div st-pagination="" st-items-by-page="15" st-displayed-pages="15"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div ng-hide="references != null && references.length > 0">
+                                        <p>This Segment is not being used in this ig document</p>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="el-def" style="margin-top:20px">
                                     <div ng-if="references != null && references.length > 0">
                                         <table st-table="tmpReferences" st-safe-src="references" class="table table-striped table-bordered table-condensed">
                                             <thead>
