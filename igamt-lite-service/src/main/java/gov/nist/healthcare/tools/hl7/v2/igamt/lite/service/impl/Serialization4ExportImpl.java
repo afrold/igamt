@@ -1398,176 +1398,172 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
     if (sl.getId() != null) {
       Segment s = segmentService.findById(sl.getId());
-
-      elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
-      elmSegment.addAttribute(new Attribute("Name", sl.getName()));
-      elmSegment.addAttribute(new Attribute("Label",
-          sl.getExt() == null || sl.getExt().isEmpty() ? sl.getName() : sl.getLabel()));
-      elmSegment.addAttribute(new Attribute("Position", ""));
-      elmSegment.addAttribute(new Attribute("Description", s.getDescription()));
-      if (s.getComment() != null && !s.getComment().isEmpty()) {
-        elmSegment.addAttribute(new Attribute("Comment", s.getComment()));
-      }
-
-      elmSegment.addAttribute(new Attribute("id", s.getId()));
-
-      if ((s.getText1() != null && !s.getText1().isEmpty())
-          || (s.getText2() != null && !s.getText2().isEmpty())) {
-        if (s.getText1() != null && !s.getText1().isEmpty()) {
-          elmSegment.appendChild(this.serializeRichtext("Text1", s.getText1()));
+      if (s != null){
+        elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
+        elmSegment.addAttribute(new Attribute("id", s.getId()));
+        elmSegment.addAttribute(new Attribute("Name", sl.getName()));
+        elmSegment.addAttribute(new Attribute("Label",
+            sl.getExt() == null || sl.getExt().isEmpty() ? sl.getName() : sl.getLabel()));
+        elmSegment.addAttribute(new Attribute("Position", ""));
+        elmSegment.addAttribute(new Attribute("Description", s.getDescription()));
+        if (s.getComment() != null && !s.getComment().isEmpty()) {
+          elmSegment.addAttribute(new Attribute("Comment", s.getComment()));
         }
-        if (s.getText2() != null && !s.getText2().isEmpty()) {
-          elmSegment.appendChild(this.serializeRichtext("Text2", s.getText2()));
+
+        if ((s.getText1() != null && !s.getText1().isEmpty())
+            || (s.getText2() != null && !s.getText2().isEmpty())) {
+          if (s.getText1() != null && !s.getText1().isEmpty()) {
+            elmSegment.appendChild(this.serializeRichtext("Text1", s.getText1()));
+          }
+          if (s.getText2() != null && !s.getText2().isEmpty()) {
+            elmSegment.appendChild(this.serializeRichtext("Text2", s.getText2()));
+          }
         }
-      }
 
-      // Map<Integer, Field> fields = new HashMap<Integer, Field>();
-      //
-      // for (Field f : s.getFields()) {
-      // fields.put(f.getPosition(), f);
-      // }
-
-      for (int i = 0; i < s.getFields().size(); i++) {
-        Field f = s.getFields().get(i);
-        nu.xom.Element elmField = new nu.xom.Element("Field");
-        elmField.addAttribute(new Attribute("Name", f.getName()));
-        elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
-
-//        if (f.getDatatype() != null) {
-//          String label = f.getDatatype().getExt() == null || f.getDatatype().getExt().isEmpty() ? f.getDatatype().getName()
-//              : f.getDatatype().getLabel();
-        	if (f.getDatatype() != null) {
-				  Datatype data =datatypeService.findById(f.getDatatype().getId());
-				  if(data!=null){
-					  elmField.addAttribute(new Attribute("Datatype", data.getLabel()));
-				  }
-			  }
-        
-      
-        if (f.getConfLength() != null && !f.getConfLength().equals("")){
-        	if(f.getDatatype()!=null){
-        		Datatype d =datatypeService.findById(f.getDatatype().getId());
-        		if(d!=null){
-        			if(d.getComponents().size()>0){
-      		          elmField.addAttribute(new Attribute("ConfLength", ""));
-        		          
-        		          elmField.addAttribute(new Attribute("MinLength", "" + ""));
-        		          if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-        		            elmField.addAttribute(new Attribute("MaxLength", ""));
-        		          
-
-        			}else{
-        		          elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
-        		          
-        		          elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
-        		          if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-        		            elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
-
-        			}
-        			
-        		}
-        	}
-        }
-        elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
-        elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
-        if (f.getTables() != null && (f.getTables().size() > 0)) {
-          String temp = "";
-          if ((f.getTables().size() > 1)) {
-            for (TableLink t : f.getTables()) {
-              String bdInd = tableService.findById(t.getId()).getBindingIdentifier();
-              temp = !temp.equals("") ? temp + "," + bdInd : bdInd;
+        for (int i = 0; i < s.getFields().size(); i++) {
+          Field f = s.getFields().get(i);
+          nu.xom.Element elmField = new nu.xom.Element("Field");
+          elmField.addAttribute(new Attribute("Name", f.getName()));
+          elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
+          if (f.getDatatype() != null) {
+            Datatype data =datatypeService.findById(f.getDatatype().getId());
+            if(data!=null){
+              elmField.addAttribute(new Attribute("Datatype", data.getLabel()));
             }
-          } else {
-            temp = f.getTables().get(0).getBindingIdentifier();
           }
-          elmField.addAttribute(new Attribute("Binding", temp));
-        }
-        if (f.getItemNo() != null && !f.getItemNo().equals(""))
-          elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
-        if (f.getComment() != null && !f.getComment().isEmpty())
-          elmField.addAttribute(new Attribute("Comment", f.getComment()));
-        elmField.addAttribute(new Attribute("Position", String.valueOf(f.getPosition())));
 
-        if (f.getText() != null && !f.getText().isEmpty()) {
-          elmField.appendChild(this.serializeRichtext("Text", f.getText()));
-        }
+          if (f.getConfLength() != null && !f.getConfLength().equals("")){
+            if(f.getDatatype()!=null){
+              Datatype d =datatypeService.findById(f.getDatatype().getId());
+              if(d!=null){
+                if(d.getComponents().size()>0){
+                  elmField.addAttribute(new Attribute("ConfLength", ""));
+
+                  elmField.addAttribute(new Attribute("MinLength", "" + ""));
+                  if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
+                    elmField.addAttribute(new Attribute("MaxLength", ""));
 
 
-        List<Constraint> constraints =
-            findConstraints(i, s.getPredicates(), s.getConformanceStatements());
-        if (!constraints.isEmpty()) {
-          for (Constraint constraint : constraints) {
-            nu.xom.Element elmConstraint =
-                serializeConstraintToElement(constraint, s.getName() + "-");
-            elmField.appendChild(elmConstraint);
-          }
-        }
+                }else{
+                  elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
 
-        elmSegment.appendChild(elmField);
-      }
+                  elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
+                  if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
+                    elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
 
-      CoConstraints coconstraints = s.getCoConstraints();
-      if (coconstraints.getConstraints().size() != 0) {
-        nu.xom.Element ccts = new Element("coconstraints");
-        nu.xom.Element htmlTable = new nu.xom.Element("table");
-        htmlTable.addAttribute(new Attribute("cellpadding", "1"));
-        htmlTable.addAttribute(new Attribute("cellspacing", "0"));
-        htmlTable.addAttribute(new Attribute("border", "1"));
-        htmlTable.addAttribute(new Attribute("width", "100%"));
-
-        nu.xom.Element thead = new nu.xom.Element("thead");
-        thead.addAttribute(
-            new Attribute("style", "background:#F0F0F0; color:#B21A1C; align:center"));
-        nu.xom.Element tr = new nu.xom.Element("tr");
-        for (CoConstraintsColumn ccc : coconstraints.getColumnList()) {
-          nu.xom.Element th = new nu.xom.Element("th");
-          th.appendChild(sl.getName() + "-" + ccc.getField().getPosition());
-          tr.appendChild(th);
-        }
-        nu.xom.Element thd = new nu.xom.Element("th");
-        thd.appendChild("Description");
-        tr.appendChild(thd);
-        nu.xom.Element thc = new nu.xom.Element("th");
-        thc.appendChild("Comments");
-        tr.appendChild(thc);
-        thead.appendChild(tr);
-        htmlTable.appendChild(thead);
-
-        nu.xom.Element tbody = new nu.xom.Element("tbody");
-        tbody.addAttribute(new Attribute("style", "background-color:white;text-decoration:normal"));
-        for (CoConstraint cct : coconstraints.getConstraints()) {
-
-          tr = new nu.xom.Element("tr");
-          for (CCValue ccv : cct.getValues()) {
-            nu.xom.Element td = new nu.xom.Element("td");
-            if (ccv != null) {
-              if (coconstraints.getColumnList().get(cct.getValues().indexOf(ccv))
-                  .getConstraintType().equals("v")) {
-                td.appendChild(ccv.getValue());
-              } else {
-                if (tableService.findById(ccv.getValue()) != null) {
-                  td.appendChild(tableService.findById(ccv.getValue()).getBindingIdentifier());
-                } else {
-                  td.appendChild("");
                 }
+
+              }
+            }
+          }
+          elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
+          elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
+          if (f.getTables() != null && (f.getTables().size() > 0)) {
+            String temp = "";
+            if ((f.getTables().size() > 1)) {
+              for (TableLink t : f.getTables()) {
+                String bdInd = tableService.findById(t.getId()).getBindingIdentifier();
+                temp = !temp.equals("") ? temp + "," + bdInd : bdInd;
               }
             } else {
-              td.appendChild("");
+              temp = f.getTables().get(0).getBindingIdentifier();
             }
-            tr.appendChild(td);
+            elmField.addAttribute(new Attribute("Binding", temp));
           }
-          nu.xom.Element td = new nu.xom.Element("td");
-          td.appendChild(cct.getDescription());
-          tr.appendChild(td);
-          td = new nu.xom.Element("td");
-          td.appendChild(cct.getComments());
-          tr.appendChild(td);
-          tbody.appendChild(tr);
+          if (f.getItemNo() != null && !f.getItemNo().equals(""))
+            elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
+          if (f.getComment() != null && !f.getComment().isEmpty())
+            elmField.addAttribute(new Attribute("Comment", f.getComment()));
+          elmField.addAttribute(new Attribute("Position", String.valueOf(f.getPosition())));
+
+          if (f.getText() != null && !f.getText().isEmpty()) {
+            elmField.appendChild(this.serializeRichtext("Text", f.getText()));
+          }
+
+
+          List<Constraint> constraints =
+              findConstraints(i, s.getPredicates(), s.getConformanceStatements());
+          if (!constraints.isEmpty()) {
+            for (Constraint constraint : constraints) {
+              nu.xom.Element elmConstraint =
+                  serializeConstraintToElement(constraint, s.getName() + "-");
+              elmField.appendChild(elmConstraint);
+            }
+          }
+
+          elmSegment.appendChild(elmField);
         }
-        htmlTable.appendChild(tbody);
-        ccts.appendChild(htmlTable);
-        elmSegment.appendChild(ccts);
+
+        CoConstraints coconstraints = s.getCoConstraints();
+        if (coconstraints.getConstraints().size() != 0) {
+          nu.xom.Element ccts = new Element("coconstraints");
+          nu.xom.Element htmlTable = new nu.xom.Element("table");
+          htmlTable.addAttribute(new Attribute("cellpadding", "1"));
+          htmlTable.addAttribute(new Attribute("cellspacing", "0"));
+          htmlTable.addAttribute(new Attribute("border", "1"));
+          htmlTable.addAttribute(new Attribute("width", "100%"));
+
+          nu.xom.Element thead = new nu.xom.Element("thead");
+          thead.addAttribute(
+              new Attribute("style", "background:#F0F0F0; color:#B21A1C; align:center"));
+          nu.xom.Element tr = new nu.xom.Element("tr");
+          for (CoConstraintsColumn ccc : coconstraints.getColumnList()) {
+            nu.xom.Element th = new nu.xom.Element("th");
+            th.appendChild(sl.getName() + "-" + ccc.getField().getPosition());
+            tr.appendChild(th);
+          }
+          nu.xom.Element thd = new nu.xom.Element("th");
+          thd.appendChild("Description");
+          tr.appendChild(thd);
+          nu.xom.Element thc = new nu.xom.Element("th");
+          thc.appendChild("Comments");
+          tr.appendChild(thc);
+          thead.appendChild(tr);
+          htmlTable.appendChild(thead);
+
+          nu.xom.Element tbody = new nu.xom.Element("tbody");
+          tbody.addAttribute(new Attribute("style", "background-color:white;text-decoration:normal"));
+          for (CoConstraint cct : coconstraints.getConstraints()) {
+
+            tr = new nu.xom.Element("tr");
+            for (CCValue ccv : cct.getValues()) {
+              nu.xom.Element td = new nu.xom.Element("td");
+              if (ccv != null) {
+                if (coconstraints.getColumnList().get(cct.getValues().indexOf(ccv))
+                    .getConstraintType().equals("v")) {
+                  td.appendChild(ccv.getValue());
+                } else {
+                  if (tableService.findById(ccv.getValue()) != null) {
+                    td.appendChild(tableService.findById(ccv.getValue()).getBindingIdentifier());
+                  } else {
+                    td.appendChild("");
+                  }
+                }
+              } else {
+                td.appendChild("");
+              }
+              tr.appendChild(td);
+            }
+            nu.xom.Element td = new nu.xom.Element("td");
+            td.appendChild(cct.getDescription());
+            tr.appendChild(td);
+            td = new nu.xom.Element("td");
+            td.appendChild(cct.getComments());
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+          }
+          htmlTable.appendChild(tbody);
+          ccts.appendChild(htmlTable);
+          elmSegment.appendChild(ccts);
+        }
       }
+    } else {
+      elmSegment.addAttribute(new Attribute("ID", sl.getId() + ""));
+      elmSegment.addAttribute(new Attribute("Name", sl.getName() + ""));
+      elmSegment.addAttribute(new Attribute("Label",
+          sl.getExt() == null || sl.getExt().isEmpty() ? sl.getName() : sl.getLabel() + ""));
+      elmSegment.addAttribute(new Attribute("Description", "Error"));
+      elmSegment.addAttribute(new Attribute("Comment", "Could not find id" + sl.getId()));
     }
     return elmSegment;
   }
@@ -1734,6 +1730,12 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				  
 			  }
 
+		  } else {
+            elmDatatype.addAttribute(new Attribute("ID", dl.getId() + ""));
+            elmDatatype.addAttribute(new Attribute("Name", dl.getName() + ""));
+            elmDatatype.addAttribute(new Attribute("Label", dl.getLabel() + ""));
+            elmDatatype.addAttribute(new Attribute("Description", "Error"));
+            elmDatatype.addAttribute(new Attribute("Comment", "Couldn't find id " + dl.getId()));
 		  }
 	  }
 	  return elmDatatype;
