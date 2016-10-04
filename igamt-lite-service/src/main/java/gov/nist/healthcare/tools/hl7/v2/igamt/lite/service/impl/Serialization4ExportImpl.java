@@ -78,6 +78,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Entities.EscapeMode;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1408,19 +1411,18 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
           String imgEnc = Base64.encodeBase64String(IOUtils.toByteArray(imgis));
           String texEncImg = "data:image/" + ext + ";base64," + imgEnc;
-
-          logger.debug("=======>>>>>>>>");
-          logger.debug(dbFile.getContentType());
-          logger.debug(dbFile.getFilename());
-          logger.debug(ext);
-          logger.debug(texEncImg);
+//          logger.debug(dbFile.getContentType());
+//          logger.debug(dbFile.getFilename());
+//          logger.debug(ext);
+//          logger.debug(texEncImg);
           elementImg.attr("src", texEncImg);
         }
       } catch (IOException e) {
         e.printStackTrace(); //If error, we leave the original document as is. 
       } 
     }
-    return "<div class=\"fr-view\">" + doc.html() + "</div>";
+    doc.outputSettings().escapeMode(EscapeMode.xhtml);
+    return "<div class=\"fr-view\">" + doc.body().html() + "</div>";
   }
 
 
