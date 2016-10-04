@@ -547,7 +547,7 @@
                                                     <td st-ratio="15">
                                                         
                                                         <a ng-if="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</a>
-                                                        <a ng-if="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.name}}</a>
+                                                        <a ng-if="ref.type === 'component'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</a>
                                                     
                                                     </td>
                                                     <td st-ratio="10">
@@ -577,9 +577,9 @@
 
                                                 </tr>
                                             </tbody>
-                                            <tr>
-                                                <td colspan="3" class="text-center">
-                                                    <div st-pagination="" st-items-by-page="15" st-displayed-pages="15"></div>
+                                            <tr ng-if="references.length > 10">
+                                                <td colspan="9" class="text-center">
+                                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
                                                 </td>
                                             </tr>
                                         </table>

@@ -119,12 +119,12 @@ public class Bootstrap implements InitializingBean {
     // addVersionAndScopetoUSERIG();
     // addScopeUserToOldClonedPRELOADEDIG();
     // changeTabletoTablesInNewHl7();
-//    modifyCodeUsage();
-//    modifyFieldUsage();
-//    modifyComponentUsage();
+    // modifyCodeUsage();
+    // modifyFieldUsage();
+    // modifyComponentUsage();
     // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
     // to write a code for the message.
-//    Colorate();
+    // Colorate();
   }
 
   private void modifyCodeUsage() {
