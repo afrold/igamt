@@ -1001,10 +1001,8 @@ angular.module('igl')
 
                                 $rootScope.references = [];
                                 angular.forEach($rootScope.igdocument.profile.messages.children, function(message) {
-                                    $rootScope.findSegmentRefs($rootScope.segment, message, message.name);
+                                    $rootScope.findSegmentRefs($rootScope.segment, message, '', '', message);
                                 });
-                                $rootScope.tmpReferences = [].concat($rootScope.references);
-
                                 $scope.loadingSelection = false;
                                 $rootScope.$emit("event:initEditArea");
                                 blockUI.stop();

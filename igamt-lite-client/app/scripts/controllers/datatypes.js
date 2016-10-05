@@ -556,7 +556,7 @@ angular.module('igl')
         $scope.reset = function() {
             blockUI.start();
             DatatypeService.reset();
-            cleanState();
+            $scope.cleanState();
             $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
 
             $rootScope.references = [];
@@ -821,7 +821,7 @@ angular.module('igl')
         };
 
 
-        var cleanState = function() {
+        $scope.cleanState = function() {
             $scope.selectedChildren = [];
             $rootScope.addedDatatypes = [];
             $rootScope.addedTables = [];
@@ -870,7 +870,7 @@ angular.module('igl')
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
                         $scope.saving = false;
-                        cleanState();
+                        $scope.cleanState();
                     }, function(error) {
                         $scope.saving = false;
                         $rootScope.msg().text = "Sorry an error occured. Please try again";

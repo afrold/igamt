@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'ElementUtils', 'SectionSvc',
-    function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, ElementUtils, SectionSvc) {
+angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc',
+    function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc) {
         // This line fetches the info from the server if the user is currently
         // logged in.
         // If success, the app is updated according to the role.
@@ -1194,16 +1194,25 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         };
 
-        $rootScope.findSegmentRefs = function(segment, obj, path) {
+        $rootScope.findSegmentRefs = function(segment, obj, path, positionPath, target) {
             if (obj != null && obj != undefined) {
-                if (angular.equals(obj.type, 'message') || angular.equals(obj.type, 'group')) {
+                if (angular.equals(obj.type, 'message')) {
                     angular.forEach(obj.children, function(child) {
-                        $rootScope.findSegmentRefs(segment, child, path + "." + child.position);
+                        $rootScope.findSegmentRefs(segment, child, obj.name + '-' + obj.identifier, obj.name + '-' + obj.identifier, target);
+                    });
+                } else if (angular.equals(obj.type, 'group')){
+                    angular.forEach(obj.children, function(child) {
+                        var groupNames = obj.name.split(".");
+                        var groupName = groupNames[groupNames.length - 1];
+                        $rootScope.findSegmentRefs(segment, child, path + '.' + groupName, positionPath + '.' + obj.position, target);
                     });
                 } else if (angular.equals(obj.type, 'segmentRef')) {
                     if (obj.ref.id === segment.id) {
                         var found = angular.copy(obj);
-                        found.path = path;
+                        found.path = path + '.' + segment.name;
+                        found.positionPath = positionPath + '.' + obj.position;
+                        found.target = angular.copy(target);
+                        found.segmentLink = angular.copy(obj.ref);
                         $rootScope.references.push(found);
                     }
                 }
@@ -1237,6 +1246,68 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     }
                 }
             }
+        };
+
+        $rootScope.saveBindingForSegment = function() {
+            var segmentBindingUpdateParameterList = [];
+
+            for (var q = 0; q < $rootScope.references.length; q++) {
+                var ref = $rootScope.references[q];
+                if (ref.segmentLink.isChanged) {
+                    ref.segmentLink.isNew = null;
+                    ref.segmentLink.isChanged = null;
+                    var segmentBindingUpdateParameter = {};
+                    segmentBindingUpdateParameter.messageId = ref.target.id;
+                    segmentBindingUpdateParameter.newSegmentLink = angular.copy(ref.segmentLink);
+                    segmentBindingUpdateParameter.positionPath = ref.positionPath;
+                    segmentBindingUpdateParameterList.push(segmentBindingUpdateParameter);
+
+                    var message = angular.copy($rootScope.messagesMap[segmentBindingUpdateParameter.messageId]);
+                    var paths = segmentBindingUpdateParameter.positionPath.split('.');
+                    $rootScope.updateSegmentBinding(message.children, paths, segmentBindingUpdateParameter.newSegmentLink);
+
+                    $rootScope.messagesMap[message.id] = message;
+                    var oldMessage = _.find($rootScope.igdocument.profile.messages.children, function(msg) {
+                        return msg.id == message.id;
+                    });
+
+                    var index = $rootScope.igdocument.profile.messages.children.indexOf(oldMessage);
+                    if (index > -1) $rootScope.igdocument.profile.messages.children[index] = message;
+
+                }
+            }
+
+            MessageService.updateSegmentBinding(segmentBindingUpdateParameterList).then(function(result) {}, function(error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+
+            $rootScope.references = [];
+            angular.forEach($rootScope.igdocument.profile.messages.children, function(message) {
+                $rootScope.findSegmentRefs($rootScope.segment, message, '', '', message);
+            });
+
+        };
+
+        $rootScope.updateSegmentBinding = function (children, paths, newSegmentLink){
+            var position = parseInt(paths[1]);
+            var child = $rootScope.findChildByPosition(children, position);
+
+            if(paths.length == 2) {
+                if(child.type === "segmentRef"){
+                    child.ref = newSegmentLink;
+                }
+            }else{
+                $rootScope.updateSegmentBinding(child.children, paths.slice(1), newSegmentLink);
+            }
+        };
+
+        $rootScope.findChildByPosition = function (children, position){
+            for (var i = 0; i < children.length; i++) {
+                if(children[i].position == position) return children[i];
+            }
+            return null;
         };
 
         $rootScope.saveBindingForDatatype = function() {
@@ -2864,26 +2935,32 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             });
 
         } else if (data.type && data.type === "segment") {
-            var segment = $rootScope.segment;
-            var ext = segment.ext;
-            if (segment.libIds === undefined) segment.libIds = [];
-            if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1) {
-                segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
-            }
-            SegmentService.save($rootScope.segment).then(function(result) {
-                var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary.children);
-                var newLink = SegmentService.getSegmentLink(result);
-                SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {
-                    SegmentService.saveNewElements().then(function() {
-                        SegmentService.merge($rootScope.segmentsMap[result.id], result);
-                        if (oldLink && oldLink != null) {
-                            oldLink.ext = newLink.ext;
-                            oldLink.name = newLink.name;
-                        }
-                        $scope.continue();
+            if (data.scope === 'USER' || (data.status && data.status === 'UNPUBLISHED')) {
+                var segment = $rootScope.segment;
+                var ext = segment.ext;
+                if (segment.libIds === undefined) segment.libIds = [];
+                if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1) {
+                    segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
+                }
+                SegmentService.save($rootScope.segment).then(function(result) {
+                    var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary.children);
+                    var newLink = SegmentService.getSegmentLink(result);
+                    SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {
+                        SegmentService.saveNewElements().then(function() {
+                            SegmentService.merge($rootScope.segmentsMap[result.id], result);
+                            if (oldLink && oldLink != null) {
+                                oldLink.ext = newLink.ext;
+                                oldLink.name = newLink.name;
+                            }
+                            $scope.continue();
+                        }, function(error) {
+                            $rootScope.msg().text = "Sorry an error occured. Please try again";
+                            $rootScope.msg().type = "danger";
+                            $rootScope.msg().show = true;
+                        });
                     }, function(error) {
-                        $rootScope.msg().text = "Sorry an error occured. Please try again";
-                        $rootScope.msg().type = "danger";
+                        $rootScope.msg().text = error.data.text;
+                        $rootScope.msg().type = error.data.type;
                         $rootScope.msg().show = true;
                     });
                 }, function(error) {
@@ -2891,11 +2968,11 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
                 });
-            }, function(error) {
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
-            });
+            }else {
+                $rootScope.saveBindingForSegment();
+                $scope.continue();
+            }
+
 
         } else if (data.type && data.type === "datatype") {
             if (data.scope === 'USER' || (data.status && data.status === 'UNPUBLISHED')) {
