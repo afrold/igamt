@@ -22,21 +22,21 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
-         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
-                 ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                 ng-click="save()">
-             <span><i class="fa fa-check fa-fw"></i> Save</span>
-                        </button>
-                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="datatype.scope !== 'USER'" ng-click="saveBindingForDatatype()">
-             <span><i class="fa fa-check fa-fw"></i> Save</span>
-         </button>
-                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
-                            <span><i class="fa fa-times fa-fw"></i> Reset</span>
-        </button>
-                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
-                            <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                        </button>
+                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                                    ng-disabled="editForm.$invalid || !editForm.$dirty"
+                                    ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
+                                    ng-click="save()">
+                                <span><i class="fa fa-check fa-fw"></i> Save</span>
+                            </button>
+                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="datatype.scope !== 'USER'" ng-click="saveBindingForDatatype()">
+                                <span><i class="fa fa-check fa-fw"></i> Save</span>
+                            </button>
+                            <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                                <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                            </button>
+                            <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                                <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                            </button>
                         </span>
                     </div>
                     <div class="col-md-12" ng-controller="cmpDatatypeCtrl as cmp">

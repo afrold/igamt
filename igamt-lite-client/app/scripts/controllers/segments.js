@@ -953,6 +953,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             $rootScope.msg().type = error.data.type;
             $rootScope.msg().show = true;
         });
+
+        $rootScope.saveBindingForSegment();
     };
 
 

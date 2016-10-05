@@ -265,6 +265,16 @@ angular.module('igl').factory('MessageService',
                 }
                 delay.resolve(true);
                 return delay.promise;
+            },
+
+            updateSegmentBinding: function(segmentBindingUpdateParameterList) {
+                var delay = $q.defer();
+                $http.post('api/messages/updateSegmentBinding/', segmentBindingUpdateParameterList).then(function(response) {
+                    delay.resolve(true);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
 
