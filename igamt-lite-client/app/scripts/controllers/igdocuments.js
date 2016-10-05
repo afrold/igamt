@@ -33,8 +33,8 @@ angular.module('igl')
             name: "Access My implementation guides",
             type: 'USER'
         }, {
-            name: "Shared Implementation Guides"
-            , type: 'SHARED'
+            name: "Shared Implementation Guides",
+            type: 'SHARED'
         }];
         $scope.loadingIGDocument = false;
         $scope.toEditIGDocumentId = null;
@@ -426,17 +426,18 @@ angular.module('igl')
                                 $scope.loadIgDocumentMetaData();
 
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);
-								// Find share participants
-								if($rootScope.igdocument.shareParticipantIds && $rootScope.igdocument.shareParticipantIds.length > 0) {
-									$http.get('api/shareparticipants', {params: {ids: $rootScope.igdocument.shareParticipantIds}})
-									.then(
-										function (response) {
-											$rootScope.igdocument.shareParticipants = response.data;
-										}, function (error) {
-											console.log(error);
-										}
-									);
-							}
+                                // Find share participants
+                                if ($rootScope.igdocument.shareParticipantIds && $rootScope.igdocument.shareParticipantIds.length > 0) {
+                                    $http.get('api/shareparticipants', { params: { ids: $rootScope.igdocument.shareParticipantIds } })
+                                        .then(
+                                            function(response) {
+                                                $rootScope.igdocument.shareParticipants = response.data;
+                                            },
+                                            function(error) {
+                                                console.log(error);
+                                            }
+                                        );
+                                }
                                 $scope.loadPc().then(function() {}, function() {});
                             }, function() {});
                         }, function() {});
@@ -773,33 +774,41 @@ angular.module('igl')
             var scopes = ['HL7STANDARD'];
 
             DatatypeService.getDataTypesByScopesAndVersion(scopes, $scope.hl7Version).then(function(datatypes) {
-                DatatypeService.getPublishedMaster($rootScope.igdocument.profile.metaData.hl7Version).then(function(master) {
-                    console.log("master");
-                    console.log(master);
+                DatatypeLibrarySvc.getDataTypeLibraryByScope('MASTER').then(function(masterLib) {
+                    DatatypeLibrarySvc.getDataTypeLibraryByScope('USER').then(function(userDtLib) {
 
-                    console.log("addDatatype scopes=" + scopes.length);
-                    var addDatatypeInstance = $modal.open({
-                        templateUrl: 'AddDatatypeDlg.html',
-                        controller: 'AddDatatypeDlgCtl',
-                        size: 'lg',
-                        windowClass: 'conformance-profiles-modal',
-                        resolve: {
-                            hl7Version: function() {
-                                return $scope.hl7Version;
-                            },
-                            datatypes: function() {
 
-                                return datatypes;
-                            },
-                            masterDatatypes: function() {
+                        console.log("userDtLib");
+                        console.log(userDtLib);
 
-                                return master;
+                        console.log("addDatatype scopes=" + scopes.length);
+                        var addDatatypeInstance = $modal.open({
+                            templateUrl: 'AddDatatypeDlg.html',
+                            controller: 'AddDatatypeDlgCtl',
+                            size: 'lg',
+                            windowClass: 'conformance-profiles-modal',
+                            resolve: {
+                                hl7Version: function() {
+                                    return $scope.hl7Version;
+                                },
+                                datatypes: function() {
+
+                                    return datatypes;
+                                },
+                                masterLib: function() {
+
+                                    return masterLib;
+                                },
+                                userDtLib: function() {
+                                    return userDtLib;
+                                }
+
                             }
-                        }
-                    }).result.then(function(results) {
-                        var ids = [];
-                        angular.forEach(results, function(result) {
-                            ids.push(result.id);
+                        }).result.then(function(results) {
+                            var ids = [];
+                            angular.forEach(results, function(result) {
+                                ids.push(result.id);
+                            });
                         });
                     });
                 });
@@ -1263,6 +1272,7 @@ angular.module('igl')
             return '';
         };
 
+
 		$scope.shareModal = function (igdocument) {
 			$http.get('api/usernames').then(function (response) {
 				var userList = response.data;
@@ -1279,7 +1289,7 @@ angular.module('igl')
 				});
 				var modalInstance = $modal.open({
 					templateUrl: 'ShareIGDocumentModal.html'
-					, controller: 'ShareIGDocumentCtrl'
+					, controller: 'ShareIGDocumentCtrl',
                         size:'lg'
 					, resolve: {
 						igdocumentSelected: function () {
@@ -1314,6 +1324,7 @@ angular.module('igl')
             });
         };
 });
+
 
 angular.module('igl').controller('ViewIGChangesCtrl', function($scope, $modalInstance, changes, $rootScope, $http) {
     $scope.changes = changes;
@@ -1954,7 +1965,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
 
 
 angular.module('igl').controller('AddDatatypeDlgCtl',
-    function($scope, $rootScope, $modalInstance, hl7Version, datatypes, masterDatatypes, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService) {
+    function($scope, $rootScope, $modalInstance, hl7Version, datatypes, masterLib, userDtLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http) {
 
         //$scope.hl7Version = hl7Version;
         //$scope.hl7Datatypes = datatypes;        
@@ -1962,15 +1973,103 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
         $scope.newDts = [];
         $scope.checkedExt = true;
         $scope.NocheckedExt = true;
-        $scope.masterDatatypes = [];
-        $scope.masterDts = masterDatatypes;
-        for (var i = 0; i < $scope.masterDts.length; i++) {
-            if (!$rootScope.datatypesMap[$scope.masterDts[i].id]) {
-                $scope.masterDatatypes.push($scope.masterDts[i]);
-            }
+        $scope.masterLib = [];
+        $scope.userDtLib = userDtLib;
+        $scope.masterLib = masterLib;
+        $scope.selectedDatatypes = [];
+        // for (var i = 0; i < $scope.masterDts.length; i++) {
+        //     if (!$rootScope.datatypesMap[$scope.masterDts[i].id]) {
+        //         $scope.masterDatatypes.push($scope.masterDts[i]);
+        //     }
+        // }
+        $scope.selectUserDtLib = function(usrLib) {
+            console.log(usrLib);
+            DatatypeLibrarySvc.getDatatypesByLibrary(usrLib.id).then(function(datatypes) {
+                $scope.userDatatypes = datatypes;
+                console.log($scope.userDatatypes);
+            });
+        };
+        $scope.selectMasterDtLib = function(masLib) {
+            console.log(masLib);
+            DatatypeLibrarySvc.getDatatypesByLibrary(masLib.id).then(function(datatypes) {
+                $scope.masterDatatypes = datatypes;
+                console.log($scope.masterDatatypes);
+            });
+        };
+        var listHL7Versions = function() {
+            return $http.get('api/igdocuments/findVersions', {
+                timeout: 60000
+            }).then(function(response) {
+                var hl7Versions = [];
+                var length = response.data.length;
+                for (var i = 0; i < length; i++) {
+                    hl7Versions.push(response.data[i]);
+                }
+                console.log(hl7Versions);
+                return hl7Versions;
+            });
+        };
+
+        var init = function() {
+            listHL7Versions().then(function(versions) {
+                //$scope.versions = versions;
+                var v = [];
+                for (var i = 0; i < versions.length; i++) {
+                    if (versions.indexOf(hl7Version) <= i) {
+                        v.push(versions[i]);
+                    }
+                }
+
+                $scope.version1 = hl7Version;
+                $scope.versions = v;
+                var scopes = ['HL7STANDARD'];
+                DatatypeService.getDataTypesByScopesAndVersion(scopes, hl7Version).then(function(result) {
+                    console.log("result");
+                    console.log(result);
+                    $scope.hl7Datatypes = result;
+
+                    // $scope.hl7Segments = result.filter(function(current) {
+                    //     return $rootScope.segments.filter(function(current_b) {
+                    //         return current_b.id == current.id;
+                    //     }).length == 0
+                    // });
+
+
+
+
+                    console.log("addSegment scopes=" + scopes.length);
+
+
+                });
+            });
+
+        };
+        init();
+        $scope.setVersion = function(version) {
+            $scope.version1 = version;
+            var scopes = ['HL7STANDARD'];
+            DatatypeService.getDataTypesByScopesAndVersion(scopes, version).then(function(result) {
+                console.log("result");
+                console.log(result);
+                $scope.hl7Datatypes = result;
+
+                // $scope.hl7Segments = result.filter(function(current) {
+                //     return $rootScope.segments.filter(function(current_b) {
+                //         return current_b.id == current.id;
+                //     }).length == 0
+                // });
+
+
+
+
+
+
+            });
         }
 
-        $scope.selectedDatatypes = [];
+
+
+
 
         $scope.addDt = function(datatype) {
             console.log(datatype);
