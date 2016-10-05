@@ -882,8 +882,8 @@
 							<table class="table">
 								<tbody>
 									<tr ng-repeat="participant in igdocumentSelected.shareParticipants">
-										<td>{{participant.fullname}}({{participant.username}})</td>
-										<td><button class="btn btn-raised btn-danger btn-xs" type="button" ng-click="unshare(participant)"><i class="fa fa-times"></i>Remove</button></td>
+										<td><i>{{participant.fullname}} ({{participant.username}})</i></td>
+										<td><button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" ng-click="unshare(participant)"><i class="fa fa-times"></i>Remove</button></td>
 									</tr>
 								</tbody>
 							</table>

@@ -1280,6 +1280,7 @@ angular.module('igl')
 				var modalInstance = $modal.open({
 					templateUrl: 'ShareIGDocumentModal.html'
 					, controller: 'ShareIGDocumentCtrl'
+                        size:'lg'
 					, resolve: {
 						igdocumentSelected: function () {
 							return igdocument;
@@ -2617,7 +2618,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
 			return user.id;
 		});
         IgDocumentService.share($scope.igdocumentSelected.id,idsTab).then(function(result){
-            if($scope.igdocumentSelected.shareParticipantIds) {
+            if($scope.igdocumentSelected.shareParticipantIds && $scope.igdocumentSelected.shareParticipants) {
                 $scope.igdocumentSelected.shareParticipantIds = $scope.igdocumentSelected.shareParticipantIds.concat(idsTab);
                 $scope.igdocumentSelected.shareParticipants = $scope.igdocumentSelected.shareParticipants.concat($scope.tags);
             } else {
@@ -2667,13 +2668,11 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
             if (participantIndex > -1) {
                 $scope.igdocumentSelected.shareParticipants.splice(participantIndex, 1);
             }
-
             $scope.loading = false;
             $rootScope.msg().text = "igUnSharedSuccessfully";
             $rootScope.msg().type ="success";
             $rootScope.msg().show = true;
-            $modalInstance.close();
-        }, function(error){
+         }, function(error){
             $rootScope.msg().text = error.data.text;
             $rootScope.msg().type = error.data.type;
             $rootScope.msg().show = true;

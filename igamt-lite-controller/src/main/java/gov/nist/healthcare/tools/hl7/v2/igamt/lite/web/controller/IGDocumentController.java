@@ -1312,7 +1312,7 @@ public class IGDocumentController extends CommonController {
   @RequestMapping(value = "/{id}/unshare", method = RequestMethod.POST,
       produces = "application/json")
   public boolean unshareIgDocument(@PathVariable("id") String id,
-      @RequestParam("participantId") Long shareParticipantId) throws IGDocumentException {
+      @RequestBody Long shareParticipantId) throws IGDocumentException {
     log.info("Unsharing id document with id=" + id + " with participant=" + shareParticipantId);
     try {
       User u = userService.getCurrentUser();
