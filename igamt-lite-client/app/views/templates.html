@@ -483,7 +483,7 @@
                         </div>
                         <div ng-show="!loading">
                             <div class="table-responsive">
-                                <table tt-table tt-params="messageEventsParams" ng-if="messageEventsParams" class="table table-striped table-bordered table-fix-header table-condensed hl7-versions-table">
+                                <table tt-table tt-params="messageEventsParams" ng-show="messageEventsParams" class="table table-striped table-bordered table-fix-header table-condensed hl7-versions-table">
                                     <thead>
                                     <tr class="tbl-header">
                                         <td class="" style="width:300px">Struct ID</td>
@@ -597,11 +597,11 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-md-12">
-                <div ng-if="!editorTarget.disabled">
+                <div ng-show="!editorTarget.disabled">
                     <textarea rows="10" froala="froalaEditorOptions" style="width:100%;" autofocus ng-model="editorTarget.obj[editorTarget.key]"
                               id="globalEditor" name="content" ng-change="recordChanged()"></textarea>
                 </div>
-                <div ng-if="editorTarget.disabled" style="width:100%;">
+                <div ng-show="editorTarget.disabled" style="width:100%;">
                     <div froala-view="editorTarget.obj[editorTarget.key]"></div>
                 </div>
             </div>
@@ -885,7 +885,7 @@
                         </td>
                         <td class="col-md-8">
                             <input class="form-control" ng-model="p.description" ng-change="setChanged()" type="text" />
-                            <span ng-if="viewAssertion">{{p.assertion}}</span>
+                            <span ng-show="viewAssertion">{{p.assertion}}</span>
                         </td>
                         <td class="col-md-1">
                             <select class="form-control" ng-model="p.trueUsage" ng-change="setChanged()" ng-options="usage for usage in config.conditionalUsage" />
