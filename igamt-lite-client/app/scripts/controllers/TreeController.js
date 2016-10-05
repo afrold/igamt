@@ -743,25 +743,17 @@ angular
                 ];
 
                 $scope.DataTypeLibraryOptions = [
-                    ['Import Datatypes',
+                    [' Add Datatypes',
                         function($itemScope) {
-                            $scope.addDatatypesFromTree();
-                            //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
-                        }
+                    	if($scope.datatypeLibrary.scope=='MASTER'){
+                    		$scope.addDatatypesFromTree();
+                    	}else{
+                    		$scope.addDatatypeForUser("2.1");
+                    	}        
+                    }
                     ]
                 ];
 
-
-
-                $scope.ValueSetAddOptionsINLIB = [
-                    ['Add Value Sets ',
-
-                        function($itemScope) {
-                            //$scope.addDatatypesFromTree();
-                            //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
-                        }
-                    ]
-                ];
 
                 $scope.addValueSets = [
 

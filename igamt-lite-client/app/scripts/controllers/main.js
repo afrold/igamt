@@ -2572,6 +2572,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         $rootScope.getTableLabel = function(table) {
+        
             if (table && table.bindingIdentifier) {
                 return $rootScope.getLabel(table.bindingIdentifier, table.ext);
             }

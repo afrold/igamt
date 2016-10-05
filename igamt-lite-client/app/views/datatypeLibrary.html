@@ -291,8 +291,8 @@ span {
 						<div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl"  ng-init="init()">
                             <form name="editForm" id="editForm" class="form-horizontal" novalidate
                                   unsaved-warning-form>
-                                <div ng-if="editView" style="width:100%;">
-                                    <div ng-include="editView"></div>
+                                <div ng-if="subview" style="width:100%;">
+                                    <div ng-include="subview"></div>
                                 </div>
                             </form>
                         </div>

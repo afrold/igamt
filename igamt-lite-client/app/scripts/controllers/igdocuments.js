@@ -405,6 +405,9 @@ angular.module('igl')
                     $rootScope.selectedMessagesIDS = [];
                     igdocument.childSections = $scope.orderSectionsByPosition(igdocument.childSections);
                     igdocument.profile.messages.children = $scope.orderMesagesByPositon(igdocument.profile.messages.children);
+                    $rootScope.datatypeLibrary=igdocument.profile.datatypeLibrary;
+                    $rootScope.tableLibrary=igdocument.profile.tableLibrary;
+                    $rootScope.ext=igdocument.metaData.ext;
                     $rootScope.selectedMessages = angular.copy(igdocument.profile.messages.children);
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
@@ -1056,6 +1059,7 @@ angular.module('igl')
         };
 
         $scope.selectDatatype = function(datatype) {
+        	console.log(datatype);
             $rootScope.Activate(datatype.id);
             $rootScope.subview = "EditDatatypes.html";
             if (datatype && datatype != null) {
@@ -2143,14 +2147,6 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             var index = $scope.selectedDatatypes.indexOf(datatype);
             if (index > -1) $scope.selectedDatatypes.splice(index, 1);
         };
-
-
-
-
-
-
-
-
         var secretEmptyKey = '[$empty$]'
 
         $scope.hl7Datatypes = datatypes.filter(function(current) {
@@ -2279,8 +2275,6 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
                             });
                         });
-
-
                     });
 
 
