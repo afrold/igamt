@@ -3,8 +3,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:param name="includeTOC" select="'true'"></xsl:param>
-    <xsl:include href="DisplaySectionContent.xsl"/>
-    <xsl:include href="DisplayProfileContent.xsl"/>
+    <xsl:include href="sectionContent.xsl"/>
+    <xsl:include href="profileContent.xsl"/>
 
     <xsl:template name="displayInfoSection" mode="disp">
         <xsl:if test="name() = 'Section'">
