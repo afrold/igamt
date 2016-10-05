@@ -1447,3 +1447,34 @@
         </span>
     </div>
 </script>
+
+<script type="text/ng-template" id="ConfirmIGDocumentUnshareCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Remove Participant Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p ng-if="shareParticipant.id === getAccountID()">Are you sure you want to be removed from the IG Document:"{{::igdocumentSelected.metaData.title}}"?</p>
+        <p ng-if="shareParticipant.id !== getAccountID()">Are you sure you want to remove '{{shareParticipant.fullname}}' from the IG Document:"{{::igdocumentSelected.metaData.title}}"?</p>
+
+        <div class="row" ng-if="error != null">
+            <div class="col-md-12">
+                <span ng-bind="error" style="color: red;"></span>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                class="fa fa-trash-o fa-fw">&nbsp; </i>Remove</span>
+        </button>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+        </div>
+
+    </div>
+    </div>
+</script>
