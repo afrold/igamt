@@ -1293,8 +1293,9 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       } catch (Exception e1) {
         e1.printStackTrace();
         String html =
-            "<html><head></head><p style=\"color:red\">Could not add sections. Check presence of special characters in sections (e.g. footer from a docx copy and paste)</p></body></html>";
+            "<html><head></head><body><p style=\"color:red\">Could not add sections. Check presence of special characters in sections (e.g. footer from a docx copy and paste)</p></body></html>";
         wordMLPackage.getMainDocumentPart().addAltChunk(AltChunkType.Html, html.getBytes());
+        wordMLPackage.getMainDocumentPart().addParagraphOfText(e1.getMessage());
       }
 
       addPageBreak(wordMLPackage, factory);
@@ -1601,8 +1602,9 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
       addImageToPackage(wordMLPackage, imageInByte);
     } catch (Exception e) {
-      logger.warn("Unable to add image");
+      logger.warn("Unable to add cover page image");
       e.printStackTrace();
+      addErrorMessageInDocx("Unable to add image", e.getLocalizedMessage(), wordMLPackage, factory);
     }
 
     wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title",
@@ -2772,8 +2774,28 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     }
     return res;
   }
+  
+  private void addErrorMessageInDocx(String customMessage, String exceptionMessage, WordprocessingMLPackage wordMLPackage, ObjectFactory factory){
+      P paragraph = factory.createP();
+      R run = factory.createR();
 
+      Text text = factory.createText();
+      text.setValue(customMessage + ": " + exceptionMessage);
+      run.getContent().add(text);
 
+      paragraph.getContent().add(run);
+      setHorizontalAlignment(paragraph, JcEnumeration.LEFT);
+
+      RPr runProperties = factory.createRPr();
+      addBoldStyle(runProperties);
+      setFontColor(runProperties, "red");
+      // addItalicStyle(runProperties);
+      // addUnderlineStyle(runProperties);
+      // setFontFamily(runProperties, "Arial");
+      // setFontSize(runProperties, "14");
+      run.setRPr(runProperties);
+      wordMLPackage.getMainDocumentPart().addObject(paragraph);
+  }
 }
 
 
