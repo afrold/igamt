@@ -119,6 +119,23 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
 
             return delay.promise;
         },
+        share:function(igDocId,shareParticipantIds){
+            $http.post('api/igdocuments/' + igDocId + '/share', shareParticipantIds).then(function (response) {
+                delay.resolve(response.data);
+            }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+        unshare: function(igDocId, participantId){
+            var delay = $q.defer();
+            $http.post('api/igdocuments/' + igDocId + '/unshare', {params:{"participantId": participantId}}).then(function (response) {
+                delay.resolve(response.data);
+             }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        }
     };
     return IgDocumentService;
 });
