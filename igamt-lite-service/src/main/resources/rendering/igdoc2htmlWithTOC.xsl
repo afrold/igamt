@@ -488,7 +488,10 @@
 				<xsl:value-of select="@Description" />
 			</td>
 			<td>
-				<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>			</td>
+				<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+					<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>
+				</xsl:if>
+			</td>
 			<td>
 				<xsl:value-of select="@Usage" />
 			</td>
@@ -703,10 +706,14 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>
+				<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+					<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>
+				</xsl:if>
 			</td>
 			<td>
-				<xsl:value-of select="concat('[', @MinLength, '..', @MaxLength, ']')"></xsl:value-of>
+				<xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+					<xsl:value-of select="concat('[', @MinLength, '..', @MaxLength, ']')"></xsl:value-of>
+				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="@Binding" />
@@ -894,7 +901,9 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				<xsl:value-of select="concat('[', @MinLength, '..', @MaxLength, ']')"></xsl:value-of>
+				<xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+					<xsl:value-of select="concat('[', @MinLength, '..', @MaxLength, ']')"></xsl:value-of>
+				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="@ConfLength" />
