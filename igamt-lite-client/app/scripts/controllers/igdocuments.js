@@ -1281,6 +1281,8 @@ angular.module('igl')
                         for (var i = 0; i < igdocument.shareParticipants.length; i++) {
                             if (igdocument.shareParticipants[i].id == user.id) {
                                 isPresent = true;
+							} else if(user.id == igdocument.accountId) {
+								isPresent = true;
                             }
                         }
                     }
@@ -2690,15 +2692,8 @@ angular.module('igl').controller('AddSegmentDlgCtl',
     });
 
 angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalInstance, $http, igdocumentSelected, userList) {
-    var filterList = function(userList) {
-        return userList.filter(function(user) {
-            return user.id != igdocumentSelected.accountId && igdocumentSelected.shareParticipantIds.indexOf(user.id) <= -1;
-        });
-    }
-
     $scope.igdocumentSelected = igdocumentSelected;
-
-	$scope.userList = filterList(userList);
+	$scope.userList = userList;
 	$scope.error = "";
 	$scope.ok = function () {
 		var idsTab = $scope.tags.map(function(user) {
