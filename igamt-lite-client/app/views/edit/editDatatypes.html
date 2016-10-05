@@ -28,7 +28,7 @@
                                     ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </button>
-                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="datatype.scope !== 'USER'" ng-click="saveBindingForDatatype()">
+                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="datatype.scope !== 'USER'" ng-click="saveBindingForDatatype();cleanState();">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </button>
                             <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">

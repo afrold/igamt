@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -82,7 +83,7 @@ public class MessageController extends CommonController {
 			  Message message = this.messageService.findById(paras.getMessageId());
 			  message.setDate(DateUtils.getCurrentTime());
 			  String[] paths = paras.getPositionPath().split("\\.");
-			  List<String> strs = Arrays.asList(paths);
+			  List<String> strs = new LinkedList<String>(Arrays.asList(paths));
 			  this.updateSegmentBindingForMessage(message.getChildren(), strs, paras.getNewSegmentLink());
 			  messageService.save(message);
 		  }

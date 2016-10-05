@@ -1264,8 +1264,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
                     var message = angular.copy($rootScope.messagesMap[segmentBindingUpdateParameter.messageId]);
                     var paths = segmentBindingUpdateParameter.positionPath.split('.');
-
-                    console.log(segmentBindingUpdateParameter);
                     $rootScope.updateSegmentBinding(message.children, paths, segmentBindingUpdateParameter.newSegmentLink);
 
                     $rootScope.messagesMap[message.id] = message;
@@ -1301,7 +1299,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     child.ref = newSegmentLink;
                 }
             }else{
-                $rootScope.updateSegmentBinding(child.children, paths.splice(0, 1), newSegmentLink);
+                $rootScope.updateSegmentBinding(child.children, paths.slice(1), newSegmentLink);
             }
         };
 
