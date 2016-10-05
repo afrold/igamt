@@ -115,6 +115,7 @@
 					html {
 					font-family: 'Arial Narrow',
 					sans-serif;
+					font-size: 10px;
 					}
 				</style>
 				<style type="text/css">
@@ -467,11 +468,13 @@
 				<xsl:value-of select="@Description" />
 			</td>
 			<td style="width:10%">
-				[
-				<xsl:value-of select="@Min" />
-				..
-				<xsl:value-of select="@Max" />
-				]
+				<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+					[
+					<xsl:value-of select="@Min" />
+					..
+					<xsl:value-of select="@Max" />
+					]
+				</xsl:if>
 			</td>
 			<td style="width:10%">
 				<xsl:value-of select="@Usage" />
@@ -630,18 +633,22 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@Min" />
-				..
-				<xsl:value-of select="@Max" />
-				]
+				<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+					[
+					<xsl:value-of select="@Min" />
+					..
+					<xsl:value-of select="@Max" />
+					]
+				</xsl:if>
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@MinLength" />
-				..
-				<xsl:value-of select="@MaxLength" />
-				]
+				<xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+					[
+					<xsl:value-of select="@MinLength" />
+					..
+					<xsl:value-of select="@MaxLength" />
+					]
+				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="@Binding" />
@@ -822,11 +829,13 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@MinLength" />
-				..
-				<xsl:value-of select="@MaxLength" />
-				]
+				<xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+					[
+					<xsl:value-of select="@MinLength" />
+					..
+					<xsl:value-of select="@MaxLength" />
+					]
+				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="@Binding" />
