@@ -56,6 +56,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.XsltIncludeUriResover;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
@@ -2654,6 +2655,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
 
       TransformerFactory factoryTf = TransformerFactory.newInstance();
+      factoryTf.setURIResolver(new XsltIncludeUriResover());
       Source xslt = new StreamSource(this.getClass().getResourceAsStream(xslPath));
       Transformer transformer;
 
