@@ -650,7 +650,7 @@
 
 		<xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
 			<h4>
-				post-definition:
+				Post-definition:
 			</h4>
 			<p>
 				<xsl:value-of disable-output-escaping="yes"
@@ -664,14 +664,7 @@
 				<xsl:if test="count(Text) &gt; 0">
 					<p>
 						<b>
-							<xsl:value-of select="../@Name" />
-							-
-							<xsl:value-of select="./@Position" />
-							&#160;
-							<xsl:value-of select="./@Name" />
-							(
-							<xsl:value-of select="./@Datatype" />
-							)
+							<xsl:value-of select="concat(../@Name,'-',./@Position,':',./@Name),'(',./@Datatype,')'" />
 						</b>
 						<xsl:value-of disable-output-escaping="yes"
 							select="./Text[@Type='Text']" />
