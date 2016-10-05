@@ -229,49 +229,47 @@
 
 	<xsl:template name="dispInfoSect" mode="disp">
 		<xsl:if test="name() = 'Section'">
-			<a id="{@id}" name="{@id}">
-				<u>
-					<xsl:choose>
-						<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'true'">
-							<xsl:element name="{concat('h', @h)}">
-								<xsl:if test="@prefix != ''">
-								<xsl:value-of select="@prefix" />
-								-
-								</xsl:if>
-								<xsl:if test="@scope = 'MASTER'">
-									<xsl:element name="span">
-										<xsl:attribute name="class"><xsl:text>masterDatatypeLabel</xsl:text></xsl:attribute>
-										<xsl:text>MAS</xsl:text>
-									</xsl:element>
-									<xsl:element name="span">
-										<xsl:text> - </xsl:text>
-									</xsl:element>
-								</xsl:if>
-								<xsl:value-of select="@title" />
-							</xsl:element>
-						</xsl:when>
-						<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
-							<xsl:element name="h6">
-								<xsl:value-of select="@prefix" />
-								-
-								<xsl:value-of select="@title" />
-							</xsl:element>
-						</xsl:when>
-						<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'false'">
-							<xsl:element name="{concat('h', @h)}">
-								<xsl:value-of select="@title" />
-							</xsl:element>
-						</xsl:when>
-						<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
-							<xsl:element name="h6">
-								<xsl:value-of select="@prefix" />
-								-
-								<xsl:value-of select="@title" />
-							</xsl:element>
-						</xsl:when>
-					</xsl:choose>
-				</u>
-			</a>
+			<u id="{@id}">
+				<xsl:choose>
+					<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'true'">
+						<xsl:element name="{concat('h', @h)}">
+							<xsl:if test="@prefix != ''">
+							<xsl:value-of select="@prefix" />
+							-
+							</xsl:if>
+							<xsl:if test="@scope = 'MASTER'">
+								<xsl:element name="span">
+									<xsl:attribute name="class"><xsl:text>masterDatatypeLabel</xsl:text></xsl:attribute>
+									<xsl:text>MAS</xsl:text>
+								</xsl:element>
+								<xsl:element name="span">
+									<xsl:text> - </xsl:text>
+								</xsl:element>
+							</xsl:if>
+							<xsl:value-of select="@title" />
+						</xsl:element>
+					</xsl:when>
+					<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
+						<xsl:element name="h6">
+							<xsl:value-of select="@prefix" />
+							-
+							<xsl:value-of select="@title" />
+						</xsl:element>
+					</xsl:when>
+					<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'false'">
+						<xsl:element name="{concat('h', @h)}">
+							<xsl:value-of select="@title" />
+						</xsl:element>
+					</xsl:when>
+					<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
+						<xsl:element name="h6">
+							<xsl:value-of select="@prefix" />
+							-
+							<xsl:value-of select="@title" />
+						</xsl:element>
+					</xsl:when>
+				</xsl:choose>
+			</u>
 			<br />
 			<xsl:call-template name="dispSectContent" />
 			<xsl:call-template name="dispProfileContent" />
