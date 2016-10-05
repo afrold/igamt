@@ -18,6 +18,7 @@
 					html {
 					font-family: 'Arial Narrow',
 					sans-serif;
+					font-size: 10px;
 					width:100%;
 					overflow:
 					auto;

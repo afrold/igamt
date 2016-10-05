@@ -115,6 +115,7 @@
 					html {
 					font-family: 'Arial Narrow',
 					sans-serif;
+					font-size: 10px;
 					}
 				</style>
 				<style type="text/css">
