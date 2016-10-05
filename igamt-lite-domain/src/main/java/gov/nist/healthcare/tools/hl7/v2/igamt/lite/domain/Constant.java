@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 public class Constant {
 
   private Constant() {}
-
+  public final static String ProfileComponent = "profilecomponent";
   public final static String SEGMENTS = "segments";
   public final static String SEGMENTLIBRARY = "segmentlibrary";
   public final static String SEGMENT = "segment";
