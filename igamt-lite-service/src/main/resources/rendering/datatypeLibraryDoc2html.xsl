@@ -7,7 +7,6 @@
 		indent="yes" />
 	<xsl:param name="inlineConstraints" select="'false'"></xsl:param>
 	<xsl:param name="includeTOC" select="'true'"></xsl:param>
-	<xsl:include href="templates/DisplaySection.xsl"/>
 
 	<xsl:template match="/">
 
@@ -203,7 +202,7 @@
 						<xsl:apply-templates select="ConformanceProfile/MetaData" />
 						<hr></hr>
 						<a name="top"></a>
-						<xsl:call-template name="displaySection" />
+						<xsl:call-template name="dispSect" />
 					</div>
 					<script type="text/javascript">
 						<xsl:text disable-output-escaping="yes">
@@ -221,11 +220,61 @@
 				</xsl:if>
 				<xsl:if test="normalize-space($includeTOC) = 'false'">
 					<div id="notoc">
-						<xsl:call-template name="displaySection" />
+						<xsl:call-template name="dispSect" />
 					</div>
 				</xsl:if>
 			</body>
 		</html>
+	</xsl:template>
+
+	<xsl:template name="dispInfoSect" mode="disp">
+		<xsl:if test="name() = 'Section'">
+			<u id="{@id}">
+				<xsl:choose>
+					<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'true'">
+						<xsl:element name="{concat('h', @h)}">
+							<xsl:if test="@prefix != ''">
+							<xsl:value-of select="@prefix" />
+							-
+							</xsl:if>
+							<xsl:if test="@scope = 'MASTER'">
+								<xsl:element name="span">
+									<xsl:attribute name="class"><xsl:text>masterDatatypeLabel</xsl:text></xsl:attribute>
+									<xsl:text>MAS</xsl:text>
+								</xsl:element>
+								<xsl:element name="span">
+									<xsl:text> - </xsl:text>
+								</xsl:element>
+							</xsl:if>
+							<xsl:value-of select="@title" />
+						</xsl:element>
+					</xsl:when>
+					<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
+						<xsl:element name="h6">
+							<xsl:value-of select="@prefix" />
+							-
+							<xsl:value-of select="@title" />
+						</xsl:element>
+					</xsl:when>
+					<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'false'">
+						<xsl:element name="{concat('h', @h)}">
+							<xsl:value-of select="@title" />
+						</xsl:element>
+					</xsl:when>
+					<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
+						<xsl:element name="h6">
+							<xsl:value-of select="@prefix" />
+							-
+							<xsl:value-of select="@title" />
+						</xsl:element>
+					</xsl:when>
+				</xsl:choose>
+			</u>
+			<br />
+			<xsl:call-template name="dispSectContent" />
+			<xsl:call-template name="dispProfileContent" />
+
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="MetaData">
@@ -266,6 +315,50 @@
 		</p>
 		<p style="font-size:62.5; text-align:center">
 		</p>
+	</xsl:template>
+
+	<xsl:template name="dispSectContent">
+		<xsl:value-of disable-output-escaping="yes" select="SectionContent" />
+	</xsl:template>
+
+	<xsl:template name="dispProfileContent">
+		<xsl:choose>
+			<xsl:when test="count(MessageDisplay) &gt; 0">
+				<xsl:apply-templates select="MessageDisplay">
+					<xsl:sort select="@position" data-type="number"></xsl:sort>
+				</xsl:apply-templates>
+			</xsl:when>
+			<xsl:when test="count(Segment) &gt; 0">
+				<xsl:apply-templates select="Segment">
+					<xsl:sort select="@position" data-type="number"></xsl:sort>
+				</xsl:apply-templates>
+			</xsl:when>
+			<xsl:when test="count(Datatype) &gt; 0">
+				<xsl:apply-templates select="Datatype">
+					<xsl:sort select="@position" data-type="number"></xsl:sort>
+				</xsl:apply-templates>
+			</xsl:when>
+			<xsl:when test="count(ValueSetDefinition) &gt; 0">
+				<xsl:apply-templates select="ValueSetDefinition">
+					<xsl:sort select="@position" data-type="number"></xsl:sort>
+				</xsl:apply-templates>
+			</xsl:when>
+			<xsl:when test="count(Constraints) &gt; 0">
+				<xsl:apply-templates select="Constraints">
+				</xsl:apply-templates>
+			</xsl:when>
+			<xsl:otherwise>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="dispSect">
+		<!-- &#xA0; -->
+		<xsl:call-template name="dispInfoSect" />
+		<xsl:for-each select="*">
+			<xsl:sort select="@position" data-type="number"></xsl:sort>
+			<xsl:call-template name="dispSect" />
+		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template name="tocInfoSect">
@@ -418,11 +511,13 @@
 				<xsl:value-of select="@Description" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@Min" />
-				..
-				<xsl:value-of select="@Max" />
-				]
+				<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+					[
+					<xsl:value-of select="@Min" />
+					..
+					<xsl:value-of select="@Max" />
+					]
+				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="@Usage" />
@@ -581,18 +676,22 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@Min" />
-				..
-				<xsl:value-of select="@Max" />
-				]
+				<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+					[
+					<xsl:value-of select="@Min" />
+					..
+					<xsl:value-of select="@Max" />
+					]
+				</xsl:if>
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@MinLength" />
-				..
-				<xsl:value-of select="@MaxLength" />
-				]
+				<xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+					[
+					<xsl:value-of select="@MinLength" />
+					..
+					<xsl:value-of select="@MaxLength" />
+					]
+				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="@Binding" />
@@ -773,11 +872,13 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				[
-				<xsl:value-of select="@MinLength" />
-				..
-				<xsl:value-of select="@MaxLength" />
-				]
+				<xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+					[
+					<xsl:value-of select="@MinLength" />
+					..
+					<xsl:value-of select="@MaxLength" />
+					]
+				</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="@Binding" />

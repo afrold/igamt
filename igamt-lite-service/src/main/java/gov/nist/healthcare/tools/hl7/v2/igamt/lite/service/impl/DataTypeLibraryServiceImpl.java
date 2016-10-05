@@ -244,7 +244,7 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 
         if (datatypes != null) {
           for (Datatype dt : datatypes) {
-            if (!dt.getStatus().equals(STATUS.PUBLISHED)) {
+            if (dt.getStatus() == null || !dt.getStatus().equals(STATUS.PUBLISHED)) {
               datatypeRepository.delete(dt);
             }
           }

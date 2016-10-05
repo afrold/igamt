@@ -287,6 +287,7 @@ angular.module('igl')
             });
         };
         $scope.redirectDT = function(datatype) {
+            console.log(datatype);
             DatatypeService.getOne(datatype.id).then(function(datatype) {
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
