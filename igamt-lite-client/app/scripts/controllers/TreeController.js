@@ -591,9 +591,11 @@ angular
                                                        if ($rootScope.hasChanges()) {
                                                            $rootScope.openConfirmLeaveDlg().result.then(function() {
                                                         	   console.log($scope.tableLibrary);
+                                                        	   console.log("table in lib");
                                                                CloneDeleteSvc.copyTableINLIB($itemScope.table, $scope.tableLibrary);
                                                            });
                                                        } else {
+                                                    	   console.log("table in lib");
                                                            CloneDeleteSvc.copyTableINLIB($itemScope.table,$scope.tableLibrary);
                                                        }
                                                    }

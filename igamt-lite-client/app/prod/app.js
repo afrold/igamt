@@ -37,7 +37,8 @@ var app = angular
         'nsPopover',
 //        'ngMaterial',
         'pageslide-directive',
-        'rzModule'
+        'rzModule',
+		'ui.select'
       ]);
 
 var

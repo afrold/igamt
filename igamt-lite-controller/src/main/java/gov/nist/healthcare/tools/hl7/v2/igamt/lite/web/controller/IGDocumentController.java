@@ -171,9 +171,10 @@ public class IGDocumentController extends CommonController {
         return preloaded();
       } else if ("USER".equalsIgnoreCase(type)) {
         return userIGDocuments();
+      } else if ("SHARED".equalsIgnoreCase(type)) {
+        return sharedIGDocument();
       }
       throw new IGDocumentListException("Unknown IG document type");
-
     } catch (RuntimeException e) {
       throw new IGDocumentListException(e);
     } catch (Exception e) {
@@ -272,8 +273,8 @@ public class IGDocumentController extends CommonController {
 
       for (Message m : igDocument.getProfile().getMessages().getChildren()) {
         m.setId(null);
-        if(m.getScope()==SCOPE.PRELOADED){
-        	m.setScope(SCOPE.USER);
+        if (m.getScope() == SCOPE.PRELOADED) {
+          m.setScope(SCOPE.USER);
         }
         messageService.save(m);
       }
@@ -300,7 +301,7 @@ public class IGDocumentController extends CommonController {
           String oldDatatypeId = null;
           Datatype d = datatypes.get(i);
           DatatypeLink dl = datatypeLibrary.findOne(d.getId()).clone();
-          if (d.getScope().equals(SCOPE.USER)  || d.getScope().equals(SCOPE.PRELOADED)) {
+          if (d.getScope().equals(SCOPE.USER) || d.getScope().equals(SCOPE.PRELOADED)) {
             oldDatatypeId = d.getId();
             d.setScope(SCOPE.USER);
             d.setId(null);
@@ -328,7 +329,7 @@ public class IGDocumentController extends CommonController {
             s.setScope(SCOPE.USER);
             s.setId(null);
             s.setLibId(new HashSet<String>());
-          } 
+          }
           s.getLibIds().add(clonedSegmentLibrary.getId());
           segmentService.save(s);
           sl.setId(s.getId());
@@ -346,7 +347,7 @@ public class IGDocumentController extends CommonController {
           String oldTableId = null;
           Table t = tables.get(i);
           TableLink tl = tableLibrary.findOneTableById(t.getId());
-          if (t.getScope().equals(SCOPE.USER)  || t.getScope().equals(SCOPE.PRELOADED)) {
+          if (t.getScope().equals(SCOPE.USER) || t.getScope().equals(SCOPE.PRELOADED)) {
             oldTableId = t.getId();
             t.setScope(SCOPE.USER);
             t.setId(null);
@@ -396,9 +397,13 @@ public class IGDocumentController extends CommonController {
         if (f.getDatatype() != null && f.getDatatype().getId() != null
             && datatypeIdChangeMap.containsKey(f.getDatatype().getId()))
           f.getDatatype().setId(datatypeIdChangeMap.get(f.getDatatype().getId()));
-        if (f.getTable() != null && f.getTable().getId() != null
-            && tableIdChangeMap.containsKey(f.getTable().getId()))
-          f.getTable().setId(tableIdChangeMap.get(f.getTable().getId()));
+        if (f.getTables() != null && !f.getTables().isEmpty()) {
+          for (TableLink tableLink : f.getTables()) {
+            if (tableLink != null && tableLink.getId() != null
+                && tableIdChangeMap.containsKey(tableLink.getId()))
+              tableLink.setId(tableIdChangeMap.get(tableLink.getId()));
+          }
+        }
       }
 
       for (Mapping map : s.getDynamicMapping().getMappings()) {
@@ -416,9 +421,13 @@ public class IGDocumentController extends CommonController {
         if (c.getDatatype() != null && c.getDatatype().getId() != null
             && datatypeIdChangeMap.containsKey(c.getDatatype().getId()))
           c.getDatatype().setId(datatypeIdChangeMap.get(c.getDatatype().getId()));
-        if (c.getTable() != null && c.getTable().getId() != null
-            && tableIdChangeMap.containsKey(c.getTable().getId()))
-          c.getTable().setId(tableIdChangeMap.get(c.getTable().getId()));
+        if (c.getTables() != null && !c.getTables().isEmpty()) {
+          for (TableLink tableLink : c.getTables()) {
+            if (tableLink != null && tableLink.getId() != null
+                && tableIdChangeMap.containsKey(tableLink))
+              tableLink.setId(tableIdChangeMap.get(tableLink.getId()));
+          }
+        }
       }
       datatypeService.save(d);
     }
@@ -465,7 +474,7 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentNotFoundException(e);
     }
   }
-  
+
   @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
   public ResponseMessage delete(@PathVariable("id") String id) throws IGDocumentDeleteException {
     try {
@@ -760,13 +769,14 @@ public class IGDocumentController extends CommonController {
     return result;
   }
 
-  @RequestMapping(value = "/PHINVADS/tables", method = RequestMethod.GET, produces = "application/json")
+  @RequestMapping(value = "/PHINVADS/tables", method = RequestMethod.GET,
+      produces = "application/json")
   public List<Table> findAllPreloadedPHINVADSTables() throws MalformedURLException {
-	    log.info("Fetching all Tables for preloaded PHINVADS");
-	    return new TimerTaskForPHINVADSValueSetDigger().findAllpreloadedPHINVADSTables();
-   }
-  
-  
+    log.info("Fetching all Tables for preloaded PHINVADS");
+    return new TimerTaskForPHINVADSValueSetDigger().findAllpreloadedPHINVADSTables();
+  }
+
+
   @RequestMapping(value = "/{searchText}/PHINVADS/tables", method = RequestMethod.GET,
       produces = "application/json")
   public Set<Table> findPHINVADSTables(@PathVariable("searchText") String searchText)
@@ -803,8 +813,8 @@ public class IGDocumentController extends CommonController {
     log.debug("idrw.getAccountId()=" + idrw.getAccountId());
     User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-    IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),idrw.getMetaData(),
-        idrw.getHl7Version(), account.getId());
+    IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),
+        idrw.getMetaData(), idrw.getHl7Version(), account.getId());
 
 
     System.out.println(igDocument.getProfile().getTableLibrary().getChildren().size());
@@ -1111,63 +1121,64 @@ public class IGDocumentController extends CommonController {
     igDocumentService.save(d);
     return null;
   }
- 
-  
+
+
   @RequestMapping(value = "/{id}/findAndAddMessages", method = RequestMethod.POST)
   public List<Message> findAndAddMessages(@PathVariable("id") String id,
-      @RequestBody  List<EventWrapper> eventWrapper)
-      throws IOException, IGDocumentNotFoundException, IGDocumentException, CloneNotSupportedException {
+      @RequestBody List<EventWrapper> eventWrapper) throws IOException, IGDocumentNotFoundException,
+      IGDocumentException, CloneNotSupportedException {
 
-	  List<Message> newMessages = new ArrayList<Message>();
-	  IGDocument d = igDocumentService.findOne(id);
-	    if (d == null) {
-	      throw new IGDocumentNotFoundException(id);
-	    }
-	    
-	    Profile p = d.getProfile();
-	    Messages msgs = p.getMessages();
-	    
-	    List<Message> msgsToadd = new ArrayList<Message>();
-	    try {
-	    	for(EventWrapper nands:eventWrapper){
-	    		Message newMessage =messageService.findByStructIdAndScopeAndVersion(nands.getParentStructId(),nands.getScope(),nands.getHl7Version());
-	    		Message m1 = null;
-	            m1 = newMessage.clone();
-	            m1.setId(null);
-	            m1.setScope(Constant.SCOPE.USER);
-	            String name = m1.getMessageType() + "^" + nands.getName() + "^" + m1.getStructID();
-	            log.debug("Message.name=" + name);
-	            m1.setName(name);
-	            int position=messageService.findMaxPosition(msgs);
-	            m1.setPosition(++position);
-	            messageRepository.save(m1);
-	            msgsToadd.add(m1);
-	        	msgs.addMessage(m1);
-	    	}
-	    	 p.setMessages(msgs);
-	    	 d.setProfile(p);
-	    	 igDocumentService.save(d);
-	    	
-	      if (newMessages.isEmpty()) {
-	        throw new NotFoundException("Message not found for event=" + eventWrapper.toString());
-	      }
-	    } catch (Exception e) {
-	      log.error("", e);
-	    }
-	    
-   
+    List<Message> newMessages = new ArrayList<Message>();
+    IGDocument d = igDocumentService.findOne(id);
+    if (d == null) {
+      throw new IGDocumentNotFoundException(id);
+    }
 
-//    for(Message m : newMessages){
-//    	
-//    }
-   
+    Profile p = d.getProfile();
+    Messages msgs = p.getMessages();
+
+    List<Message> msgsToadd = new ArrayList<Message>();
+    try {
+      for (EventWrapper nands : eventWrapper) {
+        Message newMessage = messageService.findByStructIdAndScopeAndVersion(
+            nands.getParentStructId(), nands.getScope(), nands.getHl7Version());
+        Message m1 = null;
+        m1 = newMessage.clone();
+        m1.setId(null);
+        m1.setScope(Constant.SCOPE.USER);
+        String name = m1.getMessageType() + "^" + nands.getName() + "^" + m1.getStructID();
+        log.debug("Message.name=" + name);
+        m1.setName(name);
+        int position = messageService.findMaxPosition(msgs);
+        m1.setPosition(++position);
+        messageRepository.save(m1);
+        msgsToadd.add(m1);
+        msgs.addMessage(m1);
+      }
+      p.setMessages(msgs);
+      d.setProfile(p);
+      igDocumentService.save(d);
+
+      if (newMessages.isEmpty()) {
+        throw new NotFoundException("Message not found for event=" + eventWrapper.toString());
+      }
+    } catch (Exception e) {
+      log.error("", e);
+    }
+
+
+
+    // for(Message m : newMessages){
+    //
+    // }
+
     return msgsToadd;
   }
-  
+
   @RequestMapping(value = "/{id}/addMessages", method = RequestMethod.POST)
-  public String addMessages(@PathVariable("id") String id,
-      @RequestBody Set<String> messageIds)
-      throws IOException, IGDocumentNotFoundException, IGDocumentException, CloneNotSupportedException {
+  public String addMessages(@PathVariable("id") String id, @RequestBody Set<String> messageIds)
+      throws IOException, IGDocumentNotFoundException, IGDocumentException,
+      CloneNotSupportedException {
 
     System.out.println(id);
     System.out.println();
@@ -1179,22 +1190,22 @@ public class IGDocumentController extends CommonController {
     Profile p = d.getProfile();
     Messages msgs = p.getMessages();
     List<Message> newMsgs = messageService.findByIds(messageIds);
-    for(Message m : newMsgs){
-    	Message m1 = null;
-        m1 = m.clone();
-        m1.setId(null);
-        m1.setScope(Constant.SCOPE.USER);
-        messageRepository.save(m1);
-    	msgs.addMessage(m1);
+    for (Message m : newMsgs) {
+      Message m1 = null;
+      m1 = m.clone();
+      m1.setId(null);
+      m1.setScope(Constant.SCOPE.USER);
+      messageRepository.save(m1);
+      msgs.addMessage(m1);
     }
     p.setMessages(msgs);
     d.setProfile(p);
     try {
-		profileService.save(p);
-	} catch (ProfileException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+      profileService.save(p);
+    } catch (ProfileException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     igDocumentService.save(d);
     return null;
   }
@@ -1259,5 +1270,90 @@ public class IGDocumentController extends CommonController {
         igDocument.getMetaData().getTitle());
   }
 
+  /**
+   * Share multiple participants
+   * 
+   * @param id
+   * @param participants
+   * @return
+   * @throws IGDocumentException
+   */
+  @RequestMapping(value = "/{id}/share", method = RequestMethod.POST, produces = "application/json")
+  public boolean shareIgDocument(@PathVariable("id") String id, @RequestBody Set<Long> participants)
+      throws IGDocumentException {
+    log.info("Sharing id document with id=" + id + " with partipants=" + participants);
+    try {
+      User u = userService.getCurrentUser();
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (account == null)
+        throw new UserAccountNotFoundException();
+      IGDocument d = this.findIGDocument(id);
+      if (d.getAccountId() == null || !d.getAccountId().equals(account.getId())) {
+        throw new IGDocumentException(
+            "You do not have the right privilege to share this IG Document");
+      }
+      d.getShareParticipantIds().addAll(participants);
+      igDocumentService.save(d);
+      return true;
+    } catch (Exception e) {
+      log.error("", e);
+      throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
+    }
+  }
+
+  /**
+   * Unshare one participant
+   * 
+   * @param id
+   * @param participantId
+   * @return
+   * @throws IGDocumentException
+   */
+  @RequestMapping(value = "/{id}/unshare", method = RequestMethod.POST,
+      produces = "application/json")
+  public boolean unshareIgDocument(@PathVariable("id") String id,
+      @RequestBody Long shareParticipantId) throws IGDocumentException {
+    log.info("Unsharing id document with id=" + id + " with participant=" + shareParticipantId);
+    try {
+      User u = userService.getCurrentUser();
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (account == null)
+        throw new UserAccountNotFoundException();
+      IGDocument d = this.findIGDocument(id);
+      // Cannot unshare owner
+      if (d.getAccountId() != null && shareParticipantId != d.getAccountId()) {
+        if (d.getAccountId().equals(account.getId())
+            || account.getId().equals(shareParticipantId)) {
+          d.getShareParticipantIds().remove(shareParticipantId);
+        } else {
+          throw new IGDocumentException("You do not have the right to share this ig document");
+        }
+      } else {
+        throw new IGDocumentException("You do not have the right to share this ig document");
+      }
+      igDocumentService.save(d);
+      return true;
+    } catch (Exception e) {
+      log.error("", e);
+      throw new IGDocumentException("Failed to unshare IG Document \n" + e.getMessage());
+    }
+  }
+
+
+
+  private List<IGDocument> sharedIGDocument() throws IGDocumentException {
+    log.info("Getting List of shared Ig Documents");
+    try {
+      User u = userService.getCurrentUser();
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (account == null)
+        throw new UserAccountNotFoundException();
+      List<IGDocument> d = igDocumentService.findSharedIgDocuments(account.getId());
+      return d;
+    } catch (Exception e) {
+      log.error("", e);
+      throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
+    }
+  }
 
 }

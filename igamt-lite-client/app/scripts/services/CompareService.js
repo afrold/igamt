@@ -228,6 +228,9 @@ angular.module('igl').factory('CompareService',
 
                         }
                     };
+                    if (fields[i].datatype.ext === "") {
+                        fields[i].datatype.ext = null;
+                    }
                     fields[i].datatype.id = "";
 
                 };

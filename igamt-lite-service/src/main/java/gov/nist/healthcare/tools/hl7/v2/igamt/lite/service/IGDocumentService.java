@@ -106,5 +106,7 @@ public interface IGDocumentService {
 
   List<IGDocument> findAllByScope(IGDocumentScope scope);
 
+  List<IGDocument> findSharedIgDocuments(Long participantId);
+
   // TODO NEED TO REVIEW
 }

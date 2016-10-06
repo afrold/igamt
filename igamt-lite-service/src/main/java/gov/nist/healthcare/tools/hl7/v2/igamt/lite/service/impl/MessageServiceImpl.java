@@ -94,4 +94,9 @@ public int findMaxPosition(Messages msgs) {
     return maxPos;
   }
 
+@Override
+public List<Message> findAll() {
+  return messageRepository.findAll();
+}
+
 }

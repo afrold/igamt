@@ -111,7 +111,6 @@ public String getItemNo() {
     clonedField.setMinLength(minLength);
     clonedField.setName(name);
     clonedField.setPosition(position);
-    clonedField.setTable(table.clone());
     
     clonedField.setTables(new ArrayList<TableLink>());
     for(TableLink tl:this.tables){
