@@ -153,13 +153,13 @@
                                                         <thead>
                                                             <tr class="tbl-header" style="">
                                                                 <th class="col-md-2 col-fixed-250">Name</th>
-                                                                <th class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">Usage
+                                                                <th class="col-md-1 col-fixed-80">Usage
                                                                     <button type="button" class="btn btn-raised btn-info btn-xs" ng-if="(datatype.scope === 'USER')&& !readOnly && (datatype.components.length>0)" ng-click="OtoX(datatype)">O to X
                                                                         </button>
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">Length
+                                                                <th class="col-md-1 col-fixed-100">Length
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
+                                                                <th class="col-md-1 col-fixed-80">
                                                                     Conformance Length
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">Data Type
@@ -398,7 +398,7 @@
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-md-2 col-fixed-250">{{$index}}
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80 emptyCol">
          </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
          </td>
@@ -420,11 +420,11 @@
             <span style="width:60%" type="text" name="name" ng-bind="::node.name"></span>
             <span ng-bind="::node.description"></span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
          </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
+        <td class="col-md-1 col-fixed-100 emptyCol">
          </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
+        <td class="col-md-1 col-fixed-80 emptyCol">
          </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
          </td>
@@ -487,7 +487,7 @@
                 </div>
             </ng-form>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)" ng-controller="DatatypeRowCtrl">
                 <ng-form name="{{formName}}" class="form-inline">
                     <select class="form-control input-sm" name="usage" id="usage"
@@ -506,7 +506,7 @@
                 </a>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
             <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
                 <input style="width:45%" class="form-control" name="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.minLength.$invalid}" ng-model="node.minLength" required ng-minlength="1">
@@ -515,7 +515,7 @@
             </ng-form>
                 </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
             <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
                 <input style="width:50%" class="form-control" type="text" name="confLength" required ng-change="setDirty()" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.confLength.$invalid}" ng-pattern="/^\d+$/" ng-model="node.confLength">
@@ -623,7 +623,7 @@
             <span class="label label-component label-icon">C</span>
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <div>
                 <span ng-if="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
                     <span>{{::node.usage}}</span>
@@ -636,10 +636,10 @@
                 </div>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
@@ -690,7 +690,7 @@
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80"
             <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) === 0)">
                 {{::node.usage}}
             </span>
@@ -701,10 +701,10 @@
                 </p>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
@@ -728,7 +728,7 @@
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <div ng-show="node.text && node.text !== '' && node.text !== null">
                 <a ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="point">
                     <i class="fa fa-eye fa-fw"></i>
@@ -753,7 +753,7 @@
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <span ng-if="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) === 0)">
                 {{::node.usage}}
             </span>
@@ -764,10 +764,10 @@
                 </p>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
+        <td class="col-md-1 col-fixed-100">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">

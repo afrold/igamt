@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:output method="html" encoding="utf-8"
-		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-		indent="yes" />
+	<xsl:output method="html"/>
 	<xsl:param name="inlineConstraints" select="'false'"></xsl:param>
 	<xsl:param name="includeTOC" select="'true'"></xsl:param>
 
 	<xsl:template match="/">
 
-		<html xmlns="http://www.w3.org/1999/xhtml">
+		<html>
 			<head>
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 				<title>Implementation guide</title>
 				<style type="text/css">
-					body,
-					html {
-					font-family: 'Arial Narrow',
-					sans-serif;
-					}
-
 					#sidebar {
 					float:left;
 					width:30%;
@@ -120,6 +111,12 @@
 					.masterDatatypeLabel {
 					color:red;
 					}
+					body,
+					html {
+					font-family: 'Arial Narrow',
+					sans-serif;
+					font-size: 10px;
+					}
 				</style>
 				<style type="text/css">
 
@@ -193,35 +190,9 @@
 
 			<body style="font-family:Arial Narrow, Arial, sans-serif;">
 				<xsl:if test="$includeTOC='true'">
-					<div id="sidebar">
-						<h1>TABLE OF CONTENT</h1>
-						<br />
-						<xsl:call-template name="tocSect" />
-					</div>
-					<div id="main">
 						<xsl:apply-templates select="ConformanceProfile/MetaData" />
 						<hr></hr>
-						<a name="top"></a>
 						<xsl:call-template name="dispSect" />
-					</div>
-					<script type="text/javascript">
-						<xsl:text disable-output-escaping="yes">
-					function unhide(divID, btnID) {
-					var oLimit = document.querySelector("#sidebar");
-					var divs = document.querySelectorAll("div");
-					for (var i = 0; i &lt; divs.length; i++) {
-					if (divs[i].id == divID) {
-					divs[i].className = (divs[i].className=='hidden')?'unhidden':'hidden';
-					}
-					}
-					document.getElementById(btnID).innerHTML = ((document.getElementById(divID).className=='hidden')? "[Show]":"[Hide]");
-					}</xsl:text>
-					</script>
-				</xsl:if>
-				<xsl:if test="normalize-space($includeTOC) = 'false'">
-					<div id="notoc">
-						<xsl:call-template name="dispSect" />
-					</div>
 				</xsl:if>
 			</body>
 		</html>
@@ -229,47 +200,47 @@
 
 	<xsl:template name="dispInfoSect" mode="disp">
 		<xsl:if test="name() = 'Section'">
-			<u id="{@id}">
-				<xsl:choose>
-					<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'true'">
-						<xsl:element name="{concat('h', @h)}">
-							<xsl:if test="@prefix != ''">
-							<xsl:value-of select="@prefix" />
-							-
-							</xsl:if>
-							<xsl:if test="@scope = 'MASTER'">
-								<xsl:element name="span">
-									<xsl:attribute name="class"><xsl:text>masterDatatypeLabel</xsl:text></xsl:attribute>
-									<xsl:text>MAS</xsl:text>
-								</xsl:element>
-								<xsl:element name="span">
-									<xsl:text> - </xsl:text>
-								</xsl:element>
-							</xsl:if>
-							<xsl:value-of select="@title" />
-						</xsl:element>
-					</xsl:when>
-					<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
-						<xsl:element name="h6">
-							<xsl:value-of select="@prefix" />
-							-
-							<xsl:value-of select="@title" />
-						</xsl:element>
-					</xsl:when>
-					<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'false'">
-						<xsl:element name="{concat('h', @h)}">
-							<xsl:value-of select="@title" />
-						</xsl:element>
-					</xsl:when>
-					<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
-						<xsl:element name="h6">
-							<xsl:value-of select="@prefix" />
-							-
-							<xsl:value-of select="@title" />
-						</xsl:element>
-					</xsl:when>
-				</xsl:choose>
-			</u>
+				<u>
+					<xsl:choose>
+						<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'true'">
+							<xsl:element name="{concat('h', @h)}">
+								<xsl:if test="@prefix != ''">
+								<xsl:value-of select="@prefix" />
+								-
+								</xsl:if>
+								<xsl:if test="@scope = 'MASTER'">
+									<xsl:element name="span">
+										<xsl:attribute name="class"><xsl:text>masterDatatypeLabel</xsl:text></xsl:attribute>
+										<xsl:text>MAS</xsl:text>
+									</xsl:element>
+									<xsl:element name="span">
+										<xsl:text> - </xsl:text>
+									</xsl:element>
+								</xsl:if>
+								<xsl:value-of select="@title" />
+							</xsl:element>
+						</xsl:when>
+						<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
+							<xsl:element name="h6">
+								<xsl:value-of select="@prefix" />
+								-
+								<xsl:value-of select="@title" />
+							</xsl:element>
+						</xsl:when>
+						<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'false'">
+							<xsl:element name="{concat('h', @h)}">
+								<xsl:value-of select="@title" />
+							</xsl:element>
+						</xsl:when>
+						<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
+							<xsl:element name="h6">
+								<xsl:value-of select="@prefix" />
+								-
+								<xsl:value-of select="@title" />
+							</xsl:element>
+						</xsl:when>
+					</xsl:choose>
+				</u>
 			<br />
 			<xsl:call-template name="dispSectContent" />
 			<xsl:call-template name="dispProfileContent" />
@@ -363,52 +334,38 @@
 
 	<xsl:template name="tocInfoSect">
 		<xsl:if test="name() = 'Section'">
-			<a href="#{@id}">
-				<xsl:attribute name="class"><xsl:value-of select="concat('divh', @h)" /></xsl:attribute>
-				<xsl:if test="@prefix != ''">
-					<xsl:value-of select="@prefix" />
-					-
-				</xsl:if>
-				<xsl:if test="@scope = 'MASTER'">
-					<xsl:element name="span">
-						<xsl:attribute name="class"><xsl:text>masterDatatypeLabel</xsl:text></xsl:attribute>
-						<xsl:text>MAS</xsl:text>
-					</xsl:element>
-					<xsl:element name="span">
-						<xsl:text> - </xsl:text>
-					</xsl:element>
-				</xsl:if>
-				<xsl:value-of select="@title" />
-				<xsl:choose>
-					<xsl:when test="count(Section) &gt; 0">
-						<xsl:element name="a">
-							<xsl:attribute name="href">javascript:unhide('<xsl:value-of
-								select="concat(@id, '_toc')" />', '<xsl:value-of
-								select="concat(@id, '_btn')" />');</xsl:attribute>
-							<xsl:element name="div">
-								<xsl:attribute name="id"><xsl:value-of
-									select="concat(@id, '_btn')" /></xsl:attribute>
-								<xsl:attribute name="class">unhidden btn</xsl:attribute>
-								[Hide]
-							</xsl:element>
+			<xsl:attribute name="class"><xsl:value-of select="concat('divh', @h)" /></xsl:attribute>
+			<xsl:if test="@prefix != ''">
+				<xsl:value-of select="@prefix" />
+				-
+			</xsl:if>
+			<xsl:if test="@scope = 'MASTER'">
+				<xsl:element name="span">
+					<xsl:attribute name="class"><xsl:text>masterDatatypeLabel</xsl:text></xsl:attribute>
+					<xsl:text>MAS</xsl:text>
+				</xsl:element>
+				<xsl:element name="span">
+					<xsl:text> - </xsl:text>
+				</xsl:element>
+			</xsl:if>
+			<xsl:value-of select="@title" />
+			<xsl:choose>
+				<xsl:when test="count(Section) &gt; 0">
+					<xsl:element name="a">
+						<xsl:attribute name="href">javascript:unhide('<xsl:value-of
+							select="concat(@id, '_toc')" />', '<xsl:value-of
+							select="concat(@id, '_btn')" />');</xsl:attribute>
+						<xsl:element name="div">
+							<xsl:attribute name="id"><xsl:value-of
+								select="concat(@id, '_btn')" /></xsl:attribute>
+							<xsl:attribute name="class">unhidden btn</xsl:attribute>
+							[Hide]
 						</xsl:element>
-					</xsl:when>
-				</xsl:choose>
-			</a>
+					</xsl:element>
+				</xsl:when>
+			</xsl:choose>
 			<br></br>
 		</xsl:if>
-	</xsl:template>
-
-	<xsl:template name="tocSect">
-		<xsl:call-template name="tocInfoSect" />
-		<xsl:element name="div">
-			<xsl:attribute name="id"><xsl:value-of select="concat(@id, '_toc')" /></xsl:attribute>
-			<xsl:attribute name="class">unhidden</xsl:attribute>
-			<xsl:for-each select="*">
-				<xsl:sort select="@position" data-type="number"></xsl:sort>
-				<xsl:call-template name="tocSect" />
-			</xsl:for-each>
-		</xsl:element>
 	</xsl:template>
 
 	<xsl:template match="MessageDisplay">
@@ -501,16 +458,16 @@
 	<xsl:template name="elt">
 		<xsl:param name="style" />
 		<tr style="{$style}">
-			<td>
+			<td style="width:10%">
 				<xsl:value-of select="@Ref" />
 			</td>
-			<td>
+			<td style="width:20%">
 				<xsl:value-of select="@Label" />
 			</td>
-			<td>
+			<td style="width:20%">
 				<xsl:value-of select="@Description" />
 			</td>
-			<td>
+			<td style="width:10%">
 				<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
 					[
 					<xsl:value-of select="@Min" />
@@ -519,10 +476,10 @@
 					]
 				</xsl:if>
 			</td>
-			<td>
+			<td style="width:10%">
 				<xsl:value-of select="@Usage" />
 			</td>
-			<td>
+			<td style="width:30%">
 				<xsl:value-of select="@Comment" />
 			</td>
 		</tr>
