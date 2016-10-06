@@ -73,6 +73,8 @@ angular.module('igl')
         
         $scope.save = function() {
             var datatype = $rootScope.datatype;
+            
+            console.log(datatype);
             var ext = datatype.ext;
 
             DatatypeService.save(datatype).then(function(result) {
@@ -81,7 +83,15 @@ angular.module('igl')
                 newLink.ext = ext;
                 DatatypeLibrarySvc.updateChild($scope.datatypeLibrary.id, newLink).then(function(link) {
                     $scope.saving = false;
+                    //$rootScope.datatypesMap[result.id] = result;
+                    console.log("before the merge")
+                    console.log($rootScope.datatypesMap[result.id]);
+                    console.log("After the merge")
+                    console.log($rootScope.datatypesMap[result.id]);
+
                     DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                    DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+
                     cleanState();
                 }, function(error) {
                     $scope.saving = false;
@@ -97,8 +107,6 @@ angular.module('igl')
                 $rootScope.msg().show = true;
             });
         };
-
-
         $scope.confirmPublish = function(datatypeCopy) {
             var modalInstance = $modal.open({
                 templateUrl: 'ConfirmDatatypePublishCtl.html',

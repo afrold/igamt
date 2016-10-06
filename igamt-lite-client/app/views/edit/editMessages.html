@@ -481,7 +481,7 @@
         <td class="col-md-1 col-fixed-80">
             <div>
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
-                    <select class="form-control input-sm" name="usage" ng-change="setDirty();openPredicateDialog(node);" required
+                    <select class="form-control input-sm" name="usage" ng-change="setDirty();openPredicateDialog(node);setCardinalities(node);" required
                             ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
                 </span>
 
@@ -616,7 +616,7 @@
             <div>
 
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
-                    <select class="form-control input-sm" name="usage" ng-change="setDirty(); openPredicateDialog(node);" required
+                    <select class="form-control input-sm" name="usage" ng-change="setDirty(); openPredicateDialog(node); setCardinalities(node);" required
                             ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
                 </span>
 

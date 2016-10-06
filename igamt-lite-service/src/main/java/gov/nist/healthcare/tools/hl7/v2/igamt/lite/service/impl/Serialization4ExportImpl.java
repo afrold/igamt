@@ -12,6 +12,8 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -87,7 +89,6 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
       e1.printStackTrace();
       return null;
     }
-
   }
 
   @Override
@@ -1098,7 +1099,9 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
     elmMessage.addAttribute(new Attribute("Type", m.getMessageType()));
     elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
     elmMessage.addAttribute(new Attribute("StructID", m.getStructID()));
+
     elmMessage.addAttribute(new Attribute("position", m.getPosition()+""));
+
 
 
     if (m.getDescription() != null && !m.getDescription().equals(""))
@@ -1222,6 +1225,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
     nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
     elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
+
     elmMessage.addAttribute(new Attribute("position", String.valueOf(m.getPosition())));
     elmMessage.addAttribute(new Attribute("Name", m.getName() + ""));
     elmMessage.addAttribute(new Attribute("Type", m.getMessageType()));
@@ -1244,9 +1248,9 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
     List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
     for (SegmentRefOrGroup srog : segRefOrGroups) {
       if (srog instanceof SegmentRef) {
-        this.serializeOneSegmentRef(elmMessage, (SegmentRef) srog, 0);
+        this.serializeOneSegmentRef(elmMessage, (SegmentRef) srog, 0,m);
       } else if (srog instanceof Group) {
-        this.serializeOneGroup(elmMessage, (Group) srog, 0);
+        this.serializeOneGroup(elmMessage, (Group) srog, 0,m);
       }
     }
 //    List<Constraint> constraints =
@@ -1279,12 +1283,12 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
     // return sect;
   }
 
-  private void serializeOneGroup(nu.xom.Element elmDisplay, Group group, Integer depth) {
+  private void serializeOneGroup(nu.xom.Element elmDisplay, Group group, Integer depth, Message m) {
     nu.xom.Element elmGroup = new nu.xom.Element("Elt");
     elmGroup.addAttribute(new Attribute("IdGpe", group.getId()));
     elmGroup.addAttribute(new Attribute("Name", group.getName()));
     elmGroup.addAttribute(new Attribute("Description", "BEGIN " + group.getName() + " GROUP"));
-    elmGroup.addAttribute(new Attribute("Usage", group.getUsage().value()));
+    elmGroup.addAttribute(new Attribute("Usage", depth.toString()));
     elmGroup.addAttribute(new Attribute("Min", group.getMin() + ""));
     elmGroup.addAttribute(new Attribute("Max", group.getMax()));
     elmGroup.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "["));
@@ -1294,9 +1298,9 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
     for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
       if (segmentRefOrGroup instanceof SegmentRef) {
-        this.serializeOneSegmentRef(elmDisplay, (SegmentRef) segmentRefOrGroup, depth + 1);
+        this.serializeOneSegmentRef(elmDisplay, (SegmentRef) segmentRefOrGroup, depth + 1,m);
       } else if (segmentRefOrGroup instanceof Group) {
-        this.serializeOneGroup(elmDisplay, (Group) segmentRefOrGroup, depth + 1);
+        this.serializeOneGroup(elmDisplay, (Group) segmentRefOrGroup, depth + 1,m);
       }
     }
     nu.xom.Element elmGroup2 = new nu.xom.Element("Elt");
@@ -1314,7 +1318,8 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
   }
 
   private void serializeOneSegmentRef(nu.xom.Element elmDisplay, SegmentRef segmentRef,
-      Integer depth) {
+      Integer depth, Message m) {
+	  
     nu.xom.Element elmSegment = new nu.xom.Element("Elt");
     elmSegment.addAttribute(new Attribute("IDRef", segmentRef.getId()));
     elmSegment.addAttribute(new Attribute("IDSeg", segmentRef.getRef().getId()));
@@ -1332,7 +1337,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
     }
     elmSegment.addAttribute(new Attribute("Depth", String.valueOf(depth)));
-    elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage().value()));
+    elmSegment.addAttribute(new Attribute("Usage", segmentRef.toString()));
     elmSegment.addAttribute(new Attribute("Min", segmentRef.getMin() + ""));
     elmSegment.addAttribute(new Attribute("Max", segmentRef.getMax() + ""));
     if (segmentRef.getComment() != null)
@@ -1432,31 +1437,67 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
             }
           }
 
-          if (f.getConfLength() != null && !f.getConfLength().equals("")){
-            if(f.getDatatype()!=null){
-              Datatype d =datatypeService.findById(f.getDatatype().getId());
-              if(d!=null){
-                if(d.getComponents().size()>0){
-                  elmField.addAttribute(new Attribute("ConfLength", ""));
+      for (int i = 0; i < s.getFields().size(); i++) {
+        Field f = s.getFields().get(i);
+        nu.xom.Element elmField = new nu.xom.Element("Field");
+        elmField.addAttribute(new Attribute("Name", f.getName()));
+        elmField.addAttribute(new Attribute("Usage", getFullUsage(s,i).toString()));
 
-                  elmField.addAttribute(new Attribute("MinLength", "" + ""));
-                  if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-                    elmField.addAttribute(new Attribute("MaxLength", ""));
+//        if (f.getDatatype() != null) {
+//          String label = f.getDatatype().getExt() == null || f.getDatatype().getExt().isEmpty() ? f.getDatatype().getName()
+//              : f.getDatatype().getLabel();
+        	if (f.getDatatype() != null) {
+				  Datatype data =datatypeService.findById(f.getDatatype().getId());
+				  if(data!=null){
+					  elmField.addAttribute(new Attribute("Datatype", data.getLabel()));
+				  }
+			  }
+        
+      
+        if (f.getConfLength() != null && !f.getConfLength().equals("")){
 
+        	if(f.getDatatype()!=null){
 
+        		Datatype d =datatypeService.findById(f.getDatatype().getId());
+
+        		if(d!=null){
+
+        			if(d.getComponents().size()>0){
+
+      		          elmField.addAttribute(new Attribute("ConfLength", ""));
+
+        		          
+
+        		          elmField.addAttribute(new Attribute("MinLength", "" + ""));
+
+        		          if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
+
+        		            elmField.addAttribute(new Attribute("MaxLength", ""));
                 }else{
+
                   elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
 
+
+
                   elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
+
                   if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
+
                     elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
+
+
 
                 }
 
+
+
               }
+
             }
           }
+
           elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
+
           elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
           if (f.getTables() != null && (f.getTables().size() > 0)) {
             String temp = "";
@@ -1515,6 +1556,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
           nu.xom.Element thd = new nu.xom.Element("th");
           thd.appendChild("Description");
           tr.appendChild(thd);
+
           nu.xom.Element thc = new nu.xom.Element("th");
           thc.appendChild("Comments");
           tr.appendChild(thc);
@@ -1591,6 +1633,22 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
     }
     return constraints;
   }
+  
+  private List<Predicate> findPredicate(Integer target, List<Predicate> predicates) {
+	    // TODO Add case for root level constraints
+	    List<Predicate> constraints = new ArrayList<>();
+	    for (Predicate pre : predicates) {
+	      if (pre.getConstraintTarget().indexOf('[') != -1) {
+	        if (target == Integer.parseInt(
+	            pre.getConstraintTarget().substring(0, pre.getConstraintTarget().indexOf('[')))) {
+	          constraints.add(pre);
+	        }
+	      }
+	    }
+	    
+	    return constraints;
+	  }
+
 
   private nu.xom.Element serializeDatatype(DatatypeLink dl, TableLibrary tables,
       DatatypeLibrary datatypes, String prefix, Integer position) {
@@ -1632,18 +1690,31 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 			  // here?
 			  elmDatatype.addAttribute(new Attribute("id", d.getId()));
 			    List<ConformanceStatement>	confromances= d.getConformanceStatements();
+
 			    if(confromances!=null && !confromances.isEmpty()){
+
 			    	for (Constraint constraint : confromances) {
+
 						  nu.xom.Element elmConstraint =serializeConstraintToElement(constraint, d.getName() + ".");
+
 						  elmDatatype.appendChild(elmConstraint);
+
 					  }
+
 			    }
+
 			    List<Predicate> predicates = d.getPredicates();
+
 			    if(predicates!=null && !predicates.isEmpty()){
+
 			    	for (Constraint constraint : predicates) {
+
 						  nu.xom.Element elmConstraint =serializeConstraintToElement(constraint, d.getName() + ".");
+
 						  elmDatatype.appendChild(elmConstraint);
+
 					  }
+
 			    }
 			  if (d.getComponents() != null) {
 				  //
@@ -1657,35 +1728,57 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 					  Component c = d.getComponents().get(i);
 					  nu.xom.Element elmComponent = new nu.xom.Element("Component");
 					  elmComponent.addAttribute(new Attribute("Name", c.getName()));
-					  elmComponent.addAttribute(new Attribute("Usage", c.getUsage().toString()));
+					  elmComponent.addAttribute(new Attribute("Usage", getFullUsage(d,i)));
 					  if (c.getDatatype() != null) {
 						  Datatype data =datatypeService.findById(c.getDatatype().getId());
 						  if(data!=null){
 						  elmComponent.addAttribute(new Attribute("Datatype", data.getLabel()));
 						  }
 					  }
+
 					  if(c.getDatatype()!=null){
+
 					  Datatype sub= datatypeService.findById(c.getDatatype().getId());
+
 					  if(sub!=null){
+
 						  if(sub.getComponents().size()==0){
+
 							  elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
+
 							  if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
+
 								  elmComponent.addAttribute(new Attribute("MaxLength", c.getMaxLength()));
+
 							  if (c.getConfLength() != null && !c.getConfLength().equals(""))
+
+
 
 								  elmComponent.addAttribute(new Attribute("ConfLength", c.getConfLength()));
 
+
+
 							 
+
 						  }else{
+
 							      elmComponent.addAttribute(new Attribute("MinLength", ""));
+
 								  elmComponent.addAttribute(new Attribute("MaxLength", ""));
+
 								  elmComponent.addAttribute(new Attribute("ConfLength", ""));
+
 						  }
+
 					  }
+
 					  }
 					 
+
 					  if (c.getComment() != null && !c.getComment().equals(""))
+
 						  elmComponent.addAttribute(new Attribute("Comment", c.getComment()));
+
 					  
 					  elmComponent.addAttribute(new Attribute("Position", c.getPosition().toString()));
 					  if (c.getText() != null & !c.getText().isEmpty()) {
@@ -1726,9 +1819,12 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				  if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()) {
 					  elmDatatype.appendChild(this.serializeRichtext("UsageNote", d.getUsageNote()));
 				  }
+
 				
+
 				  
 			  }
+
 
 		  } else {
             elmDatatype.addAttribute(new Attribute("ID", dl.getId() + ""));
@@ -1742,7 +1838,45 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
   }
 
 
-  public File serializeProfileToZipFile(Profile profile) throws UnsupportedEncodingException {
+  private String getFullUsage(Datatype d, int i) {
+	   List<Predicate> predicates = findPredicate(i+1,d.getPredicates());
+	   
+	   if(predicates==null||predicates.isEmpty()){
+		   return d.getComponents().get(i).getUsage().toString();
+	   }else{
+		   Predicate p=predicates.get(0);
+			
+		  return d.getComponents().get(i).getUsage().toString()+"("+p.getTrueUsage()+"/"+p.getFalseUsage()+")";
+	   }
+
+}
+  private String getFullUsage(Segment s, int i) {
+	   List<Predicate> predicates = findPredicate(i+1,s.getPredicates());
+	   
+	   if(predicates==null||predicates.isEmpty()){
+		   return s.getFields().get(i).getUsage().toString();
+	   }else{
+		   Predicate p=predicates.get(0);
+			
+		  return s.getFields().get(i).getUsage().toString()+"("+p.getTrueUsage()+"/"+p.getFalseUsage()+")";
+	   }
+
+}
+
+//  private String getFullUsage(Message m, int i, String target) {
+//	   List<Predicate> predicates = findPredicate(i+1,m.getPredicates(),target);
+//	   
+//	   if(predicates==null||predicates.isEmpty()){
+//		   return m.getChildren().get(i).getUsage().toString();
+//	   }else{
+//		   Predicate p=predicates.get(0);
+//			
+//		  return m.getChildren().get(i).getUsage().toString()+"("+p.getTrueUsage()+"/"+p.getFalseUsage()+")";
+//	   }
+//
+//}
+
+public File serializeProfileToZipFile(Profile profile) throws UnsupportedEncodingException {
     File out;
     try {
       out = File.createTempFile("Profile_" + profile.getId(), ".zip");
