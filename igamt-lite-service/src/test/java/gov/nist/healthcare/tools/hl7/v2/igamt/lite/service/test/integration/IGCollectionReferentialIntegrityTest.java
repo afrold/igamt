@@ -242,7 +242,7 @@ public class IGCollectionReferentialIntegrityTest {
               analysisRst.append("\t\tSegment id: "+ sgt.getId() + "\n");
               List<Field> fields = sgt.getFields();
               for (Field f : fields){
-                analysisRst.append("\t\t\tField id: \n"+ f.getId());
+                analysisRst.append("\t\t\tField id: "+ f.getId() + "\n");
                 Datatype d = datatypeService.findById(f.getDatatype().getId());
                 found = (d != null);
                 okStatus = okStatus && found;
@@ -274,7 +274,7 @@ public class IGCollectionReferentialIntegrityTest {
     log.info("Running testComponentDataypes...");
 
     timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-    File report = new File("testDatatypes_" + timeStamp + ".txt");
+    File report = new File("testComponentDatatypes_" + timeStamp + ".txt");
 
     log.debug("Writing to file " + report.getName());
 
