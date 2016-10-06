@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:include href="tableOfContentInfoSection.xsl"/>
+    <xsl:import href="tableOfContentInfoSection.xsl"/>
     <xsl:template name="displayTableOfContentSection">
         <xsl:call-template name="displayTableOfContentInfoSection"/>
         <xsl:element name="div">

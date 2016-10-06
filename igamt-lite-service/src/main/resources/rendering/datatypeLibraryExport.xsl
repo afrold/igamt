@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:output method="html"/>
     <!-- Include the templates -->
-    <xsl:include href="templates/section.xsl"/>
-    <xsl:include href="templates/profileContent.xsl"/>
-    <xsl:include href="templates/tableOfContentSection.xsl"/>
-    <xsl:include href="templates/htmlContent.xsl"/>
-    <xsl:param name="inlineConstraints" select="'false'"></xsl:param>
-    <xsl:param name="includeTOC" select="'true'"></xsl:param>
-    <xsl:param name="targetFormat" select="'html'"></xsl:param>
-    <xsl:param name="documentTitle" select="'Implementation Guide'"></xsl:param>
+    <xsl:import href="templates/section.xsl"/>
+    <xsl:import href="templates/profileContent.xsl"/>
+    <xsl:import href="templates/tableOfContentSection.xsl"/>
+    <xsl:import href="templates/htmlContent.xsl"/>
+    <xsl:import href="templates/wordContent.xsl"/>
+    <xsl:param name="inlineConstraints" select="'false'"/>
+    <xsl:param name="targetFormat" select="'html'"/>
+    <xsl:param name="documentTitle" select="'Implementation Guide'"/>
+
+    <xsl:output method="html"/>
+
 
     <xsl:template match="/">
 
@@ -67,23 +69,10 @@
                 <!-- Check the target format to include specific content -->
                 <xsl:choose>
                     <xsl:when test="$targetFormat='html'">
-                        <xsl:choose>
-                            <xsl:when test="normalize-space($includeTOC)='true'">
-                                <xsl:call-template name="displayHtmlContent" />
-                            </xsl:when>
-                            <xsl:when test="normalize-space($includeTOC)='false'">
-                                <xsl:element name="div">
-                                    <xsl:attribute name="id">
-                                        <xsl:text>notoc</xsl:text>
-                                    </xsl:attribute>
-                                    <xsl:call-template name="displaySection" />
-                                </xsl:element>
-                            </xsl:when>
-                        </xsl:choose>
+                        <xsl:call-template name="displayHtmlContent"/>
                     </xsl:when>
                     <xsl:when test="$targetFormat='word'">
-                        <xsl:call-template name="displayProfileContent" />
-                        <xsl:call-template name="displaySection" />
+                        <xsl:call-template name="displayWordContent"/>
                     </xsl:when>
                 </xsl:choose>
                 <!-- End of the body tag -->
