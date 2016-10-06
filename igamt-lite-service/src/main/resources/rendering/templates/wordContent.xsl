@@ -3,7 +3,14 @@
     <xsl:import href="section.xsl"/>
     <xsl:import href="profileContent.xsl"/>
     <xsl:template name="displayWordContent">
-        <xsl:call-template name="displayProfileContent" />
-        <xsl:call-template name="displaySection" />
+        <xsl:param name="inlineConstraint"/>
+        <xsl:param name="includeTOC"/>
+        <xsl:call-template name="displayProfileContent">
+            <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
+         </xsl:call-template>
+        <xsl:call-template name="displaySection">
+            <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
+            <xsl:with-param name="includeTOC" select="$includeTOC"/>
+        </xsl:call-template>
     </xsl:template>
 </xsl:stylesheet>

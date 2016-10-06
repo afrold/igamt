@@ -25,11 +25,14 @@ public class XsltIncludeUriResover implements URIResolver {
     public Source resolve(String href, String base) throws TransformerException {
         try {
             StringBuilder classpathHref = new StringBuilder();
+            if(href.startsWith("/")){
+                href=href.substring("/".length());
+            }
             if(!href.startsWith("rendering")){
                 classpathHref.append("rendering/");
-            }
-            if(!href.startsWith("templates")){
-                classpathHref.append("templates/");
+                if(!href.startsWith("templates")){
+                    classpathHref.append("templates/");
+                }
             }
             classpathHref.append(href);
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(classpathHref.toString());

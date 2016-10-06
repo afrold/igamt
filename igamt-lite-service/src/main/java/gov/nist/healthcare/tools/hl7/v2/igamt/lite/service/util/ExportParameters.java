@@ -18,10 +18,10 @@ import java.util.Map;
  */
 public class ExportParameters {
     //Define parameters with a default value
-    public boolean inlineConstraints = false;
-    public boolean includeTOC = true;
-    public String targetFormat = "html";
-    public String documentTitle = "Implementation Guide";
+    private boolean inlineConstraints = false;
+    private boolean includeTOC = true;
+    private String targetFormat = "html";
+    private String documentTitle = "Implementation Guide";
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle) {

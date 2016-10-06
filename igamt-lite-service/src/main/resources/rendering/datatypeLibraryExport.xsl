@@ -11,6 +11,7 @@
     <xsl:import href="templates/style/wordStyle.xsl"/>
     <xsl:import href="templates/style/globalStyle.xsl"/>
     <xsl:param name="inlineConstraints" select="'false'"/>
+    <xsl:param name="includeTOC" select="'false'"/>
     <xsl:param name="targetFormat" select="'html'"/>
     <xsl:param name="documentTitle" select="'Implementation Guide'"/>
 
@@ -70,10 +71,16 @@
                 <!-- Check the target format to include specific content -->
                 <xsl:choose>
                     <xsl:when test="$targetFormat='html'">
-                        <xsl:call-template name="displayHtmlContent"/>
+                        <xsl:call-template name="displayHtmlContent">
+                            <xsl:with-param name="includeTOC" select="$includeTOC"/>
+                            <xsl:with-param name="inlineConstraint" select="$inlineConstraints"/>
+                        </xsl:call-template>
                     </xsl:when>
                     <xsl:when test="$targetFormat='word'">
-                        <xsl:call-template name="displayWordContent"/>
+                        <xsl:call-template name="displayWordContent">
+                            <xsl:with-param name="includeTOC" select="$includeTOC"/>
+                            <xsl:with-param name="inlineConstraint" select="$inlineConstraints"/>
+                        </xsl:call-template>
                     </xsl:when>
                 </xsl:choose>
                 <!-- End of the body tag -->

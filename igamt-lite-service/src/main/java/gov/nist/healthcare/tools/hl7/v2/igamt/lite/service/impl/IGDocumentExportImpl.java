@@ -366,7 +366,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       ExportParameters exportParameters = new ExportParameters();
       exportParameters.setDocumentTitle(DOCUMENT_TITLE_DATATYPE_LIBRARY);
       exportParameters.setIncludeTOC(true);
-      exportParameters.setInlineConstraints(false);
+      exportParameters.setInlineConstraints(true);
       exportParameters.setTargetFormat(EXPORT_FORMAT_HTML);
       return exportAsHtmlFromXsl(igDocumentSerializationService
           .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
@@ -380,9 +380,14 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   public InputStream exportAsDocxDatatypeLibraryDocument(
       DatatypeLibraryDocument datatypeLibraryDocument) {
     if (datatypeLibraryDocument != null) {
+      ExportParameters exportParameters = new ExportParameters();
+      exportParameters.setDocumentTitle(DOCUMENT_TITLE_DATATYPE_LIBRARY);
+      exportParameters.setIncludeTOC(false);
+      exportParameters.setInlineConstraints(true);
+      exportParameters.setTargetFormat(EXPORT_FORMAT_WORD);
       return exportAsDocxFromXml(igDocumentSerializationService
-          .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
-          "/rendering/datatypeLibraryDoc2word.xsl", true);
+              .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
+          "/rendering/datatypeLibraryExport.xsl", exportParameters);
     } else {
       return new NullInputStream(1L);
     }
@@ -2655,7 +2660,6 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   }
 
   private InputStream exportAsHtmlFromXsl(String xmlString, String xslPath, ExportParameters exportParameters) {
-    // Note: inlineConstraint can be true or false
 
     try {
       File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
@@ -2673,9 +2677,9 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       // Apply XSL transformation on xml file to generate html
       transformer = factoryTf.newTransformer(xslt);
         //Set the parameters
-        /*for(Map.Entry<String,String> param:exportParameters.toMap().entrySet()){
+        for(Map.Entry<String,String> param:exportParameters.toMap().entrySet()){
             transformer.setParameter(param.getKey(),param.getValue());
-        }*/
+        }
 
 
       transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
@@ -2759,6 +2763,92 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       // createCoverPageForDocx4j(igdoc, wordMLPackage, factory); TODO Implement cover page
 
       if (includeToc) {
+        createTableOfContentForDocx4j(wordMLPackage, factory);
+      }
+
+      FieldUpdater updater = new FieldUpdater(wordMLPackage);
+      try {
+        updater.update(true);
+      } catch (Docx4JException e1) {
+        e1.printStackTrace();
+      }
+
+      AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName("/hw.html"));
+      afiPart.setBinaryData(html.getBytes());
+      afiPart.setContentType(new ContentType("text/html"));
+      Relationship altChunkRel = wordMLPackage.getMainDocumentPart().addTargetPart(afiPart);
+
+      // .. the bit in document body
+      CTAltChunk ac = Context.getWmlObjectFactory().createCTAltChunk();
+      ac.setId(altChunkRel.getId());
+      wordMLPackage.getMainDocumentPart().addObject(ac);
+
+      // .. content type
+      wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");
+
+
+
+      // Tidy tidy = new Tidy();
+      // tidy.setWraplen(Integer.MAX_VALUE);
+      // tidy.setXHTML(true);
+      // tidy.setShowWarnings(false); //to hide errors
+      // tidy.setQuiet(true); //to hide warning
+      // InputStream inputStream = new ByteArrayInputStream(html.getBytes());
+      // ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      // tidy.parseDOM(inputStream, outputStream);
+      // File cleanTmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
+      // FileUtils.writeByteArrayToFile(cleanTmpHtmlFile, outputStream.toByteArray());
+      // XHTMLImporterImpl XHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
+      // wordMLPackage.getMainDocumentPart().getContent().addAll(
+      // XHTMLImporter.convert(cleanTmpHtmlFile, null) );
+
+
+      // addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
+
+      loadTemplateForDocx4j(wordMLPackage); // Repeats the lines above but necessary; don't delete
+
+      File tmpFile;
+      tmpFile = File.createTempFile("IgDocument" + UUID.randomUUID().toString(), ".docx");
+      wordMLPackage.save(tmpFile);
+
+      return FileUtils.openInputStream(tmpFile);
+
+    } catch (TransformerException | IOException | Docx4JException e) {
+      e.printStackTrace();
+      return new NullInputStream(1L);
+    }
+  }
+
+  public InputStream exportAsDocxFromXml(String xmlString, String xmlPath, ExportParameters exportParameters) {
+    try {
+      File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
+
+      // Generate xml file containing profile
+      File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
+      FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
+
+      TransformerFactory factoryTf = TransformerFactory.newInstance();
+      Source xslt = new StreamSource(this.getClass().getResourceAsStream(xmlPath));
+      Transformer transformer;
+
+      // Apply XSL transformation on xml file to generate html
+      transformer = factoryTf.newTransformer(xslt);
+      //Set the parameters
+      for(Map.Entry<String,String> param:exportParameters.toMap().entrySet()){
+        transformer.setParameter(param.getKey(),param.getValue());
+      }
+      transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
+
+      String html = FileUtils.readFileToString(tmpHtmlFile);
+
+      WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage
+          .load(this.getClass().getResourceAsStream("/rendering/lri_template.dotx"));
+
+      ObjectFactory factory = Context.getWmlObjectFactory();
+
+      // createCoverPageForDocx4j(igdoc, wordMLPackage, factory); TODO Implement cover page
+
+      if (exportParameters.isIncludeTOC()) {
         createTableOfContentForDocx4j(wordMLPackage, factory);
       }
 

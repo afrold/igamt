@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-    <xsl:param name="includeTOC" select="'true'"/>
-
     <xsl:template name="displayHtmlContent">
+        <xsl:param name="includeTOC" select="'true'"/>
+        <xsl:param name="inlineConstraint" select="'true'"/>
         <xsl:choose>
             <!-- If we need to include the table of content -->
             <xsl:when test="$includeTOC='true'">
@@ -56,7 +55,10 @@
                     <xsl:attribute name="id">
                         <xsl:text>notoc</xsl:text>
                     </xsl:attribute>
-                    <xsl:call-template name="displaySection" />
+                    <xsl:call-template name="displaySection">
+                        <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
+                        <xsl:with-param name="includeTOC" select="$includeTOC"/>
+                    </xsl:call-template>
                 </xsl:element>
             </xsl:otherwise>
         </xsl:choose>

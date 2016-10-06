@@ -5,9 +5,9 @@
     <xsl:import href="sectionContent.xsl"/>
     <xsl:import href="profileContent.xsl"/>
 
-    <xsl:param name="includeTOC" select="'true'"></xsl:param>
-
     <xsl:template name="displayInfoSection" mode="disp">
+        <xsl:param name="includeTOC" select="'true'"></xsl:param>
+        <xsl:param name="inlineConstraint" select="'true'"></xsl:param>
         <xsl:if test="name() = 'Section'">
             <xsl:element name="u">
                 <xsl:attribute name="id">
@@ -57,7 +57,9 @@
             </xsl:element>
             <xsl:element name="br"/>
             <xsl:call-template name="displaySectionContent"/>
-            <xsl:call-template name="displayProfileContent"/>
+            <xsl:call-template name="displayProfileContent">
+                <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
+            </xsl:call-template>
 
         </xsl:if>
     </xsl:template>
