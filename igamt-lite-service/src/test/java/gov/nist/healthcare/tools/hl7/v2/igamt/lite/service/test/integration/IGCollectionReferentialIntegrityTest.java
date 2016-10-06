@@ -42,6 +42,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -213,7 +214,7 @@ public class IGCollectionReferentialIntegrityTest {
 
     timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
     File report = new File("testSegmentContent_" + timeStamp + ".txt");
-    
+
     log.debug("Writing to file " + report.getName());
 
     okStatus = true;
@@ -241,7 +242,7 @@ public class IGCollectionReferentialIntegrityTest {
               analysisRst.append("\t\tSegment id: "+ sgt.getId() + "\n");
               List<Field> fields = sgt.getFields();
               for (Field f : fields){
-                analysisRst.append("\t\t\tField id: "+ f.getId());
+                analysisRst.append("\t\t\tField id: \n"+ f.getId());
                 Datatype d = datatypeService.findById(f.getDatatype().getId());
                 found = (d != null);
                 okStatus = okStatus && found;
@@ -266,24 +267,53 @@ public class IGCollectionReferentialIntegrityTest {
     }
     assertTrue(okStatus);
   }
-  
+
   @Test
   public void testComponentDatatypes() {
+    // Check contents of datatype library 
     log.info("Running testComponentDataypes...");
 
-    List<String> dts = new ArrayList<String>();
-    Set<Component> cts = new HashSet<Component>();
-    for (DatatypeLink dt : profile.getDatatypeLibrary().getChildren()) {
-      dts.add(dt.getId());
-    }
-    for (DatatypeLink dt : profile.getDatatypeLibrary().getChildren()) {
-      //      for (Component ct : dt.getComponents()) {
-      //        cts.add(ct);
-      //      }
-    }
-    for (Component ctId : cts) {
-      assertTrue(dts.contains(ctId.getDatatype()));
-    }
+    timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    File report = new File("testDatatypes_" + timeStamp + ".txt");
+
+    log.debug("Writing to file " + report.getName());
+
+    okStatus = true;
+
+    List<Datatype> dts = datatypeService.findAll();
+
+    Iterator<Datatype> itrDt = dts.iterator();
+    while (itrDt.hasNext()) {
+      Datatype dt = (Datatype) itrDt.next();
+      addTextInReport(report, "dt id: " + dt.getId() + "\n", true);
+
+      Iterator<Component> itrCpt = dt.getComponents().iterator();
+      while (itrCpt.hasNext()) {
+        found = true;
+        analysisRst = new StringBuilder();
+        Component cpt = itrCpt.next();
+        analysisRst.append("\tComponent id: " + cpt.getId() + "\n");
+
+        Datatype d = datatypeService.findById(cpt.getDatatype().getId());
+        found = (d != null);
+        if (!(d != null)){
+          analysisRst.append("\t\tDatatype id: " + cpt.getDatatype().getId() + " not found.\n");
+        } 
+        List<TableLink> tls = cpt.getTables();
+        for (TableLink tl: tls){
+          Table t = tableService.findById(tl.getId());
+          found = found && (t != null);
+          if (!(t != null)){
+            analysisRst.append("\t\tValue set id: " + tl.getId() + " not found.\n");
+          } 
+        }
+        if (!found){
+          addTextInReport(report, analysisRst.toString(), true);
+        } 
+        okStatus = okStatus && found;
+      }
+    } 
+    assertTrue(okStatus);
   }
 
   @Test
@@ -330,7 +360,7 @@ public class IGCollectionReferentialIntegrityTest {
     }
     return refs;
   }
-  
+
   private void addTextInReport(File report, String text, boolean append){
     try {
       FileUtils.writeStringToFile(report, text, append);
