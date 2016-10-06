@@ -15,7 +15,7 @@
     <xsl:template match="/">
 
         <xsl:element name="html">
-            <xsl:attribute name="xmlns"><xsl:text>http://www.w3.org/1999/xhtml</xsl:text></xsl:attribute>
+            <!--xsl:attribute name="xmlns"><xsl:text>http://www.w3.org/1999/xhtml</xsl:text></xsl:attribute-->
             <!-- Content of the head tag -->
             <xsl:element name="head">
                 <!--xsl:element name="meta">
@@ -60,6 +60,7 @@
                         </xsl:when>
                     </xsl:choose>
                 </xsl:element>
+                <!-- End of the head tag -->
             </xsl:element>
             <!-- Content of the body tag -->
             <xsl:element name="body">
@@ -68,27 +69,26 @@
                     <xsl:when test="$targetFormat='html'">
                         <xsl:choose>
                             <xsl:when test="normalize-space($includeTOC)='true'">
-
+                                <xsl:call-template name="displayHtmlContent" />
                             </xsl:when>
                             <xsl:when test="normalize-space($includeTOC)='false'">
-
+                                <xsl:element name="div">
+                                    <xsl:attribute name="id">
+                                        <xsl:text>notoc</xsl:text>
+                                    </xsl:attribute>
+                                    <xsl:call-template name="displaySection" />
+                                </xsl:element>
                             </xsl:when>
                         </xsl:choose>
-                        <xsl:if test="$includeTOC='true'">
-                            <xsl:call-template name="displayHtmlContent" />
-                        </xsl:if>
-                        <xsl:if test="normalize-space($includeTOC) = 'false'">
-                            <div id="notoc">
-                                <xsl:call-template name="displaySection" />
-                            </div>
-                        </xsl:if>
                     </xsl:when>
                     <xsl:when test="$targetFormat='word'">
                         <xsl:call-template name="displayProfileContent" />
                         <xsl:call-template name="displaySection" />
                     </xsl:when>
                 </xsl:choose>
+                <!-- End of the body tag -->
             </xsl:element>
+            <!-- End of the html tag -->
         </xsl:element>
     </xsl:template>
 </xsl:stylesheet>

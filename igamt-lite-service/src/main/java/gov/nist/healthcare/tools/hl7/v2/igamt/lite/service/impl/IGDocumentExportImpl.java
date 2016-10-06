@@ -11,9 +11,9 @@
  */
 
 /**
- * 
+ *
  * @author Olivier MARIE-ROSE
- * 
+ *
  */
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
@@ -56,6 +56,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportParameters;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.XsltIncludeUriResover;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -195,6 +196,11 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   static String tableVSeparator = "#D3D3D3";
 
   static String inlineConstraints = "false";
+
+  private static String DOCUMENT_TITLE_IMPLEMENTATION_GUIDE = "Implementation Guide";
+  private static String DOCUMENT_TITLE_DATATYPE_LIBRARY = "Datatype Library";
+  private static String EXPORT_FORMAT_HTML = "html";
+  private static String EXPORT_FORMAT_WORD = "word";
 
 
   @Override
@@ -357,9 +363,14 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   public InputStream exportAsHtmlDatatypeLibraryDocument(
       DatatypeLibraryDocument datatypeLibraryDocument) {
     if (datatypeLibraryDocument != null) {
+      ExportParameters exportParameters = new ExportParameters();
+      exportParameters.setDocumentTitle(DOCUMENT_TITLE_DATATYPE_LIBRARY);
+      exportParameters.setIncludeTOC(true);
+      exportParameters.setInlineConstraints(true);
+      exportParameters.setTargetFormat(EXPORT_FORMAT_HTML);
       return exportAsHtmlFromXsl(igDocumentSerializationService
           .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
-          "/rendering/datatypeLibraryDoc2html.xsl");
+          "/rendering/datatypeLibraryExport.xsl",exportParameters);
     } else {
       return new NullInputStream(1L);
     }
@@ -2643,7 +2654,49 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     }
   }
 
-  private InputStream exportAsHtmlFromXsl(String xmlString, String xslPath) {
+  private InputStream exportAsHtmlFromXsl(String xmlString, String xslPath, ExportParameters exportParameters) {
+    // Note: inlineConstraint can be true or false
+
+    try {
+      File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
+
+      // Generate xml file containing profile
+      File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
+      // File tmpXmlFile = new File("temp + UUID.randomUUID().toString().xml");
+      FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
+
+      TransformerFactory factoryTf = TransformerFactory.newInstance();
+      factoryTf.setURIResolver(new XsltIncludeUriResover());
+      Source xslt = new StreamSource(this.getClass().getResourceAsStream(xslPath));
+      Transformer transformer;
+
+      // Apply XSL transformation on xml file to generate html
+      transformer = factoryTf.newTransformer(xslt);
+        //Set the parameters
+        for(Map.Entry<String,String> param:exportParameters.toMap().entrySet()){
+            transformer.setParameter(param.getKey(),param.getValue());
+        }
+
+
+      transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
+
+      Tidy tidy = new Tidy();
+      tidy.setWraplen(Integer.MAX_VALUE);
+      tidy.setXHTML(true);
+      tidy.setShowWarnings(false); // to hide errors
+      tidy.setQuiet(true); // to hide warning
+      tidy.setMakeClean(true);
+      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      tidy.parseDOM(FileUtils.openInputStream(tmpHtmlFile), outputStream);
+      return new ByteArrayInputStream(outputStream.toByteArray());
+
+    } catch (TransformerException | IOException e) {
+      e.printStackTrace();
+      return new NullInputStream(1L);
+    }
+  }
+    //TODO Delete this when the stylesheet will be unified
+    private InputStream exportAsHtmlFromXsl(String xmlString, String xslPath) {
     // Note: inlineConstraint can be true or false
 
     try {
