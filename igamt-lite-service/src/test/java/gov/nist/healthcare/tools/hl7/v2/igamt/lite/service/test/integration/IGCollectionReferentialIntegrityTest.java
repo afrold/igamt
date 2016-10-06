@@ -1,0 +1,341 @@
+/**
+ * This software was developed at the National Institute of Standards and Technology by employees of
+ * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
+ * of the United States Code this software is not subject to copyright protection and is in the
+ * public domain. This is an experimental system. NIST assumes no responsibility whatsoever for its
+ * use by other parties, and makes no guarantees, expressed or implied, about its quality,
+ * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
+ * used. This software can be redistributed and/or modified freely provided that any derivative
+ * works bear some notice that they are derived from it, and any modified versions bear some notice
+ * that they have been modified.
+ */
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
+
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.IGDocumentServiceImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit.PersistenceContextUnit;
+
+/**
+ * Not a standalone test. Intended to be called by a junit test.
+ * 
+ * A set of tests to determine the internal integrity of references in a Profile. Checks that all
+ * segmentRefs refer to valid segments. Checks that all Fields reference valid dataypes. Checks that
+ * all Datatypes.Components reference valid datatypes. Intended to be called by a junit test.
+ */
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {PersistenceContextUnit.class})
+public class IGCollectionReferentialIntegrityTest {
+
+  private static final Logger log = LoggerFactory
+      .getLogger(IGCollectionReferentialIntegrityTest.class);
+
+  @Autowired
+  IGDocumentServiceImpl igService;
+
+  @Autowired
+  private MessageService messageService;
+
+  @Autowired
+  private DatatypeService datatypeService;
+
+  @Autowired
+  private SegmentService segmentService;
+
+  @Autowired
+  private TableService tableService;
+
+  List<IGDocument> igs;
+  IGDocument ig;
+  Profile profile;
+  SegmentLink sl;
+  DatatypeLink dl;
+  TableLink tl;
+  File tmpFile = null;
+  String timeStamp = null;
+  StringBuilder analysisRst;
+  boolean okStatus = true;
+  boolean found = false;
+
+
+  @Before
+  public void setUp() throws Exception {
+    igs = igService.findAll();
+  }
+
+  @After
+  public void tearDown() throws Exception {}
+
+  @Test
+  public void testMessagesReferentialIntegrity() {
+    //  Check that messages referenced in an IG can be found
+    log.info("Running testMessagesIntegrity");
+
+    timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    tmpFile = new File("testMessages_" + timeStamp + ".txt");
+    analysisRst = new StringBuilder();
+
+    log.debug("Writing to file " + tmpFile.getName());
+
+    okStatus = true;
+
+    for (IGDocument ig : igs){
+      analysisRst.append("IGDocument: " + ig.getId() + "\n");
+
+      profile = ig.getProfile();
+
+      Iterator<Message> itr = profile.getMessages().getChildren().iterator();
+      while (itr.hasNext()) {
+        Message msg = (Message) itr.next();
+
+        found = (messageService.findById(msg.getId()) != null);
+        okStatus = okStatus && found;
+
+        if (!found){
+          analysisRst.append("\tMessage id: " + msg.getId() + " not found.\n");
+        }
+      }
+    }
+    try {
+      FileUtils.writeStringToFile(tmpFile, analysisRst.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+      log.debug(analysisRst.toString());
+      log.debug("couldn't write report");
+    }
+    assertTrue(okStatus);
+  }
+
+
+  @Test
+  public void testSegmentReferentialIntegrity() {
+    //  Check that segments referenced in an IG can be found
+    log.info("Running testSegmentIntegrity");
+
+    timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    tmpFile = new File("testSegment_" + timeStamp + ".txt");
+    analysisRst = new StringBuilder();
+
+    log.debug("Writing to file " + tmpFile.getName());
+
+    okStatus = true;
+
+    for (IGDocument ig : igs){
+      analysisRst.append("IGDocument: " + ig.getId() + "\n");
+
+      profile = ig.getProfile();
+
+      Iterator<Message> itrMsg = profile.getMessages().getChildren().iterator();
+      while (itrMsg.hasNext()) {
+        Message msg = (Message) itrMsg.next();
+        analysisRst.append("\tMessage id: " + msg.getId() + "\n");
+
+        List<SegmentRefOrGroup> segrefs = msg.getChildren();
+        for (SegmentRefOrGroup srog : segrefs){
+          List<String> segrefIds = collectSegmentRefOrGroupIds(srog);
+
+          Iterator<String> itrSgt = segrefIds.iterator();
+          while (itrSgt.hasNext()) {
+            String sgtId = (String)itrSgt.next();
+            found = (segmentService.findById(sgtId) != null);
+            okStatus = okStatus && found;
+            if (!found){
+              analysisRst.append("Segment id: " + sgtId + " not found.\n");
+            } 
+          } 
+        }
+      }
+    }
+
+    try {
+      FileUtils.writeStringToFile(tmpFile, analysisRst.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+      log.debug(analysisRst.toString());
+      log.debug("couldn't write report");
+    }
+    assertTrue(okStatus);
+  }
+
+
+  @Test
+  public void testSegmentContentRerentialIntegrity() {
+    //  Check that segments referenced in an IG can be found
+    log.info("Running testSegmentContentRerentialIntegrity");
+
+    timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    tmpFile = new File("testSegment_" + timeStamp + ".txt");
+    analysisRst = new StringBuilder();
+
+    log.debug("Writing to file " + tmpFile.getName());
+
+    okStatus = true;
+
+    for (IGDocument ig : igs){
+      analysisRst.append("IGDocument: " + ig.getId() + "\n");
+
+      profile = ig.getProfile();
+
+      Iterator<Message> itrMsg = profile.getMessages().getChildren().iterator();
+      while (itrMsg.hasNext()) {
+        Message msg = (Message) itrMsg.next();
+        analysisRst.append("\tMessage id: " + msg.getId() + "\n");
+
+        List<SegmentRefOrGroup> segrefs = msg.getChildren();
+        for (SegmentRefOrGroup srog : segrefs){
+          List<String> segrefIds = collectSegmentRefOrGroupIds(srog);
+
+          Iterator<String> itrSgt = segrefIds.iterator();
+          while (itrSgt.hasNext()) {
+            String sgtId = (String)itrSgt.next();
+            Segment sgt = segmentService.findById(sgtId);
+            if (sgt != null){
+              analysisRst.append("\t\tSegment id: "+ sgt.getId());
+              List<Field> fields = sgt.getFields();
+              for (Field f : fields){
+                analysisRst.append("\t\t\tField id: "+ f.getId());
+                Datatype d = datatypeService.findById(f.getDatatype().getId());
+                found = (d != null);
+                okStatus = okStatus && found;
+                if (!found){
+                  analysisRst.append("\t\t\t\tDatatype id: " + f.getDatatype().getId() + " not found.\n");
+                } 
+                List<TableLink> tls = f.getTables();
+                for (TableLink tl: tls){
+                  Table t = tableService.findById(tl.getId());
+                  found = (t != null);
+                  okStatus = okStatus && found;
+                  if (!found){
+                    analysisRst.append("\t\t\t\tValue set id: " + tl.getId() + " not found.\n");
+                  } 
+                }
+              }
+            }
+          } 
+        }
+      }
+    }
+
+    try {
+      FileUtils.writeStringToFile(tmpFile, analysisRst.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+      log.debug(analysisRst.toString());
+      log.debug("couldn't write report");
+    }
+    assertTrue(okStatus);
+  }
+  
+  @Test
+  public void testComponentDatatypes() {
+    log.info("Running testComponentDataypes...");
+
+    List<String> dts = new ArrayList<String>();
+    Set<Component> cts = new HashSet<Component>();
+    for (DatatypeLink dt : profile.getDatatypeLibrary().getChildren()) {
+      dts.add(dt.getId());
+    }
+    for (DatatypeLink dt : profile.getDatatypeLibrary().getChildren()) {
+      //      for (Component ct : dt.getComponents()) {
+      //        cts.add(ct);
+      //      }
+    }
+    for (Component ctId : cts) {
+      assertTrue(dts.contains(ctId.getDatatype()));
+    }
+  }
+
+  @Test
+  public void testFieldDatatypes() {
+    log.info("Running testFieldDatatypes...");
+    List<String> dts = new ArrayList<String>();
+    for (DatatypeLink dt : profile.getDatatypeLibrary().getChildren()) {
+      dts.add(dt.getId());
+    }
+    //    for (Segment seg : profile.getSegmentLibrary().getChildren()) {
+    //      for (Field fld : seg.getFields()) {
+    //        assertTrue(dts.contains(fld.getDatatype()));
+    //      }
+    //    }
+  }
+
+  private List<String> collectSegmentRefOrGroupIds(SegmentRefOrGroup srog){
+    List<String> segrefIds = new ArrayList<String>();
+    if (srog instanceof SegmentRef) {
+      segrefIds.add(collectSegmentId((SegmentRef) srog));
+    } else if (srog instanceof Group) {
+      segrefIds.addAll(collectGroupIds((Group)srog));
+    } else {
+      log.error("Neither SegRef nor Group srog=" + srog.getType() + "=");
+    }
+    return segrefIds;
+  }
+
+  private String collectSegmentId(SegmentRef sgtRef) {
+    return sgtRef.getRef().getId();
+  }
+
+  // A little recursion to get all SegmentRefs buried in Groups.
+  private List<String> collectGroupIds(Group group) {
+    List<String> refs = new ArrayList<String>();
+    for (SegmentRefOrGroup srog : group.getChildren()) {
+      if (srog instanceof SegmentRef) {
+        refs.add(collectSegmentId((SegmentRef) srog));
+      } else if (srog instanceof Group) {
+        refs.addAll(collectGroupIds((Group)srog));
+      } else {
+        log.error("Neither SegRef nor Group sog=" + srog.getType() + "=");
+      }
+    }
+    return refs;
+  }
+
+}
