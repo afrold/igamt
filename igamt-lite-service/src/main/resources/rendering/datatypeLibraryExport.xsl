@@ -7,6 +7,9 @@
     <xsl:import href="templates/tableOfContentSection.xsl"/>
     <xsl:import href="templates/htmlContent.xsl"/>
     <xsl:import href="templates/wordContent.xsl"/>
+    <xsl:import href="templates/style/htmlStyle.xsl"/>
+    <xsl:import href="templates/style/wordStyle.xsl"/>
+    <xsl:import href="templates/style/globalStyle.xsl"/>
     <xsl:param name="inlineConstraints" select="'false'"/>
     <xsl:param name="targetFormat" select="'html'"/>
     <xsl:param name="documentTitle" select="'Implementation Guide'"/>
@@ -33,32 +36,16 @@
                         <xsl:text>text/css</xsl:text>
                     </xsl:attribute>
                     <!-- Add CSS shared by word and html exports -->
-                    <xsl:text>.masterDatatypeLabel {color:red;}</xsl:text>
-                    <xsl:text>body,html {font-family: 'Arial Narrow',sans-serif;}</xsl:text>
+                    <xsl:call-template name="globalStyle"/>
                     <!-- Check the target format to include specific style -->
                     <xsl:choose>
                         <xsl:when test="$targetFormat='html'">
                             <!-- Add html specific style -->
-                            <xsl:text>#sidebar { float:left; width:30%; background:#F0F0F0; overflow: auto; max-height: 100vh; font-family: 'Arial Narrow', sans-serif; margin-top: 1px; margin-bottom: 1px; }</xsl:text>
-                            <xsl:text>#sidebar a:link { color: #000066; margin-top: 1px; margin-bottom: 1px; }</xsl:text>
-                            <xsl:text>#sidebar a:visited { color: green; margin-top: 1px; margin-bottom: 1px; }</xsl:text>
-                            <xsl:text>#sidebar a:hover { color: hotpink; margin-top: 1px; margin-bottom: 1px; }</xsl:text>
-                            <xsl:text>#sidebar a:active { color: blue; margin-top: 1px; margin-bottom: 1px; }</xsl:text>
-                            <xsl:text>#main { float:right; width:70%; overflow: auto; max-height: 100vh; }</xsl:text>
-                            <xsl:text>#notoc { float:right; width:100%; overflow: auto; max-height: 100vh; }</xsl:text>
-                            <xsl:text>.divh1 { padding-left: 15px;}</xsl:text>
-                            <xsl:text>.divh2 {padding-left: 30px;}</xsl:text>
-                            <xsl:text>.divh3 {padding-left: 45px;}</xsl:text>
-                            <xsl:text>.divh4 {padding-left: 60px;}</xsl:text>
-                            <xsl:text>.divh5 {padding-left: 75px;}</xsl:text>
-                            <xsl:text>.divh6 {padding-left:90px;}</xsl:text>
-                            <xsl:text>.hidden {display: none;}</xsl:text>
-                            <xsl:text>.unhidden {display:block;}</xsl:text>
-                            <xsl:text>.btn {float:right;}</xsl:text>
+                            <xsl:call-template name="htmlStyle"/>
                         </xsl:when>
                         <xsl:when test="$targetFormat='word'">
                             <!-- Add Word specific style-->
-                            <xsl:text>body,html {font-size: 10px;width:100%;overflow:auto;max-height:100vh;}</xsl:text>
+                            <xsl:call-template name="wordStyle"/>
                         </xsl:when>
                     </xsl:choose>
                 </xsl:element>
@@ -66,6 +53,20 @@
             </xsl:element>
             <!-- Content of the body tag -->
             <xsl:element name="body">
+                <xsl:element name="div">
+                    <xsl:text>target format : </xsl:text>
+                    <xsl:value-of select="$targetFormat"/>
+                    <xsl:element name="br"/>
+                    <xsl:text>document title : </xsl:text>
+                    <xsl:value-of select="$documentTitle"/>
+                    <xsl:element name="br"/>
+                    <xsl:text>include toc : </xsl:text>
+                    <xsl:value-of select="$includeTOC"/>
+                    <xsl:element name="br"/>
+                    <xsl:text>inline constraints : </xsl:text>
+                    <xsl:value-of select="$inlineConstraints"/>
+                    <xsl:element name="br"/>
+                </xsl:element>
                 <!-- Check the target format to include specific content -->
                 <xsl:choose>
                     <xsl:when test="$targetFormat='html'">

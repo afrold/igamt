@@ -481,7 +481,6 @@
 		</tr>
 	</xsl:template>
 
-
 	<xsl:template match="Segment" mode="toc">
 		<a href="#{@ID}">
 			<br></br>

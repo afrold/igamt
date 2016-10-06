@@ -17,6 +17,7 @@ import java.util.Map;
  * Created by Maxence Lefort on 10/5/16.
  */
 public class ExportParameters {
+    //Define parameters with a default value
     public boolean inlineConstraints = false;
     public boolean includeTOC = true;
     public String targetFormat = "html";

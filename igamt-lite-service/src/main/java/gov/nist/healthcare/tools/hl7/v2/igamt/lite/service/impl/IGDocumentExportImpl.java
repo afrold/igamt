@@ -366,7 +366,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       ExportParameters exportParameters = new ExportParameters();
       exportParameters.setDocumentTitle(DOCUMENT_TITLE_DATATYPE_LIBRARY);
       exportParameters.setIncludeTOC(true);
-      exportParameters.setInlineConstraints(true);
+      exportParameters.setInlineConstraints(false);
       exportParameters.setTargetFormat(EXPORT_FORMAT_HTML);
       return exportAsHtmlFromXsl(igDocumentSerializationService
           .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
@@ -2673,9 +2673,9 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       // Apply XSL transformation on xml file to generate html
       transformer = factoryTf.newTransformer(xslt);
         //Set the parameters
-        for(Map.Entry<String,String> param:exportParameters.toMap().entrySet()){
+        /*for(Map.Entry<String,String> param:exportParameters.toMap().entrySet()){
             transformer.setParameter(param.getKey(),param.getValue());
-        }
+        }*/
 
 
       transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
