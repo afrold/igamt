@@ -212,22 +212,21 @@ public class IGCollectionReferentialIntegrityTest {
     log.info("Running testSegmentContentRerentialIntegrity");
 
     timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-    tmpFile = new File("testSegment_" + timeStamp + ".txt");
-    analysisRst = new StringBuilder();
-
-    log.debug("Writing to file " + tmpFile.getName());
+    File report = new File("testSegmentContent_" + timeStamp + ".txt");
+    
+    log.debug("Writing to file " + report.getName());
 
     okStatus = true;
 
     for (IGDocument ig : igs){
-      analysisRst.append("IGDocument: " + ig.getId() + "\n");
+      addTextInReport(report, "IGDocument: " + ig.getId() + "\n", true);
 
       profile = ig.getProfile();
 
       Iterator<Message> itrMsg = profile.getMessages().getChildren().iterator();
       while (itrMsg.hasNext()) {
         Message msg = (Message) itrMsg.next();
-        analysisRst.append("\tMessage id: " + msg.getId() + "\n");
+        addTextInReport(report, "\tMessage id: " + msg.getId() + "\n", true);
 
         List<SegmentRefOrGroup> segrefs = msg.getChildren();
         for (SegmentRefOrGroup srog : segrefs){
@@ -235,10 +234,11 @@ public class IGCollectionReferentialIntegrityTest {
 
           Iterator<String> itrSgt = segrefIds.iterator();
           while (itrSgt.hasNext()) {
+            analysisRst = new StringBuilder();
             String sgtId = (String)itrSgt.next();
             Segment sgt = segmentService.findById(sgtId);
             if (sgt != null){
-              analysisRst.append("\t\tSegment id: "+ sgt.getId());
+              analysisRst.append("\t\tSegment id: "+ sgt.getId() + "\n");
               List<Field> fields = sgt.getFields();
               for (Field f : fields){
                 analysisRst.append("\t\t\tField id: "+ f.getId());
@@ -259,17 +259,10 @@ public class IGCollectionReferentialIntegrityTest {
                 }
               }
             }
+            addTextInReport(report, analysisRst.toString(), true);
           } 
         }
       }
-    }
-
-    try {
-      FileUtils.writeStringToFile(tmpFile, analysisRst.toString());
-    } catch (IOException e) {
-      e.printStackTrace();
-      log.debug(analysisRst.toString());
-      log.debug("couldn't write report");
     }
     assertTrue(okStatus);
   }
@@ -336,6 +329,16 @@ public class IGCollectionReferentialIntegrityTest {
       }
     }
     return refs;
+  }
+  
+  private void addTextInReport(File report, String text, boolean append){
+    try {
+      FileUtils.writeStringToFile(report, text, append);
+    } catch (IOException e) {
+      e.printStackTrace();
+      log.debug(text);
+      log.debug("couldn't add text");
+    }
   }
 
 }
