@@ -136,7 +136,6 @@ public class DatatypeController extends CommonController {
 	    	    			 int extd=Integer.parseInt(d.getExt());
 	    	    		     int ext = Integer.parseInt(tempext);
 	    	    		     if(ext>=extd){
-	    	    		    	 d=temp;
 	    	    		    	 d.setExt((ext+1+""));
 	    	    		     }
 	    	    		} catch (NumberFormatException e) {
@@ -144,7 +143,6 @@ public class DatatypeController extends CommonController {
 	    	    		}
 	    	    	  }
 
-	  
 	    	    } catch (Exception e) {
 	    	      log.error("", e);
 	    	    }

@@ -1358,7 +1358,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
     }
     elmSegment.addAttribute(new Attribute("Depth", String.valueOf(depth)));
-    elmSegment.addAttribute(new Attribute("Usage", segmentRef.toString()));
+    elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage().toString()));
     elmSegment.addAttribute(new Attribute("Min", segmentRef.getMin() + ""));
     elmSegment.addAttribute(new Attribute("Max", segmentRef.getMax() + ""));
     if (segmentRef.getComment() != null)

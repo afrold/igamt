@@ -3060,9 +3060,9 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                 });
             }else {
                 $rootScope.saveBindingForValueSet();
+                $rootScope.clearChanges();
 
             }
-
 
         } else if (data.type === "document") {
 

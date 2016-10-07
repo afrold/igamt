@@ -189,6 +189,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             });
         }
         $rootScope.saveBindingForValueSet();
+        $rootScope.clearChanges();
     };
 
     $scope.addTable = function() {
