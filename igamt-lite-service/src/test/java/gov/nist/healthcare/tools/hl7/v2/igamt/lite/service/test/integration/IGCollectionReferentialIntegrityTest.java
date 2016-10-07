@@ -219,7 +219,7 @@ public class IGCollectionReferentialIntegrityTest {
 
     okStatus = true;
 
-    for (IGDocument ig : igs){
+    for (IGDocument ig : igs){      
       addTextInReport(report, "IGDocument: " + ig.getId() + "\n", true);
 
       profile = ig.getProfile();
@@ -242,26 +242,29 @@ public class IGCollectionReferentialIntegrityTest {
               analysisRst.append("\t\tSegment id: "+ sgt.getId() + "\n");
               List<Field> fields = sgt.getFields();
               for (Field f : fields){
+                found = true;
                 analysisRst.append("\t\t\tField id: "+ f.getId() + "\n");
                 Datatype d = datatypeService.findById(f.getDatatype().getId());
                 found = (d != null);
-                okStatus = okStatus && found;
-                if (!found){
+                found = found && (d != null);
+                if (!(d != null)){
                   analysisRst.append("\t\t\t\tDatatype id: " + f.getDatatype().getId() + " not found.\n");
                 } 
                 List<TableLink> tls = f.getTables();
                 for (TableLink tl: tls){
                   Table t = tableService.findById(tl.getId());
-                  found = (t != null);
-                  okStatus = okStatus && found;
-                  if (!found){
+                  found = found && (t != null);
+                  if (!(t != null)){
                     analysisRst.append("\t\t\t\tValue set id: " + tl.getId() + " not found.\n");
                   } 
                 }
+                okStatus = okStatus && found;
+                if (!found){
+                  addTextInReport(report, analysisRst.toString(), true);
+                } 
               }
             }
-            addTextInReport(report, analysisRst.toString(), true);
-          } 
+          }
         }
       }
     }
@@ -314,20 +317,6 @@ public class IGCollectionReferentialIntegrityTest {
       }
     } 
     assertTrue(okStatus);
-  }
-
-  @Test
-  public void testFieldDatatypes() {
-    log.info("Running testFieldDatatypes...");
-    List<String> dts = new ArrayList<String>();
-    for (DatatypeLink dt : profile.getDatatypeLibrary().getChildren()) {
-      dts.add(dt.getId());
-    }
-    //    for (Segment seg : profile.getSegmentLibrary().getChildren()) {
-    //      for (Field fld : seg.getFields()) {
-    //        assertTrue(dts.contains(fld.getDatatype()));
-    //      }
-    //    }
   }
 
   private List<String> collectSegmentRefOrGroupIds(SegmentRefOrGroup srog){
