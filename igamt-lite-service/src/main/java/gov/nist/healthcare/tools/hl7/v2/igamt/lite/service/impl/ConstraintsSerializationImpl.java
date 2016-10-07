@@ -220,7 +220,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		    		  
 		    		  nu.xom.Element elmPlainCoConstraint = new nu.xom.Element("PlainCoConstraint");
 		    		  
-		    		  elmPlainCoConstraint.addAttribute(new Attribute("KeuPath", s.getCoConstraints().getColumnList().get(0).getField().getPosition() + "[1]"));
+		    		  elmPlainCoConstraint.addAttribute(new Attribute("KeyPath", s.getCoConstraints().getColumnList().get(0).getField().getPosition() + "[1]"));
 		    		  elmPlainCoConstraint.addAttribute(new Attribute("KeyValue", cc.getValues().get(0).getValue()));
 
 		    		  for(int i = 1; i < s.getCoConstraints().getColumnList().size(); i++){
@@ -230,14 +230,19 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		    			  
 		    			  if(value != null && !value.equals("")){
 		    				  if(type.equals("vs")){
-			    				  nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSet");
-			    				  elmValueSetCheck.addAttribute(new Attribute("Path", path));
-			    				  elmValueSetCheck.addAttribute(new Attribute("ValueSetID", tableService.findById(value).getBindingIdentifier()));
-			    				  elmPlainCoConstraint.appendChild(elmValueSetCheck);
+		    					  if(tableService.findById(value) != null){
+		    						  nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSet");
+				    				  elmValueSetCheck.addAttribute(new Attribute("Path", path));
+				    				  elmValueSetCheck.addAttribute(new Attribute("ValueSetID", tableService.findById(value).getBindingIdentifier()));
+				    				  elmValueSetCheck.addAttribute(new Attribute("BindingStrength", "R"));
+				    				  elmValueSetCheck.addAttribute(new Attribute("BindingLocation", "1"));
+				    				  elmPlainCoConstraint.appendChild(elmValueSetCheck);
+		    					  }
 			    			  }else{
 			    				  nu.xom.Element elmValueCheck = new nu.xom.Element("PlainText");
 			    				  elmValueCheck.addAttribute(new Attribute("Path", path));
 			    				  elmValueCheck.addAttribute(new Attribute("Text", value));
+			    				  elmValueCheck.addAttribute(new Attribute("IgnoreCase", "false"));
 			    				  elmPlainCoConstraint.appendChild(elmValueCheck);
 			    			  }
 			    			    
