@@ -1167,7 +1167,7 @@ angular.module('igl')
         $scope.selectTable = function(t) {
             $rootScope.Activate(t.id);
             var table = angular.copy(t);
-            if ($scope.viewSettings.tableReadonly || table.scope !== 'USER') {
+            if ($scope.viewSettings.tableReadonly || table.status == 'PUBLISHED') {
                 $rootScope.subview = "ReadValueSets.html";
             } else {
                 $rootScope.subview = "EditValueSets.html";
@@ -1978,7 +1978,8 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
         $scope.selectMasterDtLib = function(masLib) {
             console.log(masLib);
             DatatypeLibrarySvc.getDatatypesByLibrary(masLib.id).then(function(datatypes) {
-                $scope.masterDatatypes = datatypes;
+            	$scope.masterDatatypes = _.where(datatypes, {scope:"MASTER",status:"PUBLISHED"});
+                //$scope.masterDatatypes = datatypes;
                 console.log($scope.masterDatatypes);
             });
         };
@@ -2107,6 +2108,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
             newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
             newDatatype.scope = 'USER';
+            newDatatype.status='UNPUBLISHED';
             newDatatype.participants = [];
             newDatatype.id = new ObjectId().toString();;
             newDatatype.libIds = [];

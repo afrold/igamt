@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -124,7 +125,9 @@ public class Bootstrap implements InitializingBean {
     // modifyComponentUsage();
     // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
     // to write a code for the message.
-    // Colorate();
+    //Colorate();
+	  //setDtsStatus();
+	  //setTablesStatus();
   }
 
   private void modifyCodeUsage() {
@@ -148,7 +151,30 @@ public class Bootstrap implements InitializingBean {
       }
     }
   }
-
+  private void setTablesStatus(){
+	  List<Table> allTables = tableService.findAll();  
+	  for(Table t :allTables ){
+		  if(t.getScope().equals(SCOPE.HL7STANDARD)){
+			  t.setStatus(STATUS.PUBLISHED);
+		  }else if(t.getScope().equals(SCOPE.USER)){
+			  t.setStatus(STATUS.UNPUBLISHED);
+		  }
+	        tableService.save(t);
+	  }
+  }
+  
+  private void setDtsStatus(){
+	  List<Datatype> allDts = datatypeService.findAll();  
+	  for(Datatype d :allDts ){
+		  if(d.getScope().equals(SCOPE.HL7STANDARD)){
+			  d.setStatus(STATUS.PUBLISHED);
+		  }else if(d.getScope().equals(SCOPE.USER)){
+			  d.setStatus(STATUS.UNPUBLISHED);
+		  }
+		  datatypeService.save(d);
+	  }
+  }
+  
   private void modifyFieldUsage() {
     List<Segment> allSegments = segmentService.findAll();
 

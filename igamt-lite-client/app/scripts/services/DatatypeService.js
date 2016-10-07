@@ -321,9 +321,9 @@ angular.module('igl').factory('DatatypeService',
             saveNewElements: function() {
                 var delay = $q.defer();
                 var datatypeLinks = ElementUtils.getNewDatatypeLinks();
-                if (datatypeLinks.length > 0) {
-                    DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, datatypeLinks).then(function() {
-                        $rootScope.igdocument.profile.datatypeLibrary.children = $rootScope.igdocument.profile.datatypeLibrary.children.concat(datatypeLinks);
+                if (datatypeLinks&&datatypeLinks.length > 0) {
+                    DatatypeLibrarySvc.addChildren($rootScope.datatypeLibrary.id, datatypeLinks).then(function() {
+                        $rootScope.igdocument.profile.datatypeLibrary.children = $rootScope.datatypeLibrary.children.concat(datatypeLinks);
                         _.each($rootScope.addedDatatypes, function(datatype) {
                             if (ElementUtils.indexIn(datatype.id, $rootScope.datatypes) < 0) {
                                 $rootScope.datatypes.push(datatype);
@@ -331,8 +331,8 @@ angular.module('igl').factory('DatatypeService',
                         });
                         var tableLinks = ElementUtils.getNewTableLinks();
                         if (tableLinks.length > 0) {
-                            TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, tableLinks).then(function() {
-                                $rootScope.igdocument.profile.tableLibrary.children = $rootScope.igdocument.profile.tableLibrary.children.concat(tableLinks);
+                            TableLibrarySvc.addChildren($rootScope.tableLibrary.id, tableLinks).then(function() {
+                                $rootScope.tableLibrary.children = $rootScope.tableLibrary.children.concat(tableLinks);
                                 _.each($rootScope.addedTables, function(table) {
                                     if (ElementUtils.indexIn(table.id, $rootScope.tables) < 0) {
                                         $rootScope.tables.push(table);

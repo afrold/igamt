@@ -437,7 +437,7 @@ span {
                 <div ng-if="filteringModeON" data-nodrag ui-tree-handle style="margin-bottom:5px;"> <span class="badge label-default" ng-click="resetLibFilter()" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
-                        <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsInLib">
+                        <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptions">
                            <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data);" title="Filter By This Data Type" /> <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}</span>

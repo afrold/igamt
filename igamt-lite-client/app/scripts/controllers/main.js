@@ -531,7 +531,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }, function(newLocation, oldLocation) {
             $rootScope.setActive(newLocation);
         });
-
+        
+        $rootScope.isPublishedMaster= function(dtLink){
+        	DatatypeService.getOneDatatype(dtLink.id).then(function(datatype){
+        		console.log("called")
+        		return datatype.status=="PUBLISHED"&& datatype.scope=="MASTER";
+        	});
+        }
 
         $rootScope.api = function(value) {
             return value;
@@ -2549,11 +2555,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $rootScope.getDatatypeExtension = function(datatype) {
-            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary, "ext");
+            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.datatypeLibrary, "ext");
         };
 
         $rootScope.getTableBindingIdentifier = function(table) {
-            return $rootScope.getExtensionInLibrary(table.id, $rootScope.igdocument.profile.tableLibrary, "bindingIdentifier");
+            return $rootScope.getExtensionInLibrary(table.id, $rootScope.tableLibrary, "bindingIdentifier");
         };
 
 
@@ -2572,7 +2578,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         $rootScope.getTableLabel = function(table) {
-        
+        	
             if (table && table.bindingIdentifier) {
                 return $rootScope.getLabel(table.bindingIdentifier, table.ext);
             }
@@ -2910,8 +2916,8 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                         children = $rootScope.libraryDoc.datatypeLibrary.children;
 
                     } else if ($rootScope.igdocument && $rootScope.igdocument !== null) {
-                        libId = $rootScope.igdocument.profile.datatypeLibrary.id;
-                        children = $rootScope.igdocument.profile.datatypeLibrary.children;
+                        libId = $rootScope.datatypeLibrary.id;
+                        children = $rootScope.datatypeLibrary.children;
                     }
                     var oldLink = DatatypeLibrarySvc.findOneChild(result.id, children);
                     var newLink = DatatypeService.getDatatypeLink(result);
@@ -2951,8 +2957,8 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                     children = $rootScope.libraryDoc.tableLibrary.children;
 
                 } else if ($rootScope.igdocument && $rootScope.igdocument !== null) {
-                    libId = $rootScope.igdocument.profile.tableLibrary.id;
-                    children = $rootScope.igdocument.profile.tableLibrary.children;
+                    libId = $rootScope.tableLibrary.id;
+                    children = $rootScope.tableLibrary.children;
                 }
                 TableService.save(table).then(function(result) {
                     var oldLink = TableLibrarySvc.findOneChild(result.id, children);

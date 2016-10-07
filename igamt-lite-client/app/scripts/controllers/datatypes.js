@@ -875,19 +875,21 @@ angular.module('igl')
         	console.log($rootScope.datatype);
         	console.log("IN LIBRARY");
         	console.log($rootScope.datatypeLibrary);
-            var datatype = $rootScope.datatype;
-            var ext = datatype.ext;
-            if (datatype.libIds == undefined) datatype.libIds = [];
-            if (datatype.libIds.indexOf($rootScope.datatypeLibrary.id) == -1) {
-                datatype.libIds.push($rootScope.datatypeLibrary.id);
-            }
-            DatatypeService.save(datatype).then(function(result) {
+        	
+            var ext = $rootScope.datatype.ext;
+  
+            DatatypeService.save($rootScope.datatype).then(function(result) {
                 var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.datatypeLibrary.children);
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
                 DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
                     DatatypeService.saveNewElements().then(function() {
-                        DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                    	DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                        DatatypeService.merge($rootScope.datatype, result);
+                        if ($scope.datatypesParams){
+                            $scope.datatypesParams.refresh();   	
+                        }
+  
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
                         $scope.saving = false;
@@ -991,6 +993,11 @@ angular.module('igl')
 
 angular.module('igl')
     .controller('DatatypeRowCtrl', function($scope, $filter) {
+    	
+    	$scope.init = function(node){
+    		$scope.node =node;
+    	}
+    	
         $scope.formName = "form_" + new Date().getTime();
     });
 
@@ -2097,7 +2104,7 @@ angular.module('igl').controller('AddBindingForDatatype', function($scope, $moda
     $scope.selectedComponentForBinding = null;
 
     $scope.pathForBinding = null;
-    $scope.bindingTargetType = 'SEGMENT';
+    $scope.bindingTargetType = 'DATATYPE';
 
     $scope.init = function() {
         $scope.selectedSegmentForBinding = null;

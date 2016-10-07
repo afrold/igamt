@@ -79,14 +79,19 @@ angular.module('igl').factory(
 
         svc.copyDatatype = function (datatype) {
             var newDatatype = angular.copy(datatype, {});
+            if($rootScope.igdocument){
+            	newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
 
-            newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
-            newDatatype.scope = 'USER';
+            }else{
+            	newDatatype.ext = newDatatype.ext+(Math.floor(Math.random() * 10000000) + 1);
+            }
+            newDatatype.scope = $rootScope.datatypeLibrary.scope;
+            newDatatype.status='UNPUBLISHED';
             newDatatype.participants = [];
             newDatatype.id = null;
             newDatatype.libIds = [];
-            newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
-            if(datatype.scope==='MASTER'){
+            newDatatype.libIds.push($rootScope.datatypeLibrary.id);
+            if(datatype.scope==='MASTER' && $rootScope.igdocument){
             	//newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
             	var temp=[];
             	temp.push($rootScope.igdocument.profile.metaData.hl7Version);
@@ -118,11 +123,11 @@ angular.module('igl').factory(
 
             DatatypeService.save(newDatatype).then(function (result) {
                 newDatatype = result;
-                var newLink = angular.copy(DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.igdocument.profile.datatypeLibrary.children));
+                var newLink = angular.copy(DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.datatypeLibrary.children));
                 newLink.id = newDatatype.id;
                 newLink.ext = newDatatype.ext;
-                DatatypeLibrarySvc.addChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function (link) {
-                    $rootScope.igdocument.profile.datatypeLibrary.children.splice(0, 0, newLink);
+                DatatypeLibrarySvc.addChild($rootScope.datatypeLibrary.id, newLink).then(function (link) {
+                    $rootScope.datatypeLibrary.children.splice(0, 0, newLink);
                     $rootScope.datatypes.splice(0, 0, newDatatype);
                     $rootScope.datatype = newDatatype;
                     $rootScope.datatypesMap[newDatatype.id] = newDatatype;
@@ -152,7 +157,7 @@ angular.module('igl').factory(
         svc.createNewTable = function (scope, tableLibrary) {
             var newTable = {};
             newTable.participants = [];
-            newTable.scope = scope;
+            newTable.scope = tableLibrary.scope;
             newTable.id = null;
             newTable.libIds = [];
             newTable.libIds.push(tableLibrary.id);
@@ -198,11 +203,17 @@ angular.module('igl').factory(
         svc.copyTable = function (table) {
             TableService.getOne(table.id).then(function(newTable){
                 newTable.participants = [];
-                newTable.scope = 'USER';
+                newTable.scope = $rootScope.tableLibrary;
                 newTable.id = null;
                 newTable.libIds = [];
-                newTable.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
-                newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
+                newTable.libIds.push($rootScope.tableLibrary.id);
+                if($rootScope.igdocument){
+                    newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
+
+                }else{
+                    newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 10000000) + 1);
+	
+                }
 
                 if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
                     for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
@@ -212,12 +223,12 @@ angular.module('igl').factory(
 
                 TableService.save(newTable).then(function (result) {
                     newTable = result;
-                    var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary.children));
+                    var newLink = angular.copy(TableLibrarySvc.findOneChild(table.id, $rootScope.tableLibrary.children));
                     newLink.bindingIdentifier = newTable.bindingIdentifier;
                     newLink.id = newTable.id;
 
-                    TableLibrarySvc.addChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function (link) {
-                        $rootScope.igdocument.profile.tableLibrary.children.splice(0, 0, newLink);
+                    TableLibrarySvc.addChild($rootScope.tableLibrary.id, newLink).then(function (link) {
+                        $rootScope.datatypeLibrary.children.splice(0, 0, newLink);
                         $rootScope.tables.splice(0, 0, newTable);
                         $rootScope.table = newTable;
                         $rootScope.tablesMap[newTable.id] = newTable;
@@ -480,12 +491,12 @@ angular.module('igl').factory(
         };
 
         svc.deleteTableLink = function (table) {
-            TableLibrarySvc.deleteChild($rootScope.igdocument.profile.tableLibrary.id, table.id).then(function (res) {
+            TableLibrarySvc.deleteChild($rootScope.datatypeLibrary.id, table.id).then(function (res) {
                 var index = $rootScope.tables.indexOf(table);
                 $rootScope.tables.splice(index, 1);
-                var tmp = TableLibrarySvc.findOneChild(table.id, $rootScope.igdocument.profile.tableLibrary.children);
-                index = $rootScope.igdocument.profile.tableLibrary.children.indexOf(tmp);
-                $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
+                var tmp = TableLibrarySvc.findOneChild(table.id, $rootScope.datatypeLibrary.children);
+                index = $rootScope.datatypeLibrary.children.indexOf(tmp);
+                $rootScope.datatypeLibrary.children.splice(index, 1);
                 $rootScope.tablesMap[table.id] = null;
                 $rootScope.references = [];
                 if ($rootScope.table === table) {
@@ -552,13 +563,13 @@ angular.module('igl').factory(
         };
 
         svc.deleteDatatypeLink = function (datatype) {
-            DatatypeLibrarySvc.deleteChild($rootScope.igdocument.profile.datatypeLibrary.id, datatype.id).then(function (res) {
+            DatatypeLibrarySvc.deleteChild($rootScope.datatypeLibrary.id, datatype.id).then(function (res) {
                 var index = $rootScope.datatypes.indexOf(datatype);
                 $rootScope.datatypes.splice(index, 1);
 
-                var tmp = DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.igdocument.profile.datatypeLibrary.children);
-                index = $rootScope.igdocument.profile.datatypeLibrary.children.indexOf(tmp);
-                $rootScope.igdocument.profile.datatypeLibrary.children.splice(index, 1);
+                var tmp = DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.datatypeLibrary.children);
+                index = $rootScope.datatypeLibrary.children.indexOf(tmp);
+                $rootScope.datatypeLibrary.children.splice(index, 1);
                 $rootScope.datatypesMap[datatype.id] = null;
                 $rootScope.references = [];
                 if ($rootScope.datatype === datatype) {
