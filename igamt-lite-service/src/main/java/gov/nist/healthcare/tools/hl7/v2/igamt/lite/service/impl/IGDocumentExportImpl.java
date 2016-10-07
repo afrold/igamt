@@ -1292,9 +1292,10 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       try {
         this.addXhtmlChunk(this.exportAsHtmlSections(igdoc), wordMLPackage);
       } catch (Exception e1) {
+        logger.warn("Error adding sections");
         e1.printStackTrace();
         String html =
-            "<html><head></head><p style=\"color:red\">Could not add sections. Check presence of special characters in sections (e.g. footer from a docx copy and paste)</p></body></html>";
+            "<html><head></head><body><p style=\"color:red\">Could not add sections. Check presence of special characters in sections (e.g. footer from a docx copy and paste)</p></body></html>";
         wordMLPackage.getMainDocumentPart().addAltChunk(AltChunkType.Html, html.getBytes());
       }
 
@@ -1398,8 +1399,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     }
   }
 
-  private void addXhtmlChunk(InputStream inputStream, WordprocessingMLPackage wordMLPackage)
-      throws Docx4JException, Exception {
+  private void addXhtmlChunk(InputStream inputStream, WordprocessingMLPackage wordMLPackage) throws Docx4JException {
     Tidy tidy = new Tidy();
     tidy.setWraplen(Integer.MAX_VALUE);
     tidy.setXHTML(true);
@@ -1413,7 +1413,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     ImportXHTMLProperties.getProperty("docx4j-ImportXHTML.Element.Heading.MapToStyle", true);
 
     wordMLPackage.getMainDocumentPart().getContent()
-        .addAll(XHTMLImporter.convert(IOUtils.toInputStream(outputStream.toString()), null));
+    .addAll(XHTMLImporter.convert(IOUtils.toInputStream(outputStream.toString()), null));
   }
 
   private void addHtmlChunk(InputStream inputStream, WordprocessingMLPackage wordMLPackage) {
@@ -1427,7 +1427,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
     tidy.parseDOM(inputStream, outputStream);
     try {
-      wordMLPackage.getMainDocumentPart().addAltChunk(AltChunkType.Xhtml,
+      wordMLPackage.getMainDocumentPart().addAltChunk(AltChunkType.Html,
           outputStream.toByteArray());
     } catch (Docx4JException e) {
       e.printStackTrace();

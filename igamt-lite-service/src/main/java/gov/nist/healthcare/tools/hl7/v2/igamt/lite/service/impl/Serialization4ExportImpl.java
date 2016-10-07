@@ -48,6 +48,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -85,6 +86,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.w3c.tidy.Tidy;
 
 import com.mongodb.gridfs.GridFSDBFile;
 
@@ -1423,7 +1425,15 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
         e.printStackTrace(); //If error, we leave the original document as is. 
       } 
     }
-    doc.outputSettings().escapeMode(EscapeMode.xhtml);
+//    Tidy tidy = new Tidy();
+//    tidy.setWraplen(Integer.MAX_VALUE);
+//    tidy.setXHTML(true);
+//    tidy.setShowWarnings(false); // to hide errors
+//    tidy.setQuiet(true); // to hide warning
+//    tidy.setMakeClean(true);
+//    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//    tidy.parseDOM(IOUtils.toInputStream("<div class=\"fr-view\">" + doc.html() + "</div>"), outputStream);
+//    return outputStream.toString();
     return "<div class=\"fr-view\">" + doc.body().html() + "</div>";
   }
 
