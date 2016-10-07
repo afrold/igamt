@@ -137,6 +137,7 @@ angular.module('igl').factory('DatatypeService',
                 return predicates;
             },
             save: function(datatype) {
+            	console.log(datatype);
                 var delay = $q.defer();
                 datatype.accountId = userInfoService.getAccountID();
                 $http.post('api/datatypes/save', datatype).then(function(response) {

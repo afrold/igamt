@@ -1292,9 +1292,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
         this.addXhtmlChunk(this.exportAsHtmlSections(igdoc), wordMLPackage);
       } catch (Exception e1) {
         e1.printStackTrace();
-        String html =
-            "<html><head></head><p style=\"color:red\">Could not add sections. Check presence of special characters in sections (e.g. footer from a docx copy and paste)</p></body></html>";
-        wordMLPackage.getMainDocumentPart().addAltChunk(AltChunkType.Html, html.getBytes());
+        addErrorMessageInDocx("Could not add sections. ", e1.getLocalizedMessage() + IOUtils.toString(this.exportAsHtmlSections(igdoc)), wordMLPackage, factory);
       }
 
       addPageBreak(wordMLPackage, factory);
@@ -1326,7 +1324,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       Collections.sort(msgList);
 
       for (Message m : msgList) {
-        this.addHtmlChunk(this.exportAsHtmlMessage(m), wordMLPackage);
+        this.addHtmlChunk(m.getId(), this.exportAsHtmlMessage(m), wordMLPackage, factory);
       }
 
 
@@ -1341,7 +1339,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
           new ArrayList<SegmentLink>(profile.getSegmentLibrary().getChildren());
       Collections.sort(sgtList);
       for (SegmentLink link : sgtList) {
-        this.addHtmlChunk(this.exportAsHtmlSegment(link), wordMLPackage);
+        this.addHtmlChunk(link.getId(), this.exportAsHtmlSegment(link), wordMLPackage, factory);
       }
 
       // => dts
@@ -1355,7 +1353,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
           new ArrayList<DatatypeLink>(profile.getDatatypeLibrary().getChildren());
       Collections.sort(dtList);
       for (DatatypeLink link : dtList) {
-        this.addHtmlChunk(this.exportAsHtmlDatatype(link), wordMLPackage);
+        this.addHtmlChunk(link.getId(), this.exportAsHtmlDatatype(link), wordMLPackage, factory);
       }
 
       // => tbls
@@ -1368,7 +1366,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       List<TableLink> tables = new ArrayList<TableLink>(profile.getTableLibrary().getTables());
       Collections.sort(tables);
       for (TableLink link : tables) {
-        this.addHtmlChunk(this.exportAsHtmlTable(link), wordMLPackage);
+        this.addHtmlChunk(link.getId(), this.exportAsHtmlTable(link), wordMLPackage, factory);
       }
 
       // addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
@@ -1415,7 +1413,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
         .addAll(XHTMLImporter.convert(IOUtils.toInputStream(outputStream.toString()), null));
   }
 
-  private void addHtmlChunk(InputStream inputStream, WordprocessingMLPackage wordMLPackage) {
+  private void addHtmlChunk(String id, InputStream inputStream, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
     Tidy tidy = new Tidy();
     tidy.setWraplen(Integer.MAX_VALUE);
     tidy.setXHTML(true);
@@ -1430,6 +1428,12 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
           outputStream.toByteArray());
     } catch (Docx4JException e) {
       e.printStackTrace();
+      try {
+        addErrorMessageInDocx("Docx4jException with object id" + id, e.getLocalizedMessage() + IOUtils.toString(inputStream), wordMLPackage, factory);
+      } catch (IOException e1) {
+        e1.printStackTrace();
+        addErrorMessageInDocx("OIException with object id" + id, e.getLocalizedMessage(), wordMLPackage, factory);
+      }
     }
   }
 
@@ -1601,8 +1605,9 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
       addImageToPackage(wordMLPackage, imageInByte);
     } catch (Exception e) {
-      logger.warn("Unable to add image");
+      logger.warn("Unable to add cover page image");
       e.printStackTrace();
+      addErrorMessageInDocx("Unable to add image", e.getLocalizedMessage(), wordMLPackage, factory);
     }
 
     wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title",
@@ -1675,7 +1680,6 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       org.docx4j.relationships.Relationship rel =
           new org.docx4j.relationships.ObjectFactory().createRelationship();
       rel.setType(Namespaces.ATTACHED_TEMPLATE);
-      // String templatePath = "/rendering/lri_template.dotx";
       URL templateData = getClass().getResource("/rendering/lri_template.dotx");
       rel.setTarget(templateData.getPath());
       rel.setTargetMode("External");
@@ -2772,8 +2776,28 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     }
     return res;
   }
+  
+  private void addErrorMessageInDocx(String customMessage, String exceptionMessage, WordprocessingMLPackage wordMLPackage, ObjectFactory factory){
+      P paragraph = factory.createP();
+      R run = factory.createR();
 
+      Text text = factory.createText();
+      text.setValue(customMessage + ": " + exceptionMessage);
+      run.getContent().add(text);
 
+      paragraph.getContent().add(run);
+      setHorizontalAlignment(paragraph, JcEnumeration.LEFT);
+
+      RPr runProperties = factory.createRPr();
+      addBoldStyle(runProperties);
+      setFontColor(runProperties, "red");
+      // addItalicStyle(runProperties);
+      // addUnderlineStyle(runProperties);
+      // setFontFamily(runProperties, "Arial");
+      // setFontSize(runProperties, "14");
+      run.setRPr(runProperties);
+      wordMLPackage.getMainDocumentPart().addObject(paragraph);
+  }
 }
 
 

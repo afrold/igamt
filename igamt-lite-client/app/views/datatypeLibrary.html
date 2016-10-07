@@ -434,7 +434,7 @@ span {
                 <div ui-tree-handle data-nodrag context-menu="DataTypeLibraryOptions">
                     <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Data Types: <span class="badge">{{datatypes.length}}</span>
                 </div>
-                <div ng-if="filteringModeON" data-nodrag ui-tree-handle style="margin-bottom:5px;"> <span class="badge label-default" ng-click="resetLibFilter()" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
+                <div ng-show="filteringModeON" data-nodrag ui-tree-handle style="margin-bottom:5px;"> <span class="badge label-default" ng-click="resetLibFilter()" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptions">
@@ -648,7 +648,7 @@ span {
                                     <li ng-repeat="version in data.versions">{{version}}</li></ul>
                             </td>
                             <td class="col-md-1">
-                                <i ng-click="getDatatypeFromUnchanged(data)" class="fa fa-plus fa-fw" style="color:blue;"></i>
+                                <i ng-click="getDatatypeFromUnchanged(data)" class="fa fa-plus fa-fw" style="color:blue;cursor:pointer !important"></i>
                             </td>
                         </tr>
                     </tbody>

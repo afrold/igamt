@@ -653,7 +653,7 @@ angular.module('igl').factory(
         svc.deleteSegment = function (segment) {
             $rootScope.references = [];
             angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
-                $rootScope.findSegmentRefs(segment, message, message.name);
+                $rootScope.findSegmentRefs(segment, message, '', '', message);
             });
 
             if ($rootScope.references != null && $rootScope.references.length > 0) {
