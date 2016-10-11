@@ -2,11 +2,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <!-- Include the templates -->
-    <xsl:import href="templates/section.xsl"/>
-    <xsl:import href="templates/profileContent.xsl"/>
-    <xsl:import href="templates/tableOfContentSection.xsl"/>
     <xsl:import href="templates/htmlContent.xsl"/>
     <xsl:import href="templates/wordContent.xsl"/>
+    <xsl:import href="templates/metadata.xsl"/>
     <xsl:import href="templates/style/htmlStyle.xsl"/>
     <xsl:import href="templates/style/wordStyle.xsl"/>
     <xsl:import href="templates/style/globalStyle.xsl"/>
@@ -54,20 +52,6 @@
             </xsl:element>
             <!-- Content of the body tag -->
             <xsl:element name="body">
-                <xsl:element name="div">
-                    <xsl:text>target format : </xsl:text>
-                    <xsl:value-of select="$targetFormat"/>
-                    <xsl:element name="br"/>
-                    <xsl:text>document title : </xsl:text>
-                    <xsl:value-of select="$documentTitle"/>
-                    <xsl:element name="br"/>
-                    <xsl:text>include toc : </xsl:text>
-                    <xsl:value-of select="$includeTOC"/>
-                    <xsl:element name="br"/>
-                    <xsl:text>inline constraints : </xsl:text>
-                    <xsl:value-of select="$inlineConstraints"/>
-                    <xsl:element name="br"/>
-                </xsl:element>
                 <!-- Check the target format to include specific content -->
                 <xsl:choose>
                     <xsl:when test="$targetFormat='html'">

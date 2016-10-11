@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:import href="infoSection.xsl"/>
+    <xsl:import href="/rendering/templates/infoSection.xsl"/>
     <xsl:template name="displaySection">
         <xsl:param name="includeTOC"/>
         <xsl:param name="inlineConstraint"/>

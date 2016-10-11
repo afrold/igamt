@@ -2,8 +2,8 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:import href="sectionContent.xsl"/>
-    <xsl:import href="profileContent.xsl"/>
+    <xsl:import href="/rendering/templates/sectionContent.xsl"/>
+    <xsl:import href="/rendering/templates/profileContent.xsl"/>
 
     <xsl:template name="displayInfoSection" mode="disp">
         <xsl:param name="includeTOC" select="'true'"></xsl:param>

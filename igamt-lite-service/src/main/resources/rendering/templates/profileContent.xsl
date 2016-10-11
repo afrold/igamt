@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:import href="profile/message.xsl"/>
+    <xsl:import href="/rendering/templates/profile/message.xsl"/>
+    <xsl:import href="/rendering/templates/profile/datatype.xsl"/>
     <xsl:template name="displayProfileContent">
         <xsl:param name="inlineConstraint"/>
         <xsl:choose>

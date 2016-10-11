@@ -167,4 +167,11 @@
             </xsl:element>
         </xsl:if>
     </xsl:template>
+
+    <xsl:template match="Datatype" mode="toc">
+        <a href="#{@id}">
+            <xsl:element name="br"/>
+            <xsl:text>concat(@Label," - ",@Description)</xsl:text>
+        </a>
+    </xsl:template>
 </xsl:stylesheet>

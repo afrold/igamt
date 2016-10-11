@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
@@ -21,16 +24,18 @@ import java.io.InputStream;
  */
 public class XsltIncludeUriResover implements URIResolver {
 
-    @Override
-    public Source resolve(String href, String base) throws TransformerException {
+    Logger logger = LoggerFactory.getLogger(XsltIncludeUriResover.class);
+
+    @Override public Source resolve(String href, String base) throws TransformerException {
         try {
             StringBuilder classpathHref = new StringBuilder();
-            if(href.startsWith("/")){
-                href=href.substring("/".length());
+            //classpathHref.append("/");
+            if (href.startsWith("/")) {
+                href = href.substring("/".length());
             }
-            if(!href.startsWith("rendering")){
+            if (!href.startsWith("rendering")) {
                 classpathHref.append("rendering/");
-                if(!href.startsWith("templates")){
+                if (!href.startsWith("templates")) {
                     classpathHref.append("templates/");
                 }
             }
