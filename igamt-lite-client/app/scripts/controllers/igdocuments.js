@@ -1988,7 +1988,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             console.log(usrLib);
             DatatypeLibrarySvc.getDatatypesByLibrary(usrLib.id).then(function(datatypes) {
                 $scope.userDatatypes = datatypes;
-                console.log($scope.userDatatypes);
+            	$scope.userDatatypes = _.where(datatypes, {scope:"USER",status:"PUBLISHED"});
             });
         };
         $scope.selectMasterDtLib = function(masLib) {

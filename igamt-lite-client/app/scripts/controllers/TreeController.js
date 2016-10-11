@@ -743,11 +743,15 @@ angular
                 $scope.DataTypeLibraryOptions = [
                     [' Add Datatypes',
                         function($itemScope) {
-                    	if($rootScope.datatypeLibrary.scope=='MASTER'){
-                    		$scope.addMasterDt();
-                    	}else{
-                    		$scope.addDatatypeForUser("2.1");
-                    	}        
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	$scope.addDatatypeForUser("2.1");                            	
+                                });
+                    	
+                        }else{
+                        	$scope.addDatatypeForUser("2.1");
+                        }
                     }
                     ]
                 ];

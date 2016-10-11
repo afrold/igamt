@@ -35,9 +35,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.BindingParametersForDa
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -71,6 +73,8 @@ public class DatatypeController extends CommonController {
 
   @Autowired
   AccountRepository accountRepository;
+  @Autowired
+  UnchangedDataRepository unchangedData;
 
   @RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
   public List<Datatype> findByIds(@RequestBody Set<String> ids) {
@@ -148,6 +152,76 @@ public class DatatypeController extends CommonController {
 	    	    }
 	    	    return d;
 	   }
+  
+  
+  @RequestMapping(value = "/getLastMaster", method = RequestMethod.POST,produces = "application/json")
+ 	public Datatype getLastMaster(@RequestBody NameAndVersionWrapper wrapper) {
+	            List<SCOPE> scopes=new ArrayList<SCOPE>();
+	            Datatype d=null;
+	            scopes.add(SCOPE.HL7STANDARD);
+ 	    	    List<Datatype> result=null;
+ 	    	    try {
+ 	    	      User u = userService.getCurrentUser();
+ 	    	      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+ 	    	      if (account == null) {
+ 	    	        throw new UserAccountNotFoundException();
+ 	    	      }
+ 	    	      List<UnchangedDataType> unchanged =unchangedData.findByNameAndVersions(wrapper.getName(), wrapper.getVersion());
+ 	    	      if(unchanged!= null&& !unchanged.isEmpty()){
+ 	    	    	  
+ 	    	    	 UnchangedDataType model=unchanged.get(0);
+ 	    	    	 d= datatypeService.findByNameAndVersionAndScope(wrapper.getName(), wrapper.getVersion(),"HL7STANDARD");
+ 	    	    	if(d!=null){
+ 	    	    		d.setId(null);
+ 	    	    		d.setHl7versions(model.getVersions());
+ 	    	    		String ext =this.findLastExtesionForVersions(model.getName(),model.getVersions());
+ 	    	    		d.setExt(ext);
+ 	    	    	} 
+ 	    	      }
+ 	    	      
+ 	    	      }
+ 	    	    catch (Exception e) {
+		    	      log.error("", e);
+		    	    }
+				return d;
+ 	    	    
+ 	   	   }
+  public String findLastExtesionForVersions(String name,List<String> versions){
+	 
+	 List<Datatype> datatypes = datatypeService.findAllByNameAndVersionsAndScope(name, versions, "MASTER");
+	 int extd=1;
+	 if(datatypes!=null&& !datatypes.isEmpty()){
+		String max=datatypes.get(0).getExt(); 
+		
+		try{
+			  extd=Integer.parseInt(max);
+		}
+		catch (NumberFormatException e) {
+
+		}
+		for(Datatype d : datatypes){
+			try{
+				 int temp=Integer.parseInt(d.getExt());
+				 if(temp>=extd){
+					 extd=temp+1;
+				 }
+			}
+			catch (NumberFormatException e) {
+
+			}
+		}
+		
+	 }
+	 return extd+"";
+	 
+	 }
+
+	  
+	  
+	  
+  
+  
+  		
   @RequestMapping(value = "/findPublished", method = RequestMethod.POST)
 	public List<Datatype> findPublishedMaster(@RequestBody String version) {
 	  			List<Datatype> published=new ArrayList<Datatype>();

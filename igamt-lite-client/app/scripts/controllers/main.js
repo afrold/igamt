@@ -45,7 +45,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.activeWhen = function(value) {
             return value ? 'active' : '';
         };
-
         $scope.activeIfInList = function(value, pathsList) {
             var found = false;
             if (angular.isArray(pathsList) === false) {
@@ -72,8 +71,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
 
         };
-
-
         $scope.path = function() {
             return $location.url();
         };
@@ -120,7 +117,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 $location.url('/ig');
             }
         };
-
+        
         $scope.cancel = function() {
             $scope.$emit('event:loginCancel');
         };
@@ -1435,7 +1432,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         });
                         var index = $rootScope.segments.indexOf(oldSegment);
                         if (index > -1) $rootScope.segments[index] = targetSegment;
-
+                        
                         var segmentUpdateParameter = {};
                         segmentUpdateParameter.segmentId = targetSegment.id;
                         segmentUpdateParameter.fieldId = targetField.id;
@@ -1444,6 +1441,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         segmentUpdateParameterList.push(segmentUpdateParameter);
                     }
                 }
+                console.log("clearing");
+                $rootScope.clearChanges();
             }
 
             SegmentService.updateDatatypeBinding(segmentUpdateParameterList).then(function(result) {}, function(error) {
@@ -1618,6 +1617,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             angular.forEach($rootScope.datatypes, function(dt) {
                 $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
             });
+            console.log("clearing");
+            $rootScope.clearChanges();
         };
 
         $rootScope.genRegex = function(format) {
@@ -3060,7 +3061,6 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                 });
             }else {
                 $rootScope.saveBindingForValueSet();
-                $rootScope.clearChanges();
 
             }
 

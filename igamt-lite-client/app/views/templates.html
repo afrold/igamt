@@ -1506,7 +1506,7 @@
                                                     </div>
                                                 </div>
                                             </tab>
-                                            <tab>
+                                            <tab ng-if="datatypeLibrary.scope!=='MASTER'">
                                                 <tab-heading>Master Datatypes</tab-heading>
                                                  
                                                 <div class="col-md-6">
@@ -1524,7 +1524,7 @@
                                                             <tr class="tbl-header">
                                                                 
                                                                 <th>Name</th>
-                                                                <th>Version</th>
+                                                                <th>Versions</th>
                                                                 <th>As is</th>
                                                                 <th>As Flavor</th>
 
@@ -1535,7 +1535,13 @@
                                                             <tr ng-repeat="datatype in masterDatatypes | orderBy: 'name' | filter:search:strict">
                                                             
                                                                 <td>{{datatype.label}}</td>
-                                                                <td>{{datatype.hl7Version}}</td>
+                                                                <td>
+																	<ul>
+																		<li ng-repeat="vr in datatype.hl7versions">
+																		{{vr}}
+																		</li>
+																	</ul>
+																</td>
                                                                 <td><a class="pointer" ng-show="!checkExist(datatype)" ng-click="addDt(datatype)"><i class="fa fa-plus fa-fw"></i></a>
                                                                     <p ng-show="checkExist(datatype)">Selected</p>
                                                                 </td>
@@ -1548,7 +1554,7 @@
                                                 </div>
                                                
                                             </tab>
-                                            <tab>
+                                            <tab ng-if="datatypeLibrary.scope!=='MASTER'">
                                                 <tab-heading>User Datatypes</tab-heading>
                                                 <div class="col-md-6">
                                                     <div ng-show="loading" style="text-align:center">
@@ -1613,7 +1619,7 @@
                                                                     <tr ng-repeat="dt in selectedDatatypes">
                                                                         <td>{{dt.name}}</td>
                                                                         <td><span ng-show="!edit">{{dt.ext}}</span>
-                                                                            <a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.scope!=='MASTER'" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
+                                                                            <a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.status!=='PUBLISHED'" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
                                                                             <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext"/>
                                                                             <a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
                                                                             <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>

@@ -347,10 +347,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 $scope.hl7Versions = result;
                 $scope.hl7Version=result[0];
             });
-            DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {
-                $scope.AllUnchanged = res;
-            });
-            
+//            DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {
+//                $scope.AllUnchanged = res;
+//            });
+//            
             console.log("$scope.hl7Versions");
             console.log($scope.hl7Versions);
             $rootScope.readOnly = readOnly;
@@ -1813,7 +1813,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     $scope.datatypeLibsStruct.push(result.data);
                     //angular.forEach($scope.datatypeLibrariesConfig, function(lib) {});
                     $scope.editLibrary(result.data, false);
-
+                    
 
                 });
             });
@@ -1890,9 +1890,12 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             $scope.datatypeLibrariesConfig.selectedType = lib;
                         }
                     });
-                    $scope.editLibrary(result.data);
-                    //$scope.addDatatypesFromTree();
                     $scope.subview = "LibraryMetaData.html";
+                    //$scope.datatypeLibsStruct.push(result.data);
+                    $scope.editLibrary(result.data, false);
+                    
+                    console.log(result.data);
+
                 });
             });
         };
@@ -2771,9 +2774,23 @@ angular.module('igl').controller('AddDatatypeCtrl',
 	            return $scope.checkedExt;
 	        };
 	        $scope.addDtFlv = function(datatype) {
+	            //var newDatatype = {};
 	            var newDatatype = angular.copy(datatype);
-	            newDatatype.ext=Math.floor(Math.random() * 1000)
-	            newDatatype.scope = 'USER';
+	            if(datatypeLibrary.scope=='USER'){
+	            	newDatatype.ext=Math.floor(Math.random() * 1000);
+	            }else if(datatypeLibrary.scope=="MASTER"){
+	            	DatatypeService.getLastMaster(datatype.name,datatype.hl7Version).then(function(result){
+	            		console.log(result);
+	            		newDatatype.ext=result.ext;
+	            		newDatatype.hl7versions=result.hl7versions
+	            		
+	            	});
+	            }
+	            console.log(newDatatype.ext);
+	            newDatatype.scope =datatypeLibrary.scope;
+           	 	newDatatype.status="UNPUBLISHED";
+
+	           
 	            newDatatype.participants = [];
 	            newDatatype.id = new ObjectId().toString();;
 	            newDatatype.libIds = [];
@@ -2854,7 +2871,7 @@ angular.module('igl').controller('AddDatatypeCtrl',
 	            $scope.selectFlv = [];
 	            var newLinks = [];
 	            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
-	                if ($scope.selectedDatatypes[i].scope === 'USER') {
+	                if ($scope.selectedDatatypes[i].scope === datatypeLibrary.scope) {
 	                    $scope.selectFlv.push($scope.selectedDatatypes[i]);
 	                } else {
 	                    newLinks.push({

@@ -203,15 +203,17 @@ angular.module('igl').factory(
         svc.copyTable = function (table) {
             TableService.getOne(table.id).then(function(newTable){
                 newTable.participants = [];
-                newTable.scope = $rootScope.tableLibrary;
+                newTable.status="UNPUBLISHED";
                 newTable.id = null;
                 newTable.libIds = [];
                 newTable.libIds.push($rootScope.tableLibrary.id);
                 if($rootScope.igdocument){
                     newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
+                    newTable.scope = "USER";
 
                 }else{
                     newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 10000000) + 1);
+                    newTable.scope = $rootScope.tableLibrary;
 	
                 }
 

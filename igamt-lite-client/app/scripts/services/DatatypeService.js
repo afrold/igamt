@@ -242,6 +242,22 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
+            
+            getLastMaster: function(name, version) {
+                var wrapper = {
+                    name: name,
+                    version: version,
+                }
+                var delay = $q.defer();
+                $http.post('api/datatypes/getLastMaster', angular.toJson(wrapper)).then(function(response) {
+                    console.log(response);
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
             getPublishedMaster: function(hl7Version) {
                 var delay = $q.defer();
 

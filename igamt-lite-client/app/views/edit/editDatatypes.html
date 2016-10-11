@@ -23,7 +23,7 @@
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
 
-				<label  ng-if="datatype.scope=='MASTER'" for="publish" style="margin : 0 10px 0 0">
+				<label ng-if="!igdocument" for="publish" style="margin : 0 10px 0 0">
          <input name="publish" id ="publish" type="checkbox" ng-click="publishDatatype(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'"  ng-disabled="editForm.$dirty||datatype.status === 'PUBLISHED'"|| readOnly" style="margin-right : 8px"/>Published</label>
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                  ng-disabled="editForm.$invalid || !editForm.$dirty"
@@ -588,7 +588,7 @@
                                         </table>
                                     </div>
                                     <div ng-hide="references != null && references.length > 0">
-                                        <p>This data type is not being used in this ig document</p>
+                                        <p>This data type is not being used in this<span ng-if="igdocument"> ig document</span><span ng-if="!igdocument"> library</span></p>
                                     </div>
 
                                 </div>
