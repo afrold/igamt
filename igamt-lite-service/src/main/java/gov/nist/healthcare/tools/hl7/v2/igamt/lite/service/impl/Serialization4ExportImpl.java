@@ -12,6 +12,42 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsColumn;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,16 +67,25 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import nu.xom.Attribute;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.Serializer;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Entities.EscapeMode;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.w3c.tidy.Tidy;
+import com.mongodb.gridfs.GridFSDBFile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
@@ -81,6 +126,7 @@ import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Serializer;
 
+
 @Service
 public class Serialization4ExportImpl implements IGDocumentSerialization {
   Logger logger = LoggerFactory.getLogger(Serialization4ExportImpl.class);
@@ -93,6 +139,9 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
   @Autowired
   private TableService tableService;
+  
+  @Autowired
+  private FileStorageService fileStorageService;
 
 
   public File serializeProfileToFile(Profile profile) throws UnsupportedEncodingException {
@@ -1120,10 +1169,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
     elmMessage.addAttribute(new Attribute("Type", m.getMessageType()));
     elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
     elmMessage.addAttribute(new Attribute("StructID", m.getStructID()));
-
     elmMessage.addAttribute(new Attribute("position", m.getPosition() + ""));
-
-
 
     if (m.getDescription() != null && !m.getDescription().equals(""))
       elmMessage.addAttribute(new Attribute("Description", m.getDescription()));
@@ -1390,7 +1436,39 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
     Elements elements4 = doc.select("h4");
     elements4.tagName("p").attr("style",
         "display: block;font-size: 10.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
-    return "<div class=\"fr-view\">" + doc.html() + "</div>";
+
+    for (org.jsoup.nodes.Element elementImg : doc.select("img")){
+      try {
+        String filename = elementImg.attr("src").substring(elementImg.attr("src").indexOf("name=")+5);
+        fileStorageService.findOneByFilename(filename);
+        String ext = FilenameUtils.getExtension(filename);
+
+        GridFSDBFile dbFile = fileStorageService.findOneByFilename(filename);
+        if (dbFile != null) {
+          InputStream imgis = dbFile.getInputStream();
+
+          String imgEnc = Base64.encodeBase64String(IOUtils.toByteArray(imgis));
+          String texEncImg = "data:image/" + ext + ";base64," + imgEnc;
+//          logger.debug(dbFile.getContentType());
+//          logger.debug(dbFile.getFilename());
+//          logger.debug(ext);
+//          logger.debug(texEncImg);
+          elementImg.attr("src", texEncImg);
+        }
+      } catch (IOException e) {
+        e.printStackTrace(); //If error, we leave the original document as is. 
+      } 
+    }
+//    Tidy tidy = new Tidy();
+//    tidy.setWraplen(Integer.MAX_VALUE);
+//    tidy.setXHTML(true);
+//    tidy.setShowWarnings(false); // to hide errors
+//    tidy.setQuiet(true); // to hide warning
+//    tidy.setMakeClean(true);
+//    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//    tidy.parseDOM(IOUtils.toInputStream("<div class=\"fr-view\">" + doc.html() + "</div>"), outputStream);
+//    return outputStream.toString();
+    return "<div class=\"fr-view\">" + doc.body().html() + "</div>";
   }
 
 
@@ -1487,34 +1565,16 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
                 if (d.getComponents().size() > 0) {
 
                   elmField.addAttribute(new Attribute("ConfLength", ""));
-
-
-
                   elmField.addAttribute(new Attribute("MinLength", "" + ""));
-
                   if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-
                     elmField.addAttribute(new Attribute("MaxLength", ""));
-                } else {
-
+                }else{
                   elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
-
-
-
                   elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
-
                   if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-
                     elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
-
-
-
                 }
-
-
-
               }
-
             }
           }
 
@@ -1556,7 +1616,6 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
           elmSegment.appendChild(elmField);
         }
-
         CoConstraints coconstraints = s.getCoConstraints();
         if (coconstraints.getConstraints().size() != 0) {
           nu.xom.Element ccts = new Element("coconstraints");
@@ -1575,6 +1634,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
             th.appendChild(sl.getName() + "-" + ccc.getField().getPosition());
             tr.appendChild(th);
           }
+
           nu.xom.Element thd = new nu.xom.Element("th");
           thd.appendChild("Description");
           tr.appendChild(thd);
@@ -1697,6 +1757,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
   }
 
   private nu.xom.Element serializeOneDatatype(DatatypeLink dl) {
+
     nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
     if (dl != null && dl.getId() != null) {
       Datatype d = datatypeService.findById(dl.getId());

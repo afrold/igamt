@@ -116,6 +116,7 @@ public class IGExportTest {
 	@Test
 	public void testCallIGExportXml() {
 		try {
+			assertNotNull(ig);
 			content = igExport.exportAsXmlDisplay(ig);
 			assertNotNull(content);
 			tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "xml"));
@@ -143,13 +144,13 @@ public class IGExportTest {
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -176,13 +177,13 @@ public class IGExportTest {
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -223,13 +224,13 @@ public class IGExportTest {
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -256,13 +257,13 @@ public class IGExportTest {
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -302,13 +303,13 @@ public class IGExportTest {
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -334,13 +335,13 @@ public class IGExportTest {
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(" : " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			}
 		}
 		try {
