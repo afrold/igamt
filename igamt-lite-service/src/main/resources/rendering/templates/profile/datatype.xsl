@@ -118,6 +118,9 @@
                     <xsl:with-param name="type">
                         <xsl:text>cs</xsl:text>
                     </xsl:with-param>
+                    <xsl:with-param name="constraintPath">
+                        <xsl:text>./Constraint[@Type='cs']</xsl:text>
+                    </xsl:with-param>
                 </xsl:call-template>
                 <xsl:call-template name="Constraint">
                     <xsl:with-param name="title">
@@ -128,6 +131,9 @@
                     </xsl:with-param>
                     <xsl:with-param name="type">
                         <xsl:text>pre</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="constraintPath">
+                        <xsl:text>./Constraint[@Type='pre']</xsl:text>
                     </xsl:with-param>
                 </xsl:call-template>
             </xsl:if>

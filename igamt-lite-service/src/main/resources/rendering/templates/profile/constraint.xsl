@@ -7,7 +7,8 @@
         <xsl:param name="title" />
         <xsl:param name="type" />
         <xsl:param name="constraintMode" />
-        <xsl:if test="count(./Constraint[@Type='{$type}']) &gt; 0">
+        <xsl:param name="constraintPath" />
+        <xsl:if test="count($constraintPath) &gt; 0">
             <xsl:element name="p">
                 <xsl:element name="strong">
                     <xsl:element name="u">
@@ -27,7 +28,7 @@
                         </xsl:when>
                     </xsl:choose>
                     <xsl:element name="tbody">
-                        <xsl:for-each select="./Constraint[@Type='{$type}']">
+                        <xsl:for-each select="$constraintPath">
                             <xsl:sort select="@Position" data-type="number"></xsl:sort>
                             <xsl:call-template name="ConstraintContent">
                                 <xsl:with-param name="mode" select="$constraintMode"/>
