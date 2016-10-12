@@ -3,72 +3,111 @@
     <xsl:import href="/rendering/templates/profile/segmentField.xsl"/>
 
     <xsl:template match="Segment" mode="toc">
-        <a href="#{@ID}">
-            <br></br>
-            <xsl:value-of select="@Name" />
-            -
-            <xsl:value-of select="@Description" />
-        </a>
+        <xsl:element name="a">
+            <xsl:attribute name="href">
+                <xsl:value-of select="concat('#{',@id,'}')"/>
+            </xsl:attribute>
+            <xsl:element name="br"/>
+            <xsl:value-of select="concat(@Name,' - ',@Description)"/>
+        </xsl:element>
     </xsl:template>
 
     <xsl:template match="Segment">
         <xsl:param name="inlineConstraint"/>
-        <xsl:value-of select="@Comment"></xsl:value-of>
+        <xsl:value-of select="@Comment"/>
         <xsl:if test="count(./Text[@Type='Text1']) &gt; 0">
-            <p>
+            <xsl:element name="p">
                 <xsl:value-of disable-output-escaping="yes"
                               select="./Text[@Type='Text1']" />
-            </p>
+            </xsl:element>
         </xsl:if>
-        <p>
-            <table width="100%" border="1" cellspacing="0" cellpadding="1">
-                <col style="width:5%"></col>
-                <col style="width:15%"></col>
-                <col style="width:10%"></col>
-                <col style="width:10%"></col>
-                <col style="width:10%"></col>
-                <col style="width:10%"></col>
-                <col style="width:10%"></col>
-                <col style="width:30%"></col>
-                <thead style="background:#F0F0F0; color:#B21A1C; align:center">
-                    <tr>
-                        <th>
-                            Seq
-                        </th>
-                        <th>
-                            Element name
-                        </th>
-                        <th>
-                            Data type
-                        </th>
-                        <th>
-                            Usage
-                        </th>
-                        <th>
-                            Cardinality
-                        </th>
-                        <th>
-                            Length
-                        </th>
-                        <th>
-                            Concept Domain
-                        </th>
-                        <th>
-                            Comment
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
+        <xsl:element name="p">
+            <xsl:element name="table">
+                <xsl:attribute name="class">
+                    <xsl:text>contentTable</xsl:text>
+                </xsl:attribute>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>5%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>15%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>10%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>10%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>10%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>10%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>10%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>30%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="thead">
+                    <xsl:attribute name="class">
+                        <xsl:text>contentThead</xsl:text>
+                    </xsl:attribute>
+                    <xsl:element name="tr">
+                        <xsl:element name="th">
+                            <xsl:text>Seq</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Element name</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Data type</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Usage</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Cardinality</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Length</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Concept Domain</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Comment</xsl:text>
+                        </xsl:element>
+                    </xsl:element>
+                </xsl:element>
+                <xsl:element name="tbody">
                     <xsl:for-each select="Field">
                         <xsl:sort select="@Position" data-type="number"></xsl:sort>
                         <xsl:call-template name="SegmentField">
                             <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
                         </xsl:call-template>
-
                     </xsl:for-each>
-                </tbody>
-            </table>
-        </p>
+                </xsl:element>
+            </xsl:element>
+        </xsl:element>
+
         <xsl:if test="count(Field//Constraint) &gt; 0">
             <xsl:if test="normalize-space($inlineConstraint) = 'false'">
                 <xsl:call-template name="Constraint">
@@ -108,23 +147,15 @@
         <xsl:for-each select="Field">
             <xsl:sort select="@Position" data-type="number"></xsl:sort>
             <xsl:if test="count(Text) &gt; 0">
-                <p>
-                    <b>
-                        <xsl:value-of select="../@Name" />
-                        -
-                        <xsl:value-of select="./@Position" />
-                        &#160;
-                        <xsl:value-of select="./@Name" />
-                        (
-                        <xsl:value-of select="./@Datatype" />
-                        )
-                    </b>
-                    <xsl:value-of disable-output-escaping="yes"
-                                  select="./Text[@Type='Text']" />
-                </p>
+                <xsl:element name="p">
+                    <xsl:element name="b">
+                        <xsl:value-of select="concat(../@Name,' - ',./@Position,' ',./@Name,'(',./@Datatype,')')" />
+                    </xsl:element>
+                    <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
+                </xsl:element>
             </xsl:if>
         </xsl:for-each>
-        <br></br>
+        <xsl:element name="br"/>
     </xsl:template>
 
 </xsl:stylesheet>
