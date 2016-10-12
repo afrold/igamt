@@ -63,9 +63,6 @@
                         <xsl:sort select="@Position" data-type="number"></xsl:sort>
                         <xsl:call-template name="SegmentField">
                             <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
-                            <xsl:with-param name="style"
-                                            select="'background-color:white;text-decoration:normal'">
-                            </xsl:with-param>
                         </xsl:call-template>
 
                     </xsl:for-each>

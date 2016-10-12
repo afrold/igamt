@@ -15,7 +15,7 @@
                 </xsl:choose>
                 <xsl:element name="tr">
                     <xsl:attribute name="class">
-                        <xsl:text>.constraintTr</xsl:text>
+                        <xsl:text>constraintTr</xsl:text>
                     </xsl:attribute>
                     <xsl:element name="td"/>
                     <xsl:element name="td"/>
@@ -44,7 +44,7 @@
             <xsl:when test="$mode='standalone'">
                 <xsl:element name="tr">
                     <xsl:element name="class">
-                        <xsl:text>.constraintStandaloneTr</xsl:text>
+                        <xsl:text>.contentTr</xsl:text>
                     </xsl:element>
                     <xsl:if test="./@Type='cs'">
                         <xsl:element name="td">

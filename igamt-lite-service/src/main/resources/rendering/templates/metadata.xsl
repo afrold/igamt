@@ -5,7 +5,7 @@
     <xsl:template match="MetaData">
         <xsl:element name="div">
             <xsl:attribute name="class">
-                <xsl:text>.metadata</xsl:text>
+                <xsl:text>metadata</xsl:text>
             </xsl:attribute>
             <xsl:element name="img">
                 <xsl:attribute name="src">

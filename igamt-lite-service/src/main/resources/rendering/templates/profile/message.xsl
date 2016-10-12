@@ -8,7 +8,7 @@
         <xsl:element name="p">
             <xsl:element name="table">
                 <xsl:attribute name="class">
-                    <xsl:text>.contentTable</xsl:text>
+                    <xsl:text>contentTable</xsl:text>
                 </xsl:attribute>
                 <xsl:element name="col">
                     <xsl:attribute name="width">
@@ -42,7 +42,7 @@
                 </xsl:element>
                 <xsl:element name="thead">
                     <xsl:attribute name="class">
-                        <xsl:text>.contentThead</xsl:text>
+                        <xsl:text>contentThead</xsl:text>
                     </xsl:attribute>
                     <xsl:element name="tr">
                         <xsl:element name="th">

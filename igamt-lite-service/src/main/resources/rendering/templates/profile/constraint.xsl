@@ -17,7 +17,7 @@
                 </xsl:element>
                 <xsl:element name="table">
                     <xsl:attribute name="class">
-                        <xsl:text>.contentTable</xsl:text>
+                        <xsl:text>contentTable</xsl:text>
                     </xsl:attribute>
                     <xsl:choose>
                         <xsl:when test="$type='cs'">

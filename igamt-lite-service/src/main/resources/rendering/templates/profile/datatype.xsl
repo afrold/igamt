@@ -21,7 +21,7 @@
         <xsl:element name="p">
             <xsl:element name="table">
                 <xsl:attribute name="class">
-                    <xsl:text>.contentTable</xsl:text>
+                    <xsl:text>contentTable</xsl:text>
                 </xsl:attribute>
                 <xsl:element name="col">
                     <xsl:attribute name="width">
@@ -65,33 +65,33 @@
                 </xsl:element>
                 <xsl:element name="thead">
                     <xsl:attribute name="class">
-                        <xsl:text>.contentThead</xsl:text>
+                        <xsl:text>contentThead</xsl:text>
                     </xsl:attribute>
-                </xsl:element>
-                <xsl:element name="tr">
-                    <xsl:element name="th">
-                        <xsl:text>Seq</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Element name</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Conf length</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Data type</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Usage</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Length</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Concept Domain</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Comment</xsl:text>
+                    <xsl:element name="tr">
+                        <xsl:element name="th">
+                            <xsl:text>Seq</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Element name</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Conf length</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Data type</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Usage</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Length</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Concept Domain</xsl:text>
+                        </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Comment</xsl:text>
+                        </xsl:element>
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="tbody">

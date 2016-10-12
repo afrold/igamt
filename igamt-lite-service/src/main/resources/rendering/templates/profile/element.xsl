@@ -2,7 +2,7 @@
     <xsl:template name="element">
         <xsl:element name="tr">
             <xsl:attribute name="class">
-                <xsl:text>.elementTr</xsl:text>
+                <xsl:text>contentTr</xsl:text>
             </xsl:attribute>
             <xsl:element name="td">
                 <xsl:value-of select="@Ref"/>

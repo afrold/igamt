@@ -2,64 +2,93 @@
 
     <xsl:import href="/rendering/templates/profile/valueSetContent.xsl"/>
     <xsl:template match="ValueSetDefinition" mode="toc">
-        <a href="#{@Id}">
-            <br></br>
-            <xsl:value-of select="@BindingIdentifier" />
-            -
-            <xsl:value-of select="@Description" />
-        </a>
+        <xsl:element name="a">
+            <xsl:attribute name="href">
+                <xsl:value-of select="concat('#{',@id,'}')"/>
+            </xsl:attribute>
+            <xsl:value-of select="concat(@BindingIdentifier,' - ',@Description)"/>
+        </xsl:element>
     </xsl:template>
 
     <xsl:template match="ValueSetDefinition">
         <xsl:if test="@Stability != ''">
-            <p><xsl:text>Stability: </xsl:text>
-                <xsl:value-of select="@Stability"></xsl:value-of>
-            </p>
+            <xsl:element name="p">
+                <xsl:text>Stability: </xsl:text>
+                <xsl:value-of select="@Stability"/>
+            </xsl:element>
         </xsl:if>
         <xsl:if test="@Extensibility != ''">
-            <p><xsl:text>Extensibility: </xsl:text>
-                <xsl:value-of select="@Extensibility"></xsl:value-of></p>
+            <xsl:element name="p">
+                <xsl:text>Extensibility: </xsl:text>
+                <xsl:value-of select="@Extensibility"/>
+            </xsl:element>
         </xsl:if>
         <xsl:if test="@ContentDefinition != ''">
-            <p><xsl:text>Content Definition: </xsl:text>
-                <xsl:value-of select="@ContentDefinition"></xsl:value-of></p>
+            <xsl:element name="p">
+                <xsl:text>Content Definition: </xsl:text>
+                <xsl:value-of select="@ContentDefinition"/>
+            </xsl:element>
         </xsl:if>
         <xsl:if test="@Oid != ''">
-            <p><xsl:text>Oid: </xsl:text>
-                <xsl:value-of select="@Oid"></xsl:value-of></p>
+            <xsl:element name="p">
+                <xsl:text>Oid: </xsl:text>
+                <xsl:value-of select="@Oid"/>
+            </xsl:element>
         </xsl:if>
-        <table width="100%" border="1" cellspacing="0" cellpadding="0">
-            <col style="width:15%"></col>
-            <col style="width:15%"></col>
-            <col style="width:10%"></col>
-            <col style="width:60%"></col>
-            <thead style="background:#F0F0F0; color:#B21A1C; align:center">
-                <tr>
-                    <th>
-                        Value
-                    </th>
-                    <th>
-                        Code System
-                    </th>
-                    <th>
-                        Usage
-                    </th>
-                    <th>
-                        Description
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
+
+        <xsl:element name="table">
+
+            <xsl:attribute name="class">
+                <xsl:text>contentTable</xsl:text>
+            </xsl:attribute>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>15%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>15%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>10%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>60%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="thead">
+                <xsl:attribute name="class">
+                    <xsl:text>contentThead</xsl:text>
+                </xsl:attribute>
+                <xsl:element name="tr">
+                    <xsl:element name="th">
+                        <xsl:text>Value</xsl:text>
+                    </xsl:element>
+                    <xsl:element name="th">
+                        <xsl:text>Code System</xsl:text>
+                    </xsl:element>
+                    <xsl:element name="th">
+                        <xsl:text>Usage</xsl:text>
+                    </xsl:element>
+                    <xsl:element name="th">
+                        <xsl:text>Description</xsl:text>
+                    </xsl:element>
+                </xsl:element>
+            </xsl:element>
+            <xsl:element name="tbody">
                 <xsl:for-each select="ValueElement">
-                    <xsl:sort select="@Value" />
-                    <xsl:call-template name="ValueSetContent">
-                        <xsl:with-param name="style" select="'background-color:white;'">
-                        </xsl:with-param>
-                    </xsl:call-template>
+                    <xsl:sort select="@Value" data-type="number"></xsl:sort>
+                    <xsl:call-template name="ValueSetContent"/>
                 </xsl:for-each>
-            </tbody>
-        </table>
-        <!-- <br></br> -->
+            </xsl:element>
+
+        </xsl:element>
+
     </xsl:template>
 
 </xsl:stylesheet>

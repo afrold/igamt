@@ -2,8 +2,7 @@
 
     <xsl:template name="SegmentField">
         <xsl:param name="inlineConstraint"/>
-        <xsl:param name="style" />
-        <tr style="{$style}">
+        <tr class=".contentTr">
             <td>
                 <xsl:value-of select="format-number(@Position, '0')" />
             </td>

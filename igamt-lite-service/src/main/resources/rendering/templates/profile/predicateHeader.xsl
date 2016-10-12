@@ -16,11 +16,9 @@
             </xsl:attribute>
         </xsl:element>
         <xsl:element name="thead">
-            <xsl:element name="thead">
-                <xsl:attribute name="class">
-                    <xsl:text>.contentThead</xsl:text>
-                </xsl:attribute>
-            </xsl:element>
+            <xsl:attribute name="class">
+                <xsl:text>contentThead</xsl:text>
+            </xsl:attribute>
             <xsl:element name="tr">
                 <xsl:element name="th">
                     <xsl:text>Location</xsl:text>
