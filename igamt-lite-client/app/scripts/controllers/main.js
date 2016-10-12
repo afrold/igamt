@@ -1806,29 +1806,39 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Assertion>'
                     };
                 } else {
+                    console.log(newConstraint.value);
+                    if(newConstraint.value =='^~\\&'){
+                        cs = {
+                            id: new ObjectId().toString(),
+                            constraintId: newConstraint.constraintId,
+                            constraintTarget: positionPath,
+                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'^~\\&amp;\'.',
+                            assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"^~\\&amp;\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Assertion>'
+                        };
+                    }else {
+                        var componetsList = newConstraint.value.split("^");
+                        var assertionScript = "";
+                        var componentPosition = 0;
 
-                    var componetsList = newConstraint.value.split("^");
-                    var assertionScript = "";
-                    var componentPosition = 0;
-
-                    angular.forEach(componetsList, function(componentValue) {
-                        componentPosition = componentPosition + 1;
-                        var script = '<PlainText Path=\"' + newConstraint.position_1 + "." + componentPosition + "[1]" + '\" Text=\"' + componentValue + '\" IgnoreCase="false"/>';
-                        if (assertionScript === "") {
-                            assertionScript = script;
-                        } else {
-                            assertionScript = "<AND>" + assertionScript + script + "</AND>";
-                        }
-                    });
+                        angular.forEach(componetsList, function(componentValue) {
+                            componentPosition = componentPosition + 1;
+                            var script = '<PlainText Path=\"' + newConstraint.position_1 + "." + componentPosition + "[1]" + '\" Text=\"' + componentValue + '\" IgnoreCase="false"/>';
+                            if (assertionScript === "") {
+                                assertionScript = script;
+                            } else {
+                                assertionScript = "<AND>" + assertionScript + script + "</AND>";
+                            }
+                        });
 
 
-                    cs = {
-                        id: new ObjectId().toString(),
-                        constraintId: newConstraint.constraintId,
-                        constraintTarget: positionPath,
-                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
-                        assertion: '<Assertion>' + assertionScript + '</Assertion>'
-                    };
+                        cs = {
+                            id: new ObjectId().toString(),
+                            constraintId: newConstraint.constraintId,
+                            constraintTarget: positionPath,
+                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
+                            assertion: '<Assertion>' + assertionScript + '</Assertion>'
+                        };
+                    }
                 }
             } else if (newConstraint.contraintType === 'one of list values') {
                 cs = {
