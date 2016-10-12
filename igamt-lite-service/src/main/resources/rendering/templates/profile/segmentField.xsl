@@ -2,47 +2,43 @@
 
     <xsl:template name="SegmentField">
         <xsl:param name="inlineConstraint"/>
-        <tr class=".contentTr">
-            <td>
+        <xsl:element name="tr">
+            <xsl:attribute name="class">
+                <xsl:text>contentTr</xsl:text>
+            </xsl:attribute>
+            <xsl:element name="td">
                 <xsl:value-of select="format-number(@Position, '0')" />
-            </td>
-            <td>
+            </xsl:element>
+            <xsl:element name="td">
                 <xsl:value-of select="@Name" />
-            </td>
-            <td>
+            </xsl:element>
+            <xsl:element name="td">
                 <xsl:value-of select="@Datatype" />
-            </td>
-            <td>
+            </xsl:element>
+            <xsl:element name="td">
                 <xsl:value-of select="@Usage" />
-            </td>
-            <td>
+            </xsl:element>
+            <xsl:element name="td">
                 <xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
-                    [
-                    <xsl:value-of select="@Min" />
-                    ..
-                    <xsl:value-of select="@Max" />
-                    ]
+                    <xsl:value-of select="concat('[',@Min,'..',@Max,']')"/>
                 </xsl:if>
-            </td>
-            <td>
+            </xsl:element>
+            <xsl:element name="td">
                 <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
-                    [
-                    <xsl:value-of select="@MinLength" />
-                    ..
-                    <xsl:value-of select="@MaxLength" />
-                    ]
+                    <xsl:value-of select="concat('[',@MinLength,'..',@MaxLength,']')"/>
                 </xsl:if>
-            </td>
-            <td>
+            </xsl:element>
+            <xsl:element name="td">
                 <xsl:value-of select="@Binding" />
-            </td>
-            <td>
+            </xsl:element>
+            <xsl:element name="td">
                 <xsl:value-of select="@Comment" />
-            </td>
-        </tr>
+            </xsl:element>
+        </xsl:element>
         <xsl:if test="normalize-space($inlineConstraint) = 'true'">
             <xsl:if test="count(Constraint) &gt; 0">
-                <xsl:apply-templates select="." mode="inlineSgt"></xsl:apply-templates>
+                <!--TODO see with Olivier what's this doing here-->
+                <xsl:apply-templates select="." mode="inlineSgt"/>
             </xsl:if>
         </xsl:if>
     </xsl:template>
