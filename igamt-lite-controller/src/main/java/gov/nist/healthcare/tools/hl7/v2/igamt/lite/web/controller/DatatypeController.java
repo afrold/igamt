@@ -40,6 +40,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VersionNode;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -268,8 +269,47 @@ public class DatatypeController extends CommonController {
       throw new ForbiddenOperationException("FORBIDDEN_SAVE_DATATYPE");
     }
   }
+  
+  @RequestMapping(value = "/publish", method = RequestMethod.POST)
+  public Datatype publish(@RequestBody Datatype datatype) throws DatatypeSaveException,
+      ForbiddenOperationException {
+	    if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
+      log.debug("datatypeLibrary=" + datatype);
+      log.debug("datatypeLibrary.getId()=" + datatype.getId());
+      log.info("Saving the " + datatype.getScope() + " datatype.");
+      VersionNode versionInfo= datatype.getVersionInfo();
+      versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
+      versionInfo.setPublicationDate(DateUtils.getCurrentTime());
+      List<String> ancestors = versionInfo.getAncestors();
+      
+      for(String ancestor: ancestors){
+      updateAncestor(ancestor,datatype.getId());
+      }
+      datatype.setVersionInfo(versionInfo);
+      Datatype saved = datatypeService.save(datatype);
+      log.debug("saved.getId()=" + saved.getId());
+      log.debug("saved.getScope()=" + saved.getScope());
+      return saved;
+    } else {
+      throw new ForbiddenOperationException("FORBIDDEN_SAVE_DATATYPE");
+    }
+  }
 
-  @RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
+  private void updateAncestor(String sourceId,String dtId) {
+	Datatype source= datatypeService.findById(sourceId);
+	if(source!=null){
+	VersionNode versionInfo=source.getVersionInfo();
+	List<String> derived =versionInfo.getDerived();
+	derived.add(dtId);
+	versionInfo.setDerived(derived);
+	source.setVersionInfo(versionInfo);
+	source.setDeprecated(true);
+	datatypeService.save(source);
+	}
+	
+}
+
+@RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
   public void updateTableBinding(@RequestBody List<BindingParametersForDatatype> bindingParametersList) throws DatatypeSaveException, ForbiddenOperationException, DataNotFoundException {
 	  for(BindingParametersForDatatype paras : bindingParametersList){
 		  Datatype datatype = this.datatypeService.findById(paras.getDatatypeId());

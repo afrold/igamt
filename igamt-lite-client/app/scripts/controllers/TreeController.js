@@ -180,7 +180,8 @@ angular
                         var dest = destNodes.$parent.$modelValue;
                         var dataTypeDest = destNodes.$element.attr('data-type');
                         var dataTypeSource = sourceNode.$element.attr('data-type');
-                        //event.source.nodeScope.$modelValue.sectionPosition = sortAfter + 1;
+                        // event.source.nodeScope.$modelValue.sectionPosition =
+						// sortAfter + 1;
 
                         var parentSource = sourceNode.$parentNodeScope.$modelValue;
                         var parentDest = event.dest.nodesScope.$nodeScope.$modelValue;
@@ -555,6 +556,45 @@ angular
                         }
                     ]
                 ];
+                
+                
+                
+                $scope.DataTypeOptionsForPublished = [
+                                          ['Create New Version',
+                                                 	function($itemScope) {
+
+
+                                                	if ($rootScope.hasChanges()) {
+
+                                                		$rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                			CloneDeleteSvc.upgradeDatatype($itemScope.data);
+                                                			});
+                                                		} else {
+                                                			CloneDeleteSvc.upgradeDatatype($itemScope.data);
+                                                		}
+                                                	}
+                                                ],
+                                          ['Create Flavor',
+                                              function($itemScope) {
+
+
+                                                  if ($rootScope.hasChanges()) {
+
+                                                      $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                          CloneDeleteSvc.copyDatatype($itemScope.data);
+                                                      });
+                                                  } else {
+                                                      CloneDeleteSvc.copyDatatype($itemScope.data);
+                                                  }
+                                              }
+                                          ],
+                                          null, ['Delete',
+                                              function($itemScope) {
+                                                  CloneDeleteSvc.deleteDatatype($itemScope.data);
+
+                                              }
+                                          ]
+                                      ];
 
                 $scope.ValueSetOptions = [
 
@@ -900,7 +940,7 @@ angular
 
                 function processEditSeg(seg) {
                     $scope.Activate(seg.id);
-                    //$rootScope.activeSegment = seg;
+                    // $rootScope.activeSegment = seg;
                     $scope.$emit('event:openSegment', seg);
                 };
 
@@ -967,7 +1007,7 @@ angular
 
                     $scope.Activate(param.id);
                     $rootScope.section = $scope.getRoutSectionByname(param);
-                    //$rootScope.currentData=section;
+                    // $rootScope.currentData=section;
 
                     if ($rootScope.section.sectionContents === null) {
                         $rootScope.section.sectionContents = "";
@@ -1266,7 +1306,7 @@ angular
                 };
 
                 $scope.getSegmentsFromgroup = function(group) {
-                    //_.union($rootScope.selectedSegments,temp);
+                    // _.union($rootScope.selectedSegments,temp);
                     for (var i = 0; i < group.children.length; i++) {
                         if (group.children[i].type === "segmentRef") {
                             console.log("IN IF ");
@@ -1274,7 +1314,7 @@ angular
                             var temp2 = [];
                             temp2.push(segment);
                             $rootScope.FilteredSegments.push(segment);
-                            //$rootScope.FilteredSegments=_.union($rootScope.FilteredSegments,temp2);
+                            // $rootScope.FilteredSegments=_.union($rootScope.FilteredSegments,temp2);
 
 
                         } else if (group.children[i].type === "group") {
@@ -1348,7 +1388,7 @@ angular
                     for (var i = 0; i < seg.fields.length; i++) {
                         if (seg.fields[i].table != null) {
                             var table = $rootScope.tablesMap[seg.fields[i].table.id];
-                            //console.log(datatype);
+                            // console.log(datatype);
                             var temp = [];
                             temp.push(table);
                             tables = _.union(tables, temp);

@@ -153,6 +153,85 @@ angular.module('igl').factory(
             });
 
         };
+        svc.upgradeDatatype= function(datatype){
+            var newDatatype = angular.copy(datatype, {});
+            newDatatype.scope = $rootScope.datatypeLibrary.scope;
+            newDatatype.status='UNPUBLISHED';
+            newDatatype.participants = [];
+            var sourceVersionInfo=datatype.versionInfo;
+            var versionInfo= {};
+            versionInfo.sourceId=datatype.id;
+            versionInfo.derived=[];
+            versionInfo.ancestors=sourceVersionInfo.ancestors;
+            versionInfo.ancestors.push(datatype.id);
+            versionInfo.publicationVersion=sourceVersionInfo.publicationVersion;
+            console.log(versionInfo);
+            newDatatype.versionInfo=versionInfo;
+            newDatatype.id = null;
+            newDatatype.libIds = [];
+            newDatatype.libIds.push($rootScope.datatypeLibrary.id);
+            if(datatype.scope==='MASTER' && $rootScope.igdocument){
+            	//newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
+            	var temp=[];
+            	temp.push($rootScope.igdocument.profile.metaData.hl7Version);
+            	newDatatype.hl7versions=temp;
+            	newDatatype.hl7Version=$rootScope.igdocument.profile.metaData.hl7Version;
+            	
+            }
+
+
+            if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
+                for (var i = 0; i < newDatatype.components.length; i++) {
+                    newDatatype.components[i].id = new ObjectId().toString();
+                }
+            }
+
+            var predicates = newDatatype['predicates'];
+            if (predicates != undefined && predicates != null && predicates.length != 0) {
+                angular.forEach(predicates, function (predicate) {
+                    predicate.id = new ObjectId().toString();
+                });
+            }
+
+            var conformanceStatements = newDatatype['conformanceStatements'];
+            if (conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0) {
+                angular.forEach(conformanceStatements, function (conformanceStatement) {
+                    conformanceStatement.id = new ObjectId().toString();
+                });
+            }
+
+            DatatypeService.save(newDatatype).then(function (result) {
+                newDatatype = result;
+                var newLink = angular.copy(DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.datatypeLibrary.children));
+                newLink.id = newDatatype.id;
+                newLink.ext = newDatatype.ext;
+                DatatypeLibrarySvc.addChild($rootScope.datatypeLibrary.id, newLink).then(function (link) {
+                    $rootScope.datatypeLibrary.children.splice(0, 0, newLink);
+                    $rootScope.datatypes.splice(0, 0, newDatatype);
+                    $rootScope.datatype = newDatatype;
+                    $rootScope.datatypesMap[newDatatype.id] = newDatatype;
+
+                    //TODO MasterMap need to add Datatype
+
+                    $rootScope.processElement(newDatatype);
+//                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
+                    $rootScope.filteredDatatypesList.push(newDatatype);
+                    $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
+                    $rootScope.$broadcast('event:openDatatype', newDatatype);
+                }, function (error) {
+                    $rootScope.saving = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
+            }, function (error) {
+                $rootScope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+
+        };
 
         svc.createNewTable = function (scope, tableLibrary) {
             var newTable = {};

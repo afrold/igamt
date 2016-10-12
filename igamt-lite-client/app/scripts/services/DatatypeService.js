@@ -51,7 +51,7 @@ angular.module('igl').factory('DatatypeService',
                 return template;
             },
             getTemplate: function(node, root) {
-                if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || (root.scope === 'MASTER'&& root.status === 'PUBLISHED')|| root.scope === null) {
+                if (ViewSettings.tableReadonly || root != null && (root.status === 'PUBLISHED')|| root.scope === null) {
                     return DatatypeService.getReadTemplate(node, root);
                 } else {
                     //console.log("INTO THE NODES ")
@@ -145,6 +145,19 @@ angular.module('igl').factory('DatatypeService',
                     datatype.date = saveResponse.date;
                     datatype.version = saveResponse.version;
                     datatype.id = saveResponse.id;
+                    delay.resolve(datatype);
+                }, function(error) {
+                    //console.log("DatatypeService.save error=" + error);
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            publish: function(datatype) {
+            	console.log(datatype);
+                var delay = $q.defer();
+                datatype.accountId = userInfoService.getAccountID();
+                $http.post('api/datatypes/publish', datatype).then(function(response) {
+                    var saveResponse = angular.fromJson(response.data);
                     delay.resolve(datatype);
                 }, function(error) {
                     //console.log("DatatypeService.save error=" + error);

@@ -2048,7 +2048,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             modalInstance.result.then(function(datatype) {
 
                 var ext = datatype.ext;
-                DatatypeService.save(datatype).then(function(result) {
+                DatatypeService.publish(datatype).then(function(result) {
                     var oldLink = DatatypeLibrarySvc.findOneChild(result.id,$rootScope.datatypeLibrary.children);
                     var newLink = DatatypeService.getDatatypeLink(result);
                     newLink.ext = ext;
