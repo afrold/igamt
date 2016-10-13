@@ -1,7 +1,7 @@
 angular.module('igl').factory(
     'CloneDeleteSvc',
 
-    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, SectionSvc, FilteringSvc) {
+    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, SectionSvc, FilteringSvc,VersionAndUseService) {
 
         var svc = this;
         svc.copySection = function (section) {
@@ -133,11 +133,12 @@ angular.module('igl').factory(
                     $rootScope.datatypesMap[newDatatype.id] = newDatatype;
 
                     //TODO MasterMap need to add Datatype
-
+                    
                     $rootScope.processElement(newDatatype);
 //                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
                     $rootScope.filteredDatatypesList.push(newDatatype);
                     $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
+                    $rootScope.Activate(newDatatype.id);
                     $rootScope.$broadcast('event:openDatatype', newDatatype);
                 }, function (error) {
                     $rootScope.saving = false;
@@ -158,16 +159,19 @@ angular.module('igl').factory(
             newDatatype.scope = $rootScope.datatypeLibrary.scope;
             newDatatype.status='UNPUBLISHED';
             newDatatype.participants = [];
-            var sourceVersionInfo=datatype.versionInfo;
-            var versionInfo= {};
-            versionInfo.sourceId=datatype.id;
-            versionInfo.derived=[];
-            versionInfo.ancestors=sourceVersionInfo.ancestors;
-            versionInfo.ancestors.push(datatype.id);
-            versionInfo.publicationVersion=sourceVersionInfo.publicationVersion;
-            console.log(versionInfo);
-            newDatatype.versionInfo=versionInfo;
-            newDatatype.id = null;
+            newDatatype.id=new ObjectId().toString()
+            var datatypeInfo= {};
+            datatypeInfo.id=newDatatype.id;
+            datatypeInfo.sourceId=datatype.id;
+            
+            datatypeInfo.derived=[];
+            datatypeInfo.ancestors=[];
+            datatypeInfo.ancestors.push(datatype.id);
+            datatypeInfo.publicationVersion=1;
+            VersionAndUseService.save(datatypeInfo).then(function(result){
+            	console.log(result);
+            });
+            
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.datatypeLibrary.id);
             if(datatype.scope==='MASTER' && $rootScope.igdocument){
@@ -217,6 +221,7 @@ angular.module('igl').factory(
 //                    MastermapSvc.addDatatypeObject(newDatatype, [[$rootScope.igdocument.profile.id, "profile"], [$rootScope.igdocument.id, "ig"]]);
                     $rootScope.filteredDatatypesList.push(newDatatype);
                     $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
+                    $rootScope.Activate(newDatatype.id);
                     $rootScope.$broadcast('event:openDatatype', newDatatype);
                 }, function (error) {
                     $rootScope.saving = false;

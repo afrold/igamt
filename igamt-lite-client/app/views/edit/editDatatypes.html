@@ -20,11 +20,16 @@
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
+                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}} {{datatype.status}}</span>
                         <span class="pull-right">
 
-				<label ng-if="!igdocument" for="publish" style="margin : 0 10px 0 0">
-         <input name="publish" id ="publish" type="checkbox" ng-click="publishDatatype(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'"  ng-disabled="editForm.$dirty||datatype.status === 'PUBLISHED'"|| readOnly" style="margin-right : 8px"/>Published</label>
+         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-info"
+                 ng-disabled="editForm.$invalid || !editForm.$dirty||datatype.status === 'PUBLISHED'"
+                 ng-hide="viewSettings.tableReadonly"
+                 ng-click="publishDatatype(datatype)">
+ 		 <span><i class="fa fa-paper-plane"></i>Publish</span>
+		</button>
+		
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                  ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="viewSettings.tableReadonly || datatype.status === 'PUBLISHED'"

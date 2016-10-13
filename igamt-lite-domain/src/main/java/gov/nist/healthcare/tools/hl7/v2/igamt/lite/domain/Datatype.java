@@ -31,36 +31,6 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
 
   private String ext="";
   
-  private List<ExternalUsers> usedBy=new ArrayList<ExternalUsers>();
-  
-  private VersionNode versionInfo=new VersionNode();
-  
-  private boolean deprecated=false;
-  
-  public VersionNode getVersionInfo() {
-	return versionInfo;
-}
-
-public void setVersionInfo(VersionNode versionInfo) {
-	this.versionInfo = versionInfo;
-}
-
-public boolean isDeprecated() {
-	return deprecated;
-}
-
-public void setDeprecated(boolean deprecated) {
-	this.deprecated = deprecated;
-}
-
-public List<ExternalUsers> getUsedBy() {
-	return usedBy;
-}
-
-public void setUsedBy(List<ExternalUsers> usedBy) {
-	this.usedBy = usedBy;
-}
-
 private String purposeAndUse = "";
 
   protected List<Component> components = new ArrayList<Component>();

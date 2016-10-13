@@ -158,6 +158,9 @@ angular.module('igl').factory('DatatypeService',
                 datatype.accountId = userInfoService.getAccountID();
                 $http.post('api/datatypes/publish', datatype).then(function(response) {
                     var saveResponse = angular.fromJson(response.data);
+                    datatype.date = saveResponse.date;
+                    datatype.version = saveResponse.version;
+                    datatype.id = saveResponse.id;
                     delay.resolve(datatype);
                 }, function(error) {
                     //console.log("DatatypeService.save error=" + error);

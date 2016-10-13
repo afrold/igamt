@@ -36,14 +36,16 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.VersionAndUseRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VersionNode;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VersionAndUse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.VersionAndUseService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopeAndNameAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
@@ -76,6 +78,8 @@ public class DatatypeController extends CommonController {
   AccountRepository accountRepository;
   @Autowired
   UnchangedDataRepository unchangedData;
+  @Autowired
+  VersionAndUseRepository versionAndUse;
 
   @RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
   public List<Datatype> findByIds(@RequestBody Set<String> ids) {
@@ -271,45 +275,30 @@ public class DatatypeController extends CommonController {
   }
   
   @RequestMapping(value = "/publish", method = RequestMethod.POST)
-  public Datatype publish(@RequestBody Datatype datatype) throws DatatypeSaveException,
-      ForbiddenOperationException {
-	    if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
+  public Datatype publish(@RequestBody Datatype datatype) {
+    if (!STATUS.PUBLISHED.equals(datatype.getStatus())) {
       log.debug("datatypeLibrary=" + datatype);
       log.debug("datatypeLibrary.getId()=" + datatype.getId());
-      log.info("Saving the " + datatype.getScope() + " datatype.");
-      VersionNode versionInfo= datatype.getVersionInfo();
-      versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
-      versionInfo.setPublicationDate(DateUtils.getCurrentTime());
-      List<String> ancestors = versionInfo.getAncestors();
-      
-      for(String ancestor: ancestors){
-      updateAncestor(ancestor,datatype.getId());
-      }
-      datatype.setVersionInfo(versionInfo);
+
+      	VersionAndUse versionInfo= new VersionAndUse();
+      	versionInfo.setPublicationVersion(1);
+        versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
+
+  		List<String>  temp = new ArrayList<String>();
+  		temp.add(datatype.getId());
+  		versionInfo.setAncestors(temp);
+      	versionInfo.setPublicationDate(DateUtils.getCurrentTime());
+      	versionAndUse.insert(versionInfo);  
+      	datatype.setStatus(STATUS.PUBLISHED);
       Datatype saved = datatypeService.save(datatype);
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());
       return saved;
-    } else {
-      throw new ForbiddenOperationException("FORBIDDEN_SAVE_DATATYPE");
     }
+	return datatype; 
   }
 
-  private void updateAncestor(String sourceId,String dtId) {
-	Datatype source= datatypeService.findById(sourceId);
-	if(source!=null){
-	VersionNode versionInfo=source.getVersionInfo();
-	List<String> derived =versionInfo.getDerived();
-	derived.add(dtId);
-	versionInfo.setDerived(derived);
-	source.setVersionInfo(versionInfo);
-	source.setDeprecated(true);
-	datatypeService.save(source);
-	}
-	
-}
-
-@RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
+  @RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
   public void updateTableBinding(@RequestBody List<BindingParametersForDatatype> bindingParametersList) throws DatatypeSaveException, ForbiddenOperationException, DataNotFoundException {
 	  for(BindingParametersForDatatype paras : bindingParametersList){
 		  Datatype datatype = this.datatypeService.findById(paras.getDatatypeId());
