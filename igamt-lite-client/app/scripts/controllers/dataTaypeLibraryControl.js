@@ -1096,7 +1096,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 //$rootScope.datatypes = result;
                 console.log(result);
                 angular.forEach(result, function(info) {
-                    $rootScope.versionAndUseMap[datatype.id] = info;
+                    $rootScope.versionAndUseMap[info.id] = info;
                 });
                 delay.resolve(true);
 
@@ -2097,11 +2097,20 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                         	DatatypeService.merge($rootScope.datatypesMap[result.id], result);
                         	$rootScope.datatypesMap[result.id].status="PUBLISHED";
                         	$rootScope.datatype.status="PUBLISHED";
+                            if ($scope.editForm) {
+                            	console.log("Cleeaning");
+                                $scope.editForm.$setPristine();
+                                $scope.editForm.$dirty = false;
+                                $rootScope.clearChanges();
+                            }
           
                             DatatypeService.merge($rootScope.datatype, result);
                             if ($scope.datatypesParams){
                                 $scope.datatypesParams.refresh();   	
                             }
+                            $scope.loadVersionAndUseInfo().then(function(){
+                        		
+                        	});
                             oldLink.ext = newLink.ext;
                             oldLink.name = newLink.name;
                             $scope.saving = false;

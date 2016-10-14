@@ -139,7 +139,7 @@ angular.module('igl').factory(
                     $rootScope.filteredDatatypesList.push(newDatatype);
                     $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
                     $rootScope.Activate(newDatatype.id);
-                    $rootScope.$broadcast('event:openDatatype', newDatatype);
+                    $rootScope.$emit('event:openDatatype', newDatatype);
                 }, function (error) {
                     $rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;
@@ -166,11 +166,23 @@ angular.module('igl').factory(
             
             datatypeInfo.derived=[];
             datatypeInfo.ancestors=[];
-            datatypeInfo.ancestors.push(datatype.id);
-            datatypeInfo.publicationVersion=1;
-            VersionAndUseService.save(datatypeInfo).then(function(result){
-            	console.log(result);
-            });
+            
+           
+            VersionAndUseService.findById(datatype.id).then(function(inf){
+            	console.log("Returning");
+            	console.log(inf);
+            	datatypeInfo.ancestors=inf.ancestors;
+            	datatypeInfo.ancestors.push(datatype.id);
+            	console.log(datatypeInfo.ancestors);
+            	 VersionAndUseService.save(datatypeInfo).then(function(result){
+                 	$rootScope.versionAndUseMap[result.id]=result;
+                 	console.log(result);
+                 	datatypeInfo.publicationVersion=1;
+                 });
+            	 
+          });
+           
+           
             
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.datatypeLibrary.id);
@@ -222,7 +234,7 @@ angular.module('igl').factory(
                     $rootScope.filteredDatatypesList.push(newDatatype);
                     $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
                     $rootScope.Activate(newDatatype.id);
-                    $rootScope.$broadcast('event:openDatatype', newDatatype);
+                    $rootScope.$emit('event:openDatatype', newDatatype);
                 }, function (error) {
                     $rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;

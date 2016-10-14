@@ -34,12 +34,10 @@ public class VersionAndUseServiceImp implements VersionAndUseService {
 		return VersionAndUseRepository.findById(id);
 	}
 
-
-
 	@Override
 	public VersionAndUse save(VersionAndUse inf) {
 		// TODO Auto-generated method stub
-		return VersionAndUseRepository.save(inf) ;
+		return VersionAndUseRepository.save(inf);
 	}
 
 	@Override

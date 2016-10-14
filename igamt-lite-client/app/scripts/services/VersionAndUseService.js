@@ -6,6 +6,19 @@ angular.module('igl').factory('VersionAndUseService',
 				
 			},
 			findById:function(id){
+				console.log("loooking for "+id);
+				 var delay = $q.defer();
+	                if ($rootScope.versionAndUseMap[id] === undefined || $rootScope.versionAndUseMap[id] === null) {
+	                    $http.get('api/versionAndUse/' + id).then(function(response) {
+	                        var info = angular.fromJson(response.data);
+	                        delay.resolve(info);
+	                    }, function(error) {
+	                        delay.reject(error);
+	                    });
+	                } else {
+	                    delay.resolve($rootScope.versionAndUseMap[id]);
+	                }
+	                return delay.promise;
 				
 			},
 			findAllByIds:function(ids){
@@ -28,7 +41,11 @@ angular.module('igl').factory('VersionAndUseService',
             	console.log(info);
                 var delay = $q.defer();
                 //datatype.accountId = userInfoService.getAccountID();
+                console.log("Saving");
+                console.log(info);
                 $http.post('api/versionAndUse/save', info).then(function(response) {
+                	console.log("resopense");
+                	console.log(response);
                     delay.resolve(info);
                 }, function(error) {
                     //console.log("DatatypeService.save error=" + error);

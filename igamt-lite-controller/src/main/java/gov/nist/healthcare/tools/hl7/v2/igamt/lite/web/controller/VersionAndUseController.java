@@ -43,7 +43,8 @@ public class VersionAndUseController {
 	  @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	  public VersionAndUse getVersionAndUseById(@PathVariable("id") String id) throws DataNotFoundException {
 	    log.info("Fetching VersionAndUseById..." + id);
-	    return versionAndUseService.findById(id);
+	    VersionAndUse result=versionAndUseService.findById(id);
+	    return result;
 	  }
 	  
 	  

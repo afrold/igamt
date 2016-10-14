@@ -79,7 +79,7 @@ public class DatatypeController extends CommonController {
   @Autowired
   UnchangedDataRepository unchangedData;
   @Autowired
-  VersionAndUseRepository versionAndUse;
+  VersionAndUseService versionAndUse;
 
   @RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
   public List<Datatype> findByIds(@RequestBody Set<String> ids) {
@@ -283,13 +283,14 @@ public class DatatypeController extends CommonController {
       	VersionAndUse versionInfo= new VersionAndUse();
       	versionInfo.setPublicationVersion(1);
         versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
-
-  		List<String>  temp = new ArrayList<String>();
-  		temp.add(datatype.getId());
-  		versionInfo.setAncestors(temp);
       	versionInfo.setPublicationDate(DateUtils.getCurrentTime());
-      	versionAndUse.insert(versionInfo);  
+      	versionAndUse.save(versionInfo);  
       	datatype.setStatus(STATUS.PUBLISHED);
+      	List<VersionAndUse> ancestors =versionAndUse.findAllByIds(versionInfo.getAncestors());
+      	for(VersionAndUse ancestor: ancestors){
+      		ancestor.setDeprecated(true);
+      		versionAndUse.save(ancestor);  
+      	}
       Datatype saved = datatypeService.save(datatype);
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());

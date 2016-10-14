@@ -588,7 +588,7 @@ angular
                                                   }
                                               }
                                           ],
-                                          null, ['Delete',
+                                        ['Delete',
                                               function($itemScope) {
                                                   CloneDeleteSvc.deleteDatatype($itemScope.data);
 

@@ -20,12 +20,12 @@
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}} {{datatype.status}}</span>
+                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
 
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-info"
                  ng-disabled="editForm.$invalid || !editForm.$dirty||datatype.status === 'PUBLISHED'"
-                 ng-hide="viewSettings.tableReadonly"
+                 ng-hide="viewSettings.tableReadonly||igdocument"
                  ng-click="publishDatatype(datatype)">
  		 <span><i class="fa fa-paper-plane"></i>Publish</span>
 		</button>
@@ -36,12 +36,12 @@
                  ng-click="saveDatatype()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
-                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="datatype.status==='PUBLISHED'" ng-click="saveBindingForDatatype()">
+                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="datatype.status==='PUBLISHED'&&!editForm.$dirty" ng-click="saveBindingForDatatype()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
-         </button>
+         				</button>
                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty" ng-click="reset()">
                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
-        </button>
+        				</button>
                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty" ng-click="reset()">
                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
                         </button>
@@ -54,14 +54,14 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Data Type MetaData
                                 </tab-heading>
                                 <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope!=='MASTER'">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope!=='PUBLISHED'">
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="name" class="form-control" ng-model="datatype.name" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope==='MASTER'">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope==='PUBLISHED'">
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
