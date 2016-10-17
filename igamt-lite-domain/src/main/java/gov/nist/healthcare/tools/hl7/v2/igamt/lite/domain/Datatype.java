@@ -30,8 +30,8 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   private String label;
 
   private String ext="";
-
-  private String purposeAndUse = "";
+  
+private String purposeAndUse = "";
 
   protected List<Component> components = new ArrayList<Component>();
 

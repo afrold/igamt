@@ -20,23 +20,31 @@
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
+                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span><span ng-if="versionAndUseMap[datatype.id].deprecated"><i class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true">New version of this datatype is available</i></span>
                         <span class="pull-right">
-                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                                    ng-disabled="editForm.$invalid || !editForm.$dirty"
-                                    ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                                    ng-click="save()">
-                                <span><i class="fa fa-check fa-fw"></i> Save</span>
-                            </button>
-                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="datatype.scope !== 'USER'" ng-click="saveBindingForDatatype();cleanState();">
-                                <span><i class="fa fa-check fa-fw"></i> Save</span>
-                            </button>
-                            <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
-                                <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                            </button>
-                            <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
-                                <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                            </button>
+
+         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-info"
+                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                 ng-hide="viewSettings.tableReadonly||igdocument"
+                 ng-click="publishDatatype(datatype)">
+ 		 <span><i class="fa fa-paper-plane"></i>Publish</span>
+		</button>
+		
+         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                 ng-hide="viewSettings.tableReadonly || datatype.status === 'PUBLISHED'"
+                 ng-click="saveDatatype()">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+                        </button>
+                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="datatype.status==='PUBLISHED'&&!editForm.$dirty" ng-click="saveBindingForDatatype()">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         				</button>
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                            <span><i class="fa fa-times fa-fw"></i> Reset</span>
+        				</button>
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                            <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                        </button>
                         </span>
                     </div>
                     <div class="col-md-12" ng-controller="cmpDatatypeCtrl as cmp">
@@ -46,26 +54,26 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Data Type MetaData
                                 </tab-heading>
                                 <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope!=='MASTER'">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope!=='PUBLISHED'">
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="name" class="form-control" ng-model="datatype.name" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope==='MASTER'">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope==='PUBLISHED'">
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="name" class="form-control" ng-model="datatype.label" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}" ng-hide="datatype.scope === 'HL7STANDARD'||datatype.scope==='MASTER'">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}" ng-hide="datatype.status==='PUBLISHED'">
                                         <label class="col-md-2 control-label">Extension</label>
 
                                         <div class="controls col-md-10">
-                                            <input type="text" ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly || (datatype.scope !== 'USER' || datatype.scope === 'MASTER')" name="ext" id="ext" class="form-control" ng-model="datatype.ext" required aria-describedby="helpBlock2">
-                                            <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', igdocument.profile.datatypeLibrary.children)">Extension already used</span>
+                                            <input type="text" ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED' " name="ext" id="ext" class="form-control" ng-model="datatype.ext" required aria-describedby="helpBlock2">
+                                            <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', datatypeLibrary.children)">Extension already used</span>
                                         </div>
                                     </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
@@ -94,14 +102,14 @@
                                         <label class="col-md-2 control-label">Purpose and Use</label>
 
                                         <div class="controls col-md-10">
-                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeUse" />
+                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeUse" />
                                         </div>
                                     </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.comment.$invalid}">
                                         <label class="col-md-2 control-label">Comment</label>
 
                                         <div class="controls col-md-10">
-                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')" ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)" name="comment" id="comment"
+                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)" name="comment" id="comment"
                                                 class="form-control" ng-model="datatype.comment" />
                                         </div>
                                     </div>
@@ -112,7 +120,7 @@
                                             <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
                                                 <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>
                                             </div>
-                                            <div ng-show="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
+                                            <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
                                                 <div class="fr-view">
                                                     <div froala-view="datatype.usageNote"></div>
                                                 </div>
@@ -137,7 +145,7 @@
                                                 <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
                                                     <textarea froala="froalaEditorOptions" ng-model="datatype.defPreText" name="text" id="text" ng-change="setDirty()"></textarea>
                                                 </div>
-                                                <div ng-show="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
+                                                <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
                                                     <div class="fr-view">
                                                         <div froala-view="datatype.defPreText"></div>
                                                     </div>
@@ -172,7 +180,9 @@
                                                     </th>
                                                     <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
                                                     </th>
-                                                    <th class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                                                    <th ng-if ="igdocument" class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                                                    </th>
+                                                    <th ng-if ="!igdocument" class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Concept Domain
                                                     </th>
                                                     <th class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
                                                         Predicate
@@ -268,7 +278,7 @@
                                                 <div ng-show="!viewSettings.tableReadonly && datatype.scope==='USER'">
                                                     <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="text" ng-change="setDirty()"></textarea>
                                                 </div>
-                                                <div ng-show="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' )">
+                                                <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
                                                     <div class="fr-view">
                                                         <div froala-view="datatype.defPostText"></div>
                                                     </div>
@@ -285,7 +295,7 @@
                                                     <span class="pull-right">
                                                         <button class="btn btn-raised btn-primary btn-xs" ng-click="manageConformanceStatement(null);"
                                                                 type="button"
-                                                                ng-hide="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' ) || !datatype.components || datatype.components.length==0"><span><i
+                                                                ng-hide="viewSettings.tableReadonly || (datatype.status==='PUBLISHED') || !datatype.components || datatype.components.length==0"><span><i
                                                                 class="fa fa-plus fa-fw">
                                                             &nbsp; </i>Add Conf.Statement</span></button>
                                                     </span>
@@ -333,7 +343,7 @@
                                                     <span class="pull-right">
                                                                 <button class="btn btn-raised btn-primary btn-xs" ng-click="managePredicate(null);"
                                                                         type="button"
-                                                                        ng-hide="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER') || !datatype.components || datatype.components.length == 0"><span><i
+                                                                        ng-hide="viewSettings.tableReadonly || datatype.status==='PUBLISHED' || !datatype.components || datatype.components.length == 0"><span><i
                                                                         class="fa fa-plus fa-fw">
                                                                     &nbsp; </i>Add Predicate</span></button>
                                                     </span>
@@ -381,7 +391,7 @@
                                     </accordion>
                                 </div>
                             </tab>
-                            <tab ng-click="callDTDelta()">
+                            <tab ng-click="callDTDelta()" ng-if="igdocument">
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Datatype Delta
                                 </tab-heading>
@@ -508,6 +518,67 @@
                                 </div>
 
                             </tab>
+							
+							<tab ng-click="setDeltaToF(); getAllVersionsOfDT(versionAndUseMap[datatype.id].derived)" ng-if="igdocument&&versionAndUseMap[datatype.id].deprecated">
+      						     <tab-heading>
+                                    <i class="fa fa-link" aria-hidden="true"></i> Evolution
+                                </tab-heading>
+
+												
+                                            <div class="panel-body">
+								
+											   <table class="table table-marginless table-bordered col-md-12">
+                                                    <thead class="tbl-header col-md-12">
+                                              
+                                                          <th class="col-md-4">Version
+														  </th>
+   														  <th class="col-md-4">Publication Date
+														  </th>
+														<th class="col-md-4">Select</th>
+                                                    </thead>
+                                                    <tbody>
+													<tr class="col-md-12" ng-repeat="inf in availbleVersionOfDt">
+														<td class="col-md-4">PV{{inf.publicationVersion}}
+														</td>
+														<td class="col-md-4">{{inf.publicationDate}}
+														</td>
+														<td class="col-md-4">
+                                						 <input type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id)"/>
+														</td>
+													</tr>
+													</tbody>
+                                                </table>
+							
+                                                <table tt-table tt-params="dynamicDt_params" class=" table-marginless table-bordered table-condensed">
+                                                    <thead>
+                                                        <tr class="tbl-header">
+                                                            <th class="col-md-1" rowspan="2" style="width:14%;">Position</th>
+                                                            <th class="col-md-2" rowspan="2" style="width:37%;">Name</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:2%">Usage</th>
+                                                            <th class="col-md-1" colspan="2" style="width:4%">Cardinality</th>
+                                                            <th class="col-md-1" colspan="2" style="width:4%">Length</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
+                                                        </tr>
+                                                        <tr class="tbl-header">
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            
+                                        		</div>
+                                   
+
+
+
+
+
+                            </tab>
 
 
 
@@ -517,8 +588,8 @@
                                 </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
                                     <span class="pull-right">
-                                        <button ng-click="AddBindingForDatatype(datatype)" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> Add Binding</button>
-                                    </span>
+             <button ng-click="AddBindingForDatatype(datatype)" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> Add Binding</button>
+        </span>
                                     <div ng-show="references != null && references.length > 0">
                                         <table st-table="tmpReferences" st-safe-src="references" class="table table-striped table-bordered table-condensed">
                                             <thead>
@@ -547,7 +618,7 @@
                                                     <td st-ratio="15">
                                                         
                                                         <a ng-show="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</a>
-                                                        <a ng-show="ref.type === 'component'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</a>
+                                                        <a ng-show="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.name}}</a>
                                                     
                                                     </td>
                                                     <td st-ratio="10">
@@ -585,7 +656,7 @@
                                         </table>
                                     </div>
                                     <div ng-hide="references != null && references.length > 0">
-                                        <p>This data type is not being used in this ig document</p>
+                                        <p>This data type is not being used in this<span ng-if="igdocument"> ig document</span><span ng-if="!igdocument"> library</span></p>
                                     </div>
 
                                 </div>
@@ -664,7 +735,7 @@
 </script>
 <script type="text/ng-template" id="DatatypeComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)" ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
-        <td class="col-md-2 col-fixed-250" ng-controller="DatatypeRowCtrl">
+        <td class="col-md-2 col-fixed-250" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
             <!--<a ng-show="editableSeg!==node.id" ng-click="editComponent(node,datatype)" class="point">-->
             <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
             <!--</a>-->
@@ -710,7 +781,7 @@
             </ng-form>
         </td>
         <td class="col-md-1 col-fixed-80" >
-            <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)" ng-controller="DatatypeRowCtrl">
+            <span ng-if="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                 <ng-form name="{{formName}}" class="form-inline">
                     <select class="form-control input-sm" name="usage" id="usage"
                             ng-change="setUsage(node); openPredicateDialog(node);"
@@ -719,7 +790,7 @@
                 </ng-form>
             </span>
 
-            <div ng-show="node.usage === 'C' && countPredicate(node.position) !== 0">
+            <div ng-if="node.usage === 'C' && countPredicate(node.position) !== 0">
                 <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
                     C({{p.trueUsage}}/{{p.falseUsage}})
                 </p>
@@ -729,8 +800,8 @@
             </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <div ng-show="datatypesMap[node.datatype.id].components.length == 0">
-                <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
+            <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
+                <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                     <input style="width:45%" class="form-control" name="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.minLength.$invalid}" ng-model="node.minLength" required ng-minlength="1">
                     <input style="width:45%" class="form-control" type="text" name="maxLength" ng-change="setDirty()" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.maxLength.$invalid}" ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required>
                     </span>
@@ -738,21 +809,21 @@
             </div>
         </td>
         <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <div ng-show="datatypesMap[node.datatype.id].components.length == 0">
-                <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
+            <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
+                <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                     <input style="width:50%" class="form-control" type="text" name="confLength" required ng-change="setDirty()" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.confLength.$invalid}" ng-pattern="/^\d+$/" ng-model="node.confLength">
                 </ng-form>
             </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
-                <div ng-show="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
+            <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+                <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                     <a class="point" ng-show="editableDT!==node.id" ng-click="redirectDT(node.datatype)">
                         {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                     </a>
 
-                    <div ng-show="editableDT===node.id">
-                        <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
+                    <div ng-if="editableDT===node.id">
+                        <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                             <option ng-repeat="datatype in results" value="{{datatype}}"
                                     ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}}
                             </option>
@@ -774,8 +845,8 @@
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.tables.length!==0">
-                <a class="point" ng-repeat="table in node.tables track by table.id">
-                    <span ng-click="redirectVS(table)"> {{getTableLabel(tablesMap[table.id])}}</span>
+                <a class="point" ng-repeat="table in node.tables">
+                    <span ng-click="redirectVS(table)"> {{getTableLabel(table)}}</span>
                 </a>
                 <a ng-click="editVSModal(node)" class="point">
                     <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -874,7 +945,7 @@
             <div>
                 <div ng-show="node.tables != undefined  && node.tables !== null">
                     <span ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">
-                        {{getTableLabel(tablesMap[table.id])}}
+                        {{getTableLabel(table)}}
                     </span>
                 </div>
             </div>
@@ -938,7 +1009,7 @@
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" class="point" ng-show="node.tables !== null && node.tables !== undefined">
-                {{getTableLabel(tablesMap[table.id])}}
+                {{getTableLabel(table)}}
             </a>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
@@ -999,7 +1070,7 @@
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" ng-show="node.tables !== null && node.tables !== undefined">
-                {{getTableLabel(tablesMap[table.id])}}
+                {{getTableLabel(table.id)}}
             </a>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
@@ -1463,7 +1534,7 @@
         <h3 class="modal-title">Add Binding for Datatype : {{::getDatatypeLabel(datatype)}}</h3>
     </div>
     <div class="modal-body">
-        <span class="pull-right">
+        <span class="pull-right" ng-if="igdocument">
             <div class="btn-group btn-group-sm" data-toggle="buttons">
                 <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'SEGMENT'; init();" ng-class="{'active':bindingTargetType === 'SEGMENT'}">
                     <input type="radio" ng-value="SEGMENT" ng-model="bindingTargetType">To Segment
@@ -1502,7 +1573,7 @@
                         </td>
                         <td class="col-md-3">
                             <span ng-repeat="table in currentField.tables">
-                                {{::getTableLabel(tablesMap[table.id])}}     
+                                {{::getTableLabel(table)}}     
                             </span>
 
                         </td>
@@ -1527,7 +1598,7 @@
                 <tbody>
                     <tr>
                         <td class="col-md-3">
-                            <select ng-model='selectedDatatypeForBinding' class="form-control" ng-change="selectDatatype();" ng-options="dt as getDatatypeLabel(dt) for dt in datatypes | filter:{ scope : 'USER' }" />
+                            <select ng-model='selectedDatatypeForBinding' class="form-control" ng-change="selectDatatype();" ng-options="dt as getDatatypeLabel(dt) for dt in datatypes | filter:{ status : 'UNPUBLISHED' }" />
                         </td>
                         <td class="col-md-3">
                             <select ng-show='selectedDatatypeForBinding != null' ng-model='selectedComponentForBinding' class="form-control" ng-change="selectComp()">
@@ -1542,7 +1613,7 @@
                         </td>
                         <td class="col-md-3">
                             <span ng-repeat="table in currentComp.tables">
-                                {{getTableLabel(tablesMap[table.id])}}     
+                                {{getTableLabel(table.id)}}     
                             </span>
 
                         </td>

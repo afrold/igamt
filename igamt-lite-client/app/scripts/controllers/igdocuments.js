@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
+    .controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService,VersionAndUseService) {
 
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
@@ -18,6 +18,8 @@ angular.module('igl')
         $scope.print = function(param) {
             //console.log(param);
         }
+        $rootScope.versionAndUseMap={};
+
         $scope.loading = true;
         $scope.viewSettings = ViewSettings;
         $scope.igDocumentMsg = {};
@@ -405,6 +407,9 @@ angular.module('igl')
                     $rootScope.selectedMessagesIDS = [];
                     igdocument.childSections = $scope.orderSectionsByPosition(igdocument.childSections);
                     igdocument.profile.messages.children = $scope.orderMesagesByPositon(igdocument.profile.messages.children);
+                    $rootScope.datatypeLibrary=igdocument.profile.datatypeLibrary;
+                    $rootScope.tableLibrary=igdocument.profile.tableLibrary;
+                    $rootScope.ext=igdocument.metaData.ext;
                     $rootScope.selectedMessages = angular.copy(igdocument.profile.messages.children);
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
@@ -417,7 +422,7 @@ angular.module('igl')
                         $rootScope.filteredSegmentsList = angular.copy($rootScope.segments);
                         //$rootScope.filteredSegmentsList=[];
                         $scope.loadDatatypes().then(function() {
-
+                        	$scope.loadVersionAndUseInfo().then(function(){
                             $rootScope.filteredDatatypesList = angular.copy($rootScope.datatypes);
                             $scope.loadTables().then(function() {
                                 $scope.collectMessages();
@@ -443,7 +448,7 @@ angular.module('igl')
                         }, function() {});
                     }, function() {});
                 }, function() {});
-
+               }, function() {});
             }
 
         };
@@ -482,6 +487,32 @@ angular.module('igl')
                     this[child.id] = child;
                 }, $rootScope.datatypesMap);
                 delay.resolve(true);
+            }, function(error) {
+                $rootScope.msg().text = "DatatypesLoadFailed";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                delay.reject(false);
+
+            });
+            return delay.promise;
+        };
+        
+        $scope.loadVersionAndUseInfo = function() {
+            var delay = $q.defer();
+            var dtIds = [];
+            for (var i = 0; i < $rootScope.datatypeLibrary.children.length; i++) {
+                dtIds.push($rootScope.datatypeLibrary.children[i].id);
+                //console.log(0)
+            }
+            VersionAndUseService.findAllByIds(dtIds).then(function(result) {
+                console.log("==========Adding Datatypes from their IDS============");
+                //$rootScope.datatypes = result;
+                console.log(result);
+                angular.forEach(result, function(info) {
+                    $rootScope.versionAndUseMap[info.id] = info;
+                });
+                delay.resolve(true);
+
             }, function(error) {
                 $rootScope.msg().text = "DatatypesLoadFailed";
                 $rootScope.msg().type = "danger";
@@ -1054,6 +1085,7 @@ angular.module('igl')
         };
 
         $scope.selectDatatype = function(datatype) {
+        	console.log(datatype);
             $rootScope.Activate(datatype.id);
             $rootScope.subview = "EditDatatypes.html";
             if (datatype && datatype != null) {
@@ -1161,7 +1193,7 @@ angular.module('igl')
         $scope.selectTable = function(t) {
             $rootScope.Activate(t.id);
             var table = angular.copy(t);
-            if ($scope.viewSettings.tableReadonly || table.scope !== 'USER') {
+            if ($scope.viewSettings.tableReadonly || table.status == 'PUBLISHED') {
                 $rootScope.subview = "ReadValueSets.html";
             } else {
                 $rootScope.subview = "EditValueSets.html";
@@ -1984,13 +2016,14 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             console.log(usrLib);
             DatatypeLibrarySvc.getDatatypesByLibrary(usrLib.id).then(function(datatypes) {
                 $scope.userDatatypes = datatypes;
-                console.log($scope.userDatatypes);
+            	$scope.userDatatypes = _.where(datatypes, {scope:"USER",status:"PUBLISHED"});
             });
         };
         $scope.selectMasterDtLib = function(masLib) {
             console.log(masLib);
             DatatypeLibrarySvc.getDatatypesByLibrary(masLib.id).then(function(datatypes) {
-                $scope.masterDatatypes = datatypes;
+            	$scope.masterDatatypes = _.where(datatypes, {scope:"MASTER",status:"PUBLISHED"});
+                //$scope.masterDatatypes = datatypes;
                 console.log($scope.masterDatatypes);
             });
         };
@@ -2119,6 +2152,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
             newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
             newDatatype.scope = 'USER';
+            newDatatype.status='UNPUBLISHED';
             newDatatype.participants = [];
             newDatatype.id = new ObjectId().toString();;
             newDatatype.libIds = [];
@@ -2159,14 +2193,6 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             var index = $scope.selectedDatatypes.indexOf(datatype);
             if (index > -1) $scope.selectedDatatypes.splice(index, 1);
         };
-
-
-
-
-
-
-
-
         var secretEmptyKey = '[$empty$]'
 
         $scope.hl7Datatypes = datatypes.filter(function(current) {
@@ -2295,8 +2321,6 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
                             });
                         });
-
-
                     });
 
 

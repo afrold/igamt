@@ -44,4 +44,6 @@ public interface DatatypeOperations {
   Datatype findByNameAndVersionAndScope(String name, String version, String scope);
   Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope);
 
+List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String scope);
+
 }

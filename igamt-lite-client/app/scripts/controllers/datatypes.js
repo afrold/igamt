@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService) {
+    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService,VersionAndUseService,CompareService) {
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
             isFirstOpen: true,
@@ -13,6 +13,7 @@ angular.module('igl')
         $scope.tabStatus = {
             active: 1
         };
+        $scope.availbleVersionOfDt=[];
         $scope.editableDT = '';
         $scope.editableVS = '';
         $scope.readonly = false;
@@ -156,7 +157,41 @@ angular.module('igl')
                 }
             });
         };
+        
+        $scope.getAllVersionsOfDT=function(table){
+        	VersionAndUseService.findAllByIds(table).then(function(result) {
+                console.log("==========Adding Datatypes from their IDS============");
+                //$rootScope.datatypes = result;
+                console.log(result);
+                $scope.availbleVersionOfDt=result;
+            }, function(error) {
+                $rootScope.msg().text = "DatatypesLoadFailed";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                delay.reject(false);
 
+            });
+          
+        }
+        
+        $scope.compareWithCurrent = function(id) {
+        	DatatypeService.getOne(id).then(function(result){
+                $scope.dtChanged = false;
+                $scope.vsTemplate = false;
+                $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), [], [], [], []);
+                console.log("hg==========");
+                console.log($scope.dataList);
+                $scope.loadingSelection = false;
+                if ($scope.dynamicDt_params) {
+                    console.log($scope.dataList);
+                    $scope.showDelta = true;
+                    $scope.dynamicDt_params.refresh();
+                }
+        	});
+
+
+        };
+        
         $scope.editableComp = '';
         $scope.editComponent = function(component) {
             $scope.editableComp = component.id;
@@ -319,7 +354,7 @@ angular.module('igl')
                 $scope.ext = null;
                 $scope.results = [];
                 $scope.tmpResults = [];
-                $scope.results = $scope.results.concat(filterFlavors($rootScope.igdocument.profile.datatypeLibrary, field.datatype.name));
+                $scope.results = $scope.results.concat(filterFlavors($rootScope.datatypeLibrary, field.datatype.name));
                 $scope.results = _.uniq($scope.results, function(item, key, a) {
                     return item.id;
                 });
@@ -386,9 +421,26 @@ angular.module('igl')
             $scope.editableDT = '';
         };
 
-
+        $scope.getTableLabel = function(tableLink) {
+            var table = $rootScope.tablesMap[tableLink.id];
+            console.log("TABLE FOUND");
+            if (table && table.bindingIdentifier) {
+                return $scope.getLabel(table.bindingIdentifier, table.ext);
+            }
+            return "";
+        };
+        $scope.getLabel = function(name, ext) {
+            var label = name;
+            if (ext && ext !== null && ext !== "") {
+                label = label + "_" + ext;
+            }
+            return label;
+        };
 
         $scope.editVSModal = function(component) {
+        	console.log(component.tables);
+        	console.log($rootScope.tablesMap);
+        	console.log($rootScope.tablesMap[component.tables[0].id]);
             var modalInstance = $modal.open({
                 templateUrl: 'editVSModal.html',
                 controller: 'EditVSCtrl',
@@ -853,20 +905,26 @@ angular.module('igl')
             });
         };
 
-        $scope.save = function() {
-            var datatype = $rootScope.datatype;
-            var ext = datatype.ext;
-            if (datatype.libIds == undefined) datatype.libIds = [];
-            if (datatype.libIds.indexOf($rootScope.igdocument.profile.datatypeLibrary.id) == -1) {
-                datatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
-            }
-            DatatypeService.save(datatype).then(function(result) {
-                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary.children);
+        $scope.saveDatatype = function() {
+        	console.log("Saving");
+        	console.log($rootScope.datatype);
+        	console.log("IN LIBRARY");
+        	console.log($rootScope.datatypeLibrary);
+        	
+            var ext = $rootScope.datatype.ext;
+  
+            DatatypeService.save($rootScope.datatype).then(function(result) {
+                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.datatypeLibrary.children);
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
-                DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function(link) {
+                DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
                     DatatypeService.saveNewElements().then(function() {
-                        DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                    	DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                        DatatypeService.merge($rootScope.datatype, result);
+                        if ($scope.datatypesParams){
+                            $scope.datatypesParams.refresh();   	
+                        }
+  
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
                         $scope.saving = false;
@@ -906,8 +964,8 @@ angular.module('igl')
         };
 
         var searchById = function(id) {
-            var children = $rootScope.igdocument.profile.datatypeLibrary.children;
-            for (var i = 0; i < $rootScope.igdocument.profile.datatypeLibrary.children; i++) {
+            var children = $rootScope.datatypeLibrary.children;
+            for (var i = 0; i < $rootScope.datatypeLibrary.children; i++) {
                 if (children[i].id === id) {
                     return children[i];
                 }
@@ -939,7 +997,7 @@ angular.module('igl')
                         return $rootScope.igdocument.profile.metaData.hl7Version;
                     },
                     datatypeLibrary: function() {
-                        return $rootScope.igdocument.profile.datatypeLibrary;
+                        return $rootScope.datatypeLibrary;
                     }
                 }
             });
@@ -970,6 +1028,11 @@ angular.module('igl')
 
 angular.module('igl')
     .controller('DatatypeRowCtrl', function($scope, $filter) {
+    	
+    	$scope.init = function(node){
+    		$scope.node =node;
+    	}
+    	
         $scope.formName = "form_" + new Date().getTime();
     });
 
@@ -1283,7 +1346,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
+    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
     $scope.newComplexConstraint = [];
     $scope.constraints = [];
 
@@ -1295,7 +1358,6 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     $scope.setChanged = function() {
         $scope.changed = true;
     }
-
     $scope.initConformanceStatement = function() {
         $scope.newConstraint = angular.fromJson({
             position_1: null,
@@ -1310,7 +1372,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
             freeText: null,
             verb: null,
             ignoreCase: false,
-            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext),
+            constraintId: $rootScope.calNextCSID($rootScope.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext),
             contraintType: null,
             value: null,
             value2: null,
@@ -1326,7 +1388,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
     }
 
     $scope.initConformanceStatement();
@@ -1851,6 +1913,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
         $scope.dataList = [];
         listHL7Versions().then(function(versions) {
             $scope.versions = versions;
+            if($rootScope.igdocument&&$rootScope.igdocument!=null){
             $scope.version1 = angular.copy($rootScope.igdocument.profile.metaData.hl7Version);
             $scope.scope1 = "USER";
             $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
@@ -1866,6 +1929,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
             $scope.version2 = angular.copy($scope.version1);
             console.log($scope.scopes);
             console.log($scope.scopes[1]);
+            }
             //$scope.status.isFirstOpen = true;
             $scope.scope2 = "HL7STANDARD";
             if ($scope.dynamicDt_params) {
@@ -2075,7 +2139,7 @@ angular.module('igl').controller('AddBindingForDatatype', function($scope, $moda
     $scope.selectedComponentForBinding = null;
 
     $scope.pathForBinding = null;
-    $scope.bindingTargetType = 'SEGMENT';
+    $scope.bindingTargetType = 'DATATYPE';
 
     $scope.init = function() {
         $scope.selectedSegmentForBinding = null;

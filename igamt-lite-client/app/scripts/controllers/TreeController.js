@@ -180,7 +180,8 @@ angular
                         var dest = destNodes.$parent.$modelValue;
                         var dataTypeDest = destNodes.$element.attr('data-type');
                         var dataTypeSource = sourceNode.$element.attr('data-type');
-                        //event.source.nodeScope.$modelValue.sectionPosition = sortAfter + 1;
+                        // event.source.nodeScope.$modelValue.sectionPosition =
+						// sortAfter + 1;
 
                         var parentSource = sourceNode.$parentNodeScope.$modelValue;
                         var parentDest = event.dest.nodesScope.$nodeScope.$modelValue;
@@ -555,6 +556,71 @@ angular
                         }
                     ]
                 ];
+                
+                
+                
+                $scope.DataTypeOptionsForPublished = [
+                                          ['Create New Version',
+                                                 	function($itemScope) {
+                                        	  		console.log($rootScope.versionAndUseMap[$itemScope.data.id]);
+                                                	if ($rootScope.hasChanges()){
+                                                		
+                                                		$rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                			if($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.data.id])){
+                                                				CloneDeleteSvc.upgradeDatatype($itemScope.data);
+                                                			}else{
+                                                				$scope.showCannotPublish($itemScope.data);
+                                                			}
+                                                			
+                                                			});
+                                                		} else {
+                                                			
+                                                			if($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.data.id])){
+                                                				CloneDeleteSvc.upgradeDatatype($itemScope.data);
+                                                			}else{
+                                                				
+                                                				$scope.showCannotPublish($itemScope.data);
+                                                			}
+                                                		}
+                                                	}
+                                                ],
+                                          ['Create Flavor',
+                                              function($itemScope) {
+
+
+                                                  if ($rootScope.hasChanges()) {
+
+                                                      $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                          CloneDeleteSvc.copyDatatype($itemScope.data);
+                                                      });
+                                                  } else {
+                                                      CloneDeleteSvc.copyDatatype($itemScope.data);
+                                                  }
+                                              }
+                                          ],
+                                        ['Delete',
+                                              function($itemScope) {
+                                                  CloneDeleteSvc.deleteDatatype($itemScope.data);
+
+                                              }
+                                          ]
+                                      ];
+                
+                $rootScope.readyForNewVersion= function(obj){
+                	var ready =true;
+                	if(obj.derived&& obj.derived.length>0){
+                		 angular.forEach(obj.derived, function(derived){
+                			 
+                			 console.log(derived);
+                			 console.log($rootScope.datatypesMap[derived]);
+                		if($rootScope.datatypesMap[derived].status!=="PUBLISHED"){
+                			console.log("here");
+                			ready= false;
+                		}
+                	});
+                	}
+                	return ready;
+                };
 
                 $scope.ValueSetOptions = [
 
@@ -571,7 +637,7 @@ angular
                     ],
                     null, ['Export CSV',
                         function($itemScope) {
-                            $scope.exportCSVForTable($itemScope.table);
+                            $rootScope.exportCSVForTable($itemScope.table);
 
                         }
                     ],
@@ -592,11 +658,11 @@ angular
                                                            $rootScope.openConfirmLeaveDlg().result.then(function() {
                                                         	   console.log($scope.tableLibrary);
                                                         	   console.log("table in lib");
-                                                               CloneDeleteSvc.copyTableINLIB($itemScope.table, $scope.tableLibrary);
+                                                               CloneDeleteSvc.copyTableINLIB($itemScope.table, $rootScope.tableLibrary);
                                                            });
                                                        } else {
                                                     	   console.log("table in lib");
-                                                           CloneDeleteSvc.copyTableINLIB($itemScope.table,$scope.tableLibrary);
+                                                           CloneDeleteSvc.copyTableINLIB($itemScope.table,$rootScope.tableLibrary);
                                                        }
                                                    }
                                                ],
@@ -735,33 +801,27 @@ angular
                             	
                                 });
                         } else {
-                        	
                         	 $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);                        }
-                           
                         }
                     ]
                 ];
 
                 $scope.DataTypeLibraryOptions = [
-                    ['Import Datatypes',
+                    [' Add Datatypes',
                         function($itemScope) {
-                            $scope.addDatatypesFromTree();
-                            //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            	$scope.addDatatypeForUser("2.1");                            	
+                                });
+                    	
+                        }else{
+                        	$scope.addDatatypeForUser("2.1");
                         }
+                    }
                     ]
                 ];
 
-
-
-                $scope.ValueSetAddOptionsINLIB = [
-                    ['Add Value Sets ',
-
-                        function($itemScope) {
-                            //$scope.addDatatypesFromTree();
-                            //$scope.openDataypeList($scope.datatypeLibStruct.metaData.hl7Version);
-                        }
-                    ]
-                ];
 
                 $scope.addValueSets = [
 
@@ -788,12 +848,12 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                            	$rootScope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
                             	
                                 });
                         } else {
                         	
-                            $scope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                        	$rootScope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
                            
                         }
       	
@@ -805,12 +865,12 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                            	$rootScope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
                             	
                                 });
                         } else {
                         	
-                            $scope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                        	$rootScope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
                            
                         }
                         }
@@ -821,12 +881,12 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                            	$rootScope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
                             	
                                 });
                         } else {
                         	
-                            $scope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                        	$rootScope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
                            
                         }
                     	
@@ -843,12 +903,12 @@ angular
                                                          if ($rootScope.hasChanges()) {
 
                                                              $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                                 CloneDeleteSvc.createNewTable($scope.tableLibrary.scope, $scope.tableLibrary);
+                                                                 CloneDeleteSvc.createNewTable($rootScope.tableLibrary.scope, $scope.tableLibrary);
                                                                  $scope.editTableINLIB($rootScope.table);                                                             	
                                                                  });
                                                          } else {
                                                          	
-                                                             CloneDeleteSvc.createNewTable($scope.tableLibrary.scope, $scope.tableLibrary);
+                                                             CloneDeleteSvc.createNewTable($rootScope.tableLibrary.scope, $scope.tableLibrary);
                                                              $scope.editTableINLIB($rootScope.table);                                                            
                                                          }
 
@@ -860,11 +920,11 @@ angular
                                                              if ($rootScope.hasChanges()) {
 
                                                                  $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                                     $rootScope.addHL7Table($scope.tableLibrary, "2.1");                                                                 	
+                                                                     $rootScope.addHL7Table($rootScope.tableLibrary, "2.1");                                                                 	
                                                                      });
                                                              } else {
                                                              	
-                                                                 $rootScope.addHL7Table($scope.tableLibrary, "2.1");                                                                
+                                                                 $rootScope.addHL7Table($rootScope.tableLibrary, "2.1");                                                                
                                                              }
                                                     	 
                                                     	 
@@ -879,11 +939,11 @@ angular
                                                     	 if ($rootScope.hasChanges()) {
 
                                                              $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                                 $rootScope.addPHINVADSTables($scope.tableLibrary);
+                                                                 $rootScope.addPHINVADSTables($rootScope.tableLibrary);
                                                                  });
                                                          } else {
                                                          	
-                                                             $rootScope.addPHINVADSTables($scope.tableLibrary);
+                                                             $rootScope.addPHINVADSTables($rootScope.tableLibrary);
                                                          }
                                                          }
                                                      ],
@@ -893,11 +953,11 @@ angular
                                                     	 if ($rootScope.hasChanges()) {
 
                                                              $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                                 $rootScope.addCSVTables($scope.tableLibrary);           
+                                                                 $rootScope.addCSVTables($$rootScope.tableLibrary);           
                                                                  });
                                                          } else {
                                                          	
-                                                             $rootScope.addCSVTables($scope.tableLibrary);                                                  
+                                                             $rootScope.addCSVTables($rootScope.tableLibrary);                                                  
                                                              }
                                                          }
                                                      ]
@@ -906,7 +966,7 @@ angular
 
                 function processEditSeg(seg) {
                     $scope.Activate(seg.id);
-                    //$rootScope.activeSegment = seg;
+                    // $rootScope.activeSegment = seg;
                     $scope.$emit('event:openSegment', seg);
                 };
 
@@ -973,7 +1033,7 @@ angular
 
                     $scope.Activate(param.id);
                     $rootScope.section = $scope.getRoutSectionByname(param);
-                    //$rootScope.currentData=section;
+                    // $rootScope.currentData=section;
 
                     if ($rootScope.section.sectionContents === null) {
                         $rootScope.section.sectionContents = "";
@@ -1272,7 +1332,7 @@ angular
                 };
 
                 $scope.getSegmentsFromgroup = function(group) {
-                    //_.union($rootScope.selectedSegments,temp);
+                    // _.union($rootScope.selectedSegments,temp);
                     for (var i = 0; i < group.children.length; i++) {
                         if (group.children[i].type === "segmentRef") {
                             console.log("IN IF ");
@@ -1280,7 +1340,7 @@ angular
                             var temp2 = [];
                             temp2.push(segment);
                             $rootScope.FilteredSegments.push(segment);
-                            //$rootScope.FilteredSegments=_.union($rootScope.FilteredSegments,temp2);
+                            // $rootScope.FilteredSegments=_.union($rootScope.FilteredSegments,temp2);
 
 
                         } else if (group.children[i].type === "group") {
@@ -1354,7 +1414,7 @@ angular
                     for (var i = 0; i < seg.fields.length; i++) {
                         if (seg.fields[i].table != null) {
                             var table = $rootScope.tablesMap[seg.fields[i].table.id];
-                            //console.log(datatype);
+                            // console.log(datatype);
                             var temp = [];
                             temp.push(table);
                             tables = _.union(tables, temp);

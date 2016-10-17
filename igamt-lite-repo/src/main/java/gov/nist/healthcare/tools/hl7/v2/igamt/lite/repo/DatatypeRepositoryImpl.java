@@ -123,6 +123,16 @@ public Datatype findByNameAndVersionsAndScope(String name, String[] versions, St
 
     return datatype;
 }
+@Override
+public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String scope) {
+	Criteria where = Criteria.where("name").is(name);
+    where.andOperator(Criteria.where("hl7versions").is(versions));
+    //where.andOperator(Criteria.where("scope").is(scope));
+
+    Query qry = Query.query(where);
+    List<Datatype> datatypes = mongo.find(qry, Datatype.class);
+    return datatypes;
+}
 
 
   // Query set4Brevis(Query qry) {
