@@ -176,17 +176,15 @@ angular.module('igl')
         
         $scope.compareWithCurrent = function(id) {
         	DatatypeService.getOne(id).then(function(result){
-                $scope.loadingSelection = true;
                 $scope.dtChanged = false;
                 $scope.vsTemplate = false;
-                $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+                $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), [], [], [], []);
                 console.log("hg==========");
                 console.log($scope.dataList);
                 $scope.loadingSelection = false;
                 if ($scope.dynamicDt_params) {
                     console.log($scope.dataList);
                     $scope.showDelta = true;
-                    $scope.status.isSecondOpen = true;
                     $scope.dynamicDt_params.refresh();
                 }
         	});
