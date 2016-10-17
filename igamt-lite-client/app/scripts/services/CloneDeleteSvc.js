@@ -155,6 +155,7 @@ angular.module('igl').factory(
 
         };
         svc.upgradeDatatype= function(datatype){
+        	console.log("NEW VERSION");
             var newDatatype = angular.copy(datatype, {});
             newDatatype.scope = $rootScope.datatypeLibrary.scope;
             newDatatype.status='UNPUBLISHED';
@@ -167,23 +168,38 @@ angular.module('igl').factory(
             datatypeInfo.derived=[];
             datatypeInfo.ancestors=[];
             
-           
+           console.log(datatype.id);
             VersionAndUseService.findById(datatype.id).then(function(inf){
-            	console.log("Returning");
+            	console.log("Returning ================================");
             	console.log(inf);
-            	datatypeInfo.ancestors=inf.ancestors;
-            	datatypeInfo.ancestors.push(datatype.id);
+            	var ancestors=inf.ancestors;
+            	ancestors.push(datatype.id);
+            	datatypeInfo.ancestors=ancestors;
             	console.log(datatypeInfo.ancestors);
+            	datatypeInfo.publicationVersion=inf.publicationVersion;
+            	
             	 VersionAndUseService.save(datatypeInfo).then(function(result){
                  	$rootScope.versionAndUseMap[result.id]=result;
-                 	console.log(result);
-                 	datatypeInfo.publicationVersion=1;
+        
+                 	angular.forEach(result.ancestors,function(ancestor){
+                 		VersionAndUseService.findById(ancestor).then(function(inf){
+                         	var derived = inf.derived;
+                         	derived.push(result.id);
+                         	inf.derived=derived;
+                         	console.log(result);
+                         
+                         	VersionAndUseService.save(inf).then(function(res2){
+                         	 	$rootScope.versionAndUseMap[res2.id]=res2;
+                 		});
+                 	});
+
+                  	
+                  });
+                 	
                  });
             	 
           });
-           
-           
-            
+
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.datatypeLibrary.id);
             if(datatype.scope==='MASTER' && $rootScope.igdocument){

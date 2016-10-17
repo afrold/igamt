@@ -8,16 +8,13 @@ angular.module('igl').factory('VersionAndUseService',
 			findById:function(id){
 				console.log("loooking for "+id);
 				 var delay = $q.defer();
-	                if ($rootScope.versionAndUseMap[id] === undefined || $rootScope.versionAndUseMap[id] === null) {
 	                    $http.get('api/versionAndUse/' + id).then(function(response) {
 	                        var info = angular.fromJson(response.data);
 	                        delay.resolve(info);
 	                    }, function(error) {
 	                        delay.reject(error);
 	                    });
-	                } else {
-	                    delay.resolve($rootScope.versionAndUseMap[id]);
-	                }
+	                
 	                return delay.promise;
 				
 			},

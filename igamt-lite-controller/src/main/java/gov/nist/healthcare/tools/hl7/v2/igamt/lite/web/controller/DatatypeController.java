@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import antlr.Version;
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
@@ -279,18 +280,27 @@ public class DatatypeController extends CommonController {
     if (!STATUS.PUBLISHED.equals(datatype.getStatus())) {
       log.debug("datatypeLibrary=" + datatype);
       log.debug("datatypeLibrary.getId()=" + datatype.getId());
+      	VersionAndUse versionInfo= versionAndUse.findById(datatype.getId());
+      	
+      	
+      	if(versionInfo==null){
+      		versionInfo= new VersionAndUse();
+      		versionInfo.setPublicationVersion(1);
+       
+      		versionInfo.setPublicationDate(DateUtils.getCurrentTime());
+      		versionInfo.setId(datatype.getId());
+      	}else{
+      		List<VersionAndUse> ancestors =versionAndUse.findAllByIds(versionInfo.getAncestors());
+      		versionInfo.setPublicationDate(DateUtils.getCurrentTime());
 
-      	VersionAndUse versionInfo= new VersionAndUse();
-      	versionInfo.setPublicationVersion(1);
-        versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
-      	versionInfo.setPublicationDate(DateUtils.getCurrentTime());
-      	versionAndUse.save(versionInfo);  
-      	datatype.setStatus(STATUS.PUBLISHED);
-      	List<VersionAndUse> ancestors =versionAndUse.findAllByIds(versionInfo.getAncestors());
-      	for(VersionAndUse ancestor: ancestors){
-      		ancestor.setDeprecated(true);
-      		versionAndUse.save(ancestor);  
+          	for(VersionAndUse ancestor: ancestors){
+          		ancestor.setDeprecated(true);
+          		versionAndUse.save(ancestor);  
+          	}
+      		versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
       	}
+  		versionAndUse.save(versionInfo);
+      	datatype.setStatus(STATUS.PUBLISHED);
       Datatype saved = datatypeService.save(datatype);
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());

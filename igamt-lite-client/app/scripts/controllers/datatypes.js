@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService) {
+    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService,VersionAndUseService,CompareService) {
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
             isFirstOpen: true,
@@ -13,6 +13,7 @@ angular.module('igl')
         $scope.tabStatus = {
             active: 1
         };
+        $scope.availbleVersionOfDt=[];
         $scope.editableDT = '';
         $scope.editableVS = '';
         $scope.readonly = false;
@@ -156,7 +157,43 @@ angular.module('igl')
                 }
             });
         };
+        
+        $scope.getAllVersionsOfDT=function(table){
+        	VersionAndUseService.findAllByIds(table).then(function(result) {
+                console.log("==========Adding Datatypes from their IDS============");
+                //$rootScope.datatypes = result;
+                console.log(result);
+                $scope.availbleVersionOfDt=result;
+            }, function(error) {
+                $rootScope.msg().text = "DatatypesLoadFailed";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                delay.reject(false);
 
+            });
+          
+        }
+        
+        $scope.compareWithCurrent = function(id) {
+        	DatatypeService.getOne(id).then(function(result){
+                $scope.loadingSelection = true;
+                $scope.dtChanged = false;
+                $scope.vsTemplate = false;
+                $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+                console.log("hg==========");
+                console.log($scope.dataList);
+                $scope.loadingSelection = false;
+                if ($scope.dynamicDt_params) {
+                    console.log($scope.dataList);
+                    $scope.showDelta = true;
+                    $scope.status.isSecondOpen = true;
+                    $scope.dynamicDt_params.refresh();
+                }
+        	});
+
+
+        };
+        
         $scope.editableComp = '';
         $scope.editComponent = function(component) {
             $scope.editableComp = component.id;

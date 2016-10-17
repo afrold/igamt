@@ -562,15 +562,25 @@ angular
                 $scope.DataTypeOptionsForPublished = [
                                           ['Create New Version',
                                                  	function($itemScope) {
-
-
-                                                	if ($rootScope.hasChanges()) {
-
+                                        	  		console.log($rootScope.versionAndUseMap[$itemScope.data.id]);
+                                                	if ($rootScope.hasChanges()){
+                                                		
                                                 		$rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                			CloneDeleteSvc.upgradeDatatype($itemScope.data);
+                                                			if($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.data.id])){
+                                                				CloneDeleteSvc.upgradeDatatype($itemScope.data);
+                                                			}else{
+                                                				$scope.showCannotPublish($itemScope.data);
+                                                			}
+                                                			
                                                 			});
                                                 		} else {
-                                                			CloneDeleteSvc.upgradeDatatype($itemScope.data);
+                                                			
+                                                			if($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.data.id])){
+                                                				CloneDeleteSvc.upgradeDatatype($itemScope.data);
+                                                			}else{
+                                                				
+                                                				$scope.showCannotPublish($itemScope.data);
+                                                			}
                                                 		}
                                                 	}
                                                 ],
@@ -595,6 +605,22 @@ angular
                                               }
                                           ]
                                       ];
+                
+                $rootScope.readyForNewVersion= function(obj){
+                	var ready =true;
+                	if(obj.derived&& obj.derived.length>0){
+                		 angular.forEach(obj.derived, function(derived){
+                			 
+                			 console.log(derived);
+                			 console.log($rootScope.datatypesMap[derived]);
+                		if($rootScope.datatypesMap[derived].status!=="PUBLISHED"){
+                			console.log("here");
+                			ready= false;
+                		}
+                	});
+                	}
+                	return ready;
+                };
 
                 $scope.ValueSetOptions = [
 

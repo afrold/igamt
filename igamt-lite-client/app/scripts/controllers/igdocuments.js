@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
+    .controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService,VersionAndUseService) {
 
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
@@ -18,6 +18,8 @@ angular.module('igl')
         $scope.print = function(param) {
             //console.log(param);
         }
+        $rootScope.versionAndUseMap={};
+
         $scope.loading = true;
         $scope.viewSettings = ViewSettings;
         $scope.igDocumentMsg = {};
@@ -420,7 +422,7 @@ angular.module('igl')
                         $rootScope.filteredSegmentsList = angular.copy($rootScope.segments);
                         //$rootScope.filteredSegmentsList=[];
                         $scope.loadDatatypes().then(function() {
-
+                        	$scope.loadVersionAndUseInfo().then(function(){
                             $rootScope.filteredDatatypesList = angular.copy($rootScope.datatypes);
                             $scope.loadTables().then(function() {
                                 $scope.collectMessages();
@@ -446,7 +448,7 @@ angular.module('igl')
                         }, function() {});
                     }, function() {});
                 }, function() {});
-
+               }, function() {});
             }
 
         };
@@ -485,6 +487,32 @@ angular.module('igl')
                     this[child.id] = child;
                 }, $rootScope.datatypesMap);
                 delay.resolve(true);
+            }, function(error) {
+                $rootScope.msg().text = "DatatypesLoadFailed";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                delay.reject(false);
+
+            });
+            return delay.promise;
+        };
+        
+        $scope.loadVersionAndUseInfo = function() {
+            var delay = $q.defer();
+            var dtIds = [];
+            for (var i = 0; i < $rootScope.datatypeLibrary.children.length; i++) {
+                dtIds.push($rootScope.datatypeLibrary.children[i].id);
+                //console.log(0)
+            }
+            VersionAndUseService.findAllByIds(dtIds).then(function(result) {
+                console.log("==========Adding Datatypes from their IDS============");
+                //$rootScope.datatypes = result;
+                console.log(result);
+                angular.forEach(result, function(info) {
+                    $rootScope.versionAndUseMap[info.id] = info;
+                });
+                delay.resolve(true);
+
             }, function(error) {
                 $rootScope.msg().text = "DatatypesLoadFailed";
                 $rootScope.msg().type = "danger";

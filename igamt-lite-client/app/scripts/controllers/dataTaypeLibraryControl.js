@@ -535,6 +535,38 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             });
         };
         
+        $scope.showCannotPublish=function(datatype){
+        	
+        	$scope.unpublishedChild=[];
+        	angular.forEach($rootScope.versionAndUseMap[datatype.id].derived, function(derived){
+        		if($rootScope.datatypesMap[derived].status=="UNPUBLISHED"){
+        			$scope.unpublishedChild.push($rootScope.datatypesMap[derived]);
+        			
+        		}
+        		
+        	});
+        	 var addDatatypeInstance = $modal.open({
+                 templateUrl: 'cannotPublish.html',
+                 controller: 'cannotPublish',
+                 size: 'lg',
+                 windowClass: 'conformance-profiles-modal',
+                 resolve: {
+                    
+                     datatype: function() {
+
+                         return datatype;
+                     },
+                    derived: function() {
+
+
+                         return $scope.unpublishedChild;
+                     }
+                    
+                 }
+             }).result.then(function(results) {
+                 
+             });
+        };
         
         $scope.dynamicDt_params = new ngTreetableParams({
             getNodes: function(parent) {
@@ -729,9 +761,9 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             }
 
 
-                            $scope.addTable(table).then(function(result) {
-                                //console.log("Added table succes");
-                            });
+//                            $scope.addTable(table).then(function(result) {
+//                                //console.log("Added table succes");
+//                            });
                     		
                     	})
 
@@ -1966,8 +1998,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             return temp;
 
         };
-        
-
 
         $scope.displayVersion= function(element){
         	
@@ -2101,9 +2131,9 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             	console.log("Cleeaning");
                                 $scope.editForm.$setPristine();
                                 $scope.editForm.$dirty = false;
-                                $rootScope.clearChanges();
+                                
                             }
-          
+                            $rootScope.clearChanges();
                             DatatypeService.merge($rootScope.datatype, result);
                             if ($scope.datatypesParams){
                                 $scope.datatypesParams.refresh();   	
@@ -2436,10 +2466,6 @@ angular.module('igl').controller('AbortPublishCtl', function($scope, $rootScope,
 
 
 
-
-
-
-
 angular.module('igl').controller('ConfirmRedirect', function($scope, $rootScope, $http, $modalInstance, datatypeTo) {
 
     $scope.datatypeTo = datatypeTo;
@@ -2454,6 +2480,18 @@ angular.module('igl').controller('ConfirmRedirect', function($scope, $rootScope,
     };
 });
 
+angular.module('igl').controller('cannotPublish', function($scope, $rootScope, $http, $modalInstance, datatype, derived) {
+
+    $scope.datatypeTo= datatype;
+    $scope.delete = function() {
+        $modalInstance.close($scope.datatypeTo);
+    };
+
+    $scope.cancel = function() {
+    	console.log("sssss");
+        $modalInstance.dismiss('cancel');
+    };
+});
 
 
 angular.module('igl').controller('PredicateDatatypeLibraryCtrl', function($scope, $modalInstance, selectedNode, selectedDatatype, $rootScope) {

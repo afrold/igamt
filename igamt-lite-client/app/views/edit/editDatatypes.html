@@ -20,11 +20,11 @@
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
+                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span><span ng-if="versionAndUseMap[datatype.id].deprecated"><i class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true">New version of this datatype is available</i></span>
                         <span class="pull-right">
 
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-info"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty||datatype.status === 'PUBLISHED'"
+                 ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="viewSettings.tableReadonly||igdocument"
                  ng-click="publishDatatype(datatype)">
  		 <span><i class="fa fa-paper-plane"></i>Publish</span>
@@ -180,7 +180,9 @@
                                                     </th>
                                                     <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
                                                     </th>
-                                                    <th class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                                                    <th ng-if ="igdocument" class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                                                    </th>
+                                                    <th ng-if ="!igdocument" class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Concept Domain
                                                     </th>
                                                     <th class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
                                                         Predicate
@@ -514,6 +516,67 @@
 
 
                                 </div>
+
+                            </tab>
+							
+							<tab ng-click="setDeltaToF(); getAllVersionsOfDT(versionAndUseMap[datatype.id].derived)" ng-if="igdocument&&versionAndUseMap[datatype.id].deprecated">
+      						     <tab-heading>
+                                    <i class="fa fa-link" aria-hidden="true"></i> Evolution
+                                </tab-heading>
+
+												
+                                            <div class="panel-body">
+								
+											   <table class="table">
+                                                    <thead class="col-md-12">
+                                              
+                                                          <th class="col-md-4">Version
+														  </th>
+   														  <th class="col-md-4">Publication Date
+														  </th>
+														<th class="col-md-4">Select</th>
+                                                    </thead>
+                                                    <tbody>
+													<tr class="col-md-12" ng-repeat="inf in availbleVersionOfDt">
+														<td class="col-md-4">PV{{inf.publicationVersion}}
+														</td>
+														<td class="col-md-4">{{inf.publicationDate}}
+														</td>
+														<td class="col-md-4">
+                                						 <input type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id)"/>
+														</td>
+													</tr>
+													</tbody>
+                                                </table>
+							
+                                                <table tt-table tt-params="dynamicDt_params" class=" table-marginless table-bordered table-condensed">
+                                                    <thead>
+                                                        <tr class="tbl-header">
+                                                            <th class="col-md-1" rowspan="2" style="width:14%;">Position</th>
+                                                            <th class="col-md-2" rowspan="2" style="width:37%;">Name</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:2%">Usage</th>
+                                                            <th class="col-md-1" colspan="2" style="width:4%">Cardinality</th>
+                                                            <th class="col-md-1" colspan="2" style="width:4%">Length</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
+                                                        </tr>
+                                                        <tr class="tbl-header">
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            
+                                        		</div>
+                                   
+
+
+
+
 
                             </tab>
 
