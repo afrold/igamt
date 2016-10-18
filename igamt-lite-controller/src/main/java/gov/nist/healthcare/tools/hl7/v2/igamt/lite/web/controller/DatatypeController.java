@@ -287,7 +287,6 @@ public class DatatypeController extends CommonController {
       		versionInfo= new VersionAndUse();
       		versionInfo.setPublicationVersion(1);
        
-      		versionInfo.setPublicationDate(DateUtils.getCurrentTime());
       		versionInfo.setId(datatype.getId());
       	}else{
       		List<VersionAndUse> ancestors =versionAndUse.findAllByIds(versionInfo.getAncestors());
@@ -299,6 +298,7 @@ public class DatatypeController extends CommonController {
           	}
       		versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
       	}
+  		versionInfo.setPublicationDate(DateUtils.getCurrentTime());
   		versionAndUse.save(versionInfo);
       	datatype.setStatus(STATUS.PUBLISHED);
       Datatype saved = datatypeService.save(datatype);

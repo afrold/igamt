@@ -25,7 +25,7 @@
 
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-info"
                  ng-disabled="editForm.$invalid || !editForm.$dirty"
-                 ng-hide="viewSettings.tableReadonly||igdocument"
+                 ng-hide="viewSettings.tableReadonly||igdocument||datatype.status==='PUBLISHED'"
                  ng-click="publishDatatype(datatype)">
  		 <span><i class="fa fa-paper-plane"></i>Publish</span>
 		</button>
@@ -527,29 +527,35 @@
 												
                                             <div class="panel-body">
 								
-											   <table class="table table-marginless table-bordered col-md-12">
-                                                    <thead class="tbl-header col-md-12">
-                                              
-                                                          <th class="col-md-4">Version
-														  </th>
-   														  <th class="col-md-4">Publication Date
-														  </th>
-														<th class="col-md-4">Select</th>
-                                                    </thead>
-                                                    <tbody>
-													<tr class="col-md-12" ng-repeat="inf in availbleVersionOfDt">
-														<td class="col-md-4">PV{{inf.publicationVersion}}
-														</td>
-														<td class="col-md-4">{{inf.publicationDate}}
-														</td>
-														<td class="col-md-4">
-                                						 <input type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id)"/>
-														</td>
-													</tr>
-													</tbody>
-                                                </table>
+	
+
+					<table class="table table-bordered table-stripped">
+                    <thead>
+                        <tr class="tbl-header">
+                            <th class="col-md-3">Publication Version</th>
+                            <th class="col-md-3">Publication Date</th>
+                            <th class="col-md-3"></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="inf in availbleVersionOfDt">
+                            <td class="col-md-3">
+                                <span>PV{{inf.publicationVersion}}</span>
+                            </td>
+                            <td class="col-md-3">
+<!--                                 <span>>{{inf.publicationDate}}</span>
+ -->                         <ul>
+                                    <li ng-repeat="version in data.versions">{{version}}</li></ul>
+                            </td>
+                            <td class="col-md-3">
+              <input type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id)"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 							
-                                                <table tt-table tt-params="dynamicDt_params" class=" table-marginless table-bordered table-condensed">
+                                                <table tt-table tt-params="dynamicDt_Evolution" class=" table-marginless table-bordered table-condensed">
                                                     <thead>
                                                         <tr class="tbl-header">
                                                             <th class="col-md-1" rowspan="2" style="width:14%;">Position</th>
@@ -572,11 +578,6 @@
                                                 </table>
                                             
                                         		</div>
-                                   
-
-
-
-
 
                             </tab>
 
@@ -911,6 +912,72 @@
         </td>
     </tr>
 </script>
+<script type="text/ng-template" id="DatatypeComponentReadTree.html">
+    <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)">
+        <td class="col-md-2 col-fixed-250">
+            <span class="label label-component label-icon">C</span>
+            <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
+        </td>
+        <td class="col-md-1 col-fixed-80">
+            <div>
+                <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
+                    <span>{{::node.usage}}</span>
+                </span>
+
+                <div ng-show="node.usage === 'C' && countPredicate(node.position) !== 0">
+                    <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
+                        C({{::p.trueUsage}}/{{p.falseUsage}})
+                    </p>
+                </div>
+            </div>
+        </td>
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
+        </td>
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
+        </td>
+        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+            <a ng-click="redirectDT(node.datatype)">
+                {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            </a>
+        </td>
+        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+            <div>
+                <div ng-show="node.tables != undefined  && node.tables !== null">
+                    <span ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">
+                        {{getTableLabel(table)}}
+                    </span>
+                </div>
+            </div>
+        </td>
+        <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
+            <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
+                <span tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
+            </p>
+        </td>
+        <td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
+            <p ng-repeat="c in datatype.conformanceStatements    | filter:{constraintTarget:node.position + '[1]'}:true">
+                <span tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
+            </p>
+        </td>
+        <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
+            <a ng-show="node.text && node.text !== '' && node.text !== null" ng-click="openRichTextDlg(node, 'text','Definition Text', true)" class="point">
+                <i class="fa fa-eye fa-fw"></i>
+            </a>
+        </td>
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
+            <!--<span class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null" disabled>-->
+            <!--</span>-->
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-show="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
+                tooltip-placement="left">
+                <i class="fa fa-eye fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
+            </a>
+
+        </td>
+    </tr>
+</script>
+
 <script type="text/ng-template" id="DatatypeComponentReadTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250">

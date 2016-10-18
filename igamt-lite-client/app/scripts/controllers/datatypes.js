@@ -174,22 +174,49 @@ angular.module('igl')
           
         }
         
+        $scope.dynamicDt_Evolution = new ngTreetableParams({
+            getNodes: function(parent) {
+                if ($scope.dataList !== undefined) {
+
+                    //return parent ? parent.fields : $scope.test;
+                    if (parent) {
+                        if (parent.fields) {
+                            return parent.fields;
+                        } else if (parent.components) {
+                            return parent.components;
+                        } else if (parent.segments) {
+                            return parent.segments;
+                        } else if (parent.codes) {
+                            return parent.codes;
+                        }
+
+                    } else {
+                        return $scope.dataList;
+                    }
+
+                }
+            },
+            getTemplate: function(node) {
+                return 'tree_node';
+            }
+        });
         $scope.compareWithCurrent = function(id) {
+        	$rootScope.clearChanges();
+            $scope.cleanState();
+        	
         	DatatypeService.getOne(id).then(function(result){
                 $scope.dtChanged = false;
                 $scope.vsTemplate = false;
                 $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), [], [], [], []);
-                console.log("hg==========");
+                console.log("$scope.dataList");
                 console.log($scope.dataList);
+                $rootScope.clearChanges();
+                $scope.cleanState();
                 $scope.loadingSelection = false;
-                if ($scope.dynamicDt_params) {
-                    console.log($scope.dataList);
-                    $scope.showDelta = true;
-                    $scope.dynamicDt_params.refresh();
+                if ($scope.dynamicDt_Evolution) {
+                    $scope.dynamicDt_Evolution.refresh();
                 }
         	});
-
-
         };
         
         $scope.editableComp = '';
@@ -918,9 +945,9 @@ angular.module('igl')
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
                 DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
+                	DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                    DatatypeService.merge($rootScope.datatype, result);
                     DatatypeService.saveNewElements().then(function() {
-                    	DatatypeService.merge($rootScope.datatypesMap[result.id], result);
-                        DatatypeService.merge($rootScope.datatype, result);
                         if ($scope.datatypesParams){
                             $scope.datatypesParams.refresh();   	
                         }
