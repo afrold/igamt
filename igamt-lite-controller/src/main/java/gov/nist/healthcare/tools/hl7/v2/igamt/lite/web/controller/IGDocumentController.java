@@ -539,7 +539,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("text/xml");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -554,7 +554,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -569,7 +569,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -587,7 +587,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -605,7 +605,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -621,7 +621,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -653,7 +653,7 @@ public class IGDocumentController extends CommonController {
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -693,7 +693,7 @@ public class IGDocumentController extends CommonController {
     response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
+            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -1309,21 +1309,22 @@ public class IGDocumentController extends CommonController {
    * @return
    * @throws IGDocumentException
    */
-  @RequestMapping(value = "/{id}/selfUnshare", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/unshare", method = RequestMethod.POST,
       produces = "application/json")
   public boolean unshareIgDocument(@PathVariable("id") String id,
-      @RequestParam("participantId") Long participantId) throws IGDocumentException {
-    log.info("Unsharing id document with id=" + id + " with partipant=" + participantId);
+      @RequestBody Long shareParticipantId) throws IGDocumentException {
+    log.info("Unsharing id document with id=" + id + " with participant=" + shareParticipantId);
     try {
       User u = userService.getCurrentUser();
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (account == null)
         throw new UserAccountNotFoundException();
       IGDocument d = this.findIGDocument(id);
-      if (d.getAccountId() != null && participantId != d.getAccountId()) { // owner should not be
-                                                                           // removed
-        if (d.getAccountId().equals(account.getId()) || account.getId().equals(participantId)) {
-          d.getShareParticipantIds().remove(participantId);
+      // Cannot unshare owner
+      if (d.getAccountId() != null && shareParticipantId != d.getAccountId()) {
+        if (d.getAccountId().equals(account.getId())
+            || account.getId().equals(shareParticipantId)) {
+          d.getShareParticipantIds().remove(shareParticipantId);
         } else {
           throw new IGDocumentException("You do not have the right to share this ig document");
         }
@@ -1334,7 +1335,7 @@ public class IGDocumentController extends CommonController {
       return true;
     } catch (Exception e) {
       log.error("", e);
-      throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
+      throw new IGDocumentException("Failed to unshare IG Document \n" + e.getMessage());
     }
   }
 

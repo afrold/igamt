@@ -1001,10 +1001,8 @@ angular.module('igl')
 
                                 $rootScope.references = [];
                                 angular.forEach($rootScope.igdocument.profile.messages.children, function(message) {
-                                    $rootScope.findSegmentRefs($rootScope.segment, message, message.name);
+                                    $rootScope.findSegmentRefs($rootScope.segment, message, '', '', message);
                                 });
-                                $rootScope.tmpReferences = [].concat($rootScope.references);
-
                                 $scope.loadingSelection = false;
                                 $rootScope.$emit("event:initEditArea");
                                 blockUI.stop();
@@ -1272,43 +1270,59 @@ angular.module('igl')
             return '';
         };
 
-        $scope.shareModal = function(igdocument) {
-            $http.get('api/usernames').then(function(response) {
-                var userList = response.data;
-                var filteredUserList = userList.filter(function(user) {
-                    var isPresent = false;
-                    if (igdocument.shareParticipants) {
-                        for (var i = 0; i < igdocument.shareParticipants.length; i++) {
-                            if (igdocument.shareParticipants[i].id == user.id) {
-                                isPresent = true;
-							} else if(user.id == igdocument.accountId) {
+
+		$scope.shareModal = function (igdocument) {
+			$http.get('api/usernames').then(function (response) {
+				var userList = response.data;
+				var filteredUserList = userList.filter(function(user) {
+					var isPresent = false;
+					if(igdocument.shareParticipants) {
+						for(var i = 0; i < igdocument.shareParticipants.length; i++) {
+							if(igdocument.shareParticipants[i].id == user.id) {
 								isPresent = true;
-                            }
-                        }
+							}
+						}
+					}
+					if(!isPresent) return user;
+				});
+				var modalInstance = $modal.open({
+					templateUrl: 'ShareIGDocumentModal.html'
+					, controller: 'ShareIGDocumentCtrl',
+                        size:'lg'
+					, resolve: {
+						igdocumentSelected: function () {
+							return igdocument;
+						}
+						, userList: function () {
+                            return _.filter(filteredUserList, function(user){
+                                    return user.id != igdocument.accountId && igdocument.shareParticipantIds && igdocument.shareParticipantIds != null && igdocument.shareParticipantIds.indexOf(user.id) == -1 ;
+                                });
+
+ 						}
+					}
+				});
+			}, function (error) {
+				console.log(error);
+			});
+		};
+
+
+        $scope.unshareModal = function (igdocument, shareParticipant) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmIGDocumentUnshareCtrl.html'
+                , controller: 'UnShareIGDocumentCtrl'
+                , resolve: {
+                    igdocumentSelected: function () {
+                        return igdocument;
+                    },
+                    shareParticipant: function(){
+                        return shareParticipant;
                     }
-                    if (!isPresent) return user;
-                });
-                var modalInstance = $modal.open({
-                    templateUrl: 'ShareIGDocumentModal.html',
-                    controller: 'ShareIGDocumentCtrl',
-                    resolve: {
-                        igdocumentSelected: function() {
-                            return igdocument;
-                        },
-                        userList: function() {
-                            return filteredUserList;
-                        }
-                    }
-                });
-                modalInstance.result.then(function(igdocument) {
-                    $rootScope.clearChanges();
-                    //			$scope.openIGDocument(igdocument);
-                }, function() {});
-            }, function(error) {
-                console.log(error);
+                }
             });
         };
-    });
+});
+
 
 angular.module('igl').controller('ViewIGChangesCtrl', function($scope, $modalInstance, changes, $rootScope, $http) {
     $scope.changes = changes;
@@ -2691,43 +2705,116 @@ angular.module('igl').controller('AddSegmentDlgCtl',
         };
     });
 
-angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalInstance, $http, igdocumentSelected, userList) {
+angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modalInstance, $http, igdocumentSelected, userList,IgDocumentService,$rootScope) {
+
     $scope.igdocumentSelected = igdocumentSelected;
-	$scope.userList = userList;
+	$scope.userList =  userList;
 	$scope.error = "";
 	$scope.ok = function () {
 		var idsTab = $scope.tags.map(function(user) {
 			return user.id;
 		});
-		$http.post('api/igdocuments/' + igdocumentSelected.id + '/share', idsTab).then(function (response) {
-			if(igdocumentSelected.shareParticipantIds) {
-				igdocumentSelected.shareParticipantIds = igdocumentSelected.shareParticipantIds.concat(idsTab);
-				igdocumentSelected.shareParticipants = igdocumentSelected.shareParticipants.concat($scope.tags);
-			} else {
-				igdocumentSelected.shareParticipantIds = idsTab;
-				igdocumentSelected.shareParticipants = $scope.tags;
-			}
-            $modalInstance.dismiss('ok');
-        }, function(error) {
+        IgDocumentService.share($scope.igdocumentSelected.id,idsTab).then(function(result){
+            if($scope.igdocumentSelected.shareParticipantIds && $scope.igdocumentSelected.shareParticipants) {
+                $scope.igdocumentSelected.shareParticipantIds = $scope.igdocumentSelected.shareParticipantIds.concat(idsTab);
+                $scope.igdocumentSelected.shareParticipants = $scope.igdocumentSelected.shareParticipants.concat($scope.tags);
+            } else {
+                $scope.igdocumentSelected.shareParticipantIds = idsTab;
+                $scope.igdocumentSelected.shareParticipants = $scope.tags;
+            }
+            $rootScope.msg().text = "igSharedSuccessfully";
+            $rootScope.msg().type ="success";
+            $rootScope.msg().show = true;
+            $modalInstance.close();
+        }, function(error){
             $scope.error = error.data;
             console.log(error);
         });
-    };
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-    $scope.tags = [];
-    $scope.selectedItem = {
-        selected: "Read Only"
-    };
-    $scope.itemArray = ["Read Only"];
+	};
+	$scope.cancel = function () {
+		$modalInstance.dismiss('cancel');
+	};
+	$scope.tags = [];
+	$scope.selectedItem = {
+		selected: "Read Only"
+	};
+	$scope.itemArray = ["Read Only"];
+	
+	$scope.tags = [];
+	$scope.loadUsernames = function ($query) {
+		return userList.filter(function (user) {
+			return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
+		});
+	};
 
-    $scope.tags = [];
-    $scope.loadUsernames = function($query) {
-        return userList.filter(function(user) {
-            return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
+    $scope.unshare = function (shareParticipant) {
+        $scope.loading = false;
+        IgDocumentService.unshare($scope.igdocumentSelected.id,shareParticipant.id).then(function(res){
+            var indexOfId = $scope.igdocumentSelected.shareParticipantIds.indexOf(shareParticipant.id);
+            if (indexOfId > -1) {
+                $scope.igdocumentSelected.shareParticipantIds.splice(indexOfId, 1);
+            }
+            var participantIndex = -1;
+            for(var i=0; i <  $scope.igdocumentSelected.shareParticipants.length; i++){
+                if($scope.igdocumentSelected.shareParticipants[i].id === shareParticipant.id){
+                    participantIndex =i;
+                    $scope.userList.push($scope.igdocumentSelected.shareParticipants[i]);
+                    break;
+                }
+            }
+            if (participantIndex > -1) {
+                $scope.igdocumentSelected.shareParticipants.splice(participantIndex, 1);
+            }
+            $scope.loading = false;
+            $rootScope.msg().text = "igUnSharedSuccessfully";
+            $rootScope.msg().type ="success";
+            $rootScope.msg().show = true;
+         }, function(error){
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+            $scope.loading = false;
         });
     };
 
 
+});
+
+angular.module('igl').controller('UnShareIGDocumentCtrl', function ($scope, $modalInstance, $http, igdocumentSelected, shareParticipant,IgDocumentService,$rootScope) {
+    $scope.igdocumentSelected = igdocumentSelected;
+    $scope.shareParticipant = shareParticipant;
+    $scope.error = "";
+    $scope.loading = false;
+    $scope.ok = function () {
+        $scope.loading = true;
+        IgDocumentService.unshare(igdocumentSelected.id,shareParticipant.id).then(function(res){
+            var indexOfId = igdocumentSelected.shareParticipantIds.indexOf(shareParticipant.id);
+            if (indexOfId > -1) {
+                igdocumentSelected.shareParticipantIds.splice(indexOfId, 1);
+            }
+            var participantIndex = -1;
+            for(var i=0; i <  igdocumentSelected.shareParticipants.length; i++){
+                if(igdocumentSelected.shareParticipants[i].id === shareParticipant.id){
+                    participantIndex =i;
+                    break;
+                }
+            }
+            if (participantIndex > -1) {
+                igdocumentSelected.shareParticipants.splice(participantIndex, 1);
+            }
+            $scope.loading = false;
+            $rootScope.msg().text = "igUnSharedSuccessfully";
+            $rootScope.msg().type ="success";
+            $rootScope.msg().show = true;
+            $modalInstance.close();
+        }, function(error){
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+            $scope.loading = false;
+        });
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
 });

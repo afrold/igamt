@@ -198,13 +198,12 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 			}
 			// 5. update Table on DB
 			try {
-				mongoOps.save(table);		
+				mongoOps.save(table);	
+				log.info(oid + " Table is updated.");
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}
-		
-			log.info(oid + " Table is updated.");
 			return table;
 		}
 		return null;
