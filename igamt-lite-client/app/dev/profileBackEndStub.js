@@ -46,6 +46,13 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
             "id": 46
 		}], {}];
     });
+    $httpBackend.whenGET(new RegExp('api/shareparticipant\\?id=.*')).respond(function (method, url, data, headers) {
+        return [200, {
+            "username": "test",
+            "fullname": "test",
+            "id": 46
+		}, {}];
+    });
 	$httpBackend.whenPOST(new RegExp('api/.*/share')).respond(function (method, url, data, headers) {
         return [200, [], {}];
     });
@@ -214,6 +221,27 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         //      var d = angular.fromJson(request.response);
         //      userDocs.push(d);
         console.log('api/igdocuments?type=USER end');
+        return [request.status, userDocs, {}];
+    });
+    $httpBackend.whenGET('api/igdocuments?type=SHARED').respond(function (method, url, data, headers) {
+        var userDocs = [];
+        console.log('api/igdocuments?type=SHARED' + ' data=' + data);
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/igDocuments/igd-USER-2.5.1.json', false);
+        request.send(null);
+        var d = angular.fromJson(request.response);
+        userDocs.push(d);
+        //        var request = new XMLHttpRequest();
+        //        request.open('GET', '../../resources/igDocuments/igdocument-2.6.1-USER-ABC.json', false);
+        //       request.send(null);
+        //       var d = angular.fromJson(request.response);
+        //       userDocs.push(d);
+        //       var request = new XMLHttpRequest();
+        //       request.open('GET', '../../resources/igDocuments/igdocument-2.6.1-USER-DEI.json', false);
+        //      request.send(null);
+        //      var d = angular.fromJson(request.response);
+        //      userDocs.push(d);
+        console.log('api/igdocuments?type=SHARED end');
         return [request.status, userDocs, {}];
     });
     $httpBackend.whenGET('api/igdocuments/findVersions').respond(function (method, url, data, headers) {

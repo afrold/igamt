@@ -227,7 +227,7 @@
                 <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-checked="isChecked(node)" ng-click="trackSelections(bool, node)"></input><span ng-show="node.type === 'event'" ng-bind="::node.name" style="margin-left : 7px;"></span>
             </td>
            
-            <td class="" style="width:585px;color:black"" ng-bind="::node.description"></td>
+            <td class="" style="width:585px;color:black" ng-bind="::node.description"></td>
         
     </tr>
 
@@ -945,7 +945,13 @@
 								<tbody>
 									<tr ng-repeat="participant in igdocumentSelected.shareParticipants">
 										<td><i>{{participant.fullname}} ({{participant.username}})</i></td>
-										<td><button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" ng-click="unshare(participant)"><i class="fa fa-times"></i>Remove</button></td>
+										<td>
+                                            <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="!participant.pendingApproval"><i class="fa fa-times"></i>Remove</button>
+                                            <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request</button>
+                                        </td>
+                                        <td>
+                                            {{participant.permission}}
+                                        </td>
 									</tr>
 								</tbody>
 							</table>

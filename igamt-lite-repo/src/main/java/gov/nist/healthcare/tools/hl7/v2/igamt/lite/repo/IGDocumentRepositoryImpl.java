@@ -33,6 +33,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 
 public class IGDocumentRepositoryImpl implements IGDocumentOperations {
 
@@ -151,9 +152,11 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     List<IGDocument> igdocuments = mongo.find(query, IGDocument.class);
     List<IGDocument> igdocumentsShareWithParticipantsId = new ArrayList<IGDocument>();
     for(IGDocument doc : igdocuments) {
-    	for(Long id : doc.getShareParticipantIds()) {
-    		if(id==participantId) {
-    			igdocumentsShareWithParticipantsId.add(doc);
+    	for(ShareParticipantPermission participant : doc.getShareParticipantIds()) {
+    		if(participant.getAccountId()==participantId) {
+    			if(!participant.isPendingApproval()) {
+    				igdocumentsShareWithParticipantsId.add(doc);
+    			}
     		}
     	}
     }

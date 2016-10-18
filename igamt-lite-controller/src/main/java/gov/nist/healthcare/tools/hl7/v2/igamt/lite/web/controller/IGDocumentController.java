@@ -60,6 +60,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
@@ -1292,7 +1293,9 @@ public class IGDocumentController extends CommonController {
         throw new IGDocumentException(
             "You do not have the right privilege to share this IG Document");
       }
-      d.getShareParticipantIds().addAll(participants);
+      for(Long accountId : participants) {
+    	  d.getShareParticipantIds().add(new ShareParticipantPermission(accountId));
+      }
       igDocumentService.save(d);
       return true;
     } catch (Exception e) {

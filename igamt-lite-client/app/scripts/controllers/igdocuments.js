@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
+    .controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
 
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
@@ -428,15 +428,20 @@ angular.module('igl')
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);
                                 // Find share participants
                                 if ($rootScope.igdocument.shareParticipantIds && $rootScope.igdocument.shareParticipantIds.length > 0) {
-                                    $http.get('api/shareparticipants', { params: { ids: $rootScope.igdocument.shareParticipantIds } })
-                                        .then(
-                                            function(response) {
-                                                $rootScope.igdocument.shareParticipants = response.data;
-                                            },
-                                            function(error) {
-                                                console.log(error);
-                                            }
-                                        );
+                                    $rootScope.igdocument.shareParticipants = [];
+                                    $rootScope.igdocument.shareParticipantIds.forEach(function(participant) {
+                                        $http.get('api/shareparticipant', { params: { id: participant.accountId } })
+                                            .then(
+                                                function(response) {
+                                                    response.data.pendingApproval = participant.pendingApproval;
+                                                    response.data.permission = participant.permission;
+                                                    $rootScope.igdocument.shareParticipants.push(response.data);
+                                                },
+                                                function(error) {
+                                                    console.log(error);
+                                                }
+                                            );
+                                    });
                                 }
                                 $scope.loadPc().then(function() {}, function() {});
                             }, function() {});
