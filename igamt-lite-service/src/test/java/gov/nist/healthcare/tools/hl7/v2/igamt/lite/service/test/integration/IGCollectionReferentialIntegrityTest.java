@@ -12,20 +12,34 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertTrue;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.IGDocumentServiceImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit.PersistenceContextUnit;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -37,32 +51,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.IGDocumentServiceImpl;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit.PersistenceContextUnit;
 
 /**
  * Not a standalone test. Intended to be called by a junit test.
