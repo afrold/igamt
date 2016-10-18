@@ -579,7 +579,7 @@ private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrar
     byNameOrByIDs = new HashSet<ByNameOrByID>();
     for (Message m : profile.getMessages().getChildren()) {
       ByID byID = new ByID();
-      byID.setByID(m.getMessageID());
+      byID.setByID(m.getId());
       if (m.getConformanceStatements().size() > 0) {
         byID.setConformanceStatements(m.getConformanceStatements());
         byNameOrByIDs.add(byID);
@@ -628,7 +628,7 @@ private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrar
     byNameOrByIDs = new HashSet<ByNameOrByID>();
     for (Message m : profile.getMessages().getChildren()) {
       ByID byID = new ByID();
-      byID.setByID(m.getMessageID());
+      byID.setByID(m.getId());
       if (m.getPredicates().size() > 0) {
         byID.setPredicates(m.getPredicates());
         byNameOrByIDs.add(byID);
