@@ -116,11 +116,10 @@ public class IGExportTest {
 	@Test
 	public void testCallIGExportXml() {
 		try {
-			ig = igService.findOne("57a0b50f84aea2241d55799d");
+			assertNotNull(ig);
 			content = igExport.exportAsXmlDisplay(ig);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("IG_" + timeStamp + ".xml");
+			tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "xml"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -132,7 +131,7 @@ public class IGExportTest {
 
 	@Test
 	public void testCallIGExportXml_All() {
-		File xmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_all_xml.txt");
+		File xmlExport = new File(setFilename("export_all_report", "_all_xml", "txt"));
 		StringBuilder rst = new StringBuilder();
 		igs = igService.findAll();
 		for (IGDocument ig : igs){
@@ -141,18 +140,17 @@ public class IGExportTest {
 				FileUtils.writeStringToFile(xmlExport, "ig " + ig.getId());
 				content = igExport.exportAsXmlDisplay(ig);
 				assertNotNull(content);
-				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-				tmpFile = new File("IG_" + timeStamp + ".xml");
+				tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "xml"));
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -166,7 +164,7 @@ public class IGExportTest {
 
 	@Test
 	public void testCallIGExportXml_User() {
-		File xmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_users_xml.txt");
+		File xmlExport = new File(setFilename("export_report", "_all_user_xml", "txt"));
 		StringBuilder rst = new StringBuilder();
 	    igs = igService.findAllByScope(IGDocumentScope.USER);
 		for (IGDocument ig : igs){
@@ -175,18 +173,17 @@ public class IGExportTest {
 				FileUtils.writeStringToFile(xmlExport, "ig " + ig.getId());
 				content = igExport.exportAsXmlDisplay(ig);
 				assertNotNull(content);
-				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-				tmpFile = new File("IG_" + timeStamp + ".xml");
+				tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "xml"));
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -201,11 +198,9 @@ public class IGExportTest {
 	@Test
 	public void testCallIGExportHtml() {
 		try {
-			ig = igService.findOne("57a0b50f84aea2241d55799d");
 			content = igExport.exportAsHtml(ig);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("IG_" + timeStamp + ".html");
+			tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "html"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -216,7 +211,7 @@ public class IGExportTest {
 
 	@Test
 	public void testCallIGExportHtml_All() {
-		File htmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_all_html.txt");
+		File htmlExport = new File(setFilename("export_report", "_all_user_html", "txt"));
 		StringBuilder rst = new StringBuilder();
 		igs = igService.findAll();
 		for (IGDocument ig : igs){
@@ -225,18 +220,17 @@ public class IGExportTest {
 				FileUtils.writeStringToFile(htmlExport, "ig " + ig.getId());
 				content = igExport.exportAsHtml(ig);
 				assertNotNull(content);
-				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-				tmpFile = new File("IG_" + timeStamp + ".html");
+				tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "html"));
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -250,7 +244,7 @@ public class IGExportTest {
 
 	@Test
 	public void testCallIGExportHtml_User() {
-		File htmlExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_user_html.txt");
+		File htmlExport = new File(setFilename("export_report", "_all_user_html", "txt"));
 		StringBuilder rst = new StringBuilder();
 		igs = igService.findAllUser();
 		for (IGDocument ig : igs){
@@ -259,18 +253,17 @@ public class IGExportTest {
 				FileUtils.writeStringToFile(htmlExport, "ig " + ig.getId());
 				content = igExport.exportAsHtml(ig);
 				assertNotNull(content);
-				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-				tmpFile = new File("IG_" + timeStamp + ".html");
+				tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "html"));
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -285,11 +278,9 @@ public class IGExportTest {
 	@Test
 	public void testCallIGExportDocx() {
 		try {
-			ig = igService.findOne("57ade9c884ae90ce1261bd59");
 			content = igExport.exportAsDocx(ig);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("IG_" + timeStamp + ".docx");
+			tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "docx"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -300,7 +291,7 @@ public class IGExportTest {
 
 	@Test
 	public void testCallIGExportDocx_All() {
-		File docxExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_all_docx.txt");
+		File docxExport = new File(setFilename("export_report", "_all_docx", "txt"));
 		StringBuilder rst = new StringBuilder();
 		igs = igService.findAll();
 		for (IGDocument ig : igs){
@@ -308,18 +299,17 @@ public class IGExportTest {
 			try {
 				content = igExport.exportAsDocx(ig);
 				assertNotNull(content);
-				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-				tmpFile = new File("IG_" + timeStamp + ".docx");
+                tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "docx"));
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " "  + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -333,7 +323,7 @@ public class IGExportTest {
 
 	@Test
 	public void testCallIGExportDocx_User() {
-		File docxExport = new File(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_test_export_user_docx.txt");
+      File docxExport = new File(setFilename("export_report", "_all_user_docx", "txt"));
 		StringBuilder rst = new StringBuilder();
 		igs = igService.findAllUser();
 		for (IGDocument ig : igs){
@@ -341,18 +331,17 @@ public class IGExportTest {
 			try {
 				content = igExport.exportAsDocx(ig);
 				assertNotNull(content);
-				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-				tmpFile = new File("IG_" + timeStamp + ".docx");
+                tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "docx"));
 				logger.debug("Writing to file");
 				FileUtils.copyInputStreamToFile(content, tmpFile);
 				logger.debug("Export done");
-				rst.append(": ok\n");
+				rst.append(" : " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " ok\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			} catch (Exception e) {
 				e.printStackTrace();
-				rst.append(": " + e.getMessage() + "\n");
+				rst.append(": " + String.valueOf(tmpFile.length()/1024) + " kb - " + tmpFile.getName() + " " + e.getMessage() + "\n");
 			}
 		}
 		try {
@@ -368,8 +357,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsPdf(ig);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("IG_" + timeStamp + ".pdf");
+			tmpFile = new File(setFilename("IG_", "_" + ig.getId(), "pdf"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -385,8 +373,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsXmlSegment(sl);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("SGT_" + timeStamp + ".xml");
+            tmpFile = new File(setFilename("SGT_" + sl.getId(), "", "xml"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -401,8 +388,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsHtmlSegment(sl);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("SGT_" + timeStamp + ".html");
+            tmpFile = new File(setFilename("SGT_" + sl.getId(), "", "html"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -416,8 +402,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsDocxSegment(sl);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("SGT_" + timeStamp + ".docx");
+            tmpFile = new File(setFilename("SGT_" + sl.getId(), "", "docx"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -431,8 +416,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsXmlDatatype(dl);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("DT_" + timeStamp + ".xml");
+            tmpFile = new File(setFilename("DT_" + dl.getId(), "", "xml"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -446,8 +430,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsHtmlDatatype(dl);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("DT_" + timeStamp + ".html");
+            tmpFile = new File(setFilename("DT_" + dl.getId(), "", "html"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -461,8 +444,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsDocxDatatype(dl);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("DT_" + timeStamp + ".docx");
+            tmpFile = new File(setFilename("DT_" + dl.getId(), "", "docx"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -476,8 +458,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsXmlTable(tl);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("TBL_" + timeStamp + ".xml");
+            tmpFile = new File(setFilename("TBL_" + dl.getId(), "", "xml"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -491,8 +472,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsHtmlTable(tl);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("TBL_" + timeStamp + ".html");
+            tmpFile = new File(setFilename("TBL_" + dl.getId(), "", "html"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -506,8 +486,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsDocxTable(tl);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("TBL_" + timeStamp + ".docx");
+            tmpFile = new File(setFilename("TBL_" + dl.getId(), "", "docx"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -521,8 +500,7 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsDocxDatatypes(ig);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("DTL_" + timeStamp + ".docx");
+            tmpFile = new File(setFilename("DTL_" + dl.getId(), "", "docx"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
@@ -537,13 +515,16 @@ public class IGExportTest {
 		try {
 			content = igExport.exportAsHtmlDatatypes(ig);
 			assertNotNull(content);
-			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			tmpFile = new File("DTL_" + timeStamp + ".html");
+            tmpFile = new File(setFilename("DTL_" + dl.getId(), "", "html"));
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private String setFilename(String prefix, String suffix, String extension){
+	  return new String(prefix + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + suffix + "." + extension);
 	}
 }

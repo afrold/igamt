@@ -14,6 +14,7 @@ package gov.nist.healthcare.nht.acmgt.repo;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -49,6 +50,12 @@ public interface AccountRepository
   public List<Account> findByTheAccountsAccountType(String accountType);
 
   @Query("select a from Account a where a.fullName = ?1")
-  public Account findByTheAccountsFullName(String fullName);
+  public Account findByTheAccountsFullName(String fullName); 
+  
+
+  @Query("select a from Account a where a.id IN ?1")
+  public List<Account> findAllInIds(Set<Long> ids);
+
+  
 
 }

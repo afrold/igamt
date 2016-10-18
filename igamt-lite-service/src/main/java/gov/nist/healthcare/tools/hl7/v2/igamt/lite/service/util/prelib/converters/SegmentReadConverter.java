@@ -168,7 +168,7 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
     f.setMaxLength((String) source.get(MAX_LENGTH));
     f.setConfLength(getConfLength(source));
     f.setPosition((Integer) source.get(POSITION));
-    f.setTable((tableLink((DBObject) source.get(TABLE))));
+    f.setTables((tableLinks((BasicDBList) source.get(TABLES))));
     f.setUsage(Usage.valueOf((String) source.get(USAGE)));
     f.setItemNo((String) source.get(ITEM_NO));
     f.setMin((Integer) source.get(MIN));
@@ -209,10 +209,10 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
     p.setDescription((String) source.get(DESCRIPTION));
     p.setAssertion(((String) source.get(ASSERTION)));
     p.setReference(reference(((DBObject) source.get(REFERENCE))));
-    p.setFalseUsage(source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source
-        .get(FALSE_USAGE))) : null);
-    p.setTrueUsage(source.get(TRUE_USAGE) != null ? Usage.valueOf(((String) source.get(TRUE_USAGE)))
-        : null);
+    p.setFalseUsage(
+        source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source.get(FALSE_USAGE))) : null);
+    p.setTrueUsage(
+        source.get(TRUE_USAGE) != null ? Usage.valueOf(((String) source.get(TRUE_USAGE))) : null);
     return p;
   }
 
@@ -236,5 +236,15 @@ public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segmen
     tl.setBindingStrength((String) source.get("bindingStrength"));
 
     return tl;
+  }
+
+  private List<TableLink> tableLinks(BasicDBList sourceList) {
+    if (sourceList == null)
+      return null;
+    List<TableLink> links = new ArrayList<TableLink>();
+    for (Object libIdObj : sourceList) {
+      links.add(tableLink((DBObject) libIdObj));
+    }
+    return links;
   }
 }

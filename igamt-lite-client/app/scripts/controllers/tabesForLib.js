@@ -186,154 +186,7 @@ angular.module('igl').controller('TableListCtrlForDtLib', function($scope, $root
                 $rootScope.msg().show = true;
             });
         }
-        $scope.saveBinding();
-    };
-
-    $scope.saveBinding = function() {
-        var datatypeUpdateParameterList = [];
-        var segmentUpdateParameterList = [];
-
-        for (var q = 0; q < $rootScope.references.length; q++) {
-            var ref = $rootScope.references[q];
-            if (ref.tableLink.isNew) {
-                if (ref.type == 'component') {
-                    var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
-                    ref.tableLink.isNew = null;
-                    ref.tableLink.isChanged = null;
-                    var newTableLink = angular.copy(ref.tableLink);
-                    var targetComponent = angular.copy(ref);
-                    targetComponent.target = null;
-                    targetComponent.path = null;
-                    targetComponent.tableLink = null;
-
-                    var toBeUpdateComponent = _.find(targetDatatype.components, function(component) {
-                        return component.position == targetComponent.position;
-                    });
-                    if (toBeUpdateComponent) toBeUpdateComponent.tables.push(newTableLink);
-                    $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
-                    var oldDatatype = _.find($rootScope.datatypes, function(dt) {
-                        return dt.id == targetDatatype.id;
-                    });
-                    var index = $rootScope.datatypes.indexOf(oldDatatype);
-                    if (index > -1) $rootScope.datatypes[index] = targetDatatype;
-
-                    var datatypeUpdateParameter = {};
-                    datatypeUpdateParameter.datatypeId = targetDatatype.id;
-                    datatypeUpdateParameter.componentId = targetComponent.id;
-                    datatypeUpdateParameter.tableLink = newTableLink;
-                    datatypeUpdateParameterList.push(datatypeUpdateParameter);
-                } else if (ref.type == 'field') {
-                    var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
-                    ref.tableLink.isNew = null;
-                    ref.tableLink.isChanged = null;
-                    var newTableLink = angular.copy(ref.tableLink);
-                    var targetField = angular.copy(ref);
-                    targetField.target = null;
-                    targetField.path = null;
-                    targetField.tableLink = null;
-
-                    var toBeUpdateField = _.find(targetSegment.fields, function(field) {
-                        return field.position == targetField.position;
-                    });
-                    if (toBeUpdateField) toBeUpdateField.tables.push(newTableLink);
-                    $rootScope.segmentsMap[targetSegment.id] = targetSegment;
-                    var oldSegment = _.find($rootScope.segments, function(seg) {
-                        return seg.id == targetSegment.id;
-                    });
-                    var index = $rootScope.segments.indexOf(oldSegment);
-                    if (index > -1) $rootScope.segments[index] = targetSegment;
-
-                    var segmentUpdateParameter = {};
-                    segmentUpdateParameter.segmentId = targetSegment.id;
-                    segmentUpdateParameter.fieldId = targetField.id;
-                    segmentUpdateParameter.tableLink = newTableLink;
-                    segmentUpdateParameterList.push(segmentUpdateParameter);
-                }
-            } else if (ref.tableLink.isChanged) {
-                if (ref.type == 'component') {
-                    var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
-                    ref.tableLink.isNew = null;
-                    ref.tableLink.isChanged = null;
-                    var newTableLink = angular.copy(ref.tableLink);
-                    var targetComponent = angular.copy(ref);
-                    targetComponent.target = null;
-                    targetComponent.path = null;
-                    targetComponent.tableLink = null;
-
-                    var toBeUpdateComponent = _.find(targetDatatype.components, function(component) {
-                        return component.position == targetComponent.position;
-                    });
-                    if (toBeUpdateComponent) {
-                        for (var i = 0; i < toBeUpdateComponent.tables.length; i++) {
-                            if (toBeUpdateComponent.tables[i].id == $rootScope.table.id) {
-                                toBeUpdateComponent.tables[i] = newTableLink;
-                            }
-                        }
-                    }
-                    $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
-                    var oldDatatype = _.find($rootScope.datatypes, function(dt) {
-                        return dt.id == targetDatatype.id;
-                    });
-                    var index = $rootScope.datatypes.indexOf(oldDatatype);
-                    if (index > -1) $rootScope.datatypes[index] = targetDatatype;
-
-                    var datatypeUpdateParameter = {};
-                    datatypeUpdateParameter.datatypeId = targetDatatype.id;
-                    datatypeUpdateParameter.componentId = targetComponent.id;
-                    datatypeUpdateParameter.tableLink = newTableLink;
-                    datatypeUpdateParameter.key = $rootScope.table.id;
-                    datatypeUpdateParameterList.push(datatypeUpdateParameter);
-                } else if (ref.type == 'field') {
-                    var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
-                    ref.tableLink.isNew = null;
-                    ref.tableLink.isChanged = null;
-                    var newTableLink = angular.copy(ref.tableLink);
-                    var targetField = angular.copy(ref);
-                    targetField.target = null;
-                    targetField.path = null;
-                    targetField.tableLink = null;
-
-                    var toBeUpdateField = _.find(targetSegment.fields, function(field) {
-                        return field.position == targetField.position;
-                    });
-                    if (toBeUpdateField) {
-                        for (var i = 0; i < toBeUpdateField.tables.length; i++) {
-                            if (toBeUpdateField.tables[i].id == $rootScope.table.id) {
-                                toBeUpdateField.tables[i] = newTableLink;
-                            }
-                        }
-                    }
-                    $rootScope.segmentsMap[targetSegment.id] = targetSegment;
-                    var oldSegment = _.find($rootScope.segments, function(seg) {
-                        return seg.id == targetSegment.id;
-                    });
-                    var index = $rootScope.segments.indexOf(oldSegment);
-                    if (index > -1) $rootScope.segments[index] = targetSegment;
-
-                    var segmentUpdateParameter = {};
-                    segmentUpdateParameter.segmentId = targetSegment.id;
-                    segmentUpdateParameter.fieldId = targetField.id;
-                    segmentUpdateParameter.tableLink = newTableLink;
-                    segmentUpdateParameter.key = $rootScope.table.id;
-                    segmentUpdateParameterList.push(segmentUpdateParameter);
-                }
-            }
-        }
-
-
-        DatatypeService.updateTableBinding(datatypeUpdateParameterList).then(function(result) {}, function(error) {
-            $rootScope.msg().text = error.data.text;
-            $rootScope.msg().type = error.data.type;
-            $rootScope.msg().show = true;
-        });
-
-        $rootScope.references = [];
-        angular.forEach($rootScope.segments, function(segment) {
-            $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
-        });
-        angular.forEach($rootScope.datatypes, function(dt) {
-            $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
-        });
+        $rootScope.saveBindingForValueSet();
     };
 
 
@@ -924,77 +777,77 @@ angular.module('igl').controller('ValueSetReferencesCtrl', function($scope, $mod
 //
 //});
 
-angular.module('igl').controller('AddBindingForValueSet', function($scope, $modalInstance, $rootScope, table) {
-    console.log($rootScope.references);
-    $scope.table = table;
-    $scope.selectedSegmentForBinding = null;
-    $scope.selectedFieldForBinding = null;
-    $scope.selectedDatatypeForBinding = null;
-    $scope.selectedComponentForBinding = null;
-    $scope.selectedBindingLocation = null;
-    $scope.selectedBindingStrength = null;
-    $scope.pathForBinding = null;
-    $scope.bindingTargetType = 'SEGMENT';
-
-    $scope.init = function() {
-        $scope.selectedSegmentForBinding = null;
-        $scope.selectedFieldForBinding = null;
-        $scope.selectedDatatypeForBinding = null;
-        $scope.selectedComponentForBinding = null;
-        $scope.selectedBindingLocation = null;
-        $scope.selectedBindingStrength = null;
-        $scope.pathForBinding = null;
-    };
-
-    $scope.checkDuplicated = function(path) {
-        for (var i = 0; i < $rootScope.references.length; i++) {
-            var ref = $rootScope.references[i];
-            if (ref.path == path) return true;
-        }
-        return false;
-    };
-
-    $scope.selectSegment = function() {
-        $scope.selectedFieldForBinding = null;
-    };
-
-    $scope.selectDatatype = function() {
-        $scope.selectedComponentForBinding = null;
-    };
-
-    $scope.save = function(bindingTargetType) {
-        var tableLink = {};
-        tableLink.id = $scope.table.id;
-        tableLink.bindingIdentifier = $scope.table.bindingIdentifier;
-        tableLink.bindingLocation = $scope.selectedBindingLocation;
-        tableLink.bindingStrength = $scope.selectedBindingStrength;
-        tableLink.isChanged = true;
-        tableLink.isNew = true;
-
-        if (bindingTargetType == 'SEGMENT') {
-            $scope.selectedFieldForBinding = JSON.parse($scope.selectedFieldForBinding);
-            $scope.pathForBinding = $rootScope.getSegmentLabel($scope.selectedSegmentForBinding) + '-' + $scope.selectedFieldForBinding.position;
-
-            var ref = angular.copy($scope.selectedFieldForBinding);
-            ref.path = $scope.pathForBinding;
-            ref.target = angular.copy($scope.selectedSegmentForBinding);
-            ref.tableLink = angular.copy(tableLink);
-            $rootScope.references.push(ref);
-        } else {
-            $scope.selectedComponentForBinding = JSON.parse($scope.selectedComponentForBinding);
-            $scope.pathForBinding = $rootScope.getDatatypeLabel($scope.selectedDatatypeForBinding) + '-' + $scope.selectedComponentForBinding.position;
-
-            var ref = angular.copy($scope.selectedComponentForBinding);
-            ref.path = $scope.pathForBinding;
-            ref.target = angular.copy($scope.selectedDatatypeForBinding);
-            ref.tableLink = angular.copy(tableLink);
-            $rootScope.references.push(ref);
-        }
-
-        $modalInstance.close();
-    };
-
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-});
+//angular.module('igl').controller('AddBindingForValueSet', function($scope, $modalInstance, $rootScope, table) {
+//    console.log($rootScope.references);
+//    $scope.table = table;
+//    $scope.selectedSegmentForBinding = null;
+//    $scope.selectedFieldForBinding = null;
+//    $scope.selectedDatatypeForBinding = null;
+//    $scope.selectedComponentForBinding = null;
+//    $scope.selectedBindingLocation = null;
+//    $scope.selectedBindingStrength = null;
+//    $scope.pathForBinding = null;
+//    $scope.bindingTargetType = 'DATATYPE';
+//
+//    $scope.init = function() {
+//        $scope.selectedSegmentForBinding = null;
+//        $scope.selectedFieldForBinding = null;
+//        $scope.selectedDatatypeForBinding = null;
+//        $scope.selectedComponentForBinding = null;
+//        $scope.selectedBindingLocation = null;
+//        $scope.selectedBindingStrength = null;
+//        $scope.pathForBinding = null;
+//    };
+//
+//    $scope.checkDuplicated = function(path) {
+//        for (var i = 0; i < $rootScope.references.length; i++) {
+//            var ref = $rootScope.references[i];
+//            if (ref.path == path) return true;
+//        }
+//        return false;
+//    };
+//
+//    $scope.selectSegment = function() {
+//        $scope.selectedFieldForBinding = null;
+//    };
+//
+//    $scope.selectDatatype = function() {
+//        $scope.selectedComponentForBinding = null;
+//    };
+//
+//    $scope.save = function(bindingTargetType) {
+//        var tableLink = {};
+//        tableLink.id = $scope.table.id;
+//        tableLink.bindingIdentifier = $scope.table.bindingIdentifier;
+//        tableLink.bindingLocation = $scope.selectedBindingLocation;
+//        tableLink.bindingStrength = $scope.selectedBindingStrength;
+//        tableLink.isChanged = true;
+//        tableLink.isNew = true;
+//
+//        if (bindingTargetType == 'SEGMENT') {
+//            $scope.selectedFieldForBinding = JSON.parse($scope.selectedFieldForBinding);
+//            $scope.pathForBinding = $rootScope.getSegmentLabel($scope.selectedSegmentForBinding) + '-' + $scope.selectedFieldForBinding.position;
+//
+//            var ref = angular.copy($scope.selectedFieldForBinding);
+//            ref.path = $scope.pathForBinding;
+//            ref.target = angular.copy($scope.selectedSegmentForBinding);
+//            ref.tableLink = angular.copy(tableLink);
+//            $rootScope.references.push(ref);
+//        } else {
+//            $scope.selectedComponentForBinding = JSON.parse($scope.selectedComponentForBinding);
+//            $scope.pathForBinding = $rootScope.getDatatypeLabel($scope.selectedDatatypeForBinding) + '-' + $scope.selectedComponentForBinding.position;
+//
+//            var ref = angular.copy($scope.selectedComponentForBinding);
+//            ref.path = $scope.pathForBinding;
+//            ref.target = angular.copy($scope.selectedDatatypeForBinding);
+//            ref.tableLink = angular.copy(tableLink);
+//            $rootScope.references.push(ref);
+//        }
+//
+//        $modalInstance.close();
+//    };
+//
+//    $scope.cancel = function() {
+//        $modalInstance.dismiss('cancel');
+//    };
+//});

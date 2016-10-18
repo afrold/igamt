@@ -220,7 +220,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		    		  
 		    		  nu.xom.Element elmPlainCoConstraint = new nu.xom.Element("PlainCoConstraint");
 		    		  
-		    		  elmPlainCoConstraint.addAttribute(new Attribute("KeuPath", s.getCoConstraints().getColumnList().get(0).getField().getPosition() + "[1]"));
+		    		  elmPlainCoConstraint.addAttribute(new Attribute("KeyPath", s.getCoConstraints().getColumnList().get(0).getField().getPosition() + "[1]"));
 		    		  elmPlainCoConstraint.addAttribute(new Attribute("KeyValue", cc.getValues().get(0).getValue()));
 
 		    		  for(int i = 1; i < s.getCoConstraints().getColumnList().size(); i++){
@@ -230,14 +230,19 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		    			  
 		    			  if(value != null && !value.equals("")){
 		    				  if(type.equals("vs")){
-			    				  nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSet");
-			    				  elmValueSetCheck.addAttribute(new Attribute("Path", path));
-			    				  elmValueSetCheck.addAttribute(new Attribute("ValueSetID", tableService.findById(value).getBindingIdentifier()));
-			    				  elmPlainCoConstraint.appendChild(elmValueSetCheck);
+		    					  if(tableService.findById(value) != null){
+		    						  nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSet");
+				    				  elmValueSetCheck.addAttribute(new Attribute("Path", path));
+				    				  elmValueSetCheck.addAttribute(new Attribute("ValueSetID", tableService.findById(value).getBindingIdentifier()));
+				    				  elmValueSetCheck.addAttribute(new Attribute("BindingStrength", "R"));
+				    				  elmValueSetCheck.addAttribute(new Attribute("BindingLocation", "1"));
+				    				  elmPlainCoConstraint.appendChild(elmValueSetCheck);
+		    					  }
 			    			  }else{
 			    				  nu.xom.Element elmValueCheck = new nu.xom.Element("PlainText");
 			    				  elmValueCheck.addAttribute(new Attribute("Path", path));
 			    				  elmValueCheck.addAttribute(new Attribute("Text", value));
+			    				  elmValueCheck.addAttribute(new Attribute("IgnoreCase", "false"));
 			    				  elmPlainCoConstraint.appendChild(elmValueCheck);
 			    			  }
 			    			    
@@ -574,7 +579,7 @@ private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrar
     byNameOrByIDs = new HashSet<ByNameOrByID>();
     for (Message m : profile.getMessages().getChildren()) {
       ByID byID = new ByID();
-      byID.setByID(m.getMessageID());
+      byID.setByID(m.getId());
       if (m.getConformanceStatements().size() > 0) {
         byID.setConformanceStatements(m.getConformanceStatements());
         byNameOrByIDs.add(byID);
@@ -586,7 +591,7 @@ private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrar
     for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
       Segment s = segmentService.findById(sl.getId());
       ByID byID = new ByID();
-      byID.setByID(sl.getLabel());
+      byID.setByID(s.getLabel());
       if (s.getConformanceStatements().size() > 0) {
         byID.setConformanceStatements(s.getConformanceStatements());
         byNameOrByIDs.add(byID);
@@ -598,7 +603,7 @@ private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrar
     for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
       Datatype d = datatypeService.findById(dl.getId());
       ByID byID = new ByID();
-      byID.setByID(dl.getLabel());
+      byID.setByID(d.getLabel());
       if (d.getConformanceStatements().size() > 0) {
         byID.setConformanceStatements(d.getConformanceStatements());
         byNameOrByIDs.add(byID);
@@ -623,7 +628,7 @@ private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrar
     byNameOrByIDs = new HashSet<ByNameOrByID>();
     for (Message m : profile.getMessages().getChildren()) {
       ByID byID = new ByID();
-      byID.setByID(m.getMessageID());
+      byID.setByID(m.getId());
       if (m.getPredicates().size() > 0) {
         byID.setPredicates(m.getPredicates());
         byNameOrByIDs.add(byID);

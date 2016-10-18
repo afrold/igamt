@@ -52,7 +52,7 @@
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
-                                            <input type="text" ng-disabled="!table.newTable" name="name" class="form-control" ng-model="table.name" required ng-change="setDirty()">
+                                            <input type="text" name="name" class="form-control" ng-model="table.name" required ng-change="setDirty()">
                                         </div>
                                     </div>
 
@@ -519,7 +519,7 @@
                         <span class="pull-right">
 						<button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                                 ng-disabled="!isBindingChanged()"
-                                ng-click="saveBinding()">
+                                ng-click="saveBindingForValueSet()">
 							<span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!isBindingChanged()" ng-click="reset()">

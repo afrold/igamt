@@ -43,5 +43,7 @@ public interface IGDocumentOperations {
 
   List<IGDocument> findAllByScope(IGDocumentScope scope);
 
+  List<IGDocument> findByParticipantId(Long participantId);
+
 
 }

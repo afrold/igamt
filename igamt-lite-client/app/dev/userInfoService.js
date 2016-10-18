@@ -37,8 +37,8 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
         author = false,
         admin = false,
         id = null,
-        username = '',
-        fullName = '';
+        username = 'gcr46',
+        fullName = 'gcr46';
 
         //console.log("USER ID=", $cookieStore.get('userID'));
        
