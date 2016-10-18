@@ -1581,15 +1581,16 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
           elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 
           elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
-          if (f.getTables() != null && (f.getTables().size() > 0)) {
+          if (f.getTables() != null && !f.getTables().isEmpty()) {
             String temp = "";
-            if ((f.getTables().size() > 1)) {
+            if (f.getTables().size() > 1) {
               for (TableLink t : f.getTables()) {
                 String bdInd = tableService.findById(t.getId()).getBindingIdentifier();
-                temp = !temp.equals("") ? temp + "," + bdInd : bdInd;
+                temp += (bdInd != null && !bdInd.equals("")) ? "," + bdInd : ", DEBUG: Could not find binding identifier " + t.getBindingIdentifier();
               }
             } else {
-              temp = f.getTables().get(0).getBindingIdentifier();
+              String bdInd = tableService.findById(((TableLink) f.getTables().get(0)).getId()).getBindingIdentifier(); 
+              temp = (bdInd != null && !bdInd.equals("")) ? bdInd : "DEBUG: Could not find binding identifier " + ((TableLink) f.getTables().get(0)).getBindingIdentifier();
             }
             elmField.addAttribute(new Attribute("Binding", temp));
           }
@@ -1688,7 +1689,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
       elmSegment.addAttribute(new Attribute("Label",
           sl.getExt() == null || sl.getExt().isEmpty() ? sl.getName() : sl.getLabel() + ""));
       elmSegment.addAttribute(new Attribute("Description", "Error"));
-      elmSegment.addAttribute(new Attribute("Comment", "Could not find id" + sl.getId()));
+      elmSegment.addAttribute(new Attribute("Comment", "DEBUG: Could not find id" + sl.getId()));
     }
     return elmSegment;
   }
