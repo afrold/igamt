@@ -1492,7 +1492,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
             Datatype data = datatypeService.findById(f.getDatatype().getId());
               elmField.addAttribute(new Attribute("Datatype", data.getLabel()));
           } else {
-            elmField.addAttribute(new Attribute("Datatype", f.getDatatype() != null ? "DEBUG: Could not find datatype " + f.getDatatype().getLabel() : "DEBUG: Could not find datatype with null id"));
+            elmField.addAttribute(new Attribute("Datatype", f.getDatatype() != null ? "! DEBUG: COULD NOT FIND datatype " + f.getDatatype().getLabel() : "! DEBUG: COULD NOT FIND datatype with null id"));
           }
           // Following line means that there are no conformance length for a complex datatype
           if (f.getConfLength() != null && !f.getConfLength().equals("")) {
@@ -1521,11 +1521,11 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
             if (f.getTables().size() > 1) {
               for (TableLink t : f.getTables()) {
                 String bdInd = tableService.findById(t.getId()) == null ? null : tableService.findById(t.getId()).getBindingIdentifier();
-                temp += (bdInd != null && !bdInd.equals("")) ? "," + bdInd : ", DEBUG: Could not find binding identifier " + t.getBindingIdentifier();
+                temp += (bdInd != null && !bdInd.equals("")) ? "," + bdInd : ", ! DEBUG: COULD NOT FIND binding identifier " + t.getBindingIdentifier();
               }
             } else {
               String bdInd = tableService.findById(((TableLink) f.getTables().get(0)).getId()) == null ? null : tableService.findById(((TableLink) f.getTables().get(0)).getId()).getBindingIdentifier();
-              temp = (bdInd != null && !bdInd.equals("")) ? bdInd : "DEBUG: Could not find binding identifier " + ((TableLink) f.getTables().get(0)).getBindingIdentifier();
+              temp = (bdInd != null && !bdInd.equals("")) ? bdInd : "! DEBUG: COULD NOT FIND binding identifier " + ((TableLink) f.getTables().get(0)).getBindingIdentifier();
             }
             elmField.addAttribute(new Attribute("Binding", temp));
           }
@@ -1624,7 +1624,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
       elmSegment.addAttribute(new Attribute("Label",
           sl.getExt() == null || sl.getExt().isEmpty() ? sl.getName() : sl.getLabel() + ""));
       elmSegment.addAttribute(new Attribute("Description", "Error"));
-      elmSegment.addAttribute(new Attribute("Comment", "DEBUG: Could not find id" + sl.getId()));
+      elmSegment.addAttribute(new Attribute("Comment", "! DEBUG: COULD NOT FIND id" + sl.getId()));
     }
     return elmSegment;
   }
@@ -1736,7 +1736,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
             if (c.getDatatype() != null && datatypeService.findById(c.getDatatype().getId()) != null) {
                 elmComponent.addAttribute(new Attribute("Datatype", datatypeService.findById(c.getDatatype().getId()).getLabel()));
               } else {
-                elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype() != null ? "DEBUG: Could not find datatype " + c.getDatatype().getLabel() : "DEBUG: Could not find datatype with null id"));
+                elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype() != null ? "! DEBUG: COULD NOT FIND datatype " + c.getDatatype().getLabel() : "! DEBUG: COULD NOT FIND datatype with null id"));
             }
             if (c.getDatatype() != null && datatypeService.findById(c.getDatatype().getId()) != null) {
               Datatype sub = datatypeService.findById(c.getDatatype().getId());
@@ -1800,7 +1800,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
         elmDatatype.addAttribute(new Attribute("Name", dl.getName() + ""));
         elmDatatype.addAttribute(new Attribute("Label", dl.getLabel() + ""));
         elmDatatype.addAttribute(new Attribute("Description", "Error"));
-        elmDatatype.addAttribute(new Attribute("Comment", "Couldn't find id " + dl.getId()));
+        elmDatatype.addAttribute(new Attribute("Comment", "! DEBUG: COULD NOT FIND id " + dl.getId()));
       }
     }
     return elmDatatype;
