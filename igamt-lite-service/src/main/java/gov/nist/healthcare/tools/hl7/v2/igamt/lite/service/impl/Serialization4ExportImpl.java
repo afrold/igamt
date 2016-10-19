@@ -1673,15 +1673,20 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
       DatatypeLibrary datatypes, String prefix, Integer position) {
     nu.xom.Element sect = new nu.xom.Element("Section");
 
-    Datatype d = datatypeService.findById(dl.getId());
-
-    sect.addAttribute(new Attribute("id", d.getId()));
+    if (dl.getId() != null && datatypeService.findById(dl.getId()) != null){
+      Datatype d = datatypeService.findById(dl.getId());
+      sect.addAttribute(new Attribute("id", d.getId()));
+      sect.addAttribute(new Attribute("title", d.getLabel() + " - " + d.getDescription()));
+    } else if (dl.getId() != null) {
+      sect.addAttribute(new Attribute("id", "NULL"));
+      sect.addAttribute(new Attribute("title", "NULL"));
+    } else if (datatypeService.findById(dl.getId()) != null) {
+      sect.addAttribute(new Attribute("id", dl.getId()));
+      sect.addAttribute(new Attribute("title", "! Unfound id " + dl.getId()));
+    }
     sect.addAttribute(new Attribute("prefix", prefix));
     sect.addAttribute(new Attribute("position", String.valueOf(position)));
     sect.addAttribute(new Attribute("h", String.valueOf(3)));
-    sect.addAttribute(new Attribute("title", d.getLabel() + " - " + d.getDescription()));
-    // sect.addAttribute(new Attribute("title", d.getExt() == null || d.getExt().isEmpty() ?
-    // d.getName() + " - " + d.getDescription() : d.getLabel() + " - " + d.getDescription()));
 
     nu.xom.Element elmDatatype = serializeOneDatatype(dl);
     elmDatatype.addAttribute(new Attribute("prefix", prefix));
@@ -1693,7 +1698,6 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
   }
 
   private nu.xom.Element serializeOneDatatype(DatatypeLink dl) {
-
     nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
     if (dl != null && dl.getId() != null) {
       Datatype d = datatypeService.findById(dl.getId());
@@ -2019,9 +2023,11 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
       Element dataTypeNode = serializeDatatype(dataTypeLink,
           datatypeLibraryDocument.getTableLibrary(), datatypeLibraryDocument.getDatatypeLibrary(),
           "", datattypeLinkList.indexOf(dataTypeLink));
-      Datatype datatype = datatypeService.findById(dataTypeLink.getId());
-      if (datatype.getScope().equals(Constant.SCOPE.MASTER)) {
-        dataTypeNode.addAttribute(new Attribute("scope", "MASTER"));
+      if (dataTypeLink.getId() != null){
+        Datatype datatype = datatypeService.findById(dataTypeLink.getId());
+        if (datatype != null && datatype.getScope().equals(Constant.SCOPE.MASTER)) {
+          dataTypeNode.addAttribute(new Attribute("scope", "MASTER"));
+        }
       }
       // Add the datatype node to the children of the datatype library node
       datatypeLibraryNode.appendChild(dataTypeNode);
