@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.Objects;
+
 public class ShareParticipantPermission {
 	
 	public enum Permission {
@@ -31,6 +33,32 @@ public class ShareParticipantPermission {
 		this.accountId = accountId;
 		this.permission = permission;
 		this.pendingApproval = pendingApproval;
+	}
+	
+	@Override
+	public String toString() {
+		return "Participant: ID=" + this.getAccountId() + ", permission=" + this.getPermission() + ", pending=" + this.isPendingApproval();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+	    // self check
+	    if (this == o)
+	        return true;
+	    // null check
+	    if (o == null)
+	        return false;
+	    // type check and cast
+	    if (getClass() != o.getClass())
+	        return false;
+	    ShareParticipantPermission person = (ShareParticipantPermission) o;
+	    // field comparison
+	    return Objects.equals(accountId, person.getAccountId());
+	}
+	
+	@Override
+    public int hashCode() {
+		return this.accountId.hashCode();
 	}
 
 	public Long getAccountId() {

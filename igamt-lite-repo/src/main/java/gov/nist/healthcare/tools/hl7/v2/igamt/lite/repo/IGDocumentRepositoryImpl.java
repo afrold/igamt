@@ -156,6 +156,11 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     		if(participant.getAccountId()==participantId) {
     			if(!participant.isPendingApproval()) {
     				igdocumentsShareWithParticipantsId.add(doc);
+    			} else {
+    				IGDocument tempDoc = doc;
+    				tempDoc.setChildSections(null);
+    				tempDoc.setComment("PENDING_APPROVAL");
+    				igdocumentsShareWithParticipantsId.add(tempDoc);
     			}
     		}
     	}

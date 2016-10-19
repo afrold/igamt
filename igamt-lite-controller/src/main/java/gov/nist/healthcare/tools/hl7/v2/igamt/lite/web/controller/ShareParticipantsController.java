@@ -6,6 +6,11 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,13 +19,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 
 @RestController
 public class ShareParticipantsController {
+	
+  Logger log = LoggerFactory.getLogger(ShareParticipantsController.class);
 
   @Inject
-  AccountRepository accountRepository;
+  private AccountRepository accountRepository;
+  
+  @Autowired
+  private UserService userService;
+  
+  @Autowired
+  private IGDocumentService igDocumentService;
 
   /**
    * List of Username for share feature
@@ -73,6 +91,57 @@ public class ShareParticipantsController {
     user.setUsername(account.getUsername());
     user.setFullname(account.getFullName());
     return user;
+  }
+  
+  /**
+   * Link for share confirmation email
+   * @throws Exception 
+   */
+  @RequestMapping(value = "/shareconfimation/{id}", method = RequestMethod.GET,
+      produces = "application/json")
+  public @ResponseBody boolean confirmShare(@PathVariable("id") String id) throws Exception {
+	// Get the user
+	User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    
+    IGDocument d = igDocumentService.findOne(id);
+    
+    try {
+	    for(ShareParticipantPermission p : d.getShareParticipantIds()) {
+	    	if(p.getAccountId() == account.getId()) {
+	    		p.setPendingApproval(false);
+	    		igDocumentService.save(d);
+	    		return true;
+	    	}
+	    }
+    } catch (Exception e) {
+        log.error("", e);
+        throw new Exception("Failed to share IG Document \n" + e.getMessage());
+    }
+    return false;
+  }
+  
+  /**
+   * Link for share confirmation email
+   * @throws Exception 
+   */
+  @RequestMapping(value = "/sharereject/{id}", method = RequestMethod.GET,
+      produces = "application/json")
+  public @ResponseBody boolean rejectShare(@PathVariable("id") String id) throws Exception {
+	// Get the user
+	User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    
+    IGDocument d = igDocumentService.findOne(id);
+    
+    try {
+    	d.getShareParticipantIds().remove(new ShareParticipantPermission(account.getId()));
+    	igDocumentService.save(d);
+	    return true;
+    } catch (Exception e) {
+        log.error("", e);
+        throw new Exception("Failed to share IG Document \n" + e.getMessage());
+    }
   }
 
 }

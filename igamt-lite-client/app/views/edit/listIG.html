@@ -61,11 +61,17 @@
 							<span style="margin-left:5px ;    color: white !important;" class="badge">{{row.shareParticipantIds.length}} </span>
 						</td>
 						<td st-ratio="20">
-							<button ng-if="igDocumentConfig.selectedType === 'USER'" title="Edit IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-primary" ng-click="edit(row)"> <span><i
-                                                class="fa fa-pencil fa-fw"></i></span> </button>
-							<button title="View IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-default" ng-click="view(row)"> <span><i class="fa fa-eye fa-fw"></i></span> </button>
-							<button title="Create Copy of IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="clone(row);selectIGDocumentType('USER')"> <span><i class="fa fa-plus fa-fw"></i></span> </button>
-							<button title="Delete IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-if="igDocumentConfig.selectedType === 'USER'" ng-click="confirmDelete(row)"> <span><i class="fa fa-trash-o fa-fw"></i></span> </button>
+							<div ng-if="row.comment !== 'PENDING_APPROVAL'">
+								<button ng-if="igDocumentConfig.selectedType === 'USER'" title="Edit IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-primary" ng-click="edit(row)"> <span><i
+													class="fa fa-pencil fa-fw"></i></span> </button>
+								<button title="View IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-default" ng-click="view(row)"> <span><i class="fa fa-eye fa-fw"></i></span> </button>
+								<button title="Create Copy of IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="clone(row);selectIGDocumentType('USER')"> <span><i class="fa fa-plus fa-fw"></i></span> </button>
+								<button title="Delete IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-if="igDocumentConfig.selectedType === 'USER'" ng-click="confirmDelete(row)"> <span><i class="fa fa-trash-o fa-fw"></i></span> </button>
+							</div>
+							<div ng-if="row.comment === 'PENDING_APPROVAL'">
+								<button title="Approve Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-success" ng-click="confirmShareDocument(row)"> <span><i class="fa fa-check fa-fw" aria-hidden="true"></i></span> </button>
+								<button title="Reject Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-click="rejectShareDocument(row)"> <span><i class="fa fa-times fa-fw" aria-hidden="true"></i></span> </button>
+							</div>
 						</td>
 					</tr>
 				</tbody>

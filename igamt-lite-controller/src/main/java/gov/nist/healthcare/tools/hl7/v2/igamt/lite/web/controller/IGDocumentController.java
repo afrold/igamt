@@ -19,6 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriUtils;
 
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
@@ -147,6 +152,18 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   private ProfileSerialization profileSerializationService;
+  
+  @Value("${server.email}")
+  private String SERVER_EMAIL;
+
+  @Value("${admin.email}")
+  private String ADMIN_EMAIL;
+  
+  @Autowired
+  private MailSender mailSender;
+
+  @Autowired
+  private SimpleMailMessage templateMessage;
 
 
   public IGDocumentService getIgDocumentService() {
@@ -1295,6 +1312,11 @@ public class IGDocumentController extends CommonController {
       }
       for(Long accountId : participants) {
     	  d.getShareParticipantIds().add(new ShareParticipantPermission(accountId));
+    	  
+    	  // Find the user
+    	  Account acc = accountRepository.findOne(accountId);
+    	  // Send confirmation email
+    	  sendShareConfirmation(d, acc);
       }
       igDocumentService.save(d);
       return true;
@@ -1327,7 +1349,7 @@ public class IGDocumentController extends CommonController {
       if (d.getAccountId() != null && shareParticipantId != d.getAccountId()) {
         if (d.getAccountId().equals(account.getId())
             || account.getId().equals(shareParticipantId)) {
-          d.getShareParticipantIds().remove(shareParticipantId);
+          d.getShareParticipantIds().remove(new ShareParticipantPermission(shareParticipantId));
         } else {
           throw new IGDocumentException("You do not have the right to share this ig document");
         }
@@ -1358,5 +1380,24 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
     }
   }
+  
+  private void sendShareConfirmation(IGDocument doc, Account acc) {	  
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+	    msg.setSubject("NIST IGAMT IGDocument Shared with you.");
+	    msg.setTo(acc.getEmail());
+	    msg.setText("Dear " + acc.getUsername() + " \n\n"
+	        + "The IGDocument " +  doc.getMetaData().getTitle() + " has been shared with you."
+	        + "\n" + "If you wish to accept the invitation please go to IGAMT tool and accept the request in the shared documents tab"
+	        + "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+	  }
 
 }
