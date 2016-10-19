@@ -49,5 +49,4 @@ public interface ProfileSerialization {
 
   Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary);
   
-  ProfilePreLib convertIGAMT2TCAMT(Profile p, String igName);
 }

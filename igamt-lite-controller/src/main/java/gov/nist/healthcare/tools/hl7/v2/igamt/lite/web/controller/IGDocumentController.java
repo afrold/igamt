@@ -1251,25 +1251,7 @@ public class IGDocumentController extends CommonController {
     igDocumentService.save(d);
     return null;
   }
-
-  @RequestMapping(value = "/{id}/tcamtProfile", method = RequestMethod.GET,
-      produces = "application/json")
-  public ProfilePreLib getProfilePreLib(@PathVariable("id") String id)
-      throws IGDocumentNotFoundException, UserAccountNotFoundException, IGDocumentException {
-
-
-    System.out.println(id);
-    User u = userService.getCurrentUser();
-    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-
-    if (account == null)
-      throw new UserAccountNotFoundException();
-
-    IGDocument igDocument = this.findIGDocument(id);
-    return profileSerializationService.convertIGAMT2TCAMT(igDocument.getProfile(),
-        igDocument.getMetaData().getTitle());
-  }
-
+  
   /**
    * Share multiple participants
    * 

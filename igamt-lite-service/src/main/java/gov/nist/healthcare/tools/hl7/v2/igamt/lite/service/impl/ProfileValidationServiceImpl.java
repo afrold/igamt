@@ -49,7 +49,7 @@ public class ProfileValidationServiceImpl implements ProfileValidationService {
   Logger logger = LoggerFactory.getLogger(ProfileValidationServiceImpl.class);
 
   @Override
-  public void validate(Profile p) throws ProfileValidationException {
+  public void validate(Profile p) throws Exception {
 
     ProfileSerializationImpl profileSerializationImpl = new ProfileSerializationImpl();
     String pS = profileSerializationImpl.serializeProfileToXML(p ,new DocumentMetaData());
@@ -69,7 +69,7 @@ public class ProfileValidationServiceImpl implements ProfileValidationService {
 
   }
 
-  private void validate(String xml, String schemaPath) throws ProfileValidationException {
+  public void validate(String xml, String schemaPath) throws Exception {
 
     try {
       DocumentBuilderFactory parserFactory = DocumentBuilderFactory.newInstance();
@@ -91,13 +91,15 @@ public class ProfileValidationServiceImpl implements ProfileValidationService {
       // Instance document is invalid!
       e.printStackTrace();
       logger.debug("Instance document is invalid.");
-      throw new ProfileValidationException("Instance document is invalid!");
+      throw e;
     } catch (ParserConfigurationException e1) {
       logger.debug("Parser configuration error!");
       e1.printStackTrace();
+      throw e1;
     } catch (IOException e) {
       logger.debug("Error serializing profile");
       e.printStackTrace();
+      throw e;
     }
   }
 
