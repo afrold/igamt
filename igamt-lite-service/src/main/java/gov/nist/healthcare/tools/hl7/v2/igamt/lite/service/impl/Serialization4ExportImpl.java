@@ -48,6 +48,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -71,61 +72,19 @@ import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Serializer;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Entities.EscapeMode;
-import org.jsoup.safety.Cleaner;
-import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.w3c.tidy.Tidy;
-import com.mongodb.gridfs.GridFSDBFile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsColumn;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import nu.xom.Attribute;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Serializer;
 
+import com.mongodb.gridfs.GridFSDBFile;
 
 @Service
 public class Serialization4ExportImpl implements IGDocumentSerialization {
@@ -1037,117 +996,168 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
   }
 
   private nu.xom.Element serializeTable(TableLink tl, String prefix, Integer position) {
-    Table t = tableService.findById(tl.getId());
-    if (t != null) {
+    if (tl.getId() != null) {
+      Table t = tableService.findById(tl.getId());
+      if (t != null) {
+        nu.xom.Element sect = new nu.xom.Element("Section");
+        sect.addAttribute(new Attribute("id", t.getId()));
+        sect.addAttribute(new Attribute("prefix", prefix));
+        sect.addAttribute(new Attribute("position", String.valueOf(position)));
+        sect.addAttribute(new Attribute("h", String.valueOf(3)));
+        sect.addAttribute(
+            new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
+
+        nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
+        elmTableDefinition.addAttribute(
+            new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
+        elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+            (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+        elmTableDefinition
+        .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
+        elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
+        elmTableDefinition.addAttribute(new Attribute("Extensibility",
+            (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
+        elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
+            (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
+        elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
+        elmTableDefinition.addAttribute(new Attribute("position", ""));
+        elmTableDefinition.addAttribute(new Attribute("prefix", prefix));
+
+        if (t.getCodes() != null) {
+          for (Code c : t.getCodes()) {
+            nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
+            elmTableElement
+            .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
+            elmTableElement
+            .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
+            elmTableElement.addAttribute(
+                new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
+            elmTableElement.addAttribute(
+                new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
+            elmTableElement.addAttribute(
+                new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
+            elmTableDefinition.appendChild(elmTableElement);
+          }
+        }
+        sect.appendChild(elmTableDefinition);
+        return sect;
+      } else {
+        logger.error("ValueSet serialization: No table found with id " + tl.getId());
+
+        nu.xom.Element sect = new nu.xom.Element("Section");
+        sect.addAttribute(new Attribute("id", tl.getId()));
+        sect.addAttribute(new Attribute("prefix", prefix));
+        sect.addAttribute(new Attribute("position", String.valueOf(position)));
+        sect.addAttribute(new Attribute("h", String.valueOf(3)));
+        sect.addAttribute(
+            new Attribute("title", tl.getBindingIdentifier()));
+
+        nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
+        elmTableDefinition.addAttribute(
+            new Attribute("Id", (tl.getId() == null) ? "! DEBUG: COULD NOT FIND id" : "! DEBUG: COULD NOT FIND id " + tl.getId()));
+        elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+            (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+        sect.appendChild(elmTableDefinition);
+        return sect;
+      }
+    } else {
+      logger.error("ValueSet serialization: Null id");
       nu.xom.Element sect = new nu.xom.Element("Section");
-      sect.addAttribute(new Attribute("id", t.getId()));
+      sect.addAttribute(new Attribute("id", "NULL"));
       sect.addAttribute(new Attribute("prefix", prefix));
       sect.addAttribute(new Attribute("position", String.valueOf(position)));
       sect.addAttribute(new Attribute("h", String.valueOf(3)));
       sect.addAttribute(
-          new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
-
+          new Attribute("title", "! DEBUG: COULD NOT FIND null id"));
       nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
       elmTableDefinition.addAttribute(
-          new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
-      elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
-          (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
-      elmTableDefinition
-          .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
-      elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
-      elmTableDefinition.addAttribute(new Attribute("Extensibility",
-          (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
-      elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
-          (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
-      elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
-      elmTableDefinition.addAttribute(new Attribute("position", ""));
-      elmTableDefinition.addAttribute(new Attribute("prefix", prefix));
-
-      if (t.getCodes() != null) {
-        for (Code c : t.getCodes()) {
-          nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
-          elmTableElement
-              .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
-          elmTableElement
-              .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
-          elmTableElement.addAttribute(
-              new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
-          elmTableElement.addAttribute(
-              new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
-          elmTableElement.addAttribute(
-              new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
-          elmTableDefinition.appendChild(elmTableElement);
-        }
-      }
+          new Attribute("Id", "null"));
+      elmTableDefinition.addAttribute(new Attribute("BindingIdentifier", "null"));
       sect.appendChild(elmTableDefinition);
       return sect;
-    } else {
-      logger.error("ValueSet serialization: No table found with id " + tl.getId());
-      return null;
     }
   }
 
 
   private nu.xom.Element serializeOneTable(TableLink tl) {
-    Table t = tableService.findById(tl.getId());
-    nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
-    if (t != null) {
+    if (tl.getId() != null){
+      Table t = tableService.findById(tl.getId());
+      nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
+      if (t != null) {
 
+        elmTableDefinition.addAttribute(
+            new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
+        elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+            (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+        elmTableDefinition
+        .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
+        elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
+        elmTableDefinition.addAttribute(new Attribute("Extensibility",
+            (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
+        elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
+            (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
+        elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
+
+        if (t.getCodes() != null) {
+          for (Code c : t.getCodes()) {
+            nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
+            elmTableElement
+            .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
+            elmTableElement
+            .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
+            elmTableElement.addAttribute(
+                new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
+            elmTableElement.addAttribute(
+                new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
+            elmTableElement.addAttribute(
+                new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
+            elmTableDefinition.appendChild(elmTableElement);
+          }
+        }
+
+
+        if ((t != null && !t.getDefPreText().isEmpty())
+            || (t != null && !t.getDefPostText().isEmpty())) {
+          if (t.getDefPreText() != null && !t.getDefPreText().isEmpty()) {
+            elmTableDefinition.appendChild(this.serializeRichtext("Text1", t.getDefPreText()));
+          }
+          if (t.getDefPostText() != null && !t.getDefPostText().isEmpty()) {
+            elmTableDefinition.appendChild(this.serializeRichtext("Text2", t.getDefPostText()));
+          }
+        }
+
+      } else {
+        logger.error("ValueSet serialization: No table found with id " + tl.getId());
+        elmTableDefinition.addAttribute(
+            new Attribute("Id", tl.getId()));
+        elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+            (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Description", "! DEBUG: COULD NOT FIND table with id" + tl.getId()));
+        return elmTableDefinition; 
+      }
+      return elmTableDefinition;
+    } else {
+      logger.error("ValueSet serialization: No table found with null id");
+      nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
       elmTableDefinition.addAttribute(
-          new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
+          new Attribute("Id", "null"));
       elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
-          (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
-      elmTableDefinition
-          .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
-      elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
-      elmTableDefinition.addAttribute(new Attribute("Extensibility",
-          (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
-      elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
-          (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
-      elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
-
-      if (t.getCodes() != null) {
-        for (Code c : t.getCodes()) {
-          nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
-          elmTableElement
-              .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
-          elmTableElement
-              .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
-          elmTableElement.addAttribute(
-              new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
-          elmTableElement.addAttribute(
-              new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
-          elmTableElement.addAttribute(
-              new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
-          elmTableDefinition.appendChild(elmTableElement);
-        }
-      }
-
-
-      if ((t != null && !t.getDefPreText().isEmpty())
-          || (t != null && !t.getDefPostText().isEmpty())) {
-        if (t.getDefPreText() != null && !t.getDefPreText().isEmpty()) {
-          elmTableDefinition.appendChild(this.serializeRichtext("Text1", t.getDefPreText()));
-        }
-        if (t.getDefPostText() != null && !t.getDefPostText().isEmpty()) {
-          elmTableDefinition.appendChild(this.serializeRichtext("Text2", t.getDefPostText()));
-        }
-      }
-
+          "! DEBUG: COULD NOT FIND null id"));
+      return elmTableDefinition; 
     }
-    return elmTableDefinition;
   }
 
 
@@ -1500,7 +1510,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
   private nu.xom.Element serializeOneSegment(SegmentLink sl) {
     nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 
-    if (sl.getId() != null) {
+    if (sl.getId() != null && segmentService.findById(sl.getId()) != null) {
       Segment s = segmentService.findById(sl.getId());
       if (s != null) {
         elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
@@ -1524,51 +1534,28 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
           }
         }
 
-        // for (int i = 0; i < s.getFields().size(); i++) {
-        // Field f = s.getFields().get(i);
-        // nu.xom.Element elmField = new nu.xom.Element("Field");
-        // elmField.addAttribute(new Attribute("Name", f.getName()));
-        // elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
-        // if (f.getDatatype() != null) {
-        // Datatype data =datatypeService.findById(f.getDatatype().getId());
-        // if(data!=null){
-        // elmField.addAttribute(new Attribute("Datatype", data.getLabel()));
-        // }
-        // }
-
         for (int i = 0; i < s.getFields().size(); i++) {
           Field f = s.getFields().get(i);
           nu.xom.Element elmField = new nu.xom.Element("Field");
           elmField.addAttribute(new Attribute("Name", f.getName()));
           elmField.addAttribute(new Attribute("Usage", getFullUsage(s, i).toString()));
-
-          // if (f.getDatatype() != null) {
-          // String label = f.getDatatype().getExt() == null || f.getDatatype().getExt().isEmpty() ?
-          // f.getDatatype().getName()
-          // : f.getDatatype().getLabel();
-          if (f.getDatatype() != null) {
+          if (f.getDatatype() != null && datatypeService.findById(f.getDatatype().getId()) != null) {
             Datatype data = datatypeService.findById(f.getDatatype().getId());
-            if (data != null) {
               elmField.addAttribute(new Attribute("Datatype", data.getLabel()));
-            }
+          } else {
+            elmField.addAttribute(new Attribute("Datatype", f.getDatatype() != null ? "! DEBUG: COULD NOT FIND datatype " + f.getDatatype().getLabel() : "! DEBUG: COULD NOT FIND datatype with null id"));
           }
-
-
+          // Following line means that there are no conformance length for a complex datatype
           if (f.getConfLength() != null && !f.getConfLength().equals("")) {
-
             if (f.getDatatype() != null) {
-
               Datatype d = datatypeService.findById(f.getDatatype().getId());
-
               if (d != null) {
-
                 if (d.getComponents().size() > 0) {
-
                   elmField.addAttribute(new Attribute("ConfLength", ""));
-                  elmField.addAttribute(new Attribute("MinLength", "" + ""));
+                  elmField.addAttribute(new Attribute("MinLength", ""));
                   if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
                     elmField.addAttribute(new Attribute("MaxLength", ""));
-                }else{
+                } else {
                   elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
                   elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
                   if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
@@ -1579,17 +1566,17 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
           }
 
           elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
-
           elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
-          if (f.getTables() != null && (f.getTables().size() > 0)) {
+          if (f.getTables() != null && !f.getTables().isEmpty()) {
             String temp = "";
-            if ((f.getTables().size() > 1)) {
+            if (f.getTables().size() > 1) {
               for (TableLink t : f.getTables()) {
-                String bdInd = tableService.findById(t.getId()).getBindingIdentifier();
-                temp = !temp.equals("") ? temp + "," + bdInd : bdInd;
+                String bdInd = tableService.findById(t.getId()) == null ? null : tableService.findById(t.getId()).getBindingIdentifier();
+                temp += (bdInd != null && !bdInd.equals("")) ? "," + bdInd : ", ! DEBUG: COULD NOT FIND binding identifier " + t.getBindingIdentifier();
               }
             } else {
-              temp = f.getTables().get(0).getBindingIdentifier();
+              String bdInd = tableService.findById(((TableLink) f.getTables().get(0)).getId()) == null ? null : tableService.findById(((TableLink) f.getTables().get(0)).getId()).getBindingIdentifier();
+              temp = (bdInd != null && !bdInd.equals("")) ? bdInd : "! DEBUG: COULD NOT FIND binding identifier " + ((TableLink) f.getTables().get(0)).getBindingIdentifier();
             }
             elmField.addAttribute(new Attribute("Binding", temp));
           }
@@ -1688,7 +1675,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
       elmSegment.addAttribute(new Attribute("Label",
           sl.getExt() == null || sl.getExt().isEmpty() ? sl.getName() : sl.getLabel() + ""));
       elmSegment.addAttribute(new Attribute("Description", "Error"));
-      elmSegment.addAttribute(new Attribute("Comment", "Could not find id" + sl.getId()));
+      elmSegment.addAttribute(new Attribute("Comment", "! DEBUG: COULD NOT FIND id" + sl.getId()));
     }
     return elmSegment;
   }
@@ -1737,15 +1724,20 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
       DatatypeLibrary datatypes, String prefix, Integer position) {
     nu.xom.Element sect = new nu.xom.Element("Section");
 
-    Datatype d = datatypeService.findById(dl.getId());
-
-    sect.addAttribute(new Attribute("id", d.getId()));
+    if (dl.getId() != null && datatypeService.findById(dl.getId()) != null){
+      Datatype d = datatypeService.findById(dl.getId());
+      sect.addAttribute(new Attribute("id", d.getId()));
+      sect.addAttribute(new Attribute("title", d.getLabel() + " - " + d.getDescription()));
+    } else if (dl.getId() != null) {
+      sect.addAttribute(new Attribute("id", "NULL"));
+      sect.addAttribute(new Attribute("title", "NULL"));
+    } else if (datatypeService.findById(dl.getId()) != null) {
+      sect.addAttribute(new Attribute("id", dl.getId()));
+      sect.addAttribute(new Attribute("title", "! Unfound id " + dl.getId()));
+    }
     sect.addAttribute(new Attribute("prefix", prefix));
     sect.addAttribute(new Attribute("position", String.valueOf(position)));
     sect.addAttribute(new Attribute("h", String.valueOf(3)));
-    sect.addAttribute(new Attribute("title", d.getLabel() + " - " + d.getDescription()));
-    // sect.addAttribute(new Attribute("title", d.getExt() == null || d.getExt().isEmpty() ?
-    // d.getName() + " - " + d.getDescription() : d.getLabel() + " - " + d.getDescription()));
 
     nu.xom.Element elmDatatype = serializeOneDatatype(dl);
     elmDatatype.addAttribute(new Attribute("prefix", prefix));
@@ -1757,7 +1749,6 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
   }
 
   private nu.xom.Element serializeOneDatatype(DatatypeLink dl) {
-
     nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
     if (dl != null && dl.getId() != null) {
       Datatype d = datatypeService.findById(dl.getId());
@@ -1776,94 +1767,50 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
         List<ConformanceStatement> confromances = d.getConformanceStatements();
 
         if (confromances != null && !confromances.isEmpty()) {
-
           for (Constraint constraint : confromances) {
-
             nu.xom.Element elmConstraint =
                 serializeConstraintToElement(constraint, d.getName() + ".");
-
             elmDatatype.appendChild(elmConstraint);
-
           }
-
         }
 
         List<Predicate> predicates = d.getPredicates();
-
         if (predicates != null && !predicates.isEmpty()) {
-
           for (Constraint constraint : predicates) {
-
             nu.xom.Element elmConstraint =
                 serializeConstraintToElement(constraint, d.getName() + ".");
-
             elmDatatype.appendChild(elmConstraint);
-
           }
-
         }
         if (d.getComponents() != null) {
-          //
-          // Map<Integer, Component> components = new HashMap<Integer, Component>();
-          //
-          // for (Component c : d.getComponents()) {
-          // components.put(c.getPosition(), c);
-          // }
-
           for (int i = 0; i < d.getComponents().size(); i++) {
             Component c = d.getComponents().get(i);
             nu.xom.Element elmComponent = new nu.xom.Element("Component");
             elmComponent.addAttribute(new Attribute("Name", c.getName()));
             elmComponent.addAttribute(new Attribute("Usage", getFullUsage(d, i)));
-            if (c.getDatatype() != null) {
-              Datatype data = datatypeService.findById(c.getDatatype().getId());
-              if (data != null) {
-                elmComponent.addAttribute(new Attribute("Datatype", data.getLabel()));
-              }
+            if (c.getDatatype() != null && datatypeService.findById(c.getDatatype().getId()) != null) {
+                elmComponent.addAttribute(new Attribute("Datatype", datatypeService.findById(c.getDatatype().getId()).getLabel()));
+              } else {
+                elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype() != null ? "! DEBUG: COULD NOT FIND datatype " + c.getDatatype().getLabel() : "! DEBUG: COULD NOT FIND datatype with null id"));
             }
-
-            if (c.getDatatype() != null) {
-
+            if (c.getDatatype() != null && datatypeService.findById(c.getDatatype().getId()) != null) {
               Datatype sub = datatypeService.findById(c.getDatatype().getId());
-
               if (sub != null) {
-
                 if (sub.getComponents().size() == 0) {
-
                   elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
-
                   if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
-
                     elmComponent.addAttribute(new Attribute("MaxLength", c.getMaxLength()));
-
                   if (c.getConfLength() != null && !c.getConfLength().equals(""))
-
-
-
                     elmComponent.addAttribute(new Attribute("ConfLength", c.getConfLength()));
-
-
-
                 } else {
-
                   elmComponent.addAttribute(new Attribute("MinLength", ""));
-
                   elmComponent.addAttribute(new Attribute("MaxLength", ""));
-
                   elmComponent.addAttribute(new Attribute("ConfLength", ""));
-
                 }
-
               }
-
             }
-
-
             if (c.getComment() != null && !c.getComment().equals(""))
-
               elmComponent.addAttribute(new Attribute("Comment", c.getComment()));
-
-
             elmComponent.addAttribute(new Attribute("Position", c.getPosition().toString()));
             if (c.getText() != null & !c.getText().isEmpty()) {
               elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
@@ -1899,22 +1846,16 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
               elmDatatype.appendChild(this.serializeRichtext("Text2", d.getDefPostText()));
             }
           }
-
           if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()) {
             elmDatatype.appendChild(this.serializeRichtext("UsageNote", d.getUsageNote()));
           }
-
-
-
         }
-
-
       } else {
         elmDatatype.addAttribute(new Attribute("ID", dl.getId() + ""));
         elmDatatype.addAttribute(new Attribute("Name", dl.getName() + ""));
         elmDatatype.addAttribute(new Attribute("Label", dl.getLabel() + ""));
         elmDatatype.addAttribute(new Attribute("Description", "Error"));
-        elmDatatype.addAttribute(new Attribute("Comment", "Couldn't find id " + dl.getId()));
+        elmDatatype.addAttribute(new Attribute("Comment", "! DEBUG: COULD NOT FIND id " + dl.getId()));
       }
     }
     return elmDatatype;
@@ -2133,9 +2074,11 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
       Element dataTypeNode = serializeDatatype(dataTypeLink,
           datatypeLibraryDocument.getTableLibrary(), datatypeLibraryDocument.getDatatypeLibrary(),
           "", datattypeLinkList.indexOf(dataTypeLink));
-      Datatype datatype = datatypeService.findById(dataTypeLink.getId());
-      if (datatype.getScope().equals(Constant.SCOPE.MASTER)) {
-        dataTypeNode.addAttribute(new Attribute("scope", "MASTER"));
+      if (dataTypeLink.getId() != null){
+        Datatype datatype = datatypeService.findById(dataTypeLink.getId());
+        if (datatype != null && datatype.getScope().equals(Constant.SCOPE.MASTER)) {
+          dataTypeNode.addAttribute(new Attribute("scope", "MASTER"));
+        }
       }
       // Add the datatype node to the children of the datatype library node
       datatypeLibraryNode.appendChild(dataTypeNode);
