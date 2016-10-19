@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -38,6 +39,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -46,9 +48,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
@@ -125,6 +129,9 @@ public class Bootstrap implements InitializingBean {
     // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
     // to write a code for the message.
     // Colorate();
+	  
+	  this.modifyMSH2Constraint();
+	  createNewSectionIds();
   }
 
   private void modifyCodeUsage() {
@@ -165,6 +172,50 @@ public class Bootstrap implements InitializingBean {
         logger.info("Segment " + s.getId() + " has been updated by the usage W/B issue.");
       }
     }
+  }
+  private void createNewSectionIds() throws IGDocumentException{
+	  List<IGDocument> igs=documentService.findAll();
+	  for(IGDocument ig: igs){
+		  if(ig.getChildSections()!=null&& !ig.getChildSections().isEmpty()){
+			  for(Section s : ig.getChildSections()){
+				  ChangeIdInside(s);
+			  }
+		  }
+		  documentService.save(ig);
+	  }
+  }
+  
+  private void ChangeIdInside(Section s) {
+	  s.setId(ObjectId.get().toString());
+	  if(s.getChildSections()!=null&& !s.getChildSections().isEmpty()){
+		  for(Section sub : s.getChildSections()){
+			 
+			  ChangeIdInside(sub);
+		  }
+	  }
+}
+
+private void modifyMSH2Constraint(){
+	  List<Segment> allSegments = segmentService.findAll();
+	  
+	  for (Segment s : allSegments) {
+		  boolean isChanged = false;
+		  for(ConformanceStatement cs: s.getConformanceStatements()){
+			  if(cs.getConstraintTarget().equals("2[1]")){
+				  cs.setDescription("The value of MSH.2 (Encoding Characters) SHALL be '^~\\&'.");
+				  cs.setAssertion("<Assertion><PlainText IgnoreCase=\"false\" Path=\"2[1]\" Text=\"^~\\&amp;\"/></Assertion>");
+				  isChanged = true;
+			  }
+		  }
+		  
+		  if (isChanged) {
+			  segmentService.save(s);
+			  logger.info("Segment " + s.getId() + " has been updated by CS issue");
+		  }
+		  
+		  
+	  }
+	  
   }
 
   private void modifyComponentUsage() {
