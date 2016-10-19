@@ -1520,11 +1520,11 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
             String temp = "";
             if (f.getTables().size() > 1) {
               for (TableLink t : f.getTables()) {
-                String bdInd = tableService.findById(t.getId()).getBindingIdentifier();
+                String bdInd = tableService.findById(t.getId()) == null ? null : tableService.findById(t.getId()).getBindingIdentifier();
                 temp += (bdInd != null && !bdInd.equals("")) ? "," + bdInd : ", DEBUG: Could not find binding identifier " + t.getBindingIdentifier();
               }
             } else {
-              String bdInd = tableService.findById(((TableLink) f.getTables().get(0)).getId()).getBindingIdentifier(); 
+              String bdInd = tableService.findById(((TableLink) f.getTables().get(0)).getId()) == null ? null : tableService.findById(((TableLink) f.getTables().get(0)).getId()).getBindingIdentifier();
               temp = (bdInd != null && !bdInd.equals("")) ? bdInd : "DEBUG: Could not find binding identifier " + ((TableLink) f.getTables().get(0)).getBindingIdentifier();
             }
             elmField.addAttribute(new Attribute("Binding", temp));
