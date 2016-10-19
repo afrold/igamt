@@ -2458,3 +2458,6 @@ input[type="file"] {
 	font-size: 14px;
 	font-style: italic;
 }
+.btn-group-raised .btn:not(.btn-link).active.btn-info, .btn-group-raised .btn:not(.btn-link):active.btn-info, .btn-group-raised .btn:not(.btn-link):focus.btn-info, .btn-group-raised .btn:not(.btn-link):hover.btn-info, .btn-group-raised .input-group-btn .btn:not(.btn-link).active.btn-info, .btn-group-raised .input-group-btn .btn:not(.btn-link):active.btn-info, .btn-group-raised .input-group-btn .btn:not(.btn-link):focus.btn-info, .btn-group-raised .input-group-btn .btn:not(.btn-link):hover.btn-info, .btn.btn-raised:not(.btn-link).active.btn-info, .btn.btn-raised:not(.btn-link):active.btn-info, .btn.btn-raised:not(.btn-link):focus.btn-info, .btn.btn-raised:not(.btn-link):hover.btn-info, .input-group-btn .btn.btn-raised:not(.btn-link).active.btn-info, .input-group-btn .btn.btn-raised:not(.btn-link):active.btn-info, .input-group-btn .btn.btn-raised:not(.btn-link):focus.btn-info, .input-group-btn .btn.btn-raised:not(.btn-link):hover.btn-info {
+    background-color: #01579b !important;
+}

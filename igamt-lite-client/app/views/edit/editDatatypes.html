@@ -17,26 +17,27 @@
             <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
         </div>
         <div ng-show="!loadingSelection">
+		<pre> invalid {{editForm.$invalid}}  <br/> dirty {{editForm.$dirty}}</pre>
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span><span ng-if="versionAndUseMap[datatype.id].deprecated"><i class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true">New version of this datatype is available</i></span>
                         <span class="pull-right">
-
+		
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-info"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                 ng-disabled="datatype.status==='PUBLISHED'"
                  ng-hide="viewSettings.tableReadonly||igdocument||datatype.status==='PUBLISHED'"
                  ng-click="publishDatatype(datatype)">
- 		 <span><i class="fa fa-paper-plane"></i>Publish</span>
+ 		 <span><i class="fa fa-paper-plane"></i>Publish Datatype</span>
 		</button>
 		
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                 ng-disabled="!editForm.$dirty||editForm.$invalid"
                  ng-hide="viewSettings.tableReadonly || datatype.status === 'PUBLISHED'"
                  ng-click="saveDatatype()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
-                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="datatype.status==='PUBLISHED'&&!editForm.$dirty" ng-click="saveBindingForDatatype()">
+                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty||editForm.$invalid" ng-show="datatype.status==='PUBLISHED'&&!editForm.$dirty" ng-click="saveBindingForDatatype()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          				</button>
                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty" ng-click="reset()">
@@ -54,33 +55,25 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Data Type MetaData
                                 </tab-heading>
                                 <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope!=='PUBLISHED'">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="name" class="form-control" ng-model="datatype.name" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope==='PUBLISHED'">
-                                        <label class="col-md-2 control-label">Name*</label>
-
-                                        <div class="controls col-md-10">
-                                            <input type="text" disabled name="name" class="form-control" ng-model="datatype.label" required>
-                                        </div>
-                                    </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}" ng-hide="datatype.status==='PUBLISHED'">
                                         <label class="col-md-2 control-label">Extension</label>
 
                                         <div class="controls col-md-10">
-                                            <input type="text" ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED' " name="ext" id="ext" class="form-control" ng-model="datatype.ext" required aria-describedby="helpBlock2">
+                                            <input type="text" ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'||versionAndUseMap[datatype.id]" name="ext" id="ext" class="form-control" ng-model="datatype.ext" required aria-describedby="helpBlock2">
                                             <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', datatypeLibrary.children)">Extension already used</span>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
-                                        <label class="col-md-2 control-label">Hl7 Versions </label>
-
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}" ng-if="datatype.scope==='MASTER'">
+                                        <label class="col-md-2 control-label">Compatibility Versions </label>
                                         <div class="controls col-md-10">
-                                            <input type="text" disabled name="hl7version" id="hl7Version" class="form-control" ng-model="datatype.hl7versions" required aria-describedby="helpBlock2">
+                                            <input type="text" disabled name="hl7versions" id="hl7Versions" class="form-control" ng-model="datatype.hl7versions" required aria-describedby="helpBlock2">
                                         </div>
                                     </div>
 
@@ -91,13 +84,20 @@
                                             <input type="text" disabled ng-change="setDirty()" name="description" class="form-control" ng-model="datatype.description" required>
                                         </div>
                                     </div>
-                                    <!--<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">-->
-                                    <!--<label class="col-md-2 control-label">HL7 Version*</label>-->
+									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.description.$invalid}" ng-if="versionAndUseMap[datatype.id].publicationDate">
+                                        <label class="col-md-2 control-label">Publication Date </label>
 
-                                    <!--<div class="controls col-md-10">-->
-                                    <!--<input type="text" disabled ng-change="setDirty()" name="hl7Version" class="form-control" ng-model="datatype.hl7Version" required>-->
-                                    <!--</div>-->
-                                    <!--</div>-->
+                                        <div class="controls col-md-10">
+                                            <input type="text" disabled ng-change="setDirty()" name="description" class="form-control" ng-model="versionAndUseMap[datatype.id].publicationDate" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
+                                    <label class="col-md-2 control-label">HL7 Version*</label>
+
+                                    <div class="controls col-md-10">
+                                    <input type="text" disabled ng-change="setDirty()" name="hl7Version" class="form-control" ng-model="datatype.hl7Version" required>
+                                    </div>
+                                    </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.purposeUse.$invalid}">
                                         <label class="col-md-2 control-label">Purpose and Use</label>
 

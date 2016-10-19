@@ -39,6 +39,11 @@ public class VersionAndUseController {
 	    List<VersionAndUse> result = versionAndUseService.findAllByIds(ids);
 	    return result;
 	  }
+	  @RequestMapping(value = "/findAll", method = RequestMethod.POST, produces = "application/json")
+	  public List<VersionAndUse> findByIds() {
+	    List<VersionAndUse> result = versionAndUseService.findAll();
+	    return result;
+	  }
 
 	  @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	  public VersionAndUse getVersionAndUseById(@PathVariable("id") String id) throws DataNotFoundException {

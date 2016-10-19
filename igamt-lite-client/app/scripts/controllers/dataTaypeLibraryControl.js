@@ -491,6 +491,9 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                                 },
                                 tableLibrary :function(){
                                 	return $rootScope.tableLibrary;
+                                },
+                                versionAndUseMap:function(){
+                                	return $rootScope.versionAndUseMap;
                                 }
 
                             }
@@ -1119,11 +1122,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.loadVersionAndUseInfo = function() {
             var delay = $q.defer();
             var dtIds = [];
-            for (var i = 0; i < $rootScope.datatypeLibrary.children.length; i++) {
-                dtIds.push($rootScope.datatypeLibrary.children[i].id);
-                //console.log(0)
-            }
-            VersionAndUseService.findAllByIds(dtIds).then(function(result) {
+//            for (var i = 0; i < $rootScope.datatypeLibrary.children.length; i++) {
+//                dtIds.push($rootScope.datatypeLibrary.children[i].id);
+//                //console.log(0)
+//            }
+            VersionAndUseService.findAll().then(function(result) {
                 console.log("==========Adding Datatypes from their IDS============");
                 //$rootScope.datatypes = result;
                 console.log(result);
@@ -1630,7 +1633,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         function processEditDataType(data) {
             console.log("dialog not opened");
             //$rootScope.datatype=data;
-            $scope.$emit('event:openDatatypeInLib',data);
+            $rootScope.datatype = angular.copy(data);
+            //$rootScope.datatype =result;
+            $rootScope.currentData =$rootScope.datatype;
+            $scope.$emit('event:openDatatypeInLib',$rootScope.datatype);
         };
 
         $scope.editDatatype = function(data) {
@@ -1650,16 +1656,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.selectDatatype = function(datatype) {
             $rootScope.Activate(datatype.id);
             $scope.subview = "EditDatatypes.html";
-            if (datatype && datatype != null) {
-                $scope.loadingSelection = true;
-                blockUI.start();
 
-                        try {
-                            DatatypeService.getOne(datatype.id).then(function(result) {
-                                $rootScope.datatype = angular.copy(result);
-                                //$rootScope.datatype =result;
 
-                                $rootScope.currentData =$rootScope.datatype;
+
+
 
                                 //$rootScope.datatype.ext = $rootScope.getDatatypeExtension($rootScope.datatype);
                                 $scope.loadingSelection = false;
@@ -1682,27 +1682,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
                                 $rootScope.$emit("event:initEditArea");
 
-                                blockUI.stop();
-                            }, function(error) {
-                                $scope.loadingSelection = false;
-                                $rootScope.msg().text = error.data.text;
-                                $rootScope.msg().type = error.data.type;
-                                $rootScope.msg().show = true;
-                                blockUI.stop();
-                            });
-                        } catch (e) {
-                            $scope.loadingSelection = false;
-                            $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
-                            $rootScope.msg().type = "danger";
-                            $rootScope.msg().show = true;
-                            blockUI.stop();
-                        }
-
-                setTimeout(function() {
-                    $scope.$broadcast('reCalcViewDimensions');
-                    console.log("refreshed Slider!!");
-                }, 1000);
-            }
+                            
         };
         
         
@@ -2750,7 +2730,8 @@ angular.module('igl').controller('RichTextCtrlLIB', ['$scope', '$modalInstance',
     };
 }]);
 angular.module('igl').controller('AddDatatypeCtrl',
-	    function($scope, $rootScope, $modalInstance, hl7Version, datatypes, masterLib, userDtLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http,datatypeLibrary,tableLibrary) {
+	    function($scope, $rootScope, $modalInstance, hl7Version, datatypes, masterLib, userDtLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http,datatypeLibrary,tableLibrary,versionAndUseMap) {
+			$scope.versionAndUseMap=versionAndUseMap;
 	        $scope.newDts = [];
 	        $scope.checkedExt = true;
 	        $scope.NocheckedExt = true;
@@ -2790,21 +2771,10 @@ angular.module('igl').controller('AddDatatypeCtrl',
 
 	        var init = function() {
 	            listHL7Versions().then(function(versions) {
-//	                var v = [];
-//	                for (var i = 0; i < versions.length; i++) {
-//	                    if (versions.indexOf(hl7Version) <= i) {
-//	                        v.push(versions[i]);
-//	                    }
-//	                }
-	                $scope.version1 = hl7Version;
+	            	$scope.hl7Datatypes=[];
+	                $scope.version1 = "";
 	                $scope.versions = versions;
 	                var scopes = ['HL7STANDARD'];
-	                DatatypeService.getDataTypesByScopesAndVersion(scopes, hl7Version).then(function(result) {
-	                    console.log("result");
-	                    console.log(result);
-	                    $scope.hl7Datatypes = result;
-
-	                });
 	            });
 
 	        };
@@ -2821,7 +2791,9 @@ angular.module('igl').controller('AddDatatypeCtrl',
 	        $scope.addDt = function(datatype) {
 	            console.log(datatype);
 	            $scope.selectedDatatypes.push(datatype);
+	            console.log("chowing map");
 
+	            console.log($rootScope.versionAndUseMap[datatype.id]);
 	        };
 	        $scope.checkExist = function(datatype) {
 

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc',
-    function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc) {
+angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc','VersionAndUseService','$q'
+   , function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc,VersionAndUseService,$q) {
         // This line fetches the info from the server if the user is currently
         // logged in.
         // If success, the app is updated according to the role.
@@ -74,7 +74,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.path = function() {
             return $location.url();
         };
-
+        
         $scope.login = function() {
             // ////console.log("in login");
             $scope.$emit('event:loginRequest', $scope.username, $scope.password);
@@ -155,7 +155,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.getAccountID = function(accountId) {
             return userInfoService.getAccountID();
         };
-
+        
 
         $scope.getRoleAsString = function() {
             if ($scope.isAuthor() === true) {
@@ -2516,7 +2516,23 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.init = function() {
             $http.get('api/igdocuments/config', { timeout: 60000 }).then(function(response) {
                 $rootScope.config = angular.fromJson(response.data);
+                var delay = $q.defer();
+                VersionAndUseService.findAll().then(function(result) {
+                    angular.forEach(result.data, function(info) {
+                    	console.log($rootScope.versionAndUseMap[info.id]);
+                        $rootScope.versionAndUseMap[info.id] = info;
+                    });
+                    delay.resolve(true);
+
+                }, function(error) {
+                    $rootScope.msg().text = "DatatypesLoadFailed";
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                    delay.reject(false);
+
+                });
             }, function(error) {});
+            
         };
 
         $scope.getFullName = function() {

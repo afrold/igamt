@@ -50,6 +50,19 @@ angular.module('igl').factory('VersionAndUseService',
                 });
                 return delay.promise;
 				
+			},
+			findAll:function(){
+                var delay = $q.defer();
+                //datatype.accountId = userInfoService.getAccountID();
+                $http.post('api/versionAndUse/findAll').then(function(response) {
+                	console.log("resopense");
+                	console.log(response);
+                }, function(error) {
+                    //console.log("DatatypeService.save error=" + error);
+                    delay.reject(error);
+                });
+                return delay.promise;
+				
 			}
 			
 	};
