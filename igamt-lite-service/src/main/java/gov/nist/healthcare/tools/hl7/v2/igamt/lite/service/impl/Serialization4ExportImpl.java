@@ -1712,94 +1712,50 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
         List<ConformanceStatement> confromances = d.getConformanceStatements();
 
         if (confromances != null && !confromances.isEmpty()) {
-
           for (Constraint constraint : confromances) {
-
             nu.xom.Element elmConstraint =
                 serializeConstraintToElement(constraint, d.getName() + ".");
-
             elmDatatype.appendChild(elmConstraint);
-
           }
-
         }
 
         List<Predicate> predicates = d.getPredicates();
-
         if (predicates != null && !predicates.isEmpty()) {
-
           for (Constraint constraint : predicates) {
-
             nu.xom.Element elmConstraint =
                 serializeConstraintToElement(constraint, d.getName() + ".");
-
             elmDatatype.appendChild(elmConstraint);
-
           }
-
         }
         if (d.getComponents() != null) {
-          //
-          // Map<Integer, Component> components = new HashMap<Integer, Component>();
-          //
-          // for (Component c : d.getComponents()) {
-          // components.put(c.getPosition(), c);
-          // }
-
           for (int i = 0; i < d.getComponents().size(); i++) {
             Component c = d.getComponents().get(i);
             nu.xom.Element elmComponent = new nu.xom.Element("Component");
             elmComponent.addAttribute(new Attribute("Name", c.getName()));
             elmComponent.addAttribute(new Attribute("Usage", getFullUsage(d, i)));
-            if (c.getDatatype() != null) {
-              Datatype data = datatypeService.findById(c.getDatatype().getId());
-              if (data != null) {
-                elmComponent.addAttribute(new Attribute("Datatype", data.getLabel()));
-              }
+            if (c.getDatatype() != null && datatypeService.findById(c.getDatatype().getId()) != null) {
+                elmComponent.addAttribute(new Attribute("Datatype", datatypeService.findById(c.getDatatype().getId()).getLabel()));
+              } else {
+                elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype() != null ? "DEBUG: Could not find datatype " + c.getDatatype().getLabel() : "DEBUG: Could not find datatype with null id"));
             }
-
-            if (c.getDatatype() != null) {
-
+            if (c.getDatatype() != null && datatypeService.findById(c.getDatatype().getId()) != null) {
               Datatype sub = datatypeService.findById(c.getDatatype().getId());
-
               if (sub != null) {
-
                 if (sub.getComponents().size() == 0) {
-
                   elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
-
                   if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
-
                     elmComponent.addAttribute(new Attribute("MaxLength", c.getMaxLength()));
-
                   if (c.getConfLength() != null && !c.getConfLength().equals(""))
-
-
-
                     elmComponent.addAttribute(new Attribute("ConfLength", c.getConfLength()));
-
-
-
                 } else {
-
                   elmComponent.addAttribute(new Attribute("MinLength", ""));
-
                   elmComponent.addAttribute(new Attribute("MaxLength", ""));
-
                   elmComponent.addAttribute(new Attribute("ConfLength", ""));
-
                 }
-
               }
-
             }
-
-
             if (c.getComment() != null && !c.getComment().equals(""))
-
               elmComponent.addAttribute(new Attribute("Comment", c.getComment()));
-
-
             elmComponent.addAttribute(new Attribute("Position", c.getPosition().toString()));
             if (c.getText() != null & !c.getText().isEmpty()) {
               elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
@@ -1835,16 +1791,10 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
               elmDatatype.appendChild(this.serializeRichtext("Text2", d.getDefPostText()));
             }
           }
-
           if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()) {
             elmDatatype.appendChild(this.serializeRichtext("UsageNote", d.getUsageNote()));
           }
-
-
-
         }
-
-
       } else {
         elmDatatype.addAttribute(new Attribute("ID", dl.getId() + ""));
         elmDatatype.addAttribute(new Attribute("Name", dl.getName() + ""));
