@@ -996,117 +996,168 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
   }
 
   private nu.xom.Element serializeTable(TableLink tl, String prefix, Integer position) {
-    Table t = tableService.findById(tl.getId());
-    if (t != null) {
+    if (tl.getId() != null) {
+      Table t = tableService.findById(tl.getId());
+      if (t != null) {
+        nu.xom.Element sect = new nu.xom.Element("Section");
+        sect.addAttribute(new Attribute("id", t.getId()));
+        sect.addAttribute(new Attribute("prefix", prefix));
+        sect.addAttribute(new Attribute("position", String.valueOf(position)));
+        sect.addAttribute(new Attribute("h", String.valueOf(3)));
+        sect.addAttribute(
+            new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
+
+        nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
+        elmTableDefinition.addAttribute(
+            new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
+        elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+            (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+        elmTableDefinition
+        .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
+        elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
+        elmTableDefinition.addAttribute(new Attribute("Extensibility",
+            (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
+        elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
+            (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
+        elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
+        elmTableDefinition.addAttribute(new Attribute("position", ""));
+        elmTableDefinition.addAttribute(new Attribute("prefix", prefix));
+
+        if (t.getCodes() != null) {
+          for (Code c : t.getCodes()) {
+            nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
+            elmTableElement
+            .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
+            elmTableElement
+            .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
+            elmTableElement.addAttribute(
+                new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
+            elmTableElement.addAttribute(
+                new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
+            elmTableElement.addAttribute(
+                new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
+            elmTableDefinition.appendChild(elmTableElement);
+          }
+        }
+        sect.appendChild(elmTableDefinition);
+        return sect;
+      } else {
+        logger.error("ValueSet serialization: No table found with id " + tl.getId());
+
+        nu.xom.Element sect = new nu.xom.Element("Section");
+        sect.addAttribute(new Attribute("id", tl.getId()));
+        sect.addAttribute(new Attribute("prefix", prefix));
+        sect.addAttribute(new Attribute("position", String.valueOf(position)));
+        sect.addAttribute(new Attribute("h", String.valueOf(3)));
+        sect.addAttribute(
+            new Attribute("title", tl.getBindingIdentifier()));
+
+        nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
+        elmTableDefinition.addAttribute(
+            new Attribute("Id", (tl.getId() == null) ? "! DEBUG: COULD NOT FIND id" : "! DEBUG: COULD NOT FIND id " + tl.getId()));
+        elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+            (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+        sect.appendChild(elmTableDefinition);
+        return sect;
+      }
+    } else {
+      logger.error("ValueSet serialization: Null id");
       nu.xom.Element sect = new nu.xom.Element("Section");
-      sect.addAttribute(new Attribute("id", t.getId()));
+      sect.addAttribute(new Attribute("id", "NULL"));
       sect.addAttribute(new Attribute("prefix", prefix));
       sect.addAttribute(new Attribute("position", String.valueOf(position)));
       sect.addAttribute(new Attribute("h", String.valueOf(3)));
       sect.addAttribute(
-          new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
-
+          new Attribute("title", "! DEBUG: COULD NOT FIND null id"));
       nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
       elmTableDefinition.addAttribute(
-          new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
-      elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
-          (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
-      elmTableDefinition
-          .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
-      elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
-      elmTableDefinition.addAttribute(new Attribute("Extensibility",
-          (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
-      elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
-          (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
-      elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
-      elmTableDefinition.addAttribute(new Attribute("position", ""));
-      elmTableDefinition.addAttribute(new Attribute("prefix", prefix));
-
-      if (t.getCodes() != null) {
-        for (Code c : t.getCodes()) {
-          nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
-          elmTableElement
-              .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
-          elmTableElement
-              .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
-          elmTableElement.addAttribute(
-              new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
-          elmTableElement.addAttribute(
-              new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
-          elmTableElement.addAttribute(
-              new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
-          elmTableDefinition.appendChild(elmTableElement);
-        }
-      }
+          new Attribute("Id", "null"));
+      elmTableDefinition.addAttribute(new Attribute("BindingIdentifier", "null"));
       sect.appendChild(elmTableDefinition);
       return sect;
-    } else {
-      logger.error("ValueSet serialization: No table found with id " + tl.getId());
-      return null;
     }
   }
 
 
   private nu.xom.Element serializeOneTable(TableLink tl) {
-    Table t = tableService.findById(tl.getId());
-    nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
-    if (t != null) {
+    if (tl.getId() != null){
+      Table t = tableService.findById(tl.getId());
+      nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
+      if (t != null) {
 
+        elmTableDefinition.addAttribute(
+            new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
+        elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+            (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+        elmTableDefinition
+        .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
+        elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
+        elmTableDefinition.addAttribute(new Attribute("Extensibility",
+            (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
+        elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
+            (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
+        elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
+
+        if (t.getCodes() != null) {
+          for (Code c : t.getCodes()) {
+            nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
+            elmTableElement
+            .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
+            elmTableElement
+            .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
+            elmTableElement.addAttribute(
+                new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
+            elmTableElement.addAttribute(
+                new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
+            elmTableElement.addAttribute(
+                new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
+            elmTableDefinition.appendChild(elmTableElement);
+          }
+        }
+
+
+        if ((t != null && !t.getDefPreText().isEmpty())
+            || (t != null && !t.getDefPostText().isEmpty())) {
+          if (t.getDefPreText() != null && !t.getDefPreText().isEmpty()) {
+            elmTableDefinition.appendChild(this.serializeRichtext("Text1", t.getDefPreText()));
+          }
+          if (t.getDefPostText() != null && !t.getDefPostText().isEmpty()) {
+            elmTableDefinition.appendChild(this.serializeRichtext("Text2", t.getDefPostText()));
+          }
+        }
+
+      } else {
+        logger.error("ValueSet serialization: No table found with id " + tl.getId());
+        elmTableDefinition.addAttribute(
+            new Attribute("Id", tl.getId()));
+        elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
+            (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
+        elmTableDefinition.addAttribute(
+            new Attribute("Description", "! DEBUG: COULD NOT FIND table with id" + tl.getId()));
+        return elmTableDefinition; 
+      }
+      return elmTableDefinition;
+    } else {
+      logger.error("ValueSet serialization: No table found with null id");
+      nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
       elmTableDefinition.addAttribute(
-          new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
+          new Attribute("Id", "null"));
       elmTableDefinition.addAttribute(new Attribute("BindingIdentifier",
-          (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
-      elmTableDefinition
-          .addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
-      elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
-      elmTableDefinition.addAttribute(
-          new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
-      elmTableDefinition.addAttribute(new Attribute("Extensibility",
-          (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
-      elmTableDefinition.addAttribute(new Attribute("ContentDefinition",
-          (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
-      elmTableDefinition.addAttribute(new Attribute("id", t.getId()));
-
-      if (t.getCodes() != null) {
-        for (Code c : t.getCodes()) {
-          nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
-          elmTableElement
-              .addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
-          elmTableElement
-              .addAttribute(new Attribute("Label", (c.getLabel() == null) ? "" : c.getLabel()));
-          elmTableElement.addAttribute(
-              new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
-          elmTableElement.addAttribute(
-              new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
-          elmTableElement.addAttribute(
-              new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
-          elmTableDefinition.appendChild(elmTableElement);
-        }
-      }
-
-
-      if ((t != null && !t.getDefPreText().isEmpty())
-          || (t != null && !t.getDefPostText().isEmpty())) {
-        if (t.getDefPreText() != null && !t.getDefPreText().isEmpty()) {
-          elmTableDefinition.appendChild(this.serializeRichtext("Text1", t.getDefPreText()));
-        }
-        if (t.getDefPostText() != null && !t.getDefPostText().isEmpty()) {
-          elmTableDefinition.appendChild(this.serializeRichtext("Text2", t.getDefPostText()));
-        }
-      }
-
+          "! DEBUG: COULD NOT FIND null id"));
+      return elmTableDefinition; 
     }
-    return elmTableDefinition;
   }
 
 
