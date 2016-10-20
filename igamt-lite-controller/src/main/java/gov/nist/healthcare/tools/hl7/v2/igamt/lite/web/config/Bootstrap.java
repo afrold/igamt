@@ -130,8 +130,8 @@ public class Bootstrap implements InitializingBean {
     // to write a code for the message.
     // Colorate();
 	  
-	  this.modifyMSH2Constraint();
-	  createNewSectionIds();
+//	  this.modifyMSH2Constraint();
+//	  createNewSectionIds();
   }
 
   private void modifyCodeUsage() {

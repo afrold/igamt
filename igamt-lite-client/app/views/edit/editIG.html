@@ -106,7 +106,8 @@
 	<div class="triangle"></div>
 	<div style="z-index: 99999" class="cp-tooltip">
 		<div class="col-md-12" class="cp-tooltip">
-			<img ng-src="https://s11.postimg.org/ppmsxvppv/1475012808_user.png" /> {{participant.fullname}}
+			<i class="fa fa-user" aria-hidden="true"></i> {{participant.fullname}}<br>
+			<span ng-if="participant.pendingApproval">Confirmation pending...</span>
 		</div>
 	</div>
 </script>
