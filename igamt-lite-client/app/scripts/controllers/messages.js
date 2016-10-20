@@ -626,6 +626,23 @@ angular.module('igl')
             return component.type === 'component' && $rootScope.parentsMap && $rootScope.parentsMap[component.id] && $rootScope.parentsMap[component.id].type === 'component';
         };
 
+        $scope.openAddGlobalConformanceStatementDialog = function (message){
+            var modalInstance = $modal.open({
+                templateUrl: 'GlobalConformanceStatementCtrl.html',
+                controller: 'GlobalConformanceStatementCtrl',
+                windowClass: 'app-modal-window',
+                keyboard: false,
+                resolve: {
+                    selectedMessage: function() {
+                        return message;
+                    },
+                }
+            });
+            modalInstance.result.then(function() {
+                $scope.setDirty();
+            }, function() {});
+        };
+
         $scope.manageConformanceStatement = function(node, message) {
             var modalInstance = $modal.open({
                 templateUrl: 'ConformanceStatementMessageCtrl.html',
@@ -1319,6 +1336,101 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
     };
 
     $scope.initPredicate();
+
+});
+
+
+
+angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, $modalInstance, selectedMessage, $rootScope) {
+    $scope.selectedMessage = selectedMessage;
+
+    $scope.treeData = [{"name":"Node",
+        "folderClass":"fa-folder",
+        "nodes":[{
+            "name":"Node-1",
+            "folderClass":"fa-folder",
+            "value" : "Value of Node 1",
+            "nodes":[{
+                "name":"Node-1-1",
+
+                "folderClass":"fa-folder",
+                "nodes":[]
+            },{
+                "name":"Node-1-2",
+                "folderClass":"fa-folder",
+                "nodes":[]
+            }]
+        },{
+            "name":"Node-2",
+            "folderClass":"fa-folder",
+            "value" : "Value of Node 2",
+            "nodes":[{
+                "name":"Node-2-1",
+                "folderClass":"fa-folder",
+                "nodes":[]
+            },{
+                "name":"Node-2-2",
+                "folderClass":"fa-folder",
+                "nodes":[]
+            }]
+        },{
+            "name":"Node-3",
+            "folderClass":"fa-folder",
+            "value" : "Value of Node 3",
+            "nodes":[{
+                "name":"Node-3-1",
+                "folderClass":"fa-folder",
+                "nodes":[{
+                    "name":"Node-3-1-1",
+                    "folderClass":"fa-folder",
+                    "nodes":[]
+                },{
+                    "name":"Node-3-1-2",
+                    "folderClass":"fa-folder",
+                    "nodes":[]
+                }]
+            },{
+                "name":"Node-3-2",
+                "folderClass":"fa-folder",
+                "nodes":[]
+            }]
+        }]
+    },{"name":"Hey Node",
+        "folderClass":"fa-folder",
+        "nodes":[{
+            "name":"Node-1",
+            "folderClass":"fa-folder",
+            "value" : "Value of Node 1",
+            "nodes":[{
+                "name":"Node-1-1",
+                "folderClass":"fa-folder",
+                "nodes":[]
+            },{
+                "name":"Node-1-2",
+
+                "folderClass":"fa-folder",
+                "nodes":[]
+            }]
+        },{
+            "name":"Node-2",
+            "folderClass":"fa-folder",
+            "value" : "Value of Node 2",
+            "nodes":[{
+                "name":"Node-2-1",
+                "folderClass":"fa-folder",
+                "nodes":[]
+            },{
+                "name":"Node-2-2",
+                "folderClass":"fa-folder",
+                "nodes":[]
+            }]
+        }]
+    }];
+    $scope.toggleChildren = function(data) {
+        data.childrenVisible = !data.childrenVisible;
+        data.folderClass = data.childrenVisible?"fa-folder-open":"fa-folder";
+    };
+
 
 });
 
