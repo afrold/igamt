@@ -69,8 +69,8 @@
 								<button title="Delete IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-if="igDocumentConfig.selectedType === 'USER'" ng-click="confirmDelete(row)"> <span><i class="fa fa-trash-o fa-fw"></i></span> </button>
 							</div>
 							<div ng-if="row.comment === 'PENDING_APPROVAL'">
-								<button title="Approve Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-success" ng-click="confirmShareDocument(row)"> <span><i class="fa fa-check fa-fw" aria-hidden="true"></i></span> </button>
-								<button title="Reject Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-click="rejectShareDocument(row)"> <span><i class="fa fa-times fa-fw" aria-hidden="true"></i></span> </button>
+								<button title="Approve Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-success" ng-click="confirmShareDocument(row)"> <span><i class="fa fa-check fa-fw" aria-hidden="true"></i>Accept</span> </button>
+								<button title="Reject Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-click="rejectShareDocument(row)"> <span><i class="fa fa-times fa-fw" aria-hidden="true"></i>Reject</span> </button>
 							</div>
 						</td>
 					</tr>
@@ -92,7 +92,7 @@
 	<div class="triangle"></div>
 	<div style="z-index: 99999" class="cp-tooltip">
 		<div class="col-md-12" class="cp-tooltip" ng-if="row.shareParticipants.length > 0">
-			<h5>Shared with</h5>
+			<h5>Participants</h5>
 			<ul class="cp-tooltip">
 				<li ng-repeat="participant in row.shareParticipants track by participant"> {{participant.username}} ({{participant.fullname}}) </li>
 			</ul>
