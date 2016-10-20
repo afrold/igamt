@@ -2147,6 +2147,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
             return $scope.checkedExt;
         };
+
         $scope.addDtFlv = function(datatype) {
             var newDatatype = angular.copy(datatype);
 
@@ -2163,10 +2164,13 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
                 temp.push($rootScope.igdocument.profile.metaData.hl7Version);
                 newDatatype.hl7versions = temp;
                 newDatatype.hl7Version = $rootScope.igdocument.profile.metaData.hl7Version;
-
+                datatypeService. getOneStandard(datatupe.name,newDatatype.hl7Version,newDatatype.hl7versions).then(function(standard){
+                	$rootScope.mergeEmptyProperty(newDatatype, standard);
+                });
             }
-
-
+           
+            
+            
             if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
                 for (var i = 0; i < newDatatype.components.length; i++) {
                     newDatatype.components[i].id = new ObjectId().toString();
