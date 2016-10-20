@@ -1298,7 +1298,7 @@ public class IGDocumentController extends CommonController {
     	  // Find the user
     	  Account acc = accountRepository.findOne(accountId);
     	  // Send confirmation email
-    	  sendShareConfirmation(d, acc);
+    	  sendShareConfirmation(d, acc,account);
       }
       igDocumentService.save(d);
       return true;
@@ -1363,18 +1363,17 @@ public class IGDocumentController extends CommonController {
     }
   }
   
-  private void sendShareConfirmation(IGDocument doc, Account acc) {	  
+  private void sendShareConfirmation(IGDocument doc, Account target,Account source) {	  
 	  
 	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
 	    msg.setSubject("NIST IGAMT IGDocument Shared with you.");
-	    msg.setTo(acc.getEmail());
-	    msg.setText("Dear " + acc.getUsername() + " \n\n"
-	        + "The IGDocument " +  doc.getMetaData().getTitle() + " has been shared with you."
-	        + "\n" + "If you wish to accept the invitation please go to IGAMT tool and accept the request in the shared documents tab"
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	        + "You have received a request to share the IG Document " +  doc.getMetaData().getTitle() + " by " + source.getFullName() + "(" + source.getUsername() +")"
+	        + "\n" + "If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
 	        + "\n\n"
 	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
-
 	    try {
 	      this.mailSender.send(msg);
 	    } catch (MailException ex) {

@@ -25,6 +25,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 @RestController
 public class ShareParticipantsController {
@@ -103,7 +104,8 @@ public class ShareParticipantsController {
 	// Get the user
 	User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-    
+    if (account == null)
+        throw new UserAccountNotFoundException();
     IGDocument d = igDocumentService.findOne(id);
     
     try {
@@ -131,7 +133,8 @@ public class ShareParticipantsController {
 	// Get the user
 	User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-    
+    if (account == null)
+        throw new UserAccountNotFoundException();
     IGDocument d = igDocumentService.findOne(id);
     
     try {
