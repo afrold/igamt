@@ -1299,6 +1299,9 @@ angular
                 };
 
                 $scope.getScopeLabel = function(leaf) {
+                	if(leaf){
+                		
+                	
                     if (leaf.scope === 'HL7STANDARD') {
                         return 'HL7';
                     } else if (leaf.scope === 'USER') {
@@ -1314,6 +1317,7 @@ angular
                         return "";
 
                     }
+                	}
                 };
 
 

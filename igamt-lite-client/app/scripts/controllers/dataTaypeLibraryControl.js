@@ -753,21 +753,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     	angular.forEach(element.tables, function(table){
                             $scope.linksForTables.push(table);
 
-                            var index = $rootScope.tables.indexOf($rootScope.tablesMap[table.id]);
-                            if (index < 0) {
-
-                                console.log("Adding the table");
-                                console.log(element);
-                                console.log($rootScope.tablesMap[table.id]);
-                                $rootScope.tables.push($rootScope.tablesMap[table.id]);
-                            }
-
-
-//                            $scope.addTable(table).then(function(result) {
-//                                //console.log("Added table succes");
-//                            });
-                    		
-                    	})
+                    	});
 
 
                     }
@@ -1980,10 +1966,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         $scope.displayVersion= function(element){
         	
-        	if(element.scope&&element.scope!=='MASTER'){
+        	if(element){
         		return element.hl7Version;
-        	}else{
-        		return "[*]";
         	}
         };
         $scope.setLibrary = function(library) {
@@ -2845,19 +2829,19 @@ angular.module('igl').controller('AddDatatypeCtrl',
 	            var newDatatype = angular.copy(datatype);
 	            if(datatypeLibrary.scope=='USER'){
 	            	newDatatype.ext=Math.floor(Math.random() * 1000);
-	            }else if(datatypeLibrary.scope=="MASTER"){
-	            	DatatypeService.getLastMaster(datatype.name,datatype.hl7Version).then(function(result){
-	            		console.log(result);
-	            		newDatatype.ext=result.ext;
-	            		newDatatype.hl7versions=result.hl7versions
-	            		
-	            	});
+	            }else if (datatype.scope === 'MASTER') {
+	                //newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
+	                var temp = [];
+	                temp.push($rootScope.igdocument.profile.metaData.hl7Version);
+	                newDatatype.hl7versions = temp;
+	                newDatatype.hl7Version = $rootScope.igdocument.profile.metaData.hl7Version;
+	                DatatypeService.getOneStandard(datatype.name,newDatatype.hl7Version,newDatatype.hl7versions).then(function(standard){
+	                	$rootScope.mergeEmptyProperty(newDatatype, standard);
+	                });
 	            }
 	            console.log(newDatatype.ext);
 	            newDatatype.scope =datatypeLibrary.scope;
            	 	newDatatype.status="UNPUBLISHED";
-
-	           
 	            newDatatype.participants = [];
 	            newDatatype.id = new ObjectId().toString();;
 	            newDatatype.libIds = [];

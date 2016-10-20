@@ -2164,7 +2164,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
                 temp.push($rootScope.igdocument.profile.metaData.hl7Version);
                 newDatatype.hl7versions = temp;
                 newDatatype.hl7Version = $rootScope.igdocument.profile.metaData.hl7Version;
-                datatypeService. getOneStandard(datatupe.name,newDatatype.hl7Version,newDatatype.hl7versions).then(function(standard){
+                DatatypeService.getOneStandard(datatype.name,newDatatype.hl7Version,newDatatype.hl7versions).then(function(standard){
                 	$rootScope.mergeEmptyProperty(newDatatype, standard);
                 });
             }

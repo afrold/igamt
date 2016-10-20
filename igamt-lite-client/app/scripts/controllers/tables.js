@@ -93,7 +93,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         for (var i = 0; i < $rootScope.references.length; i++) {
             var ref = $rootScope.references[i];
 
-            if (ref.tableLink.isChanged) return true;
+            if (ref.tableLink&&ref.tableLink.isChanged) return true;
         }
         return false;
     };
