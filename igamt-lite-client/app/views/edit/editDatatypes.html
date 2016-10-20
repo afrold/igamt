@@ -17,11 +17,11 @@
             <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
         </div>
         <div ng-show="!loadingSelection">
-		<pre> invalid {{editForm.$invalid}}  <br/> dirty {{editForm.$dirty}}</pre>
+  <div ng-if="versionAndUseMap[datatype.id].deprecated" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span><span ng-if="versionAndUseMap[datatype.id].deprecated"><i class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true">New version of this datatype is available</i></span>
+                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
 		
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-info"
@@ -519,68 +519,7 @@
 
                             </tab>
 							
-							<tab ng-click="setDeltaToF(); getAllVersionsOfDT(versionAndUseMap[datatype.id].derived)" ng-if="igdocument&&versionAndUseMap[datatype.id].deprecated">
-      						     <tab-heading>
-                                    <i class="fa fa-link" aria-hidden="true"></i> Evolution
-                                </tab-heading>
-
-												
-                                            <div class="panel-body">
-								
-	
-
-					<table class="table table-bordered table-stripped">
-                    <thead>
-                        <tr class="tbl-header">
-                            <th class="col-md-3">Publication Version</th>
-                            <th class="col-md-3">Publication Date</th>
-                            <th class="col-md-3"></th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="inf in availbleVersionOfDt">
-                            <td class="col-md-3">
-                                <span>PV{{inf.publicationVersion}}</span>
-                            </td>
-                            <td class="col-md-3">
-<!--                                 <span>>{{inf.publicationDate}}</span>
- -->                         <ul>
-                                    <li ng-repeat="version in data.versions">{{version}}</li></ul>
-                            </td>
-                            <td class="col-md-3">
-              <input type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id)"/>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
 							
-                                                <table tt-table tt-params="dynamicDt_Evolution" class=" table-marginless table-bordered table-condensed">
-                                                    <thead>
-                                                        <tr class="tbl-header">
-                                                            <th class="col-md-1" rowspan="2" style="width:14%;">Position</th>
-                                                            <th class="col-md-2" rowspan="2" style="width:37%;">Name</th>
-                                                            <th class="col-md-1" rowspan="2" style="width:2%">Usage</th>
-                                                            <th class="col-md-1" colspan="2" style="width:4%">Cardinality</th>
-                                                            <th class="col-md-1" colspan="2" style="width:4%">Length</th>
-                                                            <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
-                                                            <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
-                                                            <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
-                                                        </tr>
-                                                        <tr class="tbl-header">
-                                                            <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
-                                                            <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
-                                                            <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
-                                                            <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>
-                                            
-                                        		</div>
-
-                            </tab>
-
 
 
                             <tab ng-click="setDeltaToF()">
@@ -661,6 +600,69 @@
                                     </div>
 
                                 </div>
+
+                            </tab>
+						<tab ng-click="setDeltaToF(); getAllVersionsOfDT(datatype.id)" ng-if="igdocument&&versionAndUseMap[datatype.id].deprecated">
+      						     <tab-heading>
+                                    <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
+                                </tab-heading>
+
+												
+                                            <div class="panel-body">
+								
+	
+
+					<table class="table table-bordered table-stripped">
+                    <thead>
+                        <tr class="tbl-header">
+                            <th class="col-md-6">Publication Version</th>
+                            <th class="col-md-6">Publication Date</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="inf in availbleVersionOfDt">
+                            <td class="col-md-6">
+                            <input ng-if="inf.id !==datatype.id" type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id);"/>
+                            	
+							<input type="radio" name="inforadio1" value="datatype.id" ng-model ="datatype.id" disabled ng-if="inf.id ===datatype.id"/>
+
+                                <span class ="badge" ng-class="{'selected2' :checked===inf.id}" style="color:black !important" ng-if="inf.id !==datatype.id">V{{inf.publicationVersion}}</span>
+ 								<span class ="badge selected1" style="color:black !important" ng-if="inf.id ===datatype.id">V{{inf.publicationVersion}}</span>
+                                <span ng-if ="datatype.id===inf.id"><strong>(current)</strong></span>
+
+                            </td>
+                            <td class="col-md-6">
+ 							<span>{{inf.publicationDate}}</span>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+							
+                                                <table tt-table tt-params="dynamicDt_Evolution" class=" table-marginless table-bordered table-condensed">
+                                                    <thead>
+                                                        <tr class="tbl-header">
+                                                            <th class="col-md-1" rowspan="2" style="width:14%;">Position</th>
+                                                            <th class="col-md-2" rowspan="2" style="width:37%;">Name</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:2%">Usage</th>
+                                                            <th class="col-md-1" colspan="2" style="width:4%">Cardinality</th>
+                                                            <th class="col-md-1" colspan="2" style="width:4%">Length</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
+                                                        </tr>
+                                                        <tr class="tbl-header">
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
+                                                            <th class="col-md-1 col-fixed-10" style="width:2%">max</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            
+                                        		</div>
 
                             </tab>
 

@@ -504,7 +504,7 @@ angular.module('igl')
                 dtIds.push($rootScope.datatypeLibrary.children[i].id);
                 //console.log(0)
             }
-            VersionAndUseService.findAllByIds(dtIds).then(function(result) {
+            VersionAndUseService.findAll().then(function(result) {
                 console.log("==========Adding Datatypes from their IDS============");
                 //$rootScope.datatypes = result;
                 console.log(result);

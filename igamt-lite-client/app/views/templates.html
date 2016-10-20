@@ -1583,7 +1583,7 @@
                                                             <tbody>
                                                             <tr ng-repeat="datatype in userDatatypes | orderBy: 'name' | filter:search:strict">
                                                             
-                                                                <td>{{datatype.label}}{{versionAndUseMap[datatype.publicationVersion]}}</td>
+                                                                <td>{{datatype.label}}<span class="badge">v{{versionAndUseMap[datatype.id].publicationVersion}}</span></td>
                                                                 <td>{{datatype.hl7Version}}
                                                                 <td><a class="pointer" ng-show="!checkExist(datatype)" ng-click="addDt(datatype)"><i class="fa fa-plus fa-fw"></i></a>
                                                                     <p ng-show="checkExist(datatype)">Selected</p>
@@ -1614,7 +1614,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr ng-repeat="dt in selectedDatatypes">
-                                                                        <td>{{dt.name}}{{versionAndUseMap[dt.id].publicationVersion}}</td>
+                                                                        <td>{{dt.name}}<span class="badge">v{{versionAndUseMap[dt.id].publicationVersion}}</span></td>
                                                                         <td><span ng-show="!edit">{{dt.ext}}</span>
                                                                             <a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.status!=='PUBLISHED'" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
                                                                             <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext"/>

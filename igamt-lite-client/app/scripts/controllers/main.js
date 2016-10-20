@@ -18,6 +18,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         //         }
         //     }
         // });
+		$rootScope.versionAndUseMap={};
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
 
@@ -2514,26 +2515,24 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $scope.init = function() {
+            VersionAndUseService.findAll().then(function(result) {
+            	console.log("LOADING INFO VERSION");
+
+            
+                angular.forEach(result, function(info) {
+                	console.log("LOADING INFO VERSION");
+                	console.log($rootScope.versionAndUseMap[info.id]);
+                    $rootScope.versionAndUseMap[info.id] = info;
+                });
+            });
             $http.get('api/igdocuments/config', { timeout: 60000 }).then(function(response) {
                 $rootScope.config = angular.fromJson(response.data);
                 var delay = $q.defer();
-                VersionAndUseService.findAll().then(function(result) {
-                    angular.forEach(result.data, function(info) {
-                    	console.log($rootScope.versionAndUseMap[info.id]);
-                        $rootScope.versionAndUseMap[info.id] = info;
-                    });
-                    delay.resolve(true);
 
-                }, function(error) {
-                    $rootScope.msg().text = "DatatypesLoadFailed";
-                    $rootScope.msg().type = "danger";
-                    $rootScope.msg().show = true;
-                    delay.reject(false);
-
-                });
             }, function(error) {});
             
         };
+
 
         $scope.getFullName = function() {
             if (userInfoService.isAuthenticated() === true) {

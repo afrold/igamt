@@ -133,8 +133,17 @@ angular.module('igl')
         $scope.openPredicateDialog = function(node) {
             if (node.usage == 'C') $scope.managePredicate(node);
         };
+        $scope.alerts = [
+                         { type: 'warning', msg: ' Warning: This Datatype is being deprecated, there are new versions availables' },
+                         
+                       ];
 
 
+
+       $scope.closeAlert = function(index) {
+                         $scope.alerts.splice(index, 1);
+                       };
+        
         $scope.OtoX = function(message) {
             console.log(message);
             var modalInstance = $modal.open({
@@ -158,8 +167,21 @@ angular.module('igl')
             });
         };
         
-        $scope.getAllVersionsOfDT=function(table){
-        	VersionAndUseService.findAllByIds(table).then(function(result) {
+        $scope.getAllVersionsOfDT=function(id){
+        	$scope.checked={};
+        	var ancestors=[];
+        	if($rootScope.versionAndUseMap[id].ancestors&& $rootScope.versionAndUseMap[id].ancestors.length>0){
+            	var ancestors= $rootScope.versionAndUseMap[id].ancestors;
+
+        	}
+        	ancestors.push($rootScope.versionAndUseMap[id].id);
+        	var derived =$rootScope.versionAndUseMap[id].derived;
+        	angular.forEach(ancestors, function(ancestor){
+        		derived.push(ancestor);
+        	});
+        	var all=derived;
+        	console.log(all);
+        	VersionAndUseService.findAllByIds(all).then(function(result) {
                 console.log("==========Adding Datatypes from their IDS============");
                 //$rootScope.datatypes = result;
                 console.log(result);
@@ -201,6 +223,7 @@ angular.module('igl')
             }
         });
         $scope.compareWithCurrent = function(id) {
+        	$scope.checked=id;
         	$rootScope.clearChanges();
             $scope.cleanState();
         	

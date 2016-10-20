@@ -55,8 +55,9 @@ angular.module('igl').factory('VersionAndUseService',
                 var delay = $q.defer();
                 //datatype.accountId = userInfoService.getAccountID();
                 $http.post('api/versionAndUse/findAll').then(function(response) {
-                	console.log("resopense");
-                	console.log(response);
+                    var versions = angular.fromJson(response.data);
+                    delay.resolve(versions);
+
                 }, function(error) {
                     //console.log("DatatypeService.save error=" + error);
                     delay.reject(error);

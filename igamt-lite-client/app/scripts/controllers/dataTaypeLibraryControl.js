@@ -15,7 +15,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $rootScope.messagesMap = {}; // Map for Message;key:id, value:object
         $rootScope.segmentsMap = {}; // Map for Segment;key:id, value:object
         $rootScope.datatypesMap = {}; // Map for Datatype; key:id, value:object
-        $rootScope.versionAndUseMap={};
         $rootScope.tablesMap = {}; // Map for tables; key:id, value:object
         $rootScope.segments = []; // list of segments of the selected messages
         $rootScope.datatypes = []; // list of datatypes of the selected messages
@@ -1122,10 +1121,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.loadVersionAndUseInfo = function() {
             var delay = $q.defer();
             var dtIds = [];
-//            for (var i = 0; i < $rootScope.datatypeLibrary.children.length; i++) {
-//                dtIds.push($rootScope.datatypeLibrary.children[i].id);
-//                //console.log(0)
-//            }
+            for (var i = 0; i < $rootScope.datatypeLibrary.children.length; i++) {
+                dtIds.push($rootScope.datatypeLibrary.children[i].id);
+                //console.log(0)
+            }
             VersionAndUseService.findAll().then(function(result) {
                 console.log("==========Adding Datatypes from their IDS============");
                 //$rootScope.datatypes = result;
@@ -2100,6 +2099,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 var ext = $rootScope.datatype.ext;
       
                 DatatypeService.publish($rootScope.datatype).then(function(result) {
+               
                     var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.datatypeLibrary.children);
                     var newLink = DatatypeService.getDatatypeLink(result);
                     newLink.ext = ext;
@@ -2107,6 +2107,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                         	DatatypeService.merge($rootScope.datatypesMap[result.id], result);
                         	$rootScope.datatypesMap[result.id].status="PUBLISHED";
                         	$rootScope.datatype.status="PUBLISHED";
+
                             if ($scope.editForm) {
                             	console.log("Cleeaning");
                                 $scope.editForm.$setPristine();
@@ -2118,7 +2119,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             if ($scope.datatypesParams){
                                 $scope.datatypesParams.refresh();   	
                             }
-                            $scope.loadVersionAndUseInfo().then(function(){
+                         	VersionAndUseService.findById(result.id).then(function(inf){
+                        		$rootScope.versionAndUseMap[inf.id]=inf;
+                        		if($rootScope.versionAndUseMap[inf.sourceId]){
+                        			$rootScope.versionAndUseMap[inf.sourceId].deprecated=true;
+                        		}
                         		
                         	});
                             oldLink.ext = newLink.ext;
