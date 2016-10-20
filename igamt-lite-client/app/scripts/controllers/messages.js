@@ -1341,96 +1341,29 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
 
 
 
-angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, $modalInstance, selectedMessage, $rootScope) {
+angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, $modalInstance, selectedMessage, $rootScope, $q) {
     $scope.selectedMessage = selectedMessage;
+    $scope.treeDataForMessage = [];
+    $scope.treeDataForContext = [];
+    $scope.treeDataForMessage.push($scope.selectedMessage);
+    $scope.treeDataForContext.push($scope.selectedMessage);
 
-    $scope.treeData = [{"name":"Node",
-        "folderClass":"fa-folder",
-        "nodes":[{
-            "name":"Node-1",
-            "folderClass":"fa-folder",
-            "value" : "Value of Node 1",
-            "nodes":[{
-                "name":"Node-1-1",
-
-                "folderClass":"fa-folder",
-                "nodes":[]
-            },{
-                "name":"Node-1-2",
-                "folderClass":"fa-folder",
-                "nodes":[]
-            }]
-        },{
-            "name":"Node-2",
-            "folderClass":"fa-folder",
-            "value" : "Value of Node 2",
-            "nodes":[{
-                "name":"Node-2-1",
-                "folderClass":"fa-folder",
-                "nodes":[]
-            },{
-                "name":"Node-2-2",
-                "folderClass":"fa-folder",
-                "nodes":[]
-            }]
-        },{
-            "name":"Node-3",
-            "folderClass":"fa-folder",
-            "value" : "Value of Node 3",
-            "nodes":[{
-                "name":"Node-3-1",
-                "folderClass":"fa-folder",
-                "nodes":[{
-                    "name":"Node-3-1-1",
-                    "folderClass":"fa-folder",
-                    "nodes":[]
-                },{
-                    "name":"Node-3-1-2",
-                    "folderClass":"fa-folder",
-                    "nodes":[]
-                }]
-            },{
-                "name":"Node-3-2",
-                "folderClass":"fa-folder",
-                "nodes":[]
-            }]
-        }]
-    },{"name":"Hey Node",
-        "folderClass":"fa-folder",
-        "nodes":[{
-            "name":"Node-1",
-            "folderClass":"fa-folder",
-            "value" : "Value of Node 1",
-            "nodes":[{
-                "name":"Node-1-1",
-                "folderClass":"fa-folder",
-                "nodes":[]
-            },{
-                "name":"Node-1-2",
-
-                "folderClass":"fa-folder",
-                "nodes":[]
-            }]
-        },{
-            "name":"Node-2",
-            "folderClass":"fa-folder",
-            "value" : "Value of Node 2",
-            "nodes":[{
-                "name":"Node-2-1",
-                "folderClass":"fa-folder",
-                "nodes":[]
-            },{
-                "name":"Node-2-2",
-                "folderClass":"fa-folder",
-                "nodes":[]
-            }]
-        }]
-    }];
     $scope.toggleChildren = function(data) {
         data.childrenVisible = !data.childrenVisible;
-        data.folderClass = data.childrenVisible?"fa-folder-open":"fa-folder";
+        data.folderClass = data.childrenVisible?"fa-folder-open-o":"fa-folder-o";
     };
 
+
+    $scope.beforeDrop = function() {
+        var deferred = $q.defer();
+        $scope.treeDataForContext = [];
+        deferred.resolve();
+        return deferred.promise;
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
 
 });
 

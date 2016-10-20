@@ -200,14 +200,11 @@
                                     </accordion-heading>
                                     <div class="panel-body">
 
-                                        <div class="row">
-                                            <span class="pull-right">
-                                                    <button title="Add Global Conformance Statements" type="button" class="btn btn-raised btn-sm btn-success"
-                                                        ng-hide="viewSettings.tableReadonly" ng-click="openAddGlobalConformanceStatementDialog()">
-                                                    <span><i class="fa fa-check fa-fw"></i> Add</span>
-                                                </button>
-                                            </span>
-                                        </div>
+                                        <span class="pull-right">
+                                            <button title="Add Global Conformance Statements" type="button" class="btn btn-raised btn-sm btn-success" ng-hide="viewSettings.tableReadonly" ng-click="openAddGlobalConformanceStatementDialog(message)">
+                                                <span><i class="fa fa-check fa-fw"></i> Add</span>
+                                            </button>
+                                        </span>
 
                                         <!--<div class="col-md-12">-->
                                             <!--<span ng-hide="message.conformanceStatements.length > 0">No conformance statement</span>-->
@@ -1243,23 +1240,46 @@
 
     <div class="modal-body">
         <form role="form">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th style="width:30px;"><i ng-click="loadItems()" class="fa fa-refresh blueicon"></i></th>
-                    <th style="width:auto">Data tree</th>
-                </tr>
-                </thead>
-                <tbody ng-repeat="data in treeData" ng-include="'tree_item.html'">
+            <div class="table-responsive">
+                <div class="col-md-3">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th style="width:30px"></th>
+                            <th style="width:auto">Message Tree</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="data in treeDataForMessage" ng-include="'tree_item.html'">
 
-                </tbody>
+                        </tbody>
 
-            </table>
+                    </table>
+                </div>
+
+                <div class="col-md-3">
+                    <table class="table table-striped" data-drop="true"  data-jqyoui-options ng-model="treeDataForContext" jqyoui-droppable="{beforeDrop: 'beforeDrop'}">
+                        <thead>
+                        <tr>
+                            <th style="width:30px"></th>
+                            <th style="width:auto">Selected Context</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="data in treeDataForContext" ng-include="'tree_item.html'">
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                </div>
+
+            </div>
         </form>
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
+        <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Cancel</span></button>
         <button type="button" class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
             &nbsp; </i>Save</span></button>
@@ -1269,15 +1289,31 @@
 <script type="text/ng-template"  id="tree_item.html">
 
     <tr style="width:100%">
-        <td><i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i></td>
-        <td>
-            {{data.name}}
-            <div id="expanded-data" ng-if="data.childrenVisible">
-                <table class="table table-striped" id="nested-table">
-                    <div ng-repeat="data in data.nodes" ng-include="'tree_item.html'"></div>
-                </table>
-            </div>
-        </td>
+            <td ng-if="data.type !== 'segmentRef' && data.folderClass">
+                <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
+            </td>
+            <td ng-if="data.type !== 'segmentRef' && !data.folderClass">
+                <i class="fa fa-folder-o" ng-click="toggleChildren(data)"></i>
+            </td>
+            <td>
+                <div ng-if="data.type !== 'segmentRef'" >
+                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                        <i class="glyphicon glyphicon-move cursorMove"></i>
+                        <span ng-show="data.type === 'group'" class="label label-success label-icon">G</span>
+                        <span ng-show="data.type === 'group'">&nbsp;[{{::data.min}}..{{::data.max}}]&nbsp;{{::data.name}}</span>
+                        <span ng-show="data.type === 'message'" class="label label-success label-icon">M</span>
+                        <span ng-show="data.type === 'message'">&nbsp;[1..1]&nbsp;{{::data.name}}</span>
+                    </div>
+                    <div id="expanded-data" ng-if="data.childrenVisible">
+                        <table class="table table-striped" id="nested-table">
+                            <div ng-repeat="data in data.children" ng-include="'tree_item.html'"></div>
+                        </table>
+                    </div>
+                </div>
+                <div ng-if="data.type === 'segmentRef'" ><span class="label label-segment label-icon">S</span>
+                    &nbsp;[{{::data.min}}..{{::data.max}}]&nbsp;{{::segmentsMap[data.ref.id].name}}
+                </div>
+            </td>
     </tr>
 
 </script>
@@ -1562,7 +1598,7 @@
                                     <span ng-show="compositeType == 'XOR'">XOR</span>
                                     <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                                 </td>
-                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2"data-drop="true"  data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
                                     <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
                                     <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                                 </td>
