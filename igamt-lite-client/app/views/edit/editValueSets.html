@@ -415,8 +415,8 @@
                                     <i class="fa fa-link" aria-hidden="true"></i> Value Set Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
-                                    <span class="pull-right">
-                                        <button ng-click="AddBindingForValueSet(table)" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> Add Binding</button>
+                                    <span class="pull-right" style="margin-bottom:10px">
+                                        <button type="button" ng-click="AddBindingForValueSet(table)" class="btn btn-raised btn-info btn-md"><i class="fa fa-plus"></i> Add Binding</button>
                                     </span>
                                     <table st-safe-src="references" st-table="displayReferences" class="table table-striped table-bordered table-condensed">
                                         <thead>
