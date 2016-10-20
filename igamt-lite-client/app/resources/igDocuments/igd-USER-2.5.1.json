@@ -4,7 +4,7 @@
 	, "accountId": 45
 	, "comment": ""
 	, "usageNote": ""
-	, "shareParticipantIds": [44]
+	, "shareParticipantIds": [{"accountId": 46, "permission": "VIEW", "pendingApproval": true}]
 	, "metaData": {
 		"name": null
 		, "orgName": "NIST"
