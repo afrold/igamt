@@ -2096,6 +2096,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             	console.log("Cleeaning");
                                 $scope.editForm.$setPristine();
                                 $scope.editForm.$dirty = false;
+                                $scope.editForm.$invalid = false;
                                 
                             }
                             $rootScope.clearChanges();
@@ -2826,45 +2827,77 @@ angular.module('igl').controller('AddDatatypeCtrl',
 	        };
 	        $scope.addDtFlv = function(datatype) {
 	            //var newDatatype = {};
-	            var newDatatype = angular.copy(datatype);
-	            if(datatypeLibrary.scope=='USER'){
-	            	newDatatype.ext=Math.floor(Math.random() * 1000);
-	            }else if (datatype.scope === 'MASTER') {
-	                //newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
-	                var temp = [];
-	                temp.push($rootScope.igdocument.profile.metaData.hl7Version);
-	                newDatatype.hl7versions = temp;
-	                newDatatype.hl7Version = $rootScope.igdocument.profile.metaData.hl7Version;
-	                DatatypeService.getOneStandard(datatype.name,newDatatype.hl7Version,newDatatype.hl7versions).then(function(standard){
-	                	$rootScope.mergeEmptyProperty(newDatatype, standard);
-	                });
-	            }
-	            console.log(newDatatype.ext);
-	            newDatatype.scope =datatypeLibrary.scope;
-           	 	newDatatype.status="UNPUBLISHED";
-	            newDatatype.participants = [];
-	            newDatatype.id = new ObjectId().toString();;
-	            newDatatype.libIds = [];
-        if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
-	                for (var i = 0; i < newDatatype.components.length; i++) {
-	                    newDatatype.components[i].id = new ObjectId().toString();
+	        	
+//	        		if ($rootScope.datatypeLibrary.scope=="USER") {
+//	                var temp = [];
+//	                $scope.newDatatype = angular.copy(datatype);
+//	    
+//		            	$scope.newDatatype.ext=Math.floor(Math.random() * 1000);
+//
+//	                	console.log($scope.newDatatype.ext);
+//	       	            $scope.newDatatype.scope =datatypeLibrary.scope;
+//	                  	$scope.newDatatype.status="UNPUBLISHED";
+//	       	            $scope.newDatatype.participants = [];
+//	       	            $scope.newDatatype.id = new ObjectId().toString();
+//	       	            $scope.newDatatype.libIds = [];
+//	    	            $scope.selectedDatatypes.push($scope.newDatatype);
+//	    	            console.log($scope.selectedDatatypes)
+//	                	
+//	            }else{
+//	            	
+//	                DatatypeService.getLastMaster(datatype.name,$scope.version1).then(function(standard){
+//	                	$scope.newDatatype=standard;
+//	                	console.log($scope.newDatatype);
+//	                	console.log($scope.newDatatype.ext);
+//	       	            $scope.newDatatype.scope =datatypeLibrary.scope;
+//	                  	$scope.newDatatype.status="UNPUBLISHED";
+//	       	            $scope.newDatatype.participants = [];
+//	       	            $scope.newDatatype.id = new ObjectId().toString();;
+//	       	            $scope.newDatatype.libIds = [];
+//	                	console.log(standard);
+//	    	            $scope.selectedDatatypes.push($scope.newDatatype);
+//	    	            console.log($scope.selectedDatatypes)
+//	                });
+//	            }
+	                $scope.newDatatype = angular.copy(datatype);
+	        	    
+	            	$scope.newDatatype.ext=Math.floor(Math.random() * 1000);
+
+                	console.log($scope.newDatatype.ext);
+       	            $scope.newDatatype.scope =datatypeLibrary.scope;
+                  	$scope.newDatatype.status="UNPUBLISHED";
+                  	
+       	            $scope.newDatatype.participants = [];
+       	            $scope.newDatatype.id = new ObjectId().toString();
+       	            $scope.newDatatype.libIds = [];
+    	            $scope.selectedDatatypes.push($scope.newDatatype);
+    	            console.log($scope.selectedDatatypes)
+	            console.log($scope.newDatatype.ext);
+	            $scope.newDatatype.scope =datatypeLibrary.scope;
+           	 	$scope.newDatatype.status="UNPUBLISHED";
+	            $scope.newDatatype.participants = [];
+	            $scope.newDatatype.id = new ObjectId().toString();;
+	            $scope.newDatatype.libIds = [];
+	            if ($scope.newDatatype.components != undefined && $scope.newDatatype.components != null && $scope.newDatatype.components.length != 0) {
+	                for (var i = 0; i < $scope.newDatatype.components.length; i++) {
+	                    $scope.newDatatype.components[i].id = new ObjectId().toString();
 	                }
 	            }
 
-	            var predicates = newDatatype['predicates'];
+	            var predicates = $scope.newDatatype['predicates'];
 	            if (predicates != undefined && predicates != null && predicates.length != 0) {
 	                angular.forEach(predicates, function(predicate) {
 	                    predicate.id = new ObjectId().toString();
 	                });
 	            }
 
-	            var conformanceStatements = newDatatype['conformanceStatements'];
+	            var conformanceStatements = $scope.newDatatype['conformanceStatements'];
 	            if (conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0) {
 	                angular.forEach(conformanceStatements, function(conformanceStatement) {
 	                    conformanceStatement.id = new ObjectId().toString();
 	                });
 	            }
-	            $scope.selectedDatatypes.push(newDatatype);
+	          //  $scope.selectedDatatypes.push($scope.newDatatype);
 	            console.log($scope.selectedDatatypes)
 	        }
 	        $scope.deleteDt = function(datatype) {
