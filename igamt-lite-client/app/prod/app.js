@@ -72,10 +72,10 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .when('/compare', {
             templateUrl: 'views/compare.html'
         })
-        .when('/datatypeLibrary', {
-            templateUrl: 'views/datatypeLibrary.html',
-            controller: 'DatatypeLibraryCtl'
-        })
+//        .when('/datatypeLibrary', {
+//            templateUrl: 'views/datatypeLibrary.html',
+//            controller: 'DatatypeLibraryCtl'
+//        })
         .when('/doc', {
             templateUrl: 'views/doc.html'
         })
@@ -133,9 +133,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         })
         .when('/registrationSubmitted', {
             templateUrl: 'views/account/registrationSubmitted.html'
-        })
-        .when('/masterDTLib', {
-            templateUrl: 'views/edit/masterDTLib.html'
         })
         .otherwise({
             redirectTo: '/'
