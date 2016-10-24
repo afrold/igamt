@@ -1332,6 +1332,10 @@ public class IGDocumentController extends CommonController {
         if (d.getAccountId().equals(account.getId())
             || account.getId().equals(shareParticipantId)) {
           d.getShareParticipantIds().remove(new ShareParticipantPermission(shareParticipantId));
+          // Find the user
+    	  Account acc = accountRepository.findOne(shareParticipantId);
+    	  // Send unshare confirmation email
+          sendUnshareEmail(d, acc, account);
         } else {
           throw new IGDocumentException("You do not have the right to share this ig document");
         }
@@ -1379,6 +1383,23 @@ public class IGDocumentController extends CommonController {
 	    } catch (MailException ex) {
 	      log.error(ex.getMessage(), ex);
 	    }
-	  }
+  }
+  
+  private void sendUnshareEmail(IGDocument doc, Account target,Account source) {
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
+	    msg.setSubject("NIST IGAMT IGDocument unshare");
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	    	+ "This is an automatic email to let you know that "
+	        + source.getFullName() + "(" + source.getUsername() +") stopped sharing the IG Document " +  doc.getMetaData().getTitle() + " with you."
+	    	+ "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+}
 }
