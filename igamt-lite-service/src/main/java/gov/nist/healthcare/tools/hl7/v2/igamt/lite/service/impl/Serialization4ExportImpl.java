@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1393,29 +1394,36 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 		for (org.jsoup.nodes.Element elementImg : doc.select("img")) {
 			try {
-				if (elementImg.attr("src").indexOf("name=") != -1) {
-					String filename = elementImg.attr("src").substring(elementImg.attr("src").indexOf("name=") + 5);
-					fileStorageService.findOneByFilename(filename);
-					String ext = FilenameUtils.getExtension(filename);
-
-					GridFSDBFile dbFile = fileStorageService.findOneByFilename(filename);
-					if (dbFile != null) {
-						InputStream imgis = dbFile.getInputStream();
-
-						String imgEnc = Base64.encodeBase64String(IOUtils.toByteArray(imgis));
+				if (elementImg.attr("src") != null && !"".equals(elementImg.attr("src"))) {
+					InputStream imgis = null;
+					String ext = null;
+					byte[] bytes = null;
+					if (elementImg.attr("src").indexOf("name=") != -1) {
+						String filename = elementImg.attr("src").substring(elementImg.attr("src").indexOf("name=") + 5);
+						ext = FilenameUtils.getExtension(filename);
+						GridFSDBFile dbFile = fileStorageService.findOneByFilename(filename);
+						if (dbFile != null) {
+							imgis = dbFile.getInputStream();
+							bytes = IOUtils.toByteArray(imgis);
+						}
+					} else {
+						String filename = elementImg.attr("src");
+						ext = FilenameUtils.getExtension(filename);
+						URL url = new URL(filename);
+						bytes = IOUtils.toByteArray(url);
+					}
+					if (bytes != null && bytes.length > 0) {
+						String imgEnc = Base64.encodeBase64String(bytes);
 						String texEncImg = "data:image/" + ext + ";base64," + imgEnc;
-						// logger.debug(dbFile.getContentType());
-						// logger.debug(dbFile.getFilename());
-						// logger.debug(ext);
-						// logger.debug(texEncImg);
 						elementImg.attr("src", texEncImg);
 					}
-				} else {
-
 				}
-			} catch (IOException e) {
+			} catch (RuntimeException e) {
 				e.printStackTrace(); // If error, we leave the original document
 										// as is.
+			} catch (Exception e) {
+				e.printStackTrace(); // If error, we leave the original document
+				// as is.
 			}
 		}
 		// Tidy tidy = new Tidy();
@@ -1634,13 +1642,13 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 	}
 
 	private List<Constraint> findConstraints(Integer target, List<Predicate> predicates,
-
-	List<ConformanceStatement> conformanceStateme((TableLink) f.getTables().get(0)) case for root level constraints
-		List<Constrain((TableLink) f.getTables().get(0)) ArrayList<>();
+			List<ConformanceStatement> conformanceStatements) {
+		// TODO Add case for root level constraints
+		List<Constraint> constraints = new ArrayList<>();
 		for (Predicate pre : predicates) {
 			if (pre.getConstraintTarget().indexOf('[') != -1) {
 				if (target == Integer
-						.parseInt(((TableLink) f.getTables().get(0))get().substring(0, pre.getConstraintTarget().indexOf('[')))) {
+						.parseInt(pre.getConstraintTarget().substring(0, pre.getConstraintTarget().indexOf('[')))) {
 					constraints.add(pre);
 				}
 			}
