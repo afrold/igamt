@@ -18,7 +18,7 @@
     "json3": "^3.3.0",
     "ng-idle": "~1.0.4",
     "restangular": "~1.4.0",
-      "sass-bootstrap": "~3.0.2",
+    "sass-bootstrap": "~3.0.2",
     "angular-local-storage": "~0.2.3",
     "angularjs-dropdown-multiselect": "~1.5.2",
     "lodash": "~3.10.1",
@@ -35,7 +35,7 @@
     "angular-strap": "^2.3.9",
     "angular-object-diff": "~1.0.3",
     "ng-tags-input": "~3.1.1",
-    "angularjs-slider" : "~5.4.0"
+    "angularjs-slider": "~5.4.0"
   },
   "devDependencies": {
     "angular-scenario": "1.5.8",
@@ -45,7 +45,7 @@
   "resolutions": {
     "angular": "1.5.8",
     "lodash": "~3.10.1",
-    "froala-wysiwyg-editor": "2.3.5",
+    "froala-wysiwyg-editor": "^2.3.5",
     "jquery": "^2.2",
     "angular-animate": "^1.4.8",
     "angular-messages": "^1.4.8"
