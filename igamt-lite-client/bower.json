@@ -45,7 +45,7 @@
   "resolutions": {
     "angular": "1.5.8",
     "lodash": "~3.10.1",
-    "froala-wysiwyg-editor": "2.3.0",
+    "froala-wysiwyg-editor": "2.3.5",
     "jquery": "^2.2",
     "angular-animate": "^1.4.8",
     "angular-messages": "^1.4.8"
