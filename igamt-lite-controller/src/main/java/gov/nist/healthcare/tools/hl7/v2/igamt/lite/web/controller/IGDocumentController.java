@@ -811,13 +811,9 @@ public class IGDocumentController extends CommonController {
   // String hl7Version, MessageByListCommand command) {
   @RequestMapping(value = "/messageListByVersion", method = RequestMethod.POST,
       consumes = "application/json", produces = "application/json")
-  public List<MessageEvents> getMessageListByVersion(@RequestBody String hl7Version)
-      throws IGDocumentNotFoundException {
+  public List<MessageEvents> getMessageListByVersion(@RequestBody String hl7Version) {
     log.info("Fetching messages of version hl7Version=" + hl7Version);
-    List<MessageEvents> messages = igDocumentCreation.summary(hl7Version);
-    if (messages.isEmpty()) {
-      throw new IGDocumentNotFoundException(hl7Version);
-    }
+    List<MessageEvents> messages = igDocumentCreation.findMessageEvents(hl7Version);
     return messages;
   }
 
@@ -833,12 +829,6 @@ public class IGDocumentController extends CommonController {
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),
         idrw.getMetaData(), idrw.getHl7Version(), account.getId());
-
-
-    System.out.println(igDocument.getProfile().getTableLibrary().getChildren().size());
-
-    assert (igDocument.getId() != null);
-    assert (igDocument.getAccountId() != null);
     return igDocument;
   }
 
