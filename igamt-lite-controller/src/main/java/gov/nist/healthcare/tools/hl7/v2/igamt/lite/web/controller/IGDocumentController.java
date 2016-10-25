@@ -52,6 +52,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PositionComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SectionMap;
@@ -65,6 +68,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
@@ -77,6 +83,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PhinvadsWSCallService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
@@ -122,7 +129,12 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   private IGDocumentCreationService igDocumentCreation;
-
+  @Autowired
+  private ProfileComponentService profileComponentService;
+  @Autowired
+  private ProfileComponentRepository profileComponentRepository;
+  @Autowired
+  private ProfileComponentLibraryRepository profileComponentLibraryRepository;
   @Autowired
   private DatatypeLibraryService datatypeLibraryService;
 
@@ -229,6 +241,8 @@ public class IGDocumentController extends CommonController {
       throw new NotFoundException("igDocumentNotFound");
     return result;
   }
+  
+  
 
   /**
    * Return the list of pre-loaded profiles
@@ -458,7 +472,7 @@ public class IGDocumentController extends CommonController {
 
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/{id}/", method = RequestMethod.GET)
   public IGDocument get(@PathVariable("id") String id) throws IGDocumentNotFoundException {
     try {
       log.info("Fetching profile with id=" + id);
@@ -474,7 +488,35 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentNotFoundException(e);
     }
   }
-
+  @RequestMapping(value = "/{id}/profile/profilecomponent/save", method = RequestMethod.POST)
+  public IGDocument saveProfileComponent(@PathVariable("id") String id,
+      @RequestBody ProfileComponent profileComponent, HttpServletRequest request,
+      HttpServletResponse response)
+      throws IOException, IGDocumentNotFoundException, IGDocumentException {
+    IGDocument d = igDocumentService.findOne(id);
+    if (d == null) {
+      throw new IGDocumentNotFoundException(id);
+    }
+    if(d.getProfile().getProfileComponentLibrary()==null){
+      ProfileComponentLibrary profileComponentLibrary=new ProfileComponentLibrary();
+      profileComponentService.create(profileComponent);
+      ProfileComponentLink profileComponentLink=new ProfileComponentLink();
+      profileComponentLink.setId(profileComponent.getId());
+      profileComponentLink.setName(profileComponent.getName());
+      profileComponentLibrary.addProfileComponent(profileComponentLink);
+      profileComponentLibraryRepository.save(profileComponentLibrary);
+      d.getProfile().setProfileComponentLibrary(profileComponentLibrary);
+    } else {
+      profileComponentService.create(profileComponent);
+      ProfileComponentLink profileComponentLink=new ProfileComponentLink();
+      profileComponentLink.setId(profileComponent.getId());
+      profileComponentLink.setName(profileComponent.getName());
+      d.getProfile().getProfileComponentLibrary().addProfileComponent(profileComponentLink);;
+      profileComponentLibraryRepository.save(d.getProfile().getProfileComponentLibrary());
+    }
+    igDocumentService.save(d);
+    return d;
+  }
   @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
   public ResponseMessage delete(@PathVariable("id") String id) throws IGDocumentDeleteException {
     try {
@@ -1355,5 +1397,6 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
     }
   }
+
 
 }

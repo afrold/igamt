@@ -34,16 +34,8 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 	private Set<Section> childSections = new HashSet<Section>();
 
 	private Set<Long> shareParticipantIds = new HashSet<Long>();
-	private Set<ProfileComponent> profileComponents = new HashSet<ProfileComponent>();
 
 
-	public Set<ProfileComponent> getProfileComponent() {
-		return profileComponents;
-	}
-
-	public void setProfileComponent(Set<ProfileComponent> profileComponents) {
-		this.profileComponents = profileComponents;
-	}
 
 	private void addSection(Section s) {
 		s.setSectionPosition(this.childSections.size() + 1);

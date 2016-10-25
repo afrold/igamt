@@ -1,7 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.annotation.Id;
 
@@ -22,9 +25,19 @@ Comparable<ProfileComponent>{
 	  @Id
 	  private String id;
 	  private String name;
-	  private String type;
-	  private List<SubProfileComponent> children = new ArrayList<SubProfileComponent>(); 
-	  
+	  private List<String> appliedTo;
+	  public List<String> getAppliedTo() {
+		return appliedTo;
+	}
+
+
+	public void setAppliedTo(List<String> appliedTo) {
+		this.appliedTo = appliedTo;
+	}
+
+	private Set<SubProfileComponent> children=new HashSet<SubProfileComponent>();	  
+
+	
 
 	public String getId() {
 		return id;
@@ -46,23 +59,20 @@ Comparable<ProfileComponent>{
 	}
 
 
-	public String getType() {
-		return type;
-	}
+	
 
 
-	public void setType(String type) {
-		this.type = type;
-	}
 
-
-	public List<SubProfileComponent> getChildren() {
+	public Set<SubProfileComponent> getChildren() {
 		return children;
 	}
 
 
-	public void setChildren(List<SubProfileComponent> children) {
+	public void setChildren(Set<SubProfileComponent> children) {
 		this.children = children;
+	}
+	public void addChildren(Set<SubProfileComponent> children){
+		this.children.addAll(children);
 	}
 
 
@@ -71,6 +81,12 @@ Comparable<ProfileComponent>{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	public ProfileComponent clone() {
+		ProfileComponent clonedPc = new ProfileComponent();
+		clonedPc.setName(this.name);
+		clonedPc.setChildren(this.children);
+		clonedPc.setId(this.getId());
+	    return clonedPc;
+	  }
 }
 
