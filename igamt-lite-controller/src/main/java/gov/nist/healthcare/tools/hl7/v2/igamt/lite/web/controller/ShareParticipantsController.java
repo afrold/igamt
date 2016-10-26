@@ -104,9 +104,12 @@ public class ShareParticipantsController {
       produces = "application/json")
   public @ResponseBody ShareParticipant getParticipantById(@RequestParam(value = "id") Long id) {
     Account account = accountRepository.findOne(id);
-    ShareParticipant user = new ShareParticipant(account.getId());
+    ShareParticipant user = null;
+    if(account != null){
+      user = new ShareParticipant(account.getId());
     user.setUsername(account.getUsername());
     user.setFullname(account.getFullName());
+    }
     return user;
   }
   

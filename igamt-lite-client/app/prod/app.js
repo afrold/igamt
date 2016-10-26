@@ -72,10 +72,10 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .when('/compare', {
             templateUrl: 'views/compare.html'
         })
-        .when('/datatypeLibrary', {
-            templateUrl: 'views/datatypeLibrary.html',
-            controller: 'DatatypeLibraryCtl'
-        })
+//        .when('/datatypeLibrary', {
+//            templateUrl: 'views/datatypeLibrary.html',
+//            controller: 'DatatypeLibraryCtl'
+//        })
         .when('/doc', {
             templateUrl: 'views/doc.html'
         })
@@ -133,9 +133,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         })
         .when('/registrationSubmitted', {
             templateUrl: 'views/account/registrationSubmitted.html'
-        })
-        .when('/masterDTLib', {
-            templateUrl: 'views/edit/masterDTLib.html'
         })
         .otherwise({
             redirectTo: '/'
@@ -317,7 +314,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         $rootScope.appInfo = appInfo;
         $rootScope.froalaEditorOptions = {
             placeholderText: '',
-            toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'insertFile'],
+//            toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'insertFile'],
             imageUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
             imageAllowedTypes: ['jpeg', 'jpg', 'png', 'gif'],
             fileUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
