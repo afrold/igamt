@@ -48,11 +48,7 @@ import javax.imageio.ImageIO;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -382,7 +378,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     if (datatypeLibraryDocument != null) {
       ExportParameters exportParameters = new ExportParameters();
       exportParameters.setDocumentTitle(DOCUMENT_TITLE_DATATYPE_LIBRARY);
-      exportParameters.setIncludeTOC(false);
+      exportParameters.setIncludeTOC(true);
       exportParameters.setInlineConstraints(true);
       exportParameters.setTargetFormat(EXPORT_FORMAT_WORD);
       return exportAsDocxFromXml(igDocumentSerializationService
@@ -2659,31 +2655,30 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     }
   }
 
+  private File doTransformToTempHtml(String xmlString,String xslPath, ExportParameters exportParameters) throws IOException, TransformerException {
+    File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
+    // Generate xml file containing profile
+    File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
+    // File tmpXmlFile = new File("temp + UUID.randomUUID().toString().xml");
+    FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
+    TransformerFactory factoryTf = TransformerFactory.newInstance();
+    factoryTf.setURIResolver(new XsltIncludeUriResover());
+    Source xslt = new StreamSource(this.getClass().getResourceAsStream(xslPath));
+    Transformer transformer;
+    // Apply XSL transformation on xml file to generate html
+    transformer = factoryTf.newTransformer(xslt);
+    //Set the parameters
+    for(Map.Entry<String,String> param:exportParameters.toMap().entrySet()){
+      transformer.setParameter(param.getKey(),param.getValue());
+    }
+    transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
+    return tmpHtmlFile;
+  }
+
   private InputStream exportAsHtmlFromXsl(String xmlString, String xslPath, ExportParameters exportParameters) {
 
     try {
-      File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
-
-      // Generate xml file containing profile
-      File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
-      // File tmpXmlFile = new File("temp + UUID.randomUUID().toString().xml");
-      FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
-
-      TransformerFactory factoryTf = TransformerFactory.newInstance();
-      factoryTf.setURIResolver(new XsltIncludeUriResover());
-      Source xslt = new StreamSource(this.getClass().getResourceAsStream(xslPath));
-      Transformer transformer;
-
-      // Apply XSL transformation on xml file to generate html
-      transformer = factoryTf.newTransformer(xslt);
-        //Set the parameters
-        for(Map.Entry<String,String> param:exportParameters.toMap().entrySet()){
-            transformer.setParameter(param.getKey(),param.getValue());
-        }
-
-
-      transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
-
+      File tmpHtmlFile = doTransformToTempHtml(xmlString,xslPath,exportParameters);
       Tidy tidy = new Tidy();
       tidy.setWraplen(Integer.MAX_VALUE);
       tidy.setXHTML(true);
@@ -2821,23 +2816,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   public InputStream exportAsDocxFromXml(String xmlString, String xmlPath, ExportParameters exportParameters) {
     try {
-      File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
-
-      // Generate xml file containing profile
-      File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
-      FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
-
-      TransformerFactory factoryTf = TransformerFactory.newInstance();
-      Source xslt = new StreamSource(this.getClass().getResourceAsStream(xmlPath));
-      Transformer transformer;
-
-      // Apply XSL transformation on xml file to generate html
-      transformer = factoryTf.newTransformer(xslt);
-      //Set the parameters
-      for(Map.Entry<String,String> param:exportParameters.toMap().entrySet()){
-        transformer.setParameter(param.getKey(),param.getValue());
-      }
-      transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
+      File tmpHtmlFile = doTransformToTempHtml(xmlString,xmlPath,exportParameters);
 
       String html = FileUtils.readFileToString(tmpHtmlFile);
 

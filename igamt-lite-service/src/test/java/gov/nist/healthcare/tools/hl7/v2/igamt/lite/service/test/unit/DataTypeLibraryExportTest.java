@@ -45,7 +45,7 @@ public class DataTypeLibraryExportTest  {
 
     @Test
     public void testHtmlExport(){
-        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57f330710cf2be664672e6b9");
+        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57b758a884aebc6c9d582cd3");
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
             File htmlFile = new File("tmp/test.html");
@@ -61,14 +61,17 @@ public class DataTypeLibraryExportTest  {
     }
     @Test
     public void testDocxExport(){
-//        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57f330710cf2be664672e6b9");
-//        try {
-//            File wordFile = new File("tmp/dtLib_"+new Date().toString()+".docx");
-//            if(wordFile.createNewFile()) {
-//                FileUtils.copyInputStreamToFile(igDocumentExportService.exportAsDocxDatatypeLibraryDocument(datatypeLibraryDocument), wordFile);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57b758a884aebc6c9d582cd3");
+        try {
+            File wordFile = new File("tmp/test.docx");
+            if(wordFile.exists()){
+                wordFile.delete();
+            }
+            if(wordFile.createNewFile()) {
+                FileUtils.copyInputStreamToFile(igDocumentExportService.exportAsDocxDatatypeLibraryDocument(datatypeLibraryDocument), wordFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

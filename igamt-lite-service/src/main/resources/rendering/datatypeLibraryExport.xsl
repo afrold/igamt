@@ -2,12 +2,12 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <!-- Include the templates -->
-    <xsl:import href="templates/htmlContent.xsl"/>
-    <xsl:import href="templates/wordContent.xsl"/>
-    <xsl:import href="templates/metadata.xsl"/>
-    <xsl:import href="templates/style/htmlStyle.xsl"/>
-    <xsl:import href="templates/style/wordStyle.xsl"/>
-    <xsl:import href="templates/style/globalStyle.xsl"/>
+    <xsl:import href="/rendering/templates/htmlContent.xsl"/>
+    <xsl:import href="/rendering/templates/wordContent.xsl"/>
+    <xsl:import href="/rendering/templates/metadata.xsl"/>
+    <xsl:import href="/rendering/templates/style/htmlStyle.xsl"/>
+    <xsl:import href="/rendering/templates/style/wordStyle.xsl"/>
+    <xsl:import href="/rendering/templates/style/globalStyle.xsl"/>
     <xsl:param name="inlineConstraints" select="'false'"/>
     <xsl:param name="includeTOC" select="'false'"/>
     <xsl:param name="targetFormat" select="'html'"/>
