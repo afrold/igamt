@@ -394,6 +394,7 @@ public class IGDocumentController extends CommonController {
           igDocument.getProfile());
 
       igDocument.setId(null);
+      igDocument.getShareParticipantIds().clear();
       igDocument.setScope(IGDocumentScope.USER);
       igDocument.setAccountId(account.getId());
       igDocument.getMetaData().setDate(Constant.mdy.format(new Date()));
