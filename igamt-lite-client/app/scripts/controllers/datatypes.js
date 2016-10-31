@@ -958,6 +958,45 @@ angular.module('igl')
 
         };
 
+
+        $scope.shareModal = function (datatype) {
+    			$http.get('api/usernames').then(function (response) {
+    				var userList = response.data;
+    				// var filteredUserList = userList.filter(function(user) {
+    				// 	var isPresent = false;
+    				// 	if(igdocument.shareParticipants) {
+    				// 		for(var i = 0; i < igdocument.shareParticipants.length; i++) {
+    				// 			if(igdocument.shareParticipants[i].id == user.id) {
+    				// 				isPresent = true;
+    				// 			}
+    				// 		}
+    				// 	}
+    				// 	if(!isPresent) return user;
+    				// });
+    				var modalInstance = $modal.open({
+    					templateUrl: 'ShareIGDocumentModal.html'
+    					, controller: 'ShareIGDocumentCtrl'
+              , size:'lg'
+    					, resolve: {
+    						igdocumentSelected: function () {
+    							return datatype;
+    						}
+    						// , userList: function () {
+                //                 return _.filter(filteredUserList, function(user){
+                //                         return user.id != igdocument.accountId && igdocument.shareParticipantIds && igdocument.shareParticipantIds != null && igdocument.shareParticipantIds.indexOf(user.id) == -1 ;
+                //                     });
+     					  // 	}
+                , userList: function () {
+    							return userList;
+    						}
+    					}
+    				});
+    			}, function (error) {
+    				console.log(error);
+    			});
+    		};
+
+
         //        $scope.$watch(function(){
         //            return $rootScope.datatype;
         //        }, function() {

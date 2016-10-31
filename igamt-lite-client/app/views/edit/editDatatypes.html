@@ -22,6 +22,18 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
+                            <!-- TODO Add datatype sharing hook -->
+                            <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'">
+                              <button  style="margin-top:0px" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(datatype)">
+                                <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+                                <span class="badge" ng-bind="0" style="margin-right:5px;"></span>
+                              </button>
+                              <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+                							<ul class="dropdown-menu igl-menu" role="menu">
+                								<li ng-repeat="participant in [1,2]"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant}} <span ng-if="participant">(Pending...)</span></a></li>
+                							</ul>
+                            </div>
+
                             <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                                     ng-disabled="editForm.$invalid || !editForm.$dirty"
                                     ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
@@ -545,10 +557,10 @@
                                                         <span ng-bind="ref.path"></span>
                                                     </td>
                                                     <td st-ratio="15">
-                                                        
+
                                                         <a ng-show="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</a>
                                                         <a ng-show="ref.type === 'component'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</a>
-                                                    
+
                                                     </td>
                                                     <td st-ratio="10">
                                                         {{::ref.usage}}
@@ -556,7 +568,7 @@
                                                     <td st-ratio="20">
                                                         <span ng-show="ref.target.scope !== 'USER'">
                                                              <a ng-click="redirectDT(ref.datatype)">{{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}</a>
-                                                           
+
                                                         </span>
                                                         <select ng-show="ref.target.scope == 'USER'" class="form-control" ng-change="changeDatatypeLink(ref.datatypeLink)" ng-model="ref.datatypeLink.id">
                                                             <option value="">No Value Set</option>
@@ -1502,7 +1514,7 @@
                         </td>
                         <td class="col-md-3">
                             <span ng-repeat="table in currentField.tables">
-                                {{::getTableLabel(tablesMap[table.id])}}     
+                                {{::getTableLabel(tablesMap[table.id])}}
                             </span>
 
                         </td>
@@ -1537,16 +1549,16 @@
                         </select>
                         </td>
                         <td class="col-md-3">
-                           
+
                            {{datatypesMap[currentComp.datatype.id].label}}
                         </td>
                         <td class="col-md-3">
                             <span ng-repeat="table in currentComp.tables">
-                                {{getTableLabel(tablesMap[table.id])}}     
+                                {{getTableLabel(tablesMap[table.id])}}
                             </span>
 
                         </td>
-                        
+
 
                     </tr>
                 </tbody>
