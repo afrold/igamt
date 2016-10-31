@@ -25,13 +25,13 @@ Comparable<ProfileComponent>{
 	  @Id
 	  private String id;
 	  private String name;
-	  private List<String> appliedTo;
-	  public List<String> getAppliedTo() {
+	  private List<ApplyInfo> appliedTo;
+	  public List<ApplyInfo> getAppliedTo() {
 		return appliedTo;
 	}
 
 
-	public void setAppliedTo(List<String> appliedTo) {
+	public void setAppliedTo(List<ApplyInfo> appliedTo) {
 		this.appliedTo = appliedTo;
 	}
 

@@ -28,7 +28,7 @@
                                     <table id="profileComponentTable" tt-table tt-params="profileComponentParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                         <thead>
                                             <tr class="tbl-header" style="">
-                                                <th class="col-md-1 col-fixed-60" rowspan="2">Path</th>
+                                                <th class="col-md-1 col-fixed-60" rowspan="2">Location</th>
                                                 <th class="col-md-2 col-fixed-250" rowspan="2"> Name</th>
                                                 <th class="col-md-1 col-fixed-80" rowspan="2">Usage</th>
                                                 <th class="col-md-1 col-fixed-100" colspan="2">Cardinality</th>
@@ -46,8 +46,7 @@
                                                 </th>
                                                 <th class="col-md-1" ng-style="commentWidth" rowspan="2">Comment
                                                 </th>
-                                                <th class="col-md-1" ng-style="commentWidth" rowspan="2">Applied To
-                                                </th>
+
                                                 <th class="col-md-1" ng-style="commentWidth" rowspan="2">Action
                                                 </th>
                                             </tr>
@@ -74,9 +73,22 @@
                                 <div class="col-md-12">
                                     <div class="pull-right">
                                         <button type="button" class="btn btn-raised btn-sm btn-success" ng-click="applyPcTo()">
-                                                    <span><i class="fa fa-check fa-fw"></i> Apply To</span>
+                                                    <span><i class="fa fa-plus fa-fw"></i> Apply To</span>
                                         </button>
                                     </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <table id="applyPcToTable" tt-table tt-params="applyPcToParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                                        <thead>
+                                            <tr class="tbl-header" style="">
+                                                <th class="col-md-3">Name</th>
+                                                <th class="col-md-1">Action</th>
+
+                                            </tr>
+
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
                                 </div>
 
                             </div>
@@ -106,13 +118,14 @@
 <script type="text/ng-template" id="profileComponentTable">
     <tr tt-node is-branch="false">
         <td class="col-md-1 col-fixed-60">
-            <span ng-bind="node.path"></span>
-        </td>
-        <td class="col-md-2 col-fixed-250">
             <span ng-if="node.type=='group'" class="label label-success label-icon">G</span>
             <span ng-if="node.type=='segmentRef'||node.type=='segment'" class="label label-segment label-icon">S</span>
             <span class="label label-field label-icon" ng-if="node.type==='field'">F</span>
             <span class="label label-component label-icon" ng-if="node.type==='component'">C</span>
+
+            <span ng-bind="node.path"></span>
+        </td>
+        <td class="col-md-2 col-fixed-250">
 
             <span ng-bind="node.name"></span>
         </td>
@@ -159,11 +172,9 @@
         </td>
         <td class="col-md-1" ng-style="commentWidth">
         </td>
+
         <td class="col-md-1" ng-style="commentWidth">
-            <a ng-click="applyPcTo(node)"><i class="fa fa-plus fa-fw"></i></a>
-        </td>
-        <td class="col-md-1" ng-style="commentWidth">
-            <i class="fa fa-times" aria-hidden="true"></i>
+            <i ng-click="removePcEntry(node)" class="fa fa-times" aria-hidden="true"></i>
 
         </td>
     </tr>
@@ -179,7 +190,7 @@
         <div class="container" style="margin-bottom: 20px;margin-top: 10px">
             <div class="row" style="padding-top:10px">
                 <div class="col-md-6">
-                    <select class="form-control input-sm" ng-model="applyTo" ng-options="message as message.name for message in message" />
+                    <select class="form-control input-sm" ng-model="applyTo" ng-options="message as message.name for message in messages" />
                 </div>
 
                 <div class="col-md-6 " ng-show="addedField.length> 0">
@@ -197,6 +208,21 @@
         <button class="btn btn-raised btn-info btn-sm" ng-click="apply()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Apply</span>
         </button>
     </div>
+</script>
+
+<script type="text/ng-template" id="applyPcToTable">
+
+    <tr tt-node is-branch="false">
+
+        <td class="col-md-3">
+            <span ng-bind="node.name"></span>
+        </td>
+        <td class="col-md-1">
+            <i ng-click="removeApply(node)" class="fa fa-times" aria-hidden="true"></i>
+        </td>
+
+    </tr>
+
 </script>
 
 
@@ -276,13 +302,19 @@
                                     <th>Name</th>
 
 
+
                                     <th/>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="pc in selectedPC">
                                     <td>{{pc.path}}</td>
-                                    <td><span>{{pc.name}}</span>
+                                    <td><span>
+                                        <span ng-if="pc.type=='group'" class="label label-success label-icon">G</span>
+                                        <span ng-if="pc.type=='segmentRef'||pc.type=='segment'" class="label label-segment label-icon">S</span>
+                                        <span class="label label-field label-icon" ng-if="pc.type==='field'">F</span>
+                                        <span class="label label-component label-icon" ng-if="pc.type==='component'">C</span> {{pc.name}}
+                                        </span>
                                         <!--<a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.scope!=='MASTER'" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
                                                 <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext" />-->
                                         <!--<a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
@@ -291,7 +323,7 @@
                                     </td>
 
 
-                                    <td><a class="pointer" ng-click="deleteDt(dt)"><i
+                                    <td><a class="pointer" ng-click="removeSelectedComp(pc)"><i
                                                                                     class="fa fa-times fa-fw"></i></a></td>
                                 </tr>
                             </tbody>
@@ -316,12 +348,14 @@
 
 <script type="text/ng-template" id="MsgProfileComponentTable">
 
-    <tr tt-node is-branch="node.children!==undefined">
+    <tr tt-node is-branch="node.children!==undefined && node.children.length>0">
 
         <td class="col-md-3">
-            <a ng-if="node.type=='group'||node.type=='segmentRef'" class="pointer " ng-click="addElementPc(node,$event) "><i class="fa fa-plus fa-fw "></i></a>
+            <a ng-if="node.type=='group'||node.type=='segmentRef'||node.type=='field'||node.type=='component'" class="pointer " ng-click="addElementPc(node,$event) "><i class="fa fa-plus fa-fw "></i></a>
             <span ng-if="node.type=='group'" class="label label-success label-icon">G</span>
             <span ng-if="node.type=='segmentRef'" class="label label-segment label-icon">S</span>
+            <span ng-if="node.type=='field'" class="label label-field label-icon">F</span>
+            <span ng-if="node.type=='component'" class="label label-component label-icon">C</span>
 
             <span ng-bind="node.position"></span>.
             <span ng-if="node.name" ng-bind="node.name"></span>

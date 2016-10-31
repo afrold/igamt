@@ -33,6 +33,20 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             $scope.msgs = angular.copy($rootScope.messages.children);
         }
     };
+    $scope.applyPcToParams = new ngTreetableParams({
+        getNodes: function(parent) {
+            if ($rootScope.profileComponent.appliedTo && $rootScope.profileComponent.appliedTo.length > 0) {
+                console.log("==========");
+                console.log($rootScope.profileComponent);
+                return $rootScope.profileComponent.appliedTo;
+
+
+            }
+        },
+        getTemplate: function(node) {
+            return 'applyPcToTable';
+        }
+    });
     $scope.profileComponentParams = new ngTreetableParams({
         getNodes: function(parent) {
             if ($rootScope.igdocument.profile.profileComponentLibrary !== undefined) {
@@ -75,19 +89,31 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                     return $rootScope.profileComponent;
                 },
                 messages: function() {
-                    return $rootScope.messages;
+                    return $rootScope.messages.children;
                 }
 
             }
         }).result.then(function(results) {
 
+            console.log("+++====+++++");
+            console.log($rootScope.profileComponent);
 
-            if ($scope.profileComponentParams) {
-                $scope.profileComponentParams.refresh();
+            if ($scope.applyPcToParams) {
+                $scope.applyPcToParams.refresh();
             }
 
 
 
+        });
+
+    };
+    $scope.removeApply = function(node) {
+        var index = $rootScope.profileComponent.appliedTo.indexOf(node);
+        if (index > -1) $rootScope.profileComponent.appliedTo.splice(index, 1);
+        PcService.save($rootScope.profileComponent).then(function(result) {
+            if ($scope.applyPcToParams) {
+                $scope.applyPcToParams.refresh();
+            }
         });
 
     };
@@ -104,8 +130,14 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 segments: function() {
                     return angular.copy($rootScope.segments);
                 },
+                segmentsMap: function() {
+                    return angular.copy($rootScope.segmentsMap);
+                },
                 datatypes: function() {
                     return angular.copy($rootScope.datatypes);
+                },
+                datatypesMap: function() {
+                    return $rootScope.datatypesMap;
                 },
                 currentPc: function() {
                     return $rootScope.profileComponent;
@@ -113,16 +145,19 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
             }
         }).result.then(function(results) {
-
-
             if ($scope.profileComponentParams) {
                 $scope.profileComponentParams.refresh();
             }
-
-
-
         });
 
+    };
+    $scope.removePcEntry = function(node) {
+
+        var index = $rootScope.profileComponent.children.indexOf(node);
+        if (index > -1) $rootScope.profileComponent.children.splice(index, 1);
+        if ($scope.profileComponentParams) {
+            $scope.profileComponentParams.refresh();
+        }
     };
     $scope.setPcChild = function(pc) {
         console.log(pc);
@@ -280,13 +315,24 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
 
 angular.module('igl').controller('applyPcToCtrl',
-    function($scope, $rootScope, $modalInstance, pc, messages, $http, SegmentLibrarySvc) {
+    function($scope, $rootScope, $modalInstance, pc, PcService, messages, $http, SegmentLibrarySvc) {
+        if (pc.appliedTo === null) {
+            pc.appliedTo = [];
+        }
 
         $scope.messages = messages;
+        console.log($scope.messages);
         $scope.apply = function() {
-            pc.appliedTo = $scope.applyTo;
-            console.log(pc);
-            $modalInstance.close();
+            pc.appliedTo.push({
+                id: $scope.applyTo.id,
+                name: $scope.applyTo.name
+            });
+            PcService.save(pc).then(function(result) {
+                console.log(result);
+
+                $modalInstance.close();
+
+            });
 
 
         };
@@ -298,27 +344,36 @@ angular.module('igl').controller('applyPcToCtrl',
 
 
 angular.module('igl').controller('addComponentsCtrl',
-    function($scope, $rootScope, $modalInstance, messages, segments, currentPc, PcLibraryService, datatypes, ngTreetableParams, $http, SegmentLibrarySvc, PcService) {
+    function($scope, $rootScope, $modalInstance, messages, segments, segmentsMap, datatypesMap, currentPc, PcLibraryService, datatypes, ngTreetableParams, $http, SegmentLibrarySvc, PcService) {
         $scope.selectedPC = [];
         $scope.MsgProfileComponentParams = new ngTreetableParams({
             getNodes: function(parent) {
                 if (messages !== undefined) {
 
                     if (parent) {
-                        console.log(parent);
                         if (parent.children) {
                             for (var i = 0; i < parent.children.length; i++) {
                                 if (parent.type === 'group') {
-                                    console.log(parent);
+
                                     parent.children[i].parent = parent.parent + '.' + parent.name;
+                                    if (parent.children[i].type === 'segmentRef') {
+
+                                        parent.children[i].children = segmentsMap[parent.children[i].ref.id].fields;
+
+                                    }
                                 } else if (parent.type === 'message') {
                                     parent.children[i].parent = parent.structID;
-                                } else if (parent.children[i].type === 'segmentRef') {
-                                    console.log("HEEEEEEEEEEEREEEEE");
+                                    if (parent.children[i].type === 'segmentRef') {
+
+                                        parent.children[i].children = segmentsMap[parent.children[i].ref.id].fields;
+
+                                    }
+                                } else if (parent.type === 'segmentRef') {
+                                    parent.children[i].parent = parent.parent + '.' + segmentsMap[parent.ref.id].label;
+                                    parent.children[i].children = datatypesMap[parent.children[i].datatype.id].components;
                                 }
 
                             }
-                            console.log(parent.children);
                             return parent.children;
                         }
 
@@ -332,6 +387,10 @@ angular.module('igl').controller('addComponentsCtrl',
                 return 'MsgProfileComponentTable';
             }
         });
+        $scope.removeSelectedComp = function(pc) {
+            var index = $scope.selectedPC.indexOf(pc);
+            if (index > -1) $scope.selectedPC.splice(index, 1);
+        };
 
         $scope.addElementPc = function(node, event) {
             var currentScope = angular.element(event.target).scope();
@@ -361,48 +420,78 @@ angular.module('igl').controller('addComponentsCtrl',
                     version: ""
                 };
             } else if (pc.type === 'field') {
-                var newPc = {
-                    id: new ObjectId().toString(),
-                    name: pc.name,
-                    type: pc.type,
-                    path: $rootScope.segmentsMap[parent.id].label + '.' + pc.position,
-                    attributes: {},
-                    appliedTo: [],
-                    version: ""
-                };
-            } else if (pc.type === 'component') {
+                console.log()
+                if (parent.type === 'segment') {
+                    var newPc = {
+                        id: new ObjectId().toString(),
+                        name: pc.name,
+                        type: pc.type,
+                        path: $rootScope.segmentsMap[parent.id].label + '.' + pc.position,
+                        attributes: {},
+                        appliedTo: [],
+                        version: ""
+                    };
+                } else if (parent.type === 'segmentRef') {
+                    var newPc = {
+                        id: new ObjectId().toString(),
+                        name: pc.name,
+                        type: pc.type,
+                        path: parent.parent + '.' + $rootScope.segmentsMap[parent.ref.id].label + '.' + pc.position,
+                        attributes: {},
+                        appliedTo: [],
+                        version: ""
+                    };
+                }
 
-                var newPc = {
-                    id: new ObjectId().toString(),
-                    name: pc.name,
-                    type: pc.type,
-                    path: $rootScope.datatypesMap[parent.id].label + '.' + pc.position,
-                    attributes: {},
-                    appliedTo: [],
-                    version: ""
-                };
+            } else if (pc.type === 'component') {
+                if (parent.type === 'field') {
+                    var newPc = {
+                        id: new ObjectId().toString(),
+                        name: pc.name,
+                        type: pc.type,
+                        path: parent.parent + '.' + parent.position + '.' + pc.position,
+                        attributes: {},
+                        appliedTo: [],
+                        version: ""
+                    };
+                } else {
+                    var newPc = {
+                        id: new ObjectId().toString(),
+                        name: pc.name,
+                        type: pc.type,
+                        path: $rootScope.datatypesMap[parent.id].label + '.' + pc.position,
+                        attributes: {},
+                        appliedTo: [],
+                        version: ""
+                    };
+                }
+
+
             } else if (pc.type === 'segment') {
                 var newPc = {
                     id: new ObjectId().toString(),
                     name: $rootScope.segmentsMap[pc.id].name,
                     ext: $rootScope.segmentsMap[pc.id].ex,
                     type: pc.type,
-                    path: $rootScope.segmentsMap[pc.id].label,
+                    path: '*',
                     attributes: {},
                     appliedTo: [],
                     version: ""
                 };
             } else if (pc.type === 'datatype') {
+
                 var newPc = {
                     id: new ObjectId().toString(),
                     name: $rootScope.datatypesMap[pc.id].name,
                     ext: $rootScope.datatypesMap[pc.id].ex,
                     type: pc.type,
-                    path: $rootScope.datatypesMap[pc.id].label,
+                    path: '*',
                     attributes: {},
                     appliedTo: [],
                     version: ""
                 };
+
+
             };
             $scope.selectedPC.push(newPc);
         };
