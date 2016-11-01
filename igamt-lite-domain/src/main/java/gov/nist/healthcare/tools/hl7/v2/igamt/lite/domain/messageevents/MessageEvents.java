@@ -68,4 +68,24 @@ public class MessageEvents {
   public String getDescription() {
     return description;
   }
+
+public void setId(String id) {
+	this.id = id;
+}
+
+public void setName(String name) {
+	this.name = name;
+}
+
+public void setChildren(Set<Event> children) {
+	this.children = children;
+}
+
+public void setDescription(String description) {
+	this.description = description;
+}
+  
+  
+  
+  
 }

@@ -9,6 +9,10 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +44,18 @@ public class ShareParticipantsController {
   
   @Autowired
   private IGDocumentService igDocumentService;
+  
+  @Value("${server.email}")
+  private String SERVER_EMAIL;
+
+  @Value("${admin.email}")
+  private String ADMIN_EMAIL;
+  
+  @Autowired
+  private MailSender mailSender;
+
+  @Autowired
+  private SimpleMailMessage templateMessage;
 
   /**
    * List of Username for share feature
@@ -88,9 +104,12 @@ public class ShareParticipantsController {
       produces = "application/json")
   public @ResponseBody ShareParticipant getParticipantById(@RequestParam(value = "id") Long id) {
     Account account = accountRepository.findOne(id);
-    ShareParticipant user = new ShareParticipant(account.getId());
+    ShareParticipant user = null;
+    if(account != null){
+      user = new ShareParticipant(account.getId());
     user.setUsername(account.getUsername());
     user.setFullname(account.getFullName());
+    }
     return user;
   }
   
@@ -113,6 +132,10 @@ public class ShareParticipantsController {
 	    	if(p.getAccountId() == account.getId()) {
 	    		p.setPendingApproval(false);
 	    		igDocumentService.save(d);
+	    		// Find author
+	    		Account acc = accountRepository.findOne(d.getAccountId());
+	    		// Send share confirmation email
+	    		sendShareConfirmationEmail(d, acc, account);
 	    		return true;
 	    	}
 	    }
@@ -140,11 +163,50 @@ public class ShareParticipantsController {
     try {
     	d.getShareParticipantIds().remove(new ShareParticipantPermission(account.getId()));
     	igDocumentService.save(d);
+    	// Find author
+		Account acc = accountRepository.findOne(d.getAccountId());
+		// Send share confirmation email
+		sendRejectEmail(d, acc, account);
 	    return true;
     } catch (Exception e) {
         log.error("", e);
         throw new Exception("Failed to share IG Document \n" + e.getMessage());
     }
   }
+  
+  private void sendShareConfirmationEmail(IGDocument doc, Account target,Account source) {	  
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+	    msg.setSubject("NIST IGAMT IGDocument Share");
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	        + source.getFullName() + "(" + source.getUsername() +") accepted the share request for the IG Document " +  doc.getMetaData().getTitle()
+	        + "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+}
+  
+  private void sendRejectEmail(IGDocument doc, Account target,Account source) {	  
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+	    msg.setSubject("NIST IGAMT IGDocument Share");
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	    	+ source.getFullName() + "(" + source.getUsername() +") rejected the share request for the IG Document " +  doc.getMetaData().getTitle()
+	        + "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+  }
+
 
 }

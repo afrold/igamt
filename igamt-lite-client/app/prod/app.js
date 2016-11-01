@@ -340,7 +340,8 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             },
             key: 'Rg1Wb2KYd1Td1WIh1CVc2F==',
             imageResize: true,
-            imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageAlt']
+            imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageAlt'],
+            pastePlain: true
         };
         httpHeaders.common['appVersion'] = appInfo.version;
         var prevVersion = StorageService.getAppVersion(StorageService.APP_VERSION);

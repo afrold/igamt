@@ -394,6 +394,7 @@ public class IGDocumentController extends CommonController {
           igDocument.getProfile());
 
       igDocument.setId(null);
+      igDocument.getShareParticipantIds().clear();
       igDocument.setScope(IGDocumentScope.USER);
       igDocument.setAccountId(account.getId());
       igDocument.getMetaData().setDate(Constant.mdy.format(new Date()));
@@ -811,13 +812,9 @@ public class IGDocumentController extends CommonController {
   // String hl7Version, MessageByListCommand command) {
   @RequestMapping(value = "/messageListByVersion", method = RequestMethod.POST,
       consumes = "application/json", produces = "application/json")
-  public List<MessageEvents> getMessageListByVersion(@RequestBody String hl7Version)
-      throws IGDocumentNotFoundException {
+  public List<MessageEvents> getMessageListByVersion(@RequestBody String hl7Version) {
     log.info("Fetching messages of version hl7Version=" + hl7Version);
-    List<MessageEvents> messages = igDocumentCreation.summary(hl7Version);
-    if (messages.isEmpty()) {
-      throw new IGDocumentNotFoundException(hl7Version);
-    }
+    List<MessageEvents> messages = igDocumentCreation.findMessageEvents(hl7Version);
     return messages;
   }
 
@@ -833,12 +830,6 @@ public class IGDocumentController extends CommonController {
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),
         idrw.getMetaData(), idrw.getHl7Version(), account.getId());
-
-
-    System.out.println(igDocument.getProfile().getTableLibrary().getChildren().size());
-
-    assert (igDocument.getId() != null);
-    assert (igDocument.getAccountId() != null);
     return igDocument;
   }
 
@@ -1332,6 +1323,10 @@ public class IGDocumentController extends CommonController {
         if (d.getAccountId().equals(account.getId())
             || account.getId().equals(shareParticipantId)) {
           d.getShareParticipantIds().remove(new ShareParticipantPermission(shareParticipantId));
+          // Find the user
+    	  Account acc = accountRepository.findOne(shareParticipantId);
+    	  // Send unshare confirmation email
+          sendUnshareEmail(d, acc, account);
         } else {
           throw new IGDocumentException("You do not have the right to share this ig document");
         }
@@ -1379,6 +1374,23 @@ public class IGDocumentController extends CommonController {
 	    } catch (MailException ex) {
 	      log.error(ex.getMessage(), ex);
 	    }
-	  }
+  }
+  
+  private void sendUnshareEmail(IGDocument doc, Account target,Account source) {
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
+	    msg.setSubject("NIST IGAMT IGDocument unshare");
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	    	+ "This is an automatic email to let you know that "
+	        + source.getFullName() + "(" + source.getUsername() +") stopped sharing the IG Document " +  doc.getMetaData().getTitle() + " with you."
+	    	+ "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+}
 }
