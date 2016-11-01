@@ -25,6 +25,8 @@ public class Constraints implements Serializable {
   private Context segments;
 
   private Context messages;
+  
+  private Context groups;
 
   public String getId() {
     return id;
@@ -57,5 +59,13 @@ public class Constraints implements Serializable {
   public void setMessages(Context messages) {
     this.messages = messages;
   }
+
+public Context getGroups() {
+	return groups;
+}
+
+public void setGroups(Context groups) {
+	this.groups = groups;
+}
 
 }
