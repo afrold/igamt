@@ -535,7 +535,7 @@ public class UserController {
 
     // logger.debug("^^^^^^^^^^^^^^^^^^^^^ 2 ^^^^^^^^^^^^^^^^^^");
 
-    userService.changePasswordForUser(onRecordUser.getPassword(), acc.getPassword(), userId);
+    userService.changePasswordForUser(acc.getPassword(), userId);
     if (!onRecordUser.isCredentialsNonExpired()) {
       userService.enableUserCredentials(userId);
     }
