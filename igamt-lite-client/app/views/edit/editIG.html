@@ -42,8 +42,31 @@
 						<label class="btn btn-raised btn-primary btn-sm" ng-class="{active:$root.usageF===false}" ng-click="$root.usageF=false"> All Usages </label>
 						<label class=" btn btn-raised btn-primary btn-sm" ng-class="{active:$root.usageF===true}" ng-click="usageFilter()"> Only R,RE,C </label>
 					</div>
- 			        <button ng-if="igdocument.accountId == getAccountID()" style="margin-top:0px" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(igdocument)"><i class="fa fa-share-alt" aria-hidden="true"></i> Share </button>
-                    <button ng-if="igdocument.accountId != getAccountID() && igdocument.shareParticipantIds.indexOf(getAccountID()) != -1" style="margin-top:0px" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="unshareModal(igdocument)"><i class="fa fa-share-alt" aria-hidden="true"></i> Unshare </button>
+					<div class="btn-group" ng-if="igdocument.accountId == getAccountID()">
+ 			        <button  style="margin-top:0px" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(igdocument)">
+								<i class="fa fa-share-alt" aria-hidden="true"></i> Share
+                        <span class="badge" ng-bind="igdocument.shareParticipants.length" style="margin-right:5px;"></span>
+                    </button>
+
+							<button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+							<ul class="dropdown-menu igl-menu" role="menu">
+								<li ng-repeat="participant in igdocument.shareParticipants"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant.username}} <span ng-if="participant.pendingApproval">(Pending...)</span></a></li>
+							</ul>
+					</div>
+                    <div class="btn-group" ng-if="igdocument.accountId != getAccountID() && igdocument.shareParticipantIds.indexOf(getAccountID()) != -1">
+
+                        <button  style="margin-top:0px" class="btn btn-raised btn-primary btn-sm" ng-class="" disabled>
+                            <i class="fa fa-share-alt" aria-hidden="true"></i> Shared With
+                            <span class="badge" ng-bind="igdocument.shareParticipants.length" style="margin-right:5px;"></span>
+                        </button>
+
+                        <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+                        <ul class="dropdown-menu igl-menu" role="menu">
+                            <li ng-repeat="participant in igdocument.shareParticipants"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant.username}} <span ng-if="participant.pendingApproval">(Pending...)</span> <span ng-if="participant.id === getAccountID()"><i class="fa fa-share-alt" ng-click="unshareModal(igdocument)"></i></span></a></li>
+                        </ul>
+                    </div>
+
+
                     <button style="margin-top:0px" ng-show="viewSettings.tableReadonly && igDocumentConfig.selectedType === 'USER'" title="Edit" type="button" class="btn btn-raised btn-sm btn-primary" ng-click="edit(igdocument)"> <span><i class="fa fa-pencil fa-fw"></i>Edit</span> </button>
 					<div class="btn-group">
 						<button type="button" class="btn btn-raised btn-info btn-sm"> <i class="fa fa-download fa-fw"></i> Export </button>
@@ -81,10 +104,6 @@
 				</div>
 			</div>
 			<div ng-class="{'col-md-9': !hideToc,'col-md-12': hideToc}">
-				<div ng-show="igdocument.shareParticipants.length > 0" style="margin-bottom: 10px;">
-					<span style="font-style: italic;">Shared with: </span>
-					<span ng-repeat="participant in igdocument.shareParticipants" style="font-weight: bold; margin-right: 5px;" class="badge" ns-popover ns-popover-template="sharePopover.html" ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="top" ns-popover-timeout="0">{{participant.username}}</span>
-				</div>
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-right"></i> </button> <i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </div>
@@ -106,7 +125,8 @@
 	<div class="triangle"></div>
 	<div style="z-index: 99999" class="cp-tooltip">
 		<div class="col-md-12" class="cp-tooltip">
-			<img ng-src="https://s11.postimg.org/ppmsxvppv/1475012808_user.png" /> {{participant.fullname}}
+			<i class="fa fa-user" aria-hidden="true"></i> {{participant.fullname}}<br>
+			<span ng-if="participant.pendingApproval">Confirmation pending...</span>
 		</div>
 	</div>
 </script>

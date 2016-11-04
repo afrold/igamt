@@ -1702,7 +1702,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         $rootScope.generateCompositeConformanceStatement = function(compositeType, firstConstraint, secondConstraint, constraints) {
             var cs = null;
-            if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR' || compositeType === 'IFTHEN') {
+            if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR') {
                 var firstConstraintAssertion = firstConstraint.assertion.replace("<Assertion>", "");
                 firstConstraintAssertion = firstConstraintAssertion.replace("</Assertion>", "");
                 var secondConstraintAssertion = secondConstraint.assertion.replace("<Assertion>", "");
@@ -1713,6 +1713,19 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + compositeType + ' [' + secondConstraint.description + ']',
+                    assertion: '<Assertion><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Assertion>'
+                };
+            } else if(compositeType === 'IFTHEN'){
+                var firstConstraintAssertion = firstConstraint.assertion.replace("<Assertion>", "");
+                firstConstraintAssertion = firstConstraintAssertion.replace("</Assertion>", "");
+                var secondConstraintAssertion = secondConstraint.assertion.replace("<Assertion>", "");
+                secondConstraintAssertion = secondConstraintAssertion.replace("</Assertion>", "");
+
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
+                    description: 'IF [' + firstConstraint.description + '] THEN [' + secondConstraint.description + ']',
                     assertion: '<Assertion><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Assertion>'
                 };
             } else if (compositeType === 'FORALL' || compositeType === 'EXIST') {
@@ -1743,7 +1756,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         $rootScope.generateCompositePredicate = function(compositeType, firstConstraint, secondConstraint, constraints) {
             var cp = null;
-            if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR' || compositeType === 'IFTHEN') {
+            if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR') {
                 var firstConstraintAssertion = firstConstraint.assertion.replace("<Condition>", "");
                 firstConstraintAssertion = firstConstraintAssertion.replace("</Condition>", "");
                 var secondConstraintAssertion = secondConstraint.assertion.replace("<Condition>", "");
@@ -1754,6 +1767,21 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + compositeType + ' [' + secondConstraint.description + ']',
+                    trueUsage: '',
+                    falseUsage: '',
+                    assertion: '<Condition><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Condition>'
+                };
+            } else if (compositeType === 'IFTHEN') {
+                var firstConstraintAssertion = firstConstraint.assertion.replace("<Condition>", "");
+                firstConstraintAssertion = firstConstraintAssertion.replace("</Condition>", "");
+                var secondConstraintAssertion = secondConstraint.assertion.replace("<Condition>", "");
+                secondConstraintAssertion = secondConstraintAssertion.replace("</Condition>", "");
+
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
+                    description: 'IF [' + firstConstraint.description + '] THEN [' + secondConstraint.description + ']',
                     trueUsage: '',
                     falseUsage: '',
                     assertion: '<Condition><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Condition>'
@@ -1814,29 +1842,39 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Assertion>'
                     };
                 } else {
+                    console.log(newConstraint.value);
+                    if(newConstraint.value =='^~\\&'){
+                        cs = {
+                            id: new ObjectId().toString(),
+                            constraintId: newConstraint.constraintId,
+                            constraintTarget: positionPath,
+                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'^~\\&amp;\'.',
+                            assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"^~\\&amp;\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Assertion>'
+                        };
+                    }else {
+                        var componetsList = newConstraint.value.split("^");
+                        var assertionScript = "";
+                        var componentPosition = 0;
 
-                    var componetsList = newConstraint.value.split("^");
-                    var assertionScript = "";
-                    var componentPosition = 0;
-
-                    angular.forEach(componetsList, function(componentValue) {
-                        componentPosition = componentPosition + 1;
-                        var script = '<PlainText Path=\"' + newConstraint.position_1 + "." + componentPosition + "[1]" + '\" Text=\"' + componentValue + '\" IgnoreCase="false"/>';
-                        if (assertionScript === "") {
-                            assertionScript = script;
-                        } else {
-                            assertionScript = "<AND>" + assertionScript + script + "</AND>";
-                        }
-                    });
+                        angular.forEach(componetsList, function(componentValue) {
+                            componentPosition = componentPosition + 1;
+                            var script = '<PlainText Path=\"' + newConstraint.position_1 + "." + componentPosition + "[1]" + '\" Text=\"' + componentValue + '\" IgnoreCase="false"/>';
+                            if (assertionScript === "") {
+                                assertionScript = script;
+                            } else {
+                                assertionScript = "<AND>" + assertionScript + script + "</AND>";
+                            }
+                        });
 
 
-                    cs = {
-                        id: new ObjectId().toString(),
-                        constraintId: newConstraint.constraintId,
-                        constraintTarget: positionPath,
-                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
-                        assertion: '<Assertion>' + assertionScript + '</Assertion>'
-                    };
+                        cs = {
+                            id: new ObjectId().toString(),
+                            constraintId: newConstraint.constraintId,
+                            constraintTarget: positionPath,
+                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
+                            assertion: '<Assertion>' + assertionScript + '</Assertion>'
+                        };
+                    }
                 }
             } else if (newConstraint.contraintType === 'one of list values') {
                 cs = {
