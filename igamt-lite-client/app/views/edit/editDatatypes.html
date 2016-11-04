@@ -26,11 +26,11 @@
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'">
                               <button  style="margin-top:0px" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(datatype)">
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
-                                <span class="badge" ng-bind="0" style="margin-right:5px;"></span>
+                                <span class="badge" ng-bind="datatype.shareParticipantIds.length" style="margin-right:5px;"></span>
                               </button>
                               <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
                 							<ul class="dropdown-menu igl-menu" role="menu">
-                								<li ng-repeat="participant in [1,2]"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant}} <span ng-if="participant">(Pending...)</span></a></li>
+                								<li ng-repeat="participant in datatype.shareParticipantIds"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant.username}} <span ng-if="participant.pendingApproval">(Pending...)</span></a></li>
                 							</ul>
                             </div>
 
@@ -1572,5 +1572,78 @@
         </button>
         <button class="btn btn-raised btn-info btn-sm" ng-disabled="selectedComponentForBinding == null && selectedFieldForBinding == null" ng-click="save(bindingTargetType)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span>
         </button>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="ShareDatatypeModal.html">
+	<div>
+		<div class="modal-header">
+			<h3 class="modal-title">Share Datatype</h3> </div>
+		<div class="modal-body">
+			<div class="container" style="margin-bottom: 20px;margin-top: 20px">
+				<div class="row" ng-if="error != null">
+					<div class="col-md-12">
+						<span ng-bind="error" style="color: red;"></span>
+					</div>
+				</div>
+
+				<div class="row" ng-if="igdocumentSelected.shareParticipantIds.length > 0">
+					<div class="col-md-12">
+						<h5>Shared with</h5>
+						<div class="table-responsive">
+							<table class="table">
+								<tbody>
+									<tr ng-repeat="participant in igdocumentSelected.shareParticipantIds">
+										<td><i>{{participant.fullname}} ({{participant.username}})</i></td>
+										<td>
+                                            <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="!participant.pendingApproval"><i class="fa fa-times"></i> Remove</button>
+                                            <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request</button>
+                                            <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="participant.pendingApproval"><i class="fa fa-times"></i> Cancel</button>
+                                        </td>
+                                        <td>
+                                            {{participant.permission}}
+                                        </td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row">
+					<div class="col-md-8">
+						<tags-input ng-model="tags" key-property="id" display-property="username" placeholder="Find user" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">
+							<auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
+						</tags-input>
+					</div>
+					<div class="col-md-4">
+						<ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
+							<ui-select-match>{{$select.selected}}</ui-select-match>
+							<ui-select-choices repeat="item in itemArray | filter: $select.search">
+								<div ng-bind-html="item | highlight: $select.search"></div>
+							</ui-select-choices>
+						</ui-select>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i> Cancel </button>
+				<button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="tags.length === 0"><i class="fa fa-check"></i>Share</button>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="autocomplete-template">
+    <div class="autocomplete-template">
+        <div class="share_left-panel">
+            <i class="fa fa-user" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="share_right-panel">
+        <span ng-bind-html="$highlight($getDisplayText())"></span>
+        <span>({{data.fullname}})</span>
     </div>
 </script>

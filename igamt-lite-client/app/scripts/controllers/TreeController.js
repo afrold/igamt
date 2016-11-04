@@ -1022,6 +1022,23 @@ angular
                     console.log("dialog not opened");
                     $scope.Activate(data.id);
                     $rootScope.datatype = data;
+                    // Add participants username and fullname
+                    // Find share participants
+                    if ($rootScope.datatype.shareParticipantIds && $rootScope.datatype.shareParticipantIds.length > 0) {
+                        $rootScope.datatype.shareParticipantIds.forEach(function(participant) {
+                            $http.get('api/shareparticipant', { params: { id: participant.accountId } })
+                                .then(
+                                    function(response) {
+                                        participant.username = response.data.username;
+                                        participant.fullname = response.data.fullname;
+                                    },
+                                    function(error) {
+                                        console.log(error);
+                                    }
+                                );
+                        });
+                    }
+
                     $scope.$emit('event:openDatatype', $rootScope.datatype);
                 };
 

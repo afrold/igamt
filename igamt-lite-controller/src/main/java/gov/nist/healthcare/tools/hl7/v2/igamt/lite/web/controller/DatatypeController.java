@@ -37,9 +37,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopeAndNameAndVersionWrapper;
@@ -326,6 +329,94 @@ public class DatatypeController extends CommonController {
       }
     }
     return datatypes;
+  }
+  
+  /**
+   * Share multiple participants
+   * 
+   * @param id
+   * @param participants
+   * @return
+   * @throws IGDocumentException
+   */
+  @RequestMapping(value = "/{id}/share", method = RequestMethod.POST, produces = "application/json")
+  public boolean shareDatatype(@PathVariable("id") String id, @RequestBody Set<Long> participants)
+      throws Exception {
+    log.info("Sharing datatype with id=" + id + " with partipants=" + participants);
+    Long accountId = null;
+    // Get account ID
+    if(!participants.isEmpty()) {
+    	accountId = participants.iterator().next();
+    }
+    try {
+      User u = userService.getCurrentUser();
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (account == null)
+        throw new UserAccountNotFoundException();
+      Datatype d = this.findById(id);
+      d.setAccountId(accountId);
+      if (d.getAccountId() == null || !d.getAccountId().equals(account.getId())) {
+        throw new Exception(
+            "You do not have the right privilege to share this Datatype");
+      }
+      for(Long participantId : participants) {
+    	  if(participantId != accountId) {
+    		  d.getShareParticipantIds().add(new ShareParticipantPermission(participantId));
+    	  }
+    	  
+    	  // Find the user
+    	  Account acc = accountRepository.findOne(accountId);
+    	  // Send confirmation email
+//    	  sendShareConfirmation(d, acc,account);
+      }
+      datatypeService.save(d);
+      return true;
+    } catch (Exception e) {
+      log.error("", e);
+      throw new Exception("Failed to share Datatype \n" + e.getMessage());
+    }
+  }
+  
+  /**
+   * Unshare one participant
+   * 
+   * @param id
+   * @param participantId
+   * @return
+   * @throws IGDocumentException
+   */
+  @RequestMapping(value = "/{id}/unshare", method = RequestMethod.POST,
+      produces = "application/json")
+  public boolean unshareIgDocument(@PathVariable("id") String id,
+      @RequestBody Long shareParticipantId) throws IGDocumentException {
+    log.info("Unsharing datatype with id=" + id + " with participant=" + shareParticipantId);
+    try {
+      User u = userService.getCurrentUser();
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (account == null)
+        throw new UserAccountNotFoundException();
+      Datatype d = this.findById(id);
+      // Cannot unshare owner
+      if (d.getAccountId() != null && shareParticipantId != d.getAccountId()) {
+        if (d.getAccountId().equals(account.getId())
+            || account.getId().equals(shareParticipantId)) {
+          d.getShareParticipantIds().remove(new ShareParticipantPermission(shareParticipantId));
+          // Find the user
+    	  Account acc = accountRepository.findOne(shareParticipantId);
+    	  // Send unshare confirmation email
+//          sendUnshareEmail(d, acc, account);
+        } else {
+          throw new Exception("You do not have the right to share this datatype");
+        }
+      } else {
+        throw new Exception("You do not have the right to share this datatype");
+      }
+      datatypeService.save(d);
+      return true;
+    } catch (Exception e) {
+      log.error("", e);
+      throw new IGDocumentException("Failed to unshare Datatype \n" + e.getMessage());
+    }
   }
 
   public Datatype findById(String id) throws DataNotFoundException {

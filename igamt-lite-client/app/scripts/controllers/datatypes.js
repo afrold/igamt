@@ -958,37 +958,36 @@ angular.module('igl')
 
         };
 
-
         $scope.shareModal = function (datatype) {
     			$http.get('api/usernames').then(function (response) {
     				var userList = response.data;
-    				// var filteredUserList = userList.filter(function(user) {
-    				// 	var isPresent = false;
-    				// 	if(igdocument.shareParticipants) {
-    				// 		for(var i = 0; i < igdocument.shareParticipants.length; i++) {
-    				// 			if(igdocument.shareParticipants[i].id == user.id) {
-    				// 				isPresent = true;
-    				// 			}
-    				// 		}
-    				// 	}
-    				// 	if(!isPresent) return user;
-    				// });
+    				var filteredUserList = userList.filter(function(user) {
+              // Add accountId var
+              user.accountId = user.id;
+    					var isPresent = false;
+    					if(datatype.shareParticipantIds) {
+    						for(var i = 0; i < datatype.shareParticipantIds.length; i++) {
+    							if(datatype.shareParticipantIds[i].accountId == user.id) {
+    								isPresent = true;
+    							}
+    						}
+    					}
+    					if(!isPresent) return user;
+    				});
+
     				var modalInstance = $modal.open({
-    					templateUrl: 'ShareIGDocumentModal.html'
-    					, controller: 'ShareIGDocumentCtrl'
+    					templateUrl: 'ShareDatatypeModal.html'
+    					, controller: 'ShareDatatypeCtrl'
               , size:'lg'
     					, resolve: {
     						igdocumentSelected: function () {
     							return datatype;
     						}
-    						// , userList: function () {
-                //                 return _.filter(filteredUserList, function(user){
-                //                         return user.id != igdocument.accountId && igdocument.shareParticipantIds && igdocument.shareParticipantIds != null && igdocument.shareParticipantIds.indexOf(user.id) == -1 ;
-                //                     });
-     					  // 	}
-                , userList: function () {
-    							return userList;
-    						}
+    						, userList: function () {
+                                return _.filter(filteredUserList, function(user){
+                                        return user.id != $rootScope.igdocument.accountId && datatype.shareParticipantIds && datatype.shareParticipantIds != null && datatype.shareParticipantIds.indexOf(user.id) == -1 ;
+                                    });
+     					  	}
     					}
     				});
     			}, function (error) {
@@ -2195,4 +2194,83 @@ angular.module('igl').controller('AddBindingForDatatype', function($scope, $moda
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
+});
+
+angular.module('igl').controller('ShareDatatypeCtrl', function ($scope, $modalInstance, $http, igdocumentSelected, userList,DatatypeService,$rootScope) {
+
+  $scope.igdocumentSelected = igdocumentSelected;
+	$scope.userList =  userList;
+	$scope.error = "";
+  $scope.tags = [];
+	$scope.ok = function () {
+		var idsTab = $scope.tags.map(function(user) {
+			return user.accountId;
+		});
+
+    // Add account Id on top of array
+    idsTab.unshift($rootScope.igdocument.accountId);
+
+        DatatypeService.share($scope.igdocumentSelected.id,idsTab).then(function(result){
+            // Add participants for direct view
+            $scope.igdocumentSelected.shareParticipantIds = $scope.igdocumentSelected.shareParticipantIds || [];
+            $scope.tags.forEach(function(tag) {
+                tag.permission = $scope.selectedItem.selected;
+                tag.pendingApproval = true;
+                $scope.igdocumentSelected.shareParticipantIds.push(tag);
+            });
+            $rootScope.msg().text = "igSharedSuccessfully";
+            $rootScope.msg().type ="success";
+            $rootScope.msg().show = true;
+            $modalInstance.close();
+        }, function(error){
+            $scope.error = error.data;
+            console.log(error);
+        });
+	};
+	$scope.cancel = function () {
+		$modalInstance.dismiss('cancel');
+	};
+
+	$scope.selectedItem = {
+		selected: "VIEW"
+	};
+	$scope.itemArray = ["VIEW"];
+
+	$scope.loadUsernames = function ($query) {
+		return userList.filter(function (user) {
+			return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
+		});
+	};
+
+    $scope.unshare = function (shareParticipant) {
+        $scope.loading = false;
+        DatatypeService.unshare($scope.igdocumentSelected.id,shareParticipant.accountId).then(function(res){
+            var indexOfId = $scope.igdocumentSelected.shareParticipantIds.indexOf(shareParticipant.accountId);
+            if (indexOfId > -1) {
+                $scope.igdocumentSelected.shareParticipantIds.splice(indexOfId, 1);
+            }
+            var participantIndex = -1;
+            for(var i=0; i <  $scope.igdocumentSelected.shareParticipantIds.length; i++){
+                if($scope.igdocumentSelected.shareParticipantIds[i].accountId === shareParticipant.accountId){
+                    participantIndex =i;
+                    $scope.userList.push($scope.igdocumentSelected.shareParticipantIds[i]);
+                    break;
+                }
+            }
+            if (participantIndex > -1) {
+                $scope.igdocumentSelected.shareParticipantIds.splice(participantIndex, 1);
+            }
+            $scope.loading = false;
+            $rootScope.msg().text = "igUnSharedSuccessfully";
+            $rootScope.msg().type ="success";
+            $rootScope.msg().show = true;
+         }, function(error){
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+            $scope.loading = false;
+        });
+    };
+
+
 });
