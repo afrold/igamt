@@ -5,6 +5,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     function($scope, $http, $rootScope, $q, $modal, $timeout, TableService, ngTreetableParams, DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc,IGDocumentSvc, TableService, ViewSettings, userInfoService, blockUI,CompareService,VersionAndUseService) {
         //  $scope.initLibrary();
         $rootScope.filteringModeON = false;
+        $scope.ttype="USER";
        // $rootScope.config = { "usages": ["R", "B", "RE", "C", "W", "X", "O"], "codeUsages": ["P", "R", "E"], "codeSources": ["HL7", "Local", "Redefined", "SDO"], "tableStabilities": ["Dynamic", "Static"], "tableExtensibilities": ["Close", "Open"], "constraintVerbs": ["SHALL be", "SHALL NOT be", "is", "is not"], "constraintTypes": ["valued", "one of list values", "formatted value", "a literal value", "identical to the another node"], "predefinedFormats": ["YYYYMMDDhhmmss.sss", "ISO-compliant OID", "YYYYMMDDhhmm+-ZZZZ", "YYYYMMDDhh", "YYYY+-ZZZZ", "YYYY", "YYYYMMDDhhmm", "YYYYMM", "YYYYMMDDhhmmss+-ZZZZ", "Alphanumeric", "YYYYMM+-ZZZZ", "YYYYMMDDhhmmss", "YYYYMMDD+-ZZZZ", "YYYYMMDDhh+-ZZZZ", "YYYYMMDDhhmmss.sss+-ZZZZ", "YYYYMMDD"], "statuses": ["Draft", "Active", "Withdrawn", "Superceded"], "domainVersions": ["2.0", "2.1", "2.2", "2.3", "2.4", "2.5", "2.5.1", "2.6", "2.7", "2.3.1", "2.8"], "schemaVersions": ["1.0", "2.0", "1.5", "2.5"] }
         $rootScope.igdocument = null; // current igdocument
         $rootScope.message = null; // current message
@@ -282,7 +283,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         $scope.getDataTypeLibraryByScope = function(scope) {
-
+            $scope.ttype=scope;
             $scope.datatypeLibsStruct = [];
             DatatypeLibraryDocumentSvc.getDataTypeLibraryDocumentByScope(scope).then(function(data) {
                 $scope.datatypeLibsStruct = [];
@@ -742,58 +743,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
 
-        $rootScope.getDerived = function(element) {
-            try {
-                if (element && element.type && element.type === "datatype") {
-
-                    angular.forEach(element.components, function(component) {
-                        $rootScope.getDerived(component);
-                    });
-                } else if (element && element.type && element.type === "component") {
-                	
-                    if (element.tables&&element.tables != null) {
-                    	angular.forEach(element.tables, function(table){
-                            $scope.linksForTables.push(table);
-
-                    	});
-
-
-                    }
-                    if (element.datatype !== null || element.datatype !== undefined) {
-                        var newLink = angular.fromJson({
-                            id: element.datatype.id,
-                            name: element.datatype.name,
-                            ext: element.datatype.ext
-                        });
-
-                        $scope.getDatatypeById(element.datatype.id).then(function(result) {
-
-                            DatatypeLibrarySvc.addChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
-                                if (!$rootScope.datatypesMap[element.datatype.id] || $rootScope.datatypesMap[element.datatype.id] === undefined) {
-                                    $rootScope.datatypes.push(result);
-                                    $rootScope.datatypesMap[element.datatype.id] = result;
-                                    $rootScope.getDerived(result);
-
-
-                                }
-
-                            }, function(error) {
-                                $rootScope.saving = false;
-                                $rootScope.msg().text = error.data.text;
-                                $rootScope.msg().type = error.data.type;
-                                $rootScope.msg().show = true;
-                            });
-
-                        });
-                    }
-
-                }
-
-            } catch (e) {
-                throw e;
-            }
-
-        };
 
 
         $scope.LinksForSubmit = function(element) {

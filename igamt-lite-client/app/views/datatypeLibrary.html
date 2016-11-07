@@ -160,18 +160,18 @@ if (self === top) {
                                 <form id="selectDtTypeForm" class="form-horizontal">
                                     <div class="form-group">
                                         <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                                            <label class="btn btn-raised btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER')">
-                                        <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse My Data Type Libraries
-                                    </label>
-                                            <label class="btn btn-raised btn-warning btn-sm" ng-click="getDataTypeLibraryByScope('MASTER')" ng-class="{'active':datatypeLibrariesConfig.selectedType === tt.type}">
-                                        <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.datatypeLibrariesConfig.selectedType"><i class="fa fa-th-list"></i> Browse Master Data Type Libraries
-                                    </label>
+                                            <button class="btn btn-raised btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('USER');" ng-class="{'active':ttype=='USER'}">
+                                        <i class="fa fa-th-list"></i> Browse My Data Type Libraries
+                                    </button>
+                                    <button class="btn btn-raised btn-primary btn-sm" ng-click="getDataTypeLibraryByScope('MASTER');"  ng-class="{'active':ttype=='MASTER'}">
+                                      <i class="fa fa-th-list"></i> Browse Master Data Type Libraries
+                                    </button>
                                         </div>
-                                        <div class="pull-right" style="margin-right: 20px">
-                                            <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="openStandardDataypes('USER')">
+                                  <div class="pull-right" style="margin-right: 20px">
+                                    <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="openStandardDataypes('USER')">
                                         <i class="fa fa-plus"></i>Create New Datatype Library
                                     </button>
-                                            <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="openStandardDataypes('MASTER')" ng-if="isAdmin() ">
+                                            <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="openStandardDataypes('MASTER')" >
                                         <i class="fa fa-plus"></i>Create MASTER Datatype Library
                                     </button>
                                             <!--<button type="button" class="btn btn-raised btn-primary btn-sm"-->
@@ -184,7 +184,7 @@ if (self === top) {
                             </div>
                         </div>
                         <div>
-                            <div class="row">
+                            <div class="row" ng-init="getDataTypeLibraryByScope('USER');">
                                 <div class="col-md-12">
                                     <form>
                                         <div class="form-group">
