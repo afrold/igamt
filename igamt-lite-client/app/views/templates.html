@@ -2124,11 +2124,125 @@
     	        </div>
     	        </div>     
                 </div>
+                <div class="modal-footer">
+                    <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
+                    </button>
+                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0"><i class="fa fa-check fa-fw"></i>Add
+                    </button>
+                </div>
+            </form>
+         </div>
+</script>
 
-
-
-
+<script type="text/ng-template" id="AddMasterDatatypeIntoUser.html">
+   
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Data Type</h3>
+            </div>
            
+            
+            <form name="addDT">
+                <div class="modal-body">
+                            <div class="container" style="margin-bottom: 20px;margin-top: 10px">
+                                    <div class="row" style="padding-top:10px">
+
+                <div class="row container">
+
+                <select  style="background-color: rgb(21, 101, 192);
+    color: white;" ng-model="masLib" class="form-control col-md-6" ng-change="selectMasterDtLib(masLib)" ng-options="masLib.metaData.name for masLib in masterLib track by masLib.id">
+                        <option value="" disabled selected>Choose a Master Library</option>
+                </select> 
+                 </div>
+                                    
+                 <hr style="border-top: 2px solid #271e1e"/>
+
+            <div class="row container">
+
+             <div class="panel panel-primary col-md-5">
+                    <div class="panel-heading">Source</div>
+                    <div class="panel-body container">
+                        
+            <div align="right" class="container" style="margin-top: 8px;">
+                <i class="icon-search"></i>
+                <input type="search" class="form-control" placeholder="Search Datatypes" ng-model="search.name" />
+            </div>
+            <div>
+                <table class="table table-bordered table-stripped container">
+                                                        <thead>
+                                                            <tr class="tbl-header">
+                                       
+                                                                <th class="col-md-3">Name</th>
+                                                                <th class="col-md-7">Compatible HL7 Versions</th>
+                                                                <th class="col-md-2">Actions</th>
+                                                            </tr>
+                                                           
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="datatype in masterDatatypes | orderBy: 'name' | filter:search:strict">
+                                                            
+                                                                <td  class="col-md-3">{{datatype.label}} <span class ="badge">v{{versionAndUseMap[datatype.id].publicationVersion}}</span></td>
+                                                                <td class="col-md-7">
+																	<ul ng-if="igdocument">
+																		<li ng-repeat="vr in datatype.hl7versions">
+																		{{vr}}
+																		</li>
+																	</ul>
+																	<div ng-if="!igdocument">
+																		<p ng-repeat="vr in datatype.hl7versions">
+																		<input type="radio" ng-model="datatype.hl7Version" ng-value="vr"></input>{{vr}}
+																		</p>
+																	</div>
+																	
+																</td>
+                                                                <td class="col-md-2"><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                </table>
+            </div>
+            </div>
+			</div>
+            <div class="col-md-1"></div>
+                <div class="panel panel-primary col-md-6">
+                    <div class="panel-heading">Selected Data Types</div>
+                    <div class="panel-body container">
+                    <div align="right" class="container" style="margin-top: 8px;">
+                         <i class="icon-search"></i>
+                        <input type="search" class="form-control" placeholder="Search" ng-model="search1.name" />
+                    	</div>
+            <table class="table table-bordered table-stripped container">
+                                                     <thead>
+                                                                    <tr class="tbl-header">
+                                                                        <th>Name</th>
+                                                                        <th>Ext</th>
+                                                                        <th>HL7 Version</th>
+																		
+                                                                        
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="dt in selectedDatatypes">
+                                                                        <td>{{dt.name}}<span class="badge" ng-if="versionAndUseMap[dt.id]">v{{versionAndUseMap[dt.id].publicationVersion}}</span></td>
+                                                                        <td><span ng-show="!edit">{{dt.ext}}</span>
+                                                                            <a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.status!=='PUBLISHED'" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
+                                                                            <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext"/>
+                                                                            <a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
+                                                                            <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
+                                                                            <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>
+                                                                        </td>
+                                                                        <td>{{dt.hl7Version}}</td>
+	                                                                 
+                                                                        <td><a class="pointer" ng-click="deleteDt(dt)"><i
+                                                                                    class="fa fa-times fa-fw"></i></a></td>
+                                                                    </tr>
+                                                                </tbody>
+                         </table>
+		        </div>
+		
+    	        </div>
+    	        </div>     
+                </div>
                 <div class="modal-footer">
                     <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
                     </button>
