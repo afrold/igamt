@@ -428,7 +428,10 @@ if (self === top) {
         <span style="font-size:18px;" data-nodrag ng-click="editMetadata()"><strong>{{datatypeLibrary.metaData.name}}</strong></span>{{filterdt}}
         <ol ui-tree-nodes="" ng-model="DataTypeTree">
             <li ng-repeat="dataLibrary in DataTypeTree" ui-tree-node>
-                <div ui-tree-handle data-nodrag context-menu="DataTypeLibraryOptions">
+                <div ng-if="datatypeLibrary.scope==='USER'" ui-tree-handle data-nodrag context-menu="UserDataTypeLibraryOptions">
+                    <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Data Types: <span class="badge">{{datatypes.length}}</span>
+                </div>
+                <div ng-if="datatypeLibrary.scope==='MASTER'" ui-tree-handle data-nodrag context-menu="MasterDataTypeLibraryOptions">
                     <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Data Types: <span class="badge">{{datatypes.length}}</span>
                 </div>
                 <ol ui-tree-nodes="" ng-model="datatypes">
