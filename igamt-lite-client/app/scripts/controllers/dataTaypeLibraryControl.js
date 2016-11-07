@@ -347,10 +347,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 $scope.hl7Versions = result;
                 $scope.hl7Version=result[0];
             });
-//            DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {
-//                $scope.AllUnchanged = res;
-//            });
-//            
+       DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {
+                $scope.AllUnchanged = res;
+            });
+            
             console.log("$scope.hl7Versions");
             console.log($scope.hl7Versions);
             $rootScope.readOnly = readOnly;
@@ -466,10 +466,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
                         console.log("addDatatype scopes=" + scopes.length);
                         var addDatatypeInstance = $modal.open({
-                            templateUrl: 'AddDatatypeDlg.html',
+                            templateUrl: 'AddHL7Datatype.html',
                             controller: 'AddDatatypeCtrl',
                             size: 'lg',
-                            windowClass: 'conformance-profiles-modal',
+                            windowClass: 'addDatatype',
                             resolve: {
                                 hl7Version: function() {
                                     return $scope.hl7Version;
@@ -510,12 +510,14 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.addMasterDt = function() {
             var scopes = ['HL7STANDARD'];
                         var addDatatypeInstance = $modal.open({
-                            templateUrl: 'AddMasterDtInLib.html',
+                            templateUrl: 'createMasterDt.html',
                             controller: 'AddMasterDtCtrl',
                             size: 'lg',
-                            windowClass: 'conformance-profiles-modal',
+                            windowClass: 'addDatatype',
                             resolve: {
-                               
+                               hl7Versions: function() {
+                                    return $scope.hl7Versions;
+                                },
                                 datatypes: function() {
 
                                     return $rootScope.datatypes;
@@ -3052,9 +3054,12 @@ angular.module('igl').controller('AddDatatypeCtrl',
 	    });
 
 angular.module('igl').controller('AddMasterDtCtrl',
-	    function($scope, $rootScope, $modalInstance,datatypes, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http,datatypeLibrary,tableLibrary,AllUnchanged) {
+	    function($scope, $rootScope, $modalInstance,datatypes, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http,datatypeLibrary,tableLibrary,AllUnchanged,hl7Versions) {
     
 	$scope.AllUnchanged=AllUnchanged;
+    $scope.versions=hl7Versions;
+    
+
 	$scope.addedDatatypes=[];
 	
 	$scope.getDatatypeFromUnchanged= function(data1){
@@ -3067,19 +3072,33 @@ angular.module('igl').controller('AddMasterDtCtrl',
             version=versions[versions.length-1];
         }
         var name= data.name;
-    DatatypeService.getOneStandard(name, version,versions).then(function(result) {
-    	var masterDt= angular.copy(result);
+    // DatatypeService.getOneStandard(name, version,versions).then(function(result) {
+    // 	var masterDt= angular.copy(result);
+    // 	masterDt.hl7versions= data.versions;
+    // 	//temporary fix
+    // 	if(masterDt.hl7versions.length&&masterDt.hl7versions.length>1){
+    // 		masterDt.hl7Version="[*]";
+    // 	}else if(masterDt.hl7versions.length&&masterDt.hl7versions.length==1){
+    // 		masterDt.hl7Version=version;
+    // 	}
+    	
+    //     //result.versions= versions;
+    //     $scope.AddDatatypeForMaster(masterDt);
+    // });
+
+    	DatatypeService.getLastMaster(name,$scope.version1).then(function(result){
+	    var masterDt= angular.copy(result);
     	masterDt.hl7versions= data.versions;
     	//temporary fix
-    	if(masterDt.hl7versions.length&&masterDt.hl7versions.length>1){
-    		masterDt.hl7Version="[*]";
-    	}else if(masterDt.hl7versions.length&&masterDt.hl7versions.length==1){
-    		masterDt.hl7Version=version;
-    	}
+    	// if(masterDt.hl7versions.length&&masterDt.hl7versions.length>1){
+    	// 	masterDt.hl7Version="[*]";
+    	// }else if(masterDt.hl7versions.length&&masterDt.hl7versions.length==1){
+    	// 	masterDt.hl7Version=version;
+    	// }
     	
         //result.versions= versions;
         $scope.AddDatatypeForMaster(masterDt);
-    });
+	    });
 
     };
     
@@ -3094,6 +3113,12 @@ angular.module('igl').controller('AddMasterDtCtrl',
         	console.log($scope.lastExt);
         });
         
+    }
+    $scope.setVersion=function(v){
+        $scope.version1=v;
+    }
+    $scope.containsCurrentVersion=function(data){
+        return data.versions.indexOf($scope.version1) !== -1;
     }
     $scope.AddDatatypeForMaster = function(datatype) {
             var dataToAdd = angular.copy(datatype);

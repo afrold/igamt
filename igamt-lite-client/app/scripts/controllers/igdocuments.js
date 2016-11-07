@@ -819,10 +819,10 @@ angular.module('igl')
 
                         console.log("addDatatype scopes=" + scopes.length);
                         var addDatatypeInstance = $modal.open({
-                            templateUrl: 'AddDatatypeDlg.html',
+                            templateUrl: 'AddHL7Datatype.html',
                             controller: 'AddDatatypeDlgCtl',
                             size: 'lg',
-                            windowClass: 'conformance-profiles-modal',
+                            windowClass: 'addDatatype',
                             resolve: {
                                 hl7Version: function() {
                                     return $scope.hl7Version;

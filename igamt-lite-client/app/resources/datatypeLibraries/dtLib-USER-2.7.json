@@ -1,46 +1,311 @@
-{
-  "type" : "datatypes",
-  "sectionPosition" : null,
-  "sectionTitle" : "Default title",
-  "sectionDescription" : "Default description",
-  "sectionContents" : "Default contents",
-  "id" : "573dd865da08cdb6febaf372",
-  "accountId" : 45,
-  "ext" : "Tex-18-75",
-  "metaData" : {
-    "name" : "First User",
-    "orgName" : "NIST",
-    "version" : null,
-    "hl7Version" : "2.7",
-    "date" : "May 19, 2016",
-    "ext" : "Tex-18-75",
-    "datatypeLibId" : "bdd24c78-d14e-4fa2-986b-48b890038df8"
-  },
-  "scope" : "USER",
-  "children" : [ {
-    "id" : "573ddc70da08cdb6febaf381",
-    "name" : "AD",
-    "ext" : "Tex-18-12",
-    "label" : "AD_Tex-18-12"
-  }, {
-    "id" : "573ddc70da08cdb6febaf382",
-    "name" : "CCD",
-    "ext" : "Tex-18-96",
-    "label" : "CCD_Tex-18-96"
-  }, {
-    "id" : "573ddc70da08cdb6febaf380",
-    "name" : "AUI",
-    "ext" : "Tex-18-36",
-    "label" : "AUI_Tex-18-36"
-  }, {
-    "id" : "573de333da08cdb6febaf39d",
-    "name" : "DDI",
-    "ext" : "Tex-18-75-15",
-    "label" : "DDI_Tex-18-75-15"
-  }, {
-    "id" : "573de333da08cdb6febaf39e",
-    "name" : "DIN",
-    "ext" : "Tex-18-75-15",
-    "label" : "DIN_Tex-18-75-15"
-  } ]
-}
+
+    {
+        "type": "datatypeLibraryDocument",
+        "sectionPosition": null,
+        "sectionTitle": "Default title",
+        "sectionDescription": "Default description",
+        "sectionContents": "Default contents",
+        "id": "580a4f34d4c6bb4631b7ca71",
+        "accountId": 45,
+        "ext": null,
+        "metaData": {
+            "name": "TEST",
+            "orgName": null,
+            "version": null,
+            "hl7Version": null,
+            "date": "October 21, 2016",
+            "description": "",
+            "ext": null,
+            "datatypeLibId": "216f1740-ef54-4486-9786-2c8c80dc0360"
+        },
+        "scope": "USER",
+        "datatypeLibrary": {
+            "type": "datatypelibrary",
+            "sectionPosition": null,
+            "sectionTitle": "Default title",
+            "sectionDescription": "Default description",
+            "sectionContents": "Default contents",
+            "id": "580a4f34d4c6bb4631b7ca6f",
+            "accountId": 45,
+            "ext": null,
+            "metaData": {
+                "name": "TEST",
+                "orgName": "NIST",
+                "version": null,
+                "hl7Version": null,
+                "date": "October 21, 2016",
+                "description": "",
+                "ext": null,
+                "datatypeLibId": "04c83535-ba1c-4a4d-8def-780613906c85"
+            },
+            "scope": "USER",
+            "children": [
+                {
+                    "id": "580a4f66b39f90a0e5a4d8fb",
+                    "name": "EI",
+                    "ext": "436",
+                    "label": "EI_436"
+                },
+                {
+                    "id": "580a4f5fb39f90a0e5a4d8cb",
+                    "name": "CNE",
+                    "ext": "918",
+                    "label": "CNE_918"
+                },
+                {
+                    "id": "580a4f68b39f90a0e5a4d901",
+                    "name": "HD",
+                    "ext": "IZ",
+                    "label": "HD_IZ"
+                },
+                {
+                    "id": "580a4f62b39f90a0e5a4d8e3",
+                    "name": "CWE",
+                    "ext": "562",
+                    "label": "CWE_562"
+                },
+                {
+                    "id": "579654555455fa34e848dd39",
+                    "name": "ST",
+                    "ext": null,
+                    "label": "ST"
+                },
+                {
+                    "id": "579654555455fa34e848dd01",
+                    "name": "ID",
+                    "ext": null,
+                    "label": "ID"
+                },
+                {
+                    "id": "579654555455fa34e848dd14",
+                    "name": "DTM",
+                    "ext": null,
+                    "label": "DTM"
+                },
+                {
+                    "id": "579654555455fa34e848dd07",
+                    "name": "IS",
+                    "ext": null,
+                    "label": "IS"
+                },
+                {
+                    "id": "580a5105d4c6bb4631b8652d",
+                    "name": "HD",
+                    "ext": "IZ26285811",
+                    "label": "HD_IZ26285811"
+                },
+                {
+                    "id": "580a510cb39f90a0e5a4d90b",
+                    "name": "HD",
+                    "ext": "IZ2",
+                    "label": "HD_IZ2"
+                },
+                {
+                    "id": "580a52e9b39f90a0e5a4d913",
+                    "name": "HD",
+                    "ext": "IZ2",
+                    "label": "HD_IZ2"
+                },
+                {
+                    "id": "580a5ffdbdec73d6eae3fcb5",
+                    "name": "HD",
+                    "ext": "557",
+                    "label": "HD_557"
+                },
+                {
+                    "id": "580a6028d4c6bb4631bb6d32",
+                    "name": "HD",
+                    "ext": "IZ23539474",
+                    "label": "HD_IZ23539474"
+                },
+                {
+                    "id": "580a6045d4c6bb4631bb6d36",
+                    "name": "HD",
+                    "ext": "IZ22355936",
+                    "label": "HD_IZ22355936"
+                },
+                {
+                    "id": "58174ffbd4c63dfc01648a23",
+                    "name": "CNE",
+                    "ext": "9186598152",
+                    "label": "CNE_9186598152"
+                },
+                {
+                    "id": "565f3ab7d4c6e52cfd448416",
+                    "name": "CK",
+                    "ext": null,
+                    "label": "CK"
+                },
+                {
+                    "id": "581cedbbbdec738d61122144",
+                    "name": "AD",
+                    "ext": "668",
+                    "label": "AD_668"
+                },
+                {
+                    "id": "565f3ab4d4c6e52cfd438415",
+                    "name": "ID",
+                    "ext": null,
+                    "label": "ID"
+                },
+                {
+                    "id": "565f3ab4d4c6e52cfd43844d",
+                    "name": "ST",
+                    "ext": null,
+                    "label": "ST"
+                },
+                {
+                    "id": "581cededbdec738d6112214d",
+                    "name": "AD",
+                    "ext": "668",
+                    "label": "AD_668"
+                },
+                {
+                    "id": "581cedf2d4c6859b90dfb31e",
+                    "name": "AD",
+                    "ext": "4305705",
+                    "label": "AD_4305705"
+                },
+                {
+                    "id": "581cee4dd4c6859b90dfb322",
+                    "name": "HD",
+                    "ext": "IZ21960915",
+                    "label": "HD_IZ21960915"
+                },
+                {
+                    "id": "581cee60d4c6859b90dfb326",
+                    "name": "HD",
+                    "ext": "IZ29036245",
+                    "label": "HD_IZ29036245"
+                }
+            ]
+        },
+        "tableLibrary": {
+            "type": "tablelibrary",
+            "sectionPosition": null,
+            "sectionTitle": "Default title",
+            "sectionDescription": "Default description",
+            "sectionContents": "Default contents",
+            "id": "580a4f34d4c6bb4631b7ca70",
+            "accountId": 45,
+            "ext": null,
+            "valueSetLibraryIdentifier": null,
+            "status": null,
+            "valueSetLibraryVersion": null,
+            "organizationName": null,
+            "description": null,
+            "dateCreated": null,
+            "profileName": "",
+            "metaData": {
+                "name": "TEST",
+                "orgName": "NIST",
+                "version": null,
+                "hl7Version": null,
+                "date": "October 21, 2016",
+                "description": "",
+                "ext": null,
+                "tableLibId": "6e620bc9-f610-4d95-8aba-ada14b4022fb"
+            },
+            "scope": "USER",
+            "children": [
+                {
+                    "id": "57c707735455fa972c2a54df",
+                    "bindingIdentifier": "0363",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "579654555455fa34e848d510",
+                    "bindingIdentifier": "0300",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "579654555455fa34e848d4ed",
+                    "bindingIdentifier": "0301",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "579654555455fa34e848cfc8",
+                    "bindingIdentifier": "0396",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "579654555455fa34e848cf17",
+                    "bindingIdentifier": "0399",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "579654555455fa34e848d20b",
+                    "bindingIdentifier": "0190",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "565f3ab4d4c6e52cfd4378bf",
+                    "bindingIdentifier": "0190",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "565f3ab4d4c6e52cfd4375d6",
+                    "bindingIdentifier": "0399",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                }
+            ],
+            "tables": [
+                {
+                    "id": "57c707735455fa972c2a54df",
+                    "bindingIdentifier": "0363",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "579654555455fa34e848d510",
+                    "bindingIdentifier": "0300",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "579654555455fa34e848d4ed",
+                    "bindingIdentifier": "0301",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "579654555455fa34e848cfc8",
+                    "bindingIdentifier": "0396",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "579654555455fa34e848cf17",
+                    "bindingIdentifier": "0399",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "579654555455fa34e848d20b",
+                    "bindingIdentifier": "0190",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "565f3ab4d4c6e52cfd4378bf",
+                    "bindingIdentifier": "0190",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                },
+                {
+                    "id": "565f3ab4d4c6e52cfd4375d6",
+                    "bindingIdentifier": "0399",
+                    "bindingStrength": null,
+                    "bindingLocation": null
+                }
+            ]
+        }
+    }
