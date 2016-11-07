@@ -93,7 +93,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         for (var i = 0; i < $rootScope.references.length; i++) {
             var ref = $rootScope.references[i];
 
-            if (ref.tableLink.isChanged) return true;
+            if (ref.tableLink&&ref.tableLink.isChanged) return true;
         }
         return false;
     };
@@ -150,12 +150,12 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
 
             if (table.libIds == undefined) table.libIds = [];
-            if (table.libIds.indexOf($rootScope.igdocument.profile.tableLibrary.id) == -1) {
-                table.libIds.push($rootScope.igdocument.profile.tableLibrary.id);
+            if (table.libIds.indexOf($rootScope.tableLibrary.id) == -1) {
+                table.libIds.push($rootScope.tableLibrary.id);
             }
 
             TableService.save(table).then(function(result) {
-                var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary.children);
+                var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.tableLibrary.children);
                 TableService.merge($rootScope.tablesMap[result.id], result);
                 // remove unnecessary variables for toc
                 delete $rootScope.tablesMap[result.id].codes;
@@ -168,7 +168,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
                 var newLink = TableService.getTableLink(result);
                 newLink.bindingIdentifier = bindingIdentifier;
-                TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function(link) {
+                TableLibrarySvc.updateChild($rootScope.tableLibrary.id, newLink).then(function(link) {
                     oldLink.bindingIdentifier = link.bindingIdentifier;
                     oldLink.ext = link.ext;
                     cleanState();
@@ -189,6 +189,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             });
         }
         $rootScope.saveBindingForValueSet();
+        $rootScope.clearChanges();
     };
 
     $scope.addTable = function() {
@@ -435,8 +436,8 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function($scope, $
     //        // We must delete from two collections.
     //        var index = $rootScope.tables.indexOf(tableToDelete);
     //        $rootScope.tables.splice(index, 1);
-    //        var index = $rootScope.igdocument.profile.tableLibrary.children.indexOf($scope.tableToDelete);
-    //        if (index > -1) $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
+    //        var index = $rootScope.tableLibrary.children.indexOf($scope.tableToDelete);
+    //        if (index > -1) $rootScope.tableLibrary.children.splice(index, 1);
     //        $rootScope.tablesMap[tableToDelete.id] = undefined;
     //
     //        $rootScope.generalInfo.type = 'info';
@@ -459,9 +460,9 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function($scope, $
     //                    // We must delete from two collections.
     //                    var index = $rootScope.tables.indexOf($scope.tableToDelete);
     //                    $rootScope.tables.splice(index, 1);
-    //                    var tmp = TableLibrarySvc.findOneChiletd($scope.tableToDelete.id, $rootScope.igdocument.profile.tableLibrary.children);
-    //                    index = $rootScope.igdocument.profile.tableLibrary.children.indexOf(tmp);
-    //                    $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
+    //                    var tmp = TableLibrarySvc.findOneChiletd($scope.tableToDelete.id, $rootScope.tableLibrary.children);
+    //                    index = $rootScope.tableLibrary.children.indexOf(tmp);
+    //                    $rootScope.tableLibrary.children.splice(index, 1);
     //                    $rootScope.tablesMap[$scope.tableToDelete.id] = null;
     //                    $rootScope.references = [];
     //                    if ($rootScope.table === $scope.tableToDelete) {

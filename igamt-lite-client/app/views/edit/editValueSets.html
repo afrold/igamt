@@ -159,10 +159,10 @@
                                             <accordion-heading>
                                                 <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
-                                                <div ng-if="!viewSettings.tableReadonly && table.scope === 'USER'">
+                                                <div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">
                                                     <textarea froala="froalaEditorOptions" ng-model="table.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
                                                 </div>
-                                                <div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.scope === 'MASTER')">
+                                                <div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.status==='PUBLISHED')">
                                                     <div class="fr-view">
                                                         <div froala-view="table.defPreText"></div>
                                                     </div>
@@ -285,10 +285,10 @@
                                             <span style="color:white;">Definition Post-Text </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>
                                         </accordion-heading>
                                         <div class="panel-body">
-                                            <div ng-if="!viewSettings.tableReadonly && table.scope === 'USER'">
+                                            <div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">
                                                 <textarea froala="froalaEditorOptions" ng-model="table.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
                                             </div>
-                                            <div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.scope === 'MASTER')">
+                                            <div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.status==='PUBLISHED')">
                                                 <div class="fr-view">
                                                     <div froala-view="table.defPostText"></div>
                                                 </div>
@@ -300,7 +300,7 @@
                                     </div>
 
                             </tab>
-                            <tab  ng-click="callVSDelta()">
+                            <tab  ng-click="callVSDelta()" ng-if="igdocument">
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Delta
                                 </tab-heading>
@@ -939,7 +939,7 @@
         <h3 class="modal-title">Add Binding for Value Set : {{::table.bindingIdentifier}}</h3>
     </div>
     <div class="modal-body">
-        <span class="pull-right">
+        <span class="pull-right" ng-if="igdocument">
             <div class="btn-group btn-group-sm" data-toggle="buttons">
                 <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'SEGMENT'; init();" ng-class="{'active':bindingTargetType === 'SEGMENT'}">
                     <input type="radio" ng-value="SEGMENT" ng-model="bindingTargetType">To Segment
@@ -1004,7 +1004,7 @@
                 <tbody>
                 <tr>
                     <td class="col-md-3">
-                        <select ng-model='selectedDatatypeForBinding' class="form-control" ng-change="selectDatatype();" ng-options="dt as getDatatypeLabel(dt) for dt in datatypes | filter:{ scope : 'USER' }" />
+                        <select ng-model='selectedDatatypeForBinding' class="form-control" ng-change="selectDatatype();" ng-options="dt as getDatatypeLabel(dt) for dt in datatypes | filter:{ status : 'UNPUBLISHED' }" />
                     </td>
                     <td class="col-md-3">
                         <select ng-show='selectedDatatypeForBinding != null' ng-model='selectedComponentForBinding' class="form-control">

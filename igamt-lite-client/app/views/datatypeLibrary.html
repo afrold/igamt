@@ -291,8 +291,8 @@ span {
 						<div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl"  ng-init="init()">
                             <form name="editForm" id="editForm" class="form-horizontal" novalidate
                                   unsaved-warning-form>
-                                <div ng-if="editView" style="width:100%;">
-                                    <div ng-include="editView"></div>
+                                <div ng-if="subview" style="width:100%;">
+                                    <div ng-include="subview"></div>
                                 </div>
                             </form>
                         </div>
@@ -434,13 +434,17 @@ span {
                 <div ui-tree-handle data-nodrag context-menu="DataTypeLibraryOptions">
                     <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Data Types: <span class="badge">{{datatypes.length}}</span>
                 </div>
-                <div ng-show="filteringModeON" data-nodrag ui-tree-handle style="margin-bottom:5px;"> <span class="badge label-default" ng-click="resetLibFilter()" > <i class="fa fa-times" aria-hidden="true"></i> Clear Filter</span></div>
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
-                        <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsInLib">
-                           <input data-nodrag type="radio" name="datatypeRadio" value="data" ng-model="data.checked" ng-click="filterByDatatype(data);" title="Filter By This Data Type" /> <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span>
-                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}</span>
+                        <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptions" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated">
+                          <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span><span ng-if="versionAndUseMap[data.id].deprecated" class="badge">v{{versionAndUseMap[data.id].publicationVersion}}</span>
+                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}<i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
+                        </div>
+						<div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForPublished" ng-if="(data.status==='PUBLISHED'&&!versionAndUseMap[data.id].deprecated)&&data.scope!=='HL7STANDARD'">
+						<span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span><span class="badge">v{{versionAndUseMap[data.id].publicationVersion}}</span>
+                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
                         </div>
                     </li>
                 </ol>
@@ -449,7 +453,7 @@ span {
                         <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Value Sets <span class="badge">{{tables.length}}</span>
                     </div>
                     <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed" context-menu="ValueSetOptionsINLIB">
-                        <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)">
+                        <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)"  ng-if="table">
                            <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}{{displayVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
@@ -1883,6 +1887,25 @@ span {
         </button>
         <button class="btn btn-raised btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                 class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
+        </button>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
+        </div>
+    </div>
+    </div>
+</script>
+<script type="text/ng-template" id="cannotPublish.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Redirecting confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+	<span> You cannot create a new version of {{datatypeTo.name}}_{{datatypeTo.ext}} until you pubish the pervious version </span>
+    </div>
+    </div>
+    <div class="modal-footer">
+            <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />

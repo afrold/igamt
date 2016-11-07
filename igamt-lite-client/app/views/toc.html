@@ -148,7 +148,7 @@ color:white;
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDataType(data)">
 
                                      <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}" > {{getScopeLabel(data)}} {{hasSameVersion(data)}}</span> {{getDatatypeLabel(data)}}-{{data.description}} 
+                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}" > {{getScopeLabel(data)}} {{hasSameVersion(data)}}</span><span ng-if="versionAndUseMap[data.id]" class="badge">v{{versionAndUseMap[data.id].publicationVersion}}</span> {{getDatatypeLabel(data)}}-{{data.description}} 
                                     </span>
                                 </div>
                             </li>

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc',
-    function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc) {
+angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc','VersionAndUseService','$q'
+   , function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc,VersionAndUseService,$q) {
         // This line fetches the info from the server if the user is currently
         // logged in.
         // If success, the app is updated according to the role.
@@ -18,6 +18,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         //         }
         //     }
         // });
+		$rootScope.versionAndUseMap={};
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
 
@@ -45,7 +46,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.activeWhen = function(value) {
             return value ? 'active' : '';
         };
-
         $scope.activeIfInList = function(value, pathsList) {
             var found = false;
             if (angular.isArray(pathsList) === false) {
@@ -72,12 +72,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
 
         };
-
-
         $scope.path = function() {
             return $location.url();
         };
-
+        
         $scope.login = function() {
             // ////console.log("in login");
             $scope.$emit('event:loginRequest', $scope.username, $scope.password);
@@ -120,7 +118,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 $location.url('/ig');
             }
         };
-
+        
         $scope.cancel = function() {
             $scope.$emit('event:loginCancel');
         };
@@ -158,7 +156,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.getAccountID = function(accountId) {
             return userInfoService.getAccountID();
         };
-
+        
 
         $scope.getRoleAsString = function() {
             if ($scope.isAuthor() === true) {
@@ -531,7 +529,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }, function(newLocation, oldLocation) {
             $rootScope.setActive(newLocation);
         });
-
+        
+        $rootScope.isPublishedMaster= function(dtLink){
+        	DatatypeService.getOneDatatype(dtLink.id).then(function(datatype){
+        		console.log("called")
+        		return datatype.status=="PUBLISHED"&& datatype.scope=="MASTER";
+        	});
+        }
 
         $rootScope.api = function(value) {
             return value;
@@ -1429,7 +1433,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         });
                         var index = $rootScope.segments.indexOf(oldSegment);
                         if (index > -1) $rootScope.segments[index] = targetSegment;
-
+                        
                         var segmentUpdateParameter = {};
                         segmentUpdateParameter.segmentId = targetSegment.id;
                         segmentUpdateParameter.fieldId = targetField.id;
@@ -1438,6 +1442,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         segmentUpdateParameterList.push(segmentUpdateParameter);
                     }
                 }
+                console.log("clearing");
+                $rootScope.clearChanges();
             }
 
             SegmentService.updateDatatypeBinding(segmentUpdateParameterList).then(function(result) {}, function(error) {
@@ -1612,6 +1618,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             angular.forEach($rootScope.datatypes, function(dt) {
                 $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
             });
+            console.log("clearing");
+            $rootScope.clearChanges();
         };
 
         $rootScope.genRegex = function(format) {
@@ -2543,12 +2551,34 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 }
             });
         };
+        $rootScope.mergeEmptyProperty= function(to, from){
+        	Object.keys(to).forEach(function(key,index) {
+        		if(!to[key]&&from[key])
+        			to[key]=from[key];
+        	    // key: the name of the object key
+        	    // index: the ordinal position of the key within the object 
+        	});
 
+        }
         $scope.init = function() {
+            VersionAndUseService.findAll().then(function(result) {
+            	console.log("LOADING INFO VERSION");
+
+            
+                angular.forEach(result, function(info) {
+                	console.log("LOADING INFO VERSION");
+                	console.log($rootScope.versionAndUseMap[info.id]);
+                    $rootScope.versionAndUseMap[info.id] = info;
+                });
+            });
             $http.get('api/igdocuments/config', { timeout: 60000 }).then(function(response) {
                 $rootScope.config = angular.fromJson(response.data);
+                var delay = $q.defer();
+
             }, function(error) {});
+            
         };
+
 
         $scope.getFullName = function() {
             if (userInfoService.isAuthenticated() === true) {
@@ -2658,11 +2688,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $rootScope.getDatatypeExtension = function(datatype) {
-            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary, "ext");
+            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.datatypeLibrary, "ext");
         };
 
         $rootScope.getTableBindingIdentifier = function(table) {
-            return $rootScope.getExtensionInLibrary(table.id, $rootScope.igdocument.profile.tableLibrary, "bindingIdentifier");
+            return $rootScope.getExtensionInLibrary(table.id, $rootScope.tableLibrary, "bindingIdentifier");
         };
 
 
@@ -2681,6 +2711,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         $rootScope.getTableLabel = function(table) {
+        	
             if (table && table.bindingIdentifier) {
                 return $rootScope.getLabel(table.bindingIdentifier, table.ext);
             }
@@ -3024,8 +3055,8 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                         children = $rootScope.libraryDoc.datatypeLibrary.children;
 
                     } else if ($rootScope.igdocument && $rootScope.igdocument !== null) {
-                        libId = $rootScope.igdocument.profile.datatypeLibrary.id;
-                        children = $rootScope.igdocument.profile.datatypeLibrary.children;
+                        libId = $rootScope.datatypeLibrary.id;
+                        children = $rootScope.datatypeLibrary.children;
                     }
                     var oldLink = DatatypeLibrarySvc.findOneChild(result.id, children);
                     var newLink = DatatypeService.getDatatypeLink(result);
@@ -3065,8 +3096,8 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                     children = $rootScope.libraryDoc.tableLibrary.children;
 
                 } else if ($rootScope.igdocument && $rootScope.igdocument !== null) {
-                    libId = $rootScope.igdocument.profile.tableLibrary.id;
-                    children = $rootScope.igdocument.profile.tableLibrary.children;
+                    libId = $rootScope.tableLibrary.id;
+                    children = $rootScope.tableLibrary.children;
                 }
                 TableService.save(table).then(function(result) {
                     var oldLink = TableLibrarySvc.findOneChild(result.id, children);
@@ -3093,7 +3124,6 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                 $rootScope.saveBindingForValueSet();
 
             }
-
 
         } else if (data.type === "document") {
 

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import antlr.Version;
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
@@ -35,15 +36,20 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.BindingParametersForDa
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.VersionAndUseRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VersionAndUse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.VersionAndUseService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopeAndNameAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
@@ -74,6 +80,10 @@ public class DatatypeController extends CommonController {
 
   @Autowired
   AccountRepository accountRepository;
+  @Autowired
+  UnchangedDataRepository unchangedData;
+  @Autowired
+  VersionAndUseService versionAndUse;
 
   @RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
   public List<Datatype> findByIds(@RequestBody Set<String> ids) {
@@ -139,7 +149,6 @@ public class DatatypeController extends CommonController {
 	    	    			 int extd=Integer.parseInt(d.getExt());
 	    	    		     int ext = Integer.parseInt(tempext);
 	    	    		     if(ext>=extd){
-	    	    		    	 d=temp;
 	    	    		    	 d.setExt((ext+1+""));
 	    	    		     }
 	    	    		} catch (NumberFormatException e) {
@@ -147,12 +156,81 @@ public class DatatypeController extends CommonController {
 	    	    		}
 	    	    	  }
 
-	  
 	    	    } catch (Exception e) {
 	    	      log.error("", e);
 	    	    }
 	    	    return d;
 	   }
+  
+  
+  @RequestMapping(value = "/getLastMaster", method = RequestMethod.POST,produces = "application/json")
+ 	public Datatype getLastMaster(@RequestBody NameAndVersionWrapper wrapper) {
+	            List<SCOPE> scopes=new ArrayList<SCOPE>();
+	            Datatype d=null;
+	            scopes.add(SCOPE.HL7STANDARD);
+ 	    	    List<Datatype> result=null;
+ 	    	    try {
+ 	    	      User u = userService.getCurrentUser();
+ 	    	      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+ 	    	      if (account == null) {
+ 	    	        throw new UserAccountNotFoundException();
+ 	    	      }
+ 	    	      List<UnchangedDataType> unchanged =unchangedData.findByNameAndVersions(wrapper.getName(), wrapper.getVersion());
+ 	    	      if(unchanged!= null&& !unchanged.isEmpty()){
+ 	    	    	  
+ 	    	    	 UnchangedDataType model=unchanged.get(0);
+ 	    	    	 d= datatypeService.findByNameAndVersionAndScope(wrapper.getName(), wrapper.getVersion(),"HL7STANDARD");
+ 	    	    	if(d!=null){
+ 	    	    		d.setId(null);
+ 	    	    		d.setHl7versions(model.getVersions());
+ 	    	    		String ext =this.findLastExtesionForVersions(model.getName(),model.getVersions());
+ 	    	    		d.setExt(ext);
+ 	    	    	} 
+ 	    	      }
+ 	    	      
+ 	    	      }
+ 	    	    catch (Exception e) {
+		    	      log.error("", e);
+		    	    }
+				return d;
+ 	    	    
+ 	   	   }
+  public String findLastExtesionForVersions(String name,List<String> versions){
+	 
+	 List<Datatype> datatypes = datatypeService.findAllByNameAndVersionsAndScope(name, versions, "MASTER");
+	 int extd=1;
+	 if(datatypes!=null&& !datatypes.isEmpty()){
+		String max=datatypes.get(0).getExt(); 
+		
+		try{
+			  extd=Integer.parseInt(max);
+		}
+		catch (NumberFormatException e) {
+
+		}
+		for(Datatype d : datatypes){
+			try{
+				 int temp=Integer.parseInt(d.getExt());
+				 if(temp>=extd){
+					 extd=temp+1;
+				 }
+			}
+			catch (NumberFormatException e) {
+
+			}
+		}
+		
+	 }
+	 return extd+"";
+	 
+	 }
+
+	  
+	  
+	  
+  
+  
+  		
   @RequestMapping(value = "/findPublished", method = RequestMethod.POST)
 	public List<Datatype> findPublishedMaster(@RequestBody String version) {
 	  			List<Datatype> published=new ArrayList<Datatype>();
@@ -198,6 +276,40 @@ public class DatatypeController extends CommonController {
     } else {
       throw new ForbiddenOperationException("FORBIDDEN_SAVE_DATATYPE");
     }
+  }
+  
+  @RequestMapping(value = "/publish", method = RequestMethod.POST)
+  public Datatype publish(@RequestBody Datatype datatype) {
+    if (!STATUS.PUBLISHED.equals(datatype.getStatus())) {
+      log.debug("datatypeLibrary=" + datatype);
+      log.debug("datatypeLibrary.getId()=" + datatype.getId());
+      	VersionAndUse versionInfo= versionAndUse.findById(datatype.getId());
+      	
+      	
+      	if(versionInfo==null){
+      		versionInfo= new VersionAndUse();
+      		versionInfo.setPublicationVersion(1);
+       
+      		versionInfo.setId(datatype.getId());
+      	}else{
+      		List<VersionAndUse> ancestors =versionAndUse.findAllByIds(versionInfo.getAncestors());
+      		versionInfo.setPublicationDate(DateUtils.getCurrentTime());
+
+          	for(VersionAndUse ancestor: ancestors){
+          		ancestor.setDeprecated(true);
+          		versionAndUse.save(ancestor);  
+          	}
+      		versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
+      	}
+  		versionInfo.setPublicationDate(DateUtils.getCurrentTime());
+  		versionAndUse.save(versionInfo);
+      	datatype.setStatus(STATUS.PUBLISHED);
+      Datatype saved = datatypeService.save(datatype);
+      log.debug("saved.getId()=" + saved.getId());
+      log.debug("saved.getScope()=" + saved.getScope());
+      return saved;
+    }
+	return datatype; 
   }
 
   @RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)

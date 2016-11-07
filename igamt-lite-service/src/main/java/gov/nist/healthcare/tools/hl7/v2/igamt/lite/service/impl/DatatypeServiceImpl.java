@@ -122,4 +122,9 @@ public Datatype findByNameAndVersionsAndScope(String name, String[] versions, St
 	return datatypeRepository.findByNameAndVersionsAndScope(name,versions, scope);
 }
 
+@Override
+public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String string) {
+	return datatypeRepository.findAllByNameAndVersionsAndScope( name, versions,  string) ;
+}
+
 }

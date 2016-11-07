@@ -43,5 +43,7 @@ public interface DatatypeService {
 
   Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
 
+ List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String string);
+
 
 }
