@@ -990,6 +990,14 @@ angular.module('igl')
      					  	}
     					}
     				});
+
+            modalInstance.result.then(function (result) {
+              $scope.save();
+            }, function () {
+              $scope.save();
+              // $log.info('Modal dismissed at: ' + new Date());
+            });
+
     			}, function (error) {
     				console.log(error);
     			});
