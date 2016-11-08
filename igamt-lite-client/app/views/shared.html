@@ -1,0 +1,124 @@
+<style id="antiClickjack">
+    body {
+        display: none !important;
+    }
+</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
+<div class="container">
+
+            <tabset>
+                <tab active="pending" select="select(pending)">
+                    <tab-heading>
+                        Pending Requests
+                    </tab-heading>
+                    <!--<div ng-include="'views/edit/listIG.html'"></div>-->
+                </tab>
+                <tab active="datatype" select="select(dtTab)">
+                    <tab-heading ng-click="setTypeOfSharing('datatype');">
+                        Datatypes
+                    </tab-heading>
+                    <div ng-include="sharedElementView"></div>
+                </tab>
+                <tab active="segment" select="select(segTab)">
+                    <tab-heading>
+                        Segments
+                    </tab-heading>
+                    <!--<div ng-include="'views/edit/editIG.html'"></div>-->
+                </tab>
+                 <tab active="table" select="select(vsTabe)">
+                    <tab-heading>
+                        Value Sets
+                    </tab-heading>
+                    <!--<div ng-include="'views/edit/editIG.html'"></div>-->
+                </tab>
+            </tabset>
+</div>
+            
+         
+
+
+<script type="text/ng-template" id="sharedElementView">
+<br/>
+		<div class="row" ng-init="init()">
+			<!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
+			<!--<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
+			<!--<i class="fa fa-caret-right"></i>-->
+			<!--</button>-->
+			<!--</div>-->
+			<div ng-show="!hideToc" class="col-md-3">
+				<div class="panel panel-primary">
+					<!-- Default panel contents -->
+					<div class="panel-heading panel-heading-collapsable"> <i class="glyphicon glyphicon-list"></i><span> Table of Contents </span>
+						<button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right" style="margin:0px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-left"></i> </button>
+					</div>
+					<div class="panel-body toc-container">
+						<div ng-include="SharedtocView"></div>
+					</div>
+				</div>
+			</div>
+			<div ng-class="{'col-md-9': !hideToc,'col-md-12': hideToc}">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-right"></i> </button> <i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </div>
+					<div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init">
+						<form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form>
+							<div id="edit" ng-show="subview" style="width:100%;">
+								<div ng-include="Sharedsubview"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+</script>
+
+
+<script type="text/ng-template" id="sharedtocView.html">
+    <div ui-tree ng-controller="TreeCtrl" style="margin-left:5px;">
+        <span style="font-size:18px;" data-nodrag ng-click="editMetadata()"><strong>Shared Datatype</strong></span>
+        <ol ui-tree-nodes="" ng-model="SharedDataTypeTree">
+            <li ng-repeat="dataLibrary in SharedDataTypeTree" ui-tree-node>
+                <div ui-tree-handle data-nodrag>
+                    <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Data Types: <span class="badge">{{datatypes.length}}</span>
+                </div>
+
+                <ol ui-tree-nodes="" ng-model="datatypes">
+                    <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
+                        <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated">
+                          <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span><span ng-if="versionAndUseMap[data.id].deprecated" class="badge">v{{versionAndUseMap[data.id].publicationVersion}}</span>
+                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}<i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
+                        </div>
+						<div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" ng-if="(data.status==='PUBLISHED'&&!versionAndUseMap[data.id].deprecated)&&data.scope!=='HL7STANDARD'">
+						<span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span><span class="badge">v{{versionAndUseMap[data.id].publicationVersion}}</span>
+                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
+                        </div>
+                    </li>
+                </ol>
+                <ol ui-tree-nodes="" ng-model="tables"  data-type="tables">
+                    <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="addValueSetsInTableLibrary">
+                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Value Sets <span class="badge">{{tables.length}}</span>
+                    </div>
+                    <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed">
+                        <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)"  ng-if="table">
+                           <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
+                                     <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}{{displayVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
+                            </span>
+                        </div>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+</script>
