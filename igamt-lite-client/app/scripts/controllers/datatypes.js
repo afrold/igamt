@@ -135,7 +135,7 @@ angular.module('igl')
         };
         $scope.alerts = [
                          { type: 'warning', msg: ' Warning: This Datatype is being deprecated, there are new versions availables' },
-                         
+
                        ];
 
 
@@ -143,7 +143,7 @@ angular.module('igl')
        $scope.closeAlert = function(index) {
                          $scope.alerts.splice(index, 1);
                        };
-        
+
         $scope.OtoX = function(message) {
             console.log(message);
             var modalInstance = $modal.open({
@@ -166,7 +166,7 @@ angular.module('igl')
                 }
             });
         };
-        
+
         $scope.getAllVersionsOfDT=function(id){
         	$scope.checked={};
         	var ancestors=[];
@@ -193,9 +193,9 @@ angular.module('igl')
                 delay.reject(false);
 
             });
-          
+
         }
-        
+
         $scope.dynamicDt_Evolution = new ngTreetableParams({
             getNodes: function(parent) {
                 if ($scope.dataList !== undefined) {
@@ -226,7 +226,7 @@ angular.module('igl')
         	$scope.checked=id;
         	$rootScope.clearChanges();
             $scope.cleanState();
-        	
+
         	DatatypeService.getOne(id).then(function(result){
                 $scope.dtChanged = false;
                 $scope.vsTemplate = false;
@@ -241,7 +241,7 @@ angular.module('igl')
                 }
         	});
         };
-        
+
         $scope.editableComp = '';
         $scope.editComponent = function(component) {
             $scope.editableComp = component.id;
@@ -960,9 +960,9 @@ angular.module('igl')
         	console.log($rootScope.datatype);
         	console.log("IN LIBRARY");
         	console.log($rootScope.datatypeLibrary);
-        	
+
             var ext = $rootScope.datatype.ext;
-  
+
             DatatypeService.save($rootScope.datatype).then(function(result) {
                 var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.datatypeLibrary.children);
                 var newLink = DatatypeService.getDatatypeLink(result);
@@ -972,9 +972,9 @@ angular.module('igl')
                     DatatypeService.merge($rootScope.datatype, result);
                     DatatypeService.saveNewElements().then(function() {
                         if ($scope.datatypesParams){
-                            $scope.datatypesParams.refresh();   	
+                            $scope.datatypesParams.refresh();
                         }
-  
+
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
                         $scope.saving = false;
@@ -1093,16 +1093,16 @@ angular.module('igl')
     						}
     						, userList: function () {
                                 return _.filter(filteredUserList, function(user){
-                                        return user.id != $rootScope.igdocument.accountId && datatype.shareParticipantIds && datatype.shareParticipantIds != null && datatype.shareParticipantIds.indexOf(user.id) == -1 ;
+                                        return user.id != $rootScope.accountId && datatype.shareParticipantIds && datatype.shareParticipantIds != null && datatype.shareParticipantIds.indexOf(user.id) == -1 ;
                                     });
      					  	}
     					}
     				});
 
             modalInstance.result.then(function (result) {
-              $scope.save();
+              $scope.saveDatatype();
             }, function () {
-              $scope.save();
+              $scope.saveDatatype();
               // $log.info('Modal dismissed at: ' + new Date());
             });
 
@@ -1124,11 +1124,11 @@ angular.module('igl')
 
 angular.module('igl')
     .controller('DatatypeRowCtrl', function($scope, $filter) {
-    	
+
     	$scope.init = function(node){
     		$scope.node =node;
     	}
-    	
+
         $scope.formName = "form_" + new Date().getTime();
     });
 
@@ -2330,7 +2330,7 @@ angular.module('igl').controller('ShareDatatypeCtrl', function ($scope, $modalIn
 		});
 
     // Add account Id on top of array
-    idsTab.unshift($rootScope.igdocument.accountId);
+    idsTab.unshift($rootScope.accountId);
 
         DatatypeService.share($scope.igdocumentSelected.id,idsTab).then(function(result){
             // Add participants for direct view
@@ -2340,7 +2340,7 @@ angular.module('igl').controller('ShareDatatypeCtrl', function ($scope, $modalIn
                 tag.pendingApproval = true;
                 $scope.igdocumentSelected.shareParticipantIds.push(tag);
             });
-            $rootScope.msg().text = "igSharedSuccessfully";
+            $rootScope.msg().text = "dtSharedSuccessfully";
             $rootScope.msg().type ="success";
             $rootScope.msg().show = true;
             $modalInstance.close();
@@ -2383,7 +2383,7 @@ angular.module('igl').controller('ShareDatatypeCtrl', function ($scope, $modalIn
                 $scope.igdocumentSelected.shareParticipantIds.splice(participantIndex, 1);
             }
             $scope.loading = false;
-            $rootScope.msg().text = "igUnSharedSuccessfully";
+            $rootScope.msg().text = "dtUnSharedSuccessfully";
             $rootScope.msg().type ="success";
             $rootScope.msg().show = true;
          }, function(error){

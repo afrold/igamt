@@ -26,11 +26,9 @@
                             <!-- TODO Add datatype sharing hook -->
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'">
                               <button  style="margin-top:0px" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(datatype)">
-                 ng-disabled="datatype.status==='PUBLISHED'"
-                 ng-hide="viewSettings.tableReadonly||igdocument||datatype.status==='PUBLISHED'"
-                 ng-click="publishDatatype(datatype)">
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
-		</button>
+                                <span class="badge" ng-bind="datatype.shareParticipantIds.length" style="margin-right:5px;"></span>
+                              </button>
                               <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
                 							<ul class="dropdown-menu igl-menu" role="menu">
                 								<li ng-repeat="participant in datatype.shareParticipantIds"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant.username}} <span ng-if="participant.pendingApproval">(Pending...)</span></a></li>
@@ -524,8 +522,8 @@
                                 </div>
 
                             </tab>
-							
-							
+
+
 
 
                             <tab ng-click="setDeltaToF()">
@@ -565,7 +563,7 @@
 
                                                         <a ng-show="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</a>
                                                         <a ng-show="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.name}}</a>
-                                                    
+
                                                     </td>
                                                     <td st-ratio="10">
                                                         {{::ref.usage}}
@@ -613,10 +611,10 @@
                                     <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
                                 </tab-heading>
 
-												
+
                                             <div class="panel-body">
-								
-	
+
+
 
 					<table class="table table-bordered table-stripped">
                     <thead>
@@ -630,7 +628,7 @@
                         <tr ng-repeat="inf in availbleVersionOfDt">
                             <td class="col-md-6">
                             <input ng-if="inf.id !==datatype.id" type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id);"/>
-                            	
+
 							<input type="radio" name="inforadio1" value="datatype.id" ng-model ="datatype.id" disabled ng-if="inf.id ===datatype.id"/>
 
                                 <span class ="badge" ng-class="{'selected2' :checked===inf.id}" style="color:black !important" ng-if="inf.id !==datatype.id">v{{inf.publicationVersion}}</span>
@@ -645,7 +643,7 @@
                         </tr>
                     </tbody>
                 </table>
-							
+
                                                 <table tt-table tt-params="dynamicDt_Evolution" class=" table-marginless table-bordered table-condensed">
                                                     <thead>
                                                         <tr class="tbl-header">
@@ -667,7 +665,7 @@
                                                     </thead>
                                                     <tbody></tbody>
                                                 </table>
-                                            
+
                                         		</div>
 
                             </tab>
@@ -1648,7 +1646,7 @@
                         </td>
                         <td class="col-md-3">
                             <span ng-repeat="table in currentField.tables">
-                                {{::getTableLabel(table)}}     
+                                {{::getTableLabel(table)}}
                             </span>
 
                         </td>
@@ -1688,7 +1686,7 @@
                         </td>
                         <td class="col-md-3">
                             <span ng-repeat="table in currentComp.tables">
-                                {{getTableLabel(table.id)}}     
+                                {{getTableLabel(table.id)}}
                             </span>
 
                         </td>

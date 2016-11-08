@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -55,6 +56,14 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
     // qry = set4Brevis(qry);
     return mongo.find(qry, Datatype.class);
   }
+  
+  @Override
+  public List<Datatype> findShared(Long accountId) {
+    Query qry = new BasicQuery("{ $and: [ {$where : \"this.scope == 'USER'\"}, {$where : \"this.shareParticipantIds.length > 0\"}]}");
+    // qry = set4Brevis(qry);
+    return mongo.find(qry, Datatype.class);
+  }
+  
   @Override
   public Datatype findByNameAndVersionAndScope(String name,String version, String scope) {
 	    Criteria where = Criteria.where("name").is(name);

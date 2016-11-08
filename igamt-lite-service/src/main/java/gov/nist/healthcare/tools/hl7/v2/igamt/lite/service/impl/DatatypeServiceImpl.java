@@ -111,6 +111,12 @@ public List<Datatype> findByScope(String scope) {
 }
 
 @Override
+public List<Datatype> findShared(Long accountId) {
+	// TODO Auto-generated method stub
+	return datatypeRepository.findShared(accountId);
+}
+
+@Override
 public Datatype findByNameAndVersionAndScope(String name, String version,String scope) {
 	// TODO Auto-generated method stub
 	return datatypeRepository.findByNameAndVersionAndScope(name,version, scope);

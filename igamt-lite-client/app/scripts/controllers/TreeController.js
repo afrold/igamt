@@ -549,12 +549,12 @@ angular
                             }
                         }
                     ],
-                    null, ['Share Datatype',
-                        function($itemScope) {
-                            $scope.shareModal($itemScope.datatype);
-
-                        }
-                    ],
+                    // null, ['Share Datatype',
+                    //     function($itemScope) {
+                    //         $scope.shareModal($itemScope.datatype);
+                    //
+                    //     }
+                    // ],
                     null, ['Delete',
                         function($itemScope) {
                             CloneDeleteSvc.deleteDatatype($itemScope.data);
@@ -562,29 +562,29 @@ angular
                         }
                     ]
                 ];
-                
-                
-                
+
+
+
                 $scope.DataTypeOptionsForPublished = [
                                           ['Create New Version',
                                                  	function($itemScope) {
                                         	  		console.log($rootScope.versionAndUseMap[$itemScope.data.id]);
                                                 	if ($rootScope.hasChanges()){
-                                                		
+
                                                 		$rootScope.openConfirmLeaveDlg().result.then(function() {
                                                 			if($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.data.id])){
                                                 				CloneDeleteSvc.upgradeDatatype($itemScope.data);
                                                 			}else{
                                                 				$scope.showCannotPublish($itemScope.data);
                                                 			}
-                                                			
+
                                                 			});
                                                 		} else {
-                                                			
+
                                                 			if($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.data.id])){
                                                 				CloneDeleteSvc.upgradeDatatype($itemScope.data);
                                                 			}else{
-                                                				
+
                                                 				$scope.showCannotPublish($itemScope.data);
                                                 			}
                                                 		}
@@ -611,12 +611,12 @@ angular
                                               }
                                           ]
                                       ];
-                
+
                 $rootScope.readyForNewVersion= function(obj){
                 	var ready =true;
                 	if(obj.derived&& obj.derived.length>0){
                 		 angular.forEach(obj.derived, function(derived){
-                			 
+
                 			 console.log(derived);
                 			 console.log($rootScope.datatypesMap[derived]);
                 		if($rootScope.datatypesMap[derived].status!=="PUBLISHED"){
@@ -818,9 +818,9 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function() {
-                            	$scope.addDatatypeForUser("2.1");                            	
+                            	$scope.addDatatypeForUser("2.1");
                                 });
-                    	
+
                         }else{
                         	$scope.addDatatypeForUser("2.1");
                         }
@@ -855,12 +855,12 @@ angular
 
                             $rootScope.openConfirmLeaveDlg().result.then(function() {
                             	$rootScope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
-                            	
+
                                 });
                         } else {
-                        	
+
                         	$rootScope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
-                           
+
                         }
 
                         }
@@ -872,12 +872,12 @@ angular
 
                             $rootScope.openConfirmLeaveDlg().result.then(function() {
                             	$rootScope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
-                            	
+
                                 });
                         } else {
-                        	
+
                         	$rootScope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
-                           
+
                         }
                         }
                     ],
@@ -888,12 +888,12 @@ angular
 
                             $rootScope.openConfirmLeaveDlg().result.then(function() {
                             	$rootScope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
-                            	
+
                                 });
                         } else {
-                        	
+
                         	$rootScope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
-                           
+
                         }
 
                         }
@@ -910,12 +910,12 @@ angular
 
                                                              $rootScope.openConfirmLeaveDlg().result.then(function() {
                                                                  CloneDeleteSvc.createNewTable($rootScope.tableLibrary.scope, $scope.tableLibrary);
-                                                                 $scope.editTableINLIB($rootScope.table);                                                             	
+                                                                 $scope.editTableINLIB($rootScope.table);
                                                                  });
                                                          } else {
-                                                         	
+
                                                              CloneDeleteSvc.createNewTable($rootScope.tableLibrary.scope, $scope.tableLibrary);
-                                                             $scope.editTableINLIB($rootScope.table);                                                            
+                                                             $scope.editTableINLIB($rootScope.table);
                                                          }
 
                                                          }
@@ -926,11 +926,11 @@ angular
                                                              if ($rootScope.hasChanges()) {
 
                                                                  $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                                     $rootScope.addHL7Table($rootScope.tableLibrary, "2.1");                                                                 	
+                                                                     $rootScope.addHL7Table($rootScope.tableLibrary, "2.1");
                                                                      });
                                                              } else {
-                                                             	
-                                                                 $rootScope.addHL7Table($rootScope.tableLibrary, "2.1");                                                                
+
+                                                                 $rootScope.addHL7Table($rootScope.tableLibrary, "2.1");
                                                              }
 
 
@@ -948,7 +948,7 @@ angular
                                                                  $rootScope.addPHINVADSTables($rootScope.tableLibrary);
                                                                  });
                                                          } else {
-                                                         	
+
                                                              $rootScope.addPHINVADSTables($rootScope.tableLibrary);
                                                          }
                                                          }
@@ -959,11 +959,11 @@ angular
                                                     	 if ($rootScope.hasChanges()) {
 
                                                              $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                                 $rootScope.addCSVTables($$rootScope.tableLibrary);           
+                                                                 $rootScope.addCSVTables($$rootScope.tableLibrary);
                                                                  });
                                                          } else {
-                                                         	
-                                                             $rootScope.addCSVTables($rootScope.tableLibrary);                                                  
+
+                                                             $rootScope.addCSVTables($rootScope.tableLibrary);
                                                              }
                                                          }
                                                      ]
@@ -1323,8 +1323,8 @@ angular
 
                 $scope.getScopeLabel = function(leaf) {
                 	if(leaf){
-                		
-                	
+
+
                     if (leaf.scope === 'HL7STANDARD') {
                         return 'HL7';
                     } else if (leaf.scope === 'USER') {

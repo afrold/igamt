@@ -530,6 +530,27 @@ public class DatatypeController extends CommonController {
       throw new IGDocumentException("Failed to unshare Datatype \n" + e.getMessage());
     }
   }
+  
+  /**
+   * Find shared datatypes
+   */
+  @RequestMapping(value = "/findShared", method = RequestMethod.GET,
+      produces = "application/json")
+  public List<Datatype> findShared() throws Exception {
+	  List<Datatype> datatypes = new ArrayList<Datatype>();
+      try {
+        User u = userService.getCurrentUser();
+        Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+        if (account == null) {
+          throw new UserAccountNotFoundException();
+        }
+        datatypes = datatypeService.findShared(account.getId());
+        
+      } catch (Exception e) {
+          log.error("", e);
+      }
+      return datatypes;
+  }
 
   public Datatype findById(String id) throws DataNotFoundException {
     Datatype result = datatypeService.findById(id);

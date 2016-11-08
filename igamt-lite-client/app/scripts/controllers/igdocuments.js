@@ -216,6 +216,7 @@ angular.module('igl')
 
         $scope.selectIGDocument = function(igdocument) {
             $rootScope.igdocument = igdocument;
+            $rootScope.accountId = igdocument.accountId;
             $scope.openIGDocument(igdocument);
         };
 
@@ -501,7 +502,7 @@ angular.module('igl')
             });
             return delay.promise;
         };
-        
+
         $scope.loadVersionAndUseInfo = function() {
             var delay = $q.defer();
             var dtIds = [];
@@ -2032,7 +2033,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
     function($scope, $rootScope, $modalInstance, hl7Version, datatypes, masterLib, userDtLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http) {
 
         //$scope.hl7Version = hl7Version;
-        //$scope.hl7Datatypes = datatypes;        
+        //$scope.hl7Datatypes = datatypes;
 
         $scope.newDts = [];
         $scope.checkedExt = true;
@@ -2202,9 +2203,9 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
                 	$rootScope.mergeEmptyProperty(newDatatype, standard);
                 });
             }
-           
-            
-            
+
+
+
             if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
                 for (var i = 0; i < newDatatype.components.length; i++) {
                     newDatatype.components[i].id = new ObjectId().toString();
@@ -2801,7 +2802,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
 		selected: "VIEW"
 	};
 	$scope.itemArray = ["VIEW"];
-	
+
 	$scope.tags = [];
 	$scope.loadUsernames = function ($query) {
 		return userList.filter(function (user) {
