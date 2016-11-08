@@ -76,6 +76,10 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             templateUrl: 'views/datatypeLibrary.html',
             controller: 'DatatypeLibraryCtl'
         })
+        .when('/shared', {
+             templateUrl: 'views/shared.html',
+             controller: 'shared'
+         })
         .when('/doc', {
             templateUrl: 'views/doc.html'
         })

@@ -461,6 +461,15 @@ angular.module('igl').factory('DatatypeService',
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+            getSharedDatatypes: function(){
+                var delay = $q.defer();
+                $http.get('api/datatypes/findShared').then(function (response) {
+                    delay.resolve(response.data);
+                 }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
         };

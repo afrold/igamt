@@ -341,6 +341,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
         	
         	$rootScope.libraryDoc= datatypeLibraryDocument;
+            $rootScope.accountId=datatypeLibraryDocument.accountId;
         	$scope.viewSettings.setTableReadonly(readOnly);
         	$rootScope.ext=datatypeLibraryDocument.metaData.ext;
         	
