@@ -8,6 +8,7 @@
     <xsl:import href="/rendering/templates/style/htmlStyle.xsl"/>
     <xsl:import href="/rendering/templates/style/wordStyle.xsl"/>
     <xsl:import href="/rendering/templates/style/globalStyle.xsl"/>
+    <xsl:import href="/rendering/templates/style/froalaEditorStyle.xsl"/>
     <xsl:param name="inlineConstraints" select="'false'"/>
     <xsl:param name="includeTOC" select="'false'"/>
     <xsl:param name="targetFormat" select="'html'"/>
@@ -45,6 +46,8 @@
                         <xsl:when test="$targetFormat='word'">
                             <!-- Add Word specific style-->
                             <xsl:call-template name="wordStyle"/>
+                            <!--Add the Froala Editor style-->
+                            <xsl:call-template name="froalaEditorStyle"/>
                         </xsl:when>
                     </xsl:choose>
                 </xsl:element>

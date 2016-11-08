@@ -157,7 +157,7 @@
         </xsl:if>
         <xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
             <xsl:element name="h4">
-                <xsl:text>post-definition:</xsl:text>
+                <xsl:text>Post-definition:</xsl:text>
             </xsl:element>
             <xsl:if test="count(./Text[@Type='Text']) &gt; 0">
                 <xsl:element name="p">
