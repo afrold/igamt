@@ -11,17 +11,29 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Jun 2, 2015
  */
 public class DateUtils {
 
+	public static final String FORMAT = "yyyy/MM/dd HH:mm:ss";
 	public static String getCurrentTime() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat(FORMAT);
 		return dateFormat.format(Calendar.getInstance().getTime());
+	} 
+	
+	public static Date getDate(String dataString) throws ParseException {
+		DateFormat dateFormat = new SimpleDateFormat(FORMAT);
+		return dateFormat.parse(dataString);
 	}
-
+	
+	public static Date getCurrentDate() {
+		 return Calendar.getInstance().getTime();
+	}
+	
 }

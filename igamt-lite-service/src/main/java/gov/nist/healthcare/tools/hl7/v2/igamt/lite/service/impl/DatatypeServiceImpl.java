@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +27,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 
 /**
  * @author gcr1
@@ -34,92 +36,96 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 @Service
 public class DatatypeServiceImpl implements DatatypeService {
 
-  Logger log = LoggerFactory.getLogger(DatatypeServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(DatatypeServiceImpl.class);
 
-  @Autowired
-  private DatatypeRepository datatypeRepository;
+	@Autowired
+	private DatatypeRepository datatypeRepository;
 
-  @Override
-  public List<Datatype> findAll() {
-    List<Datatype> datatypes = datatypeRepository.findAll();
-    log.info("DataypeServiceImpl.findAll=" + datatypes.size());
-    return datatypes;
-  }
+	@Override
+	public List<Datatype> findAll() {
+		List<Datatype> datatypes = datatypeRepository.findAll();
+		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
+		return datatypes;
+	}
 
-  @Override
-  public Datatype findById(String id) {
-    log.info("DataypeServiceImpl.findById=" + id);
-    Datatype datatype;
-    datatype = datatypeRepository.findOne(id);
-    return datatype;
-  }
+	@Override
+	public Datatype findById(String id) {
+		log.info("DataypeServiceImpl.findById=" + id);
+		Datatype datatype;
+		datatype = datatypeRepository.findOne(id);
+		return datatype;
+	}
 
-  @Override
-  public List<Datatype> findByIds(Set<String> ids) {
-    log.info("DataypeServiceImpl.findByIds=" + ids);
-    return datatypeRepository.findByIds(ids);
-  }
+	@Override
+	public List<Datatype> findByIds(Set<String> ids) {
+		log.info("DataypeServiceImpl.findByIds=" + ids);
+		return datatypeRepository.findByIds(ids);
+	}
 
+	@Override
+	public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		List<Datatype> datatypes = datatypeRepository.findByScopesAndVersion(scopes, hl7Version);
+		log.info("DataypeServiceImpl.findByScopesAndVersion=" + datatypes.size());
+		return datatypes;
+	}
 
-  @Override
-  public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-    List<Datatype> datatypes = datatypeRepository.findByScopesAndVersion(scopes, hl7Version);
-    log.info("DataypeServiceImpl.findByScopesAndVersion=" + datatypes.size());
-    return datatypes;
-  }
+	@Override
+	public Datatype save(Datatype datatype) {
+		log.info("DataypeServiceImpl.save=" + datatype.getId());
+		return datatypeRepository.save(datatype);
+	}
 
-  @Override
-  public Datatype save(Datatype datatype) {
-    log.info("DataypeServiceImpl.save=" + datatype.getId());
-    return datatypeRepository.save(datatype);
-  }
+	@Override
+	public void delete(Datatype dt) {
+		datatypeRepository.delete(dt);
+	}
 
-  @Override
-  public void delete(Datatype dt) {
-    datatypeRepository.delete(dt);
-  }
+	@Override
+	public void delete(String id) {
+		datatypeRepository.delete(id);
+	}
 
-  @Override
-  public void delete(String id) {
-    datatypeRepository.delete(id);
-  }
+	@Override
+	public void save(List<Datatype> datatypes) {
+		// TODO Auto-generated method stub
+		datatypeRepository.save(datatypes);
+	}
 
-  @Override
-  public void save(List<Datatype> datatypes) {
-    // TODO Auto-generated method stub
-    datatypeRepository.save(datatypes);
-  }
+	@Override
+	public Set<Datatype> collectDatatypes(Datatype datatype) {
+		Set<Datatype> datatypes = new HashSet<Datatype>();
+		if (datatype != null) {
+			datatypes.add(datatype);
+			List<Component> components = datatype.getComponents();
+			for (Component component : components) {
+				DatatypeLink link = component.getDatatype();
+				datatypes.addAll(collectDatatypes(this.findById(link.getId())));
+			}
+		}
+		return datatypes;
+	}
 
-  @Override
-  public Set<Datatype> collectDatatypes(Datatype datatype) {
-    Set<Datatype> datatypes = new HashSet<Datatype>();
-    if (datatype != null) {
-      datatypes.add(datatype);
-      List<Component> components = datatype.getComponents();
-      for (Component component : components) {
-        DatatypeLink link = component.getDatatype();
-        datatypes.addAll(collectDatatypes(this.findById(link.getId())));
-      }
-    }
-    return datatypes;
-  }
+	@Override
+	public List<Datatype> findByScope(String scope) {
+		// TODO Auto-generated method stub
+		return datatypeRepository.findByScope(scope);
+	}
 
-@Override
-public List<Datatype> findByScope(String scope) {
-	// TODO Auto-generated method stub
-	return datatypeRepository.findByScope(scope);
-}
+	@Override
+	public Datatype findByNameAndVersionAndScope(String name, String version, String scope) {
+		// TODO Auto-generated method stub
+		return datatypeRepository.findByNameAndVersionAndScope(name, version, scope);
+	}
 
-@Override
-public Datatype findByNameAndVersionAndScope(String name, String version,String scope) {
-	// TODO Auto-generated method stub
-	return datatypeRepository.findByNameAndVersionAndScope(name,version, scope);
-}
+	@Override
+	public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope) {
+		// TODO Auto-generated method stub
+		return datatypeRepository.findByNameAndVersionsAndScope(name, versions, scope);
+	}
 
-@Override
-public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope) {
-	// TODO Auto-generated method stub
-	return datatypeRepository.findByNameAndVersionsAndScope(name,versions, scope);
-}
+	@Override
+	public Date updateDate(String id, Date date) throws IGDocumentException {
+		return null;
+	}
 
 }

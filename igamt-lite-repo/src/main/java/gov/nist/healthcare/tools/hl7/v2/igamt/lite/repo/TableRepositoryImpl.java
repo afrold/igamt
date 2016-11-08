@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
@@ -87,6 +89,17 @@ public class TableRepositoryImpl implements TableOperations {
 		Query qry = Query.query(where);
 		Table table = mongo.findOne(qry, Table.class);
 		return table;
+	}
+
+	@Override
+	public Date updateDate(String id, Date date) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("id").is(id));
+		query.fields().include("dateUpdated");
+		Update update = new Update();
+		update.set("dateUpdated", date);
+		mongo.updateFirst(query, update, Table.class);
+		return date;
 	}
 
 	// Query set4Brevis(Query qry) {

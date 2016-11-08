@@ -61,7 +61,7 @@ public class MessageController extends CommonController {
 		log.debug("message=" + message);
 		log.debug("message.getId()=" + message.getId());
 		log.info("Saving the " + message.getScope() + " message.");
-		message.setDate(DateUtils.getCurrentTime());
+		message.setDateUpdated(DateUtils.getCurrentDate());
 		Message saved = messageService.save(message);
 		log.debug("saved.getId()=" + saved.getId());
 		log.debug("saved.getScope()=" + saved.getScope());

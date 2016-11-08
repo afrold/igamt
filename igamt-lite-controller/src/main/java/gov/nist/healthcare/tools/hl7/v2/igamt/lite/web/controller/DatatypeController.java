@@ -187,7 +187,7 @@ public class DatatypeController extends CommonController {
       log.debug("datatypeLibrary=" + datatype);
       log.debug("datatypeLibrary.getId()=" + datatype.getId());
       log.info("Saving the " + datatype.getScope() + " datatype.");
-      datatype.setDate(DateUtils.getCurrentTime());
+      datatype.setDateUpdated(DateUtils.getCurrentDate());
       Datatype saved = datatypeService.save(datatype);
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());

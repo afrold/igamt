@@ -109,7 +109,7 @@ public class SegmentController extends CommonController {
       log.debug("segment=" + segment);
       log.debug("segment.getId()=" + segment.getId());
       log.info("Saving the " + segment.getScope() + " segment.");
-      segment.setDate(DateUtils.getCurrentTime());
+      segment.setDateUpdated(DateUtils.getCurrentDate());
       Segment saved = segmentService.save(segment);
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());
@@ -190,7 +190,7 @@ public class SegmentController extends CommonController {
 		      log.debug("segment=" + seg);
 		      log.debug("segment.getId()=" + seg.getId());
 		      log.info("Saving the " + seg.getScope() + " segment.");
-		      seg.setDate(DateUtils.getCurrentTime());
+		      seg.setDateUpdated(DateUtils.getCurrentDate());
 		      Segment saved = segmentService.save(seg);
 		      log.debug("saved.getId()=" + saved.getId());
 		      log.debug("saved.getScope()=" + saved.getScope());

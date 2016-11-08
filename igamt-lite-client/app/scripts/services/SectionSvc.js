@@ -1,13 +1,14 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService) {
+angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService, $rootScope) {
 	var svc = this;
     svc.save = function (id, section) {
         var delay = $q.defer();
         $http.post('api/igdocuments/'+ id+ '/section/save', section).then(function (response) {
-            var saveResponse = angular.fromJson(response.data);
-            delay.resolve(saveResponse);
+            var dateUpdated = angular.fromJson(response.data);
+            $rootScope.$emit("event:updateIgDate",dateUpdated);
+            delay.resolve(dateUpdated);
         }, function (error) {
             delay.reject(error);
         });
@@ -18,8 +19,9 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService) 
         console.log("section");
         console.log(section);
         $http.post('api/igdocuments/'+ id+ '/section/update', section).then(function (response) {
-            var saveResponse = angular.fromJson(response.data);
-            delay.resolve(saveResponse);
+            var dateUpdated = angular.fromJson(response.data);
+            $rootScope.$emit("event:updateIgDate",dateUpdated);
+            delay.resolve(dateUpdated);
         }, function (error) {
             delay.reject(error);
         });
@@ -29,8 +31,9 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService) 
     svc.delete = function (id, sectionId) {
         var delay = $q.defer();
         $http.post('api/igdocuments/'+ id+ '/section/'+sectionId+'/delete').then(function (response) {
-            var saveResponse = angular.fromJson(response.data);
-            delay.resolve(saveResponse);
+            var dateUpdated = angular.fromJson(response.data);
+            $rootScope.$emit("event:updateIgDate",dateUpdated);
+            delay.resolve(dateUpdated);
         }, function (error) {
             delay.reject(error);
         });

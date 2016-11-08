@@ -78,7 +78,7 @@ public class TableController extends CommonController {
       log.debug("table=" + table);
       log.debug("table.getId()=" + table.getId());
       log.info("Saving the " + table.getScope() + " table.");
-      table.setDate(DateUtils.getCurrentTime());
+      table.setDateUpdated(DateUtils.getCurrentDate());
       Table saved = tableService.save(table);
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());

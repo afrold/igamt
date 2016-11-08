@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +27,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
     this.type = Constant.PROFILE;
     scope = IGDocumentScope.PRELOADED;
     this.id = ObjectId.get().toString();
-  }
+   }
 
   private IGDocumentScope scope;
 

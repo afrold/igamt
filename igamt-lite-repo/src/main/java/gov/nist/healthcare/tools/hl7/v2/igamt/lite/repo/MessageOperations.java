@@ -10,13 +10,11 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NamesAndStruct;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 /**
  * @author gcr1
@@ -24,13 +22,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
  */
 public interface MessageOperations {
 
-	  public List<Message> findByIds(Set<String> ids);
+	public List<Message> findByIds(Set<String> ids);
 
-
-	List<Message> findByNamesScopeAndVersion(String name,String structId, String scope, String hl7Version);
-
+	List<Message> findByNamesScopeAndVersion(String name, String structId, String scope, String hl7Version);
 
 	Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version);
 
-	 
+	public Date updateDate(String id, Date date);
+
 }

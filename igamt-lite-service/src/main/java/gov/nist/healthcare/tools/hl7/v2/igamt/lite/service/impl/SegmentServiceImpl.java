@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -31,57 +32,61 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 @Service
 public class SegmentServiceImpl implements SegmentService {
 
-  Logger log = LoggerFactory.getLogger(SegmentServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(SegmentServiceImpl.class);
 
-  @Autowired
-  private SegmentRepository segmentRepository;
+	@Autowired
+	private SegmentRepository segmentRepository;
 
-  @Override
-  public List<Segment> findAll() {
-    return segmentRepository.findAll();
-  }
+	@Override
+	public List<Segment> findAll() {
+		return segmentRepository.findAll();
+	}
 
+	@Override
+	public Segment findById(String id) {
+		log.info("SegmentServiceImpl.findById=" + id);
+		return segmentRepository.findOne(id);
+	}
 
-  @Override
-  public Segment findById(String id) {
-    log.info("SegmentServiceImpl.findById=" + id);
-    return segmentRepository.findOne(id);
-  }
+	@Override
+	public List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		List<Segment> segments = segmentRepository.findByScopesAndVersion(scopes, hl7Version);
+		log.info("SegmentServiceImpl.findByScopeAndVersion=" + segments.size());
+		return segments;
+	}
 
-  @Override
-  public List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-    List<Segment> segments = segmentRepository.findByScopesAndVersion(scopes, hl7Version);
-    log.info("SegmentServiceImpl.findByScopeAndVersion=" + segments.size());
-    return segments;
-  }
+	@Override
+	public Segment save(Segment segment) {
+		log.info("SegmentServiceImpl.save=" + segment.getLabel());
+		return segmentRepository.save(segment);
+	}
 
-  @Override
-  public Segment save(Segment segment) {
-    log.info("SegmentServiceImpl.save=" + segment.getLabel());
-    return segmentRepository.save(segment);
-  }
+	@Override
+	public void delete(Segment segment) {
+		segmentRepository.delete(segment);
+	}
 
-  @Override
-  public void delete(Segment segment) {
-    segmentRepository.delete(segment);
-  }
+	@Override
+	public void delete(String id) {
+		segmentRepository.delete(id);
+	}
 
-  @Override
-  public void delete(String id) {
-    segmentRepository.delete(id);
-  }
+	@Override
+	public void save(List<Segment> segments) {
+		// TODO Auto-generated method stub
+		segmentRepository.save(segments);
+	}
 
-  @Override
-  public void save(List<Segment> segments) {
-    // TODO Auto-generated method stub
-    segmentRepository.save(segments);
-  }
+	@Override
+	public List<Segment> findByIds(Set<String> ids) {
+		log.info("DataypeServiceImpl.findByIds=" + ids);
+		return segmentRepository.findByIds(ids);
+	}
 
-  @Override
-  public List<Segment> findByIds(Set<String> ids) {
-    log.info("DataypeServiceImpl.findByIds=" + ids);
-    return segmentRepository.findByIds(ids);
-  }
+	@Override
+	public Date updateDate(String id, Date date) {
+		return segmentRepository.updateDate(id, date);
 
+	}
 
 }
