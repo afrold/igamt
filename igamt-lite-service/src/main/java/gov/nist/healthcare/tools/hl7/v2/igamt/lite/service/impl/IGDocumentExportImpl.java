@@ -366,7 +366,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       exportParameters.setTargetFormat(EXPORT_FORMAT_HTML);
       return exportAsHtmlFromXsl(igDocumentSerializationService
           .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
-          "/rendering/datatypeLibraryExport.xsl",exportParameters);
+          "/rendering/generalExport.xsl",exportParameters);
     } else {
       return new NullInputStream(1L);
     }
@@ -383,7 +383,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       exportParameters.setTargetFormat(EXPORT_FORMAT_WORD);
       return exportAsDocxFromXml(igDocumentSerializationService
               .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
-          "/rendering/datatypeLibraryExport.xsl", exportParameters);
+          "/rendering/generalExport.xsl", exportParameters);
     } else {
       return new NullInputStream(1L);
     }
