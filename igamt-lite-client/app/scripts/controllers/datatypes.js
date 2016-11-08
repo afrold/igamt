@@ -2321,6 +2321,23 @@ angular.module('igl').controller('AddBindingForDatatype', function($scope, $moda
 angular.module('igl').controller('ShareDatatypeCtrl', function ($scope, $modalInstance, $http, igdocumentSelected, userList,DatatypeService,$rootScope) {
 
   $scope.igdocumentSelected = igdocumentSelected;
+
+  // Add participants username and fullname
+  // Find share participants
+  if ($scope.igdocumentSelected.shareParticipantIds && $scope.igdocumentSelected.shareParticipantIds.length > 0) {
+      $scope.igdocumentSelected.shareParticipantIds.forEach(function(participant) {
+          $http.get('api/shareparticipant', { params: { id: participant.accountId } })
+              .then(
+                  function(response) {
+                      participant.username = response.data.username;
+                      participant.fullname = response.data.fullname;
+                  },
+                  function(error) {
+                      console.log(error);
+                  }
+              );
+      });
+  }
 	$scope.userList =  userList;
 	$scope.error = "";
   $scope.tags = [];
@@ -2329,10 +2346,7 @@ angular.module('igl').controller('ShareDatatypeCtrl', function ($scope, $modalIn
 			return user.accountId;
 		});
 
-    // Add account Id on top of array
-    idsTab.unshift($rootScope.accountId);
-
-        DatatypeService.share($scope.igdocumentSelected.id,idsTab).then(function(result){
+        DatatypeService.share($scope.igdocumentSelected.id,idsTab, $rootScope.accountId).then(function(result){
             // Add participants for direct view
             $scope.igdocumentSelected.shareParticipantIds = $scope.igdocumentSelected.shareParticipantIds || [];
             $scope.tags.forEach(function(tag) {

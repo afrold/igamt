@@ -258,7 +258,7 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
-            
+
             getLastMaster: function(name, version) {
                 var wrapper = {
                     name: name,
@@ -446,7 +446,7 @@ angular.module('igl').factory('DatatypeService',
             },
             share:function(datatypeId,shareParticipantIds, accountId){
                 var delay = $q.defer();
-                $http.post('api/datatypes/' + datatypeId + '/share', shareParticipantIds).then(function (response) {
+                $http.post('api/datatypes/' + datatypeId + '/share', {'accountId': accountId, 'participantsList': shareParticipantIds}).then(function (response) {
                     delay.resolve(response.data);
                 }, function (error) {
                     delay.reject(error);

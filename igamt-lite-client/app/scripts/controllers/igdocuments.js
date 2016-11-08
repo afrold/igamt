@@ -401,6 +401,8 @@ angular.module('igl')
 
         $scope.openIGDocument = function(igdocument) {
             if (igdocument != null) {
+                 // Set rootscope accountId for sharing
+                 $rootScope.accountId = igdocument.accountId;
                 $timeout(function() {
                     $scope.selectIgTab(1);
                     $rootScope.TreeIgs = [];
