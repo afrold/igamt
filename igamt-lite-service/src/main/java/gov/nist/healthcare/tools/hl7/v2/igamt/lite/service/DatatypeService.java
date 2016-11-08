@@ -38,6 +38,8 @@ public interface DatatypeService {
   Set<Datatype> collectDatatypes(Datatype datatype);
 
   List<Datatype> findByScope(String scope);
+  
+  List<Datatype> findShared(Long accountId);
 
   Datatype findByNameAndVersionAndScope(String name, String version, String scope);
 

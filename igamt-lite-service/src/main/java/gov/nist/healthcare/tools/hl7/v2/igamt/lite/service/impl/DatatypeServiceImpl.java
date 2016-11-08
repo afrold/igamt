@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 
@@ -108,6 +110,21 @@ public class DatatypeServiceImpl implements DatatypeService {
 public List<Datatype> findByScope(String scope) {
 	// TODO Auto-generated method stub
 	return datatypeRepository.findByScope(scope);
+}
+
+@Override
+public List<Datatype> findShared(Long accountId) {
+	// TODO Auto-generated method stub
+	List<Datatype> datatypes = datatypeRepository.findShared(accountId);
+	List<Datatype> sharedWithAccount = new ArrayList<Datatype>();
+	for(Datatype d : datatypes) {
+		for(ShareParticipantPermission p : d.getShareParticipantIds()) {
+			if(p.getAccountId() == accountId) {
+				sharedWithAccount.add(d);
+			}
+		}
+	}
+	return sharedWithAccount;
 }
 
 @Override

@@ -443,6 +443,24 @@ angular.module('igl').factory('DatatypeService',
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+            share:function(datatypeId,shareParticipantIds, accountId){
+                var delay = $q.defer();
+                $http.post('api/datatypes/' + datatypeId + '/share', shareParticipantIds).then(function (response) {
+                    delay.resolve(response.data);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            unshare: function(datatypeId, participantId){
+                var delay = $q.defer();
+                $http.post('api/datatypes/' + datatypeId + '/unshare', participantId).then(function (response) {
+                    delay.resolve(response.data);
+                 }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
         };
