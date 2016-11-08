@@ -130,8 +130,10 @@ public class Bootstrap implements InitializingBean {
     // to write a code for the message.
     // Colorate();
 	  
-	  this.modifyMSH2Constraint();
-	  createNewSectionIds();
+	//  this.modifyConstraint();
+	  
+//	  this.modifyMSH2Constraint();
+//	  createNewSectionIds();
   }
 
   private void modifyCodeUsage() {
@@ -199,24 +201,50 @@ private void modifyMSH2Constraint(){
 	  List<Segment> allSegments = segmentService.findAll();
 	  
 	  for (Segment s : allSegments) {
-		  boolean isChanged = false;
-		  for(ConformanceStatement cs: s.getConformanceStatements()){
-			  if(cs.getConstraintTarget().equals("2[1]")){
-				  cs.setDescription("The value of MSH.2 (Encoding Characters) SHALL be '^~\\&'.");
-				  cs.setAssertion("<Assertion><PlainText IgnoreCase=\"false\" Path=\"2[1]\" Text=\"^~\\&amp;\"/></Assertion>");
-				  isChanged = true;
+		  if(s.getName().equals("MSH")){
+			  boolean isChanged = false;
+			  for(ConformanceStatement cs: s.getConformanceStatements()){
+				  if(cs.getConstraintTarget().equals("2[1]")){
+					  cs.setDescription("The value of MSH.2 (Encoding Characters) SHALL be '^~\\&'.");
+					  cs.setAssertion("<Assertion><PlainText IgnoreCase=\"false\" Path=\"2[1]\" Text=\"^~\\&amp;\"/></Assertion>");
+					  isChanged = true;
+				  }
 			  }
+			  
+			  if (isChanged) {
+				  segmentService.save(s);
+				  logger.info("Segment " + s.getId() + " has been updated by CS issue");
+			  }  
 		  }
-		  
-		  if (isChanged) {
-			  segmentService.save(s);
-			  logger.info("Segment " + s.getId() + " has been updated by CS issue");
-		  }
-		  
-		  
 	  }
 	  
   }
+
+private void modifyConstraint(){
+	  List<Segment> allSegments = segmentService.findAll();
+	  
+	  for (Segment s : allSegments) {
+		  if(!s.getName().equals("MSH")){
+			  boolean isChanged = false;
+			  ConformanceStatement wrongCS = null;
+			  for(ConformanceStatement cs: s.getConformanceStatements()){
+				  if(cs.getConstraintTarget().equals("2[1]")){
+					  if(cs.getDescription().startsWith("The value of MSH.2")){
+						  wrongCS = cs;
+						  isChanged = true;  
+					  }
+				  }
+			  }
+
+			  if (isChanged) {
+				  s.getConformanceStatements().remove(wrongCS);
+				  segmentService.save(s);
+				  logger.info("Segment " + s.getId() + " has been updated by CS issue");
+			  }  
+		  }
+	  }
+	  
+}
 
   private void modifyComponentUsage() {
     List<Datatype> allDatatypes = datatypeService.findAll();

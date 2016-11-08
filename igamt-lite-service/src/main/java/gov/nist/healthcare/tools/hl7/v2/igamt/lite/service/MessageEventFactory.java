@@ -11,86 +11,17 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 
 /**
  * @author gcr1
  *
  */
-public class MessageEventFactory {
 
-  private static Logger log = LoggerFactory.getLogger(MessageEventFactory.class);
+public interface MessageEventFactory {
 
-  private TableRepository tableRepository;
-  
-  private Table table0354;
-
-  public MessageEventFactory(TableRepository tableRepository) {
-    this.tableRepository = tableRepository;
-  }
-
-  public List<MessageEvents> createMessageEvents(Messages msgs) {
-
-    List<MessageEvents> list = new ArrayList<MessageEvents>();
-    for (Message msg : msgs.getChildren()) {
-    	
-    		String id = msg.getId();
-    	      
-    	      String structID = msg.getStructID();
-    	      Set<String> events = findEvents(structID);
-    	      
-    	      String description = msg.getDescription();
-    	      list.add(new MessageEvents(id, structID, events, description));
-    	
-      
-    }
-    return list;
-  }
-
-  public Set<String> findEvents(String structID) {
-    Set<String> events = new HashSet<String>();
-    String structID1 = fixUnderscore(structID);
-    Code code = (Code) getTable0354().findOneCodeByValue(structID1);
-    if (code != null) {
-      String label = code.getLabel();
-      String[] ss = label.split(",");
-      Collections.addAll(events, ss);
-    } else {
-      log.error("No code found for structID=" + structID1);
-    }
-    
-    return events;
-  }
-
-  public String fixUnderscore(String structID) {
-    if (structID.endsWith("_")) {
-      int pos = structID.length();
-      return structID.substring(0, pos - 1);
-    } else {
-      return structID;
-    }
-  }
-
-  public Table getTable0354() {
-	  if (table0354 == null) {
-		  table0354 = tableRepository.findByBindingIdentifier("0354");
-	  }
-    return table0354;
-  }
+	public List<MessageEvents> createMessageEvents(Messages msgs, String hl7Version);
 }

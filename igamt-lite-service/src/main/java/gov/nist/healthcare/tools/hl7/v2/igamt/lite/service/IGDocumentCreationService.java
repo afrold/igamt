@@ -26,18 +26,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageE
 
 public interface IGDocumentCreationService {
 
-  public List<String> findHl7Versions();
+	public List<String> findHl7Versions();
 
-  List<IGDocument> findIGDocumentsByHl7Versions();
+	List<IGDocument> findIGDocumentsByHl7Versions();
 
-  List<MessageEvents> summary(String hl7Version);
+	List<MessageEvents> findMessageEvents(String hl7Version);
 
- 
+	IGDocument updateIntegratedIGDocument(List<MessageEvents> msgIds, IGDocument dTarget) throws IGDocumentException;
 
-  IGDocument updateIntegratedIGDocument(List<MessageEvents> msgIds, IGDocument dTarget)
-      throws IGDocumentException;
-
-IGDocument createIntegratedIGDocument(List<MessageEvents> msgEvts, DocumentMetaData metadata, String hl7Version,
-		Long accountId) throws IGDocumentException;
+	IGDocument createIntegratedIGDocument(List<MessageEvents> msgEvts, DocumentMetaData metadata, String hl7Version,
+			Long accountId) throws IGDocumentException;
 
 }
