@@ -16,7 +16,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Delta;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DeltaService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 
 @RestController

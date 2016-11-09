@@ -222,9 +222,10 @@ angular.module('igl')
             $scope.saving = true;
             var message = $rootScope.message;
             $rootScope.$emit("event:saveMsgForDelta");
-
             console.log($rootScope.message);
             MessageService.save(message).then(function(result) {
+                $rootScope.message.dateUpdated = result.dateUpdated;
+                $rootScope.$emit("event:updateIgDate");
                 var index = findIndex(message.id);
                 if (index < 0) {
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);

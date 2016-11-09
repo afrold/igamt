@@ -15,6 +15,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -61,6 +62,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ConstraintsSerializat
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import nu.xom.Attribute;
 import nu.xom.Builder;
@@ -71,651 +73,646 @@ import nu.xom.ValidityException;
 @Service
 public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
-  @Autowired
-  private DatatypeService datatypeService;
-
-  @Autowired
-  private SegmentService segmentService;
-
-  @Autowired
-  private TableService tableService;
-
-  @Override
-  public Constraints deserializeXMLToConformanceStatements(String xmlConstraints) {
-    if (xmlConstraints != null) {
-      Document conformanceContextDoc = this.stringToDom(xmlConstraints);
-      Element elmConstraints =
-          (Element) conformanceContextDoc.getElementsByTagName("Constraints").item(0);
-      Constraints constraints = new Constraints();
-
-      Context datatypeContextObj = new Context();
-      Context segmentContextObj = new Context();
-      Context messageContextObj = new Context();
-
-      this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Datatype")
-          .item(0), datatypeContextObj);
-      this.deserializeXMLToContext(
-          (Element) elmConstraints.getElementsByTagName("Segment").item(0), segmentContextObj);
-      this.deserializeXMLToContext(
-          (Element) elmConstraints.getElementsByTagName("Message").item(0), messageContextObj);
-
-      constraints.setDatatypes(datatypeContextObj);
-      constraints.setSegments(segmentContextObj);
-      constraints.setMessages(messageContextObj);
-
-      return constraints;
-    }
-    return null;
-  }
-
-  @Override
-  public Constraints deserializeXMLToPredicates(String xmlConstraints) {
-    if (xmlConstraints != null) {
-      Document conformanceContextDoc = this.stringToDom(xmlConstraints);
-      Element elmConstraints =
-          (Element) conformanceContextDoc.getElementsByTagName("Predicates").item(0);
-      Constraints constraints = new Constraints();
-
-      Context datatypeContextObj = new Context();
-      Context segmentContextObj = new Context();
-      Context messageContextObj = new Context();
-
-      this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Datatype")
-          .item(0), datatypeContextObj);
-      this.deserializeXMLToContext(
-          (Element) elmConstraints.getElementsByTagName("Segment").item(0), segmentContextObj);
-      this.deserializeXMLToContext(
-          (Element) elmConstraints.getElementsByTagName("Message").item(0), messageContextObj);
-
-      constraints.setDatatypes(datatypeContextObj);
-      constraints.setSegments(segmentContextObj);
-      constraints.setMessages(messageContextObj);
-
-      return constraints;
-    }
-    return null;
-  }
-
-  @Override
-  public String serializeConstraintsToXML(Profile profile, DocumentMetaData metadata) {
-    return this.serializeConstraintsToDoc(profile, metadata).toXML();
-  }
-
-  @Override
-  public String serializeConstraintsToXML(DatatypeLibrary datatypeLibrary) {
-    return this.serializeConstraintsToDoc(datatypeLibrary).toXML();
-  }
-
-  @Override
-  public nu.xom.Document serializeConstraintsToDoc(Profile profile, DocumentMetaData metadata) {
-    Constraints predicates = findAllPredicates(profile);
-    Constraints conformanceStatements = findAllConformanceStatement(profile);
-
-
-    nu.xom.Element e = new nu.xom.Element("ConformanceContext");
-
-    if (profile.getConstraintId() == null || profile.getConstraintId().equals("")) {
-      e.addAttribute(new Attribute("UUID", UUID.randomUUID().toString()));
-    } else {
-      e.addAttribute(new Attribute("UUID", profile.getConstraintId()));
-    }
-
-    nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
-    if (metadata == null) {
-      elmMetaData.addAttribute(new Attribute("Name", "Constraints for " + "Profile"));
-      elmMetaData.addAttribute(new Attribute("OrgName", "NIST"));
-      elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
-      elmMetaData.addAttribute(new Attribute("Date", ""));
-    } else {
-    	elmMetaData.addAttribute(new Attribute("Name", !ExportUtil.str(metadata.getTitle()).equals("") ? ExportUtil.str(metadata.getTitle()) : "No Title Info"));
-        elmMetaData.addAttribute(new Attribute("OrgName", !ExportUtil.str(metadata.getOrgName()).equals("") ? ExportUtil.str(metadata.getOrgName()) : "No Org Info"));
-        elmMetaData.addAttribute(new Attribute("Version", !ExportUtil.str(metadata.getVersion()).equals("") ? ExportUtil.str(metadata.getVersion()) : "No Version Info"));
-        elmMetaData.addAttribute(new Attribute("Date", !ExportUtil.str(metadata.getDate()).equals("") ? ExportUtil.str(metadata.getDate()) : "No Date Info"));
-
-      if (profile.getMetaData().getSpecificationName() != null
-          && !profile.getMetaData().getSpecificationName().equals(""))
-        elmMetaData.addAttribute(new Attribute("SpecificationName", ExportUtil.str(profile
-            .getMetaData().getSpecificationName())));
-      if (profile.getMetaData().getStatus() != null
-          && !profile.getMetaData().getStatus().equals(""))
-        elmMetaData.addAttribute(new Attribute("Status", ExportUtil.str(profile.getMetaData()
-            .getStatus())));
-      if (profile.getMetaData().getTopics() != null
-          && !profile.getMetaData().getTopics().equals(""))
-        elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(profile.getMetaData()
-            .getTopics())));
-    }
-    e.appendChild(elmMetaData);
-
-    this.serializeMain(e, predicates, conformanceStatements);
-    
-    this.serializeCoConstaint(e, profile);
-
-    return new nu.xom.Document(e);
-  }
-
-  private void serializeCoConstaint(nu.xom.Element e, Profile profile) {
-	  nu.xom.Element coConstraints_Elm = new nu.xom.Element("CoConstraints");
-	  
-      nu.xom.Element coConstraints_segment_Elm = new nu.xom.Element("Segment");
-	  for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
-	      Segment s = segmentService.findById(sl.getId());
-	      if(s.getCoConstraints() != null){
-	    	  if(s.getCoConstraints().getColumnList() != null && s.getCoConstraints().getColumnList().size() > 1){
-	    		  nu.xom.Element byID_Elm = new nu.xom.Element("ByID");
-	    		  byID_Elm.addAttribute(new Attribute("ID", s.getLabel()));
-	    		  
-	    		  for(CoConstraint cc : s.getCoConstraints().getConstraints()){
-	    			  nu.xom.Element coConstraint_Elm = new nu.xom.Element("CoConstraint");
-		    		  
-		    		  nu.xom.Element elmDescription = new nu.xom.Element("Description");
-		    		  elmDescription.appendChild(cc.getDescription());
-		    		  coConstraint_Elm.appendChild(elmDescription);  
-		    		  
-		    		  nu.xom.Element elmCommnets = new nu.xom.Element("Comments");
-		    		  elmCommnets.appendChild(cc.getComments());
-		    		  coConstraint_Elm.appendChild(elmCommnets); 
-		    		  
-		    		  nu.xom.Element elmAssertion = new nu.xom.Element("Assertion");
-		    		  
-		    		  nu.xom.Element elmPlainCoConstraint = new nu.xom.Element("PlainCoConstraint");
-		    		  
-		    		  elmPlainCoConstraint.addAttribute(new Attribute("KeyPath", s.getCoConstraints().getColumnList().get(0).getField().getPosition() + "[1]"));
-		    		  elmPlainCoConstraint.addAttribute(new Attribute("KeyValue", cc.getValues().get(0).getValue()));
-
-		    		  for(int i = 1; i < s.getCoConstraints().getColumnList().size(); i++){
-		    			  String path = s.getCoConstraints().getColumnList().get(i).getField().getPosition() + "[1]";
-		    			  String type = s.getCoConstraints().getColumnList().get(i).getConstraintType();
-		    			  String value = cc.getValues().get(s.getCoConstraints().getColumnList().get(i).getColumnPosition()).getValue();
-		    			  
-		    			  if(value != null && !value.equals("")){
-		    				  if(type.equals("vs")){
-		    					  if(tableService.findById(value) != null){
-		    						  nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSet");
-				    				  elmValueSetCheck.addAttribute(new Attribute("Path", path));
-				    				  elmValueSetCheck.addAttribute(new Attribute("ValueSetID", tableService.findById(value).getBindingIdentifier()));
-				    				  elmValueSetCheck.addAttribute(new Attribute("BindingStrength", "R"));
-				    				  elmValueSetCheck.addAttribute(new Attribute("BindingLocation", "1"));
-				    				  elmPlainCoConstraint.appendChild(elmValueSetCheck);
-		    					  }
-			    			  }else{
-			    				  nu.xom.Element elmValueCheck = new nu.xom.Element("PlainText");
-			    				  elmValueCheck.addAttribute(new Attribute("Path", path));
-			    				  elmValueCheck.addAttribute(new Attribute("Text", value));
-			    				  elmValueCheck.addAttribute(new Attribute("IgnoreCase", "false"));
-			    				  elmPlainCoConstraint.appendChild(elmValueCheck);
-			    			  }
-			    			    
-		    			  }
-		    			  
-		    			  
-		    		  }
-		    		  elmAssertion.appendChild(elmPlainCoConstraint);
-		    		  coConstraint_Elm.appendChild(elmAssertion); 
-		    		  byID_Elm.appendChild(coConstraint_Elm);
-	    		  }
-	    		  coConstraints_segment_Elm.appendChild(byID_Elm);
-	    	  }
-	      }
-	  }
-	  
-	  if(coConstraints_segment_Elm.getChildCount() > 0) coConstraints_Elm.appendChild(coConstraints_segment_Elm);
-	  if(coConstraints_Elm.getChildCount() > 0) e.appendChild(coConstraints_Elm);
-}
-
-private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrary) {
-    Constraints predicates = findAllPredicates(datatypeLibrary);
-    Constraints conformanceStatements = findAllConformanceStatement(datatypeLibrary);
-
-
-    nu.xom.Element e = new nu.xom.Element("ConformanceContext");
-
-    e.addAttribute(new Attribute("UUID", UUID.randomUUID().toString()));
-
-    nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
-    elmMetaData.addAttribute(new Attribute("Name", "Constraints for " + "Profile"));
-    elmMetaData.addAttribute(new Attribute("OrgName", "NIST"));
-    elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
-    elmMetaData.addAttribute(new Attribute("Date", ""));
-    e.appendChild(elmMetaData);
-
-    this.serializeMain(e, predicates, conformanceStatements);
-
-    return new nu.xom.Document(e);
-  }
-
-  private nu.xom.Element serializeMain(nu.xom.Element e, Constraints predicates,
-      Constraints conformanceStatements) {
-    nu.xom.Element predicates_Elm = new nu.xom.Element("Predicates");
-
-    nu.xom.Element predicates_dataType_Elm = new nu.xom.Element("Datatype");
-    for (ByNameOrByID byNameOrByIDObj : predicates.getDatatypes().getByNameOrByIDs()) {
-      nu.xom.Element dataTypeConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
-      if (dataTypeConstaint != null)
-        predicates_dataType_Elm.appendChild(dataTypeConstaint);
-    }
-    predicates_Elm.appendChild(predicates_dataType_Elm);
-
-    nu.xom.Element predicates_segment_Elm = new nu.xom.Element("Segment");
-    for (ByNameOrByID byNameOrByIDObj : predicates.getSegments().getByNameOrByIDs()) {
-      nu.xom.Element segmentConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
-      if (segmentConstaint != null)
-        predicates_segment_Elm.appendChild(segmentConstaint);
-    }
-    predicates_Elm.appendChild(predicates_segment_Elm);
-
-
-    nu.xom.Element predicates_message_Elm = new nu.xom.Element("Message");
-    for (ByNameOrByID byNameOrByIDObj : predicates.getMessages().getByNameOrByIDs()) {
-      nu.xom.Element messageConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
-      if (messageConstaint != null)
-        predicates_message_Elm.appendChild(messageConstaint);
-    }
-    predicates_Elm.appendChild(predicates_message_Elm);
-
-    e.appendChild(predicates_Elm);
-
-    nu.xom.Element constraints_Elm = new nu.xom.Element("Constraints");
-
-    nu.xom.Element constraints_dataType_Elm = new nu.xom.Element("Datatype");
-    for (ByNameOrByID byNameOrByIDObj : conformanceStatements.getDatatypes().getByNameOrByIDs()) {
-      nu.xom.Element dataTypeConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
-      if (dataTypeConstaint != null)
-        constraints_dataType_Elm.appendChild(dataTypeConstaint);
-    }
-    constraints_Elm.appendChild(constraints_dataType_Elm);
-
-    nu.xom.Element constraints_segment_Elm = new nu.xom.Element("Segment");
-    for (ByNameOrByID byNameOrByIDObj : conformanceStatements.getSegments().getByNameOrByIDs()) {
-      nu.xom.Element segmentConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
-      if (segmentConstaint != null)
-        constraints_segment_Elm.appendChild(segmentConstaint);
-    }
-    constraints_Elm.appendChild(constraints_segment_Elm);
-
-    nu.xom.Element constraints_message_Elm = new nu.xom.Element("Message");
-    for (ByNameOrByID byNameOrByIDObj : conformanceStatements.getMessages().getByNameOrByIDs()) {
-      nu.xom.Element messageConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
-      if (messageConstaint != null)
-        constraints_message_Elm.appendChild(messageConstaint);
-    }
-    constraints_Elm.appendChild(constraints_message_Elm);
-    e.appendChild(constraints_Elm);
-
-    return e;
-  }
-
-  private nu.xom.Element serializeByNameOrByID(ByNameOrByID byNameOrByIDObj) {
-    if (byNameOrByIDObj instanceof ByName) {
-      ByName byNameObj = (ByName) byNameOrByIDObj;
-      nu.xom.Element elmByName = new nu.xom.Element("ByName");
-      elmByName.addAttribute(new Attribute("Name", byNameObj.getByName()));
-
-      for (Constraint c : byNameObj.getPredicates()) {
-        nu.xom.Element elmConstaint = this.serializeConstaint(c, "Predicate");
-        if (elmConstaint != null)
-          elmByName.appendChild(elmConstaint);
-      }
-
-      for (Constraint c : byNameObj.getConformanceStatements()) {
-        nu.xom.Element elmConstaint = this.serializeConstaint(c, "Constraint");
-        if (elmConstaint != null)
-          elmByName.appendChild(elmConstaint);
-      }
-
-      return elmByName;
-    } else if (byNameOrByIDObj instanceof ByID) {
-      ByID byIDObj = (ByID) byNameOrByIDObj;
-      nu.xom.Element elmByID = new nu.xom.Element("ByID");
-      elmByID.addAttribute(new Attribute("ID", byIDObj.getByID()));
-
-      for (Constraint c : byIDObj.getConformanceStatements()) {
-        nu.xom.Element elmConstaint = this.serializeConstaint(c, "Constraint");
-        if (elmConstaint != null)
-          elmByID.appendChild(elmConstaint);
-      }
-
-      for (Constraint c : byIDObj.getPredicates()) {
-        nu.xom.Element elmConstaint = this.serializeConstaint(c, "Predicate");
-        if (elmConstaint != null)
-          elmByID.appendChild(elmConstaint);
-      }
-
-      return elmByID;
-    }
-
-    return null;
-  }
-
-  private nu.xom.Element serializeConstaint(Constraint c, String type) {
-    nu.xom.Element elmConstraint = new nu.xom.Element(type);
-
-    if (c.getConstraintId() != null) {
-      elmConstraint.addAttribute(new Attribute("ID", c.getConstraintId()));
-    }
-
-    if (c.getConstraintTarget() != null && !c.getConstraintTarget().equals(""))
-      elmConstraint.addAttribute(new Attribute("Target", c.getConstraintTarget()));
-
-    if (c instanceof Predicate) {
-      Predicate pred = (Predicate) c;
-      if (pred.getTrueUsage() != null)
-        elmConstraint.addAttribute(new Attribute("TrueUsage", pred.getTrueUsage().value()));
-      if (pred.getFalseUsage() != null)
-        elmConstraint.addAttribute(new Attribute("FalseUsage", pred.getFalseUsage().value()));
-    }
-
-    if (c.getReference() != null) {
-      Reference referenceObj = c.getReference();
-      nu.xom.Element elmReference = new nu.xom.Element("Reference");
-      if (referenceObj.getChapter() != null && !referenceObj.getChapter().equals(""))
-        elmReference.addAttribute(new Attribute("Chapter", referenceObj.getChapter()));
-      if (referenceObj.getSection() != null && !referenceObj.getSection().equals(""))
-        elmReference.addAttribute(new Attribute("Section", referenceObj.getSection()));
-      if (referenceObj.getPage() == 0)
-        elmReference.addAttribute(new Attribute("Page", "" + referenceObj.getPage()));
-      if (referenceObj.getUrl() != null && !referenceObj.getUrl().equals(""))
-        elmReference.addAttribute(new Attribute("URL", referenceObj.getUrl()));
-      elmConstraint.appendChild(elmReference);
-    }
-    nu.xom.Element elmDescription = new nu.xom.Element("Description");
-    elmDescription.appendChild(c.getDescription());
-    elmConstraint.appendChild(elmDescription);
-
-    nu.xom.Node n = this.innerXMLHandler(c.getAssertion());
-    if (n != null)
-      elmConstraint.appendChild(n);
-
-    return elmConstraint;
-  }
-
-  private nu.xom.Node innerXMLHandler(String xml) {
-    if (xml != null) {
-      Builder builder = new Builder(new NodeFactory());
-      try {
-        nu.xom.Document doc = builder.build(xml, null);
-        return doc.getRootElement().copy();
-      } catch (ValidityException e) {
-        e.printStackTrace();
-      } catch (ParsingException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    return null;
-  }
-
-  private void deserializeXMLToContext(Element elmContext, Context contextObj) {
-    if (elmContext != null) {
-      NodeList nodes = elmContext.getChildNodes();
-
-      for (int i = 0; i < nodes.getLength(); i++) {
-        if (nodes.item(i).getNodeName().equals("ByName")) {
-          ByName byNameObj = new ByName();
-          Element elmByName = (Element) nodes.item(i);
-          byNameObj.setByName(elmByName.getAttribute("Name"));
-          deserializeXMLToConstraints(elmByName, byNameObj);
-          contextObj.getByNameOrByIDs().add(byNameObj);
-        } else if (nodes.item(i).getNodeName().equals("ByID")) {
-          ByID byIDObj = new ByID();
-          Element elmByID = (Element) nodes.item(i);
-          byIDObj.setByID(elmByID.getAttribute("ID"));
-          deserializeXMLToConstraints(elmByID, byIDObj);
-          contextObj.getByNameOrByIDs().add(byIDObj);
-        }
-
-      }
-    }
-
-  }
-
-  private void deserializeXMLToConstraints(Element elmByNameOrByID, ByNameOrByID byNameOrByIDObj) {
-    NodeList constraintNodes = elmByNameOrByID.getElementsByTagName("Constraint");
-
-    for (int i = 0; i < constraintNodes.getLength(); i++) {
-      ConformanceStatement constraintObj = new ConformanceStatement();
-      Element elmConstraint = (Element) constraintNodes.item(i);
-
-      constraintObj.setConstraintId(elmConstraint.getAttribute("ID"));
-      constraintObj.setConstraintTarget(elmConstraint.getAttribute("Target"));
-      String constraintClassification = elmConstraint.getAttribute("Classification");
-      if (constraintClassification == null || constraintClassification.equals("")) {
-        constraintObj.setConstraintClassification("E");
-      } else {
-        constraintObj.setConstraintClassification(constraintClassification);
-      }
-      NodeList descriptionNodes = elmConstraint.getElementsByTagName("Description");
-      if (descriptionNodes != null && descriptionNodes.getLength() == 1) {
-        constraintObj.setDescription(descriptionNodes.item(0).getTextContent());
-      }
-      this.deserializeXMLToReference(elmConstraint, constraintObj);
-      constraintObj.setAssertion(this.convertElementToString(elmConstraint.getElementsByTagName(
-          "Assertion").item(0)));
-      byNameOrByIDObj.getConformanceStatements().add(constraintObj);
-    }
-
-    NodeList predicateNodes = elmByNameOrByID.getElementsByTagName("Predicate");
-
-    for (int i = 0; i < predicateNodes.getLength(); i++) {
-      Predicate predicateObj = new Predicate();
-      Element elmPredicate = (Element) predicateNodes.item(i);
-
-      predicateObj.setConstraintId(elmPredicate.getAttribute("ID"));
-      predicateObj.setConstraintTarget(elmPredicate.getAttribute("Target"));
-      predicateObj.setTrueUsage(Usage.fromValue(elmPredicate.getAttribute("TrueUsage")));
-      predicateObj.setFalseUsage(Usage.fromValue(elmPredicate.getAttribute("FalseUsage")));
-      NodeList descriptionNodes = elmPredicate.getElementsByTagName("Description");
-      if (descriptionNodes != null && descriptionNodes.getLength() == 1) {
-        predicateObj.setDescription(descriptionNodes.item(0).getTextContent());
-      }
-      this.deserializeXMLToReference(elmPredicate, predicateObj);
-      predicateObj.setAssertion(this.convertElementToString(elmPredicate.getElementsByTagName(
-          "Condition").item(0)));
-      byNameOrByIDObj.getPredicates().add(predicateObj);
-    }
-  }
-
-  private String convertElementToString(Node node) {
-    try {
-      TransformerFactory transFactory = TransformerFactory.newInstance();
-      Transformer transformer = transFactory.newTransformer();
-      StringWriter buffer = new StringWriter();
-      transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-      transformer.transform(new DOMSource(node), new StreamResult(buffer));
-
-      return buffer.toString();
-    } catch (TransformerException e) {
-      e.printStackTrace();
-    }
-
-    return null;
-  }
-
-  private void deserializeXMLToReference(Element elmConstraint, Constraint constraintObj) {
-    NodeList nodes = elmConstraint.getElementsByTagName("Reference");
-    if (nodes != null && nodes.getLength() == 1) {
-      Reference referenceObj = new Reference();
-      Element elmReference = (Element) nodes.item(0);
-
-      referenceObj.setChapter(elmReference.getAttribute("Chapter"));
-      referenceObj.setPage(Integer.parseInt(elmReference.getAttribute("Page")));
-      referenceObj.setSection(elmReference.getAttribute("Section"));
-      referenceObj.setUrl(elmReference.getAttribute("URL"));
-
-      constraintObj.setReference(referenceObj);
-    }
-
-  }
-
-  private Document stringToDom(String xmlSource) {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setNamespaceAware(true);
-    factory.setIgnoringComments(false);
-    factory.setIgnoringElementContentWhitespace(true);
-    DocumentBuilder builder;
-    try {
-      builder = factory.newDocumentBuilder();
-      return builder.parse(new InputSource(new StringReader(xmlSource)));
-    } catch (ParserConfigurationException e) {
-      e.printStackTrace();
-    } catch (SAXException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-
-  private Constraints findAllConformanceStatement(Profile profile) {
-    Constraints constraints = new Constraints();
-    Context dtContext = new Context();
-    Context sContext = new Context();
-    Context mContext = new Context();
-
-    Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
-
-    byNameOrByIDs = new HashSet<ByNameOrByID>();
-    for (Message m : profile.getMessages().getChildren()) {
-      ByID byID = new ByID();
-      byID.setByID(m.getId());
-      if (m.getConformanceStatements().size() > 0) {
-        byID.setConformanceStatements(m.getConformanceStatements());
-        byNameOrByIDs.add(byID);
-      }
-    }
-    mContext.setByNameOrByIDs(byNameOrByIDs);
-
-    byNameOrByIDs = new HashSet<ByNameOrByID>();
-    for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
-      Segment s = segmentService.findById(sl.getId());
-      ByID byID = new ByID();
-      byID.setByID(s.getLabel());
-      if (s.getConformanceStatements().size() > 0) {
-        byID.setConformanceStatements(s.getConformanceStatements());
-        byNameOrByIDs.add(byID);
-      }
-    }
-    sContext.setByNameOrByIDs(byNameOrByIDs);
-
-    byNameOrByIDs = new HashSet<ByNameOrByID>();
-    for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
-      Datatype d = datatypeService.findById(dl.getId());
-      ByID byID = new ByID();
-      byID.setByID(d.getLabel());
-      if (d.getConformanceStatements().size() > 0) {
-        byID.setConformanceStatements(d.getConformanceStatements());
-        byNameOrByIDs.add(byID);
-      }
-    }
-    dtContext.setByNameOrByIDs(byNameOrByIDs);
-
-    constraints.setDatatypes(dtContext);
-    constraints.setSegments(sContext);
-    // constraints.setGroups(gContext);
-    constraints.setMessages(mContext);
-    return constraints;
-  }
-
-  private Constraints findAllPredicates(Profile profile) {
-    Constraints constraints = new Constraints();
-    Context dtContext = new Context();
-    Context sContext = new Context();
-    Context mContext = new Context();
-
-    Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
-    byNameOrByIDs = new HashSet<ByNameOrByID>();
-    for (Message m : profile.getMessages().getChildren()) {
-      ByID byID = new ByID();
-      byID.setByID(m.getId());
-      if (m.getPredicates().size() > 0) {
-        byID.setPredicates(m.getPredicates());
-        byNameOrByIDs.add(byID);
-      }
-    }
-    mContext.setByNameOrByIDs(byNameOrByIDs);
-
-    byNameOrByIDs = new HashSet<ByNameOrByID>();
-    for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
-      Segment s = segmentService.findById(sl.getId());
-      ByID byID = new ByID();
-      byID.setByID(s.getLabel());
-      if (s.getPredicates().size() > 0) {
-        byID.setPredicates(s.getPredicates());
-        byNameOrByIDs.add(byID);
-      }
-    }
-    sContext.setByNameOrByIDs(byNameOrByIDs);
-
-    byNameOrByIDs = new HashSet<ByNameOrByID>();
-    for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
-      Datatype d = datatypeService.findById(dl.getId());
-      ByID byID = new ByID();
-      byID.setByID(d.getLabel());
-      if (d.getPredicates().size() > 0) {
-        byID.setPredicates(d.getPredicates());
-        byNameOrByIDs.add(byID);
-      }
-    }
-    dtContext.setByNameOrByIDs(byNameOrByIDs);
-
-    constraints.setDatatypes(dtContext);
-    constraints.setSegments(sContext);
-    constraints.setMessages(mContext);
-    return constraints;
-  }
-
-
-  private Constraints findAllConformanceStatement(DatatypeLibrary datatypeLibrary) {
-    Constraints constraints = new Constraints();
-    Context dtContext = new Context();
-    Context sContext = new Context();
-    Context mContext = new Context();
-
-    Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
-
-    byNameOrByIDs = new HashSet<ByNameOrByID>();
-    for (DatatypeLink dl : datatypeLibrary.getChildren()) {
-      Datatype d = datatypeService.findById(dl.getId());
-      ByID byID = new ByID();
-      byID.setByID(dl.getName());
-      if (d.getPredicates().size() > 0) {
-        byID.setPredicates(d.getPredicates());
-        byNameOrByIDs.add(byID);
-      }
-    }
-    dtContext.setByNameOrByIDs(byNameOrByIDs);
-
-    constraints.setDatatypes(dtContext);
-    constraints.setSegments(sContext);
-    constraints.setMessages(mContext);
-    return constraints;
-  }
-
-  private Constraints findAllPredicates(DatatypeLibrary datatypeLibrary) {
-    Constraints constraints = new Constraints();
-    Context dtContext = new Context();
-    Context sContext = new Context();
-    Context mContext = new Context();
-
-    Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
-    for (DatatypeLink dl : datatypeLibrary.getChildren()) {
-      Datatype d = datatypeService.findById(dl.getId());
-      ByID byID = new ByID();
-      byID.setByID(dl.getName());
-      if (d.getPredicates().size() > 0) {
-        byID.setPredicates(d.getPredicates());
-        byNameOrByIDs.add(byID);
-      }
-    }
-    dtContext.setByNameOrByIDs(byNameOrByIDs);
-
-
-    constraints.setDatatypes(dtContext);
-    constraints.setSegments(sContext);
-    constraints.setMessages(mContext);
-    return constraints;
-  }
+	@Autowired
+	private DatatypeService datatypeService;
+
+	@Autowired
+	private SegmentService segmentService;
+
+	@Autowired
+	private TableService tableService;
+
+	@Override
+	public Constraints deserializeXMLToConformanceStatements(String xmlConstraints) {
+		if (xmlConstraints != null) {
+			Document conformanceContextDoc = this.stringToDom(xmlConstraints);
+			Element elmConstraints = (Element) conformanceContextDoc.getElementsByTagName("Constraints").item(0);
+			Constraints constraints = new Constraints();
+
+			Context datatypeContextObj = new Context();
+			Context segmentContextObj = new Context();
+			Context messageContextObj = new Context();
+
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Datatype").item(0),
+					datatypeContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Segment").item(0),
+					segmentContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Message").item(0),
+					messageContextObj);
+
+			constraints.setDatatypes(datatypeContextObj);
+			constraints.setSegments(segmentContextObj);
+			constraints.setMessages(messageContextObj);
+
+			return constraints;
+		}
+		return null;
+	}
+
+	@Override
+	public Constraints deserializeXMLToPredicates(String xmlConstraints) {
+		if (xmlConstraints != null) {
+			Document conformanceContextDoc = this.stringToDom(xmlConstraints);
+			Element elmConstraints = (Element) conformanceContextDoc.getElementsByTagName("Predicates").item(0);
+			Constraints constraints = new Constraints();
+
+			Context datatypeContextObj = new Context();
+			Context segmentContextObj = new Context();
+			Context messageContextObj = new Context();
+
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Datatype").item(0),
+					datatypeContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Segment").item(0),
+					segmentContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Message").item(0),
+					messageContextObj);
+
+			constraints.setDatatypes(datatypeContextObj);
+			constraints.setSegments(segmentContextObj);
+			constraints.setMessages(messageContextObj);
+
+			return constraints;
+		}
+		return null;
+	}
+
+	@Override
+	public String serializeConstraintsToXML(Profile profile, DocumentMetaData metadata, Date dateUpdated) {
+		return this.serializeConstraintsToDoc(profile, metadata, dateUpdated).toXML();
+	}
+
+	@Override
+	public String serializeConstraintsToXML(DatatypeLibrary datatypeLibrary) {
+		return this.serializeConstraintsToDoc(datatypeLibrary).toXML();
+	}
+
+	@Override
+	public nu.xom.Document serializeConstraintsToDoc(Profile profile, DocumentMetaData metadata, Date dateUpdated) {
+		Constraints predicates = findAllPredicates(profile);
+		Constraints conformanceStatements = findAllConformanceStatement(profile);
+
+		nu.xom.Element e = new nu.xom.Element("ConformanceContext");
+
+		if (profile.getConstraintId() == null || profile.getConstraintId().equals("")) {
+			e.addAttribute(new Attribute("UUID", UUID.randomUUID().toString()));
+		} else {
+			e.addAttribute(new Attribute("UUID", profile.getConstraintId()));
+		}
+
+		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
+		if (metadata == null) {
+			elmMetaData.addAttribute(new Attribute("Name", "Constraints for " + "Profile"));
+			elmMetaData.addAttribute(new Attribute("OrgName", "NIST"));
+			elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
+			elmMetaData.addAttribute(new Attribute("Date", ""));
+		} else {
+			elmMetaData.addAttribute(new Attribute("Name", !ExportUtil.str(metadata.getTitle()).equals("")
+					? ExportUtil.str(metadata.getTitle()) : "No Title Info"));
+			elmMetaData.addAttribute(new Attribute("OrgName", !ExportUtil.str(metadata.getOrgName()).equals("")
+					? ExportUtil.str(metadata.getOrgName()) : "No Org Info"));
+			elmMetaData.addAttribute(new Attribute("Version", !ExportUtil.str(metadata.getVersion()).equals("")
+					? ExportUtil.str(metadata.getVersion()) : "No Version Info"));
+			elmMetaData.addAttribute(
+					new Attribute("Date", dateUpdated != null ? DateUtils.format(dateUpdated) : "No Date Info"));
+
+			if (profile.getMetaData().getSpecificationName() != null
+					&& !profile.getMetaData().getSpecificationName().equals(""))
+				elmMetaData.addAttribute(new Attribute("SpecificationName",
+						ExportUtil.str(profile.getMetaData().getSpecificationName())));
+			if (profile.getMetaData().getStatus() != null && !profile.getMetaData().getStatus().equals(""))
+				elmMetaData.addAttribute(new Attribute("Status", ExportUtil.str(profile.getMetaData().getStatus())));
+			if (profile.getMetaData().getTopics() != null && !profile.getMetaData().getTopics().equals(""))
+				elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(profile.getMetaData().getTopics())));
+		}
+		e.appendChild(elmMetaData);
+
+		this.serializeMain(e, predicates, conformanceStatements);
+
+		this.serializeCoConstaint(e, profile);
+
+		return new nu.xom.Document(e);
+	}
+
+	private void serializeCoConstaint(nu.xom.Element e, Profile profile) {
+		nu.xom.Element coConstraints_Elm = new nu.xom.Element("CoConstraints");
+
+		nu.xom.Element coConstraints_segment_Elm = new nu.xom.Element("Segment");
+		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
+			Segment s = segmentService.findById(sl.getId());
+			if (s.getCoConstraints() != null) {
+				if (s.getCoConstraints().getColumnList() != null && s.getCoConstraints().getColumnList().size() > 1) {
+					nu.xom.Element byID_Elm = new nu.xom.Element("ByID");
+					byID_Elm.addAttribute(new Attribute("ID", s.getLabel()));
+
+					for (CoConstraint cc : s.getCoConstraints().getConstraints()) {
+						nu.xom.Element coConstraint_Elm = new nu.xom.Element("CoConstraint");
+
+						nu.xom.Element elmDescription = new nu.xom.Element("Description");
+						elmDescription.appendChild(cc.getDescription());
+						coConstraint_Elm.appendChild(elmDescription);
+
+						nu.xom.Element elmCommnets = new nu.xom.Element("Comments");
+						elmCommnets.appendChild(cc.getComments());
+						coConstraint_Elm.appendChild(elmCommnets);
+
+						nu.xom.Element elmAssertion = new nu.xom.Element("Assertion");
+
+						nu.xom.Element elmPlainCoConstraint = new nu.xom.Element("PlainCoConstraint");
+
+						elmPlainCoConstraint.addAttribute(new Attribute("KeyPath",
+								s.getCoConstraints().getColumnList().get(0).getField().getPosition() + "[1]"));
+						elmPlainCoConstraint.addAttribute(new Attribute("KeyValue", cc.getValues().get(0).getValue()));
+
+						for (int i = 1; i < s.getCoConstraints().getColumnList().size(); i++) {
+							String path = s.getCoConstraints().getColumnList().get(i).getField().getPosition() + "[1]";
+							String type = s.getCoConstraints().getColumnList().get(i).getConstraintType();
+							String value = cc.getValues()
+									.get(s.getCoConstraints().getColumnList().get(i).getColumnPosition()).getValue();
+
+							if (value != null && !value.equals("")) {
+								if (type.equals("vs")) {
+									if (tableService.findById(value) != null) {
+										nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSet");
+										elmValueSetCheck.addAttribute(new Attribute("Path", path));
+										elmValueSetCheck.addAttribute(new Attribute("ValueSetID",
+												tableService.findById(value).getBindingIdentifier()));
+										elmValueSetCheck.addAttribute(new Attribute("BindingStrength", "R"));
+										elmValueSetCheck.addAttribute(new Attribute("BindingLocation", "1"));
+										elmPlainCoConstraint.appendChild(elmValueSetCheck);
+									}
+								} else {
+									nu.xom.Element elmValueCheck = new nu.xom.Element("PlainText");
+									elmValueCheck.addAttribute(new Attribute("Path", path));
+									elmValueCheck.addAttribute(new Attribute("Text", value));
+									elmValueCheck.addAttribute(new Attribute("IgnoreCase", "false"));
+									elmPlainCoConstraint.appendChild(elmValueCheck);
+								}
+
+							}
+
+						}
+						elmAssertion.appendChild(elmPlainCoConstraint);
+						coConstraint_Elm.appendChild(elmAssertion);
+						byID_Elm.appendChild(coConstraint_Elm);
+					}
+					coConstraints_segment_Elm.appendChild(byID_Elm);
+				}
+			}
+		}
+
+		if (coConstraints_segment_Elm.getChildCount() > 0)
+			coConstraints_Elm.appendChild(coConstraints_segment_Elm);
+		if (coConstraints_Elm.getChildCount() > 0)
+			e.appendChild(coConstraints_Elm);
+	}
+
+	private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrary) {
+		Constraints predicates = findAllPredicates(datatypeLibrary);
+		Constraints conformanceStatements = findAllConformanceStatement(datatypeLibrary);
+
+		nu.xom.Element e = new nu.xom.Element("ConformanceContext");
+
+		e.addAttribute(new Attribute("UUID", UUID.randomUUID().toString()));
+
+		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
+		elmMetaData.addAttribute(new Attribute("Name", "Constraints for " + "Profile"));
+		elmMetaData.addAttribute(new Attribute("OrgName", "NIST"));
+		elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
+		elmMetaData.addAttribute(new Attribute("Date", ""));
+		e.appendChild(elmMetaData);
+
+		this.serializeMain(e, predicates, conformanceStatements);
+
+		return new nu.xom.Document(e);
+	}
+
+	private nu.xom.Element serializeMain(nu.xom.Element e, Constraints predicates, Constraints conformanceStatements) {
+		nu.xom.Element predicates_Elm = new nu.xom.Element("Predicates");
+
+		nu.xom.Element predicates_dataType_Elm = new nu.xom.Element("Datatype");
+		for (ByNameOrByID byNameOrByIDObj : predicates.getDatatypes().getByNameOrByIDs()) {
+			nu.xom.Element dataTypeConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+			if (dataTypeConstaint != null)
+				predicates_dataType_Elm.appendChild(dataTypeConstaint);
+		}
+		predicates_Elm.appendChild(predicates_dataType_Elm);
+
+		nu.xom.Element predicates_segment_Elm = new nu.xom.Element("Segment");
+		for (ByNameOrByID byNameOrByIDObj : predicates.getSegments().getByNameOrByIDs()) {
+			nu.xom.Element segmentConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+			if (segmentConstaint != null)
+				predicates_segment_Elm.appendChild(segmentConstaint);
+		}
+		predicates_Elm.appendChild(predicates_segment_Elm);
+
+		nu.xom.Element predicates_message_Elm = new nu.xom.Element("Message");
+		for (ByNameOrByID byNameOrByIDObj : predicates.getMessages().getByNameOrByIDs()) {
+			nu.xom.Element messageConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+			if (messageConstaint != null)
+				predicates_message_Elm.appendChild(messageConstaint);
+		}
+		predicates_Elm.appendChild(predicates_message_Elm);
+
+		e.appendChild(predicates_Elm);
+
+		nu.xom.Element constraints_Elm = new nu.xom.Element("Constraints");
+
+		nu.xom.Element constraints_dataType_Elm = new nu.xom.Element("Datatype");
+		for (ByNameOrByID byNameOrByIDObj : conformanceStatements.getDatatypes().getByNameOrByIDs()) {
+			nu.xom.Element dataTypeConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+			if (dataTypeConstaint != null)
+				constraints_dataType_Elm.appendChild(dataTypeConstaint);
+		}
+		constraints_Elm.appendChild(constraints_dataType_Elm);
+
+		nu.xom.Element constraints_segment_Elm = new nu.xom.Element("Segment");
+		for (ByNameOrByID byNameOrByIDObj : conformanceStatements.getSegments().getByNameOrByIDs()) {
+			nu.xom.Element segmentConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+			if (segmentConstaint != null)
+				constraints_segment_Elm.appendChild(segmentConstaint);
+		}
+		constraints_Elm.appendChild(constraints_segment_Elm);
+
+		nu.xom.Element constraints_message_Elm = new nu.xom.Element("Message");
+		for (ByNameOrByID byNameOrByIDObj : conformanceStatements.getMessages().getByNameOrByIDs()) {
+			nu.xom.Element messageConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+			if (messageConstaint != null)
+				constraints_message_Elm.appendChild(messageConstaint);
+		}
+		constraints_Elm.appendChild(constraints_message_Elm);
+		e.appendChild(constraints_Elm);
+
+		return e;
+	}
+
+	private nu.xom.Element serializeByNameOrByID(ByNameOrByID byNameOrByIDObj) {
+		if (byNameOrByIDObj instanceof ByName) {
+			ByName byNameObj = (ByName) byNameOrByIDObj;
+			nu.xom.Element elmByName = new nu.xom.Element("ByName");
+			elmByName.addAttribute(new Attribute("Name", byNameObj.getByName()));
+
+			for (Constraint c : byNameObj.getPredicates()) {
+				nu.xom.Element elmConstaint = this.serializeConstaint(c, "Predicate");
+				if (elmConstaint != null)
+					elmByName.appendChild(elmConstaint);
+			}
+
+			for (Constraint c : byNameObj.getConformanceStatements()) {
+				nu.xom.Element elmConstaint = this.serializeConstaint(c, "Constraint");
+				if (elmConstaint != null)
+					elmByName.appendChild(elmConstaint);
+			}
+
+			return elmByName;
+		} else if (byNameOrByIDObj instanceof ByID) {
+			ByID byIDObj = (ByID) byNameOrByIDObj;
+			nu.xom.Element elmByID = new nu.xom.Element("ByID");
+			elmByID.addAttribute(new Attribute("ID", byIDObj.getByID()));
+
+			for (Constraint c : byIDObj.getConformanceStatements()) {
+				nu.xom.Element elmConstaint = this.serializeConstaint(c, "Constraint");
+				if (elmConstaint != null)
+					elmByID.appendChild(elmConstaint);
+			}
+
+			for (Constraint c : byIDObj.getPredicates()) {
+				nu.xom.Element elmConstaint = this.serializeConstaint(c, "Predicate");
+				if (elmConstaint != null)
+					elmByID.appendChild(elmConstaint);
+			}
+
+			return elmByID;
+		}
+
+		return null;
+	}
+
+	private nu.xom.Element serializeConstaint(Constraint c, String type) {
+		nu.xom.Element elmConstraint = new nu.xom.Element(type);
+
+		if (c.getConstraintId() != null) {
+			elmConstraint.addAttribute(new Attribute("ID", c.getConstraintId()));
+		}
+
+		if (c.getConstraintTarget() != null && !c.getConstraintTarget().equals(""))
+			elmConstraint.addAttribute(new Attribute("Target", c.getConstraintTarget()));
+
+		if (c instanceof Predicate) {
+			Predicate pred = (Predicate) c;
+			if (pred.getTrueUsage() != null)
+				elmConstraint.addAttribute(new Attribute("TrueUsage", pred.getTrueUsage().value()));
+			if (pred.getFalseUsage() != null)
+				elmConstraint.addAttribute(new Attribute("FalseUsage", pred.getFalseUsage().value()));
+		}
+
+		if (c.getReference() != null) {
+			Reference referenceObj = c.getReference();
+			nu.xom.Element elmReference = new nu.xom.Element("Reference");
+			if (referenceObj.getChapter() != null && !referenceObj.getChapter().equals(""))
+				elmReference.addAttribute(new Attribute("Chapter", referenceObj.getChapter()));
+			if (referenceObj.getSection() != null && !referenceObj.getSection().equals(""))
+				elmReference.addAttribute(new Attribute("Section", referenceObj.getSection()));
+			if (referenceObj.getPage() == 0)
+				elmReference.addAttribute(new Attribute("Page", "" + referenceObj.getPage()));
+			if (referenceObj.getUrl() != null && !referenceObj.getUrl().equals(""))
+				elmReference.addAttribute(new Attribute("URL", referenceObj.getUrl()));
+			elmConstraint.appendChild(elmReference);
+		}
+		nu.xom.Element elmDescription = new nu.xom.Element("Description");
+		elmDescription.appendChild(c.getDescription());
+		elmConstraint.appendChild(elmDescription);
+
+		nu.xom.Node n = this.innerXMLHandler(c.getAssertion());
+		if (n != null)
+			elmConstraint.appendChild(n);
+
+		return elmConstraint;
+	}
+
+	private nu.xom.Node innerXMLHandler(String xml) {
+		if (xml != null) {
+			Builder builder = new Builder(new NodeFactory());
+			try {
+				nu.xom.Document doc = builder.build(xml, null);
+				return doc.getRootElement().copy();
+			} catch (ValidityException e) {
+				e.printStackTrace();
+			} catch (ParsingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	private void deserializeXMLToContext(Element elmContext, Context contextObj) {
+		if (elmContext != null) {
+			NodeList nodes = elmContext.getChildNodes();
+
+			for (int i = 0; i < nodes.getLength(); i++) {
+				if (nodes.item(i).getNodeName().equals("ByName")) {
+					ByName byNameObj = new ByName();
+					Element elmByName = (Element) nodes.item(i);
+					byNameObj.setByName(elmByName.getAttribute("Name"));
+					deserializeXMLToConstraints(elmByName, byNameObj);
+					contextObj.getByNameOrByIDs().add(byNameObj);
+				} else if (nodes.item(i).getNodeName().equals("ByID")) {
+					ByID byIDObj = new ByID();
+					Element elmByID = (Element) nodes.item(i);
+					byIDObj.setByID(elmByID.getAttribute("ID"));
+					deserializeXMLToConstraints(elmByID, byIDObj);
+					contextObj.getByNameOrByIDs().add(byIDObj);
+				}
+
+			}
+		}
+
+	}
+
+	private void deserializeXMLToConstraints(Element elmByNameOrByID, ByNameOrByID byNameOrByIDObj) {
+		NodeList constraintNodes = elmByNameOrByID.getElementsByTagName("Constraint");
+
+		for (int i = 0; i < constraintNodes.getLength(); i++) {
+			ConformanceStatement constraintObj = new ConformanceStatement();
+			Element elmConstraint = (Element) constraintNodes.item(i);
+
+			constraintObj.setConstraintId(elmConstraint.getAttribute("ID"));
+			constraintObj.setConstraintTarget(elmConstraint.getAttribute("Target"));
+			String constraintClassification = elmConstraint.getAttribute("Classification");
+			if (constraintClassification == null || constraintClassification.equals("")) {
+				constraintObj.setConstraintClassification("E");
+			} else {
+				constraintObj.setConstraintClassification(constraintClassification);
+			}
+			NodeList descriptionNodes = elmConstraint.getElementsByTagName("Description");
+			if (descriptionNodes != null && descriptionNodes.getLength() == 1) {
+				constraintObj.setDescription(descriptionNodes.item(0).getTextContent());
+			}
+			this.deserializeXMLToReference(elmConstraint, constraintObj);
+			constraintObj
+					.setAssertion(this.convertElementToString(elmConstraint.getElementsByTagName("Assertion").item(0)));
+			byNameOrByIDObj.getConformanceStatements().add(constraintObj);
+		}
+
+		NodeList predicateNodes = elmByNameOrByID.getElementsByTagName("Predicate");
+
+		for (int i = 0; i < predicateNodes.getLength(); i++) {
+			Predicate predicateObj = new Predicate();
+			Element elmPredicate = (Element) predicateNodes.item(i);
+
+			predicateObj.setConstraintId(elmPredicate.getAttribute("ID"));
+			predicateObj.setConstraintTarget(elmPredicate.getAttribute("Target"));
+			predicateObj.setTrueUsage(Usage.fromValue(elmPredicate.getAttribute("TrueUsage")));
+			predicateObj.setFalseUsage(Usage.fromValue(elmPredicate.getAttribute("FalseUsage")));
+			NodeList descriptionNodes = elmPredicate.getElementsByTagName("Description");
+			if (descriptionNodes != null && descriptionNodes.getLength() == 1) {
+				predicateObj.setDescription(descriptionNodes.item(0).getTextContent());
+			}
+			this.deserializeXMLToReference(elmPredicate, predicateObj);
+			predicateObj
+					.setAssertion(this.convertElementToString(elmPredicate.getElementsByTagName("Condition").item(0)));
+			byNameOrByIDObj.getPredicates().add(predicateObj);
+		}
+	}
+
+	private String convertElementToString(Node node) {
+		try {
+			TransformerFactory transFactory = TransformerFactory.newInstance();
+			Transformer transformer = transFactory.newTransformer();
+			StringWriter buffer = new StringWriter();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			transformer.transform(new DOMSource(node), new StreamResult(buffer));
+
+			return buffer.toString();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private void deserializeXMLToReference(Element elmConstraint, Constraint constraintObj) {
+		NodeList nodes = elmConstraint.getElementsByTagName("Reference");
+		if (nodes != null && nodes.getLength() == 1) {
+			Reference referenceObj = new Reference();
+			Element elmReference = (Element) nodes.item(0);
+
+			referenceObj.setChapter(elmReference.getAttribute("Chapter"));
+			referenceObj.setPage(Integer.parseInt(elmReference.getAttribute("Page")));
+			referenceObj.setSection(elmReference.getAttribute("Section"));
+			referenceObj.setUrl(elmReference.getAttribute("URL"));
+
+			constraintObj.setReference(referenceObj);
+		}
+
+	}
+
+	private Document stringToDom(String xmlSource) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+		factory.setIgnoringComments(false);
+		factory.setIgnoringElementContentWhitespace(true);
+		DocumentBuilder builder;
+		try {
+			builder = factory.newDocumentBuilder();
+			return builder.parse(new InputSource(new StringReader(xmlSource)));
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private Constraints findAllConformanceStatement(Profile profile) {
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+		Context sContext = new Context();
+		Context mContext = new Context();
+
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Message m : profile.getMessages().getChildren()) {
+			ByID byID = new ByID();
+			byID.setByID(m.getId());
+			if (m.getConformanceStatements().size() > 0) {
+				byID.setConformanceStatements(m.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		mContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
+			Segment s = segmentService.findById(sl.getId());
+			ByID byID = new ByID();
+			byID.setByID(s.getLabel());
+			if (s.getConformanceStatements().size() > 0) {
+				byID.setConformanceStatements(s.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		sContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
+			Datatype d = datatypeService.findById(dl.getId());
+			ByID byID = new ByID();
+			byID.setByID(d.getLabel());
+			if (d.getConformanceStatements().size() > 0) {
+				byID.setConformanceStatements(d.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		constraints.setSegments(sContext);
+		// constraints.setGroups(gContext);
+		constraints.setMessages(mContext);
+		return constraints;
+	}
+
+	private Constraints findAllPredicates(Profile profile) {
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+		Context sContext = new Context();
+		Context mContext = new Context();
+
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Message m : profile.getMessages().getChildren()) {
+			ByID byID = new ByID();
+			byID.setByID(m.getId());
+			if (m.getPredicates().size() > 0) {
+				byID.setPredicates(m.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		mContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
+			Segment s = segmentService.findById(sl.getId());
+			ByID byID = new ByID();
+			byID.setByID(s.getLabel());
+			if (s.getPredicates().size() > 0) {
+				byID.setPredicates(s.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		sContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
+			Datatype d = datatypeService.findById(dl.getId());
+			ByID byID = new ByID();
+			byID.setByID(d.getLabel());
+			if (d.getPredicates().size() > 0) {
+				byID.setPredicates(d.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		constraints.setSegments(sContext);
+		constraints.setMessages(mContext);
+		return constraints;
+	}
+
+	private Constraints findAllConformanceStatement(DatatypeLibrary datatypeLibrary) {
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+		Context sContext = new Context();
+		Context mContext = new Context();
+
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (DatatypeLink dl : datatypeLibrary.getChildren()) {
+			Datatype d = datatypeService.findById(dl.getId());
+			ByID byID = new ByID();
+			byID.setByID(dl.getName());
+			if (d.getPredicates().size() > 0) {
+				byID.setPredicates(d.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		constraints.setSegments(sContext);
+		constraints.setMessages(mContext);
+		return constraints;
+	}
+
+	private Constraints findAllPredicates(DatatypeLibrary datatypeLibrary) {
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+		Context sContext = new Context();
+		Context mContext = new Context();
+
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (DatatypeLink dl : datatypeLibrary.getChildren()) {
+			Datatype d = datatypeService.findById(dl.getId());
+			ByID byID = new ByID();
+			byID.setByID(dl.getName());
+			if (d.getPredicates().size() > 0) {
+				byID.setPredicates(d.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		constraints.setSegments(sContext);
+		constraints.setMessages(mContext);
+		return constraints;
+	}
 
 }

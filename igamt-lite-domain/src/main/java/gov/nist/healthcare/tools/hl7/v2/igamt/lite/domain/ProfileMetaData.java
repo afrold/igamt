@@ -101,8 +101,7 @@ public class ProfileMetaData extends MetaData {
     clonedProfileMetaData.setStatus(status);
     clonedProfileMetaData.setTopics(topics);
     clonedProfileMetaData.setType(type);
-    clonedProfileMetaData.setDate(this.getDate());
-    clonedProfileMetaData.setVersion(this.getVersion());
+     clonedProfileMetaData.setVersion(this.getVersion());
     clonedProfileMetaData.setSubTitle(subTitle);
     clonedProfileMetaData.setVersion(getHl7Version());
     clonedProfileMetaData.setProfileID(UUID.randomUUID().toString());
