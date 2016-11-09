@@ -572,6 +572,152 @@ angular.module('igl')
         //     $scope.VSselected = false;
 
         // };
+            $scope.ContainUnpublished = function(element) {
+
+            if (element && element.type && element.type === "datatype") {
+
+                angular.forEach(element.components, function(component) {
+                    $scope.ContainUnpublished(component);
+                });
+
+
+            } else if (element && element.type && element.type === "component") {
+
+                if (element.tables&&element.tables != null) {
+                	angular.forEach(element.tables, function(table){
+                		if ($rootScope.tablesMap[table.id] && $rootScope.tablesMap[table.id]) {
+                            if ($rootScope.tablesMap[table.id].scope!=="HL7STANDARD" && $rootScope.tablesMap[table.id].status !== "PUBLISHED" ) {
+                                $scope.containUnpublished = true;
+                                console.log("Fouuund Unpublished");
+                                $scope.unpublishedTables.push({ table: table, location: element });
+                                console.log($scope.unpublishedTables);
+                            }
+                        }
+                	});
+                    
+
+                }
+                if (element.datatype !== null || element.datatype !== undefined) {
+
+
+                    if ($rootScope.datatypesMap[element.datatype.id] && $rootScope.datatypesMap[element.datatype.id]) {
+                        if ($rootScope.datatypesMap[element.datatype.id].status !== "PUBLISHED") {
+                        	console.log("Found Unpublished");
+                            console.log($scope.containUnpublished);
+                            $scope.containUnpublished = true;
+                            $scope.unpublishedDatatypes.push({ datatype: element.datatype, location: element });
+                        }
+                    }
+
+
+                }
+            }
+        };  
+
+        $scope.confirmPublish = function(datatypeCopy) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmDatatypePublishCtl.html',
+                controller: 'ConfirmDatatypePublishCtl',
+                resolve: {
+                    datatypeToPublish: function() {
+                        return datatypeCopy;
+                    }
+                }
+            });
+            modalInstance.result.then(function(datatypetoPublish) {
+            	console.log("Saving");
+            	console.log($rootScope.datatype);
+            	console.log("IN LIBRARY");
+            	console.log($rootScope.datatypeLibrary);
+            	
+                var ext = $rootScope.datatype.ext;
+      
+                DatatypeService.publish($rootScope.datatype).then(function(result) {
+               
+                    var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.datatypeLibrary.children);
+                    var newLink = DatatypeService.getDatatypeLink(result);
+                    newLink.ext = ext;
+                    DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
+                        	DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                        	$rootScope.datatypesMap[result.id].status="PUBLISHED";
+                        	$rootScope.datatype.status="PUBLISHED";
+
+                            if ($scope.editForm) {
+                            	console.log("Cleeaning");
+                                $scope.editForm.$setPristine();
+                                $scope.editForm.$dirty = false;
+                                $scope.editForm.$invalid = false;
+                                
+                            }
+                            $rootScope.clearChanges();
+                            DatatypeService.merge($rootScope.datatype, result);
+                            if ($scope.datatypesParams){
+                                $scope.datatypesParams.refresh();   	
+                            }
+                         	VersionAndUseService.findById(result.id).then(function(inf){
+                        		$rootScope.versionAndUseMap[inf.id]=inf;
+                        		if($rootScope.versionAndUseMap[inf.sourceId]){
+                        			$rootScope.versionAndUseMap[inf.sourceId].deprecated=true;
+                        		}
+                        		
+                        	});
+                            oldLink.ext = newLink.ext;
+                            oldLink.name = newLink.name;
+                            $scope.saving = false;
+                            //$scope.cleanState();
+                        }, function(error) {
+                            $scope.saving = false;
+                            $rootScope.msg().text = "Sorry an error occured. Please try again";
+                            $rootScope.msg().type = "danger";
+                            $rootScope.msg().show = true;
+                        });
+                    }, function(error) {
+                        $scope.saving = false;
+                        $rootScope.msg().text = "Sorry an error occured. Please try again";
+                        $rootScope.msg().type = "danger";
+                        $rootScope.msg().show = true;
+                    });
+            });
+        };
+
+        $scope.abortPublish = function(datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AbortPublishCtl.html',
+                controller: 'AbortPublishCtl',
+                resolve: {
+                    datatypeToPublish: function() {
+                        return datatype;
+                    },
+                    unpublishedDatatypes: function() {
+                        return $scope.unpublishedDatatypes;
+                    },
+                    unpublishedTables: function() {
+                        return $scope.unpublishedTables;
+                    }
+
+                }
+            });
+
+        };
+
+
+
+
+         $scope.publishDatatype = function(datatype) {
+
+            $scope.containUnpublished = false;
+            $scope.unpublishedTables = [];
+            $scope.unpublishedDatatypes = [];
+            $scope.ContainUnpublished(datatype);
+
+            if ($scope.containUnpublished) {
+                $scope.abortPublish(datatype);
+                datatype.status = "UNPUBLISHED";
+            } else {
+                $scope.confirmPublish(datatype);
+
+            }
+        };
 
         $scope.redirectVS = function(valueSet) {
             TableService.getOne(valueSet.id).then(function(valueSet) {
@@ -1377,9 +1523,10 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function($scope, $
     $scope.loading = false;
     $scope.delete = function() {
         $scope.loading = true;
-        if ($scope.dtToDelete.scope === 'USER') {
+        if ($scope.dtToDelete.scope === 'USER' && $scope.dtToDelete.status==='UNPUBLISHED') {
             CloneDeleteSvc.deleteDatatypeAndDatatypeLink($scope.dtToDelete);
         } else {
+            console.log("deleting");
             CloneDeleteSvc.deleteDatatypeLink($scope.dtToDelete);
         }
 
@@ -2409,4 +2556,36 @@ angular.module('igl').controller('ShareDatatypeCtrl', function ($scope, $modalIn
     };
 
 
+});
+angular.module('igl').controller('ConfirmDatatypePublishCtl', function($scope, $rootScope, $http, $modalInstance, datatypeToPublish) {
+
+    $scope.datatypeToPublish = datatypeToPublish;
+    $scope.loading = false;
+
+    $scope.delete = function() {
+        $modalInstance.close($scope.datatypeToPublish);
+    };
+
+    $scope.cancel = function() {
+        $scope.datatypeToPublish.status = 'UNPUBLISHED';
+        $rootScope.clearChanges();
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('igl').controller('AbortPublishCtl', function($scope, $rootScope, $http, $modalInstance, datatypeToPublish, unpublishedDatatypes, unpublishedTables) {
+
+    $scope.datatypeToPublish = datatypeToPublish;
+    $scope.loading = false;
+    $scope.unpublishedDatatypes = unpublishedDatatypes;
+    $scope.unpublishedTables = unpublishedTables;
+
+    $scope.delete = function() {
+        $modalInstance.close($scope.datatypeToPublish);
+    };
+
+    $scope.cancel = function() {
+        //$scope.datatypeToPublish.status = "'UNPUBLISHED'";
+        $modalInstance.dismiss('cancel');
+    };
 });

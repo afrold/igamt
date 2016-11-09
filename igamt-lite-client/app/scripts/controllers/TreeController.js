@@ -1447,6 +1447,15 @@ angular
                 return label;
             };
 
+        $scope.getDatatypeLabel = function(datatype) {
+            if (datatype && datatype != null) {
+                // var ext = $rootScope.getDatatypeExtension(datatype);
+                return $rootScope.getLabel(datatype.name, datatype.ext);
+            }
+            return "";
+        };
+
+
             $scope.getSegmentsFromgroup = function (group) {
                 // _.union($rootScope.selectedSegments,temp);
                 for (var i = 0; i < group.children.length; i++) {

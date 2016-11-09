@@ -24,7 +24,9 @@
                     <tab-heading ng-click="setTypeOfSharing('datatype');">
                         Datatypes
                     </tab-heading>
+                    <div ng-init="init()">
                     <div ng-include="sharedElementView"></div>
+                    </div>
                 </tab>
                 <tab active="segment" select="select(segTab)">
                     <tab-heading>
@@ -46,7 +48,7 @@
 
 <script type="text/ng-template" id="sharedElementView">
 <br/>
-		<div class="row" ng-init="init()">
+		<div class="row">
 			<!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
 			<!--<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
 			<!--<i class="fa fa-caret-right"></i>-->

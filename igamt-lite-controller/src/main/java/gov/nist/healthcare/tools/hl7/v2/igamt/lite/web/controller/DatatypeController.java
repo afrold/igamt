@@ -12,7 +12,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -290,7 +289,7 @@ public class DatatypeController extends CommonController {
       	if(versionInfo==null){
       		versionInfo= new VersionAndUse();
       		versionInfo.setPublicationVersion(1);
-       
+      		datatype.setPublicationVersion(1);
       		versionInfo.setId(datatype.getId());
       	}else{
       		List<VersionAndUse> ancestors =versionAndUse.findAllByIds(versionInfo.getAncestors());
@@ -301,8 +300,12 @@ public class DatatypeController extends CommonController {
           		versionAndUse.save(ancestor);  
           	}
       		versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
+      		datatype.setPublicationVersion(versionInfo.getPublicationVersion()+1);
+
+      		
       	}
   		versionInfo.setPublicationDate(DateUtils.getCurrentTime());
+  		datatype.setPublicationDate(DateUtils.getCurrentTime());
   		versionAndUse.save(versionInfo);
       	datatype.setStatus(STATUS.PUBLISHED);
       Datatype saved = datatypeService.save(datatype);
@@ -453,13 +456,13 @@ public class DatatypeController extends CommonController {
    * @throws IGDocumentException
    */
   @RequestMapping(value = "/{id}/share", method = RequestMethod.POST, produces = "application/json")
-  public boolean shareDatatype(@PathVariable("id") String id, @RequestBody HashMap<String, Object> participants)
+  public boolean shareDatatype(@PathVariable("id") String id, @RequestBody List<Long> participants)
       throws Exception {
     log.info("Sharing datatype with id=" + id + " with partipants=" + participants);
     Long accountId = null;
     // Get account ID
-    if(participants.containsKey("accountId")) {
-    	accountId = new Long((int) participants.get("accountId"));
+    if(!participants.isEmpty()) {
+    	accountId = participants.get(0);
     }
     try {
       User u = userService.getCurrentUser();
@@ -472,19 +475,15 @@ public class DatatypeController extends CommonController {
         throw new Exception(
             "You do not have the right privilege to share this Datatype");
       }
-      if(participants.containsKey("participantsList")) {
-    	  List<Integer> participantList = (List<Integer>)participants.get("participantsList");
-	      for(Integer participantId : participantList) {
-	    	  Long longId = new Long(participantId);
-	    	  if(longId != accountId) {
-	    		  d.getShareParticipantIds().add(new ShareParticipantPermission(longId));
-	    	  }
-	    	  
-	    	  // Find the user
-	    	  Account acc = accountRepository.findOne(accountId);
-	    	  // Send confirmation email
-	//    	  sendShareConfirmation(d, acc,account);
-	      }
+      for(Long participantId : participants) {
+    	  if(participantId != accountId) {
+    		  d.getShareParticipantIds().add(new ShareParticipantPermission(participantId));
+    	  }
+    	  
+    	  // Find the user
+    	  Account acc = accountRepository.findOne(accountId);
+    	  // Send confirmation email
+//    	  sendShareConfirmation(d, acc,account);
       }
       datatypeService.save(d);
       return true;

@@ -17,13 +17,17 @@
             <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
         </div>
         <div ng-show="!loadingSelection">
-  <div ng-if="versionAndUseMap[datatype.id].deprecated" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+  <!--<div ng-if="versionAndUseMap[datatype.id].deprecated" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>-->
+  <div ng-if="versionAndUseMap[datatype.id].deprecated" class="alert in alert-warning" ng-class="'alert-' + (alert.type || 'warning')">New version of this datatype is available </div>
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 10px">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
+                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}} <span class="badge" ng-if="datatype.status==='PUBLISHED'" style="background-color:green">PUBLISHED</span></span>
                         <span class="pull-right">
                             <!-- TODO Add datatype sharing hook -->
+                                            <button title="publish" type="button" class="btn btn-raised btn-sm btn-success"
+                 ng-disabled="!editForm.$dirty||editForm.$invalid||datatype.status === 'PUBLISHED'"
+                 ng-click="publishDatatype(datatype)" ng-if="datatype.status !== 'PUBLISHED'">PUBLISH<i class="fa fa-check" aria-hidden="true"></i><span></button> 
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'">
                               <button  style="margin-top:0px" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(datatype)">
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
@@ -35,19 +39,20 @@
                 							</ul>
                             </div>
 
+                 
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                 ng-disabled="!editForm.$dirty||editForm.$invalid"
-                 ng-hide="viewSettings.tableReadonly || datatype.status === 'PUBLISHED'"
+                 ng-disabled="editForm.$invalid|| datatype.status === 'PUBLISHED'"
+                 ng-hide="viewSettings.tableReadonly"
                  ng-click="saveDatatype()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
-                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty||editForm.$invalid" ng-show="datatype.status==='PUBLISHED'&&!editForm.$dirty" ng-click="saveBindingForDatatype()">
+                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty||editForm.$invalid || datatype.status === 'PUBLISHED'" ng-show="datatype.status==='PUBLISHED'&&!editForm.$dirty" ng-click="saveBindingForDatatype()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
          				</button>
-                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
         				</button>
-                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
                         </button>
                         </span>

@@ -2750,11 +2750,19 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $rootScope.getDatatypeLabel = function(datatype) {
             if (datatype && datatype != null) {
                 // var ext = $rootScope.getDatatypeExtension(datatype);
-                return $rootScope.getLabel(datatype.name, datatype.ext);
+                return $rootScope.getLabel(datatype.name, datatype.ext)+$rootScope.getVersionLabel(datatype.id);
             }
             return "";
         };
 
+        $rootScope.getVersionLabel=function(id){
+            if($rootScope.versionAndUseMap[id]){
+                return "-(V"+$rootScope.versionAndUseMap[id].publicationVersion+")";
+            }else{
+                return "";
+            }
+             
+        }
         $rootScope.hasSameVersion = function(element) {
 
             return element.hl7Version;
@@ -2779,6 +2787,21 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 }
             }
             return "";
+        };
+        $rootScope.publishDatatype = function(datatype) {
+
+            $rootScope.containUnpublished = false;
+            $rootScope.unpublishedTables = [];
+            $rootScope.unpublishedDatatypes = [];
+            $rootScope.ContainUnpublished(datatype);
+
+            if ($rootScope.containUnpublished) {
+                $rootScope.abortPublish(datatype);
+                datatype.status = "UNPUBLISHED";
+            } else {
+                $rootScope.confirmPublish(datatype);
+
+            }
         };
 
 

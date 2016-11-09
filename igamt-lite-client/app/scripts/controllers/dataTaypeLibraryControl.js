@@ -344,33 +344,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $rootScope.accountId=datatypeLibraryDocument.accountId;
         	$scope.viewSettings.setTableReadonly(readOnly);
         	$rootScope.ext=datatypeLibraryDocument.metaData.ext;
-        	
-            DatatypeLibrarySvc.getHL7Versions().then(function(result) {
-                $scope.hl7Versions = result;
-                $scope.hl7Version=result[0];
-            });
-       DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {
-                $scope.AllUnchanged = res;
-            });
-            
-            console.log("$scope.hl7Versions");
-            console.log($scope.hl7Versions);
-            $rootScope.readOnly = readOnly;
-
-            if (!readOnly) {
-                $scope.datatypeListView = "DatatypeList.html";
-            } else {
-                $scope.datatypeListView = "DatatypeListReadOnly.html";
-            }
-           $rootScope.datatype=null;
-            $rootScope.filteringModeON = false;
-            $rootScope.initMaps();
-            $scope.selectDTLibTab(1);
-            //DTLibDetails=true;
-            $rootScope.datatypes = [];
-            $rootScope.datatypesMap = {};
-            $rootScope.tablesMap = {};
-            $rootScope.igdocument = null;
 
             $rootScope.tables = [];
             $scope.tablesIds = [];
@@ -406,17 +379,45 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.datatypeLibCopy = angular.copy($rootScope.datatypeLibrary);
             $scope.datatypeLibCopy.children = [];
 
-            $scope.loadDatatypes().then(function() {
-            	$scope.loadVersionAndUseInfo().then(function(){
-            		   $scope.loadTables().then(function() {
-                           $rootScope.$emit("event:initEditArea");
-                           blockUI.stop();
-                       }, function() {});
-            	})
+             console.log("$scope.hl7Versions");
+            console.log($scope.hl7Versions);
+            $rootScope.readOnly = readOnly;
+
+            if (!readOnly) {
+                $scope.datatypeListView = "DatatypeList.html";
+            } else {
+                $scope.datatypeListView = "DatatypeListReadOnly.html";
+            }
+           $rootScope.datatype=null;
+            $rootScope.filteringModeON = false;
+            $rootScope.initMaps();
+            $scope.selectDTLibTab(1);
+            //DTLibDetails=true;
+            $rootScope.datatypes = [];
+            $rootScope.datatypesMap = {};
+            $rootScope.tablesMap = {};
+            $rootScope.igdocument = null;
+             $scope.DataTypeTree.push($scope.datatypeLibCopy);
+
+            DatatypeLibrarySvc.getHL7Versions().then(function(result) {
+                $scope.hl7Versions = result;
+                $scope.hl7Version=result[0];
+                    DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {
+                        $scope.AllUnchanged = res;
+                            $scope.loadDatatypes().then(function() {
+            	                $scope.loadVersionAndUseInfo().then(function(){
+            		                $scope.loadTables().then(function() {
+                                                      
+
+                                $rootScope.$emit("event:initEditArea");
+                        }, function() {});
+            	    })
             }, function() {});
+                 });
+            });
+           
 
-
-            $scope.DataTypeTree.push($scope.datatypeLibCopy);
+            
 
         };
 
@@ -790,47 +791,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
 
 
-        $scope.ContainUnpublished = function(element) {
-
-            if (element && element.type && element.type === "datatype") {
-
-                angular.forEach(element.components, function(component) {
-                    $scope.ContainUnpublished(component);
-                });
-
-
-            } else if (element && element.type && element.type === "component") {
-
-                if (element.tables&&element.tables != null) {
-                	angular.forEach(element.tables, function(table){
-                		if ($rootScope.tablesMap[table.id] && $rootScope.tablesMap[table.id]) {
-                            if ($rootScope.tablesMap[table.id].scope!=="HL7STANDARD" && $rootScope.tablesMap[table.id].status !== "PUBLISHED" ) {
-                                $scope.containUnpublished = true;
-                                console.log("Fouuund Unpublished");
-                                $scope.unpublishedTables.push({ table: table, location: element });
-                                console.log($scope.unpublishedTables);
-                            }
-                        }
-                	});
-                    
-
-                }
-                if (element.datatype !== null || element.datatype !== undefined) {
-
-
-                    if ($rootScope.datatypesMap[element.datatype.id] && $rootScope.datatypesMap[element.datatype.id]) {
-                        if ($rootScope.datatypesMap[element.datatype.id].status !== "PUBLISHED") {
-                        	console.log("Found Unpublished");
-                            console.log($scope.containUnpublished);
-                            $scope.containUnpublished = true;
-                            $scope.unpublishedDatatypes.push({ datatype: element.datatype, location: element });
-                        }
-                    }
-
-
-                }
-            }
-        };
+ 
 
 
         $scope.publishDatatype = function(datatype) {
@@ -1093,6 +1054,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
             console.log(tableIds);
             console.log(tableIds);
+                            blockUI.start();
 
             TableService.findAllByIds(tableIds).then(function(tables) {
                 $rootScope.tables = tables;
@@ -1100,7 +1062,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     $rootScope.tablesMap[table.id] = table;
                 });
                 console.log($rootScope.tablesMap);
-                
+                            blockUI.stop();
+
             }, function(error) {
                 $rootScope.msg().text = "TablesLoadFailed";
                 $rootScope.msg().type = "danger";
@@ -2332,21 +2295,6 @@ angular.module('igl').controller('PreventDatatypeDeleteCtl', function($scope, $r
     };
 });
 
-angular.module('igl').controller('ConfirmDatatypePublishCtl', function($scope, $rootScope, $http, $modalInstance, datatypeToPublish) {
-
-    $scope.datatypeToPublish = datatypeToPublish;
-    $scope.loading = false;
-
-    $scope.delete = function() {
-        $modalInstance.close($scope.datatypeToPublish);
-    };
-
-    $scope.cancel = function() {
-        $scope.datatypeToPublish.status = 'UNPUBLISHED';
-        $rootScope.clearChanges();
-        $modalInstance.dismiss('cancel');
-    };
-});
 
 
 
@@ -2369,22 +2317,6 @@ angular.module('igl').controller('ConfirmTablePublishCtl', function($scope, $roo
 
 
 
-angular.module('igl').controller('AbortPublishCtl', function($scope, $rootScope, $http, $modalInstance, datatypeToPublish, unpublishedDatatypes, unpublishedTables) {
-
-    $scope.datatypeToPublish = datatypeToPublish;
-    $scope.loading = false;
-    $scope.unpublishedDatatypes = unpublishedDatatypes;
-    $scope.unpublishedTables = unpublishedTables;
-
-    $scope.delete = function() {
-        $modalInstance.close($scope.datatypeToPublish);
-    };
-
-    $scope.cancel = function() {
-        //$scope.datatypeToPublish.status = "'UNPUBLISHED'";
-        $modalInstance.dismiss('cancel');
-    };
-});
 
 
 

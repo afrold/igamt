@@ -59,7 +59,7 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
   
   @Override
   public List<Datatype> findShared(Long accountId) {
-    Query qry = new BasicQuery("{ $and: [ {$where : \"this.scope == 'USER'\"}, {$where : \"this.shareParticipantIds.length > 0\"}]}");
+    Query qry = new BasicQuery("{ $and: [{\"shareParticipantIds\": {$exists: true}}, {$where : \"this.scope == 'USER'\"}, {$where : \"this.shareParticipantIds.length > 0\"}]}");
     return mongo.find(qry, Datatype.class);
   }
   
