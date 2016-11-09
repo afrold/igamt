@@ -19,9 +19,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.MongoException;
@@ -42,8 +38,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 @Service
 public class IGDocumentServiceImpl implements IGDocumentService {
@@ -54,8 +50,17 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 	private IGDocumentRepository documentRepository;
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public IGDocument save(IGDocument ig) throws IGDocumentException {
+		try {
+			save(ig, DateUtils.getCurrentDate());
+			return documentRepository.save(ig);
+		} catch (MongoException e) {
+			throw new IGDocumentException(e);
+		}
+	}
+
+	@Override
+	public IGDocument save(IGDocument ig, Date date) throws IGDocumentException {
 		try {
 			return documentRepository.save(ig);
 		} catch (MongoException e) {
@@ -161,10 +166,8 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 	}
 
 	@Override
-	public IGDocument apply(IGDocument ig) throws IGDocumentSaveException {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		ig.getMetaData().setDate(dateFormat.format(Calendar.getInstance().getTime()));
-		documentRepository.save(ig);
+	public IGDocument apply(IGDocument ig) throws IGDocumentException {
+		save(ig);
 		return ig;
 	}
 

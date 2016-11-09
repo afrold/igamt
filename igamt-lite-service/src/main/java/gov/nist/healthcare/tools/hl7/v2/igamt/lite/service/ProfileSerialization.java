@@ -14,39 +14,37 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfilePreLib;
 import nu.xom.Document;
 
 public interface ProfileSerialization {
-  Profile deserializeXMLToProfile(String xmlContentsProfile, String xmlValueSet,
-      String xmlConstraints);
+	Profile deserializeXMLToProfile(String xmlContentsProfile, String xmlValueSet, String xmlConstraints);
 
-  Profile deserializeXMLToProfile(Document docProfile, Document docValueSet, Document docConstraints);
+	Profile deserializeXMLToProfile(Document docProfile, Document docValueSet, Document docConstraints);
 
-  String serializeProfileToXML(Profile profile, DocumentMetaData metadata);
+	String serializeProfileToXML(Profile profile, DocumentMetaData metadata, Date dateUpdated);
 
-  Document serializeProfileToDoc(Profile profile, DocumentMetaData metadata);
+	Document serializeProfileToDoc(Profile profile, DocumentMetaData metadata, Date dateUpdated);
 
-  InputStream serializeProfileToZip(Profile profile, DocumentMetaData metadata) throws IOException;
+	InputStream serializeProfileToZip(Profile profile, DocumentMetaData metadata, Date dateUpdated) throws IOException;
 
-  InputStream serializeProfileToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException,
-      CloneNotSupportedException;
+	InputStream serializeProfileToZip(Profile profile, String[] ids, DocumentMetaData metadata, Date dateUpdated)
+			throws IOException, CloneNotSupportedException;
 
-  InputStream serializeProfileDisplayToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException,
-      CloneNotSupportedException;
+	InputStream serializeProfileDisplayToZip(Profile profile, String[] ids, DocumentMetaData metadata, Date dateUpdated)
+			throws IOException, CloneNotSupportedException;
 
-  InputStream serializeProfileGazelleToZip(Profile profile, String[] ids) throws IOException,
-      CloneNotSupportedException;
+	InputStream serializeProfileGazelleToZip(Profile profile, String[] ids)
+			throws IOException, CloneNotSupportedException;
 
+	InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException;
 
-  InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException;
+	String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary);
 
-  String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary);
+	Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary);
 
-  Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary);
-  
 }

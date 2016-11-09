@@ -21,8 +21,8 @@ import org.bson.types.ObjectId;
  * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
  */
 public abstract class DataModel {
-	
-  protected Date dateUpdated;
+
+   protected Date dateUpdated;
 	  
   public DataModel() {
 	  this.dateUpdated = new Date();

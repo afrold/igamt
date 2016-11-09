@@ -38,4 +38,6 @@ public interface SegmentService {
 
 	public Date updateDate(String id, Date date) throws IGDocumentException;
 
+	Segment save(Segment segment, Date date);
+
 }

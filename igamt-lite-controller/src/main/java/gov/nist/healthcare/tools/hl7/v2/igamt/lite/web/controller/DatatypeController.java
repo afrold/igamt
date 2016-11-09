@@ -41,7 +41,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopeAndNameAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
@@ -187,8 +187,7 @@ public class DatatypeController extends CommonController {
       log.debug("datatypeLibrary=" + datatype);
       log.debug("datatypeLibrary.getId()=" + datatype.getId());
       log.info("Saving the " + datatype.getScope() + " datatype.");
-      datatype.setDateUpdated(DateUtils.getCurrentDate());
-      Datatype saved = datatypeService.save(datatype);
+       Datatype saved =datatypeService.save(datatype);
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());
       return saved;
@@ -202,8 +201,7 @@ public class DatatypeController extends CommonController {
 	  for(BindingParametersForDatatype paras : bindingParametersList){
 		  Datatype datatype = this.datatypeService.findById(paras.getDatatypeId());
 		  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
-			  datatype.setDate(DateUtils.getCurrentTime());
-			  Component targetComponent = datatype.getComponents().get(this.indexOfComponent(paras.getComponentId(), datatype));
+ 			  Component targetComponent = datatype.getComponents().get(this.indexOfComponent(paras.getComponentId(), datatype));
 			  TableLink tableLink = paras.getTableLink();
 			  if(tableLink != null && tableLink.getBindingIdentifier() != null && !tableLink.getBindingIdentifier().equals("")) {
 				  tableLink.setBindingIdentifier(tableService.findById(tableLink.getId()).getBindingIdentifier());
@@ -213,7 +211,7 @@ public class DatatypeController extends CommonController {
 				  this.deleteTable(targetComponent, paras.getKey());  
 			  }
 			  datatypeService.save(datatype);
-		  } else {
+ 		  } else {
 			  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
 		  }
 	  }
@@ -236,17 +234,15 @@ public class DatatypeController extends CommonController {
 	  for(BindingParametersForDatatype paras : bindingParametersList){
 		  Datatype datatype = this.datatypeService.findById(paras.getDatatypeId());
 		  if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
-			  datatype.setDate(DateUtils.getCurrentTime());
-			  Component targetComponent = datatype.getComponents().get(this.indexOfComponent(paras.getComponentId(), datatype));
+ 			  Component targetComponent = datatype.getComponents().get(this.indexOfComponent(paras.getComponentId(), datatype));
 			  TableLink tableLink = paras.getTableLink();
 			  DatatypeLink datatypeLink=paras.getDatatypeLink();
 			  
 			  if(datatypeLink != null) {
 				  targetComponent.setDatatype(datatypeLink);
 			  }
-			  
 			  datatypeService.save(datatype);
-		  } else {
+ 		  } else {
 			  throw new ForbiddenOperationException("FORBIDDEN_SAVE_SEGMENT");  
 		  }
 	  }
@@ -273,7 +269,6 @@ public class DatatypeController extends CommonController {
 		      log.debug("datatype=" + datatype);
 		      log.debug("datatype.getId()=" + datatype.getId());
 		      log.info("Saving the " + datatype.getScope() + " datatype.");
-		      datatype.setDate(DateUtils.getCurrentTime());
 		      Datatype saved = datatypeService.save(datatype);
 		      log.debug("saved.getId()=" + saved.getId());
 		      log.debug("saved.getScope()=" + saved.getScope());
@@ -295,6 +290,8 @@ public class DatatypeController extends CommonController {
       Datatype c = it.next();
       if (SCOPE.HL7STANDARD.equals(c.getScope())) {
         it.remove();
+      }else{
+    	  c.setDateUpdated(DateUtils.getCurrentDate());
       }
     }
     datatypeService.save(datatypes);
@@ -343,4 +340,6 @@ public class DatatypeController extends CommonController {
 	  }
 	  throw new DataNotFoundException("fieldNotFound");
   }
+  
+ 
 }

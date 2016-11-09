@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -23,30 +24,30 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 @Service
 public interface SegmentLibraryService {
 
-  List<SegmentLibrary> findAll();
+	List<SegmentLibrary> findAll();
 
-  List<SegmentLibrary> findByScopes(List<SCOPE> scopes);
+	List<SegmentLibrary> findByScopes(List<SCOPE> scopes);
 
-  SegmentLibrary findById(String id);
+	SegmentLibrary findById(String id);
 
-  List<SegmentLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	List<SegmentLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-  List<SegmentLibrary> findByAccountId(Long accountId, String hl7Version);
+	List<SegmentLibrary> findByAccountId(Long accountId, String hl7Version);
 
-  SegmentLibrary save(SegmentLibrary library);
+	SegmentLibrary save(SegmentLibrary library);
 
-  SegmentLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
+	SegmentLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
 
-  void delete(SegmentLibrary library);
+	void delete(SegmentLibrary library);
 
-  List<String> findHl7Versions();
+	List<String> findHl7Versions();
 
-  public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version, String name,
-      Long accountId);
+	public List<SegmentLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version, String name, Long accountId);
 
-  public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version, String name, Long accountId);
+	public List<SegmentLink> findFlavors(SCOPE scope, String hl7Version, String name, Long accountId);
 
-  List<Segment> findSegmentsById(String libId);
+	List<Segment> findSegmentsById(String libId);
 
+	SegmentLibrary save(SegmentLibrary library, Date date);
 
 }

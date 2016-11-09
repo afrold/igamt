@@ -864,7 +864,7 @@ angular.module('igl')
                 var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.datatypeLibrary.children);
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
-                datatype.dateUpdated = result.dateUpdated;
+                $rootScope.datatype.dateUpdated = result.dateUpdated;
                 $rootScope.$emit("event:updateIgDate");
                 DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function(link) {
                     DatatypeService.saveNewElements().then(function() {

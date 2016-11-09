@@ -24,6 +24,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 /**
  * @author gcr1
@@ -56,8 +57,14 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public Message save(Message segment) {
-		return messageRepository.save(segment);
+	public Message save(Message message) {
+		return save(message, DateUtils.getCurrentDate());
+	}
+
+	@Override
+	public Message save(Message message, Date dateUpdated) {
+		message.setDateUpdated(dateUpdated);
+		return messageRepository.save(message);
 	}
 
 	@Override

@@ -27,7 +27,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $rootScope.commentWidth = null;
         $scope.viewSettings = ViewSettings;
         $rootScope.addedSegments = [];
-
+        $rootScope.dateFormat= 'MM/dd/yyyy HH:mm';
         $scope.state = false;
 
         $scope.toggleState = function() {

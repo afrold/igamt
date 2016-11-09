@@ -40,4 +40,6 @@ public interface TableService {
 
 	Date updateDate(String id, Date date);
 
+	Table save(Table table, Date date);
+
 }

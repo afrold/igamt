@@ -23,7 +23,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 
 @RestController
@@ -81,8 +81,7 @@ public class MessageController extends CommonController {
 	  public void updateSegmentBinding(@RequestBody List<BindingParametersForMessage> bindingParametersList) throws DataNotFoundException {
 		  for(BindingParametersForMessage paras : bindingParametersList){
 			  Message message = this.messageService.findById(paras.getMessageId());
-			  message.setDate(DateUtils.getCurrentTime());
-			  String[] paths = paras.getPositionPath().split("\\.");
+ 			  String[] paths = paras.getPositionPath().split("\\.");
 			  List<String> strs = new LinkedList<String>(Arrays.asList(paths));
 			  this.updateSegmentBindingForMessage(message.getChildren(), strs, paras.getNewSegmentLink());
 			  messageService.save(message);

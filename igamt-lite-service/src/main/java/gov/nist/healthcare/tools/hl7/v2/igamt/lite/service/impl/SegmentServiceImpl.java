@@ -24,6 +24,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 /**
  * @author gcr1
@@ -58,6 +59,13 @@ public class SegmentServiceImpl implements SegmentService {
 	@Override
 	public Segment save(Segment segment) {
 		log.info("SegmentServiceImpl.save=" + segment.getLabel());
+		return save(segment, DateUtils.getCurrentDate());
+	}
+
+	@Override
+	public Segment save(Segment segment, Date date) {
+		log.info("SegmentServiceImpl.save=" + segment.getLabel());
+		segment.setDateUpdated(date);
 		return segmentRepository.save(segment);
 	}
 

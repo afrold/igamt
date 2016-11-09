@@ -43,4 +43,6 @@ public interface MessageService {
 	List<Message> findAll();
 
 	public Date updateDate(String id, Date date);
+
+	Message save(Message message, Date dateUpdated);
 }

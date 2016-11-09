@@ -27,7 +27,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 /**
  * @author gcr1
@@ -72,6 +72,13 @@ public class DatatypeServiceImpl implements DatatypeService {
 	@Override
 	public Datatype save(Datatype datatype) {
 		log.info("DataypeServiceImpl.save=" + datatype.getId());
+		return save(datatype, DateUtils.getCurrentDate());
+	}
+
+	@Override
+	public Datatype save(Datatype datatype, Date date) {
+		log.info("DataypeServiceImpl.save=" + datatype.getId());
+		datatype.setDateUpdated(date);
 		return datatypeRepository.save(datatype);
 	}
 
@@ -124,8 +131,8 @@ public class DatatypeServiceImpl implements DatatypeService {
 	}
 
 	@Override
-	public Date updateDate(String id, Date date) throws IGDocumentException {
-		return null;
+	public Date updateDate(String id, Date date) {
+		return datatypeRepository.updateDate(id, date);
 	}
 
 }

@@ -55,7 +55,7 @@ public interface IGDocumentService {
 
 	public IGDocument clone(IGDocument ig) throws CloneNotSupportedException;
 
-	public IGDocument apply(IGDocument ig) throws IGDocumentSaveException;
+	public IGDocument apply(IGDocument ig) throws IGDocumentException;
 
 	// TODO NEED TO REVIEW
 
@@ -121,6 +121,8 @@ public interface IGDocumentService {
 	public Date updateDate(String id, Date date) throws IGDocumentException;
 
 	List<IGDocument> save(Collection<IGDocument> igs) throws IGDocumentException;
+
+	IGDocument save(IGDocument ig, Date date) throws IGDocumentException;
 
 	// TODO NEED TO REVIEW
 }

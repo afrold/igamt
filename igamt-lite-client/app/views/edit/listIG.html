@@ -57,7 +57,7 @@
 						<td st-ratio="10" st-sort="cp"><span style="margin-left:5px ;    color: white !important;" class="badge" ns-popover ns-popover-template="templateRow.html" ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="right|top" ns-popover-timeout="0">{{row.profile.messages.children.length}} </span></td>
 						<td st-ratio="10" ng-bind="row.profile.metaData.hl7Version"></td>
 						<td st-ratio="10">
-                           {{row.dateUpdated | date:'MM/dd/yyyy HH:mm'}}
+                           {{row.dateUpdated | date:dateFormat}}
 						</td>
 						<td st-ratio="5" ng-if="igDocumentConfig.selectedType === 'USER' || igDocumentConfig.selectedType === 'SHARED'">
 							<span style="margin-left:5px ;    color: white !important;" class="badge">{{row.shareParticipantIds.length}} </span>

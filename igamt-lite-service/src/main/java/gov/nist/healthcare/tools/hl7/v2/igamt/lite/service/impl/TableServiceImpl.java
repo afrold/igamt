@@ -24,6 +24,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 /**
  * @author gcr1
@@ -61,6 +62,13 @@ public class TableServiceImpl implements TableService {
 	@Override
 	public Table save(Table table) {
 		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
+		return save(table, DateUtils.getCurrentDate());
+	}
+
+	@Override
+	public Table save(Table table, Date date) {
+		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
+		table.setDateUpdated(date);
 		return tableRepository.save(table);
 	}
 

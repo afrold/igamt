@@ -131,7 +131,6 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		DocumentMetaData metaData = metadata;
 		dTarget.setMetaData(metaData);
 		Date date = new Date();
-		metaData.setDate(Constant.mdy.format(date));
 		dTarget.setDateUpdated(new Date());
 		pTarget.setDateUpdated(new Date());
 		// metaData.setVersion("1.0");
@@ -142,7 +141,6 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// Setting profile metaData
 		ProfileMetaData profileMetaData = new ProfileMetaData();
 		pTarget.setMetaData(profileMetaData);
-		profileMetaData.setDate(Constant.mdy.format(date));
 		profileMetaData.setVersion("1.0");
 		profileMetaData.setName("Default name");
 		profileMetaData.setOrgName("Default org name");

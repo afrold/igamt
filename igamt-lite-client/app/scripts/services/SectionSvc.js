@@ -7,6 +7,7 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService, 
         var delay = $q.defer();
         $http.post('api/igdocuments/'+ id+ '/section/save', section).then(function (response) {
             var dateUpdated = angular.fromJson(response.data);
+            section.dateUpdated = dateUpdated;
             $rootScope.$emit("event:updateIgDate",dateUpdated);
             delay.resolve(dateUpdated);
         }, function (error) {
@@ -20,6 +21,7 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService, 
         console.log(section);
         $http.post('api/igdocuments/'+ id+ '/section/update', section).then(function (response) {
             var dateUpdated = angular.fromJson(response.data);
+            section.dateUpdated = dateUpdated;
             $rootScope.$emit("event:updateIgDate",dateUpdated);
             delay.resolve(dateUpdated);
         }, function (error) {

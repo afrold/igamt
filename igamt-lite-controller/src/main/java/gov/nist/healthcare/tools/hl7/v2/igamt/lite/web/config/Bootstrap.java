@@ -67,7 +67,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 @Service
 public class Bootstrap implements InitializingBean {
@@ -736,7 +736,7 @@ private void setUpdatedDates() throws IGDocumentException {
 
   }
 
-  private void checkTableNameForAllIGDocuments() throws IGDocumentSaveException {
+  private void checkTableNameForAllIGDocuments() throws IGDocumentException {
 
     List<IGDocument> igDocuments = documentService.findAll();
 

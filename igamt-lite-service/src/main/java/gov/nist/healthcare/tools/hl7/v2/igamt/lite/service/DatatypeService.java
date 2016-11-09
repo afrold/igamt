@@ -46,4 +46,6 @@ public interface DatatypeService {
 
 	Date updateDate(String id, Date date) throws IGDocumentException;
 
+	Datatype save(Datatype datatype, Date date);
+
 }
