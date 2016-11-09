@@ -24,9 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
@@ -44,6 +46,9 @@ public class ShareParticipantsController {
   
   @Autowired
   private IGDocumentService igDocumentService;
+  
+  @Autowired
+  private DatatypeService datatypeService;
   
   @Value("${server.email}")
   private String SERVER_EMAIL;
@@ -113,6 +118,8 @@ public class ShareParticipantsController {
     return user;
   }
   
+  
+  // IG Documents
   /**
    * Link for share confirmation email
    * @throws Exception 
@@ -174,6 +181,68 @@ public class ShareParticipantsController {
     }
   }
   
+// Datatypes
+ /**
+  * Link for share confirmation email
+  * @throws Exception 
+  */
+ @RequestMapping(value = "/shareDtconfimation/{id}", method = RequestMethod.GET,
+     produces = "application/json")
+ public @ResponseBody boolean confirmDtShare(@PathVariable("id") String id) throws Exception {
+	// Get the user
+	User u = userService.getCurrentUser();
+   Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+   if (account == null)
+       throw new UserAccountNotFoundException();
+   Datatype d = datatypeService.findById(id);
+   
+   try {
+	    for(ShareParticipantPermission p : d.getShareParticipantIds()) {
+	    	if(p.getAccountId() == account.getId()) {
+	    		p.setPendingApproval(false);
+	    		datatypeService.save(d);
+	    		// Find author
+	    		Account acc = accountRepository.findOne(d.getAccountId());
+	    		// Send share confirmation email
+	    		sendDtShareConfirmationEmail(d, acc, account);
+	    		return true;
+	    	}
+	    }
+   } catch (Exception e) {
+       log.error("", e);
+       throw new Exception("Failed to share IG Document \n" + e.getMessage());
+   }
+   return false;
+ }
+ 
+ /**
+  * Link for share confirmation email
+  * @throws Exception 
+  */
+ @RequestMapping(value = "/shareDtreject/{id}", method = RequestMethod.GET,
+     produces = "application/json")
+ public @ResponseBody boolean rejectDtShare(@PathVariable("id") String id) throws Exception {
+	// Get the user
+	User u = userService.getCurrentUser();
+   Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+   if (account == null)
+       throw new UserAccountNotFoundException();
+   Datatype d = datatypeService.findById(id);
+   
+   try {
+   	d.getShareParticipantIds().remove(new ShareParticipantPermission(account.getId()));
+   	datatypeService.save(d);
+   	// Find author
+		Account acc = accountRepository.findOne(d.getAccountId());
+		// Send share confirmation email
+		sendDtRejectEmail(d, acc, account);
+	    return true;
+   } catch (Exception e) {
+       log.error("", e);
+       throw new Exception("Failed to share IG Document \n" + e.getMessage());
+   }
+ }
+  
   private void sendShareConfirmationEmail(IGDocument doc, Account target,Account source) {	  
 	  
 	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
@@ -191,6 +260,23 @@ public class ShareParticipantsController {
 	    }
 }
   
+  private void sendDtShareConfirmationEmail(Datatype doc, Account target,Account source) {	  
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+	    msg.setSubject("NIST IGAMT Datatype Share");
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	        + source.getFullName() + "(" + source.getUsername() +") accepted the share request for the Datatype " +  doc.getDescription()
+	        + "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+  }
+  
   private void sendRejectEmail(IGDocument doc, Account target,Account source) {	  
 	  
 	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
@@ -207,6 +293,23 @@ public class ShareParticipantsController {
 	      log.error(ex.getMessage(), ex);
 	    }
   }
+  
+  private void sendDtRejectEmail(Datatype doc, Account target,Account source) {	  
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+	    msg.setSubject("NIST IGAMT Datatype Share");
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	    	+ source.getFullName() + "(" + source.getUsername() +") rejected the share request for the IG Document " +  doc.getDescription()
+	        + "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+}
 
 
 }

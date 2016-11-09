@@ -10,7 +10,7 @@ angular
             $scope.sharedElementView='sharedElementView';
             $scope.SharedDataTypeTree=[]
             $scope.typeOfSharing="Pending";
-            $rootScope.datatype={};
+$rootScope.datatype={};
             $rootScope.datatypesMap={};
             $rootScope.TablesMap={};
         $scope.datatypesParams = new ngTreetableParams({
@@ -21,6 +21,9 @@ angular
                 return DatatypeService.getTemplate(node, $rootScope.datatype);
             }
         });
+            $scope.datatypes = [];
+            $scope.pendingDatatypes = [];
+
             $scope.setTypeOfSharing=function(type){
                 $scope.typeOfSharing=type;
                 if(type==='datatype'){
@@ -36,23 +39,25 @@ angular
         });
         
             $scope.init=function(){
-                $scope.createDummyLibrary();
-
+                $scope.getSharedDatatypes();
+                $scope.SharedtocView='sharedtocView.html';
+                $scope.Sharedsubview = "datatypePending.html";
                 $scope.SharedDataTypeTree.push( $scope.library);
             }
-            
-            $scope.createDummyLibrary=function(){
-                console.log("coalled")
+
+            $scope.getSharedDatatypes = function(){
                 DatatypeService.getSharedDatatypes().then(function(result){
-                    console.log("result");
-                    console.log(result);
-                    $scope.datatypes=result;
+                    $scope.datatypes = result;
+                });
+
+                DatatypeService.getPendingSharedDatatypes().then(function(result){
+                    $scope.pendingDatatypes = result;
                 });
 
               //  $scope.datatypes=[{id:1, name:"dummy",description:"dummy"},{id:2, name:"dummy",description:"dummy"}];
-                $scope.tables=[{id:3, name:"dummy",description:"dummy"},{id:4, name:"dummy",description:"dummy"}];
-                $scope.library={name:"bla"};
-                
+                // $scope.tables=[{id:3, name:"dummy",description:"dummy"},{id:4, name:"dummy",description:"dummy"}];
+                // $scope.library={name:"bla"};
+
 
             }
 
@@ -69,6 +74,34 @@ angular
                 processEditDataType(data);
   
         };
+
+        $scope.confirmShareDocument = function(datatype) {
+                $http.get('api/shareDtconfimation/' + datatype.id).then(function(response) {
+                    $rootScope.msg().text = "igSharedConfirmationSuccessful";
+                    $rootScope.msg().type ="success";
+                    $rootScope.msg().show = true;
+                    $scope.getSharedDatatypes();
+                }, function(error) {
+                    $rootScope.msg().text = "igSharedConfirmationFailed";
+                    $rootScope.msg().type ="danger";
+                    $rootScope.msg().show = true;
+                    console.log(error);
+                });
+            };
+
+            $scope.rejectShareDocument = function(datatype) {
+                $http.get('api/shareDtreject/' + datatype.id).then(function(response) {
+                    $rootScope.msg().text = "igSharedRejectedSuccessfully";
+                    $rootScope.msg().type ="success";
+                    $rootScope.msg().show = true;
+                    $scope.getSharedDatatypes();
+                }, function(error) {
+                    $rootScope.msg().text = "igSharedRejectFailed";
+                    $rootScope.msg().type ="danger";
+                    $rootScope.msg().show = true;
+                    console.log(error);
+                });
+            };
 
         $scope.selectDatatype = function(datatype) {
             $rootScope.Activate(datatype.id);
@@ -106,4 +139,3 @@ angular
 
 
         }]);
-          

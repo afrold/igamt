@@ -119,7 +119,22 @@ public List<Datatype> findShared(Long accountId) {
 	List<Datatype> sharedWithAccount = new ArrayList<Datatype>();
 	for(Datatype d : datatypes) {
 		for(ShareParticipantPermission p : d.getShareParticipantIds()) {
-			if(p.getAccountId() == accountId) {
+			if(p.getAccountId() == accountId && !p.isPendingApproval()) {
+				sharedWithAccount.add(d);
+			}
+		}
+	}
+	return sharedWithAccount;
+}
+
+@Override
+public List<Datatype> findPendingShared(Long accountId) {
+	// TODO Auto-generated method stub
+	List<Datatype> datatypes = datatypeRepository.findShared(accountId);
+	List<Datatype> sharedWithAccount = new ArrayList<Datatype>();
+	for(Datatype d : datatypes) {
+		for(ShareParticipantPermission p : d.getShareParticipantIds()) {
+			if(p.getAccountId() == accountId && p.isPendingApproval()) {
 				sharedWithAccount.add(d);
 			}
 		}
