@@ -361,7 +361,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }
 
            $rootScope.datatype=null;
-            $rootScope.filteringModeON = false;
             $rootScope.initMaps();
             $scope.selectDTLibTab(1);
             //DTLibDetails=true;
@@ -1283,7 +1282,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             modalInstance.result.then(function(datatype) {
                 DatatypeService.getOne(datatype.id).then(function(datatype) {
                 	$rootScope.datatype = datatype;
-                	$rootScope.editDatatype($scope.datatype);
+                	$rootScope.editDatatype($rootScope.datatype);
                     $rootScope.ActiveModel=datatype;
 
                 });
@@ -1472,7 +1471,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         $scope.toggleStatus = function(status) {
-            $scope.datatype.status = $scope.datatype.status === 'PUBLISHED' ? 'UNPUBLISHED' : 'PUBLISHED';
+            $rootScope.datatype.status = $rootScope.datatype.status === 'PUBLISHED' ? 'UNPUBLISHED' : 'PUBLISHED';
         };
 
         $scope.saveDatatype = function(datatypeCopy) {
@@ -1490,7 +1489,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         
         $scope.resetDatatype = function() {
             blockUI.start();
-           $rootScope.datatype=angular.copy($rootScope.datatypesMap[$scope.datatype.id]);
+           $rootScope.datatype=angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
             cleanState();
             blockUI.stop();
         };
@@ -1548,7 +1547,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             $rootScope.currentData = $rootScope.datatype;
                             $scope.editView = "EditDatatypesInLib.html";
                             $scope.loadingSelection = false;
-                            $scope.datatype["type"] = "datatype";
+                            $rootScope.datatype["type"] = "datatype";
                             $rootScope.tableWidth = null;
                             $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
                             $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 890);
@@ -1561,7 +1560,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             } catch (e) {
 
                             }
- 
 
                             $rootScope.$emit("event:initEditArea");
 
@@ -1668,7 +1666,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
   
                 
                 DatatypeLibrarySvc.deleteChild($scope.datatypeLibrary.id, newLink).then(function(link) {
-                    if(datatype.status=='PUBLISHED'){
+                    if(datatype.status=='UNPUBLISHED'){
                     	DatatypeService.delete(datatype);
                     }
                 });
@@ -1712,7 +1710,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         $scope.recordDatatypeChange = function(type, command, id, valueType, value) {
-            var datatypeFromChanges = $rootScope.findObjectInChanges("datatype", "add", $scope.datatype.id);
+            var datatypeFromChanges = $rootScope.findObjectInChanges("datatype", "add", $rootScope.datatype.id);
             if (datatypeFromChanges === undefined) {
                 $rootScope.recordChangeForEdit2(type, command, id, valueType, value);
             }
@@ -1840,22 +1838,12 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             //$scope.openDataypeList();
             $scope.miniDTMap = [];
             $scope.datatypeLibList = [];
-           $rootScope.datatype=null;
             if ($scope.datatypeLibrary.scope === 'MASTER') {
                 $scope.editView = "addingViewForMaster.html";
 
-//                DatatypeLibrarySvc.getDataTypeLibraryByScopesAndVersion(["HL7STANDARD"], $scope.hl7Version).then(function(result) {
-//                    $scope.datatypeLibList = result;
-//
-//                });
 
             } else if ($scope.datatypeLibrary.scope === 'USER') {
                 $scope.editView = "addingViewForMaster.html";
-
-//                DatatypeLibrarySvc.getDataTypeLibraryByScopesAndVersion(["MASTER", "HL7STANDARD", "USER"], $scope.hl7Version).then(function(result) {
-//                    $scope.datatypeLibList = result;
-//
-//                });
             }
 
         };
@@ -1900,7 +1888,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             console.log("versions ===== data ");
             console.log(versions);
             if(versions.length&&versions.length>0){
-                version=versions[0];
+                version=versions[versions.length-1];
             }
             var name= data.name;
         DatatypeService.getOneStandard(name, version,versions).then(function(result) {
@@ -1932,9 +1920,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             
         }
         $scope.AddDatatypeForMaster = function(datatype) {
-
-
-
                 var dataToAdd = angular.copy(datatype);
                 dataToAdd.id = new ObjectId().toString();
                 dataToAdd.status = 'UNPUBLISHED';

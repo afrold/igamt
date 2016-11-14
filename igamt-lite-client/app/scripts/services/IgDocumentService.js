@@ -147,6 +147,16 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
             });
             return delay.promise;
 
+        updateDate: function(igdocument){
+            var delay = $q.defer();
+            $http.post('api/igdocuments/' + igdocument.id + '/updateDate').then(function (response) {
+               var resu =  response.data;
+               igdocument.dateUpdated = resu;
+               delay.resolve(resu);
+            }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
         }
     };
     return IgDocumentService;

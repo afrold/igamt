@@ -17,9 +17,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +52,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -64,11 +66,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
@@ -84,8 +84,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
-import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfileMetaDataPreLib;
-import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfilePreLib;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.NodeFactory;
@@ -101,7 +99,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	@Autowired
 	private SegmentService segmentService;
-	
+
 	@Autowired
 	private TableService tableService;
 
@@ -179,11 +177,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	@Override
-	public String serializeProfileToXML(Profile profile, DocumentMetaData metadata) {
-		return this.serializeProfileToDoc(profile, metadata).toXML();
+	public String serializeProfileToXML(Profile profile, DocumentMetaData metadata, Date dateUpdated) {
+		return this.serializeProfileToDoc(profile, metadata, dateUpdated).toXML();
 	}
 
-	private String serializeProfileDisplayToXML(Profile profile, DocumentMetaData metadata) {
+	private String serializeProfileDisplayToXML(Profile profile, DocumentMetaData metadata, Date dateUpdated) {
 		return this.serializeProfileDisplayToDoc(profile, metadata).toXML();
 	}
 
@@ -224,12 +222,13 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private nu.xom.Document serializeProfileDisplayToDoc(Profile profile, DocumentMetaData metadata) {
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
-		this.serializeProfileMetaData(e, profile.getMetaData(), metadata);
+		this.serializeProfileMetaData(e, profile, metadata);
 
 		for (Message m : profile.getMessages().getChildren()) {
 			e.appendChild(this.serializeDisplayMessage(m, profile));
 		}
-		e.appendChild(tableSerializationService.serializeTableLibraryToElement(profile, metadata));
+		e.appendChild(
+				tableSerializationService.serializeTableLibraryToElement(profile, metadata, profile.getDateUpdated()));
 		nu.xom.Document doc = new nu.xom.Document(e);
 		return doc;
 	}
@@ -308,9 +307,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	@Override
-	public nu.xom.Document serializeProfileToDoc(Profile profile, DocumentMetaData metadata) {
+	public nu.xom.Document serializeProfileToDoc(Profile profile, DocumentMetaData metadata, Date dateUpdated) {
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
-		this.serializeProfileMetaData(e, profile.getMetaData(), metadata);
+		this.serializeProfileMetaData(e, profile, metadata);
 
 		nu.xom.Element ms = new nu.xom.Element("Messages");
 		for (Message m : profile.getMessages().getChildren()) {
@@ -328,8 +327,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element ds = new nu.xom.Element("Datatypes");
 		for (DatatypeLink link : profile.getDatatypeLibrary().getChildren()) {
 			Datatype d = datatypeService.findById(link.getId());
-			ds.appendChild(this.serializeDatatypeForValidation(d, profile.getTableLibrary(),
-					profile.getDatatypeLibrary()));
+			ds.appendChild(
+					this.serializeDatatypeForValidation(d, profile.getTableLibrary(), profile.getDatatypeLibrary()));
 		}
 		e.appendChild(ds);
 
@@ -338,25 +337,25 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return doc;
 	}
 
-	private void serializeProfileMetaData(nu.xom.Element e, ProfileMetaData metaData, DocumentMetaData igMetaData) {
-		if (metaData.getProfileID() == null || metaData.getProfileID().equals("")) {
-			e.addAttribute(new Attribute("ID", UUID.randomUUID().toString()));
-		} else {
-			e.addAttribute(new Attribute("ID", metaData.getProfileID()));
-		}
-
+	private void serializeProfileMetaData(nu.xom.Element e, Profile profile, DocumentMetaData igMetaData) {
+		e.addAttribute(new Attribute("ID", profile.getId()));
+		ProfileMetaData metaData = profile.getMetaData();
 		if (metaData.getType() != null && !metaData.getType().equals(""))
 			e.addAttribute(new Attribute("Type", ExportUtil.str(metaData.getType())));
 		if (metaData.getHl7Version() != null && !metaData.getHl7Version().equals(""))
 			e.addAttribute(new Attribute("HL7Version", ExportUtil.str(metaData.getHl7Version())));
 		if (metaData.getSchemaVersion() != null && !metaData.getSchemaVersion().equals(""))
 			e.addAttribute(new Attribute("SchemaVersion", ExportUtil.str(metaData.getSchemaVersion())));
-	
+
 		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
-		elmMetaData.addAttribute(new Attribute("Name", !ExportUtil.str(igMetaData.getTitle()).equals("") ? ExportUtil.str(igMetaData.getTitle()) : "No Title Info"));
-		elmMetaData.addAttribute(new Attribute("OrgName", !ExportUtil.str(igMetaData.getOrgName()).equals("") ? ExportUtil.str(igMetaData.getOrgName()) : "No Org Info"));
-		elmMetaData.addAttribute(new Attribute("Version", !ExportUtil.str(igMetaData.getVersion()).equals("") ? ExportUtil.str(igMetaData.getVersion()) : "No Version Info"));
-		elmMetaData.addAttribute(new Attribute("Date", !ExportUtil.str(igMetaData.getDate()).equals("") ? ExportUtil.str(igMetaData.getDate()) : "No Date Info"));
+		elmMetaData.addAttribute(new Attribute("Name", !ExportUtil.str(igMetaData.getTitle()).equals("")
+				? ExportUtil.str(igMetaData.getTitle()) : "No Title Info"));
+		elmMetaData.addAttribute(new Attribute("OrgName", !ExportUtil.str(igMetaData.getOrgName()).equals("")
+				? ExportUtil.str(igMetaData.getOrgName()) : "No Org Info"));
+		elmMetaData.addAttribute(new Attribute("Version", !ExportUtil.str(igMetaData.getVersion()).equals("")
+				? ExportUtil.str(igMetaData.getVersion()) : "No Version Info"));
+		elmMetaData.addAttribute(new Attribute("Date", !ExportUtil.str(igMetaData.getDate()).equals("")
+				? ExportUtil.str(igMetaData.getDate()) : "No Date Info"));
 
 		if (metaData.getSpecificationName() != null && !metaData.getSpecificationName().equals(""))
 			elmMetaData
@@ -523,12 +522,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private nu.xom.Element serializeMessage(Message m, SegmentLibrary segments) {
 		nu.xom.Element elmMessage = new nu.xom.Element("Message");
-
-		if (m.getMessageID() == null || m.getMessageID().equals("")) {
-			elmMessage.addAttribute(new Attribute("ID", UUID.randomUUID().toString()));
-		} else {
-			elmMessage.addAttribute(new Attribute("ID", m.getMessageID()));
-		}
+		elmMessage.addAttribute(new Attribute("ID", m.getId()));
 		if (m.getIdentifier() != null && !m.getIdentifier().equals(""))
 			elmMessage.addAttribute(new Attribute("Identifier", ExportUtil.str(m.getIdentifier())));
 		if (m.getName() != null && !m.getName().equals(""))
@@ -860,7 +854,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		Segment segment = segmentService.findById(segmentRef.getRef().getId());
 
-		elmSegment.addAttribute(new Attribute("ID", ExportUtil.str(segmentRef.getRef().getLabel())));
+		elmSegment.addAttribute(new Attribute("ID", ExportUtil.str(segment.getLabel())));
 		elmSegment.addAttribute(new Attribute("Usage", ExportUtil.str(segmentRef.getUsage().value())));
 		elmSegment.addAttribute(new Attribute("Min", ExportUtil.str(segmentRef.getMin() + "")));
 		elmSegment.addAttribute(new Attribute("Max", ExportUtil.str(segmentRef.getMax())));
@@ -970,24 +964,24 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				elmField.addAttribute(new Attribute("Length", ExportUtil.str(f.getMaxLength())));
 			}
 		}
-		elmField.addAttribute(new Attribute("Datatype", ExportUtil.str(fieldDatatype.getName())));		
+		elmField.addAttribute(new Attribute("Datatype", ExportUtil.str(fieldDatatype.getName())));
 		if (f.getTables() != null) {
-			if(f.getTables().size() > 0){
+			if (f.getTables().size() > 0) {
 				String bindingString = "";
-				for(TableLink tl:f.getTables()){
+				for (TableLink tl : f.getTables()) {
 					Table table = tableService.findById(tl.getId());
-					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+					if (table != null && table.getBindingIdentifier() != null
+							&& !table.getBindingIdentifier().equals(""))
 						bindingString = bindingString + table.getBindingIdentifier() + ":";
 				}
-				
+
 				if (!bindingString.equals(""))
-					elmField.addAttribute(new Attribute("Table", bindingString.substring(0,bindingString.length() - 1)));
-				
+					elmField.addAttribute(
+							new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
+
 			}
 		}
-		
-		
-		
+
 		if (f.getItemNo() != null && !f.getItemNo().equals(""))
 			elmField.addAttribute(new Attribute("ItemNo", ExportUtil.str(f.getItemNo())));
 
@@ -1035,44 +1029,45 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		elmField.addAttribute(new Attribute("Name", ExportUtil.str(f.getName())));
 		elmField.addAttribute(new Attribute("Usage", ExportUtil.str(f.getUsage().toString())));
-		elmField.addAttribute(new Attribute("Datatype", ExportUtil.str(f.getDatatype().getName())));
-		elmField.addAttribute(new Attribute("Flavor", ExportUtil.str(f.getDatatype().getLabel())));
+		elmField.addAttribute(new Attribute("Datatype", ExportUtil.str(fieldDatatype.getName())));
+		elmField.addAttribute(new Attribute("Flavor", ExportUtil.str(fieldDatatype.getLabel())));
 		elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
 		if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
 			elmField.addAttribute(new Attribute("MaxLength", ExportUtil.str(f.getMaxLength())));
 		if (f.getConfLength() != null && !f.getConfLength().equals(""))
 			elmField.addAttribute(new Attribute("ConfLength", ExportUtil.str(f.getConfLength())));
-		
+
 		if (f.getTables() != null) {
-			if(f.getTables().size() > 0){
+			if (f.getTables().size() > 0) {
 				String bindingString = "";
 				String bindingStrength = "";
 				String bindingLocation = "";
-				for(TableLink tl:f.getTables()){
+				for (TableLink tl : f.getTables()) {
 					Table table = tableService.findById(tl.getId());
-					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+					if (table != null && table.getBindingIdentifier() != null
+							&& !table.getBindingIdentifier().equals(""))
 						bindingString = bindingString + table.getBindingIdentifier() + ":";
 				}
-				
+
 				if (!bindingString.equals(""))
-					elmField.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
-				if (!bindingStrength.equals("")){
+					elmField.addAttribute(
+							new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+				if (!bindingStrength.equals("")) {
 					elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
 				}
-					
-				if (!bindingLocation.equals("")){
+
+				if (!bindingLocation.equals("")) {
 					elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
-				}else {
+				} else {
 					Datatype d = datatypeService.findById(f.getDatatype().getId());
-					if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
+					if (d != null && d.getComponents() != null && d.getComponents().size() > 0) {
 						elmField.addAttribute(new Attribute("BindingLocation", "1"));
 					}
 				}
-				
+
 			}
 		}
-		
-		
+
 		elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 		elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
 		if (f.getItemNo() != null && !f.getItemNo().equals(""))
@@ -1158,21 +1153,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				elmComponent.addAttribute(new Attribute("Length", ExportUtil.str(c.getMaxLength())));
 			}
 		}
-		
+
 		if (c.getTables() != null) {
-			if(c.getTables().size() > 0){
+			if (c.getTables().size() > 0) {
 				String bindingString = "";
-				for(TableLink tl:c.getTables()){
+				for (TableLink tl : c.getTables()) {
 					Table table = tableService.findById(tl.getId());
-					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+					if (table != null && table.getBindingIdentifier() != null
+							&& !table.getBindingIdentifier().equals(""))
 						bindingString = bindingString + table.getBindingIdentifier() + ":";
 				}
-				
+
 				if (!bindingString.equals(""))
-					elmComponent.addAttribute(new Attribute("Table", bindingString.substring(0,bindingString.length() - 1)));				
+					elmComponent.addAttribute(
+							new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
 			}
 		}
-		
 
 		List<ConformanceStatement> componentConformanceStatements = this.findConformanceStatements(
 				fieldDatatype.getConformanceStatements(), c.getPosition() + "[1]", message.getConformanceStatements(),
@@ -1217,39 +1213,41 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmComponent = new nu.xom.Element("Component");
 		elmComponent.addAttribute(new Attribute("Name", ExportUtil.str(c.getName())));
 		elmComponent.addAttribute(new Attribute("Usage", ExportUtil.str(c.getUsage().toString())));
-		elmComponent.addAttribute(new Attribute("Datatype", ExportUtil.str(c.getDatatype().getName())));
-		elmComponent.addAttribute(new Attribute("Flavor", ExportUtil.str(c.getDatatype().getLabel())));
+		elmComponent.addAttribute(new Attribute("Datatype", ExportUtil.str(componentDatatype.getName())));
+		elmComponent.addAttribute(new Attribute("Flavor", ExportUtil.str(componentDatatype.getLabel())));
 		elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
 		if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
 			elmComponent.addAttribute(new Attribute("MaxLength", ExportUtil.str(c.getMaxLength())));
 		if (c.getConfLength() != null && !c.getConfLength().equals(""))
 			elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
 		if (c.getTables() != null) {
-			if(c.getTables().size() > 0){
+			if (c.getTables().size() > 0) {
 				String bindingString = "";
 				String bindingStrength = "";
 				String bindingLocation = "";
-				for(TableLink tl:c.getTables()){
+				for (TableLink tl : c.getTables()) {
 					Table table = tableService.findById(tl.getId());
-					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+					if (table != null && table.getBindingIdentifier() != null
+							&& !table.getBindingIdentifier().equals(""))
 						bindingString = bindingString + table.getBindingIdentifier() + ":";
 				}
-				
+
 				if (!bindingString.equals(""))
-					elmComponent.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
-				if (!bindingStrength.equals("")){
+					elmComponent.addAttribute(
+							new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+				if (!bindingStrength.equals("")) {
 					elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
 				}
-					
-				if (!bindingLocation.equals("")){
+
+				if (!bindingLocation.equals("")) {
 					elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
-				}else {
+				} else {
 					Datatype d = datatypeService.findById(c.getDatatype().getId());
-					if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
+					if (d != null && d.getComponents() != null && d.getComponents().size() > 0) {
 						elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
 					}
 				}
-				
+
 			}
 		}
 		Predicate componentPredicate = this.findPredicate(fieldDatatype.getPredicates(), c.getPosition() + "[1]",
@@ -1333,22 +1331,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				elmSubComponent.addAttribute(new Attribute("Length", ExportUtil.str(sc.getMaxLength())));
 			}
 		}
-		
+
 		if (sc.getTables() != null) {
-			if(sc.getTables().size() > 0){
+			if (sc.getTables().size() > 0) {
 				String bindingString = "";
-				for(TableLink tl:sc.getTables()){
+				for (TableLink tl : sc.getTables()) {
 					Table table = tableService.findById(tl.getId());
-					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+					if (table != null && table.getBindingIdentifier() != null
+							&& !table.getBindingIdentifier().equals(""))
 						bindingString = bindingString + table.getBindingIdentifier() + ":";
 				}
-				
+
 				if (!bindingString.equals(""))
-					elmSubComponent.addAttribute(new Attribute("Table", bindingString.substring(0,bindingString.length() - 1)));				
+					elmSubComponent.addAttribute(
+							new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
 			}
 		}
-		
-		
 
 		List<ConformanceStatement> subComponentConformanceStatements = this.findConformanceStatements(
 				componentDatatype.getConformanceStatements(), sc.getPosition() + "[1]",
@@ -1381,40 +1379,42 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmSubComponent = new nu.xom.Element("SubComponent");
 		elmSubComponent.addAttribute(new Attribute("Name", ExportUtil.str(sc.getName())));
 		elmSubComponent.addAttribute(new Attribute("Usage", ExportUtil.str(sc.getUsage().toString())));
-		elmSubComponent.addAttribute(new Attribute("Datatype", ExportUtil.str(sc.getDatatype().getName())));
-		elmSubComponent.addAttribute(new Attribute("Flavor", ExportUtil.str(sc.getDatatype().getLabel())));
+		elmSubComponent.addAttribute(new Attribute("Datatype", ExportUtil.str(subComponentDatatype.getName())));
+		elmSubComponent.addAttribute(new Attribute("Flavor", ExportUtil.str(subComponentDatatype.getLabel())));
 		elmSubComponent.addAttribute(new Attribute("MinLength", "" + sc.getMinLength()));
 		if (sc.getMaxLength() != null && !sc.getMaxLength().equals(""))
 			elmSubComponent.addAttribute(new Attribute("MaxLength", ExportUtil.str(sc.getMaxLength())));
 		if (sc.getConfLength() != null && !sc.getConfLength().equals(""))
 			elmSubComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(sc.getConfLength())));
-		
+
 		if (sc.getTables() != null) {
-			if(sc.getTables().size() > 0){
+			if (sc.getTables().size() > 0) {
 				String bindingString = "";
 				String bindingStrength = "";
 				String bindingLocation = "";
-				for(TableLink tl:sc.getTables()){
+				for (TableLink tl : sc.getTables()) {
 					Table table = tableService.findById(tl.getId());
-					if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+					if (table != null && table.getBindingIdentifier() != null
+							&& !table.getBindingIdentifier().equals(""))
 						bindingString = bindingString + table.getBindingIdentifier() + ":";
 				}
-				
+
 				if (!bindingString.equals(""))
-					elmSubComponent.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
-				if (!bindingStrength.equals("")){
+					elmSubComponent.addAttribute(
+							new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+				if (!bindingStrength.equals("")) {
 					elmSubComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
 				}
-					
-				if (!bindingLocation.equals("")){
+
+				if (!bindingLocation.equals("")) {
 					elmSubComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
-				}else {
+				} else {
 					Datatype d = datatypeService.findById(sc.getDatatype().getId());
-					if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
+					if (d != null && d.getComponents() != null && d.getComponents().size() > 0) {
 						elmSubComponent.addAttribute(new Attribute("BindingLocation", "1"));
 					}
 				}
-				
+
 			}
 		}
 
@@ -1500,19 +1500,19 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				nu.xom.Element elmMapping = new nu.xom.Element("Mapping");
 				elmMapping.addAttribute(new Attribute("Position", String.valueOf(m.getPosition())));
 				elmMapping.addAttribute(new Attribute("Reference", String.valueOf(m.getReference())));
-				
-				if(m.getSecondReference() != null) {
+
+				if (m.getSecondReference() != null) {
 					elmMapping.addAttribute(new Attribute("SecondReference", String.valueOf(m.getSecondReference())));
 				}
-				
 
 				for (Case c : m.getCases()) {
 					nu.xom.Element elmCase = new nu.xom.Element("Case");
 					elmCase.addAttribute(new Attribute("Value", c.getValue()));
-					if(c.getSecondValue() != null && !c.getSecondValue().equals("")) {
+					if (c.getSecondValue() != null && !c.getSecondValue().equals("")) {
 						elmCase.addAttribute(new Attribute("SecondValue", c.getSecondValue()));
 					}
-					elmCase.addAttribute(new Attribute("Datatype", datatypes.findOne(c.getDatatype()).getLabel()));
+					elmCase.addAttribute(
+							new Attribute("Datatype", datatypeService.findById(c.getDatatype()).getLabel()));
 					elmMapping.appendChild(elmCase);
 				}
 
@@ -1529,42 +1529,43 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		for (int i = 1; i < fields.size() + 1; i++) {
 			Field f = fields.get(i);
+			Datatype d = datatypeService.findById(f.getDatatype().getId());
 			nu.xom.Element elmField = new nu.xom.Element("Field");
 			elmField.addAttribute(new Attribute("Name", ExportUtil.str(f.getName())));
 			elmField.addAttribute(new Attribute("Usage", ExportUtil.str(f.getUsage().toString())));
-			elmField.addAttribute(
-					new Attribute("Datatype", ExportUtil.str(datatypes.findOne(f.getDatatype()).getLabel())));
+			elmField.addAttribute(new Attribute("Datatype", ExportUtil.str(d.getLabel())));
 			elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
 			if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
 				elmField.addAttribute(new Attribute("MaxLength", ExportUtil.str(f.getMaxLength())));
 			if (f.getConfLength() != null && !f.getConfLength().equals(""))
 				elmField.addAttribute(new Attribute("ConfLength", ExportUtil.str(f.getConfLength())));
 			if (f.getTables() != null) {
-				if(f.getTables().size() > 0){
+				if (f.getTables().size() > 0) {
 					String bindingString = "";
 					String bindingStrength = "";
 					String bindingLocation = "";
-					for(TableLink tl:f.getTables()){
+					for (TableLink tl : f.getTables()) {
 						Table table = tableService.findById(tl.getId());
-						if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+						if (table != null && table.getBindingIdentifier() != null
+								&& !table.getBindingIdentifier().equals(""))
 							bindingString = bindingString + table.getBindingIdentifier() + ":";
 					}
-					
+
 					if (!bindingString.equals(""))
-						elmField.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
-					if (!bindingStrength.equals("")){
+						elmField.addAttribute(
+								new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+					if (!bindingStrength.equals("")) {
 						elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
 					}
-						
-					if (!bindingLocation.equals("")){
+
+					if (!bindingLocation.equals("")) {
 						elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
-					}else {
-						Datatype d = datatypeService.findById(f.getDatatype().getId());
-						if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
+					} else {
+						if (d != null && d.getComponents() != null && d.getComponents().size() > 0) {
 							elmField.addAttribute(new Attribute("BindingLocation", "1"));
 						}
 					}
-					
+
 				}
 			}
 
@@ -1580,8 +1581,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return elmSegment;
 	}
 
-	private nu.xom.Element serializeDatatypeForValidation(Datatype d, TableLibrary tables,
-			DatatypeLibrary datatypes) {
+	private nu.xom.Element serializeDatatypeForValidation(Datatype d, TableLibrary tables, DatatypeLibrary datatypes) {
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
 		elmDatatype.addAttribute(new Attribute("ID", ExportUtil.str(d.getLabel())));
 		elmDatatype.addAttribute(new Attribute("Name", ExportUtil.str(d.getName())));
@@ -1598,45 +1598,47 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 			for (int i = 1; i < components.size() + 1; i++) {
 				Component c = components.get(i);
+				Datatype componentDatatype = datatypeService.findById(c.getDatatype().getId());
 				nu.xom.Element elmComponent = new nu.xom.Element("Component");
 				elmComponent.addAttribute(new Attribute("Name", ExportUtil.str(c.getName())));
 				elmComponent.addAttribute(new Attribute("Usage", ExportUtil.str(c.getUsage().toString())));
-				elmComponent.addAttribute(
-						new Attribute("Datatype", ExportUtil.str(datatypes.findOne(c.getDatatype()).getLabel())));
+				elmComponent.addAttribute(new Attribute("Datatype", ExportUtil.str(componentDatatype.getLabel())));
 				elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
 				if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
 					elmComponent.addAttribute(new Attribute("MaxLength", ExportUtil.str(c.getMaxLength())));
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
 					elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
 				if (c.getTables() != null) {
-					if(c.getTables().size() > 0){
+					if (c.getTables().size() > 0) {
 						String bindingString = "";
 						String bindingStrength = "";
 						String bindingLocation = "";
-						for(TableLink tl:c.getTables()){
+						for (TableLink tl : c.getTables()) {
 							Table table = tableService.findById(tl.getId());
-							if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+							if (table != null && table.getBindingIdentifier() != null
+									&& !table.getBindingIdentifier().equals(""))
 								bindingString = bindingString + table.getBindingIdentifier() + ":";
 						}
-						
+
 						if (!bindingString.equals(""))
-							elmComponent.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
-						if (!bindingStrength.equals("")){
+							elmComponent.addAttribute(
+									new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+						if (!bindingStrength.equals("")) {
 							elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
 						}
-							
-						if (!bindingLocation.equals("")){
+
+						if (!bindingLocation.equals("")) {
 							elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
-						}else {
+						} else {
 							Datatype childD = datatypeService.findById(c.getDatatype().getId());
-							if(childD != null && childD.getComponents() != null && childD.getComponents().size() > 0){
+							if (childD != null && childD.getComponents() != null && childD.getComponents().size() > 0) {
 								elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
 							}
 						}
-						
+
 					}
 				}
-				
+
 				if (c.isHide())
 					elmComponent.addAttribute(new Attribute("Hide", "true"));
 
@@ -1649,8 +1651,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private nu.xom.Element serializeDatatypeWithConstraints(DatatypeLink dl, Datatype d, TableLibrary tables,
 			DatatypeLibrary datatypeLib) {
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
-		elmDatatype.addAttribute(new Attribute("Name", ExportUtil.str(dl.getName())));
-		elmDatatype.addAttribute(new Attribute("Flavor", ExportUtil.str(dl.getLabel())));
+		elmDatatype.addAttribute(new Attribute("Name", ExportUtil.str(d.getName())));
+		elmDatatype.addAttribute(new Attribute("Flavor", ExportUtil.str(d.getLabel())));
 		elmDatatype.addAttribute(new Attribute("Description", ExportUtil.str(d.getDescription())));
 
 		if (d.getComponents() != null) {
@@ -1663,43 +1665,46 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 			for (int i = 1; i < components.size() + 1; i++) {
 				Component c = components.get(i);
+				Datatype componentDatatype = datatypeService.findById(c.getDatatype().getId());
 				nu.xom.Element elmComponent = new nu.xom.Element("Component");
 				elmComponent.addAttribute(new Attribute("Name", ExportUtil.str(c.getName())));
 				elmComponent.addAttribute(new Attribute("Usage", ExportUtil.str(c.getUsage().toString())));
-				elmComponent.addAttribute(new Attribute("Datatype", ExportUtil.str(c.getDatatype().getName())));
-				elmComponent.addAttribute(new Attribute("Flavor", ExportUtil.str(c.getDatatype().getLabel())));
+				elmComponent.addAttribute(new Attribute("Datatype", ExportUtil.str(componentDatatype.getName())));
+				elmComponent.addAttribute(new Attribute("Flavor", ExportUtil.str(componentDatatype.getLabel())));
 				elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
 				if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
 					elmComponent.addAttribute(new Attribute("MaxLength", ExportUtil.str(c.getMaxLength())));
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
 					elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
-				
+
 				if (c.getTables() != null) {
-					if(c.getTables().size() > 0){
+					if (c.getTables().size() > 0) {
 						String bindingString = "";
 						String bindingStrength = "";
 						String bindingLocation = "";
-						for(TableLink tl:c.getTables()){
+						for (TableLink tl : c.getTables()) {
 							Table table = tableService.findById(tl.getId());
-							if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals(""))
+							if (table != null && table.getBindingIdentifier() != null
+									&& !table.getBindingIdentifier().equals(""))
 								bindingString = bindingString + table.getBindingIdentifier() + ":";
 						}
-						
+
 						if (!bindingString.equals(""))
-							elmComponent.addAttribute(new Attribute("Binding", bindingString.substring(0,bindingString.length() - 1)));
-						if (!bindingStrength.equals("")){
+							elmComponent.addAttribute(
+									new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+						if (!bindingStrength.equals("")) {
 							elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
 						}
-							
-						if (!bindingLocation.equals("")){
+
+						if (!bindingLocation.equals("")) {
 							elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
-						}else {
+						} else {
 							Datatype childD = datatypeService.findById(c.getDatatype().getId());
-							if(childD != null && childD.getComponents() != null && childD.getComponents().size() > 0){
+							if (childD != null && childD.getComponents() != null && childD.getComponents().size() > 0) {
 								elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
 							}
 						}
-						
+
 					}
 				}
 
@@ -1988,15 +1993,46 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	@Override
-	public InputStream serializeProfileToZip(Profile profile, DocumentMetaData metadata) throws IOException {
+	public InputStream serializeProfileToZip(Profile profile, DocumentMetaData metadata, java.util.Date dateUpdated)
+			throws IOException {
 		ByteArrayOutputStream outputStream = null;
 		byte[] bytes;
 		outputStream = new ByteArrayOutputStream();
 		ZipOutputStream out = new ZipOutputStream(outputStream);
 
-		this.generateProfileIS(out, this.serializeProfileToXML(profile, metadata));
-		this.generateValueSetIS(out, tableSerializationService.serializeTableLibraryToXML(profile, metadata));
-		this.generateConstraintsIS(out, constraintsSerializationService.serializeConstraintsToXML(profile, metadata));
+		String profileXMLStr = serializeProfileToXML(profile, metadata, dateUpdated);
+		String valueSetXMLStr = tableSerializationService.serializeTableLibraryToXML(profile, metadata, dateUpdated);
+		String ConstraintXMLStr = constraintsSerializationService.serializeConstraintsToXML(profile, metadata,
+				dateUpdated);
+
+		Exception profileError = null;
+		try {
+			new ProfileValidationServiceImpl().validate(profileXMLStr, "validation/profilesSchema/Profile.xsd");
+		} catch (Exception e) {
+			profileError = e;
+		}
+
+		Exception valueSetEreor = null;
+		try {
+			new ProfileValidationServiceImpl().validate(valueSetXMLStr, "validation/profilesSchema/ValueSets.xsd");
+		} catch (Exception e) {
+			valueSetEreor = e;
+		}
+
+		Exception constraintsError = null;
+		try {
+			new ProfileValidationServiceImpl().validate(ConstraintXMLStr,
+					"validation/profilesSchema/ConformanceContext.xsd");
+		} catch (Exception e) {
+			constraintsError = e;
+		}
+
+		this.generateProfileIS(out, profileXMLStr);
+		this.generateValueSetIS(out, valueSetXMLStr);
+		this.generateConstraintsIS(out, ConstraintXMLStr);
+		this.generateProfileError(out, profileError);
+		this.generateValueSetError(out, valueSetEreor);
+		this.generateConstraintsError(out, constraintsError);
 
 		out.close();
 		bytes = outputStream.toByteArray();
@@ -2017,7 +2053,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return new ByteArrayInputStream(bytes);
 	}
 
-	private InputStream serializeProfileDisplayToZip(List<Profile> profiles,  DocumentMetaData metadata) throws IOException {
+	private InputStream serializeProfileDisplayToZip(List<Profile> profiles, DocumentMetaData metadata,
+			Date dateUpdated) throws IOException {
 		ByteArrayOutputStream outputStream = null;
 		byte[] bytes;
 		outputStream = new ByteArrayOutputStream();
@@ -2026,7 +2063,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		for (Profile p : profiles) {
 			Message m = p.getMessages().getChildren().iterator().next();
 			String folderName = m.getIdentifier() + "(" + m.getName() + ")";
-			this.generateDisplayProfileIS(out, this.serializeProfileDisplayToXML(p, metadata), folderName);
+			this.generateDisplayProfileIS(out, this.serializeProfileDisplayToXML(p, metadata, dateUpdated), folderName);
 		}
 
 		out.close();
@@ -2071,6 +2108,67 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		}
 		out.closeEntry();
 		inProfile.close();
+	}
+
+	private void generateProfileError(ZipOutputStream out, Exception e) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("ProfileValidation.txt"));
+		InputStream inProfile = null;
+		if (e == null) {
+			inProfile = IOUtils.toInputStream("No error found!");
+		} else {
+			inProfile = IOUtils.toInputStream(
+					e.getMessage() + System.getProperty("line.separator") + ProfileSerializationImpl.getStackTrace(e));
+		}
+		int lenTP;
+		while ((lenTP = inProfile.read(buf)) > 0) {
+			out.write(buf, 0, lenTP);
+		}
+		out.closeEntry();
+		inProfile.close();
+	}
+
+	private void generateValueSetError(ZipOutputStream out, Exception e) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("ValueSetValidation.txt"));
+		InputStream inProfile = null;
+		if (e == null) {
+			inProfile = IOUtils.toInputStream("No error found!");
+		} else {
+			inProfile = IOUtils.toInputStream(
+					e.getMessage() + System.getProperty("line.separator") + ProfileSerializationImpl.getStackTrace(e));
+		}
+		int lenTP;
+		while ((lenTP = inProfile.read(buf)) > 0) {
+			out.write(buf, 0, lenTP);
+		}
+		out.closeEntry();
+		inProfile.close();
+	}
+
+	private void generateConstraintsError(ZipOutputStream out, Exception e) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("ConstraintsValidation.txt"));
+		InputStream inProfile = null;
+		if (e == null) {
+			inProfile = IOUtils.toInputStream("No error found!");
+		} else {
+			inProfile = IOUtils.toInputStream(
+					e.getMessage() + System.getProperty("line.separator") + ProfileSerializationImpl.getStackTrace(e));
+		}
+		int lenTP;
+		while ((lenTP = inProfile.read(buf)) > 0) {
+			out.write(buf, 0, lenTP);
+		}
+		out.closeEntry();
+		inProfile.close();
+	}
+
+	private static String getStackTrace(final Throwable throwable) {
+		final StringWriter sw = new StringWriter();
+		final PrintWriter pw = new PrintWriter(sw, true);
+		throwable.printStackTrace(pw);
+		return sw.getBuffer().toString();
 	}
 
 	private void generateGazelleProfileIS(ZipOutputStream out, String profileXML) throws IOException {
@@ -2181,8 +2279,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	@Override
-	public InputStream serializeProfileToZip(Profile original, String[] ids, DocumentMetaData metadata)
-			throws IOException, CloneNotSupportedException {
+	public InputStream serializeProfileToZip(Profile original, String[] ids, DocumentMetaData metadata,
+			Date dateUpdated) throws IOException, CloneNotSupportedException {
 		Profile filteredProfile = new Profile();
 
 		HashMap<String, SegmentLink> segmentsMap = new HashMap<String, SegmentLink>();
@@ -2226,7 +2324,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			datatypes.addDatatype(datatypesMap.get(key));
 		}
 
-		TableLibrary tables = new TableLibrary();		
+		TableLibrary tables = new TableLibrary();
 		for (String key : tablesMap.keySet()) {
 
 			if (tablesMap.get(key) != null)
@@ -2238,12 +2336,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		filteredProfile.setMessages(messages);
 		filteredProfile.setTableLibrary(original.getTableLibrary());
 
-		return this.serializeProfileToZip(filteredProfile, metadata);
+		return this.serializeProfileToZip(filteredProfile, metadata, dateUpdated);
 	}
 
 	@Override
-	public InputStream serializeProfileDisplayToZip(Profile original, String[] ids, DocumentMetaData metadata)
-			throws IOException, CloneNotSupportedException {
+	public InputStream serializeProfileDisplayToZip(Profile original, String[] ids, DocumentMetaData metadata,
+			Date dateUpdated) throws IOException, CloneNotSupportedException {
 
 		List<Profile> filteredProfiles = new ArrayList<Profile>();
 
@@ -2303,7 +2401,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			filteredProfiles.add(filteredProfile);
 		}
 
-		return this.serializeProfileDisplayToZip(filteredProfiles, metadata);
+		return this.serializeProfileDisplayToZip(filteredProfiles, metadata, dateUpdated);
 	}
 
 	private void visit(SegmentRefOrGroup seog, HashMap<String, SegmentLink> segmentsMap,
@@ -2316,26 +2414,28 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 			for (Field f : s.getFields()) {
 				this.addDatatype(f.getDatatype(), original, datatypesMap, tablesMap);
-				
-				if(f.getTables() != null){
-					if(f.getTables().size() > 0){
-						for(TableLink tl : f.getTables()){
-							tablesMap.put(tl.getBindingIdentifier(), tl);	
+
+				if (f.getTables() != null) {
+					if (f.getTables().size() > 0) {
+						for (TableLink tl : f.getTables()) {
+							Table t = tableService.findById(tl.getId());
+							if (t != null)
+								tablesMap.put(t.getBindingIdentifier(), tl);
 						}
 					}
 				}
 			}
-			
-			for(Mapping mapping:s.getDynamicMapping().getMappings()){
-				for(Case mappingCase:mapping.getCases()){
+
+			for (Mapping mapping : s.getDynamicMapping().getMappings()) {
+				for (Case mappingCase : mapping.getCases()) {
 					Datatype dt = datatypeService.findById(mappingCase.getDatatype());
-					
-					if(dt != null){
+
+					if (dt != null) {
 						DatatypeLink dl = new DatatypeLink();
 						dl.setExt(dt.getExt());
 						dl.setId(dt.getId());
 						dl.setName(dt.getName());
-						
+
 						this.addDatatype(dl, original, datatypesMap, tablesMap);
 					}
 				}
@@ -2356,10 +2456,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			Datatype d = datatypeService.findById(dl.getId());
 			for (Component c : d.getComponents()) {
 				this.addDatatype(c.getDatatype(), original, datatypesMap, tablesMap);
-				if(c.getTables() != null){
-					if(c.getTables().size() > 0){
-						for(TableLink tl : c.getTables()){
-							tablesMap.put(tl.getBindingIdentifier(), tl);	
+				if (c.getTables() != null) {
+					if (c.getTables().size() > 0) {
+						for (TableLink tl : c.getTables()) {
+							Table t = tableService.findById(tl.getId());
+							if (t != null)
+								tablesMap.put(t.getBindingIdentifier(), tl);
 						}
 					}
 				}
@@ -2387,89 +2489,4 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		this.log = log;
 	}
 
-	@Override
-	public ProfilePreLib convertIGAMT2TCAMT(Profile p, String igName) {
-		ProfilePreLib ppl = new ProfilePreLib();
-		ppl.setAccountId(p.getAccountId());
-		ppl.setBaseId(p.getBaseId());
-		ppl.setChanges(p.getChanges());
-		ppl.setComment(p.getComment());
-		ppl.setConstraintId(p.getConstraintId());
-		ppl.setId(p.getId());
-		ppl.setScope(p.getScope());
-		ppl.setSectionContents(p.getSectionContents());
-		ppl.setSectionDescription(p.getSectionDescription());
-		ppl.setSectionPosition(p.getSectionPosition());
-		ppl.setSectionTitle(igName);
-		ppl.setSourceId(p.getSourceId());
-		ppl.setType(p.getType());
-		ppl.setUsageNote(p.getUsageNote());
-
-		ProfileMetaDataPreLib profileMetaDataPreLib = new ProfileMetaDataPreLib();
-		profileMetaDataPreLib.setEncodings(p.getMetaData().getEncodings());
-		profileMetaDataPreLib.setExt(p.getMetaData().getExt());
-		profileMetaDataPreLib.setHl7Version(p.getMetaData().getHl7Version());
-		profileMetaDataPreLib.setSchemaVersion(p.getMetaData().getSchemaVersion());
-		profileMetaDataPreLib.setProfileID(null);
-		profileMetaDataPreLib.setSpecificationName(p.getMetaData().getSpecificationName());
-		profileMetaDataPreLib.setStatus(p.getMetaData().getStatus());
-		profileMetaDataPreLib.setSubTitle(p.getMetaData().getSubTitle());
-		profileMetaDataPreLib.setTopics(p.getMetaData().getTopics());
-		profileMetaDataPreLib.setType(p.getMetaData().getType());
-		ppl.setMetaData(profileMetaDataPreLib);
-		ppl.setMessages(p.getMessages());
-
-		Datatypes datatypes = new Datatypes();
-		datatypes.setId(p.getDatatypeLibrary().getId());
-		datatypes.setSectionContents(p.getDatatypeLibrary().getSectionContents());
-		datatypes.setSectionDescription(p.getDatatypeLibrary().getSectionDescription());
-		datatypes.setSectionDescription(p.getDatatypeLibrary().getSectionDescription());
-		datatypes.setSectionPosition(p.getDatatypeLibrary().getSectionPosition());
-		datatypes.setSectionTitle(p.getDatatypeLibrary().getSectionTitle());
-		datatypes.setType(p.getDatatypeLibrary().getType());
-		for (DatatypeLink link : p.getDatatypeLibrary().getChildren()) {
-			Datatype dt = datatypeService.findById(link.getId());
-			dt.setLabel(dt.getName() + dt.getExt());
-			datatypes.addDatatype(dt);
-		}
-		ppl.setDatatypes(datatypes);
-
-		Segments segments = new Segments();
-		segments.setId(p.getSegmentLibrary().getId());
-		segments.setSectionContents(p.getSegmentLibrary().getSectionContents());
-		segments.setSectionDescription(p.getSegmentLibrary().getSectionDescription());
-		segments.setSectionPosition(p.getSegmentLibrary().getSectionPosition());
-		segments.setSectionTitle(p.getSegmentLibrary().getSectionTitle());
-		segments.setType(p.getSegmentLibrary().getType());
-		for (SegmentLink link : p.getSegmentLibrary().getChildren()) {
-			Segment seg = segmentService.findById(link.getId());
-			seg.setLabel(link.getLabel());
-			segments.addSegment(seg);
-		}
-		ppl.setSegments(segments);
-
-		Tables tables = new Tables();
-		tables.setDateCreated(p.getTableLibrary().getMetaData().getDate());
-		tables.setDescription(p.getTableLibrary().getDescription());
-		tables.setId(p.getTableLibrary().getId());
-		tables.setName(p.getTableLibrary().getProfileName());
-		tables.setOrganizationName(p.getTableLibrary().getOrganizationName());
-		tables.setProfileName(p.getTableLibrary().getProfileName());
-		tables.setSectionContents(p.getTableLibrary().getSectionContents());
-		tables.setSectionDescription(p.getTableLibrary().getSectionDescription());
-		tables.setSectionPosition(p.getTableLibrary().getSectionPosition());
-		tables.setSectionTitle(p.getTableLibrary().getSectionTitle());
-		tables.setStatus(p.getTableLibrary().getStatus());
-		tables.setType(p.getTableLibrary().getType());
-		tables.setValueSetLibraryIdentifier(p.getTableLibrary().getValueSetLibraryIdentifier());
-		tables.setValueSetLibraryVersion(p.getTableLibrary().getValueSetLibraryVersion());
-		for (TableLink link : p.getTableLibrary().getChildren()) {
-			Table t = tableService.findById(link.getId());
-			t.setBindingIdentifier(link.getBindingIdentifier());
-			tables.addTable(t);
-		}
-		ppl.setTables(tables);
-
-		return ppl;
-	}
 }

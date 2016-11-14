@@ -22,6 +22,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
 public interface ProfileValidationService {
 
-  void validate(Profile p) throws ProfileValidationException;
+  void validate(Profile p) throws Exception;
 
 }

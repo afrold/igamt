@@ -11,6 +11,8 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
@@ -20,8 +22,10 @@ import org.bson.types.ObjectId;
  */
 public abstract class DataModel {
 
+   protected Date dateUpdated;
+	  
   public DataModel() {
-    super();
+	  this.dateUpdated = new Date();
   }
 
   protected String type;
@@ -37,4 +41,13 @@ public abstract class DataModel {
   public void setType(String type) {
     this.type = type;
   }
+  
+  public Date getDateUpdated() {
+		return dateUpdated;
+	}
+
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
+	}
+	  
 }

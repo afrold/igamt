@@ -137,14 +137,15 @@ angular.module('igl').factory('DatatypeService',
                 return predicates;
             },
             save: function(datatype) {
+            	console.log(datatype);
                 var delay = $q.defer();
                 datatype.accountId = userInfoService.getAccountID();
                 $http.post('api/datatypes/save', datatype).then(function(response) {
                     var saveResponse = angular.fromJson(response.data);
-                    datatype.date = saveResponse.date;
+                     datatype.dateUpdated = saveResponse.dateUpdated;
                     datatype.version = saveResponse.version;
                     datatype.id = saveResponse.id;
-                    delay.resolve(datatype);
+                    delay.resolve(saveResponse);
                 }, function(error) {
                     //console.log("DatatypeService.save error=" + error);
                     delay.reject(error);
@@ -160,7 +161,7 @@ angular.module('igl').factory('DatatypeService',
                 $http.post('api/datatypes/saveDts', datatypes).then(function(response) {
                     var saveResponse = angular.fromJson(response.data);
                     for (var i = 0; i < datatypes.length; i++) {
-                        datatypes[i].date = saveResponse[i].date;
+                        datatypes[i].dateUpdated = saveResponse[i].dateUpdated;
                         datatypes[i].version = saveResponse[i].version;
                     }
 

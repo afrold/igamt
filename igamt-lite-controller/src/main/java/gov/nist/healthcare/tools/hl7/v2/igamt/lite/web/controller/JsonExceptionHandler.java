@@ -36,6 +36,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -129,7 +130,12 @@ public class JsonExceptionHandler implements HandlerExceptionResolver {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         mapper.writeValue(response.getWriter(),
             new ResponseMessage(ResponseMessage.Type.danger, ex.getMessage()));
-      } else {
+      } else if (ex instanceof BadCredentialsException) {
+          logger.error("ERROR: Failed to retrieve a data", ex);
+          response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+          mapper.writeValue(response.getWriter(),
+              new ResponseMessage(ResponseMessage.Type.danger, ex.getMessage()));
+        } else {
         logger.error("ERROR: " + ex.getMessage(), ex);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         mapper.writeValue(response.getWriter(), new ResponseMessage(ResponseMessage.Type.danger,

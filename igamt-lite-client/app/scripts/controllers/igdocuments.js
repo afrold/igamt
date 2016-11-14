@@ -5,6 +5,7 @@
 angular.module('igl')
     .controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
 
+
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
         $scope.uiGrid = {};
@@ -159,6 +160,14 @@ angular.module('igl')
                 $scope.selectProfileMetaData(metaData); // Should we open in a dialog ??
             });
 
+
+            $rootScope.$on('event:updateIgDate', function(event, dateUpdated) {
+                if(!dateUpdated || dateUpdated === null) {
+                    IgDocumentService.updateDate($rootScope.igdocument);
+                }else{
+                    $rootScope.igdocument.dateUpdated = dateUpdated;
+                }
+            });
 
             $rootScope.$on('event:IgsPushed', function(event, igdocument) {
                 //                console.log("event:IgsPushed=" + igdocument)
@@ -432,15 +441,20 @@ angular.module('igl')
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);
                                 // Find share participants
                                 if ($rootScope.igdocument.shareParticipantIds && $rootScope.igdocument.shareParticipantIds.length > 0) {
-                                    $http.get('api/shareparticipants', { params: { ids: $rootScope.igdocument.shareParticipantIds } })
-                                        .then(
-                                            function(response) {
-                                                $rootScope.igdocument.shareParticipants = response.data;
-                                            },
-                                            function(error) {
-                                                console.log(error);
-                                            }
-                                        );
+                                    $rootScope.igdocument.shareParticipants = [];
+                                    $rootScope.igdocument.shareParticipantIds.forEach(function(participant) {
+                                        $http.get('api/shareparticipant', { params: { id: participant.accountId } })
+                                            .then(
+                                                function(response) {
+                                                    response.data.pendingApproval = participant.pendingApproval;
+                                                    response.data.permission = participant.permission;
+                                                    $rootScope.igdocument.shareParticipants.push(response.data);
+                                                },
+                                                function(error) {
+                                                    console.log(error);
+                                                }
+                                            );
+                                    });
                                 }
                                 $scope.loadPc().then(function() {}, function() {});
                             }, function() {});
@@ -1065,10 +1079,8 @@ angular.module('igl')
 
                                 $rootScope.references = [];
                                 angular.forEach($rootScope.igdocument.profile.messages.children, function(message) {
-                                    $rootScope.findSegmentRefs($rootScope.segment, message, message.name);
+                                    $rootScope.findSegmentRefs($rootScope.segment, message, '', '', message);
                                 });
-                                $rootScope.tmpReferences = [].concat($rootScope.references);
-
                                 $scope.loadingSelection = false;
                                 $rootScope.$emit("event:initEditArea");
                                 blockUI.stop();
@@ -1473,7 +1485,37 @@ angular.module('igl')
                 }
             });
         };
-    });
+
+
+        $scope.confirmShareDocument = function(igdocument) {
+            $http.get('api/shareconfimation/' + igdocument.id).then(function(response) {
+                $rootScope.msg().text = "igSharedConfirmationSuccessful";
+                $rootScope.msg().type ="success";
+                $rootScope.msg().show = true;
+                $scope.loadIGDocuments();
+            }, function(error) {
+                $rootScope.msg().text = "igSharedConfirmationFailed";
+                $rootScope.msg().type ="danger";
+                $rootScope.msg().show = true;
+                console.log(error);
+            });
+        };
+
+        $scope.rejectShareDocument = function(igdocument) {
+            $http.get('api/sharereject/' + igdocument.id).then(function(response) {
+                $rootScope.msg().text = "igSharedRejectedSuccessfully";
+                $rootScope.msg().type ="success";
+                $rootScope.msg().show = true;
+                $scope.loadIGDocuments();
+            }, function(error) {
+                $rootScope.msg().text = "igSharedRejectFailed";
+                $rootScope.msg().type ="danger";
+                $rootScope.msg().show = true;
+                console.log(error);
+            });
+        };
+
+});
 
 
 angular.module('igl').controller('ViewIGChangesCtrl', function($scope, $modalInstance, changes, $rootScope, $http) {
@@ -1696,10 +1738,11 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootS
         $scope.saving = true;
         $scope.saved = false;
         if ($rootScope.igdocument != null && $rootScope.metaData != null) {
-            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function(result) {
+            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function(dateUpdated) {
                 $scope.saving = false;
                 $scope.saved = true;
                 $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
+                $rootScope.igdocument.dateUpdated = dateUpdated;
                 if ($scope.editForm) {
                     $scope.editForm.$setPristine();
                     $scope.editForm.$dirty = false;
@@ -1736,10 +1779,11 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootSc
         $scope.saving = true;
         $scope.saved = false;
         if ($rootScope.igdocument != null && $rootScope.metaData != null) {
-            ProfileSvc.saveMetaData($rootScope.igdocument.id, $rootScope.metaData).then(function(result) {
+            ProfileSvc.saveMetaData($rootScope.igdocument.id, $rootScope.metaData).then(function(dateUpdated) {
                 $scope.saving = false;
                 $scope.saved = true;
                 $rootScope.igdocument.profile.metaData = angular.copy($rootScope.metaData);
+                $rootScope.igdocument.dateUpdated = dateUpdated;
                 $scope.editForm.$setPristine();
                 $scope.editForm.$dirty = false;
                 $rootScope.clearChanges();
@@ -2912,20 +2956,21 @@ angular.module('igl').controller('AddSegmentDlgCtl',
 angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalInstance, $http, igdocumentSelected, userList, IgDocumentService, $rootScope) {
 
     $scope.igdocumentSelected = igdocumentSelected;
-    $scope.userList = userList;
-    $scope.error = "";
-    $scope.ok = function() {
-        var idsTab = $scope.tags.map(function(user) {
-            return user.id;
-        });
-        IgDocumentService.share($scope.igdocumentSelected.id, idsTab).then(function(result) {
-            if ($scope.igdocumentSelected.shareParticipantIds && $scope.igdocumentSelected.shareParticipants) {
-                $scope.igdocumentSelected.shareParticipantIds = $scope.igdocumentSelected.shareParticipantIds.concat(idsTab);
-                $scope.igdocumentSelected.shareParticipants = $scope.igdocumentSelected.shareParticipants.concat($scope.tags);
-            } else {
-                $scope.igdocumentSelected.shareParticipantIds = idsTab;
-                $scope.igdocumentSelected.shareParticipants = $scope.tags;
-            }
+
+	$scope.userList =  userList;
+	$scope.error = "";
+	$scope.ok = function () {
+		var idsTab = $scope.tags.map(function(user) {
+			return user.id;
+		});
+        IgDocumentService.share($scope.igdocumentSelected.id,idsTab).then(function(result){
+            // Add participants for direct view
+            $scope.igdocumentSelected.shareParticipants = $scope.igdocumentSelected.shareParticipants || [];
+            $scope.tags.forEach(function(tag) {
+                tag.permission = $scope.selectedItem.selected;
+                tag.pendingApproval = true;
+                $scope.igdocumentSelected.shareParticipants.push(tag);
+            });
             $rootScope.msg().text = "igSharedSuccessfully";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
@@ -2934,24 +2979,25 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalI
             $scope.error = error.data;
             console.log(error);
         });
-    };
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-    $scope.tags = [];
-    $scope.selectedItem = {
-        selected: "Read Only"
-    };
-    $scope.itemArray = ["Read Only"];
 
-    $scope.tags = [];
-    $scope.loadUsernames = function($query) {
-        return userList.filter(function(user) {
-            return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
-        });
-    };
+	};
+	$scope.cancel = function () {
+		$modalInstance.dismiss('cancel');
+	};
+	$scope.tags = [];
+	$scope.selectedItem = {
+		selected: "VIEW"
+	};
+	$scope.itemArray = ["VIEW"];
+	
+	$scope.tags = [];
+	$scope.loadUsernames = function ($query) {
+		return userList.filter(function (user) {
+			return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
+		});
+	};
 
-    $scope.unshare = function(shareParticipant) {
+    $scope.unshare = function (shareParticipant) {
         $scope.loading = false;
         IgDocumentService.unshare($scope.igdocumentSelected.id, shareParticipant.id).then(function(res) {
             var indexOfId = $scope.igdocumentSelected.shareParticipantIds.indexOf(shareParticipant.id);

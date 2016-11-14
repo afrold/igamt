@@ -40,7 +40,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
@@ -109,8 +109,7 @@ public class SegmentController extends CommonController {
       log.debug("segment=" + segment);
       log.debug("segment.getId()=" + segment.getId());
       log.info("Saving the " + segment.getScope() + " segment.");
-      segment.setDate(DateUtils.getCurrentTime());
-      Segment saved = segmentService.save(segment);
+       Segment saved = segmentService.save(segment);
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());
       return segment;
@@ -125,8 +124,7 @@ public class SegmentController extends CommonController {
 	  for(BindingParametersForSegment paras : bindingParametersList){
 		  Segment segment = this.segmentService.findById(paras.getSegmentId());
 		  if (!SCOPE.HL7STANDARD.equals(segment.getScope())) {
-			  segment.setDate(DateUtils.getCurrentTime());
-			  Field targetField = segment.getFields().get(this.indexOfField(paras.getFieldId(), segment));
+ 			  Field targetField = segment.getFields().get(this.indexOfField(paras.getFieldId(), segment));
 			  TableLink tableLink = paras.getTableLink();
 			  if(tableLink != null && tableLink.getBindingIdentifier() != null && !tableLink.getBindingIdentifier().equals("")) {
 				  tableLink.setBindingIdentifier(tableService.findById(tableLink.getId()).getBindingIdentifier());
@@ -146,8 +144,7 @@ public class SegmentController extends CommonController {
 	  for(BindingParametersForSegment paras : bindingParametersList){
 		  Segment segment = this.segmentService.findById(paras.getSegmentId());
 		  if (!SCOPE.HL7STANDARD.equals(segment.getScope())) {
-			  segment.setDate(DateUtils.getCurrentTime());
-			  Field targetField = segment.getFields().get(this.indexOfField(paras.getFieldId(), segment));
+ 			  Field targetField = segment.getFields().get(this.indexOfField(paras.getFieldId(), segment));
 			  DatatypeLink datatypeLink=paras.getDatatypeLink();
 			  if(datatypeLink != null) {
 				  targetField.setDatatype(datatypeLink);
@@ -190,8 +187,7 @@ public class SegmentController extends CommonController {
 		      log.debug("segment=" + seg);
 		      log.debug("segment.getId()=" + seg.getId());
 		      log.info("Saving the " + seg.getScope() + " segment.");
-		      seg.setDate(DateUtils.getCurrentTime());
-		      Segment saved = segmentService.save(seg);
+ 		      Segment saved = segmentService.save(seg);
 		      log.debug("saved.getId()=" + saved.getId());
 		      log.debug("saved.getScope()=" + saved.getScope());
 		      segs.add(seg);
@@ -254,4 +250,5 @@ public class SegmentController extends CommonController {
 	  }
 	  throw new DataNotFoundException("fieldNotFound");
   }
+  
 }

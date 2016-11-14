@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -23,15 +24,18 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
  */
 public interface TableOperations {
 
-  List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-  List<Table> findBindingIdentifiers(List<String> tableIds);
+	List<Table> findBindingIdentifiers(List<String> tableIds);
 
-  List<Table> findUserTablesByIds(Set<String> ids);
+	List<Table> findUserTablesByIds(Set<String> ids);
 
-  List<Table> findAllByIds(Set<String> ids);
+	List<Table> findAllByIds(Set<String> ids);
 
-  List<Table> findShortAllByIds(Set<String> ids);
+	List<Table> findShortAllByIds(Set<String> ids);
 
+	Table findByBindingIdentifierAndHL7VersionAndScope(String bindingIdentifier, String hl7Version, SCOPE scope);
+
+	public Date updateDate(String id, Date date);
 
 }
