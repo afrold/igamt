@@ -23,6 +23,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -43,7 +44,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import nu.xom.Attribute;
 
 @Service
@@ -117,15 +117,15 @@ public class TableSerializationImpl implements TableSerialization {
     elmSpecification.addAttribute(new Attribute("ProcRule", "HL7"));
     // }else {
     // elmSpecification.addAttribute(new Attribute("SpecName",
-    // ExportUtil.str(profile.getMetaData().getSpecificationName())));
+    // SerializationUtil.str(profile.getMetaData().getSpecificationName())));
     // elmSpecification.addAttribute(new Attribute("OrgName",
-    // ExportUtil.str(profile.getMetaData().getOrgName())));
+    // SerializationUtil.str(profile.getMetaData().getOrgName())));
     // elmSpecification.addAttribute(new Attribute("HL7Version",
-    // ExportUtil.str(profile.getMetaData().getHl7Version())));
+    // SerializationUtil.str(profile.getMetaData().getHl7Version())));
     // elmSpecification.addAttribute(new Attribute("SpecVersion",
-    // ExportUtil.str(profile.getMetaData().getVersion())));
+    // SerializationUtil.str(profile.getMetaData().getVersion())));
     // elmSpecification.addAttribute(new Attribute("Status",
-    // ExportUtil.str(profile.getMetaData().getStatus())));
+    // SerializationUtil.str(profile.getMetaData().getStatus())));
     // elmSpecification.addAttribute(new Attribute("ConformanceType",
     // "Tolerant"));
     // elmSpecification.addAttribute(new Attribute("Role", "Sender"));
@@ -157,7 +157,7 @@ public class TableSerializationImpl implements TableSerialization {
       tableID = tableID + 1;
       nu.xom.Element elmHl7table = new nu.xom.Element("hl7table");
       elmHl7table.addAttribute(new Attribute("id", tableID + ""));
-      elmHl7table.addAttribute(new Attribute("name", ExportUtil.str(t.getBindingIdentifier())));
+      elmHl7table.addAttribute(new Attribute("name", SerializationUtil.str(t.getBindingIdentifier())));
       elmHl7table.addAttribute(new Attribute("type", "HL7"));
 
       int order = 0;
@@ -170,14 +170,17 @@ public class TableSerializationImpl implements TableSerialization {
 
         nu.xom.Element elmTableElement = new nu.xom.Element("tableElement");
         elmTableElement.addAttribute(new Attribute("order", order + ""));
-        elmTableElement.addAttribute(new Attribute("code", ExportUtil.str(c.getValue())));
-        elmTableElement.addAttribute(new Attribute("description", ExportUtil.str(c.getLabel())));
-        elmTableElement.addAttribute(new Attribute("displayName", ExportUtil.str(c.getLabel())));
+        elmTableElement.addAttribute(new Attribute("code", SerializationUtil.str(c.getValue())));
+        elmTableElement.addAttribute(new Attribute("description", SerializationUtil
+            .str(c.getLabel())));
+        elmTableElement.addAttribute(new Attribute("displayName", SerializationUtil
+            .str(c.getLabel())));
 
         if (c.getCodeSystem() == null || c.getCodeSystem().equals(""))
           elmTableElement.addAttribute(new Attribute("source", "NOSource"));
         else
-          elmTableElement.addAttribute(new Attribute("source", ExportUtil.str(c.getCodeSystem())));
+          elmTableElement.addAttribute(new Attribute("source", SerializationUtil
+              .str(c.getCodeSystem())));
         elmTableElement.addAttribute(new Attribute("usage", "Optional"));
         elmTableElement.addAttribute(new Attribute("creator", ""));
         elmTableElement.addAttribute(new Attribute("date", ""));
@@ -214,7 +217,7 @@ public class TableSerializationImpl implements TableSerialization {
       elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier", UUID.randomUUID()
           .toString()));
     } else {
-      elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier", ExportUtil
+      elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier", SerializationUtil
           .str(tableLibrary.getValueSetLibraryIdentifier())));
     }
     nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
@@ -224,23 +227,27 @@ public class TableSerializationImpl implements TableSerialization {
       elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
       elmMetaData.addAttribute(new Attribute("Date", ""));
     } else {      
-      elmMetaData.addAttribute(new Attribute("Name", !ExportUtil.str(metadata.getTitle()).equals("") ? ExportUtil.str(metadata.getTitle()) : "No Title Info"));
-      elmMetaData.addAttribute(new Attribute("OrgName", !ExportUtil.str(metadata.getOrgName()).equals("") ? ExportUtil.str(metadata.getOrgName()) : "No Org Info"));
-      elmMetaData.addAttribute(new Attribute("Version", !ExportUtil.str(metadata.getVersion()).equals("") ? ExportUtil.str(metadata.getVersion()) : "No Version Info"));
-      elmMetaData.addAttribute(new Attribute("Date", !ExportUtil.str(metadata.getDate()).equals("") ? ExportUtil.str(metadata.getDate()) : "No Date Info"));
+      elmMetaData.addAttribute(new Attribute("Name", !SerializationUtil.str(metadata.getTitle()).equals("") ? SerializationUtil
+          .str(metadata.getTitle()) : "No Title Info"));
+      elmMetaData.addAttribute(new Attribute("OrgName", !SerializationUtil
+          .str(metadata.getOrgName()).equals("") ? SerializationUtil.str(metadata.getOrgName()) : "No Org Info"));
+      elmMetaData.addAttribute(new Attribute("Version", !SerializationUtil
+          .str(metadata.getVersion()).equals("") ? SerializationUtil.str(metadata.getVersion()) : "No Version Info"));
+      elmMetaData.addAttribute(new Attribute("Date", !SerializationUtil.str(metadata.getDate()).equals("") ? SerializationUtil
+          .str(metadata.getDate()) : "No Date Info"));
 
       if (profile.getMetaData().getSpecificationName() != null
           && !profile.getMetaData().getSpecificationName().equals(""))
-        elmMetaData.addAttribute(new Attribute("SpecificationName", ExportUtil.str(profile
-            .getMetaData().getSpecificationName())));
+        elmMetaData.addAttribute(new Attribute("SpecificationName", SerializationUtil
+            .str(profile.getMetaData().getSpecificationName())));
       if (profile.getMetaData().getStatus() != null
           && !profile.getMetaData().getStatus().equals(""))
-        elmMetaData.addAttribute(new Attribute("Status", ExportUtil.str(profile.getMetaData()
-            .getStatus())));
+        elmMetaData.addAttribute(new Attribute("Status", SerializationUtil
+            .str(profile.getMetaData().getStatus())));
       if (profile.getMetaData().getTopics() != null
           && !profile.getMetaData().getTopics().equals(""))
-        elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(profile.getMetaData()
-            .getTopics())));
+        elmMetaData.addAttribute(new Attribute("Topics", SerializationUtil
+            .str(profile.getMetaData().getTopics())));
     }
 
     HashMap<String, nu.xom.Element> valueSetDefinitionsMap = new HashMap<String, nu.xom.Element>();
@@ -250,26 +257,28 @@ public class TableSerializationImpl implements TableSerialization {
       
       if(t != null) {
     	  nu.xom.Element elmValueSetDefinition = new nu.xom.Element("ValueSetDefinition");
-          elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", ExportUtil.str(t
-              .getBindingIdentifier())));
-          elmValueSetDefinition.addAttribute(new Attribute("Name", ExportUtil.str(t.getName())));
+          elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", SerializationUtil
+              .str(t.getBindingIdentifier())));
+          elmValueSetDefinition.addAttribute(new Attribute("Name", SerializationUtil
+              .str(t.getName())));
           if (t.getDescription() != null && !t.getDescription().equals(""))
-            elmValueSetDefinition.addAttribute(new Attribute("Description", ExportUtil.str(t
-                .getDescription())));
+            elmValueSetDefinition.addAttribute(new Attribute("Description", SerializationUtil
+                .str(t.getDescription())));
           if (t.getVersion() != null && !t.getVersion().equals(""))
             elmValueSetDefinition
-                .addAttribute(new Attribute("Version", ExportUtil.str(t.getVersion())));
+                .addAttribute(new Attribute("Version", SerializationUtil.str(t.getVersion())));
           if (t.getOid() != null && !t.getOid().equals(""))
-            elmValueSetDefinition.addAttribute(new Attribute("Oid", ExportUtil.str(t.getOid())));
+            elmValueSetDefinition.addAttribute(new Attribute("Oid", SerializationUtil
+                .str(t.getOid())));
           if (t.getStability() != null && !t.getStability().equals(""))
-            elmValueSetDefinition.addAttribute(new Attribute("Stability", ExportUtil.str(t
-                .getStability().value())));
+            elmValueSetDefinition.addAttribute(new Attribute("Stability", SerializationUtil
+                .str(t.getStability().value())));
           if (t.getExtensibility() != null && !t.getExtensibility().equals(""))
-            elmValueSetDefinition.addAttribute(new Attribute("Extensibility", ExportUtil.str(t
-                .getExtensibility().value())));
+            elmValueSetDefinition.addAttribute(new Attribute("Extensibility", SerializationUtil
+                .str(t.getExtensibility().value())));
           if (t.getContentDefinition() != null && !t.getContentDefinition().equals(""))
-            elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", ExportUtil.str(t
-                .getContentDefinition().value())));
+            elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", SerializationUtil
+                .str(t.getContentDefinition().value())));
 
           nu.xom.Element elmValueSetDefinitions = null;
           if (t.getGroup() != null && !t.getGroup().equals("")) {
@@ -296,20 +305,22 @@ public class TableSerializationImpl implements TableSerialization {
           if (t.getCodes() != null) {
             for (Code c : t.getCodes()) {
               nu.xom.Element elmValueElement = new nu.xom.Element("ValueElement");
-              elmValueElement.addAttribute(new Attribute("Value", ExportUtil.str(c.getValue())));
-              elmValueElement.addAttribute(new Attribute("DisplayName", ExportUtil.str(c.getLabel()
-                  + "")));
+              elmValueElement.addAttribute(new Attribute("Value", SerializationUtil
+                  .str(c.getValue())));
+              elmValueElement.addAttribute(new Attribute("DisplayName", SerializationUtil
+                  .str(c.getLabel() + "")));
               if (c.getCodeSystem() != null && !c.getCodeSystem().equals(""))
-                elmValueElement.addAttribute(new Attribute("CodeSystem", ExportUtil.str(c
-                    .getCodeSystem())));
+                elmValueElement.addAttribute(new Attribute("CodeSystem", SerializationUtil
+                    .str(c.getCodeSystem())));
               if (c.getCodeSystemVersion() != null && !c.getCodeSystemVersion().equals(""))
-                elmValueElement.addAttribute(new Attribute("CodeSystemVersion", ExportUtil.str(c
-                    .getCodeSystemVersion())));
+                elmValueElement.addAttribute(new Attribute("CodeSystemVersion", SerializationUtil
+                    .str(c.getCodeSystemVersion())));
               if (c.getCodeUsage() != null && !c.getCodeUsage().equals(""))
-                elmValueElement.addAttribute(new Attribute("Usage", ExportUtil.str(c.getCodeUsage())));
+                elmValueElement.addAttribute(new Attribute("Usage", SerializationUtil
+                    .str(c.getCodeUsage())));
               if (c.getComments() != null && !c.getComments().equals(""))
                 elmValueElement
-                    .addAttribute(new Attribute("Comments", ExportUtil.str(c.getComments())));
+                    .addAttribute(new Attribute("Comments", SerializationUtil.str(c.getComments())));
               elmValueSetDefinition.appendChild(elmValueElement);
             }
           }  
