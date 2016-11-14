@@ -52,6 +52,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportParameters;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.XsltIncludeUriResover;
 import org.apache.commons.io.FileUtils;
@@ -132,26 +133,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.tidy.Tidy;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -383,7 +364,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       exportParameters.setTargetFormat(EXPORT_FORMAT_WORD);
       return exportAsDocxFromXml(igDocumentSerializationService
               .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
-          "/rendering/generalExport.xsl", exportParameters);
+          "/rendering/generalExport.xsl", exportParameters,null,datatypeLibraryDocument.getMetaData());
     } else {
       return new NullInputStream(1L);
     }
@@ -1212,7 +1193,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
       ObjectFactory factory = Context.getWmlObjectFactory();
 
-      createCoverPageForDocx4j(igdoc, wordMLPackage, factory);
+      createCoverPageForDocx4j(wordMLPackage, factory,igdoc.getProfile(),igdoc.getMetaData());
 
       createTableOfContentForDocx4j(wordMLPackage, factory);
 
@@ -1276,139 +1257,154 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     }
   }
 
-  public InputStream exportAsDocxIG(IGDocument igdoc) {
-    // Note: inlineConstraint can be true or false
-
-    try {
-      WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage
-          .load(this.getClass().getResourceAsStream("/rendering/lri_template.dotx"));
-
-      ObjectFactory factory = Context.getWmlObjectFactory();
-
-      createCoverPageForDocx4j(igdoc, wordMLPackage, factory);
-
-      addPageBreak(wordMLPackage, factory);
-
-      createTableOfContentForDocx4j(wordMLPackage, factory);
-
-      // FieldUpdater updater = new FieldUpdater(wordMLPackage);
-      // try {
-      // updater.update(true);
-      // } catch (Docx4JException e1) {
-      // e1.printStackTrace();
-      // }
-
-      addPageBreak(wordMLPackage, factory);
-
-      // Add sections
-      try {
-        this.addXhtmlChunk(this.exportAsHtmlSections(igdoc), wordMLPackage);
-      } catch (Exception e1) {
-        e1.printStackTrace();
-        String html =
-            "<html><head></head><p style=\"color:red\">Could not add sections. Check presence of special characters in sections (e.g. footer from a docx copy and paste)</p></body></html>";
-        wordMLPackage.getMainDocumentPart().addAltChunk(AltChunkType.Html, html.getBytes());
-      }
-
-      addPageBreak(wordMLPackage, factory);
-
-      // addContents4Docx(
-      // (Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>) igdoc.getChildSections(),
-      // "",
-      // 1, wordMLPackage);
-
-      Profile profile = igdoc.getProfile();
-
-      if (profile.getSectionTitle() != null) {
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1",
-            profile.getSectionTitle());
-      } else {
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "");
-      }
-
-      // Including information regarding messages
-      if (profile.getMessages().getSectionTitle() != null) {
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
-            profile.getMessages().getSectionTitle());
-      } else {
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
-      }
-
-      // Add messages infrastructure
-      List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
-      Collections.sort(msgList);
-
-      for (Message m : msgList) {
-        this.addHtmlChunk(this.exportAsHtmlMessage(m), wordMLPackage);
-      }
-
-
-      // => sgts
-      if (profile.getSegmentLibrary().getSectionTitle() != null) {
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
-            profile.getSegmentLibrary().getSectionTitle());
-      } else {
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
-      }
-      List<SegmentLink> sgtList =
-          new ArrayList<SegmentLink>(profile.getSegmentLibrary().getChildren());
-      Collections.sort(sgtList);
-      for (SegmentLink link : sgtList) {
-        this.addHtmlChunk(this.exportAsHtmlSegment(link), wordMLPackage);
-      }
-
-      // => dts
-      if (profile.getDatatypeLibrary().getSectionTitle() != null) {
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
-            profile.getDatatypeLibrary().getSectionTitle());
-      } else {
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
-      }
-      List<DatatypeLink> dtList =
-          new ArrayList<DatatypeLink>(profile.getDatatypeLibrary().getChildren());
-      Collections.sort(dtList);
-      for (DatatypeLink link : dtList) {
-        this.addHtmlChunk(this.exportAsHtmlDatatype(link), wordMLPackage);
-      }
-
-      // => tbls
-      if (profile.getTableLibrary().getSectionTitle() != null) {
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
-            profile.getTableLibrary().getSectionTitle());
-      } else {
-        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
-      }
-      List<TableLink> tables = new ArrayList<TableLink>(profile.getTableLibrary().getTables());
-      Collections.sort(tables);
-      for (TableLink link : tables) {
-        this.addHtmlChunk(this.exportAsHtmlTable(link), wordMLPackage);
-      }
-
-      // addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
-
-      loadTemplateForDocx4j(wordMLPackage); // Repeats the lines above but necessary; don't delete
-
-      File tmpFile;
-      tmpFile = File.createTempFile("IgDocument" + UUID.randomUUID().toString(), ".docx");
-      wordMLPackage.save(tmpFile);
-      wordMLPackage = WordprocessingMLPackage.load(tmpFile);
-      FieldUpdater updater = new FieldUpdater(wordMLPackage);
-      updater = new FieldUpdater(wordMLPackage);
-      try {
-        updater.update(true);
-      } catch (Docx4JException e1) {
-        e1.printStackTrace();
-      }
-      wordMLPackage.save(tmpFile);
-
-
-      return FileUtils.openInputStream(tmpFile);
-
-    } catch (IOException | Docx4JException e) {
-      e.printStackTrace();
+  public InputStream exportAsDocxIG(
+      IGDocument igDocument) {
+    if (igDocument != null) {
+      ExportParameters exportParameters = new ExportParameters();
+      exportParameters.setDocumentTitle(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE);
+      exportParameters.setIncludeTOC(true);
+      exportParameters.setInlineConstraints(true);
+      exportParameters.setTargetFormat(EXPORT_FORMAT_WORD);
+      return exportAsDocxFromXml(igDocumentSerializationService
+              .serializeIGDocumentToXML(igDocument), "/rendering/generalExport.xsl", exportParameters, igDocument.getProfile(), igDocument.getMetaData());
+    } else {
       return new NullInputStream(1L);
     }
   }
+
+//  public InputStream exportAsDocxIG(IGDocument igdoc) {
+//    // Note: inlineConstraint can be true or false
+//
+//    try {
+//      WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage
+//          .load(this.getClass().getResourceAsStream("/rendering/lri_template.dotx"));
+//
+//      ObjectFactory factory = Context.getWmlObjectFactory();
+//
+//      createCoverPageForDocx4j(igdoc, wordMLPackage, factory);
+//
+//      addPageBreak(wordMLPackage, factory);
+//
+//      createTableOfContentForDocx4j(wordMLPackage, factory);
+//
+//      // FieldUpdater updater = new FieldUpdater(wordMLPackage);
+//      // try {
+//      // updater.update(true);
+//      // } catch (Docx4JException e1) {
+//      // e1.printStackTrace();
+//      // }
+//
+//      addPageBreak(wordMLPackage, factory);
+//
+//      // Add sections
+//      try {
+//        this.addXhtmlChunk(this.exportAsHtmlSections(igdoc), wordMLPackage);
+//      } catch (Exception e1) {
+//        e1.printStackTrace();
+//        String html =
+//            "<html><head></head><p style=\"color:red\">Could not add sections. Check presence of special characters in sections (e.g. footer from a docx copy and paste)</p></body></html>";
+//        wordMLPackage.getMainDocumentPart().addAltChunk(AltChunkType.Html, html.getBytes());
+//      }
+//
+//      addPageBreak(wordMLPackage, factory);
+//
+//      // addContents4Docx(
+//      // (Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>) igdoc.getChildSections(),
+//      // "",
+//      // 1, wordMLPackage);
+//
+//      Profile profile = igdoc.getProfile();
+//
+//      if (profile.getSectionTitle() != null) {
+//        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1",
+//            profile.getSectionTitle());
+//      } else {
+//        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "");
+//      }
+//
+//      // Including information regarding messages
+//      if (profile.getMessages().getSectionTitle() != null) {
+//        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+//            profile.getMessages().getSectionTitle());
+//      } else {
+//        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+//      }
+//
+//      // Add messages infrastructure
+//      List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
+//      Collections.sort(msgList);
+//
+//      for (Message m : msgList) {
+//        this.addHtmlChunk(this.exportAsHtmlMessage(m), wordMLPackage);
+//      }
+//
+//
+//      // => sgts
+//      if (profile.getSegmentLibrary().getSectionTitle() != null) {
+//        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+//            profile.getSegmentLibrary().getSectionTitle());
+//      } else {
+//        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+//      }
+//      List<SegmentLink> sgtList =
+//          new ArrayList<SegmentLink>(profile.getSegmentLibrary().getChildren());
+//      Collections.sort(sgtList);
+//      for (SegmentLink link : sgtList) {
+//        this.addHtmlChunk(this.exportAsHtmlSegment(link), wordMLPackage);
+//      }
+//
+//      // => dts
+//      if (profile.getDatatypeLibrary().getSectionTitle() != null) {
+//        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+//            profile.getDatatypeLibrary().getSectionTitle());
+//      } else {
+//        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+//      }
+//      List<DatatypeLink> dtList =
+//          new ArrayList<DatatypeLink>(profile.getDatatypeLibrary().getChildren());
+//      Collections.sort(dtList);
+//      for (DatatypeLink link : dtList) {
+//        this.addHtmlChunk(this.exportAsHtmlDatatype(link), wordMLPackage);
+//      }
+//
+//      // => tbls
+//      if (profile.getTableLibrary().getSectionTitle() != null) {
+//        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+//            profile.getTableLibrary().getSectionTitle());
+//      } else {
+//        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+//      }
+//      List<TableLink> tables = new ArrayList<TableLink>(profile.getTableLibrary().getTables());
+//      Collections.sort(tables);
+//      for (TableLink link : tables) {
+//        this.addHtmlChunk(this.exportAsHtmlTable(link), wordMLPackage);
+//      }
+//
+//      // addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
+//
+//      loadTemplateForDocx4j(wordMLPackage); // Repeats the lines above but necessary; don't delete
+//
+//      File tmpFile;
+//      tmpFile = File.createTempFile("IgDocument" + UUID.randomUUID().toString(), ".docx");
+//      wordMLPackage.save(tmpFile);
+//      wordMLPackage = WordprocessingMLPackage.load(tmpFile);
+//      FieldUpdater updater = new FieldUpdater(wordMLPackage);
+//      updater = new FieldUpdater(wordMLPackage);
+//      try {
+//        updater.update(true);
+//      } catch (Docx4JException e1) {
+//        e1.printStackTrace();
+//      }
+//      wordMLPackage.save(tmpFile);
+//
+//
+//      return FileUtils.openInputStream(tmpFile);
+//
+//    } catch (IOException | Docx4JException e) {
+//      e.printStackTrace();
+//      return new NullInputStream(1L);
+//    }
+//  }
 
   private void addXhtmlChunk(InputStream inputStream, WordprocessingMLPackage wordMLPackage)
       throws Docx4JException, Exception {
@@ -1504,7 +1500,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
       ObjectFactory factory = Context.getWmlObjectFactory();
 
-      createCoverPageForDocx4j(igdoc, wordMLPackage, factory);
+      createCoverPageForDocx4j(wordMLPackage, factory,igdoc.getProfile(),igdoc.getMetaData());
 
       createTableOfContentForDocx4j(wordMLPackage, factory);
 
@@ -1598,9 +1594,8 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   }
 
 
-  private void createCoverPageForDocx4j(IGDocument igdoc, WordprocessingMLPackage wordMLPackage,
-      ObjectFactory factory) {
-    Profile p = igdoc.getProfile();
+  private void createCoverPageForDocx4j(WordprocessingMLPackage wordMLPackage,
+      ObjectFactory factory, Profile p, MetaData metaData) {
 
     BufferedImage image = null;
     try {
@@ -1618,24 +1613,28 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       e.printStackTrace();
     }
 
-    wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title",
-        igdoc.getMetaData().getTitle());
+    if(metaData instanceof DocumentMetaData) {
+      wordMLPackage.getMainDocumentPart()
+          .addStyledParagraphOfText("Title", ((DocumentMetaData) metaData).getTitle());
+      addLineBreak(wordMLPackage, factory);
+      wordMLPackage.getMainDocumentPart()
+          .addStyledParagraphOfText("Subtitle", "Subtitle " + ((DocumentMetaData) metaData).getSubTitle());
+    }
+    wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", metaData.getDate());
     addLineBreak(wordMLPackage, factory);
-    wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle",
-        "Subtitle " + igdoc.getMetaData().getSubTitle());
-    wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1",
-        igdoc.getMetaData().getDate());
     addLineBreak(wordMLPackage, factory);
-    addLineBreak(wordMLPackage, factory);
-    wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1",
-        "HL7 Version " + p.getMetaData().getHl7Version());
-    wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1",
-        "Document Version " + igdoc.getMetaData().getVersion());
-    wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1",
-        p.getMetaData().getOrgName());
-
+    if(p!=null&&p.getMetaData()!=null&&p.getMetaData().getHl7Version()!=null&&!"".equals(p.getMetaData().getHl7Version())) {
+      wordMLPackage.getMainDocumentPart()
+          .addStyledParagraphOfText("Style1", "HL7 Version " + p.getMetaData().getHl7Version());
+    }
+    wordMLPackage.getMainDocumentPart()
+        .addStyledParagraphOfText("Style1", "Document Version " + metaData.getVersion());
+    if(p!=null&&p.getMetaData()!=null&&p.getMetaData().getOrgName()!=null&&!"".equals(p.getMetaData().getOrgName())) {
+      wordMLPackage.getMainDocumentPart()
+          .addStyledParagraphOfText("Style1", p.getMetaData().getOrgName());
+    }
     addPageBreak(wordMLPackage, factory);
-  }
+    }
 
   private void createTableOfContentForDocx4j(WordprocessingMLPackage wordMLPackage,
       ObjectFactory factory) {
@@ -2814,7 +2813,141 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     }
   }
 
-  public InputStream exportAsDocxFromXml(String xmlString, String xmlPath, ExportParameters exportParameters) {
+  public InputStream exportAsDocxFromXml(String xmlString, String xmlPath, ExportParameters exportParameters, Profile p, MetaData metaData) {
+
+
+    //    try {
+    //      WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage
+    //          .load(this.getClass().getResourceAsStream("/rendering/lri_template.dotx"));
+    //
+    //      ObjectFactory factory = Context.getWmlObjectFactory();
+    //
+    //      createCoverPageForDocx4j(igdoc, wordMLPackage, factory);
+    //
+    //      addPageBreak(wordMLPackage, factory);
+    //
+    //      createTableOfContentForDocx4j(wordMLPackage, factory);
+    //
+    //      // FieldUpdater updater = new FieldUpdater(wordMLPackage);
+    //      // try {
+    //      // updater.update(true);
+    //      // } catch (Docx4JException e1) {
+    //      // e1.printStackTrace();
+    //      // }
+    //
+    //      addPageBreak(wordMLPackage, factory);
+    //
+    //      // Add sections
+    //      try {
+    //        this.addXhtmlChunk(this.exportAsHtmlSections(igdoc), wordMLPackage);
+    //      } catch (Exception e1) {
+    //        e1.printStackTrace();
+    //        String html =
+    //            "<html><head></head><p style=\"color:red\">Could not add sections. Check presence of special characters in sections (e.g. footer from a docx copy and paste)</p></body></html>";
+    //        wordMLPackage.getMainDocumentPart().addAltChunk(AltChunkType.Html, html.getBytes());
+    //      }
+    //
+    //      addPageBreak(wordMLPackage, factory);
+    //
+    //      // addContents4Docx(
+    //      // (Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>) igdoc.getChildSections(),
+    //      // "",
+    //      // 1, wordMLPackage);
+    //
+    //      Profile profile = igdoc.getProfile();
+    //
+    //      if (profile.getSectionTitle() != null) {
+    //        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1",
+    //            profile.getSectionTitle());
+    //      } else {
+    //        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "");
+    //      }
+    //
+    //      // Including information regarding messages
+    //      if (profile.getMessages().getSectionTitle() != null) {
+    //        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+    //            profile.getMessages().getSectionTitle());
+    //      } else {
+    //        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+    //      }
+    //
+    //      // Add messages infrastructure
+    //      List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
+    //      Collections.sort(msgList);
+    //
+    //      for (Message m : msgList) {
+    //        this.addHtmlChunk(this.exportAsHtmlMessage(m), wordMLPackage);
+    //      }
+    //
+    //
+    //      // => sgts
+    //      if (profile.getSegmentLibrary().getSectionTitle() != null) {
+    //        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+    //            profile.getSegmentLibrary().getSectionTitle());
+    //      } else {
+    //        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+    //      }
+    //      List<SegmentLink> sgtList =
+    //          new ArrayList<SegmentLink>(profile.getSegmentLibrary().getChildren());
+    //      Collections.sort(sgtList);
+    //      for (SegmentLink link : sgtList) {
+    //        this.addHtmlChunk(this.exportAsHtmlSegment(link), wordMLPackage);
+    //      }
+    //
+    //      // => dts
+    //      if (profile.getDatatypeLibrary().getSectionTitle() != null) {
+    //        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+    //            profile.getDatatypeLibrary().getSectionTitle());
+    //      } else {
+    //        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+    //      }
+    //      List<DatatypeLink> dtList =
+    //          new ArrayList<DatatypeLink>(profile.getDatatypeLibrary().getChildren());
+    //      Collections.sort(dtList);
+    //      for (DatatypeLink link : dtList) {
+    //        this.addHtmlChunk(this.exportAsHtmlDatatype(link), wordMLPackage);
+    //      }
+    //
+    //      // => tbls
+    //      if (profile.getTableLibrary().getSectionTitle() != null) {
+    //        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+    //            profile.getTableLibrary().getSectionTitle());
+    //      } else {
+    //        wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+    //      }
+    //      List<TableLink> tables = new ArrayList<TableLink>(profile.getTableLibrary().getTables());
+    //      Collections.sort(tables);
+    //      for (TableLink link : tables) {
+    //        this.addHtmlChunk(this.exportAsHtmlTable(link), wordMLPackage);
+    //      }
+    //
+    //      // addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
+    //
+    //      loadTemplateForDocx4j(wordMLPackage); // Repeats the lines above but necessary; don't delete
+    //
+    //      File tmpFile;
+    //      tmpFile = File.createTempFile("IgDocument" + UUID.randomUUID().toString(), ".docx");
+    //      wordMLPackage.save(tmpFile);
+    //      wordMLPackage = WordprocessingMLPackage.load(tmpFile);
+    //      FieldUpdater updater = new FieldUpdater(wordMLPackage);
+    //      updater = new FieldUpdater(wordMLPackage);
+    //      try {
+    //        updater.update(true);
+    //      } catch (Docx4JException e1) {
+    //        e1.printStackTrace();
+    //      }
+    //      wordMLPackage.save(tmpFile);
+    //
+    //
+    //      return FileUtils.openInputStream(tmpFile);
+    //
+    //    } catch (IOException | Docx4JException e) {
+    //      e.printStackTrace();
+    //      return new NullInputStream(1L);
+    //    }
+
+
+
     try {
       File tmpHtmlFile = doTransformToTempHtml(xmlString,xmlPath,exportParameters);
 
@@ -2825,7 +2958,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
       ObjectFactory factory = Context.getWmlObjectFactory();
 
-      // createCoverPageForDocx4j(igdoc, wordMLPackage, factory); TODO Implement cover page
+       createCoverPageForDocx4j(wordMLPackage, factory, p, metaData);
 
       if (exportParameters.isIncludeTOC()) {
         createTableOfContentForDocx4j(wordMLPackage, factory);
