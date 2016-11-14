@@ -594,7 +594,7 @@ angular.module('igl')
                             }
                         }
                 	});
-                    
+
 
                 }
                 if (element.datatype !== null || element.datatype !== undefined) {
@@ -612,7 +612,7 @@ angular.module('igl')
 
                 }
             }
-        };  
+        };
 
         $scope.confirmPublish = function(datatypeCopy) {
             var modalInstance = $modal.open({
@@ -629,11 +629,11 @@ angular.module('igl')
             	console.log($rootScope.datatype);
             	console.log("IN LIBRARY");
             	console.log($rootScope.datatypeLibrary);
-            	
+
                 var ext = $rootScope.datatype.ext;
-      
+
                 DatatypeService.publish($rootScope.datatype).then(function(result) {
-               
+
                     var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.datatypeLibrary.children);
                     var newLink = DatatypeService.getDatatypeLink(result);
                     newLink.ext = ext;
@@ -647,19 +647,19 @@ angular.module('igl')
                                 $scope.editForm.$setPristine();
                                 $scope.editForm.$dirty = false;
                                 $scope.editForm.$invalid = false;
-                                
+
                             }
                             $rootScope.clearChanges();
                             DatatypeService.merge($rootScope.datatype, result);
                             if ($scope.datatypesParams){
-                                $scope.datatypesParams.refresh();   	
+                                $scope.datatypesParams.refresh();
                             }
                          	VersionAndUseService.findById(result.id).then(function(inf){
                         		$rootScope.versionAndUseMap[inf.id]=inf;
                         		if($rootScope.versionAndUseMap[inf.sourceId]){
                         			$rootScope.versionAndUseMap[inf.sourceId].deprecated=true;
                         		}
-                        		
+
                         	});
                             oldLink.ext = newLink.ext;
                             oldLink.name = newLink.name;
@@ -1213,6 +1213,8 @@ angular.module('igl')
         };
 
         $scope.shareModal = function (datatype) {
+
+
     			$http.get('api/usernames').then(function (response) {
     				var userList = response.data;
     				var filteredUserList = userList.filter(function(user) {
@@ -1229,8 +1231,12 @@ angular.module('igl')
     					if(!isPresent) return user;
     				});
 
+            var modalTemplate = "ShareDatatypeErrorModal.html";
+            if(datatype.status === "PUBLISHED") {
+              modalTemplate = "ShareDatatypeModal.html";
+            }
     				var modalInstance = $modal.open({
-    					templateUrl: 'ShareDatatypeModal.html'
+    					templateUrl: modalTemplate
     					, controller: 'ShareDatatypeCtrl'
               , size:'lg'
     					, resolve: {
@@ -1248,7 +1254,9 @@ angular.module('igl')
             modalInstance.result.then(function (result) {
               $scope.saveDatatype();
             }, function () {
-              $scope.saveDatatype();
+              if(modalTemplate === 'ShareDatatypeModal.html') {
+                $scope.saveDatatype();
+              }
               // $log.info('Modal dismissed at: ' + new Date());
             });
 

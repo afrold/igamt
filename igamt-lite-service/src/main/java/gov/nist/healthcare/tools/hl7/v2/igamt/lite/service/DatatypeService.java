@@ -40,6 +40,8 @@ public interface DatatypeService {
   List<Datatype> findByScope(String scope);
   
   List<Datatype> findShared(Long accountId);
+  
+  List<Datatype> findPendingShared(Long accountId);
 
   Datatype findByNameAndVersionAndScope(String name, String version, String scope);
 
