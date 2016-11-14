@@ -1,7 +1,7 @@
 angular
     .module('igl')
     .controller(
-    'shared', ['$scope', '$http', '$rootScope', '$q', '$modal','$timeout','ngTreetableParams', 'DatatypeLibraryDocumentSvc', 'TableLibrarySvc', 'DatatypeService', 'DatatypeLibrarySvc','IGDocumentSvc', 'TableService', 'ViewSettings', 'userInfoService', 
+    'shared', ['$scope', '$http', '$rootScope', '$q', '$modal','$timeout','ngTreetableParams', 'DatatypeLibraryDocumentSvc', 'TableLibrarySvc', 'DatatypeService', 'DatatypeLibrarySvc','IGDocumentSvc', 'TableService', 'ViewSettings', 'userInfoService',
     'blockUI','CompareService','VersionAndUseService',
 
         function ($scope, $http, $rootScope, $q, $modal, $timeout,ngTreetableParams, DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc,IGDocumentSvc, TableService, ViewSettings, userInfoService, blockUI,CompareService,VersionAndUseService) {
@@ -10,7 +10,7 @@ angular
             $scope.sharedElementView='sharedElementView';
             $scope.SharedDataTypeTree=[]
             $scope.typeOfSharing="Pending";
-$rootScope.datatype={};
+            $rootScope.datatype={};
             $rootScope.datatypesMap={};
             $rootScope.TablesMap={};
         $scope.datatypesParams = new ngTreetableParams({
@@ -29,7 +29,7 @@ $rootScope.datatype={};
                 if(type==='datatype'){
                     console.log("TOCs")
                     $scope.SharedtocView='sharedtocView.html';
-                    
+
 
                 }
             }
@@ -37,7 +37,7 @@ $rootScope.datatype={};
 
             $scope.selectDatatype(datatype); // Should we open in a dialog ??
         });
-        
+
             $scope.init=function(){
                 $scope.getSharedDatatypes();
                 $scope.SharedtocView='sharedtocView.html';
@@ -72,7 +72,7 @@ $rootScope.datatype={};
 
         $scope.editDatatype = function(data) {
                 processEditDataType(data);
-  
+
         };
 
         $scope.confirmShareDocument = function(datatype) {
@@ -132,9 +132,9 @@ $rootScope.datatype={};
 
                                 $rootScope.$emit("event:initEditArea");
 
-                            
+
         };
-        
+
 
 
 

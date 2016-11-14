@@ -27,7 +27,7 @@
                             <!-- TODO Add datatype sharing hook -->
                                             <button title="publish" type="button" class="btn btn-raised btn-sm btn-success"
                  ng-disabled="!editForm.$dirty||editForm.$invalid||datatype.status === 'PUBLISHED'"
-                 ng-click="publishDatatype(datatype)" ng-if="datatype.status !== 'PUBLISHED'">PUBLISH<i class="fa fa-check" aria-hidden="true"></i><span></button> 
+                 ng-click="publishDatatype(datatype)" ng-if="datatype.status !== 'PUBLISHED'">PUBLISH<i class="fa fa-check" aria-hidden="true"></i><span></button>
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'">
                               <button  style="margin-top:0px" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(datatype)">
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
@@ -39,7 +39,7 @@
                 							</ul>
                             </div>
 
-                 
+
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                  ng-disabled="editForm.$invalid|| datatype.status === 'PUBLISHED'"
                  ng-hide="viewSettings.tableReadonly"
@@ -1736,7 +1736,7 @@
 									<tr ng-repeat="participant in igdocumentSelected.shareParticipantIds">
 										<td><i>{{participant.fullname}} ({{participant.username}})</i></td>
 										<td>
-                                            <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="!participant.pendingApproval"><i class="fa fa-times"></i> Remove</button>
+                                            <!-- <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="!participant.pendingApproval"><i class="fa fa-times"></i> Remove</button> -->
                                             <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request</button>
                                             <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="participant.pendingApproval"><i class="fa fa-times"></i> Cancel</button>
                                         </td>
@@ -1773,6 +1773,29 @@
 			</div>
 		</div>
 	</div>
+</script>
+
+<script type="text/ng-template" id="ShareDatatypeErrorModal.html">
+	<div>
+		<div class="modal-header">
+			<h3 class="modal-title">Share Datatype Error</h3> </div>
+		<div class="modal-body">
+			<div class="container" style="margin-bottom: 20px;margin-top: 20px">
+				<div class="row">
+					<div class="col-md-12">
+						<span style="color: red;">
+              Please publish this datatype before sharing it. You cannot share a datatype that is not published.
+            </span>
+					</div>
+				</div>
+
+      </div>
+
+      <div class="modal-footer">
+				<button class="btn btn-raised btn-primary" type="button" ng-click="cancel()"><i class="fa fa-check"></i>OK</button>
+			</div>
+    </div>
+  </div>
 </script>
 
 <script type="text/ng-template" id="autocomplete-template">

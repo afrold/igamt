@@ -12,6 +12,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -456,13 +457,13 @@ public class DatatypeController extends CommonController {
    * @throws IGDocumentException
    */
   @RequestMapping(value = "/{id}/share", method = RequestMethod.POST, produces = "application/json")
-  public boolean shareDatatype(@PathVariable("id") String id, @RequestBody List<Long> participants)
+  public boolean shareDatatype(@PathVariable("id") String id, @RequestBody HashMap<String, Object> participants)
       throws Exception {
     log.info("Sharing datatype with id=" + id + " with partipants=" + participants);
     Long accountId = null;
     // Get account ID
-    if(!participants.isEmpty()) {
-    	accountId = participants.get(0);
+    if(participants.containsKey("accountId")) {
+    	accountId = new Long((int) participants.get("accountId"));
     }
     try {
       User u = userService.getCurrentUser();
@@ -475,15 +476,19 @@ public class DatatypeController extends CommonController {
         throw new Exception(
             "You do not have the right privilege to share this Datatype");
       }
-      for(Long participantId : participants) {
-    	  if(participantId != accountId) {
-    		  d.getShareParticipantIds().add(new ShareParticipantPermission(participantId));
-    	  }
-    	  
-    	  // Find the user
-    	  Account acc = accountRepository.findOne(accountId);
-    	  // Send confirmation email
-//    	  sendShareConfirmation(d, acc,account);
+      if(participants.containsKey("participantsList")) {
+    	  List<Integer> participantsList = (List<Integer>) participants.get("participantsList");
+	      for(Integer participantId : participantsList) {
+	    	  Long longId = new Long(participantId);
+	    	  if(longId != accountId) {
+	    		  d.getShareParticipantIds().add(new ShareParticipantPermission(longId));
+	    	  }
+	    	  
+	    	  // Find the user
+	    	  Account acc = accountRepository.findOne(accountId);
+	    	  // Send confirmation email
+	//    	  sendShareConfirmation(d, acc,account);
+	      }
       }
       datatypeService.save(d);
       return true;
