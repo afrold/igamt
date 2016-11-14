@@ -12,4 +12,6 @@ public interface ProfileComponentLibraryService {
 
 	List<ProfileComponent> findProfileComponentsById(String pcLibId);
 	ProfileComponentLibrary findProfileComponentLibById(String LibId);
+
+	ProfileComponentLibrary save(ProfileComponentLibrary pcLib);
 }

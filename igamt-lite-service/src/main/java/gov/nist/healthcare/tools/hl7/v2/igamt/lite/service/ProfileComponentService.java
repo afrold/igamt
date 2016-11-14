@@ -12,5 +12,6 @@ public interface ProfileComponentService {
 	ProfileComponent create(ProfileComponent pc);
 	List<ProfileComponent> findAll();
 	ProfileComponent save(ProfileComponent pc);
+	void delete(String id);
 
 }

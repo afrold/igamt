@@ -87,7 +87,7 @@ color:white;
                             </div>
                             <li ng-repeat="pc in ig.profile.profileComponentLibrary.children | orderBy :'name'" ui-tree-node ng-if="!collapseprofilecomponent" data-type="profileComponents">
                                 <div ui-tree-handle data-nodrag confirm-click style="margin-left:30px;" >
-                                    <span data-nodrag style="font-weight: normal;" ng-class="{selected : pc.id===activeModel}" confirm-click ng-click="editPC(pc);">
+                                    <span data-nodrag style="font-weight: normal;" context-menu="ProfileComponentsOption" ng-class="{selected : pc.id===activeModel}" confirm-click ng-click="editPC(pc);">
                                         {{pc.name}}
                                        
                                 </div>

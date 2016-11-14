@@ -1,6 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +27,40 @@ Comparable<ProfileComponent>{
 	  @Id
 	  private String id;
 	  private String name;
-	  private List<ApplyInfo> appliedTo;
+	  private String description;
+	  private String Comment;
+	  private Date dataUpdated;
+	  
+	  public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public String getComment() {
+		return Comment;
+	}
+
+
+	public void setComment(String comment) {
+		Comment = comment;
+	}
+
+
+	public Date getDataUpdated() {
+		return dataUpdated;
+	}
+
+
+	public void setDataUpdated(Date date) {
+		this.dataUpdated = date;
+	}
+
+	private List<ApplyInfo> appliedTo;
 	  public List<ApplyInfo> getAppliedTo() {
 		return appliedTo;
 	}

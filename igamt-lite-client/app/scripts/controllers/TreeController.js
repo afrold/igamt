@@ -555,6 +555,9 @@ angular
                     ],
                     null, ['Delete',
                         function($itemScope) {
+                            console.log($itemScope);
+                            console.log($itemScope.data);
+
                             CloneDeleteSvc.deleteDatatype($itemScope.data);
 
                         }
@@ -683,6 +686,35 @@ angular
 
                     }]
                 ];
+
+                $scope.ProfileComponentsOption = [
+
+                    ['Delete', function($itemScope) {
+
+                        PcService.getPc($itemScope.pc.id).then(function(profileComponent) {
+                            console.log(profileComponent);
+                            if (profileComponent.appliedTo === null || (profileComponent.appliedTo && profileComponent.appliedTo.length === 0)) {
+                                if ($rootScope.hasChanges()) {
+                                    $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                        $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
+                                    });
+                                } else {
+                                    $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
+                                }
+                            } else {
+                                //can't delete because it's used
+                                console.log("notHEEEEEEEREEEE");
+                                $rootScope.cantDeletePc(profileComponent);
+
+                            }
+
+                        });
+
+
+
+                    }]
+                ];
+
 
 
 
@@ -1119,13 +1151,15 @@ angular
                 function processEditPC(pc) {
 
                     PcService.getPc(pc.id).then(function(profileC) {
+                        console.log("HEEEERE");
+                        console.log(profileC);
                         $scope.Activate(pc.id);
                         $rootScope.profileComponent = profileC;
                         $scope.$emit('event:openPc');
                     });
 
                 };
-                $scope.editPC = function(pc) {
+                $rootScope.editPC = function(pc) {
 
                     if ($rootScope.hasChanges()) {
                         $rootScope.openConfirmLeaveDlg().result.then(function() {

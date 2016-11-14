@@ -489,7 +489,7 @@ public class IGDocumentController extends CommonController {
     }
   }
   @RequestMapping(value = "/{id}/profile/profilecomponent/save", method = RequestMethod.POST)
-  public IGDocument saveProfileComponent(@PathVariable("id") String id,
+  public ProfileComponent saveProfileComponent(@PathVariable("id") String id,
       @RequestBody ProfileComponent profileComponent, HttpServletRequest request,
       HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, IGDocumentException {
@@ -497,6 +497,8 @@ public class IGDocumentController extends CommonController {
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
     }
+    
+    profileComponent.setDataUpdated(new Date());
     if(d.getProfile().getProfileComponentLibrary()==null){
       ProfileComponentLibrary profileComponentLibrary=new ProfileComponentLibrary();
       profileComponentService.create(profileComponent);
@@ -515,7 +517,7 @@ public class IGDocumentController extends CommonController {
       profileComponentLibraryRepository.save(d.getProfile().getProfileComponentLibrary());
     }
     igDocumentService.save(d);
-    return d;
+    return profileComponent;
   }
   @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
   public ResponseMessage delete(@PathVariable("id") String id) throws IGDocumentDeleteException {

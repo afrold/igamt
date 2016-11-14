@@ -41,6 +41,12 @@ public class ProfileComponentLibraryServiceImpl implements ProfileComponentLibra
 	public ProfileComponentLibrary findProfileComponentLibById(String LibId) {
 		return profileComponentLibraryRepository.findOne(LibId);
 	}
+	@Override
+	public ProfileComponentLibrary save(ProfileComponentLibrary pcLib) {
+		profileComponentLibraryRepository.save(pcLib);
+		return pcLib;
+		
+	}
 	
 
 }

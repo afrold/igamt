@@ -55,12 +55,27 @@ angular.module('igl').factory('PcService', ['$rootScope', 'ViewSettings', 'Eleme
             });
             return delay.promise;
         },
-        save: function(profileComponent) {
+        save: function(pcLibId, profileComponent) {
             //$rootScope.saved = false;
             var delay = $q.defer();
             //var changes = angular.toJson([]);
             //var data = angular.fromJson({ "changes": changes, "igDocument": igDocument });
-            $http.post('api/profile-components/save', profileComponent).then(function(response) {
+            $http.post('api/profile-components/save/' + pcLibId, profileComponent).then(function(response) {
+                var saveResponse = angular.fromJson(response.data);
+
+                delay.resolve(saveResponse);
+            }, function(error) {
+                delay.reject(error);
+                $rootScope.saved = false;
+            });
+            return delay.promise;
+        },
+        delete: function(pcLibId, profileComponent) {
+            //$rootScope.saved = false;
+            var delay = $q.defer();
+            //var changes = angular.toJson([]);
+            //var data = angular.fromJson({ "changes": changes, "igDocument": igDocument });
+            $http.post('api/profile-components/delete/' + pcLibId, profileComponent).then(function(response) {
                 var saveResponse = angular.fromJson(response.data);
 
                 delay.resolve(saveResponse);

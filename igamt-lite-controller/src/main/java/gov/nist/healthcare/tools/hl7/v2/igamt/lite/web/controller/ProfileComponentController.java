@@ -1,6 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +25,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
@@ -57,15 +61,46 @@ public class ProfileComponentController extends CommonController {
 	    log.info("Fetching ProfileComponentById..." + id);
 	    return profileComponentService.findById(id);
 	  }
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	  public ProfileComponent saveProfileComponent(@RequestBody ProfileComponent profileComponent, HttpServletRequest request,
+	@RequestMapping(value = "/save/{pcLibid}", method = RequestMethod.POST)
+	  public ProfileComponent saveProfileComponent(@PathVariable("pcLibid") String pcLibid,@RequestBody ProfileComponent profileComponent, HttpServletRequest request,
 	      HttpServletResponse response)
 	      throws IOException, IGDocumentNotFoundException, IGDocumentException {
+	  profileComponent.setDataUpdated(new Date());
+	  ProfileComponentLibrary pcLib=profileComponentLibraryService.findProfileComponentLibById(pcLibid);
+//	  pcLib.findOne(profileComponent.getId());
+	  for(ProfileComponentLink pcLink:pcLib.getChildren()){
+	    if(pcLink.getId().equals(profileComponent.getId())){
+	      pcLink.setName(profileComponent.getName());
+	    }
+	  }
+	  profileComponentLibraryService.save(pcLib);
 	  profileComponentService.save(profileComponent);
 	  return profileComponent;
 	    
 	    
 	  }
+	@RequestMapping(value = "/delete/{pcLibid}", method = RequestMethod.POST)
+    public ProfileComponentLibrary deleteProfileComponent(@PathVariable("pcLibid") String pcLibid,@RequestBody ProfileComponent profileComponent, HttpServletRequest request,
+        HttpServletResponse response)
+        throws IOException, IGDocumentNotFoundException, IGDocumentException {
+    ProfileComponentLibrary pcLib=profileComponentLibraryService.findProfileComponentLibById(pcLibid);
+    ProfileComponentLink toDelete= new ProfileComponentLink();
+    for(ProfileComponentLink pcLink:pcLib.getChildren()){
+      if(pcLink.getId().equals(profileComponent.getId())){
+        //pcLink.setName(profileComponent.getName());
+        toDelete=pcLink;
+        
+      }
+    }
+    if(toDelete!=null){
+      pcLib.getChildren().remove(toDelete);
+    }
+    profileComponentService.delete(toDelete.getId());
+    profileComponentLibraryService.save(pcLib);
+    return pcLib;
+      
+      
+    }
 //	@RequestMapping(value = "/create", method = RequestMethod.POST,
 //		      consumes = "application/json", produces = "application/json")
 //		  public ProfileComponent createPC(@RequestBody ProfileComponent pc) throws UserAccountNotFoundException{

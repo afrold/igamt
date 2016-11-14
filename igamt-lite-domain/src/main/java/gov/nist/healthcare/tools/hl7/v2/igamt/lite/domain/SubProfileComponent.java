@@ -13,8 +13,16 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable{
 	  public SubProfileComponent() {
 	    
 	  }
-	 
-	  private HashMap<String,Object> attributes=new HashMap<String,Object>();
+	  @Id
+	  private String id;
+	  public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	private HashMap<String,Object> attributes=new HashMap<String,Object>();
 	  private String path;
 	  private String type;
 	  private String name;

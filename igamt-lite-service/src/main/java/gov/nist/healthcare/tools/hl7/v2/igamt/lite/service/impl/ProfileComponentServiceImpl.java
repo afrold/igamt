@@ -38,6 +38,7 @@ public class ProfileComponentServiceImpl implements ProfileComponentService {
 	@Override
 	public ProfileComponent create(ProfileComponent pc) {
 		 log.info("ProfileComponentServiceImpl.create=" + pc);
+		 
 		    return profileComponentRepository.insert(pc);
 	}
 	@Override
@@ -50,6 +51,10 @@ public class ProfileComponentServiceImpl implements ProfileComponentService {
 		return pc;
 		
 	}
+	@Override
+	  public void delete(String id) {
+		profileComponentRepository.delete(id);
+	  }
 	
 
 }

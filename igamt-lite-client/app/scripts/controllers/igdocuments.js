@@ -680,6 +680,39 @@ angular.module('igl')
                 $rootScope.clearChanges();
             }, function() {});
         };
+        $rootScope.deleteProfileComponent = function(pcLibId, profileComponent) {
+            var modalInstance = $modal.open({
+                templateUrl: 'DeleteProfileComponentCtrl.html',
+                controller: 'DeleteProfileComponentCtrl',
+                resolve: {
+                    profileComponentToDelete: function() {
+                        return profileComponent;
+                    },
+                    pcLibId: function() {
+                        return pcLibId;
+                    }
+                }
+            });
+            modalInstance.result.then(function(profileComponent) {
+
+            }, function() {});
+        };
+
+        $rootScope.cantDeletePc = function(profileComponent) {
+            var modalInstance = $modal.open({
+                templateUrl: 'CantDeletePcCtrl.html',
+                controller: 'CantDeletePcCtrl',
+                resolve: {
+                    profileComponent: function() {
+                        return profileComponent;
+                    },
+
+                }
+            });
+            modalInstance.result.then(function(profileComponent) {
+
+            }, function() {});
+        };
 
         $scope.confirmOpen = function(igdocument) {
             var modalInstance = $modal.open({
@@ -858,14 +891,20 @@ angular.module('igl')
             var addDatatypeInstance = $modal.open({
                 templateUrl: 'createProfileComponent.html',
                 controller: 'createProfileComponentCtrl',
-                size: 'lg',
-                windowClass: 'conformance-profiles-modal',
                 resolve: {
+                    // PcLibrary: function() {
+                    //     return $rootScope.igdocument.profile.profileComponentLibrary;
+                    // }
 
                 }
             }).result.then(function(results) {
                 console.log("results");
                 console.log(results);
+                $rootScope.editPC(results)
+                if ($scope.profileComponentParams)
+                    $scope.profileComponentParams.refresh();
+                if ($scope.applyPcToParams)
+                    $scope.applyPcToParams.refresh();
             });
 
         };
@@ -1184,10 +1223,54 @@ angular.module('igl')
                     }
                 }, 100);
         };
+        $scope.applyPcToParams = new ngTreetableParams({
+            getNodes: function(parent) {
+                if ($rootScope.profileComponent.appliedTo && $rootScope.profileComponent.appliedTo.length > 0) {
+                    console.log("==========");
+                    console.log($rootScope.profileComponent);
+                    return $rootScope.profileComponent.appliedTo;
+
+
+                }
+            },
+            getTemplate: function(node) {
+                return 'applyPcToTable';
+            }
+        });
+        $scope.profileComponentParams = new ngTreetableParams({
+            getNodes: function(parent) {
+                if ($rootScope.igdocument.profile.profileComponentLibrary !== undefined) {
+                    console.log("$rootScope.profileComponent");
+
+                    console.log($rootScope.profileComponent);
+                    return $rootScope.profileComponent.children;
+                    // return $rootScope.profileComponent.children;
+                    // if (parent) {
+                    //     if (parent.fields) {
+                    //         return parent.fields;
+                    //     } else if (parent.components) {
+                    //         return parent.components;
+                    //     } else if (parent.segments) {
+                    //         return parent.segments;
+                    //     } else if (parent.codes) {
+                    //         return parent.codes;
+                    //     }
+
+                    // } else {
+                    // console.log($rootScope.igdocument.profile.profileComponentLibrary.children);
+                    // return $rootScope.igdocument.profile.profileComponentLibrary.children;
+                    // }
+
+                }
+            },
+            getTemplate: function(node) {
+                return 'profileComponentTable';
+            }
+        });
         $scope.selectPc = function() {
             console.log("=++++++++====");
             console.log($rootScope.profileComponents);
-            //$rootScope.Activate(pc.id);
+            $rootScope.Activate($rootScope.profileComponent.id);
             $rootScope.subview = "EditProfileComponent.html";
             $scope.loadingSelection = true;
             blockUI.start();
@@ -1208,8 +1291,10 @@ angular.module('igl')
                         $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
                         $scope.loadingSelection = false;
                         try {
-                            if ($scope.messagesParams)
-                                $scope.messagesParams.refresh();
+                            if ($scope.profileComponentParams)
+                                $scope.profileComponentParams.refresh();
+                            if ($scope.applyPcToParams)
+                                $scope.applyPcToParams.refresh();
                         } catch (e) {
 
                         }
@@ -1409,6 +1494,58 @@ angular.module('igl').controller('ViewIGChangesCtrl', function($scope, $modalIns
         $modalInstance.dismiss('cancel');
     };
 });
+
+angular.module('igl').controller('DeleteProfileComponentCtrl', function($scope, $modalInstance, pcLibId, profileComponentToDelete, $rootScope, $http, PcService) {
+    $scope.profileComponentToDelete = profileComponentToDelete;
+    $scope.loading = false;
+    $scope.delete = function() {
+        $scope.loading = true;
+        PcService.delete(pcLibId, $scope.profileComponentToDelete).then(function(profileComponentLib) {
+            console.log(profileComponentLib);
+            $rootScope.igdocument.profile.profileComponentLibrary = profileComponentLib;
+            if ($rootScope.profileComponent && $rootScope.profileComponent.id === $scope.profileComponentToDelete.id) {
+                $rootScope.profileComponent = null;
+                $rootScope.subview = null;
+            }
+            $modalInstance.close();
+
+        });
+
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+angular.module('igl').controller('CantDeletePcCtrl', function($scope, $modalInstance, profileComponent, $rootScope, $http, PcService) {
+    $scope.profileComponent = profileComponent;
+    $scope.loading = false;
+    // $scope.delete = function() {
+    //     $scope.loading = true;
+    //     PcService.delete(pcLibId, $scope.profileComponentToDelete).then(function(profileComponentLib) {
+    //         console.log(profileComponentLib);
+    //         $rootScope.igdocument.profile.profileComponentLibrary = profileComponentLib;
+    //         if ($rootScope.profileComponent && $rootScope.profileComponent.id === $scope.profileComponentToDelete.id) {
+    //             $rootScope.profileComponent = null;
+    //             $rootScope.subview = null;
+    //         }
+    //         $modalInstance.close();
+
+    //     });
+
+    // };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+
+
+
 
 
 angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function($scope, $modalInstance, igdocumentToDelete, $rootScope, $http) {
@@ -2891,6 +3028,9 @@ angular.module('igl').controller('createProfileComponentCtrl',
         $scope.create = function() {
             var newPC = {
                 name: $scope.name,
+                description: $scope.description,
+                comment: $scope.comment,
+                appliedTo: null,
                 children: []
             };
             console.log(newPC);
@@ -2898,7 +3038,12 @@ angular.module('igl').controller('createProfileComponentCtrl',
             //add save function
 
             IgDocumentService.saveProfileComponent($rootScope.igdocument.id, newPC).then(function(profileC) {
-                $rootScope.profileComponents.push(profileC);
+                $rootScope.profileComponent = profileC;
+                console.log(profileC);
+
+                $rootScope.igdocument.profile.profileComponentLibrary.children.push(profileC);
+                $scope.Activate(profileC.id);
+
             });
 
 

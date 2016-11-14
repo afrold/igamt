@@ -38,8 +38,17 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
   private String structID; // Message/@StructID
 
   private String description; // Message/@Description
+  private List<String> appliedPcs;
 
-  private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
+  public List<String> getAppliedPcs() {
+	return appliedPcs;
+}
+
+public void setAppliedPcs(List<String> appliedPcs) {
+	this.appliedPcs = appliedPcs;
+}
+
+private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
   protected Integer position = 0;
 
