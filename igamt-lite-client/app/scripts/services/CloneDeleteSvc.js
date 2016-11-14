@@ -588,6 +588,7 @@ angular.module('igl').factory(
                 if (dt && dt != null && dt.id !== datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt),dt);
             });
             if ($rootScope.references != null && $rootScope.references.length > 0) {
+                console.log($rootScope.references);
                 abortDatatypeDelete(datatype);
             } else {
                 confirmDatatypeDelete(datatype);
@@ -679,8 +680,13 @@ angular.module('igl').factory(
         svc.deleteDatatypeLink = function (datatype) {
             DatatypeLibrarySvc.deleteChild($rootScope.datatypeLibrary.id, datatype.id).then(function (res) {
                 var index = $rootScope.datatypes.indexOf(datatype);
+                console.log(index);
+                if(index>=0){
+                    console.log("deleting");
                 $rootScope.datatypes.splice(index, 1);
-
+                }
+                
+                console.log($rootScope.datatypes);
                 var tmp = DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.datatypeLibrary.children);
                 index = $rootScope.datatypeLibrary.children.indexOf(tmp);
                 $rootScope.datatypeLibrary.children.splice(index, 1);
@@ -695,7 +701,7 @@ angular.module('igl').factory(
                 $rootScope.msg().show = true;
                 //TODO MasterMap need to delete datatype
 //                MastermapSvc.deleteDatatype($scope.segToDelete.id);
-                $rootScope.$broadcast('event:SetToC');
+                //$rootScope.$broadcast('event:SetToC');
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = "danger";

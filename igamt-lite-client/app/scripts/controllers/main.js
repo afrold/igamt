@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc','VersionAndUseService','$q'
-   , function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc,VersionAndUseService,$q) {
+angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc','VersionAndUseService','$q','DatatypeLibrarySvc','CloneDeleteSvc'
+   , function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc,VersionAndUseService,$q,DatatypeLibrarySvc,CloneDeleteSvc) {
         // This line fetches the info from the server if the user is currently
         // logged in.
         // If success, the app is updated according to the role.
@@ -1518,7 +1518,157 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             });
         };
 
+        $rootScope.replaceElement= function(source, dest){
+            $rootScope.SegmentsToUpdate=[];
+            $rootScope.datatypeToUpdate=[];
+             var newLink = angular.fromJson({
+                            id: dest.id,
+                            name: dest.name,
+                            ext: dest.ext
+                        });
+            var refs= angular.copy($rootScope.references);
+            angular.forEach($rootScope.references, function(ref){
+                
+                if(ref.type=='field'){
+                    console.log(ref.target);
+                    var segment=angular.copy(ref.target);
+                angular.forEach(ref.target.fields, function(field){
+                    if(field.position==ref.position){
+                        field.datatype.id=dest.id;
+                    }
+                });
+                $rootScope.SegmentsToUpdate.push(ref.target);  
+                
+                }
+                else if(ref.type=='component'){
+                angular.forEach(ref.target.components, function(component){
+                    if(component.position==ref.position){
+                        component.datatype.id=dest.id;
+                    }
+                });
+                  $rootScope.datatypeToUpdate.push(ref.target);  
+                }
+       
+                
+                SegmentService.saves($rootScope.SegmentsToUpdate).then(function(segs){
+                            angular.forEach(segs, function(seg){
+                            SegmentService.merge($rootScope.segmentsMap[seg.id], seg);
+                            
+                        
+                    });
+                            DatatypeService.saves($rootScope.datatypeToUpdate).then(function(dts){
+                            
+                            angular.forEach(dts, function(dt){
+                            DatatypeService.merge($rootScope.datatypesMap[dt.id], dt);
+                    });
+                                                $rootScope.editDataType(dest);
 
+                    });
+                    
+                            });
+                         })
+            //
+        };
+
+        
+
+
+        $rootScope.addOneDatatypeById=function(id){
+            $scope.selectedDatatypes=[];
+
+
+        DatatypeService.getOneDatatype(id).then(function(datatype){
+
+             $scope.selectedDatatypes.push(datatype);
+
+                
+	            $scope.selectFlv = [];
+	            var newLinks = [];
+	            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	   
+	                    newLinks.push({
+	                        id: $scope.selectedDatatypes[i].id,
+	                        name: $scope.selectedDatatypes[i].name
+	                    })
+	                
+	            }
+	            $rootScope.usedDtLink = [];
+	            $rootScope.usedVsLink = [];
+	            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	                $rootScope.fillMaps($scope.selectedDatatypes[i]);
+	            }
+	            DatatypeService.saves($scope.selectFlv).then(function(result) {
+	                for (var i = 0; i < result.length; i++) {
+	                    newLinks.push({
+	                        id: result[i].id,
+	                        name: result[i].name,
+	                        ext: result[i].ext
+	                    })
+	                }
+	                DatatypeLibrarySvc.addChildren($rootScope.datatypeLibrary.id, newLinks).then(function(link) {
+	                    for (var i = 0; i < newLinks.length; i++) {
+	                        $rootScope.datatypeLibrary.children.splice(0, 0, newLinks[i]);
+	                    }
+	                    for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	                        $rootScope.datatypes.splice(0, 0, $scope.selectedDatatypes[i]);
+	                    }
+	                    for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	                        $rootScope.datatypesMap[$scope.selectedDatatypes[i].id] = $scope.selectedDatatypes[i];
+	                    }
+	                    var usedDtId1 = _.map($rootScope.usedDtLink, function(num, key) {
+	                        return num.id;
+	                    });
+
+	                    DatatypeService.get(usedDtId1).then(function(datatypes) {
+	                        for (var j = 0; j < datatypes.length; j++) {
+	                            if (!$rootScope.datatypesMap[datatypes[j].id]) {
+
+	                                $rootScope.datatypesMap[datatypes[j].id] = datatypes[j];
+	                                $rootScope.datatypes.push(datatypes[j]);
+	                                //$rootScope.getDerived(datatypes[j]);
+	                            }
+	                        }
+
+	                        var usedVsId = _.map($rootScope.usedVsLink, function(num, key) {
+	                            return num.id;
+	                        });
+	                        console.log("$rootScope.usedVsLink");
+
+	                        console.log($rootScope.usedVsLink);
+	                        var newTablesLink = _.difference($rootScope.usedVsLink,$rootScope.tableLibrary.children);
+	                        console.log(newTablesLink);
+
+	                        TableLibrarySvc.addChildren($rootScope.tableLibrary.id, newTablesLink).then(function() {
+	                          $rootScope.tableLibrary.children = _.union(newTablesLink, $rootScope.tableLibrary.children);
+
+	                            TableService.get(usedVsId).then(function(tables) {
+	                                for (var j = 0; j < tables.length; j++) {
+	                                    if (!$rootScope.tablesMap[tables[j].id]) {
+	                                        $rootScope.tablesMap[tables[j].id] = tables[j];
+	                                        $rootScope.tables.push(tables[j]);
+
+	                                    }
+	                                }
+	                            });
+                              
+	                        });
+	                    });
+	                    $rootScope.msg().text = "datatypeAdded";
+	                    $rootScope.msg().type = "success";
+	                    $rootScope.msg().show = true;
+	                });
+
+	            }, function(error) {
+	                $rootScope.saving = false;
+	                $rootScope.msg().text = error.data.text;
+	                $rootScope.msg().type = error.data.type;
+	                $rootScope.msg().show = true;
+	            });
+
+        });
+
+	        
+        };
         $rootScope.saveBindingForValueSet = function() {
             var datatypeUpdateParameterList = [];
             var segmentUpdateParameterList = [];
