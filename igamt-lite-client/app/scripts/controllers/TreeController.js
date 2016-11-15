@@ -1127,6 +1127,7 @@ angular
                     var promise = $http(req)
                         .success(function(data, status, headers, config) {
                             // //console.log(data);
+                            $rootScope.$emit("event:updateIgDate", data);
                             return data;
                         })
                         .error(function(data, status, headers, config) {
@@ -1179,7 +1180,7 @@ angular
 
                     var promise = $http(req)
                         .success(function(data, status, headers, config) {
-
+                            $rootScope.$emit("event:updateIgDate", data);
                             return data;
                         })
                         .error(function(data, status, headers, config) {
@@ -1214,7 +1215,7 @@ angular
                     }
                     var promise = $http(req)
                         .success(function(data, status, headers, config) {
-
+                            $rootScope.$emit("event:updateIgDate", data);
                             return data;
                         })
                         .error(function(data, status, headers, config) {

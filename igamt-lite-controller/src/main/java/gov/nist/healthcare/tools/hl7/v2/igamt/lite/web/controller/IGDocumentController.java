@@ -91,6 +91,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.EventWrapper;
@@ -397,9 +398,7 @@ public class IGDocumentController extends CommonController {
       igDocument.getShareParticipantIds().clear();
       igDocument.setScope(IGDocumentScope.USER);
       igDocument.setAccountId(account.getId());
-      igDocument.getMetaData().setDate(Constant.mdy.format(new Date()));
-      igDocumentService.save(igDocument);
-      return igDocument;
+      return igDocumentService.save(igDocument);
     } catch (UserAccountNotFoundException e) {
       throw new IGDocumentException(e);
     } catch (CloneNotSupportedException e) {
@@ -527,25 +526,6 @@ public class IGDocumentController extends CommonController {
 
   }
 
-  @RequestMapping(value = "/save", method = RequestMethod.POST)
-  public IGDocumentSaveResponse save(@RequestBody IGDocumentChangeCommand command)
-      throws IGDocumentSaveException {
-    try {
-      User u = userService.getCurrentUser();
-      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-      if (account == null)
-        throw new UserAccountNotFoundException();
-      log.info("Applying changes to IGDocument=" + command.getIgDocument().getId() + " for account="
-          + command.getIgDocument().getAccountId());
-      IGDocument saved = igDocumentService.apply(command.getIgDocument());
-      return new IGDocumentSaveResponse(saved.getMetaData().getDate(),
-          saved.getMetaData().getVersion());
-    } catch (RuntimeException e) {
-      throw new IGDocumentSaveException(e);
-    } catch (Exception e) {
-      throw new IGDocumentSaveException(e);
-    }
-  }
 
   @RequestMapping(value = "/{id}/export/xml", method = RequestMethod.POST, produces = "text/xml",
       consumes = "application/x-www-form-urlencoded; charset=UTF-8")
@@ -847,7 +827,7 @@ public class IGDocumentController extends CommonController {
 
   @RequestMapping(value = "/{id}/deleteMessage/{messageId}", method = RequestMethod.POST,
       produces = "application/json")
-  public boolean deleteMessage(@PathVariable("id") String id,
+  public Long deleteMessage(@PathVariable("id") String id,
       @PathVariable("messageId") String messageId, HttpServletRequest request,
       HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, IGDocumentException {
@@ -866,12 +846,12 @@ public class IGDocumentController extends CommonController {
     if (found != null) {
       messages.remove(found);
       igDocumentService.save(d);
-    }
-    return true;
+     }
+    return d.getDateUpdated().getTime();
   }
 
   @RequestMapping(value = "/{id}/metadata/save", method = RequestMethod.POST)
-  public boolean saveIgDocMetadata(@PathVariable("id") String id,
+  public Long saveIgDocMetadata(@PathVariable("id") String id,
       @RequestBody DocumentMetaData metaData, HttpServletRequest request,
       HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, IGDocumentException {
@@ -881,11 +861,11 @@ public class IGDocumentController extends CommonController {
     }
     d.setMetaData(metaData);
     igDocumentService.save(d);
-    return true;
+    return d.getDateUpdated().getTime();
   }
 
   @RequestMapping(value = "/{id}/profile/metadata/save", method = RequestMethod.POST)
-  public boolean saveProfileMetadata(@PathVariable("id") String id,
+  public Long saveProfileMetadata(@PathVariable("id") String id,
       @RequestBody ProfileMetaData metaData, HttpServletRequest request,
       HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, IGDocumentException {
@@ -894,45 +874,37 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentNotFoundException(id);
     }
     d.getProfile().setMetaData(metaData);
+    d.getProfile().setDateUpdated(DateUtils.getCurrentDate());
     igDocumentService.save(d);
-    return true;
-  }
+    return d.getDateUpdated().getTime();
+   }
 
   @RequestMapping(value = "/{id}/section/save", method = RequestMethod.POST)
-  public boolean saveSection(@PathVariable("id") String id, @RequestBody Section section,
+  public Long saveSection(@PathVariable("id") String id, @RequestBody Section section,
       HttpServletRequest request, HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, IGDocumentException {
     IGDocument d = igDocumentService.findOne(id);
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
     }
-    System.out.println(d.getChildSections());
-    System.out.println(d.getChildSections());
     Set<Section> newChildSection = d.getChildSections();
+    section.setDateUpdated(DateUtils.getCurrentDate());
     newChildSection.add(section);
     d.setChildSections(newChildSection);
-    System.out.println(d.getChildSections());
-    igDocumentService.save(d);
-    return true;
-  }
+    igDocumentService.save(d, section.getDateUpdated());
+    return d.getDateUpdated().getTime();
+   }
 
   @RequestMapping(value = "/{id}/section/update", method = RequestMethod.POST)
-  public boolean updateSection(@PathVariable("id") String id, @RequestBody Section section,
+  public Long updateSection(@PathVariable("id") String id, @RequestBody Section section,
       HttpServletRequest request, HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, IGDocumentException {
     IGDocument d = igDocumentService.findOne(id);
-    System.out.println("Section from front end ");
-
-    System.out.println("IN " + section.getSectionTitle());
-    for (Section sect : section.getChildSections()) {
-      System.out
-          .println(sect.getSectionTitle() + "===========positrion" + sect.getSectionPosition());
-    }
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
     }
     String idSect = section.getId();
-
+    section.setDateUpdated(new Date());
     // String msgInfraId= d.getProfile().getId();
     String conformaneId = d.getProfile().getMessages().getId();
     String dataTypesId = d.getProfile().getDatatypeLibrary().getId();
@@ -941,65 +913,27 @@ public class IGDocumentController extends CommonController {
 
     if (idSect.equalsIgnoreCase(conformaneId)) {
       d.getProfile().getMessages().setSectionContents(section.getSectionContents());
-
-      igDocumentService.save(d);
-      System.out.println(d.getProfile().getMessages().getSectionContents());
-
-      return true;
     } else if (idSect.equalsIgnoreCase(dataTypesId)) {
-
       d.getProfile().getDatatypeLibrary().setSectionContents(section.getSectionContents());
-      System.out.println("DTLib ID:::: " + d.getProfile().getDatatypeLibrary().getId());
       datatypeLibraryService.save(d.getProfile().getDatatypeLibrary());
-      System.out.println("DTLib ID after save:::: " + d.getProfile().getDatatypeLibrary().getId());
-
-      return true;
     } else if (idSect.equalsIgnoreCase(tableId)) {
-
       d.getProfile().getTableLibrary().setSectionContents(section.getSectionContents());
       tableLibraryService.save(d.getProfile().getTableLibrary());
-
-      return true;
     } else if (idSect.equalsIgnoreCase(segmentId)) {
-
       d.getProfile().getSegmentLibrary().setSectionContents(section.getSectionContents());
       segmentLibraryService.save(d.getProfile().getSegmentLibrary());
-      igDocumentService.save(d);
-      return true;
     } else {
-
-
-
-      System.out.println("===================BEFORE");
       Section s = findSection(d, idSect);
-      System.out.println("IN " + s.getSectionTitle());
-      for (Section sect : s.getChildSections()) {
-        System.out
-            .println(sect.getSectionTitle() + "===========positrion" + sect.getSectionPosition());
-      }
-
-
-      System.out.println(s);
       if (s == null)
         throw new IGDocumentException("Unknown Section");
-
-      s.merge(section);
-
-      System.out.println("two");
-      System.out.println("after============================");
-      System.out.println("IN " + s.getSectionTitle());
-      for (Section sect : s.getChildSections()) {
-        System.out
-            .println(sect.getSectionTitle() + "===========position" + sect.getSectionPosition());
-      }
-
-      igDocumentService.save(d);
-      return true;
+      s.merge(section); 
     }
+    igDocumentService.save(d, section.getDateUpdated());    
+    return d.getDateUpdated().getTime();
   }
 
   @RequestMapping(value = "/{id}/section/{sectionId}/delete", method = RequestMethod.POST)
-  public boolean updateSection(@PathVariable("id") String id,
+  public Long updateSection(@PathVariable("id") String id,
       @PathVariable("sectionId") String sectionId, HttpServletRequest request,
       HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, IGDocumentException {
@@ -1018,9 +952,9 @@ public class IGDocumentController extends CommonController {
         throw new IGDocumentException("Unknown Section");
       parent.getChildSections().remove(sect);
     }
-    igDocumentService.save(d);
-    return true;
-  }
+    igDocumentService.save(d);  
+    return d.getDateUpdated().getTime();
+   }
 
   private Section findSectionParent(IGDocument document, String sectionId) {
     for (Section section : document.getChildSections()) {
@@ -1082,23 +1016,20 @@ public class IGDocumentController extends CommonController {
 
 
   @RequestMapping(value = "/{id}/updateChildSections", method = RequestMethod.POST)
-  public String updateChildSections(@PathVariable("id") String id,
+  public Long updateChildSections(@PathVariable("id") String id,
       @RequestBody Set<Section> childSections)
       throws IOException, IGDocumentNotFoundException, IGDocumentException {
-    System.out.println(id);
-
     IGDocument d = igDocumentService.findOne(id);
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
     }
     d.setChildSections(childSections);
     igDocumentService.save(d);
-
-    return null;
+    return d.getDateUpdated().getTime();
   }
 
   @RequestMapping(value = "/{id}/reorderMessages", method = RequestMethod.POST)
-  public String reorderMessages(@PathVariable("id") String id,
+  public Long reorderMessages(@PathVariable("id") String id,
       @RequestBody Set<MessageMap> messages)
       throws IOException, IGDocumentNotFoundException, IGDocumentException, ProfileException {
 
@@ -1107,13 +1038,14 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentNotFoundException(id);
     }
 
+    Date date = DateUtils.getCurrentDate();
     Profile p = d.getProfile();
     Messages msgs = p.getMessages();
     for (Message m : msgs.getChildren()) {
       for (MessageMap x : messages) {
         if (m.getId().equals(x.getId())) {
           m.setPosition(x.getPosition());
-          messageService.save(m);
+          messageService.save(m,date);
         }
       }
     }
@@ -1125,10 +1057,10 @@ public class IGDocumentController extends CommonController {
     sortedSet.addAll(sortedList);
     msgs.setChildren(sortedSet);
     p.setMessages(msgs);
-    profileService.save(p);
+    profileService.save(p,date);
     d.setProfile(p);
-    igDocumentService.save(d);
-    return null;
+    igDocumentService.save(d,date);
+    return date.getTime();
   }
 
 
@@ -1167,7 +1099,6 @@ public class IGDocumentController extends CommonController {
       p.setMessages(msgs);
       d.setProfile(p);
       igDocumentService.save(d);
-
       if (newMessages.isEmpty()) {
         throw new NotFoundException("Message not found for event=" + eventWrapper.toString());
       }
@@ -1185,12 +1116,10 @@ public class IGDocumentController extends CommonController {
   }
 
   @RequestMapping(value = "/{id}/addMessages", method = RequestMethod.POST)
-  public String addMessages(@PathVariable("id") String id, @RequestBody Set<String> messageIds)
+  public Long addMessages(@PathVariable("id") String id, @RequestBody Set<String> messageIds)
       throws IOException, IGDocumentNotFoundException, IGDocumentException,
       CloneNotSupportedException {
 
-    System.out.println(id);
-    System.out.println();
     IGDocument d = igDocumentService.findOne(id);
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
@@ -1216,17 +1145,15 @@ public class IGDocumentController extends CommonController {
       e.printStackTrace();
     }
     igDocumentService.save(d);
-    return null;
+    return d.getDateUpdated().getTime();
   }
 
 
 
   @RequestMapping(value = "/{id}/reorderChildSections", method = RequestMethod.POST)
-  public String reorderChildSections(@PathVariable("id") String id,
+  public Long reorderChildSections(@PathVariable("id") String id,
       @RequestBody Set<SectionMap> sections)
       throws IOException, IGDocumentNotFoundException, IGDocumentException {
-    System.out.println(id);
-    System.out.println();
     IGDocument d = igDocumentService.findOne(id);
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
@@ -1242,23 +1169,16 @@ public class IGDocumentController extends CommonController {
     }
     List<Section> sortedList = new ArrayList<Section>();
     sortedList.addAll(d.getChildSections());
-
-    System.out.println("=========unsorted List=====================");
-    System.out.println(sortedList);
+ 
 
     PositionComparator comparator = new PositionComparator();
     Collections.sort(sortedList, comparator);
-
-    System.out.println("=========sorted List=====================");
-    System.out.println(sortedList);
+ 
     Set<Section> sortedSet = new HashSet<Section>();
     sortedSet.addAll(sortedList);
-    System.out.println("=========sorted set=====================");
-    System.out.println(sortedSet);
-    d.setChildSections(sortedSet);
-    System.out.println(d.getChildSections());
-    igDocumentService.save(d);
-    return null;
+     d.setChildSections(sortedSet);
+     igDocumentService.save(d);
+    return d.getDateUpdated().getTime();
   }
   
   /**
@@ -1292,7 +1212,7 @@ public class IGDocumentController extends CommonController {
     	  sendShareConfirmation(d, acc,account);
       }
       igDocumentService.save(d);
-      return true;
+       return true;
     } catch (Exception e) {
       log.error("", e);
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
@@ -1393,4 +1313,28 @@ public class IGDocumentController extends CommonController {
 	      log.error(ex.getMessage(), ex);
 	    }
 }
+  
+ /**
+  *  Update the IG document's date
+  * @param id
+  * @return
+  * @throws IGDocumentException
+  */
+  @RequestMapping(value = "/{id}/updateDate", method = RequestMethod.POST, produces = "application/json")
+  public Long updateDate(@PathVariable("id") String id)
+      throws IGDocumentException {
+    log.info("Updating date of ig document with id=" + id);
+    try {
+      User u = userService.getCurrentUser();
+      if (accountRepository.findByTheAccountsUsername(u.getUsername()) == null)
+        throw new UserAccountNotFoundException();
+      Date date = igDocumentService.updateDate(id, DateUtils.getCurrentDate());
+      return date.getTime();
+    } catch (Exception e) {
+      log.error("", e);
+      throw new IGDocumentException("Failed to update IG Document's date \n" + e.getMessage());
+    }
+  } 
+  
+ 
 }

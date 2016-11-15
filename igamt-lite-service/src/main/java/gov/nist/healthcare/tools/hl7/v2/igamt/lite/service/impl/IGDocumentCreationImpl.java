@@ -131,7 +131,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		DocumentMetaData metaData = metadata;
 		dTarget.setMetaData(metaData);
 		Date date = new Date();
-		metaData.setDate(Constant.mdy.format(date));
+		dTarget.setDateUpdated(new Date());
+		pTarget.setDateUpdated(new Date());
 		// metaData.setVersion("1.0");
 		// metaData.setIdentifier("Default Identifier");
 		// metaData.setSubTitle(metadata.getSubTitle());
@@ -140,7 +141,6 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// Setting profile metaData
 		ProfileMetaData profileMetaData = new ProfileMetaData();
 		pTarget.setMetaData(profileMetaData);
-		profileMetaData.setDate(Constant.mdy.format(date));
 		profileMetaData.setVersion("1.0");
 		profileMetaData.setName("Default name");
 		profileMetaData.setOrgName("Default org name");
@@ -216,6 +216,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		String hl7Version = dTarget.getProfile().getMetaData().getHl7Version();
 		IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
 		addMessages(msgEvts, dSource.getProfile(), dTarget.getProfile());
+		dTarget.setDateUpdated(new Date());
 		igdocumentRepository.save(dTarget);
 		return dTarget;
 	}
@@ -249,6 +250,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 				log.debug("Message.name=" + name);
 				m1.setName(name);
 				m1.setPosition(++maxPos);
+				m1.setDateUpdated(new Date());
 				messageRepository.save(m1);
 				log.info("a pos=" + m1.getPosition());
 				messages.addMessage(m1);

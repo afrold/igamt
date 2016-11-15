@@ -52,7 +52,6 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 		this.setUsageNote(p.getUsageNote());
 
 		DocumentMetaData documentMetaData = new DocumentMetaData();
-		documentMetaData.setDate(p.getMetaData().getDate());
 		documentMetaData.setExt(p.getMetaData().getExt());
 		documentMetaData.setSubTitle(p.getMetaData().getSubTitle());
 		documentMetaData.setTitle(p.getMetaData().getName());
@@ -149,7 +148,6 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 		this.setUsageNote(p.getUsageNote());
 
 		DocumentMetaData documentMetaData = new DocumentMetaData();
-		documentMetaData.setDate(p.getMetaData().getDate());
 		documentMetaData.setExt(p.getMetaData().getExt());
 		documentMetaData.setSubTitle(p.getMetaData().getSubTitle());
 		documentMetaData.setTitle(p.getMetaData().getName());

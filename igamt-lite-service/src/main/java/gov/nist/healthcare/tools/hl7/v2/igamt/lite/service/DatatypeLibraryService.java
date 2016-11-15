@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -25,38 +26,39 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 @Service
 public interface DatatypeLibraryService {
 
-  List<DatatypeLibrary> findAll();
+	List<DatatypeLibrary> findAll();
 
-  List<DatatypeLibrary> findByScope(SCOPE scope, Long accountId);
+	List<DatatypeLibrary> findByScope(SCOPE scope, Long accountId);
 
-  DatatypeLibrary findById(String id);
+	DatatypeLibrary findById(String id);
 
-  List<DatatypeLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	List<DatatypeLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-  List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version);
+	List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version);
 
-  DatatypeLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
+	DatatypeLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
 
-  List<String> findHl7Versions();
+	List<String> findHl7Versions();
 
-  List<DatatypeLink> bindDatatypes(Set<String> datatypeIds, String datatyeLibraryId,
-      String datatypeLibraryExt, Long accountId);
+	List<DatatypeLink> bindDatatypes(Set<String> datatypeIds, String datatyeLibraryId, String datatypeLibraryExt,
+			Long accountId);
 
-  void delete(String id);
+	void delete(String id);
 
-  List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name, Long accountId);
+	List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name, Long accountId);
 
-  List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version, String name,
-      Long accountId);
+	List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version, String name, Long accountId);
 
-  DatatypeLibrary save(DatatypeLibrary library);
+	DatatypeLibrary save(DatatypeLibrary library);
 
-  List<Datatype> getChildren(String id);
+	List<Datatype> getChildren(String id);
 
-  DatatypeLibrary saveMetaData(String libId, DatatypeLibraryMetaData datatypeLibraryMetaData);
+	DatatypeLibrary saveMetaData(String libId, DatatypeLibraryMetaData datatypeLibraryMetaData);
 
-  void delete(DatatypeLibrary library);
+	void delete(DatatypeLibrary library);
 
-  List<Datatype> findDatatypesById(String libId);
+	List<Datatype> findDatatypesById(String libId);
+
+	DatatypeLibrary save(DatatypeLibrary library, Date dateUpdated);
 
 }

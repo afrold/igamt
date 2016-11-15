@@ -60,8 +60,7 @@ public class DocumentMetaData extends MetaData implements java.io.Serializable, 
     clonedDocumentMetaData.setSubTitle(subTitle);
     clonedDocumentMetaData.setTitle(title);
     clonedDocumentMetaData.setVersion(this.getHl7Version());
-    clonedDocumentMetaData.setDate(this.getDate());
-    clonedDocumentMetaData.setExt(this.getExt());
+     clonedDocumentMetaData.setExt(this.getExt());
     clonedDocumentMetaData.setIdentifier(identifier);
     clonedDocumentMetaData.setOrgName(this.getOrgName());
     clonedDocumentMetaData.setSpecificationName(specificationName);

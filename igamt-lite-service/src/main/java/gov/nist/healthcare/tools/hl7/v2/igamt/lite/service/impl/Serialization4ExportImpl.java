@@ -81,6 +81,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -222,8 +223,8 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				elmMetaData.addAttribute(new Attribute("Subtitle", metaDataObj.getSubTitle()));
 			if (metaDataObj.getVersion() != null)
 				elmMetaData.addAttribute(new Attribute("DocumentVersion", metaDataObj.getVersion()));
-			if (metaDataObj.getDate() != null)
-				elmMetaData.addAttribute(new Attribute("Date", metaDataObj.getDate()));
+			if (igdoc.getDateUpdated() != null)
+				elmMetaData.addAttribute(new Attribute("Date", DateUtils.format(igdoc.getDateUpdated())));
 			if (metaDataObj.getExt() != null)
 				elmMetaData.addAttribute(new Attribute("Ext", metaDataObj.getExt()));
 		}
@@ -329,8 +330,8 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				elmMetaData.addAttribute(new Attribute("Subtitle", metaDataObj.getSubTitle()));
 			if (metaDataObj.getVersion() != null)
 				elmMetaData.addAttribute(new Attribute("Version", metaDataObj.getVersion()));
-			if (metaDataObj.getDate() != null)
-				elmMetaData.addAttribute(new Attribute("Date", metaDataObj.getDate()));
+			if (igdoc.getDateUpdated() != null)
+				elmMetaData.addAttribute(new Attribute("Date", DateUtils.format(igdoc.getDateUpdated())));
 			if (metaDataObj.getExt() != null)
 				elmMetaData.addAttribute(new Attribute("Ext", metaDataObj.getExt()));
 			if (profile.getComment() != null && !profile.getComment().equals("")) {
@@ -876,8 +877,8 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				elmMetaData.addAttribute(new Attribute("Subtitle", metaDataObj.getSubTitle()));
 			if (metaDataObj.getVersion() != null)
 				elmMetaData.addAttribute(new Attribute("Version", metaDataObj.getVersion()));
-			if (metaDataObj.getDate() != null)
-				elmMetaData.addAttribute(new Attribute("Date", metaDataObj.getDate()));
+			if (profile.getDateUpdated() != null)
+				elmMetaData.addAttribute(new Attribute("Date", DateUtils.format(profile.getDateUpdated())));
 			if (metaDataObj.getExt() != null)
 				elmMetaData.addAttribute(new Attribute("Ext", metaDataObj.getExt()));
 			if (profile.getComment() != null && !profile.getComment().equals("")) {
@@ -1899,9 +1900,9 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 		this.generateProfileIS(out, this.serializeProfileToXML(profile));
 		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile.getTableLibrary(),
-				new DocumentMetaData()));
-		this.generateConstraintsIS(out,
-				new ConstraintsSerializationImpl().serializeConstraintsToXML(profile, new DocumentMetaData()));
+				new DocumentMetaData(), profile.getDateUpdated()));
+		this.generateConstraintsIS(out, new ConstraintsSerializationImpl().serializeConstraintsToXML(profile,
+				new DocumentMetaData(), profile.getDateUpdated()));
 
 		out.close();
 		bytes = outputStream.toByteArray();

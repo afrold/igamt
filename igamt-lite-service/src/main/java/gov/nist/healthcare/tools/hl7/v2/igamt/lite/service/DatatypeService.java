@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -19,29 +20,32 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 public interface DatatypeService {
 
-  Datatype findById(String id);
+	Datatype findById(String id);
 
-  Datatype save(Datatype datatype);
+	Datatype save(Datatype datatype);
 
-  List<Datatype> findAll();
+	List<Datatype> findAll();
 
-  List<Datatype> findByIds(Set<String> ids);
+	List<Datatype> findByIds(Set<String> ids);
 
-  List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-  void delete(Datatype dt);
+	void delete(Datatype dt);
 
-  void delete(String id);
+	void delete(String id);
 
-  void save(List<Datatype> datatypes);
+	void save(List<Datatype> datatypes);
 
-  Set<Datatype> collectDatatypes(Datatype datatype);
+	Set<Datatype> collectDatatypes(Datatype datatype);
 
-  List<Datatype> findByScope(String scope);
+	List<Datatype> findByScope(String scope);
 
-  Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+	Datatype findByNameAndVersionAndScope(String name, String version, String scope);
 
-  Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
+	Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
 
+	Date updateDate(String id, Date date) throws IGDocumentException;
+
+	Datatype save(Datatype datatype, Date date);
 
 }
