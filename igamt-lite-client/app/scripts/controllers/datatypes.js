@@ -1114,12 +1114,16 @@ angular.module('igl')
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
                 DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
-                	DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                	//DatatypeService.merge($rootScope.datatypesMap[result.id], result);
                     DatatypeService.merge($rootScope.datatype, result);
-                    DatatypeService.saveNewElements().then(function() {
-                        if ($scope.datatypesParams){
+                    console.log("datatype.components");
+                    console.log($rootScope.datatype.components);
+                     if ($scope.datatypesParams){
                             $scope.datatypesParams.refresh();
                         }
+
+                    DatatypeService.saveNewElements().then(function() {
+            
 
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;

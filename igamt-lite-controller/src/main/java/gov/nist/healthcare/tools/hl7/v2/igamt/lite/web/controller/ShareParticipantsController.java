@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission.Permission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
@@ -201,6 +203,7 @@ public class ShareParticipantsController {
 	    	if(p.getAccountId() == account.getId()) {
 	    		p.setPendingApproval(false);
 	    		datatypeService.save(d);
+	    		ShareDerived(d,account.getId());
 	    		// Find author
 	    		Account acc = accountRepository.findOne(d.getAccountId());
 	    		// Send share confirmation email
@@ -215,7 +218,30 @@ public class ShareParticipantsController {
    return false;
  }
  
- /**
+ private void ShareDerived(Datatype d,Long accountId) throws Exception {
+	// TODO Auto-generated method stub
+	 if(d.getComponents().isEmpty()){
+		 
+	 }else{
+		 for(Component c:d.getComponents()){
+			 if(c.getDatatype()!=null){
+				 try{
+				 Datatype temp=datatypeService.findById(c.getDatatype().getId());
+	    		  temp.getShareParticipantIds().add(new ShareParticipantPermission(accountId, Permission.VIEW, false));
+	    		  ShareDerived(temp, accountId);
+	    		  datatypeService.save(temp);
+				 }catch(Exception e) {
+				       log.error("", e);
+				   }
+			 }
+		 }
+	 }
+	 
+	 
+	
+}
+
+/**
   * Link for share confirmation email
   * @throws Exception 
   */

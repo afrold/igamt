@@ -39,10 +39,11 @@ angular
         });
 
             $scope.init=function(){
+                $rootScope.datatype=null;
                 $scope.getSharedDatatypes();
                 $scope.SharedtocView='sharedtocView.html';
                 $scope.Sharedsubview = "datatypePending.html";
-                $scope.SharedDataTypeTree.push( $scope.library);
+                $scope.SharedDataTypeTree=[$scope.library];
             }
 
             $scope.getSharedDatatypes = function(){
@@ -103,17 +104,29 @@ angular
                 });
             };
 
-        $scope.selectDatatype = function(datatype) {
+            $scope.selectDatatype = function (datatype) {
+                $rootScope.datatype = angular.copy(datatype);
+            console.log(datatype);
             $rootScope.Activate(datatype.id);
-            $scope.Sharedsubview="EditDatatypes.html";
+            $scope.Sharedsubview = "EditDatatypes.html";
+            if (datatype && datatype != null) {
+                $scope.loadingSelection = true;
+                blockUI.start();
+                $timeout(
+                    function () {
+  
+                                
+                                $rootScope.$emit("event:initDatatype");
 
+                                $rootScope.currentData = datatype;
 
-
-
-
-                                //$rootScope.datatype.ext = $rootScope.getDatatypeExtension($rootScope.datatype);
                                 $scope.loadingSelection = false;
                                 $rootScope.datatype["type"] = "datatype";
+                                $rootScope.tableWidth = null;
+                                $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                                $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                                $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                                $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 890);
                                 $scope.loadingSelection = false;
                                 try {
                                     if ($scope.datatypesParams)
@@ -123,16 +136,20 @@ angular
                                 }
                                 $rootScope.references = [];
                                 $rootScope.tmpReferences = [].concat($rootScope.references);
-
-                                angular.forEach($rootScope.datatypes, function(dt) {
-                                    if (dt && dt != null && dt.id !== $rootScope.datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt), dt);
-                                });
-
                                 $rootScope.tmpReferences = [].concat($rootScope.references);
 
                                 $rootScope.$emit("event:initEditArea");
 
+                                blockUI.stop();
+                          
+                        } 
+                    , 100);
 
+                setTimeout(function () {
+                    $scope.$broadcast('reCalcViewDimensions');
+                    console.log("refreshed Slider!!");
+                }, 1000);
+            }
         };
 
 

@@ -441,6 +441,61 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 //            $scope.addedDatatypes.push($scope.addedItem);
 //        };
 //      
+
+
+       $rootScope.getDerived = function(element) {
+            try {
+                if (element && element.type && element.type === "datatype") {
+
+                    angular.forEach(element.components, function(component) {
+                        $rootScope.getDerived(component);
+                    });
+                } else if (element && element.type && element.type === "component") {
+                	
+                    if (element.tables&&element.tables != null) {
+                    	angular.forEach(element.tables, function(table){
+                            $rootScope.linksForTables.push(table);
+
+                    	});
+
+
+                    }
+                    if (element.datatype !== null || element.datatype !== undefined) {
+                        var newLink = angular.fromJson({
+                            id: element.datatype.id,
+                            name: element.datatype.name,
+                            ext: element.datatype.ext
+                        });
+
+                        $scope.getDatatypeById(element.datatype.id).then(function(result) {
+
+                            DatatypeLibrarySvc.addChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
+                                if (!$rootScope.datatypesMap[element.datatype.id] || $rootScope.datatypesMap[element.datatype.id] === undefined) {
+                                    $rootScope.datatypes.push(result);
+                                    $rootScope.datatypesMap[element.datatype.id] = result;
+                                    $rootScope.getDerived(result);
+
+
+                                }
+
+                            }, function(error) {
+                                $rootScope.saving = false;
+                                $rootScope.msg().text = error.data.text;
+                                $rootScope.msg().type = error.data.type;
+                                $rootScope.msg().show = true;
+                            });
+
+                        });
+                    }
+
+                }
+
+            } catch (e) {
+                throw e;
+            }
+
+        };
+
         $scope.hasUnpublishedCopy= function(dt){
         	var res= false;
         

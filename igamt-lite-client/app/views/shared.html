@@ -14,7 +14,7 @@
 <div class="container" ng-init="init()">
 
             <tabset>
-                <tab active="datatype" select="select(dtTab)">
+                <tab active="dt" select="select(dtTab)">
                     <tab-heading ng-click="setTypeOfSharing('datatype');">
                         Datatypes
                     </tab-heading>
@@ -91,7 +91,7 @@
                 </div>
 
                 <ol ui-tree-nodes="" ng-model="datatypes">
-                    <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
+                    <li ng-repeat="data in datatypes track by $index" ui-tree-node ng-if="!collapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated">
                           <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span><span ng-if="versionAndUseMap[data.id].deprecated" class="badge">v{{versionAndUseMap[data.id].publicationVersion}}</span>
@@ -134,11 +134,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="datatype in pendingDatatypes track by datatype.id">
+      <tr ng-repeat="datatype in pendingDatatypes track by $index">
         <td st-ratio="5">{{$index + 1}}</td>
         <td st-ratio="15"> {{datatype.name}} </td>
         <td st-ratio="30" ng-bind="datatype.description"></td>
-        <td st-ratio="10" st-sort="cp"><span style="margin-left:5px ;    color: white !important;" class="badge">{{datatype.components.length}} </span></td>
+        <td st-ratio="10" st-sort="cp"><span style="margin-left:5px ;color: white !important;" class="badge">{{datatype.components.length}} </span></td>
         <td st-ratio="10" ng-bind="datatype.hl7Version"></td>
         <td st-ratio="30">
           <button title="Approve Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-success" ng-click="confirmShareDocument(datatype)"> <span><i class="fa fa-check fa-fw" aria-hidden="true"></i> Accept </span> </button>

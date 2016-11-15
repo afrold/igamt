@@ -123,7 +123,7 @@ angular.module('igl').factory(
 
             DatatypeService.save(newDatatype).then(function (result) {
                 newDatatype = result;
-                var newLink = angular.copy(DatatypeLibrarySvc.findOneChild(datatype.id, $rootScope.datatypeLibrary.children));
+                var newLink = {};
                 newLink.id = newDatatype.id;
                 newLink.ext = newDatatype.ext;
                 DatatypeLibrarySvc.addChild($rootScope.datatypeLibrary.id, newLink).then(function (link) {
