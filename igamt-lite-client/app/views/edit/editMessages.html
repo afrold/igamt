@@ -1266,6 +1266,9 @@
                 <div class="panel panel-default" data-drop="true"  data-jqyoui-options ng-model="treeDataForContext" jqyoui-droppable="{beforeDrop: 'beforeContextDrop', onDrop: 'afterContextDrop'}">
                     <div class="panel-heading">Selected Context</div>
                     <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
+                        <div ng-show="draggingStatus == 'MessageTreeNodeDragging'">
+                            <span style="color:red;" class="blink_me">You can drop here!!</span>
+                        </div>
                         <div ng-show="treeDataForContext.length > 0">
                             <table class="table table-striped">
                                 <tbody ng-repeat="data in treeDataForContext" ng-include="'context_tree_item.html'">
@@ -1273,8 +1276,7 @@
                             </table>
                         </div>
                         <div ng-show="treeDataForContext.length == 0">
-                            <h3>No Selected Context</h3>
-                            <h4>Please drop Message or Group from Full Message Tree.</h4>
+                            <span style="color:red;">No Selected Context</span>
                         </div>
                     </div>
                 </div>
@@ -1347,7 +1349,10 @@
                             <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text"/>
                             <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
                         </td>
-                        <td class="col-md-2" data-drop="true"  data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{onDrop: 'afterNodeDrop'}">
+                        <td class="col-md-2" data-drop="true"  data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterNodeDrop'}">
+                            <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
+                                <span style="color:red;" class="blink_me">You can drop here!!</span>
+                            </div>
                             <div ng-show="newConstraint.location_1">
                                 <input class="form-control" ng-model="newConstraint.location_1" type="text"/>
                                 <input class="form-control" ng-model="newConstraint.position_1" type="text"/>
@@ -1426,7 +1431,7 @@
                             </span>
                         </td>
                         <td class="col-md-2"
-                            data-drop="true"  data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{onDrop: 'afterSecondNodeDrop'}"
+                            data-drop="true"  data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
                             ng-show="newConstraint.contraintType == 'identical to another node' ||
                                      newConstraint.contraintType == 'equal to another node' ||
                                      newConstraint.contraintType == 'not-equal to another node' ||
@@ -1434,6 +1439,9 @@
                                      newConstraint.contraintType == 'equal to or greater than another node' ||
                                      newConstraint.contraintType == 'less than another node' ||
                                      newConstraint.contraintType == 'equal to or less than another node'">
+                            <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
+                                <span style="color:red;" class="blink_me">You can drop Here!!</span>
+                            </div>
                             <div ng-show="secondNodeData">
                                 <input class="form-control" ng-model="newConstraint.location_2" type="text"/>
                                 <input class="form-control" ng-model="newConstraint.position_2" type="text"/>
@@ -1491,7 +1499,7 @@
         </td>
         <td>
                 <div ng-if="data.type === 'message'">
-                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
                         <span class="label label-success label-icon">M</span>
                         <span>&nbsp;[1..1]&nbsp;{{::data.name}}</span>
                     </div>
@@ -1502,7 +1510,7 @@
                     </div>
                 </div>
                 <div ng-if="data.type === 'group'">
-                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
                         <span class="label label-success label-icon">G</span>
                         <span>&nbsp;[{{::data.min}}..{{::data.max}}]&nbsp;{{::data.name}}</span>
                     </div>
@@ -1513,7 +1521,7 @@
                     </div>
                 </div>
                 <div ng-if="data.type === 'segmentRef'">
-                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
                         <span class="label label-segment label-icon">S</span>
                         <span>&nbsp;[{{::data.min}}..{{::data.max}}]&nbsp;{{::segmentsMap[data.ref.id].name}}</span>
                     </div>
@@ -1524,7 +1532,7 @@
                     </div>
                 </div>
                 <div ng-if="data.type === 'field'">
-                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
                         <span class="label label-field label-icon">F</span>
                         <span>&nbsp;[{{::data.min}}..{{::data.max}}]&nbsp;{{::data.position}}. {{::data.name}}</span>
                     </div>
@@ -1535,7 +1543,7 @@
                     </div>
                 </div>
                 <div ng-if="data.type === 'component'">
-                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
                         <span class="label label-component label-icon">C</span>
                         <span>&nbsp;{{::data.position}}. {{::data.name}}</span>
                     </div>
@@ -1563,7 +1571,7 @@
             </td>
             <td>
                 <div ng-if="data.type !== 'segmentRef'" >
-                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                    <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromMessageTree({nodeData: data})'}">
                         <span ng-show="data.type === 'group'" class="label label-success label-icon">G</span>
                         <span ng-show="data.type === 'group'">&nbsp;[{{::data.min}}..{{::data.max}}]&nbsp;{{::data.name}}</span>
                         <span ng-show="data.type === 'message'" class="label label-success label-icon">M</span>

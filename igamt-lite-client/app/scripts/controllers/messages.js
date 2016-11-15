@@ -1349,12 +1349,12 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.targetContext = null;
     $scope.treeDataForMessage = [];
     $scope.treeDataForContext = [];
-    $scope.backupTreeDataForContext = null;
     $scope.constraintType = 'Plain';
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
     $scope.changed = false;
     $scope.treeDataForMessage.push($scope.selectedMessage);
+    $scope.draggingStatus = null;
 
     $scope.setChanged = function() {
         $scope.changed = true;
@@ -1367,84 +1367,128 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
 
     $scope.beforeContextDrop = function() {
         var deferred = $q.defer();
-        $scope.backupTreeDataForContext = $scope.treeDataForContext;
-        $scope.treeDataForContext = [];
 
-        deferred.resolve();
+        if($scope.draggingStatus === 'MessageTreeNodeDragging') {
+            $scope.treeDataForContext = [];
+            deferred.resolve();
+        }else {
+            deferred.reject();
+        }
+        return deferred.promise;
+    };
+
+    $scope.beforeNodeDrop = function() {
+        var deferred = $q.defer();
+        if($scope.draggingStatus === 'ContextTreeNodeDragging') {
+            deferred.resolve();
+        }else {
+            deferred.reject();
+        }
         return deferred.promise;
     };
 
     $scope.afterContextDrop = function() {
-        if(!$scope.treeDataForContext[0].positionPath) {
-            $scope.targetContext = $scope.treeDataForContext[0];
-            $scope.treeDataForContext[0] = angular.copy($scope.treeDataForContext[0]);
-        }else {
-            $scope.treeDataForContext = $scope.backupTreeDataForContext;
-        }
-        $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".");
+        $scope.draggingStatus = null;
+        $scope.targetContext = $scope.treeDataForContext[0];
+        $scope.treeDataForContext[0] = angular.copy($scope.treeDataForContext[0]);
+        $scope.treeDataForContext[0].pathInfoSet = [];
+        $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
     };
 
     $scope.afterNodeDrop = function () {
-        if($scope.firstNodeData.positionPath){
-            $scope.newConstraint.position_1 = $scope.firstNodeData.positionPath.replace("..", "");
-            $scope.newConstraint.location_1 = $scope.firstNodeData.locationPath.replace("..", "") + "(" + $scope.firstNodeData.targetName + ")";
-        }
+        $scope.draggingStatus = null;
+
+
+        console.log($scope.firstNodeData.pathInfoSet);
+
+        // $scope.newConstraint.position_1 = $scope.firstNodeData.positionPath.replace("..", "");
+        // $scope.newConstraint.location_1 = $scope.firstNodeData.locationPath.replace("..", "") + "(" + $scope.firstNodeData.targetName + ")";
     };
 
     $scope.afterSecondNodeDrop = function () {
-        if($scope.secondNodeData.positionPath){
-            $scope.newConstraint.position_2 = $scope.secondNodeData.positionPath.replace("..", "");
-            $scope.newConstraint.location_2 = $scope.secondNodeData.locationPath.replace("..", "") + "(" + $scope.secondNodeData.targetName + ")";
-        }
+        $scope.draggingStatus = null;
+
+
+        // $scope.newConstraint.position_2 = $scope.secondNodeData.positionPath.replace("..", "");
+        // $scope.newConstraint.location_2 = $scope.secondNodeData.locationPath.replace("..", "") + "(" + $scope.secondNodeData.targetName + ")";
     };
 
-    $scope.generatePathInfo = function(current, positionPath, locationPath) {
-        current.positionPath = positionPath;
-        current.locationPath = locationPath;
-        current.targetName = current.name;
+    $scope.draggingNodeFromMessageTree = function (event, ui, nodeData) {
+        $scope.draggingStatus = 'MessageTreeNodeDragging';
+    };
+
+    $scope.draggingNodeFromContextTree = function (event, ui, nodeData) {
+        $scope.draggingStatus = 'ContextTreeNodeDragging';
+    };
+
+    $scope.generatePathInfo = function(current, positionNumber, locationName, instanceNumber, isInstanceNumberEditable, nodeName) {
+        var pathInfo = {};
+        pathInfo.positionNumber = positionNumber;
+        pathInfo.locationName = locationName;
+        pathInfo.nodeName = nodeName;
+        pathInfo.instanceNumber = instanceNumber;
+        pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
+        current.pathInfoSet.push(pathInfo);
 
         if(current.type == 'message' || current.type == 'group'){
             for(var i in current.children){
                 var segGroup = current.children[i];
-                var cardi = '1';
-                if(segGroup.max != '1') cardi = '*';
-                var newPositionPath = positionPath + '.' + segGroup.position + '[' + cardi + ']';
-                var newLocationPath = '';
+                segGroup.pathInfoSet = angular.copy(current.pathInfoSet);
+                var childPositionNumber = segGroup.position;
+                var childLocationName = '';
+                var childNodeName = '';
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
+                if(segGroup.max != '1') {
+                    childInstanceNumber = '*';
+                    childisInstanceNumberEditable = true;
+                }
                 if(segGroup.type == 'group'){
-                    newLocationPath = '.' + segGroup.name + '[' + cardi + ']';
+                    childNodeName = segGroup.name;
+                    childLocationName = segGroup.name.substr(segGroup.name.lastIndexOf('.') + 1);
                 }else {
                     var s = angular.copy($rootScope.segmentsMap[segGroup.ref.id]);
                     s.id = new ObjectId().toString();
-                    newLocationPath = locationPath + '.' + s.name + '[' + cardi + ']';
+                    childLocationName = s.name;
+                    childNodeName = s.name;
                     segGroup.segment = s;
-
                 }
-                $scope.generatePathInfo(segGroup, newPositionPath, newLocationPath);
+                $scope.generatePathInfo(segGroup, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
         }else if(current.type == 'segmentRef'){
             var seg = current.segment;
             for(var i in seg.fields){
                 var f = seg.fields[i];
-                var cardi = '1';
-                if(f.max != '1') cardi = '*';
-                var newPositionPath = positionPath + '.' + f.position + '[' + cardi + ']';
-                var newLocationPath = locationPath + '-' + f.position + '[' + cardi + ']';
+                f.pathInfoSet = angular.copy(current.pathInfoSet);
+
+                var childPositionNumber = f.position;
+                var childLocationName = f.position;
+                var childNodeName = f.name;
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
+                if(f.max != '1') {
+                    childInstanceNumber = '*';
+                    childisInstanceNumberEditable = true;
+                }
                 var child = $rootScope.datatypesMap[f.datatype.id];
                 child.id = new ObjectId().toString();
                 f.child = child;
-                $scope.generatePathInfo(f, newPositionPath, newLocationPath);
+                $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
         }else if(current.type == 'field' || current.type == 'component'){
             var dt = current.child;
             for(var i in dt.components){
                 var c = dt.components[i];
-                var cardi = '1';
-                var newPositionPath = positionPath + '.' + c.position + '[' + cardi + ']';
-                var newLocationPath = locationPath + '.' + c.position + '[' + cardi + ']';
+                c.pathInfoSet = angular.copy(current.pathInfoSet);
+                var childPositionNumber = c.position;
+                var childLocationName = c.position;
+                var childNodeName = c.name;
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
                 var child = $rootScope.datatypesMap[c.datatype.id];
                 child.id = new ObjectId().toString();
                 c.child = child;
-                $scope.generatePathInfo(c, newPositionPath, newLocationPath);
+                $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
         }
     };
