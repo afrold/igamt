@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import org.apache.commons.io.FileUtils;
@@ -35,20 +36,20 @@ public class IGDocumentExportTest {
     //57450d2ed4c6f57e6980e821
 
     @Autowired IGDocumentService igDocumentService;
-    @Autowired IGDocumentExportService igDocumentExportService;
+    @Autowired ExportService exportService;
 
     @Test
     public void testHtmlExport(){
-        IGDocument igDocument = igDocumentService.findById("57450d11d4c6f57e6950bfea");
+        IGDocument igDocument = igDocumentService.findById("57450d0ed4c6f57e694df8d4");
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
-            File htmlFile = new File("tmp/ig_test.html");
+            File htmlFile = new File("test/ig_test.html");
             if(htmlFile.exists()){
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(igDocumentExportService
-                    .exportAsHtml(igDocument), htmlFile);
+                FileUtils.copyInputStreamToFile(exportService
+                    .exportIGDocumentAsHtml(igDocument), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,14 +57,29 @@ public class IGDocumentExportTest {
     }
     @Test
     public void testDocxExport(){
-        IGDocument igDocument = igDocumentService.findById("57450d11d4c6f57e6950bfea");
+        IGDocument igDocument = igDocumentService.findById("57450d0ed4c6f57e694df8d4");
         try {
-            File wordFile = new File("tmp/ig_test.docx");
+            File wordFile = new File("test/ig_test.docx");
             if(wordFile.exists()){
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(igDocumentExportService.exportAsDocx(igDocument), wordFile);
+                FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument), wordFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testXmlExport(){
+        IGDocument igDocument = igDocumentService.findById("57450d0ed4c6f57e694df8d4");
+        try {
+            File xmlFile = new File("test/ig_test.xml");
+            if(xmlFile.exists()){
+                xmlFile.delete();
+            }
+            if(xmlFile.createNewFile()) {
+                FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsXml(igDocument), xmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +20,7 @@ import java.io.InputStream;
  * <p>
  * Created by Maxence Lefort on 11/01/16.
  */
+@Service
 public interface ExportService {
 
     InputStream exportIGDocumentAsDocx(IGDocument igDocument) throws IOException;

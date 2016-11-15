@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -40,20 +41,19 @@ public class DataTypeLibraryExportTest  {
     @Autowired
     DatatypeLibraryDocumentService datatypeLibraryDocumentService;
 
-    @Autowired
-    IGDocumentExportService igDocumentExportService;
+    @Autowired ExportService exportService;
 
     @Test
     public void testHtmlExport(){
         DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57b758a884aebc6c9d582cd3");
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
-            File htmlFile = new File("tmp/test.html");
+            File htmlFile = new File("test/dl_test.html");
             if(htmlFile.exists()){
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(igDocumentExportService.exportAsHtmlDatatypeLibraryDocument(datatypeLibraryDocument), htmlFile);
+                FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsHtml(datatypeLibraryDocument), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,12 +63,12 @@ public class DataTypeLibraryExportTest  {
     public void testDocxExport(){
         DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57b758a884aebc6c9d582cd3");
         try {
-            File wordFile = new File("tmp/test.docx");
+            File wordFile = new File("test/dl_test.docx");
             if(wordFile.exists()){
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(igDocumentExportService.exportAsDocxDatatypeLibraryDocument(datatypeLibraryDocument), wordFile);
+                FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsDocx(datatypeLibraryDocument), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
