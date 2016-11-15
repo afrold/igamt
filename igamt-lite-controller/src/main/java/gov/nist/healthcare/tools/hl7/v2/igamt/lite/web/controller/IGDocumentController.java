@@ -81,6 +81,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PhinvadsWSCallService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
@@ -114,6 +115,9 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   private IGDocumentExportService igDocumentExport;
+
+  @Autowired
+  private ExportService exportService;
 
   @Autowired
   private IGDocumentConfiguration igDocumentConfig;
@@ -534,7 +538,7 @@ public class IGDocumentController extends CommonController {
     log.info("Exporting as xml file IGDcoument with id=" + id);
     IGDocument d = this.findIGDocument(id);
     InputStream content = null;
-    content = igDocumentExport.exportAsXml(d);
+    content = exportService.exportIGDocumentAsXml(d);
     response.setContentType("text/xml");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
@@ -549,7 +553,7 @@ public class IGDocumentController extends CommonController {
     log.info("Exporting as html file IGDcoument with id=" + id);
     IGDocument d = this.findIGDocument(id);
     InputStream content = null;
-    content = igDocumentExport.exportAsHtml(d);
+    content = exportService.exportIGDocumentAsHtml(d);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
@@ -647,7 +651,7 @@ public class IGDocumentController extends CommonController {
     log.info("Exporting as docx file profile with id=" + id);
     IGDocument d = findIGDocument(id);
     InputStream content = null;
-    content = igDocumentExport.exportAsDocx(d);
+    content = exportService.exportIGDocumentAsDocx(d);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
@@ -1223,7 +1227,7 @@ public class IGDocumentController extends CommonController {
    * Unshare one participant
    * 
    * @param id
-   * @param participantId
+   * @param shareParticipantId
    * @return
    * @throws IGDocumentException
    */
