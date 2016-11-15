@@ -78,7 +78,7 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportIGDocumentAsXml(IGDocument d) throws IOException {
         if (d != null) {
             return IOUtils.toInputStream(
-                profileSerializationService.serializeProfileToXML(d.getProfile(), d.getMetaData()));
+                profileSerializationService.serializeProfileToXML(d.getProfile(), d.getMetaData(),d.getDateUpdated()));
         } else {
             return new NullInputStream(1L);
         }
