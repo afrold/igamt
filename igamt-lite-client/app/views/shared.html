@@ -22,17 +22,17 @@
                     <div ng-include="sharedElementView"></div>
                     </div>
                 </tab>
-                <tab active="segment" select="select(segTab)">
-                    <tab-heading>
-                        Segments
-                    </tab-heading>
-                    <!--<div ng-include="'views/edit/editIG.html'"></div>-->
-                </tab>
                  <tab active="table" select="select(vsTabe)">
                     <tab-heading>
                         Value Sets
                     </tab-heading>
                     <!--<div ng-include="'views/edit/editIG.html'"></div>-->
+                </tab>
+                <tab active="segment" select="select(segTab)">
+                  <tab-heading>
+                    Segments
+                  </tab-heading>
+                  <!--<div ng-include="'views/edit/editIG.html'"></div>-->
                 </tab>
             </tabset>
 </div>
@@ -83,7 +83,12 @@
 
 <script type="text/ng-template" id="sharedtocView.html">
     <div ui-tree ng-controller="TreeCtrl" style="margin-left:5px;">
-        <span style="font-size:18px;" data-nodrag ng-click="editSharedMetadata()"><strong>Shared Datatype</strong></span>
+      <div>
+        <span style="font-size:18px;" data-nodrag ng-click="showPending()"><strong>Pending requests</strong></span>
+      </div>
+      <div style="margin-top:10px;">
+        <span style="font-size:18px;" data-nodrag><strong>Shared Datatypes</strong></span>
+      </div>
         <ol ui-tree-nodes="" ng-model="SharedDataTypeTree">
             <li ng-repeat="dataLibrary in SharedDataTypeTree" ui-tree-node>
                 <div ui-tree-handle data-nodrag>

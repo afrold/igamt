@@ -13,14 +13,14 @@ angular
             $rootScope.datatype={};
             $rootScope.datatypesMap={};
             $rootScope.TablesMap={};
-        $scope.datatypesParams = new ngTreetableParams({
-            getNodes: function(parent) {
-                return DatatypeService.getNodes(parent, $rootScope.datatype);
-            },
-            getTemplate: function(node) {
-                return DatatypeService.getTemplate(node, $rootScope.datatype);
-            }
-        });
+            $scope.datatypesParams = new ngTreetableParams({
+              getNodes: function(parent) {
+                  return DatatypeService.getNodes(parent, $rootScope.datatype);
+              },
+              getTemplate: function(node) {
+                  return DatatypeService.getTemplate(node, $rootScope.datatype);
+              }
+            });
             $scope.datatypes = [];
             $scope.pendingDatatypes = [];
 
@@ -44,6 +44,10 @@ angular
                 $scope.SharedtocView='sharedtocView.html';
                 $scope.Sharedsubview = "datatypePending.html";
                 $scope.SharedDataTypeTree=[$scope.library];
+            }
+
+            $scope.showPending = function() {
+              $scope.Sharedsubview = "datatypePending.html";
             }
 
             $scope.getSharedDatatypes = function(){
@@ -105,8 +109,7 @@ angular
             };
 
             $scope.selectDatatype = function (datatype) {
-                $rootScope.datatype = angular.copy(datatype);
-            console.log(datatype);
+            $rootScope.datatype = angular.copy(datatype);
             $rootScope.Activate(datatype.id);
             $scope.Sharedsubview = "EditDatatypes.html";
             if (datatype && datatype != null) {
@@ -114,8 +117,8 @@ angular
                 blockUI.start();
                 $timeout(
                     function () {
-  
-                                
+
+
                                 $rootScope.$emit("event:initDatatype");
 
                                 $rootScope.currentData = datatype;
@@ -141,8 +144,8 @@ angular
                                 $rootScope.$emit("event:initEditArea");
 
                                 blockUI.stop();
-                          
-                        } 
+
+                        }
                     , 100);
 
                 setTimeout(function () {
