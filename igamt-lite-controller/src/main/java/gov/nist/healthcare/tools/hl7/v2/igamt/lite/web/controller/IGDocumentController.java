@@ -19,6 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriUtils;
 
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
@@ -60,6 +65,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
@@ -146,6 +152,18 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   private ProfileSerialization profileSerializationService;
+  
+  @Value("${server.email}")
+  private String SERVER_EMAIL;
+
+  @Value("${admin.email}")
+  private String ADMIN_EMAIL;
+  
+  @Autowired
+  private MailSender mailSender;
+
+  @Autowired
+  private SimpleMailMessage templateMessage;
 
 
   public IGDocumentService getIgDocumentService() {
@@ -376,6 +394,7 @@ public class IGDocumentController extends CommonController {
           igDocument.getProfile());
 
       igDocument.setId(null);
+      igDocument.getShareParticipantIds().clear();
       igDocument.setScope(IGDocumentScope.USER);
       igDocument.setAccountId(account.getId());
       igDocument.getMetaData().setDate(Constant.mdy.format(new Date()));
@@ -793,13 +812,9 @@ public class IGDocumentController extends CommonController {
   // String hl7Version, MessageByListCommand command) {
   @RequestMapping(value = "/messageListByVersion", method = RequestMethod.POST,
       consumes = "application/json", produces = "application/json")
-  public List<MessageEvents> getMessageListByVersion(@RequestBody String hl7Version)
-      throws IGDocumentNotFoundException {
+  public List<MessageEvents> getMessageListByVersion(@RequestBody String hl7Version) {
     log.info("Fetching messages of version hl7Version=" + hl7Version);
-    List<MessageEvents> messages = igDocumentCreation.summary(hl7Version);
-    if (messages.isEmpty()) {
-      throw new IGDocumentNotFoundException(hl7Version);
-    }
+    List<MessageEvents> messages = igDocumentCreation.findMessageEvents(hl7Version);
     return messages;
   }
 
@@ -815,12 +830,6 @@ public class IGDocumentController extends CommonController {
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),
         idrw.getMetaData(), idrw.getHl7Version(), account.getId());
-
-
-    System.out.println(igDocument.getProfile().getTableLibrary().getChildren().size());
-
-    assert (igDocument.getId() != null);
-    assert (igDocument.getAccountId() != null);
     return igDocument;
   }
 
@@ -1274,7 +1283,14 @@ public class IGDocumentController extends CommonController {
         throw new IGDocumentException(
             "You do not have the right privilege to share this IG Document");
       }
-      d.getShareParticipantIds().addAll(participants);
+      for(Long accountId : participants) {
+    	  d.getShareParticipantIds().add(new ShareParticipantPermission(accountId));
+    	  
+    	  // Find the user
+    	  Account acc = accountRepository.findOne(accountId);
+    	  // Send confirmation email
+    	  sendShareConfirmation(d, acc,account);
+      }
       igDocumentService.save(d);
       return true;
     } catch (Exception e) {
@@ -1306,7 +1322,11 @@ public class IGDocumentController extends CommonController {
       if (d.getAccountId() != null && shareParticipantId != d.getAccountId()) {
         if (d.getAccountId().equals(account.getId())
             || account.getId().equals(shareParticipantId)) {
-          d.getShareParticipantIds().remove(shareParticipantId);
+          d.getShareParticipantIds().remove(new ShareParticipantPermission(shareParticipantId));
+          // Find the user
+    	  Account acc = accountRepository.findOne(shareParticipantId);
+    	  // Send unshare confirmation email
+          sendUnshareEmail(d, acc, account);
         } else {
           throw new IGDocumentException("You do not have the right to share this ig document");
         }
@@ -1337,5 +1357,40 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
     }
   }
+  
+  private void sendShareConfirmation(IGDocument doc, Account target,Account source) {	  
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
+	    msg.setSubject("NIST IGAMT IGDocument Shared with you.");
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	        + "You have received a request to share the IG Document " +  doc.getMetaData().getTitle() + " by " + source.getFullName() + "(" + source.getUsername() +")"
+	        + "\n" + "If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
+	        + "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+  }
+  
+  private void sendUnshareEmail(IGDocument doc, Account target,Account source) {
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+	    msg.setSubject("NIST IGAMT IGDocument unshare");
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	    	+ "This is an automatic email to let you know that "
+	        + source.getFullName() + "(" + source.getUsername() +") stopped sharing the IG Document " +  doc.getMetaData().getTitle() + " with you."
+	    	+ "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+}
 }

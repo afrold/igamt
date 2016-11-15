@@ -4,6 +4,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.FileStorageUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.binary.Base64;
+
 public class HttpUtil {
 
   public static String getAppUrl(HttpServletRequest request) {
@@ -20,5 +22,12 @@ public class HttpUtil {
 
   public static String getImagesRootUrl(HttpServletRequest request) {
     return HttpUtil.getAppUrl(request) + "/api" + FileStorageUtil.root;
-  }
+  } 
+  
+  public static String base64UrlDecode(String input) {
+	    Base64 decoder = new Base64(true);
+	    byte[] decodedBytes = decoder.decode(input);
+	    String result = new String(decodedBytes);
+	    return result;
+	}
 }
