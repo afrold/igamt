@@ -20,7 +20,6 @@ public class SegmentLibraryMetaData extends MetaData {
 
     clonedProfileMetaData.setName(this.getName());
     clonedProfileMetaData.setOrgName(this.getOrgName());
-    clonedProfileMetaData.setDate(Constant.mdy.format(new Date()));
     clonedProfileMetaData.setVersion(this.getVersion());
     clonedProfileMetaData.setSegmentLibId(UUID.randomUUID().toString());
     return clonedProfileMetaData;

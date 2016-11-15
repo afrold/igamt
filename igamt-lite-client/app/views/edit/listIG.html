@@ -45,7 +45,7 @@
 						<th st-ratio="40" st-sort="metaData.title">Document Title</th>
 						<th st-ratio="10" st-sort="cp">#Conformance Profiles</th>
 						<th st-ratio="10" st-sort="metaData.hl7Version">HL7 Version</th>
-						<th st-ratio="10" st-sort="metaData.date">Date</th>
+						<th st-ratio="10" st-sort="dateUpdated">Date Updated</th>
 						<th st-ratio="5" ng-if="igDocumentConfig.selectedType === 'USER' || igDocumentConfig.selectedType === 'SHARED'">#Participants</th>
 						<th st-ratio="20">Actions</th>
 					</tr>
@@ -56,16 +56,24 @@
 						<td st-ratio="40"> {{row.metaData.title}} </td>
 						<td st-ratio="10" st-sort="cp"><span style="margin-left:5px ;    color: white !important;" class="badge" ns-popover ns-popover-template="templateRow.html" ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="right|top" ns-popover-timeout="0">{{row.profile.messages.children.length}} </span></td>
 						<td st-ratio="10" ng-bind="row.profile.metaData.hl7Version"></td>
-						<td st-ratio="10" ng-bind="row.metaData.date"></td>
+						<td st-ratio="10">
+                           {{row.dateUpdated | date:dateFormat}}
+						</td>
 						<td st-ratio="5" ng-if="igDocumentConfig.selectedType === 'USER' || igDocumentConfig.selectedType === 'SHARED'">
 							<span style="margin-left:5px ;    color: white !important;" class="badge">{{row.shareParticipantIds.length}} </span>
 						</td>
 						<td st-ratio="20">
-							<button ng-if="igDocumentConfig.selectedType === 'USER'" title="Edit IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-primary" ng-click="edit(row)"> <span><i
-                                                class="fa fa-pencil fa-fw"></i></span> </button>
-							<button title="View IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-default" ng-click="view(row)"> <span><i class="fa fa-eye fa-fw"></i></span> </button>
-							<button title="Create Copy of IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="clone(row);selectIGDocumentType('USER')"> <span><i class="fa fa-plus fa-fw"></i></span> </button>
-							<button title="Delete IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-if="igDocumentConfig.selectedType === 'USER'" ng-click="confirmDelete(row)"> <span><i class="fa fa-trash-o fa-fw"></i></span> </button>
+							<div ng-if="row.comment !== 'PENDING_APPROVAL'">
+								<button ng-if="igDocumentConfig.selectedType === 'USER'" title="Edit IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-primary" ng-click="edit(row)"> <span><i
+													class="fa fa-pencil fa-fw"></i></span> </button>
+								<button title="View IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-default" ng-click="view(row)"> <span><i class="fa fa-eye fa-fw"></i></span> </button>
+								<button title="Create Copy of IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="clone(row);selectIGDocumentType('USER')"> <span><i class="fa fa-plus fa-fw"></i></span> </button>
+								<button title="Delete IG Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-if="igDocumentConfig.selectedType === 'USER'" ng-click="confirmDelete(row)"> <span><i class="fa fa-trash-o fa-fw"></i></span> </button>
+							</div>
+							<div ng-if="row.comment === 'PENDING_APPROVAL'">
+								<button title="Approve Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-success" ng-click="confirmShareDocument(row)"> <span><i class="fa fa-check fa-fw" aria-hidden="true"></i>Accept</span> </button>
+								<button title="Reject Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-click="rejectShareDocument(row)"> <span><i class="fa fa-times fa-fw" aria-hidden="true"></i>Reject</span> </button>
+							</div>
 						</td>
 					</tr>
 				</tbody>
@@ -86,7 +94,7 @@
 	<div class="triangle"></div>
 	<div style="z-index: 99999" class="cp-tooltip">
 		<div class="col-md-12" class="cp-tooltip" ng-if="row.shareParticipants.length > 0">
-			<h5>Shared with</h5>
+			<h5>Participants</h5>
 			<ul class="cp-tooltip">
 				<li ng-repeat="participant in row.shareParticipants track by participant"> {{participant.username}} ({{participant.fullname}}) </li>
 			</ul>

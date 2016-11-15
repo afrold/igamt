@@ -5,7 +5,7 @@
 angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService, blockUI) {
     //        $scope.loading = false;
 
-    console.log("IN SEGMENTS========");
+    // console.log("IN SEGMENTS========");
     $scope.accordStatus = {
         isCustomHeaderOpen: false,
         isFirstOpen: true,
@@ -45,7 +45,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.selectedChildren = [];
     $scope.saving = false;
 
-    console.log($rootScope.tables);
+    // console.log($rootScope.tables);
     $scope.OtoX = function(message) {
         var modalInstance = $modal.open({
             templateUrl: 'OtoX.html',
@@ -96,11 +96,46 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
     $scope.editableField = '';
     $scope.editField = function(field) {
-        console.log(field);
+        // console.log(field);
         $scope.editableField = field.id;
         $scope.fieldName = field.name;
 
     };
+
+    $scope.AddBindingForSegment = function(segment) {
+        var modalInstance = $modal.open({
+            templateUrl: 'AddBindingForSegment.html',
+            controller: 'AddBindingForSegment',
+            windowClass: 'conformance-profiles-modal',
+            resolve: {
+                segment: function() {
+                    return segment;
+                }
+            }
+        });
+        modalInstance.result.then(function() {
+            $scope.setDirty();
+        });
+    };
+
+
+    $scope.changeSegmentLink = function(segmentLink) {
+        segmentLink.isChanged = true;
+
+        var t = $rootScope.segmentsMap[segmentLink.id];
+
+        if (t == null) {
+            segmentLink.name = null;
+            segmentLink.ext = null;
+            segmentLink.label = null;
+        } else {
+            segmentLink.name = t.name;
+            segmentLink.ext = t.ext;
+            segmentLink.label = t.label;
+        }
+        // console.log(segmentLink);
+    };
+
 
     $scope.backField = function() {
         $scope.editableField = '';
@@ -138,7 +173,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             field.datatype.id = JSON.parse(datatype).id;
             field.datatype.label = JSON.parse(datatype).label;
             field.datatype.name = JSON.parse(datatype).name;
-            console.log(field);
+            // console.log(field);
             $scope.setDirty();
             $rootScope.processElement(field);
             if ($scope.segmentsParams)
@@ -169,7 +204,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     // };
     $scope.otherDT = function(field) {
-        console.log("heeere");
+        // console.log("heeere");
         var modalInstance = $modal.open({
             templateUrl: 'otherDTModal.html',
             controller: 'otherDTCtrl',
@@ -199,7 +234,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.editDT = function(field) {
         $scope.editableDT = field.id;
         $scope.loadLibrariesByFlavorName = function() {
-            console.log($rootScope.igdocument);
+            // console.log($rootScope.igdocument);
             var delay = $q.defer();
             $scope.ext = null;
             $scope.results = [];
@@ -249,7 +284,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
 
         $scope.loadLibrariesByFlavorName().then(function(done) {
-            console.log($scope.results);
+            // console.log($scope.results);
             // $scope.selection.selected = $scope.currentDatatype.id;
             // $scope.showSelectedDetails($scope.currentDatatype);
         });
@@ -320,12 +355,12 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
 
     $scope.editVS = function(field) {
-        console.log(field);
+        // console.log(field);
         $scope.editableVS = field.id;
         if (field.table !== null) {
             $scope.VSselected = true;
             $scope.selectedValueSet = field.table;
-            console.log($scope.selectedValueSet);
+            // console.log($scope.selectedValueSet);
 
         } else {
             $scope.VSselected = false;
@@ -383,8 +418,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.selectVS = function(field, valueSet) {
-        console.log("valueSet");
-        console.log(valueSet);
+        // console.log("valueSet");
+        // console.log(valueSet);
 
         $scope.selectedValueSet = valueSet;
         $scope.VSselected = true;
@@ -395,10 +430,10 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
                 bindingIdentifier: ''
 
             };
-            console.log(field);
+            // console.log(field);
 
         }
-        console.log(field);
+        // console.log(field);
 
 
         field.table.id = $scope.selectedValueSet.id;
@@ -535,7 +570,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.headerChanged = function() {
-        console.log("WWWWWW");
+        // console.log("WWWWWW");
     }
 
     $scope.reset = function() {
@@ -855,7 +890,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
 
 
-    var cleanState = function() {
+    $scope.cleanState = function() {
         $scope.saving = false;
         $scope.selectedChildren = [];
         if ($scope.editForm) {
@@ -882,7 +917,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
         }
         SegmentService.save($rootScope.segment).then(function(result) {
-
+            $rootScope.segment.dateUpdated = result.dateUpdated;
+            $rootScope.$emit("event:updateIgDate");
             if ($rootScope.selectedSegment !== null && $rootScope.segment.id === $rootScope.selectedSegment.id) {
                 $rootScope.processSegmentsTree($rootScope.segment, null);
             }
@@ -896,7 +932,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
                     }
-                    cleanState();
+                    $scope.cleanState();
                 }, function(error) {
                     $scope.saving = false;
 
@@ -918,6 +954,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             $rootScope.msg().type = error.data.type;
             $rootScope.msg().show = true;
         });
+
+        $rootScope.saveBindingForSegment();
     };
 
 
@@ -1545,10 +1583,10 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
     $scope.valueSets = valueSets;
     $scope.datatypes = datatypes;
 
-    console.log("$scope.valueSets");
-    console.log($scope.valueSets);
-    console.log("$scope.datatypes");
-    console.log($scope.datatypes);
+    // console.log("$scope.valueSets");
+    // console.log($scope.valueSets);
+    // console.log("$scope.datatypes");
+    // console.log($scope.datatypes);
 
 
     $scope.newField = {
@@ -1591,7 +1629,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
 
 
         }
-        console.log($scope.DT);
+        // console.log($scope.DT);
 
     }, true);
     $scope.loadVS = function($query) {
@@ -1640,7 +1678,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
     // }, true);
 
     $scope.selectUsage = function(usage) {
-        console.log(usage);
+        // console.log(usage);
         if (usage === 'X' || usage === 'W') {
             $scope.newField.max = 0;
             $scope.newField.min = 0;
@@ -1753,8 +1791,8 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
 angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInstance, fieldToDelete, segment, $rootScope, SegmentService, blockUI) {
     $scope.fieldToDelete = fieldToDelete;
     $scope.loading = false;
-    console.log(segment);
-    console.log($scope.fieldToDelete);
+    // console.log(segment);
+    // console.log($scope.fieldToDelete);
     $scope.updatePosition = function(node) {
         angular.forEach(node.fields, function(field) {
             field.position = node.fields.indexOf(field) + 1;
@@ -1915,7 +1953,7 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
     var ctrl = this;
     this.segmentId = -1;
     $scope.setDeltaToF = function() {
-        console.log("HEEEEEEEEEEREREEE");
+        // console.log("HEEEEEEEEEEREREEE");
         $scope.isDeltaCalled = false;
     }
 
@@ -1969,8 +2007,8 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
             $scope.segList1 = angular.copy($rootScope.segments);
             $scope.dtList1 = angular.copy($rootScope.datatypes);
             $scope.version2 = angular.copy($scope.version1);
-            console.log($scope.scopes);
-            console.log($scope.scopes[1]);
+            // console.log($scope.scopes);
+            // console.log($scope.scopes[1]);
             //$scope.status.isFirstOpen = true;
             $scope.scope2 = "HL7STANDARD";
             if ($scope.dynamicSeg_params) {
@@ -1991,8 +2029,8 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
     //$scope.initt();
 
     $rootScope.$on('event:initSegment', function(event) {
-        console.log("$scope.isDeltaCalled");
-        console.log($scope.isDeltaCalled);
+        // console.log("$scope.isDeltaCalled");
+        // console.log($scope.isDeltaCalled);
         if ($scope.isDeltaCalled) {
             $scope.initt();
         }
@@ -2036,17 +2074,17 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
         $scope.segments2 = [];
         $scope.ig2 = "";
         if ($scope.scope2 && $scope.version2) {
-            console.log("+++++++++++++++++++++++++++");
+            // console.log("+++++++++++++++++++++++++++");
             IgDocumentService.getIgDocumentsByScopesAndVersion([$scope.scope2], $scope.version2).then(function(result) {
                 if (result) {
-                    console.log($scope.scope2);
+                    // console.log($scope.scope2);
                     if ($scope.scope2 === "HL7STANDARD") {
                         $scope.igDisabled2 = true;
                         $scope.ig2 = {
                             id: result[0].id,
                             title: result[0].metaData.title
                         };
-                        console.log($scope.ig2);
+                        // console.log($scope.ig2);
                         $scope.igList2.push($scope.ig2);
 
                         $scope.setIG2($scope.ig2);
@@ -2155,11 +2193,11 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
         $scope.segChanged = false;
         $scope.vsTemplate = false;
         $scope.dataList = CompareService.cmpSegment(JSON.stringify(segment1), JSON.stringify(segment2), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
-        console.log("hg==========");
-        console.log($scope.dataList);
+        // console.log("hg==========");
+        // console.log($scope.dataList);
         $scope.loadingSelection = false;
         if ($scope.dynamicSeg_params) {
-            console.log($scope.dataList);
+            // console.log($scope.dataList);
             $scope.showDelta = true;
             $scope.status.isSecondOpen = true;
             $scope.dynamicSeg_params.refresh();
@@ -2181,6 +2219,84 @@ angular.module('igl').controller('DeleteSegmentPredicateCtrl', function($scope, 
                 return;
             }
         }
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('igl').controller('AddBindingForSegment', function($scope, $modalInstance, $rootScope, segment) {
+    // console.log($rootScope.references);
+    $scope.segment = segment;
+    $scope.selectedMessageForBinding = null;
+    $scope.selectedSegRefForBinding = null;
+    $scope.segRefsList = [];
+    $scope.pathForBinding = null;
+
+    $scope.init = function() {
+        $scope.selectedMessageForBinding = null;
+        $scope.selectedSegRefForBinding = null;
+        $scope.segRefsList = [];
+        $scope.pathForBinding = null;
+
+    };
+
+    $scope.checkDuplicated = function(positionPath) {
+        for (var i = 0; i < $rootScope.references.length; i++) {
+            var ref = $rootScope.references[i];
+            if (ref.positionPath == positionPath) return true;
+        }
+        return false;
+    };
+
+
+    $scope.selectMessage = function() {
+        $scope.selectedSegRefForBinding = null;
+        $scope.segRefsList = [];
+        $scope.pathForBinding = null;
+
+        $scope.travelMessage($scope.selectedMessageForBinding.children, $scope.selectedMessageForBinding.name + '-' + $scope.selectedMessageForBinding.identifier, $scope.selectedMessageForBinding.name + '-' + $scope.selectedMessageForBinding.identifier);
+    };
+
+    $scope.travelMessage = function (children, positionPath, namePath){
+        angular.forEach(children, function(child) {
+            if(child.type === 'group'){
+                var groupNames = child.name.split(".");
+                var groupName = groupNames[groupNames.length - 1];
+                $scope.travelMessage(child.children, positionPath + '.' + child.position, namePath + '.' + groupName);
+            }else {
+                var s = $rootScope.segmentsMap[child.ref.id];
+                if(s.name === $scope.segment.name){
+                    var segRef = {};
+                    segRef.obj = child;
+                    segRef.path = namePath + '.' + s.name;
+                    segRef.positionPath = positionPath + '.' + child.position;
+                    $scope.segRefsList.push(segRef);
+                }
+            }
+
+        });
+    }
+
+    $scope.save = function() {
+        var segmentLink = {};
+        segmentLink.id = $scope.segment.id;
+        segmentLink.name = $scope.segment.name;
+        segmentLink.ext = $scope.segment.ext;
+        segmentLink.isChanged = true;
+        segmentLink.isNew = true;
+
+        $scope.selectedSegRefForBinding = JSON.parse($scope.selectedSegRefForBinding);
+
+        var ref = angular.copy($scope.selectedSegRefForBinding.obj);
+        ref.path = $scope.selectedSegRefForBinding.path;
+        ref.positionPath = $scope.selectedSegRefForBinding.positionPath;
+        ref.target = angular.copy($scope.selectedMessageForBinding);
+        ref.segmentLink = segmentLink;
+        $rootScope.references.push(ref);
+
         $modalInstance.close();
     };
 

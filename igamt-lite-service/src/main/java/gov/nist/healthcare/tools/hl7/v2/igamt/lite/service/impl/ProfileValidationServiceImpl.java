@@ -36,69 +36,70 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileValidationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileValidationService;
 
 @Service
 public class ProfileValidationServiceImpl implements ProfileValidationService {
-  Logger logger = LoggerFactory.getLogger(ProfileValidationServiceImpl.class);
+	Logger logger = LoggerFactory.getLogger(ProfileValidationServiceImpl.class);
 
-  @Override
-  public void validate(Profile p) throws ProfileValidationException {
+	@Override
+	public void validate(Profile p) throws Exception {
 
-    ProfileSerializationImpl profileSerializationImpl = new ProfileSerializationImpl();
-    String pS = profileSerializationImpl.serializeProfileToXML(p ,new DocumentMetaData());
-    String schemaPath = "validation/profilesSchema/Profile.xsd";
-    validate(pS, schemaPath);
+		ProfileSerializationImpl profileSerializationImpl = new ProfileSerializationImpl();
+		String pS = profileSerializationImpl.serializeProfileToXML(p, new DocumentMetaData(), p.getDateUpdated());
+		String schemaPath = "validation/profilesSchema/Profile.xsd";
+		validate(pS, schemaPath);
 
+		TableSerializationImpl tableSerializationImpl = new TableSerializationImpl();
+		String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTableLibrary(), new DocumentMetaData(),
+				p.getDateUpdated());
+		schemaPath = "validation/profilesSchema/ValueSets.xsd";
+		validate(tS, schemaPath);
 
-    TableSerializationImpl tableSerializationImpl = new TableSerializationImpl();
-    String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTableLibrary(), new DocumentMetaData());
-    schemaPath = "validation/profilesSchema/ValueSets.xsd";
-    validate(tS, schemaPath);
+		ConstraintsSerializationImpl constraintsSerializationImpl = new ConstraintsSerializationImpl();
+		String cS = constraintsSerializationImpl.serializeConstraintsToXML(p, new DocumentMetaData(),
+				p.getDateUpdated());
+		schemaPath = "validation/profilesSchema/ConformanceContext.xsd";
+		validate(cS, schemaPath);
 
-    ConstraintsSerializationImpl constraintsSerializationImpl = new ConstraintsSerializationImpl();
-    String cS = constraintsSerializationImpl.serializeConstraintsToXML(p,  new DocumentMetaData());
-    schemaPath = "validation/profilesSchema/ConformanceContext.xsd";
-    validate(cS, schemaPath);
+	}
 
-  }
+	public void validate(String xml, String schemaPath) throws Exception {
 
-  private void validate(String xml, String schemaPath) throws ProfileValidationException {
+		try {
+			DocumentBuilderFactory parserFactory = DocumentBuilderFactory.newInstance();
+			parserFactory.setNamespaceAware(true);
+			DocumentBuilder parser = parserFactory.newDocumentBuilder();
 
-    try {
-      DocumentBuilderFactory parserFactory = DocumentBuilderFactory.newInstance();
-      parserFactory.setNamespaceAware(true);
-      DocumentBuilder parser = parserFactory.newDocumentBuilder();
+			Document document = parser.parse(IOUtils.toInputStream(xml));
 
-      Document document = (Document) parser.parse(IOUtils.toInputStream(xml));
+			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Source schemaFile = new StreamSource(this.getClass().getClassLoader().getResource(schemaPath).openStream());
 
-      SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-      Source schemaFile =
-          new StreamSource(this.getClass().getClassLoader().getResource(schemaPath).openStream());
+			Schema schema = factory.newSchema(schemaFile);
+			Validator validator = schema.newValidator();
 
-      Schema schema = factory.newSchema(schemaFile);
-      Validator validator = schema.newValidator();
-
-      // validate the DOM tree; if document is invalid, SAXException is raised
-      validator.validate(new DOMSource((Node) document));
-    } catch (SAXException e) {
-      // Instance document is invalid!
-      e.printStackTrace();
-      logger.debug("Instance document is invalid.");
-      throw new ProfileValidationException("Instance document is invalid!");
-    } catch (ParserConfigurationException e1) {
-      logger.debug("Parser configuration error!");
-      e1.printStackTrace();
-    } catch (IOException e) {
-      logger.debug("Error serializing profile");
-      e.printStackTrace();
-    }
-  }
+			// validate the DOM tree; if document is invalid, SAXException is
+			// raised
+			validator.validate(new DOMSource(document));
+		} catch (SAXException e) {
+			// Instance document is invalid!
+			e.printStackTrace();
+			logger.debug("Instance document is invalid.");
+			throw e;
+		} catch (ParserConfigurationException e1) {
+			logger.debug("Parser configuration error!");
+			e1.printStackTrace();
+			throw e1;
+		} catch (IOException e) {
+			logger.debug("Error serializing profile");
+			e.printStackTrace();
+			throw e;
+		}
+	}
 
 }

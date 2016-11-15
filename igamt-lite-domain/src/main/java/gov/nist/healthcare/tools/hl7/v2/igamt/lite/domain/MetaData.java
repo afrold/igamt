@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.Date;
+
 public class MetaData implements java.io.Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
@@ -16,8 +18,10 @@ public class MetaData implements java.io.Serializable, Cloneable {
 
   private String hl7Version;
 
-  private String date;
+  @Deprecated 
+  private String date; 
   
+   
   private String description=""; 
   
 
@@ -62,11 +66,13 @@ private String ext;
   public void setHl7Version(String hl7Version) {
     this.hl7Version = hl7Version;
   }
-
+  
+  @Deprecated 
   public String getDate() {
     return date;
   }
 
+  @Deprecated 
   public void setDate(String date) {
     this.date = date;
   }
@@ -79,7 +85,9 @@ private String ext;
     this.ext = ext;
   }
 
-  @Override
+ 
+
+@Override
   public MetaData clone() throws CloneNotSupportedException {
     MetaData clonedProfileMetaData = new MetaData();
 

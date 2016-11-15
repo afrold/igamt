@@ -41,9 +41,11 @@ angular.module('igl')
 
         $scope.save = function () {
             if($rootScope.igdocument != null && $rootScope.section != null) {
-                SectionSvc.update($rootScope.igdocument.id, $rootScope.section).then(function (result) {
+                SectionSvc.update($rootScope.igdocument.id, $rootScope.section).then(function (dateUpdated) {
                     $scope.saving = false;
                     $scope.saved = true;
+                    $rootScope.section.dateUpdated = dateUpdated;
+                    $rootScope.igdocument.dateUpdated = dateUpdated;
                     SectionSvc.merge($rootScope.originalSection,$rootScope.section);
                     if($scope.editForm) {
                         $scope.editForm.$setPristine();
