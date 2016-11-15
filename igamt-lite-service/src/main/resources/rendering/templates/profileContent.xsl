@@ -3,7 +3,9 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="/rendering/templates/profile/message.xsl"/>
     <xsl:import href="/rendering/templates/profile/datatype.xsl"/>
+    <xsl:import href="/rendering/templates/profile/segment.xsl"/>
     <xsl:import href="/rendering/templates/profile/valueSet.xsl"/>
+    <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:template name="displayProfileContent">
         <xsl:param name="inlineConstraint"/>
         <xsl:choose>
