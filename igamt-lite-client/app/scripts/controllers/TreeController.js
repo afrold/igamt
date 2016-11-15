@@ -567,7 +567,7 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
-                                if ($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.data.id])) {
+                                if ($rootScope.readyForNewVersion($itemScope.data)) {
                                     CloneDeleteSvc.upgradeDatatype($itemScope.data);
                                 } else {
                                     $scope.showCannotPublish($itemScope.data);
@@ -606,17 +606,88 @@ angular
                     }
                 ]
             ];
+            
+            
+            $scope.TableOptionsForPublished = [
+                                                  ['Create New Version',
+                                                      function ($itemScope) {
+                                                          console.log($rootScope.versionAndUseMap[$itemScope.table.id]);
+                                                          if ($rootScope.hasChanges()) {
 
-            $rootScope.readyForNewVersion = function (obj) {
+                                                              $rootScope.openConfirmLeaveDlg().result.then(function () {
+                                                                  if ($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.table.id])) {
+                                                                      CloneDeleteSvc.upgradeTable($itemScope.table);
+                                                                  } else {
+                                                                      $scope.showCannotPublish($itemScope.table);
+                                                                  }
+
+                                                              });
+                                                          } else {
+
+                                                              if ($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.table.id])) {
+                                                                  CloneDeleteSvc.upgradeTable($itemScope.table);
+                                                              } else {
+
+                                                                  $scope.showCannotPublish($itemScope.table);
+                                                              }
+                                                          }
+                                                      }
+                                                  ],
+                                                  
+                                                  ['Export CSV',
+                                                         function ($itemScope) {
+                                                             $rootScope.exportCSVForTable($itemScope.table);
+
+                                                         }
+                                                     ],
+                                                  
+                                                  
+                                                  ['Create Flavor',
+                                                      function ($itemScope) {
+
+
+                                                          if ($rootScope.hasChanges()) {
+
+                                                              $rootScope.openConfirmLeaveDlg().result.then(function () {
+                                                                  CloneDeleteSvc.copyTable($itemScope.table);
+                                                              });
+                                                          } else {
+                                                              CloneDeleteSvc.copyTable($itemScope.table);
+                                                          }
+                                                      }
+                                                  ],
+                                                  ['Delete',
+                                                      function ($itemScope) {
+                                                	  CloneDeleteSvc.deleteValueSet($itemScope.table);
+
+                                                      }
+                                                  ]
+                                              ];
+            
+            
+            
+            
+
+            $rootScope.readyForNewVersion = function (element) {
                 var ready = true;
+                var obj=$rootScope.versionAndUseMap[element.id];
                 if (obj.derived && obj.derived.length > 0) {
                     angular.forEach(obj.derived, function (derived) {
 
                         console.log(derived);
                         console.log($rootScope.datatypesMap[derived]);
+                        if(element.type==='datatype'){
                         if ($rootScope.datatypesMap[derived].status !== "PUBLISHED") {
                             console.log("here");
                             ready = false;
+                        }}
+                        else{
+                        	if(element.type==='table'){
+                                if ($rootScope.tablesMap[derived].status !== "PUBLISHED") {
+                                    console.log("here");
+                                    ready = false;
+                                }
+                        	}
                         }
                     });
                 }
@@ -2321,6 +2392,22 @@ angular.module('igl').controller('cannotPublish', function($scope, $rootScope, $
 
     $scope.cancel = function() {
     	console.log("sssss");
+        $modalInstance.dismiss('cancel');
+    };
+});
+angular.module('igl').controller('ConfirmTablePublishCtl', function($scope, $rootScope, $http, $modalInstance, tableToPublish) {
+
+    $scope.tableToPublish = tableToPublish;
+    $scope.loading = false;
+
+    $scope.confirm = function() {
+        console.log("confirming")
+
+        $modalInstance.close($scope.tableToPublish);
+    };
+
+    $scope.cancel = function() {
+        $scope.tableToPublish.status = "UNPUBLISHED";
         $modalInstance.dismiss('cancel');
     };
 });

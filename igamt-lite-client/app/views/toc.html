@@ -176,12 +176,23 @@ if (self === top) {
                                     </span>
                             </div>
                             <li ng-repeat="table in tables |orderBy :'bindingIdentifier'" ui-tree-node ng-if="!collapsevalueSet" data-type="table">
-                                <div ui-tree-handle data-nodrag confirm-click context-menu="ValueSetOptions" style="margin-left:30px;">
+                                <div ui-tree-handle data-nodrag confirm-click context-menu="ValueSetOptions" style="margin-left:30px;"ng-if="table.status!=='PUBLISHED'||table.scope=='HL7STANDARD'||versionAndUseMap[table.id].deprecated||versionAndUseMap[table.id].deprecated">
                                     <span data-nodrag style="font-weight:normal;" ng-class="{selected : table.id===activeModel}" confirm-click ng-click="editTable(table)">
                                      <span class="badge" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL','label-PVS':getScopeLabel(table)==='PVS'}" >  {{getScopeLabel(table)}} {{hasSameVersion(table)}}</span>                                    {{table.bindingIdentifier}}-{{table.description}}
                                     </span>
                                 </div>
+
+                                <div ui-tree-handle data-nodrag confirm-click context-menu="TableOptionsForPublished" style="margin-left:30px;" ng-if="(table.status==='PUBLISHED'&&!versionAndUseMap[table.id].deprecated)&&table.scope!=='HL7STANDARD'">
+                                    <span data-nodrag style="font-weight: normal;" ng-class="{selected : table.id===activeModel}" confirm-click ng-click="editTable(table)">
+
+                                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                   'label-USE':  getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS','label-PRL':getScopeLabel(table)==='PRL'}" > {{getScopeLabel(table)}} {{hasSameVersion(table)}}</span>
+                                    <span
+                                        ng-if="versionAndUseMap[table.id]" class="badge">v{{versionAndUseMap[table.id].publicationVersion}}</span> {{table.bindingIdentifier}}-{{table.description}}
+                                        </span>
+                                </div>
+
                             </li>
                         </ol>
                     </li>

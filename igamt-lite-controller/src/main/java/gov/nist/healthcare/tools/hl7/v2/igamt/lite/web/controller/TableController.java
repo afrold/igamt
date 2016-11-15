@@ -26,11 +26,14 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VersionAndUse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.VersionAndUseService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.TableCSVGenerator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
@@ -50,6 +53,8 @@ public class TableController extends CommonController {
 
   @Autowired
   AccountRepository accountRepository;
+  @Autowired
+  VersionAndUseService versionAndUse;
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
   public Table getTableById(@PathVariable("id") String id) throws DataNotFoundException {
@@ -130,6 +135,41 @@ public class TableController extends CommonController {
       throw new DataNotFoundException("tableNotFound");
     return result;
   }
+  @RequestMapping(value = "/publish", method = RequestMethod.POST)
+  public Table publish(@RequestBody Table table) {
+      log.debug("datatypeLibrary=" + table);
+      log.debug("datatypeLibrary.getId()=" + table.getId());
+      	VersionAndUse versionInfo= versionAndUse.findById(table.getId());
+      	
+      	
+      	if(versionInfo==null){
+      		versionInfo= new VersionAndUse();
+      		versionInfo.setPublicationVersion(1);
+      		table.setPublicationVersion(1);
+      		versionInfo.setId(table.getId());
+      	}else{
+      		List<VersionAndUse> ancestors =versionAndUse.findAllByIds(versionInfo.getAncestors());
+      		versionInfo.setPublicationDate(DateUtils.getCurrentTime());
 
+          	for(VersionAndUse ancestor: ancestors){
+          		ancestor.setDeprecated(true);
+          		versionAndUse.save(ancestor);  
+          	}
+      		versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
+      		table.setPublicationVersion(versionInfo.getPublicationVersion()+1);
+
+      		
+      	}
+  		versionInfo.setPublicationDate(DateUtils.getCurrentTime());
+  		table.setPublicationDate(DateUtils.getCurrentTime());
+  		versionAndUse.save(versionInfo);
+      	table.setStatus(STATUS.PUBLISHED);
+      Table saved = tableService.save(table);
+      log.debug("saved.getId()=" + saved.getId());
+      log.debug("saved.getScope()=" + saved.getScope());
+      return saved;
+    
+	
+  }
 
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc','VersionAndUseService','$q','DatatypeLibrarySvc','CloneDeleteSvc'
-   , function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc,VersionAndUseService,$q,DatatypeLibrarySvc,CloneDeleteSvc) {
+,'TableService','TableLibrarySvc', function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc,VersionAndUseService,$q,DatatypeLibrarySvc,CloneDeleteSvc,TableService,TableLibrarySvc) {
         // This line fetches the info from the server if the user is currently
         // logged in.
         // If success, the app is updated according to the role.
@@ -403,58 +403,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         };
 
-        $rootScope.getDerived = function(element) {
-            try {
-                if (element && element.type && element.type === "datatype") {
-
-                    angular.forEach(element.components, function(component) {
-                        $rootScope.getDerived(component);
-                    });
-                } else if (element && element.type && element.type === "component") {
-                	
-                    if (element.tables&&element.tables != null) {
-                    	angular.forEach(element.tables, function(table){
-                            $scope.linksForTables.push(table);
-
-                    	});
-
-
-                    }
-                    if (element.datatype !== null || element.datatype !== undefined) {
-                        var newLink = angular.fromJson({
-                            id: element.datatype.id,
-                            name: element.datatype.name,
-                            ext: element.datatype.ext
-                        });
-
-                        $scope.getDatatypeById(element.datatype.id).then(function(result) {
-
-                            DatatypeLibrarySvc.addChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
-                                if (!$rootScope.datatypesMap[element.datatype.id] || $rootScope.datatypesMap[element.datatype.id] === undefined) {
-                                    $rootScope.datatypes.push(result);
-                                    $rootScope.datatypesMap[element.datatype.id] = result;
-                                    $rootScope.getDerived(result);
-
-
-                                }
-
-                            }, function(error) {
-                                $rootScope.saving = false;
-                                $rootScope.msg().text = error.data.text;
-                                $rootScope.msg().type = error.data.type;
-                                $rootScope.msg().show = true;
-                            });
-
-                        });
-                    }
-
-                }
-
-            } catch (e) {
-                throw e;
-            }
-
-        };
+ 
         $rootScope.readonly = false;
         $rootScope.igdocument = null; // current igdocument
         $rootScope.message = null; // current message
@@ -2516,8 +2465,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return false;
         };
-
-
         $rootScope.erorrForPredicate = function(newConstraint, type, selectedNode) {
             if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
@@ -2938,6 +2885,55 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return "";
         };
+        $rootScope.publishTable = function(table) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmTablePublishCtl.html',
+                controller: 'ConfirmTablePublishCtl',
+                resolve: {
+                    tableToPublish: function() {
+                        return table;
+                    }
+                }
+            });
+            modalInstance.result.then(function(table) {
+                
+                var newLink={
+                    name:table.name,
+                    ext:table.ext,
+                    id:table.id
+                }
+
+        
+      
+                TableService.publish($rootScope.table).then(function(result) {
+               
+                    
+                    TableLibrarySvc.updateChild($rootScope.tableLibrary.id, newLink).then(function(link) {
+                        	DatatypeService.merge($rootScope.tablesMap[result.id], result);
+                        	$rootScope.tablesMap[result.id].status="PUBLISHED";
+                        	$rootScope.table.status="PUBLISHED";
+
+                            if ($scope.editForm) {
+                            	console.log("Cleeaning");
+                                $scope.editForm.$setPristine();
+                                $scope.editForm.$dirty = false;
+                                $scope.editForm.$invalid = false;
+                                
+                            }
+                            $rootScope.clearChanges();
+                            TableService.merge($rootScope.table, result);
+                            //$scope.subview = "ReadValueSets.html";
+                         	VersionAndUseService.findById(result.id).then(function(inf){
+                        		$rootScope.versionAndUseMap[inf.id]=inf;
+                        		if($rootScope.versionAndUseMap[inf.sourceId]){
+                        			$rootScope.versionAndUseMap[inf.sourceId].deprecated=true;
+                        		}
+                        		
+                        	});
+                    });
+            });
+            });
+        };
         $rootScope.publishDatatype = function(datatype) {
 
             $rootScope.containUnpublished = false;
@@ -2953,7 +2949,21 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
             }
         };
-
+        $rootScope.confirmPublishTable = function(table) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmTablePublishCtl.html',
+                controller: 'ConfirmTablePublishCtl',
+                resolve: {
+                    tableToPublish: function() {
+                        return table;
+                    }
+                }
+            });
+            modalInstance.result.then(function(table) {
+                TableService.save(table);
+                
+            });
+        };
 
         $rootScope.getGroupNodeName = function(node) {
             return node.position + "." + node.name;

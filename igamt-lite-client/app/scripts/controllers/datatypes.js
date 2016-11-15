@@ -397,76 +397,19 @@ angular.module('igl')
         };
 
 
-        $scope.editDT = function(field) {
-            $scope.editableDT = field.id;
-            $scope.loadLibrariesByFlavorName = function() {
-                var delay = $q.defer();
-                $scope.ext = null;
-                $scope.results = [];
-                $scope.tmpResults = [];
-                $scope.results = $scope.results.concat(filterFlavors($rootScope.datatypeLibrary, field.datatype.name));
-                $scope.results = _.uniq($scope.results, function(item, key, a) {
-                    return item.id;
-                });
-                $scope.tmpResults = [].concat($scope.results);
-                //                DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
-                //                    if (libraries != null) {
-                //                        _.each(libraries, function(library) {
-                //                            $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
-                //                        });
-                //                    }
-                //
-                //                    $scope.results = _.uniq($scope.results, function(item, key, a) {
-                //                        return item.id;
-                //                    });
-                //                    $scope.tmpResults = [].concat($scope.results);
-                //
-                //                    delay.resolve(true);
-                //                }, function(error) {
-                //                    $rootScope.msg().text = "Sorry could not load the data types";
-                //                    $rootScope.msg().type = error.data.type;
-                //                    $rootScope.msg().show = true;
-                //                    delay.reject(error);
-                //                });
-                return delay.promise;
-            };
-
-            //
-            //            $scope.editDT = function(field) {
-            //                $scope.editableDT = field.id;
-            //
-            //                $scope.results = [];
-            //                angular.forEach($rootScope.igdocument.profile.datatypeLibrary.children ,function(dtLink){
-            //                    if(dtLink.name&&dtLink.name===field.datatype.name&&field.datatype.id!==dtLink.id){
-            //                        $scope.results.push(dtLink);
-            //                    }
-            //                });
-            //            };
-            //
+                        $scope.editDT = function(field) {
+                           $scope.editableDT = field.id;
+            
+                           $scope.results = [];
+                           angular.forEach($rootScope.datatypeLibrary.children ,function(dtLink){
+                               if(dtLink.name&&dtLink.name===field.datatype.name&&field.datatype.id!==dtLink.id){
+                                   $scope.results.push(dtLink);
+                               }
+                           });
+                       };
+            
 
 
-            var filterFlavors = function(library, name) {
-                var results = [];
-                _.each(library.children, function(link) {
-                    if (link.name === name) {
-                        link.libraryName = library.metaData.name;
-                        link.hl7Version = $rootScope.datatypesMap[link.id].hl7Version;
-                        //link.hl7Version = library.metaData.hl7Version;
-                        results.push(link);
-                    }
-                });
-                return results;
-            };
-
-
-
-
-            $scope.loadLibrariesByFlavorName().then(function(done) {
-                console.log($scope.results);
-                // $scope.selection.selected = $scope.currentDatatype.id;
-                // $scope.showSelectedDetails($scope.currentDatatype);
-            });
-        };
         $scope.backDT = function() {
             $scope.editableDT = '';
         };
@@ -1114,14 +1057,19 @@ angular.module('igl')
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
                 DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
-                	//DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                	DatatypeService.merge($rootScope.datatypesMap[result.id], result);
                     DatatypeService.merge($rootScope.datatype, result);
                     console.log("datatype.components");
+                    console.log($scope.datatypesParams);
                     console.log($rootScope.datatype.components);
-                     if ($scope.datatypesParams){
-                            $scope.datatypesParams.refresh();
-                        }
-
+                    //  if ($scope.datatypesParams){
+                    //      $scope.datatypesParams
+                    //         $scope.datatypesParams.refresh();
+                    //     }
+                    $rootScope.clearChanges();
+                            if ($scope.datatypesParams){
+                               // $scope.datatypesParams.refresh();   	
+                            }
                     DatatypeService.saveNewElements().then(function() {
             
 

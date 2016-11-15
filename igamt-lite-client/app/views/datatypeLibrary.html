@@ -960,30 +960,6 @@ if (self === top) {
 </script>
 
 
-<script type="text/ng-template" id="ConfirmTablePublishCtl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Publish Confirmation
-        </h3>
-    </div>
-    <div class="modal-body">
-        <p>Are you sure you want to publish this Table?</p>
-        <p>Data Type will no longer be editable.</p>
-        <p>This operation is irreversible.</p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
-                class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
-        </button>
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
-        </div>
-    </div>
-    </div>
-</script>
 <script type="text/ng-template" id="EditTablesINLIB.html">
     <div ng-controller="TableListCtrlForDtLib" ng-init="init()" class="container">
         <div ng-show="loadingSelection" style="text-align: center; padding-top:20px">

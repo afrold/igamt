@@ -83,7 +83,7 @@ angular.module('igl').factory(
             	newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
 
             }else{
-            	newDatatype.ext = newDatatype.ext+(Math.floor(Math.random() * 10000000) + 1);
+            	newDatatype.ext = newDatatype.ext+(Math.floor(Math.random() * 100) + 1);
             }
             newDatatype.scope = $rootScope.datatypeLibrary.scope;
             newDatatype.status='UNPUBLISHED';
@@ -126,6 +126,7 @@ angular.module('igl').factory(
                 var newLink = {};
                 newLink.id = newDatatype.id;
                 newLink.ext = newDatatype.ext;
+                newLink.name=newDatatype.name;
                 DatatypeLibrarySvc.addChild($rootScope.datatypeLibrary.id, newLink).then(function (link) {
                     $rootScope.datatypeLibrary.children.splice(0, 0, newLink);
                     $rootScope.datatypes.splice(0, 0, newDatatype);
@@ -381,6 +382,130 @@ angular.module('igl').factory(
                 $rootScope.msg().show = true;
             });
         };
+        
+        
+        svc.upgradeTable = function (table) {
+            TableService.getOne(table.id).then(function(newTable){
+                newTable.participants = [];
+                newTable.status="UNPUBLISHED";
+                newTable.id = null;
+                newTable.libIds = [];
+                newTable.id=new ObjectId().toString()
+                newTable.libIds.push($rootScope.tableLibrary.id);
+                if($rootScope.igdocument){
+                    newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
+                    newTable.scope = "USER";
+
+                }else{
+                    newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 10000000) + 1);
+                    newTable.scope = $rootScope.tableLibrary;
+	
+                }
+
+                if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
+                    for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
+                        newTable.codes[i].id = new ObjectId().toString();
+                    }
+                }
+
+                TableService.save(newTable).then(function (result) {
+                    newTable = result;
+                    var newLink = {};
+                    newLink.bindingIdentifier = newTable.bindingIdentifier;
+                    newLink.id = newTable.id;
+
+                    TableLibrarySvc.addChild($rootScope.tableLibrary.id, newLink).then(function (link) {
+                    	
+                    	
+                    	
+                    	
+                    	
+                    	
+                    	
+                    	
+                      
+                        var newTableInfo= {};
+                        newTableInfo.id=newTable.id;
+                        newTableInfo.sourceId=newTable.id;
+                        
+                        newTableInfo.derived=[];
+                        newTableInfo.ancestors=[];
+                        
+                        VersionAndUseService.findById(table.id).then(function(inf){
+                        	console.log("Returning ================================");
+                        	console.log(inf);
+                        	var ancestors=inf.ancestors;
+                        	ancestors.push(table.id);
+                        	newTableInfo.ancestors=ancestors;
+                        	console.log(newTableInfo.ancestors);
+                        	newTableInfo.publicationVersion=inf.publicationVersion;
+                        	
+                        	 VersionAndUseService.save(newTableInfo).then(function(result){
+                             	$rootScope.versionAndUseMap[result.id]=result;
+                    
+                             	angular.forEach(result.ancestors,function(ancestor){
+                             		VersionAndUseService.findById(ancestor).then(function(inf){
+                                     	var derived = inf.derived;
+                                     	derived.push(result.id);
+                                     	inf.derived=derived;
+                                     	console.log(result);
+                                     
+                                     	VersionAndUseService.save(inf).then(function(res2){
+                                     	 	$rootScope.versionAndUseMap[res2.id]=res2;
+                             		});
+                             	});
+
+                              	
+                              });
+                             	
+                             });
+                        	 
+                      });
+      
+                    	
+                        $rootScope.datatypeLibrary.children.splice(0, 0, newLink);
+                        $rootScope.tables.splice(0, 0, newTable);
+                        $rootScope.table = newTable;
+                        $rootScope.tablesMap[newTable.id] = newTable;
+
+                        $rootScope.codeSystems = [];
+
+                        for (var i = 0; i < $rootScope.table.codes.length; i++) {
+                            if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+                                if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+                                    $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+                                }
+                            }
+                        }
+                        if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+                            $rootScope.filteredTablesList.push(newTable);
+                            $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+                        }
+                        $rootScope.$broadcast('event:openTable', newTable);
+
+                    }, function (error) {
+                        $rootScope.msg().text = error.data.text;
+                        $rootScope.msg().type = error.data.type;
+                        $rootScope.msg().show = true;
+                    });
+
+
+                }, function (error) {
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
+
+            }, function(error){
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+        };
+        
+        
+        
+        
 
         svc.copyTableINLIB = function (table, tableLibrary) {
         	console.log(tableLibrary);
