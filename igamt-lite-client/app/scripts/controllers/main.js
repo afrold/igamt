@@ -2909,9 +2909,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                
                     
                     TableLibrarySvc.updateChild($rootScope.tableLibrary.id, newLink).then(function(link) {
-                        	DatatypeService.merge($rootScope.tablesMap[result.id], result);
-                        	$rootScope.tablesMap[result.id].status="PUBLISHED";
-                        	$rootScope.table.status="PUBLISHED";
+                    		TableService.merge($rootScope.tablesMap[result.id], result);
+                        	$rootScope.tablesMap[result.id]=result;
+                        	$rootScope.table=result;
 
                             if ($scope.editForm) {
                             	console.log("Cleeaning");

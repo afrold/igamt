@@ -325,7 +325,7 @@ angular.module('igl').factory(
                     newTable.scope = "USER";
 
                 }else{
-                    newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 10000000) + 1);
+                    newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 1000) + 1);
                     newTable.scope = $rootScope.tableLibrary;
 	
                 }
@@ -343,7 +343,7 @@ angular.module('igl').factory(
                     newLink.id = newTable.id;
 
                     TableLibrarySvc.addChild($rootScope.tableLibrary.id, newLink).then(function (link) {
-                        $rootScope.datatypeLibrary.children.splice(0, 0, newLink);
+                        $rootScope.tableLibrary.children.splice(0, 0, newLink);
                         $rootScope.tables.splice(0, 0, newTable);
                         $rootScope.table = newTable;
                         $rootScope.tablesMap[newTable.id] = newTable;
@@ -415,15 +415,10 @@ angular.module('igl').factory(
                     newLink.id = newTable.id;
 
                     TableLibrarySvc.addChild($rootScope.tableLibrary.id, newLink).then(function (link) {
-                    	
-                    	
-                    	
-                    	
-                    	
-                    	
-                    	
-                    	
-                      
+                        $rootScope.tableLibrary.children.splice(0, 0, newLink);
+                        $rootScope.tables.splice(0, 0, newTable);
+                        $rootScope.table = newTable;
+                        $rootScope.tablesMap[newTable.id] = newTable;
                         var newTableInfo= {};
                         newTableInfo.id=newTable.id;
                         newTableInfo.sourceId=newTable.id;
@@ -463,10 +458,7 @@ angular.module('igl').factory(
                       });
       
                     	
-                        $rootScope.datatypeLibrary.children.splice(0, 0, newLink);
-                        $rootScope.tables.splice(0, 0, newTable);
-                        $rootScope.table = newTable;
-                        $rootScope.tablesMap[newTable.id] = newTable;
+
 
                         $rootScope.codeSystems = [];
 
