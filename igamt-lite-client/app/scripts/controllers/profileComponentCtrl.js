@@ -175,7 +175,6 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
     $scope.save = function() {
         console.log($rootScope.profileComponent);
-
         var children = $rootScope.profileComponent.children;
         var childrenToSave = [];
         PcService.save($rootScope.igdocument.profile.profileComponentLibrary.id, $rootScope.profileComponent).then(function(result) {
@@ -183,9 +182,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 if ($rootScope.igdocument.profile.profileComponentLibrary.children[i].id === $rootScope.profileComponent.id) {
                     $rootScope.igdocument.profile.profileComponentLibrary.children[i].name = $rootScope.profileComponent.name;
                 }
-
                 $rootScope.profileComponent = result;
-
             }
             $scope.changes = false;
             $scope.clearDirty();
@@ -540,10 +537,12 @@ angular.module('igl').controller('addDefTextCtrl',
 
 
 angular.module('igl').controller('applyPcToCtrl',
-    function($scope, $rootScope, $modalInstance, pc, PcService, messages, $http, SegmentLibrarySvc) {
+    function($scope, $rootScope, $modalInstance, pc, PcService, messages, $http, SegmentLibrarySvc, ngTreetableParams) {
         if (pc.appliedTo === null) {
             pc.appliedTo = [];
         }
+        $scope.applyToList = [];
+
 
 
 
@@ -563,26 +562,72 @@ angular.module('igl').controller('applyPcToCtrl',
             }
 
         };
+        $scope.ApplyToComponentParams = new ngTreetableParams({
+            getNodes: function(parent) {
+                if ($scope.msgs !== undefined) {
+
+                    if (parent) {
+                        if (parent.children) {
+
+                            return parent.children;
+                        }
+
+                    } else {
+                        return $scope.msgs;
+                    }
+
+                }
+            },
+            getTemplate: function(node) {
+                return 'applyTable';
+            }
+        });
+        $scope.addApplyToMsg = function(node) {
+            console.log(node);
+            $scope.applyToList.push(node);
+            var index = $scope.msgs.indexOf(node);
+            if (index > -1) $scope.msgs.splice(index, 1);
+            console.log($scope.msgs);
+            if ($scope.ApplyToComponentParams) {
+                $scope.ApplyToComponentParams.refresh();
+            }
+        };
+        $scope.removeSelectedApplyTo = function(applyTo) {
+            var index = $scope.applyToList.indexOf(applyTo);
+            if (index > -1) $scope.applyToList.splice(index, 1);
+            $scope.msgs.push(applyTo);
+            if ($scope.ApplyToComponentParams) {
+                $scope.ApplyToComponentParams.refresh();
+            }
+
+        };
         $scope.apply = function() {
             // pc.appliedTo.push({
             //     id: $scope.applyTo.id,
             //     name: $scope.applyTo.name
             // });
-            $rootScope.profileComponent.appliedTo.push({
-                id: $scope.applyTo.id,
-                name: $scope.applyTo.name
-            });
+            for (var j = 0; j < $scope.applyToList.length; j++) {
+                $rootScope.profileComponent.appliedTo.push({
+                    id: $scope.applyToList[j].id,
+                    name: $scope.applyToList[j].name
+                });
+                for (var i = 0; i < $rootScope.messages.children.length; i++) {
+                    if ($rootScope.messages.children[i].id === $scope.applyToList[j].id) {
+                        if (!$rootScope.messages.children[i].appliedPc) {
+                            $rootScope.messages.children[i].appliedPc = [];
+                        }
+                        $rootScope.messages.children[i].appliedPc.push({
+                            id: $scope.applyToList[j].id,
+                            name: $scope.applyToList[j].name
+                        });
+                    }
+                }
+
+
+            }
             console.log("$rootScope.messages");
             console.log($rootScope.messages);
-            for (var i = 0; i < $rootScope.messages.children.length; i++) {
-                if ($rootScope.messages.children[i].id === $scope.applyTo.id) {
-                    if (!$rootScope.messages.children[i].appliedPc) {
-                        $rootScope.messages.children[i].appliedPc = [];
-                    }
-                    console.log($rootScope.messages.children[i]);
-                    $rootScope.messages.children[i].appliedPc.push(pc.id);
-                }
-            }
+
 
             $modalInstance.close();
             // PcService.save(pc).then(function(result) {

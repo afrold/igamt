@@ -315,7 +315,7 @@
 
 <script type="text/ng-template" id="addCommentModal.html">
     <div class="modal-header">
-        <h3>{{field.name}}</h3>
+        <h3>{{field.name}} : Comment</h3>
 
 
 
@@ -340,7 +340,7 @@
 
 <script type="text/ng-template" id="addDefTextModal.html">
     <div class="modal-header modal-wide ">
-        <h3 class="modal-title ">{{field.name}}</h3>
+        <h3 class="modal-title ">{{field.name}} : Definition Text</h3>
     </div>
     <div class="modal-body ">
         <div class="row ">
@@ -364,7 +364,7 @@
         <h3 class="modal-title">Apply Profile Component: {{profileComponent.name}}</h3>
     </div>
     <div class="modal-body">
-        <div class="container" style="margin-bottom: 20px;margin-top: 10px">
+        <!--<div class="container" style="margin-bottom: 20px;margin-top: 10px">
             <div class="row" style="padding-top:10px">
                 <div class="col-md-6">
                     <select class="form-control input-sm" ng-model="applyTo" ng-options="message as message.name for message in msgs" />
@@ -377,6 +377,68 @@
             </div>
 
 
+        </div>-->
+    </div>
+    <div class="container" style="margin-bottom: 20px;margin-top: 10px">
+        <div class="row" style="padding-top:10px">
+
+            <div class="col-md-6">
+
+                <table id="applyTable" tt-table tt-params="ApplyToComponentParams" class="table table-striped table-borderless table-condensed hl7-versions-valueset table-fixed">
+                    <thead>
+                        <tr class="tbl-header">
+                            <th>Choose Conformance Profile</th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+
+
+
+
+            <div class="col-md-6 " ng-show="applyToList.length> 0">
+                <div class="igl-table">
+                    <h5>Selected Conformance Profiles</h5>
+                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                        <thead>
+                            <tr class="tbl-header">
+                                <th class="col-md-3">Conformance Profile</th>
+                                <th class="col-md-2">Position</th>
+
+
+
+                                <th class="col-md-1" />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="applyTo in applyToList">
+                                <td class="col-md-3">
+                                    {{applyTo.name}}
+                                </td>
+                                <td class="col-md-2"><span>
+                                        
+                                        
+                                    <span>{{applyTo.position}}</span>
+
+                                    </span>
+
+                                </td>
+
+
+                                <td class="col-md-1"> <a class="pointer" ng-click="removeSelectedApplyTo(applyTo)"><i class="fa fa-times fa-fw"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
     <div class="modal-footer">
@@ -385,6 +447,20 @@
         <button class="btn btn-raised btn-info btn-sm" ng-click="apply()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Apply</span>
         </button>
     </div>
+</script>
+<script type="text/ng-template" id="applyTable">
+
+    <tr tt-node is-branch="false">
+
+        <td>
+            <a class="pointer " ng-click="addApplyToMsg(node) "><i class="fa fa-plus fa-fw "></i></a>
+
+
+            <span ng-bind="node.name"></span>
+        </td>
+
+    </tr>
+
 </script>
 
 <script type="text/ng-template" id="applyPcToTable">
