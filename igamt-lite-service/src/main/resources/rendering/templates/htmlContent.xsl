@@ -23,6 +23,7 @@
                     <xsl:call-template name="displaySection">
                         <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
                         <xsl:with-param name="includeTOC" select="$includeTOC"/>
+                        <xsl:with-param name="target" select="'html'"/>
                     </xsl:call-template>
                 </xsl:element>
             </xsl:otherwise>

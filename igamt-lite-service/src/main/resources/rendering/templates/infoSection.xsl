@@ -8,6 +8,7 @@
     <xsl:template name="displayInfoSection" mode="disp">
         <xsl:param name="includeTOC" select="'true'"></xsl:param>
         <xsl:param name="inlineConstraint" select="'true'"></xsl:param>
+        <xsl:param name="target" select="'html'"></xsl:param>
         <xsl:if test="name() = 'Section'">
             <xsl:element name="u">
                 <xsl:attribute name="id">
@@ -16,7 +17,7 @@
                 <xsl:choose>
                     <xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'true'">
                         <xsl:element name="{concat('h', @h)}">
-                            <xsl:if test="@prefix != ''">
+                            <xsl:if test="@prefix != '' and @target = 'html' ">
                                 <xsl:value-of select="@prefix"/>
                                 -
                             </xsl:if>
