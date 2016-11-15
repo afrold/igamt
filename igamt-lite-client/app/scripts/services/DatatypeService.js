@@ -350,8 +350,11 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
 
-
             saveNewElements: function() {
+              saveNewElements(false);
+            },
+
+            saveNewElements: function(silent) {
                 var delay = $q.defer();
                 var datatypeLinks = ElementUtils.getNewDatatypeLinks();
                 if (datatypeLinks&&datatypeLinks.length > 0) {
@@ -371,20 +374,32 @@ angular.module('igl').factory('DatatypeService',
                                         $rootScope.tables.push(table);
                                     }
                                 });
-                                DatatypeService.completeSave();
+                                if(silent) {
+                                  DatatypeService.completeSaveSilent();
+                                } else {
+                                  DatatypeService.completeSave();
+                                }
                                 delay.resolve(true);
                             }, function(error) {
                                 delay.reject(error);
                             });
                         } else {
-                            DatatypeService.completeSave();
+                            if(silent) {
+                              DatatypeService.completeSaveSilent();
+                            } else {
+                              DatatypeService.completeSave();
+                            }
                             delay.resolve(true);
                         }
                     }, function(error) {
                         delay.reject(error);
                     });
                 } else {
-                    DatatypeService.completeSave();
+                    if(silent) {
+                      DatatypeService.completeSaveSilent();
+                    } else {
+                      DatatypeService.completeSave();
+                    }
                     delay.resolve(true);
                 }
                 return delay.promise;
@@ -397,6 +412,12 @@ angular.module('igl').factory('DatatypeService',
                 $rootScope.msg().text = "datatypeSaved";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
+            },
+
+            completeSaveSilent: function() {
+              $rootScope.addedDatatypes = [];
+              $rootScope.addedTables = [];
+              $rootScope.clearChanges();
             },
 
             reset: function() {

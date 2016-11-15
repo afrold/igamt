@@ -62,6 +62,8 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   protected String defPreText= "";
   
   protected String defPostText = "";
+  
+  private Set<ShareParticipantPermission> shareParticipantIds = new HashSet<ShareParticipantPermission>();
 
   public Table() {
     super();
@@ -354,5 +356,12 @@ public void setPublicationVersion(int publicationVersion) {
 }
  
 
+public Set<ShareParticipantPermission> getShareParticipantIds() {
+	return shareParticipantIds;
+}
+
+public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
+	this.shareParticipantIds = shareParticipantIds;
+}
   
 }

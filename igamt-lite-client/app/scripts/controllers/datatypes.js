@@ -1071,7 +1071,7 @@ angular.module('igl')
                                // $scope.datatypesParams.refresh();   	
                             }
                     DatatypeService.saveNewElements().then(function() {
-            
+
 
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
@@ -1204,10 +1204,10 @@ angular.module('igl')
     				});
 
             modalInstance.result.then(function (result) {
-              $scope.saveDatatype();
+              $scope.saveDatatypeAfterShare();
             }, function () {
               if(modalTemplate === 'ShareDatatypeModal.html') {
-                $scope.saveDatatype();
+                $scope.saveDatatypeAfterShare();
               }
               // $log.info('Modal dismissed at: ' + new Date());
             });
@@ -1216,6 +1216,41 @@ angular.module('igl')
     				console.log(error);
     			});
     		};
+
+        $scope.saveDatatypeAfterShare = function() {
+
+            var ext = $rootScope.datatype.ext;
+
+            DatatypeService.save($rootScope.datatype).then(function(result) {
+                var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.datatypeLibrary.children);
+                var newLink = DatatypeService.getDatatypeLink(result);
+                newLink.ext = ext;
+                DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
+                	//DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                    DatatypeService.merge($rootScope.datatype, result);
+                     if ($scope.datatypesParams){
+                            $scope.datatypesParams.refresh();
+                        }
+
+                    DatatypeService.saveNewElements(true).then(function() {
+
+
+                        oldLink.ext = newLink.ext;
+                        oldLink.name = newLink.name;
+                        $scope.saving = false;
+                        $scope.cleanState();
+                    }, function(error) {
+                        $scope.saving = false;
+                    });
+                }, function(error) {
+                    $scope.saving = false;
+                });
+
+            }, function(error) {
+                $scope.saving = false;
+            });
+            $rootScope.saveBindingForDatatype();
+        };
 
 
         //        $scope.$watch(function(){

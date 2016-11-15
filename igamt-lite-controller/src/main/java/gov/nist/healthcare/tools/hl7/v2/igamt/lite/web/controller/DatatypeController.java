@@ -21,6 +21,10 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -85,6 +89,18 @@ public class DatatypeController extends CommonController {
   UnchangedDataRepository unchangedData;
   @Autowired
   VersionAndUseService versionAndUse;
+  
+  @Value("${server.email}")
+  private String SERVER_EMAIL;
+
+  @Value("${admin.email}")
+  private String ADMIN_EMAIL;
+  
+  @Autowired
+  private MailSender mailSender;
+
+  @Autowired
+  private SimpleMailMessage templateMessage;
 
   @RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
   public List<Datatype> findByIds(@RequestBody Set<String> ids) {
@@ -487,7 +503,7 @@ public class DatatypeController extends CommonController {
 	    	  // Find the user
 	    	  Account acc = accountRepository.findOne(accountId);
 	    	  // Send confirmation email
-	//    	  sendShareConfirmation(d, acc,account);
+	    	  sendShareConfirmation(d, acc,account);
 	      }
       }
       datatypeService.save(d);
@@ -525,7 +541,7 @@ public class DatatypeController extends CommonController {
           // Find the user
     	  Account acc = accountRepository.findOne(shareParticipantId);
     	  // Send unshare confirmation email
-//          sendUnshareEmail(d, acc, account);
+          sendUnshareEmail(d, acc, account);
         } else {
           throw new Exception("You do not have the right to share this datatype");
         }
@@ -597,4 +613,40 @@ public class DatatypeController extends CommonController {
 	  }
 	  throw new DataNotFoundException("fieldNotFound");
   }
+  
+  private void sendShareConfirmation(Datatype datatype, Account target,Account source) {	  
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+	    msg.setSubject("NIST IGAMT IGDocument Shared with you.");
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	        + "You have received a request to share the datatype " +  datatype.getName() + ": " + datatype.getDescription() + " by " + source.getFullName() + "(" + source.getUsername() +")"
+	        + "\n" + "If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Elements' tab"
+	        + "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+}
+
+private void sendUnshareEmail(Datatype datatype, Account target,Account source) {
+	  
+	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+	    msg.setSubject("NIST IGAMT IGDocument unshare");
+	    msg.setTo(target.getEmail());
+	    msg.setText("Dear " + target.getUsername() + " \n\n"
+	    	+ "This is an automatic email to let you know that "
+	        + source.getFullName() + "(" + source.getUsername() +") stopped sharing the Datatype " +  datatype.getName() + ": " + datatype.getDescription()  + " with you."
+	    	+ "\n\n"
+	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+	    try {
+	      this.mailSender.send(msg);
+	    } catch (MailException ex) {
+	      log.error(ex.getMessage(), ex);
+	    }
+}
 }

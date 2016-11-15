@@ -13,14 +13,14 @@ angular
             $rootScope.datatype={};
             $rootScope.datatypesMap={};
             $rootScope.TablesMap={};
-        $scope.datatypesParams = new ngTreetableParams({
-            getNodes: function(parent) {
-                return DatatypeService.getNodes(parent, $rootScope.datatype);
-            },
-            getTemplate: function(node) {
-                return DatatypeService.getTemplate(node, $rootScope.datatype);
-            }
-        });
+            $scope.datatypesParams = new ngTreetableParams({
+              getNodes: function(parent) {
+                  return DatatypeService.getNodes(parent, $rootScope.datatype);
+              },
+              getTemplate: function(node) {
+                  return DatatypeService.getTemplate(node, $rootScope.datatype);
+              }
+            });
             $scope.datatypes = [];
             $scope.pendingDatatypes = [];
 
@@ -44,6 +44,10 @@ angular
                 $scope.SharedtocView='sharedtocView.html';
                 $scope.Sharedsubview = "datatypePending.html";
                 $scope.SharedDataTypeTree=[$scope.library];
+            }
+
+            $scope.showPending = function() {
+              $scope.Sharedsubview = "datatypePending.html";
             }
 
             $scope.getSharedDatatypes = function(){
@@ -78,12 +82,12 @@ angular
 
         $scope.confirmShareDocument = function(datatype) {
                 $http.get('api/shareDtconfimation/' + datatype.id).then(function(response) {
-                    $rootScope.msg().text = "igSharedConfirmationSuccessful";
+                    $rootScope.msg().text = "dtSharedConfirmationSuccessful";
                     $rootScope.msg().type ="success";
                     $rootScope.msg().show = true;
                     $scope.getSharedDatatypes();
                 }, function(error) {
-                    $rootScope.msg().text = "igSharedConfirmationFailed";
+                    $rootScope.msg().text = "dtSharedConfirmationFailed";
                     $rootScope.msg().type ="danger";
                     $rootScope.msg().show = true;
                     console.log(error);
@@ -92,12 +96,12 @@ angular
 
             $scope.rejectShareDocument = function(datatype) {
                 $http.get('api/shareDtreject/' + datatype.id).then(function(response) {
-                    $rootScope.msg().text = "igSharedRejectedSuccessfully";
+                    $rootScope.msg().text = "dtSharedRejectedSuccessfully";
                     $rootScope.msg().type ="success";
                     $rootScope.msg().show = true;
                     $scope.getSharedDatatypes();
                 }, function(error) {
-                    $rootScope.msg().text = "igSharedRejectFailed";
+                    $rootScope.msg().text = "dtSharedRejectFailed";
                     $rootScope.msg().type ="danger";
                     $rootScope.msg().show = true;
                     console.log(error);
@@ -105,8 +109,7 @@ angular
             };
 
             $scope.selectDatatype = function (datatype) {
-                $rootScope.datatype = angular.copy(datatype);
-            console.log(datatype);
+            $rootScope.datatype = angular.copy(datatype);
             $rootScope.Activate(datatype.id);
             $scope.Sharedsubview = "EditDatatypes.html";
             if (datatype && datatype != null) {
@@ -114,8 +117,8 @@ angular
                 blockUI.start();
                 $timeout(
                     function () {
-  
-                                
+
+
                                 $rootScope.$emit("event:initDatatype");
 
                                 $rootScope.currentData = datatype;
@@ -141,8 +144,8 @@ angular
                                 $rootScope.$emit("event:initEditArea");
 
                                 blockUI.stop();
-                          
-                        } 
+
+                        }
                     , 100);
 
                 setTimeout(function () {
