@@ -5,10 +5,6 @@
 angular.module('igl').factory('ViewSettings',
     ['StorageService', function (StorageService) {
         var columnOptions = [
-            { id: "usage", label: "Usage"},
-            { id: "cardinality", label: "Cardinality"},
-            { id: "length", label: "Length"},
-            { id: "confLength", label: "Conf. Length"},
             { id: "datatype", label: "Datatype"},
             { id: "valueSet", label: "Value Set"},
             { id: "predicate", label: "Predicate"},
@@ -16,10 +12,21 @@ angular.module('igl').factory('ViewSettings',
             { id: "defText", label: "Defin. Text"},
             { id: "comment", label: "Comment"}
         ];
-        var visibleColumns = StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY) == null ? angular.copy(columnOptions) : angular.fromJson(StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY));
+        var selectedColumns =  {
+            "datatype": true,
+            "valueSet": true,
+            "predicate": true,
+            "confStatement": true,
+            "defText": true,
+            "comment": true
+        };
+
+//        var visibleColumns = StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY) == null ? angular.copy(columnOptions) : angular.fromJson(StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY));
+        var visibleColumns = angular.copy(columnOptions);
         var ViewSettings = {
             columnOptions: columnOptions,
             visibleColumns: visibleColumns,
+            selectedColumns: selectedColumns,
             translations: {buttonDefaultText: 'Visible Columns'},
             extra: {displayProp: 'label', buttonClasses: 'btn btn-xs btn-primary', showCheckAll: false, showUncheckAll: false, scrollable: false},
             tableRelevance:StorageService.get(StorageService.TABLE_RELEVANCE_SETTINGS) == null ? false : StorageService.get(StorageService.TABLE_RELEVANCE_SETTINGS),
@@ -28,10 +35,14 @@ angular.module('igl').factory('ViewSettings',
             tableReadonly:StorageService.get(StorageService.TABLE_READONLY_SETTINGS) == null ? false : StorageService.get(StorageService.TABLE_READONLY_SETTINGS),
             events: {
                 onItemSelect: function (item) {
+                    console.log("selected " + item);
                     ViewSettings.setVisibleColumns();
+                    ViewSettings.selectedColumns[item.id] = true;
                 },
                 onItemDeselect: function (item) {
+                    console.log("deselected " + item);
                     ViewSettings.setVisibleColumns();
+                    ViewSettings.selectedColumns[item.id] = false;
                 }
             },
             setVisibleColumns: function () {
@@ -54,12 +65,7 @@ angular.module('igl').factory('ViewSettings',
                 StorageService.set(StorageService.TABLE_READONLY_SETTINGS, ViewSettings.tableReadonly);
             },
             isVisibleColumn: function (column) {
-                for (var i = 0; i < ViewSettings.visibleColumns.length; i++) {
-                    if (ViewSettings.visibleColumns[i].id === column) {
-                        return true;
-                    }
-                }
-                return false;
+                return ViewSettings.selectedColumns[column];
             }
         };
         return ViewSettings;

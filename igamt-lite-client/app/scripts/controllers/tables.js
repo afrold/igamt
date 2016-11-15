@@ -2,7 +2,7 @@
  * Created by Jungyub on 4/01/15.
  */
 
-angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc, blockUI) {
+angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc, blockUI, SegmentService, DatatypeService) {
     $scope.readonly = false;
     $scope.codeSysEditMode = false;
     $scope.codeSysForm = {};
@@ -11,7 +11,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.params = null;
     $scope.predicate = 'value';
     $scope.reverse = false;
-    $scope.selectedCodes=[];
+    $scope.selectedCodes = [];
     $scope.isDeltaCalled = false;
     $scope.tabStatus = {
         active: 1
@@ -20,7 +20,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         $scope.tabStatus = {
             active: 1
         };
-        $scope.selectedCodes=[];
+        $scope.selectedCodes = [];
         $rootScope.$on('event:cloneTableFlavor', function(event, table) {
             $scope.copyTable(table);
         });
@@ -30,7 +30,72 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         blockUI.start();
         cleanState();
         $rootScope.table = angular.copy($rootScope.tablesMap[$rootScope.table.id]);
+
+        $rootScope.references = [];
+        angular.forEach($rootScope.segments, function(segment) {
+            $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
+        });
+        angular.forEach($rootScope.datatypes, function(dt) {
+            $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
+        });
+
         blockUI.stop();
+    };
+    $scope.redirectSeg = function(segmentRef) {
+        SegmentService.get(segmentRef.id).then(function(segment) {
+            var modalInstance = $modal.open({
+                templateUrl: 'redirectCtrl.html',
+                controller: 'redirectCtrl',
+                size: 'md',
+                resolve: {
+                    destination: function() {
+                        return segment;
+                    }
+                }
+
+
+
+            });
+            modalInstance.result.then(function() {
+                $rootScope.editSeg(segment);
+            });
+
+
+
+        });
+    };
+    $scope.redirectDT = function(datatype) {
+        console.log(datatype);
+        DatatypeService.getOne(datatype.id).then(function(datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'redirectCtrl.html',
+                controller: 'redirectCtrl',
+                size: 'md',
+                resolve: {
+                    destination: function() {
+                        return datatype;
+                    }
+                }
+
+
+
+            });
+            modalInstance.result.then(function() {
+                $rootScope.editDataType(datatype);
+            });
+
+
+
+        });
+    };
+
+    $scope.isBindingChanged = function() {
+        for (var i = 0; i < $rootScope.references.length; i++) {
+            var ref = $rootScope.references[i];
+
+            if (ref.tableLink.isChanged) return true;
+        }
+        return false;
     };
 
     var cleanState = function() {
@@ -47,9 +112,37 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         $rootScope.$emit("event:openVSDelta");
     };
 
+    $scope.changeTableLink = function(tableLink) {
+        tableLink.isChanged = true;
+
+        var t = $rootScope.tablesMap[tableLink.id];
+
+        if (t == null) {
+            tableLink.bindingIdentifier = null;
+            tableLink.bindingLocation = null;
+            tableLink.bindingStrength = null;
+        } else {
+            tableLink.bindingIdentifier = t.bindingIdentifier;
+        }
+    };
+
+    $scope.AddBindingForValueSet = function(table) {
+        var modalInstance = $modal.open({
+            templateUrl: 'AddBindingForValueSet.html',
+            controller: 'AddBindingForValueSet',
+            windowClass: 'conformance-profiles-modal',
+            resolve: {
+                table: function() {
+                    return table;
+                }
+            }
+        });
+        modalInstance.result.then(function() {
+            $scope.setDirty();
+        });
+    };
 
     $scope.save = function() {
-
         if ($rootScope.table.scope === 'USER') {
             $scope.saving = true;
             var table = $rootScope.table;
@@ -62,7 +155,9 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             }
 
             TableService.save(table).then(function(result) {
+                $rootScope.table.dateUpdated = result.dateUpdated;
                 var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.tableLibrary.children);
+                $rootScope.$emit("event:updateIgDate");
                 TableService.merge($rootScope.tablesMap[result.id], result);
                 // remove unnecessary variables for toc
                 delete $rootScope.tablesMap[result.id].codes;
@@ -77,7 +172,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                 newLink.bindingIdentifier = bindingIdentifier;
                 TableLibrarySvc.updateChild($rootScope.igdocument.profile.tableLibrary.id, newLink).then(function(link) {
                     oldLink.bindingIdentifier = link.bindingIdentifier;
-                    oldLink.ext=link.ext;
+                    oldLink.ext = link.ext;
                     cleanState();
                     $rootScope.msg().text = "tableSaved";
                     $rootScope.msg().type = "success";
@@ -95,8 +190,8 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                 $rootScope.msg().show = true;
             });
         }
+        $rootScope.saveBindingForValueSet();
     };
-
 
     $scope.addTable = function() {
         $rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
@@ -165,51 +260,51 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         }
         $scope.setDirty();
     };
-    $rootScope.checkAll=false;
-    $scope.ProcessChecking= function(checkAll){
+    $rootScope.checkAll = false;
+    $scope.ProcessChecking = function(checkAll) {
 
 
         console.log("here");
-        if(checkAll){
+        if (checkAll) {
             $scope.checkAllValues();
-        }else{
+        } else {
             $scope.uncheckAllValues();
         }
 
     }
-    $scope.addOrRemoveValue= function(c){
-        if(c.selected===true){
+    $scope.addOrRemoveValue = function(c) {
+        if (c.selected === true) {
             $scope.selectedCodes.push(c);
-        }else if (c.selected===false){
-             var index = $scope.selectedCodes.indexOf(c);
-                if (index > -1) {
-                    $scope.selectedCodes.splice(index, 1);
-                }
+        } else if (c.selected === false) {
+            var index = $scope.selectedCodes.indexOf(c);
+            if (index > -1) {
+                $scope.selectedCodes.splice(index, 1);
+            }
         }
 
 
     }
-    $scope.deleteSlectedValues= function(){
+    $scope.deleteSlectedValues = function() {
         console.log()
         console.log("deleting");
-        $rootScope.table.codes=_.difference($rootScope.table.codes,$scope.selectedCodes);
-         $scope.selectedCodes=[];
+        $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
+        $scope.selectedCodes = [];
     }
-    $scope.checkAllValues= function(){
-        angular.forEach($rootScope.table.codes, function(c){
-            c.selected=true;
+    $scope.checkAllValues = function() {
+        angular.forEach($rootScope.table.codes, function(c) {
+            c.selected = true;
             $scope.selectedCodes.push(c);
         });
     }
-    $scope.uncheckAllValues= function(){
+    $scope.uncheckAllValues = function() {
         console.log("deleting");
-         //console.log($rootScope.displayCollection);
-        angular.forEach($rootScope.table.codes, function(c){
-            if(c.selected&&c.selected===true){
-               c.selected=false;
+        //console.log($rootScope.displayCollection);
+        angular.forEach($rootScope.table.codes, function(c) {
+            if (c.selected && c.selected === true) {
+                c.selected = false;
             }
         });
-        $scope.selectedCodes=[];
+        $scope.selectedCodes = [];
     }
     $scope.deleteValue = function(value) {
         // if (!$scope.isNewValueThenDelete(value.id)) {
@@ -687,4 +782,79 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
     };
 
 
+});
+
+angular.module('igl').controller('AddBindingForValueSet', function($scope, $modalInstance, $rootScope, table) {
+    console.log($rootScope.references);
+    $scope.table = table;
+    $scope.selectedSegmentForBinding = null;
+    $scope.selectedFieldForBinding = null;
+    $scope.selectedDatatypeForBinding = null;
+    $scope.selectedComponentForBinding = null;
+    $scope.selectedBindingLocation = null;
+    $scope.selectedBindingStrength = null;
+    $scope.pathForBinding = null;
+    $scope.bindingTargetType = 'DATATYPE';
+
+    $scope.init = function() {
+        $scope.selectedSegmentForBinding = null;
+        $scope.selectedFieldForBinding = null;
+        $scope.selectedDatatypeForBinding = null;
+        $scope.selectedComponentForBinding = null;
+        $scope.selectedBindingLocation = null;
+        $scope.selectedBindingStrength = null;
+        $scope.pathForBinding = null;
+    };
+
+    $scope.checkDuplicated = function(path) {
+        for (var i = 0; i < $rootScope.references.length; i++) {
+            var ref = $rootScope.references[i];
+            if (ref.path == path) return true;
+        }
+        return false;
+    };
+
+    $scope.selectSegment = function() {
+        $scope.selectedFieldForBinding = null;
+    };
+
+    $scope.selectDatatype = function() {
+        $scope.selectedComponentForBinding = null;
+    };
+
+    $scope.save = function(bindingTargetType) {
+        var tableLink = {};
+        tableLink.id = $scope.table.id;
+        tableLink.bindingIdentifier = $scope.table.bindingIdentifier;
+        tableLink.bindingLocation = $scope.selectedBindingLocation;
+        tableLink.bindingStrength = $scope.selectedBindingStrength;
+        tableLink.isChanged = true;
+        tableLink.isNew = true;
+
+        if (bindingTargetType == 'SEGMENT') {
+            $scope.selectedFieldForBinding = JSON.parse($scope.selectedFieldForBinding);
+            $scope.pathForBinding = $rootScope.getSegmentLabel($scope.selectedSegmentForBinding) + '-' + $scope.selectedFieldForBinding.position;
+
+            var ref = angular.copy($scope.selectedFieldForBinding);
+            ref.path = $scope.pathForBinding;
+            ref.target = angular.copy($scope.selectedSegmentForBinding);
+            ref.tableLink = angular.copy(tableLink);
+            $rootScope.references.push(ref);
+        } else {
+            $scope.selectedComponentForBinding = JSON.parse($scope.selectedComponentForBinding);
+            $scope.pathForBinding = $rootScope.getDatatypeLabel($scope.selectedDatatypeForBinding) + '-' + $scope.selectedComponentForBinding.position;
+
+            var ref = angular.copy($scope.selectedComponentForBinding);
+            ref.path = $scope.pathForBinding;
+            ref.target = angular.copy($scope.selectedDatatypeForBinding);
+            ref.tableLink = angular.copy(tableLink);
+            $rootScope.references.push(ref);
+        }
+
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
 });

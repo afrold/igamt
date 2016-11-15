@@ -22,15 +22,21 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
-         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
-                 ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
-                 ng-click="save()">
-             <span><i class="fa fa-check fa-fw"></i> Save</span>
-                        </button>
-                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
-                            <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                        </button>
+                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                                    ng-disabled="editForm.$invalid || !editForm.$dirty"
+                                    ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
+                                    ng-click="save()">
+                                <span><i class="fa fa-check fa-fw"></i> Save</span>
+                            </button>
+                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="datatype.scope !== 'USER'" ng-click="saveBindingForDatatype();cleanState();">
+                                <span><i class="fa fa-check fa-fw"></i> Save</span>
+                            </button>
+                            <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                                <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                            </button>
+                            <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                                <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                            </button>
                         </span>
                     </div>
                     <div class="col-md-12" ng-controller="cmpDatatypeCtrl as cmp">
@@ -40,14 +46,14 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Data Type MetaData
                                 </tab-heading>
                                 <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-if="datatype.scope!=='MASTER'">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope!=='MASTER'">
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="name" class="form-control" ng-model="datatype.name" required>
                                         </div>
                                     </div>
-									<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-if="datatype.scope==='MASTER'">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}" ng-show="datatype.scope==='MASTER'">
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
@@ -103,16 +109,27 @@
                                         <label class="col-md-2 control-label">Usage Note </label>
 
                                         <div class="controls col-md-10">
-                                            <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'">
+                                            <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
                                                 <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>
                                             </div>
-                                            <div ng-if="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
+                                            <div ng-show="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
                                                 <div class="fr-view">
                                                     <div froala-view="datatype.usageNote"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="form-group control-group" ng-hide="datatype.scope === 'HL7STANDARD'">
+                                        <label class="col-md-2 control-label">Date Updated</label>
+
+                                        <div class="controls col-md-10">
+                                            <span type="text" name="date"
+                                                   class="form-control">{{datatype.dateUpdated | date:dateFormat}}</span>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </tab>
                             <tab ng-click="setDeltaToF(); refreshSlider();">
@@ -128,10 +145,10 @@
                                             <accordion-heading>
                                                 <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
-                                                <div ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'">
+                                                <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
                                                     <textarea froala="froalaEditorOptions" ng-model="datatype.defPreText" name="text" id="text" ng-change="setDirty()"></textarea>
                                                 </div>
-                                                <div ng-if="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
+                                                <div ng-show="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
                                                     <div class="fr-view">
                                                         <div froala-view="datatype.defPreText"></div>
                                                     </div>
@@ -146,55 +163,51 @@
                                                 <span style="color:white;">Data Type Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
                                             </accordion-heading>
                                             <div class="" style="margin:5px 5px 5px 5px">
-                                                 <div ng-if="datatype.components && datatype.components.length > 0" class="pull-left">
-                                                    <div ng-dropdown-multiselect=""
-                                                        options="viewSettings.columnOptions"
-                                                        selected-model="viewSettings.visibleColumns"
-                                                        events="viewSettings.events" extra-settings="viewSettings.extra"
-                                                        translation-texts="viewSettings.translations"></div>
-                                         </div>
+                                                <div ng-show="datatype.components && datatype.components.length > 0" class="pull-left">
+                                                    <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
+                                                </div>
 
-                                                 <div ng-show="datatype.components && datatype.components.length > 0" class=igl-def-table-container">
-                                                    <table id="treeTable" tt-table tt-params="datatypesParams" class="table table-bordered table-fix-header table-condensed profile-table">
-                                                        <thead>
-                                                            <tr class="tbl-header" style="">
-                                                                <th class="col-md-2 col-fixed-250">Name</th>
-                                                                <th class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">Usage
-                                                                    <button type="button" class="btn btn-raised btn-info btn-xs" ng-if="(datatype.scope === 'USER')&& !viewSettings.tableReadonly && (datatype.components.length>0)" ng-click="OtoX(datatype)">O to X
-                                                                        </button>
-                                                                </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">Length
-                                                                </th>
-                                                                <th class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')">
-                                                                    Conformance Length
-                                                                </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">Data Type
-                                                                </th>
-                                                                <th class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">Value Set
-                                                                </th>
-                                                                <th class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-                                                                    Predicate
-                                                                </th>
-                                                                <th class="col-md-2" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-                                                                    Conformance Statement
-                                                                </th>
-                                                                <th class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">Definition Text
-                                                                </th>
-                                                                <th class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
-                                                                    Comment
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody></tbody>
+                                                <div ng-show="datatype.components && datatype.components.length > 0" class=igl-def-table-container ">
+            <table id="treeTable " tt-table tt-params="datatypesParams " class="table table-bordered table-fix-header table-condensed profile-table ">
+                <thead>
+                <tr class="tbl-header " style=" ">
+                    <th class="col-md-2 col-fixed-250 ">Name</th>
+                    <th class="col-md-1 col-fixed-80 ">Usage
+                        <button type="button " class="btn btn-raised btn-info btn-xs " ng-show="(datatype.scope==='USER' )&& !viewSettings.tableReadonly && (datatype.components.length>0)" ng-click="OtoX(datatype)">O to X
+                                                    </button>
+                                                    </th>
+                                                    <th class="col-md-1 col-fixed-100">Length
+                                                    </th>
+                                                    <th class="col-md-1 col-fixed-80">
+                                                        Conformance Length
+                                                    </th>
+                                                    <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
+                                                    </th>
+                                                    <th class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                                                    </th>
+                                                    <th class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
+                                                        Predicate
+                                                    </th>
+                                                    <th class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
+                                                        Conformance Statement
+                                                    </th>
+                                                    <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
+                                                    </th>
+                                                    <th class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
+                                                        Comment
+                                                    </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
                                                     </table>
-                                                 </div>
+                                                </div>
 
 
                                                 <div ng-hide="(datatype.components && datatype.components.length > 0) || datatype.name === 'DTM'">
                                                     Primitive Data Type
                                                 </div>
 
-                                                <div ng-if="datatype.name === 'DTM'" class="table table-bordered table-fix-header table-condensed profile-table">
+                                                <div ng-show="datatype.name === 'DTM'" class="table table-bordered table-fix-header table-condensed profile-table">
                                                     <label>Date, Time, and TimeZone Format</label>
                                                     <table class="table table-striped table-bordered">
                                                         <thead>
@@ -212,45 +225,45 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 0)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 0">Required</Span>
+                                                                    <Span ng-show="datatype.precisionOfDTM > 0">Required</Span>
                                                                     <Span ng-hide="datatype.precisionOfDTM > 0">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 1)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 1">Required</Span>
+                                                                    <Span ng-show="datatype.precisionOfDTM > 1">Required</Span>
                                                                     <Span ng-hide="datatype.precisionOfDTM > 1">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 2)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 2">Required</Span>
+                                                                    <Span ng-show="datatype.precisionOfDTM > 2">Required</Span>
                                                                     <Span ng-hide="datatype.precisionOfDTM > 2">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 3)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 3">Required</Span>
+                                                                    <Span ng-show="datatype.precisionOfDTM > 3">Required</Span>
                                                                     <Span ng-hide="datatype.precisionOfDTM > 3">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 4)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 4">Required</Span>
+                                                                    <Span ng-show="datatype.precisionOfDTM > 4">Required</Span>
                                                                     <Span ng-hide="datatype.precisionOfDTM > 4">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 5)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 5">Required</Span>
+                                                                    <Span ng-show="datatype.precisionOfDTM > 5">Required</Span>
                                                                     <Span ng-hide="datatype.precisionOfDTM > 5">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.precisionOfDTM > 6)}">
-                                                                    <Span ng-if="datatype.precisionOfDTM > 6">Required</Span>
+                                                                    <Span ng-show="datatype.precisionOfDTM > 6">Required</Span>
                                                                     <Span ng-hide="datatype.precisionOfDTM > 6">Optional</Span>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" ng-class="{'activeTD': (datatype.timeZoneOfDTM)}">
-                                                                    <Span ng-if="datatype.timeZoneOfDTM">Required</Span>
+                                                                    <Span ng-show="datatype.timeZoneOfDTM">Required</Span>
                                                                     <Span ng-hide="datatype.timeZoneOfDTM">Optional</Span>
                                                                 </td>
                                                             </tr>
 
-                                                            <tr ng-if="!viewSettings.tableReadonly && datatype.scope === 'USER'">
+                                                            <tr ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
                                                                 <td class="col-md-7" colspan="7">
                                                                     <rzslider rz-slider-options="dtmSliderOptions" rz-slider-model="datatype.precisionOfDTM"></rzslider>
                                                                 </td>
                                                                 <td class="col-md-1" align="center" valign="center">
-                                                                    <input type="checkbox" ng-model="datatype.timeZoneOfDTM"/>
+                                                                    <input type="checkbox" ng-model="datatype.timeZoneOfDTM" />
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -263,10 +276,10 @@
                                             <accordion-heading>
                                                 <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
-                                                <div ng-if="!viewSettings.tableReadonly && datatype.scope==='USER'">
+                                                <div ng-show="!viewSettings.tableReadonly && datatype.scope==='USER'">
                                                     <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="text" ng-change="setDirty()"></textarea>
                                                 </div>
-                                                <div ng-if="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' )">
+                                                <div ng-show="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' )">
                                                     <div class="fr-view">
                                                         <div froala-view="datatype.defPostText"></div>
                                                     </div>
@@ -290,94 +303,94 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <span ng-hide="datatype.conformanceStatements.length> 0">No conformance statement</span>
-                                                        <table st-table="displayed" st-safe-src="datatype.conformanceStatements" class="table table-striped table-bordered" ng-if="datatype.conformanceStatements.length > 0">
-                                                            <thead>
-                                                                <tr class="tbl-header">
-                                                                    <th st-sort="constraintId" class="col-md-1">ID</th>
-                                                                    <th st-sort="constraintTarget" class="col-md-3">Location</th>
-                                                                    <th class="col-md-7">Description</th>
-                                                                    <th class="col-md-1"></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr ng-repeat="c in displayed ">
-                                                                    <td class="col-md-1">
-                                                                        {{c.constraintId}}
-                                                                    </td>
-                                                                    <td class="col-md-3">
-                                                                        <span ng-bind="displayLocationForDatatype(datatype, c.constraintTarget)" />
-                                                                    </td>
-                                                                    <td class="col-md-7">
-                                                                        {{c.description}}
-                                                                    </td>
-                                                                    <td class="col-md-1" align="center">
-                                                                        <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">
-                                                                        &nbsp; </i>Del</span></button>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-
-                                                    </div>
+                                                    <table st-table="displayed" st-safe-src="datatype.conformanceStatements" class="table table-striped table-bordered" ng-show="datatype.conformanceStatements.length > 0">
+                                                        <thead>
+                                                            <tr class="tbl-header">
+                                                                <th st-sort="constraintId" class="col-md-1">ID</th>
+                                                                <th st-sort="constraintTarget" class="col-md-3">Location</th>
+                                                                <th class="col-md-7">Description</th>
+                                                                <th class="col-md-1"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="c in displayed ">
+                                                                <td class="col-md-1">
+                                                                    {{c.constraintId}}
+                                                                </td>
+                                                                <td class="col-md-3">
+                                                                    <span ng-bind="displayLocationForDatatype(datatype, c.constraintTarget)" />
+                                                                </td>
+                                                                <td class="col-md-7">
+                                                                    {{c.description}}
+                                                                </td>
+                                                                <td class="col-md-1" align="center">
+                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">
+                            &nbsp; </i>Del</span></button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
 
                                                 </div>
-                                            </div>
-                                            <div accordion-group class="panel-primary" is-open="accordStatus.isThirdOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Conditional Predicates</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>                                                    </accordion-heading>
-                                                <div class="panel-body">
-                                                    <div class="col-md-12 igl-page-header">
 
-                                                        <span class="pull-right">
+                                            </div>
+                                        </div>
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isThirdOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Conditional Predicates</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div class="col-md-12 igl-page-header">
+
+                                                    <span class="pull-right">
                                                                 <button class="btn btn-raised btn-primary btn-xs" ng-click="managePredicate(null);"
                                                                         type="button"
                                                                         ng-hide="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER') || !datatype.components || datatype.components.length == 0"><span><i
                                                                         class="fa fa-plus fa-fw">
                                                                     &nbsp; </i>Add Predicate</span></button>
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <span ng-hide="datatype.predicates.length > 0">No conditional predicate</span>
-                                                        <table st-table="displayed" st-safe-src="datatype.predicates" class="table table-striped table-bordered" ng-if="datatype.predicates.length > 0">
-                                                            <thead>
-                                                                <tr class="tbl-header">
-                                                                    <th st-sort="constraintTarget" class="col-md-3">Location</th>
-                                                                    <th class="col-md-6">Description</th>
-                                                                    <th class="col-md-1">True usage</th>
-                                                                    <th class="col-md-1">False usage</th>
-                                                                    <th class="col-md-1"></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr ng-repeat="p in displayed">
-                                                                    <td class="col-md-3">
-                                                                        <span ng-bind="displayLocationForDatatype(datatype, p.constraintTarget)" />
-                                                                    </td>
-                                                                    <td class="col-md-6">
-                                                                        {{p.description}}
-                                                                    </td>
-                                                                    <td class="col-md-1">
-                                                                        {{p.trueUsage}}
-                                                                    </td>
-                                                                    <td class="col-md-1">
-                                                                        {{p.falseUsage}}
-                                                                    </td>
-                                                                    <td class="col-md-1" align="center">
-                                                                        <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.predicates.splice(datatype.predicates.indexOf(p), 1);" ng-disabled="viewSettings.tableReadonly"><span><i
-                                                                                    class="fa fa-trash fa-fw">
-                                                                                &nbsp; </i>Del</span>
-                                                                            </button>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <span ng-hide="datatype.predicates.length > 0">No conditional predicate</span>
+                                                    <table st-table="displayed" st-safe-src="datatype.predicates" class="table table-striped table-bordered" ng-show="datatype.predicates.length > 0">
+                                                        <thead>
+                                                            <tr class="tbl-header">
+                                                                <th st-sort="constraintTarget" class="col-md-3">Location</th>
+                                                                <th class="col-md-6">Description</th>
+                                                                <th class="col-md-1">True usage</th>
+                                                                <th class="col-md-1">False usage</th>
+                                                                <th class="col-md-1"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="p in displayed">
+                                                                <td class="col-md-3">
+                                                                    <span ng-bind="displayLocationForDatatype(datatype, p.constraintTarget)" />
+                                                                </td>
+                                                                <td class="col-md-6">
+                                                                    {{p.description}}
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    {{p.trueUsage}}
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    {{p.falseUsage}}
+                                                                </td>
+                                                                <td class="col-md-1" align="center">
+                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.predicates.splice(datatype.predicates.indexOf(p), 1);" ng-disabled="viewSettings.tableReadonly"><span><i
+                                class="fa fa-trash fa-fw">
+                            &nbsp; </i>Del</span>
+                        </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
+                                        </div>
 
 
                                     </accordion>
-                                    </div>
+                                </div>
                             </tab>
                             <tab ng-click="callDTDelta()">
                                 <tab-heading>
@@ -392,68 +405,68 @@
                                             <div class="">
                                                 <table class="table table-stripped table-borderless table-condensed">
                                                     <thead>
-                                                    <tr class="tbl-header">
-                                                    <th class="col-md-1"></th>
-                                                    <th class="col-md-2">HL7 Version</th>
-                                                    <th class="col-md-2">Scope</th>
-                                                    <th class="col-md-3">IG Document</th>
-                                                    <th class="col-md-4">Datatype</th>
-                                                     </thead>
+                                                        <tr class="tbl-header">
+                                                            <th class="col-md-1"></th>
+                                                            <th class="col-md-2">HL7 Version</th>
+                                                            <th class="col-md-2">Scope</th>
+                                                            <th class="col-md-3">IG Document</th>
+                                                            <th class="col-md-4">Datatype</th>
+                                                    </thead>
 
                                                     <tbody>
-                                                    <tr>
-                                                        <td class="col-md-1">
-                                                            <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
-                                                        </td>
-                                                        <td class="col-md-2">
-                                                            <select ng-model="version1" class="form-control" disabled>
-                                                                <option ng-selected="version1"> {{version1}}</option>
-                                                            </select>
-                                                        </td>
-                                                        <td class="col-md-2">
-                                                            <select ng-model="scope1" class="form-control" disabled>
-                                                                <option ng-selected="scope1"> {{scope1}}</option>
-                                                            </select>
-                                                        </td>
-                                                        <td class="col-md-3">
-                                                            <select ng-model="ig1" class="form-control" disabled>
-                                                                <option ng-selected="ig1"> {{ig1}}</option>
-                                                            </select>
-                                                        </td>
-                                                        <td class="col-md-4">
-                                                            <select ng-model="datatype1" class="form-control" disabled>
-                                                                <option ng-selected="datatype1"> {{getLabel(datatype1)}}</option>
-                                                            </select>
-                                                        </td>
+                                                        <tr>
+                                                            <td class="col-md-1">
+                                                                <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <select ng-model="version1" class="form-control" disabled>
+                                    <option ng-selected="version1"> {{version1}}</option>
+                                </select>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <select ng-model="scope1" class="form-control" disabled>
+                                    <option ng-selected="scope1"> {{scope1}}</option>
+                                </select>
+                                                            </td>
+                                                            <td class="col-md-3">
+                                                                <select ng-model="ig1" class="form-control" disabled>
+                                    <option ng-selected="ig1"> {{ig1}}</option>
+                                </select>
+                                                            </td>
+                                                            <td class="col-md-4">
+                                                                <select ng-model="datatype1" class="form-control" disabled>
+                                    <option ng-selected="datatype1"> {{getLabel(datatype1)}}</option>
+                                </select>
+                                                            </td>
 
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="col-md-1">
-                                                            <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-md-1">
+                                                                <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
 
-                                                        </td>
-                                                        <td class="col-md-2">
-                                                            <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
-                                                                <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
-                                                            </select>
-                                                        </td>
-                                                        <td class="col-md-2">
-                                                            <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
-                                                                <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
-                                                            </select>
-                                                        </td>
-                                                        <td class="col-md-3">
-                                                            <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
+                                    <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
+                                </select>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
+                                    <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
+                                </select>
+                                                            </td>
+                                                            <td class="col-md-3">
+                                                                <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
 
-                                                        </td>
-                                                        <td class="col-md-4">
-                                                            <select ng-model="cmp.datatypeId" class="form-control" ng-change="setDatatype2(cmp.datatypeId)" ng-disabled="!ig2" no-dirty-check>
-                                                                <option value='-1'></option>
-                                                                <option ng-repeat="datatype in datatypes2" ng-disabled="disableDT(datatype,datatype1)" ng-hide="hideDT(datatype,datatype1)" value='{{$index}}'> {{getLabel(datatype)}}</option>
-                                                            </select>
-                                                        </td>
+                                                            </td>
+                                                            <td class="col-md-4">
+                                                                <select ng-model="cmp.datatypeId" class="form-control" ng-change="setDatatype2(cmp.datatypeId)" ng-disabled="!ig2" no-dirty-check>
+                                    <option value='-1'></option>
+                                    <option ng-repeat="datatype in datatypes2" ng-disabled="disableDT(datatype,datatype1)" ng-hide="hideDT(datatype,datatype1)" value='{{$index}}'> {{getLabel(datatype)}}</option>
+                                </select>
+                                                            </td>
 
-                                                    </tr>
+                                                        </tr>
 
 
                                                     </tbody>
@@ -467,7 +480,7 @@
 
                                             <div class="" align="center" style="margin-bottom:10px">
                                                 <button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="btn btn-raised btn-info btn-md">
-                                                        <i class="fa fa-check"></i> Delta</button>
+                        <i class="fa fa-check"></i> Delta</button>
                                             </div>
                                         </div>
                                         <div accordion-group class="panel-primary" is-open="status.isSecondOpen">
@@ -514,13 +527,20 @@
                                     <i class="fa fa-link" aria-hidden="true"></i> Data Type Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
-                                    <div ng-if="references != null && references.length > 0">
+                                    <span class="pull-right" style="margin-bottom:10px">
+                                        <button type="button" ng-click="AddBindingForDatatype(datatype)" class="btn btn-raised btn-info btn-md"><i class="fa fa-plus"></i> Add Binding</button>
+                                    </span>
+                                    <div ng-show="references != null && references.length > 0">
                                         <table st-table="tmpReferences" st-safe-src="references" class="table table-striped table-bordered table-condensed">
                                             <thead>
                                                 <tr class="tbl-header">
                                                     <td st-ratio="5">#</td>
-                                                    <th st-ratio="40" st-sort="path">Reference Path</th>
-                                                    <th st-ratio="55" st-sort="name">Reference Name</th>
+                                                    <th st-ratio="15">Path</th>
+                                                    <th st-ratio="15">Name</th>
+                                                    <th st-ratio="10">Usage</th>
+                                                    <th st-ratio="20">DataType</th>
+                                                    <th st-ratio="10">Value Set</th>
+                                                    <th st-ratio="5">Status</th>
                                                 </tr>
 
                                             </thead>
@@ -529,20 +549,48 @@
                                                 <tr ng-repeat="ref in tmpReferences">
                                                     <td st-ratio="5">{{$index + 1}}
                                                     </td>
-                                                    <td st-ratio="40">
-                                                        <span ng-if="ref.type === 'field'" class="label label-field label-icon">F</span>
-                                                        <span ng-if="ref.type === 'component'" class="label label-component label-icon">C</span>
-                                                        <span ng-if="ref.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
+                                                    <td st-ratio="15">
+                                                        <span ng-show="ref.type === 'field'" class="label label-field label-icon">F</span>
+                                                        <span ng-show="ref.type === 'component'" class="label label-component label-icon">C</span>
+                                                        <span ng-show="ref.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
                                                         <span ng-bind="ref.path"></span>
                                                     </td>
-                                                    <td st-ratio="55">
-                                                        {{ref.name}}
+                                                    <td st-ratio="15">
+                                                        
+                                                        <a ng-show="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</a>
+                                                        <a ng-show="ref.type === 'component'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</a>
+                                                    
                                                     </td>
+                                                    <td st-ratio="10">
+                                                        {{::ref.usage}}
+                                                    </td>
+                                                    <td st-ratio="20">
+                                                        <span ng-show="ref.target.scope !== 'USER'">
+                                                             <a ng-click="redirectDT(ref.datatype)">{{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}</a>
+                                                           
+                                                        </span>
+                                                        <select ng-show="ref.target.scope == 'USER'" class="form-control" ng-change="changeDatatypeLink(ref.datatypeLink)" ng-model="ref.datatypeLink.id">
+                                                            <option value="">No Value Set</option>
+                                                            <option ng-repeat="dt in datatypes |orderBy:'+name'" value="{{dt.id}}">
+                                                                {{::getDatatypeLabel(dt)}}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+
+                                                    <td st-ratio="10">
+                                                        <span ng-repeat="table in ref.tables"><a ng-click="redirectVS(table)"{{::getTableLabel(table)}}</span>
+                                                    </td>
+
+                                                    <td st-ratio="5">
+                                                        <span ng-show="ref.datatypeLink.isNew">New</span>
+                                                        <span ng-show="!ref.datatypeLink.isNew && ref.datatypeLink.isChanged">Changed</span>
+                                                    </td>
+
                                                 </tr>
                                             </tbody>
-                                            <tr>
-                                                <td colspan="3" class="text-center">
-                                                    <div st-pagination="" st-items-by-page="15" st-displayed-pages="15"></div>
+                                            <tr ng-show="references.length > 10">
+                                                <td colspan="9" class="text-center">
+                                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -557,11 +605,11 @@
 
 
                         </tabset>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </script>
 <script type="text/ng-template" id="ConfirmDatatypeDeleteCtrl.html">
     <div class="modal-header">
@@ -583,20 +631,20 @@
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-md-2 col-fixed-250">{{$index}}
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('usage')">
-         </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
-         </td>
-        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('codeSys')">
-         </td>
-        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-         </td>
-        <td class="col-md-2 emptyCol" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('defText')">
-         </td>
-        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
-         </td>
+        <td class="col-md-1 col-fixed-80 emptyCol">
+        </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
+        </td>
+        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('codeSys')">
+        </td>
+        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
+        </td>
+        <td class="col-md-2 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
+        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
+        </td>
+        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
+        </td>
     </tr>
 </script>
 <script type="text/ng-template" id="DatatypeReadTree.html">
@@ -605,24 +653,24 @@
             <span style="width:60%" type="text" name="name" ng-bind="::node.name"></span>
             <span ng-bind="::node.description"></span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
-         </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('length')">
-         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('confLength')">
-         </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="viewSettings.isVisibleColumn('datatype')">
-         </td>
-        <td class="col-md-1 col-fixed-130 emptyCol" ng-if="viewSettings.isVisibleColumn('valueSet')">
-         </td>
-        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
-         </td>
-        <td class="col-md-2 emptyCol" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
-         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="viewSettings.isVisibleColumn('defText')">
-         </td>
-        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
-         </td>
+        <td class="col-md-1 col-fixed-80">
+        </td>
+        <td class="col-md-1 col-fixed-100 emptyCol">
+        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol">
+        </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
+        </td>
+        <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        </td>
+        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
+        </td>
+        <td class="col-md-2 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
+        </td>
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
+        </td>
+        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
+        </td>
     </tr>
 </script>
 <script type="text/ng-template" id="DatatypeComponentEditTree.html">
@@ -672,13 +720,13 @@
                 </div>
             </ng-form>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80" >
             <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)" ng-controller="DatatypeRowCtrl">
                 <ng-form name="{{formName}}" class="form-inline">
                     <select class="form-control input-sm" name="usage" id="usage"
-                                ng-change="setUsage(node); openPredicateDialog(node);"
-                                ng-class="{ 'igl-has-error has-feedback' : {{formName}}.usage.$invalid}"
-                                required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
+                            ng-change="setUsage(node); openPredicateDialog(node);"
+                            ng-class="{ 'igl-has-error has-feedback' : {{formName}}.usage.$invalid}"
+                            required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
                 </ng-form>
             </span>
 
@@ -691,27 +739,27 @@
                 </a>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
-            <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
-                <input style="width:45%" class="form-control" name="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.minLength.$invalid}" ng-model="node.minLength" required ng-minlength="1">
-                <input style="width:45%" class="form-control" type="text" name="maxLength" ng-change="setDirty()" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.maxLength.$invalid}" ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required>
-                </span>
-            </ng-form>
-                </div>
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0">
+                <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
+                    <input style="width:45%" class="form-control" name="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.minLength.$invalid}" ng-model="node.minLength" required ng-minlength="1">
+                    <input style="width:45%" class="form-control" type="text" name="maxLength" ng-change="setDirty()" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.maxLength.$invalid}" ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required>
+                    </span>
+                </ng-form>
+            </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
-            <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
-                <input style="width:50%" class="form-control" type="text" name="confLength" required ng-change="setDirty()" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.confLength.$invalid}" ng-pattern="/^\d+$/" ng-model="node.confLength">
-            </ng-form>
-                </div>
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0">
+                <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl">
+                    <input style="width:50%" class="form-control" type="text" name="confLength" required ng-change="setDirty()" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.confLength.$invalid}" ng-pattern="/^\d+$/" ng-model="node.confLength">
+                </ng-form>
+            </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
+        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
                 <div ng-show="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                     <a class="point" ng-show="editableDT!==node.id" ng-click="redirectDT(node.datatype)">
-                        {{getDatatypeLabel(datatypesMap[node.datatype.id])}} 
+                        {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                     </a>
 
                     <div ng-show="editableDT===node.id">
@@ -719,6 +767,7 @@
                             <option ng-repeat="datatype in results" value="{{datatype}}"
                                     ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}}
                             </option>
+                            <!--<option ng-click="otherDT(node)" value=""> Others-->
                         </select>
                     </div>
                     <a ng-show="editableDT!==node.id" ng-click="editDT(node)" class="point">
@@ -734,7 +783,7 @@
                 </div>
             </ng-form>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.tables.length!==0">
                 <a class="point" ng-repeat="table in node.tables track by table.id">
                     <span ng-click="redirectVS(table)"> {{getTableLabel(tablesMap[table.id])}}</span>
@@ -749,7 +798,7 @@
                 </a>
             </div>
         </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-class="{'has-error': node.usage === 'C' && countPredicate(node.position) != 1}" ng-if="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-md-1" ng-style="predWidthx" ng-class="{'has-error': node.usage === 'C' && countPredicate(node.position) != 1}" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="countPredicate(node.position) === 0 && node.usage === 'C'">
                     <a ng-click="managePredicate(node)" class="point">
@@ -768,7 +817,7 @@
                 </div>
             </div>
         </td>
-        <td class="col-md-2" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
+        <td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>
                 <div ng-show="countConformanceStatements(node.position) == 0">
                     <a ng-click="manageConformanceStatement(node)" class="point">
@@ -780,7 +829,7 @@
                 </p>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')" style="text-align:center">
+        <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">
             <div>
                 <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)" class="point">
                     <i class="fa fa-pencil fa-fw" ng-show="node.text !== '' && node.text !== null"></i>
@@ -791,7 +840,7 @@
                 </a>
             </div>
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
             <a ng-click="openInputTextDlg(node, 'comment','Comment', false)" class="point" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 <i class="fa fa-pencil fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
                 <i class="fa fa-plus fa-fw" ng-show="node.comment === '' || node.comment === null"></i>
@@ -808,60 +857,60 @@
             <span class="label label-component label-icon">C</span>
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <div>
-                <span ng-if="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
+                <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
                     <span>{{::node.usage}}</span>
                 </span>
 
-                <div ng-if="node.usage === 'C' && countPredicate(node.position) !== 0">
+                <div ng-show="node.usage === 'C' && countPredicate(node.position) !== 0">
                     <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
                         C({{::p.trueUsage}}/{{p.falseUsage}})
                     </p>
                 </div>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
+        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <a ng-click="redirectDT(node.datatype)">
                 {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </a>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>
-                <div ng-if="node.tables != undefined  && node.tables !== null">
+                <div ng-show="node.tables != undefined  && node.tables !== null">
                     <span ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">
                         {{getTableLabel(tablesMap[table.id])}}
                     </span>
                 </div>
             </div>
         </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </p>
         </td>
-        <td class="col-md-2" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
+        <td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <p ng-repeat="c in datatype.conformanceStatements    | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </p>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <a ng-if="node.text && node.text !== '' && node.text !== null" ng-click="openRichTextDlg(node, 'text','Definition Text', true)" class="point">
+        <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
+            <a ng-show="node.text && node.text !== '' && node.text !== null" ng-click="openRichTextDlg(node, 'text','Definition Text', true)" class="point">
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <!--<span class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null" disabled>-->
             <!--</span>-->
-            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-if="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-show="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
                 tooltip-placement="left">
-                <i class="fa fa-eye fa-fw" ng-if="node.comment !== '' && node.comment !== null"></i>
+                <i class="fa fa-eye fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
             </a>
 
         </td>
@@ -875,7 +924,7 @@
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) === 0)">
                 {{::node.usage}}
             </span>
@@ -886,41 +935,41 @@
                 </p>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
+        <td class="col-md-1 col-fixed-100"ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')">
+        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
                 <a ng-click="redirectDT(node.datatype)" class="point">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                 </a>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" class="point" ng-show="node.tables !== null && node.tables !== undefined">
                 {{getTableLabel(tablesMap[table.id])}}
             </a>
         </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <p ng-repeat="p in parentsMap[node.id].predicates    | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)"
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
-        <td class="col-md-2" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
+        <td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <p ng-repeat="c in parentsMap[node.id].conformanceStatements     | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)"
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
+        <td class="col-md-1 col-fixed-80">
             <div ng-show="node.text && node.text !== '' && node.text !== null">
                 <a ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="point">
                     <i class="fa fa-eye fa-fw"></i>
                 </a>
             </div>
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <!--<textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" disabled>-->
             <!--</textarea>-->
             <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-show="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
@@ -938,53 +987,53 @@
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('usage')">
-            <span ng-if="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) === 0)">
+        <td class="col-md-1 col-fixed-80">
+            <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) === 0)">
                 {{::node.usage}}
             </span>
 
-            <div ng-if="node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) !== 0">
+            <div ng-show="node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) !== 0">
                 <p ng-repeat="p in parentsMap[node.id].predicates     | filter:{constraintTarget:node.position + '[1]'}:true">
                     C({{::p.trueUsage}}/{{::p.falseUsage}})
                 </p>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('length')">
-            <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
+        <td class="col-md-1 col-fixed-100">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('confLength')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
-            <div ng-if="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> <span ng-bind="::node.confLength"></span> </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="viewSettings.isVisibleColumn('datatype')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
             <a ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
             </a>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-if="viewSettings.isVisibleColumn('valueSet')">
-            <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" ng-if="node.tables !== null && node.tables !== undefined">
+        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+            <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" ng-show="node.tables !== null && node.tables !== undefined">
                 {{getTableLabel(tablesMap[table.id])}}
             </a>
         </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-if="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <p ng-repeat="p in parentsMap[node.id].predicates   | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)"
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
-        <td class="col-md-2" ng-style="csWidthx" ng-if="viewSettings.isVisibleColumn('confStatement')">
+        <td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <p ng-repeat="c in parentsMap[node.id].conformanceStatements   | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)"
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-if="viewSettings.isVisibleColumn('defText')">
-            <a ng-if="node.text && node.text !== '' && node.text !== null" ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="point">
+        <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
+            <a ng-show="node.text && node.text !== '' && node.text !== null" ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="point">
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-if="viewSettings.isVisibleColumn('comment')">
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <!--<span class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null" disabled>-->
             <!--</span>-->
-            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-if="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-show="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
                 tooltip-placement="left">
-                <i class="fa fa-eye fa-fw" ng-if="node.comment !== '' && node.comment !== null"></i>
+                <i class="fa fa-eye fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
             </a>
         </td>
     </tr>
@@ -1026,626 +1075,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</script>
-<script type="text/ng-template" id="PredicateDatatypeCtrl.html">
-    <div class="modal-header">
-        <h3 ng-show="selectedNode === null" class="header4">Predicate for {{::datatype.name}}</h3>
-
-        <h3 ng-show="selectedNode !== null" class="header4">Predicate for {{::datatype.name}}-{{::selectedNode.position}}</h3>
-    </div>
-    <div class="modal-body">
-        <form role="form">
-            <div class="table-responsive">
-                <div class="page-header">
-                    <span class="header5">List of Predicates</span>
-                    <span class="pull-right">
-                        <select class="form-control input-sm" ng-model="selectedNode" ng-class="{'form-control-invalid': !selectedNode}" ng-options="component as (datatype.name + '.' + component.position + ': ' + component.name) for component in datatype.components | filter:{usage : 'C'}">
-                            <option value="">Select target location</option>
-                        </select>
-                    </span>
-                </div>
-                <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
-                    <thead>
-                        <tr class="tbl-header">
-                            <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
-                            <th class="col-md-8">Desciption (
-                                <input type="checkbox" ng-model="viewAssertion"> view assertion )
-                            </th>
-                            <th class="col-md-1">True Usage</th>
-                            <th class="col-md-1">False Usage</th>
-                            <th class="col-md-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="p in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
-                            <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
-                                <i ng-show="p.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="p" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
-                            </td>
-                            <td class="col-md-8">
-                                <input class="form-control" ng-model="p.description" ng-change="setChanged()" type="text" />
-                                <span ng-if="viewAssertion">{{p.assertion}}</span>
-                            </td>
-                            <td class="col-md-1">
-                                <select class="form-control" ng-model="p.trueUsage" ng-change="setChanged()" ng-options="usage for usage in config.conditionalUsage" />
-                            </td>
-                            <td class="col-md-1">
-                                <select class="form-control" ng-model="p.falseUsage" ng-change="setChanged()" ng-options="usage for usage in config.conditionalUsage" />
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <button class="btn btn-raised btn-danger btn-xxs" ng-click="deletePredicate(p)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <span class="pull-left">
-                    <span class="header5" ng-show="constraintType === 'Free'">Add new Free-Text predicate</span>
-                <span class="header5" ng-show="constraintType === 'Plain'">Add new plain predicate</span>
-                <span class="header5" ng-show="constraintType === 'Complex'">Add new complex predicate</span>
-                </span>
-                <span class="pull-right">
-        <div class="btn-group btn-group-sm" data-toggle="buttons">
-            <label class="btn btn-raised btn-info btn-xs" ng-click="constraintType = 'Free'" ng-class="{'active':constraintType === 'Free'}">
-                <input type="radio" ng-value="constraintType">Add Free-Text predicate
-            </label>
-            <label class="btn btn-raised btn-info btn-xs" ng-click="constraintType = 'Plain'" ng-class="{'active':constraintType === 'Plain'}">
-                <input type="radio" ng-value="constraintType">Add plain predicate
-            </label>
-            <label class="btn btn-raised btn-info btn-xs" ng-click="constraintType = 'Complex'" ng-class="{'active':constraintType === 'Complex'}">
-                <input type="radio" ng-value="constraintType">Add complex predicate
-            </label>
-        </div>
-    </span>
-                <table class="table table-striped table-bordered" ng-show="constraintType === 'Free'">
-                    <thead>
-                        <tr class="tbl-header">
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-8">Free-Text (Not supported by validation tool)</th>
-                            <th class="col-md-1">True Usage</th>
-                            <th class="col-md-1">False Usage</th>
-                            <th class="col-md-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="col-md-1" align="center" style="width: 4.1667%">
-                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                            </td>
-                            <td class="col-md-8">
-                                <input class="form-control" ng-model="newConstraint.freeText" type="text" />
-                            </td>
-                            <td class="col-md-1">
-                                <select class="form-control" ng-class="{'form-control-invalid': !newConstraint.trueUsage}" ng-model="newConstraint.trueUsage" ng-options="usage for usage in config.conditionalUsage" />
-                                <span style="color:red;" ng-show="!newConstraint.trueUsage">Empty true usage</span>
-                            </td>
-                            <td class="col-md-1">
-                                <select class="form-control" ng-class="{'form-control-invalid': !newConstraint.falseUsage}" ng-model="newConstraint.falseUsage" ng-options="usage for usage in config.conditionalUsage" />
-                                <span style="color:red;" ng-show="!newConstraint.falseUsage">Empty false usage</span>
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table table-striped table-bordered" ng-show="constraintType === 'Plain'">
-                    <thead>
-                        <tr class="tbl-header">
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-2">Node</th>
-                            <th class="col-md-2">Verb</th>
-                            <th class="col-md-2">Constraint Pattern</th>
-                            <th class="col-md-2">Value</th>
-                            <th class="col-md-1">True Usage</th>
-                            <th class="col-md-1">False Usage</th>
-                            <th class="col-md-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="col-md-1" align="center" style="width: 4.1667%">
-                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                            </td>
-                            <td class="col-md-2">
-                                <span>{{::newConstraint.datatype}}.</span>
-                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'datatype')}" ng-model="newConstraint.component_1" ng-options="component as component.position for component in datatype.components"
-                                />
-                                <span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
-                                    <select class="form-control form-control-short" ng-model="newConstraint.subComponent_1" ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components"/>
-                                </span>
-                                <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'datatype')">Empty node</span>
-                            </td>
-                            <td class="col-md-2">
-                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'" />
-                                <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
-                            </td>
-                            <td class="col-md-2">
-                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
-                                <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty constraint pattern</span>
-                            </td>
-                            <td class="col-md-2">
-                                <span ng-show="newConstraint.contraintType == 'a literal value' ||
-                                   newConstraint.contraintType == 'equal to' ||
-                                   newConstraint.contraintType == 'not-equal to' ||
-                                   newConstraint.contraintType == 'greater than' ||
-                                   newConstraint.contraintType == 'equal to or greater than' ||
-                                   newConstraint.contraintType == 'less than' ||
-                                   newConstraint.contraintType == 'equal to or less than'">
-                                    <input class="form-control"
-                                        ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                                        ng-model="newConstraint.value" type="text"/>
-                                    <span ng-show="newConstraint.contraintType == 'a literal value'">Case Insensitive: </span>
-                                <input ng-show="newConstraint.contraintType == 'a literal value'" type="checkbox" ng-model="newConstraint.ignoreCase" />
-                                <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'one of list values'">
-                        <input class="form-control"
-                               ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                               ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
-                        <span style="color:red;"
-                              ng-show="isEmptyConstraintValue(newConstraint)">Empty list of values</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'formatted value'">
-                        <select class="form-control"
-                                ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                                ng-model="newConstraint.value"
-                                ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats | orderBy:'toString()'"/>
-                        <div ng-show="newConstraint.value === 'Regular expression'">
-                            <input class="form-control"
-                                   ng-class="{'form-control-invalid': isEmptyConstraintValue2(newConstraint)}"
-                                   ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
-                        </div>
-                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty format</span>
-                                <span style="color:red;" ng-show="newConstraint.value === 'Regular expression' &&  isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'identical to another node' ||
-                                   newConstraint.contraintType == 'equal to another node' ||
-                                   newConstraint.contraintType == 'not-equal to another node' ||
-                                   newConstraint.contraintType == 'greater than another node' ||
-                                   newConstraint.contraintType == 'equal to or greater than another node' ||
-                                   newConstraint.contraintType == 'less than another node' ||
-                                   newConstraint.contraintType == 'equal to or less than another node'">
-                        <span>{{::newConstraint.datatype}}.</span>
-                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintAnotherNode(newConstraint, 'datatype')}" ng-change="updateComponent_2()" ng-model="newConstraint.component_2" ng-options="component as component.position for component in datatype.components"
-                                />
-                                <span ng-show="datatypesMap[newConstraint.component_2.datatype.id].components.length > 0">.
-                            <select class="form-control form-control-short" ng-model="newConstraint.subComponent_2"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype.id].components"/>
-                        </span>
-                                <span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'datatype')">Empty another node</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
-                        <span>ValueSet ID: </span>
-                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
-                                    <option ng-repeat="table in tables  track by table.id |orderBy:'+bindingIdentifier'"
-                                            value="{{table.bindingIdentifier}}">
-                                        {{::table.bindingIdentifier}}
-                                    </option>
-                                </select>
-                                <span style="color:red;" ng-show="isEmptyConstraintValueSet(newConstraint)">Empty value set</span>
-                                <br/>
-                                <span>BindingStrength: </span>
-                                <select name="bindingStrength" class="form-control form-control-short" ng-model="newConstraint.bindingStrength">
-                                    <option value="R">R</option>
-                                    <option value="S">S</option>
-                                    <option value="U">U</option>
-                                </select>
-                                <br/>
-                                <span>BindingLocation: </span>
-                                <input class="form-control form-control-short" ng-model="newConstraint.bindingLocation" type="text" />
-                                </span>
-                            </td>
-                            <td class="col-md-1">
-                                <select class="form-control" ng-class="{'form-control-invalid': !newConstraint.trueUsage}" ng-model="newConstraint.trueUsage" ng-options="usage for usage in config.conditionalUsage" />
-                                <span style="color:red;" ng-show="!newConstraint.trueUsage">Empty true usage</span>
-                            </td>
-                            <td class="col-md-1">
-                                <select class="form-control" ng-class="{'form-control-invalid': !newConstraint.falseUsage}" ng-model="newConstraint.falseUsage" ng-options="usage for usage in config.conditionalUsage" />
-                                <span style="color:red;" ng-show="!newConstraint.falseUsage">Empty false usage</span>
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'datatype', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table table-striped table-bordered" ng-show="constraintType === 'Complex'">
-                    <thead>
-                        <tr class="tbl-header">
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-2">Complex Type</th>
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-
-
-                            <th ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5">Constraints</th>
-
-                            <th ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2">First Constraint</th>
-                            <th ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" style="width: 4.1667%"></th>
-                            <th ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2">Second Constraint</th>
-                            <th class="col-md-1">True Usage</th>
-                            <th class="col-md-1">False Usage</th>
-                            <th class="col-md-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                            </td>
-                            <td class="col-md-2">
-                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
-                                    <option value="AND">AND</option>
-                                    <option value="OR">OR</option>
-                                    <option value="XOR">XOR</option>
-                                    <option value="IFTHEN">IFTHEN(IMPLY)</option>
-                                    <option value="FORALL">FORALL(True, if all assertions are true)</option>
-                                    <option value="EXIST">EXIST(True, if one of assertions is true)</option>
-                                </select>
-                                <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
-                            </td>
-                            <td class="col-md-1" align="center" style="width: 4.1667%">
-                                <span ng-show="compositeType == 'IFTHEN'">IF</span>
-                                <span ng-show="compositeType == 'FORALL'">FORALL</span>
-                                <span ng-show="compositeType == 'EXIST'">EXIST</span>
-                            </td>
-                            <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
-                                <span style="color:red;" ng-show="constraints.length < 2">Drop two more constraints here!</span>
-                                <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
-                            </td>
-                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
-                                <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
-                                <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
-                            </td>
-                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" align="center" style="width: 4.1667%">
-                                <span ng-show="compositeType == 'AND'">AND</span>
-                                <span ng-show="compositeType == 'OR'">OR</span>
-                                <span ng-show="compositeType == 'XOR'">XOR</span>
-                                <span ng-show="compositeType == 'IFTHEN'">THEN</span>
-                            </td>
-                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
-                                <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
-                                <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
-                            </td>
-                            <td class="col-md-1">
-                                <select class="form-control" ng-class="{'form-control-invalid': !complexConstraintTrueUsage}" ng-model="complexConstraintTrueUsage" ng-options="usage for usage in config.conditionalUsage" />
-                                <span style="color:red;" ng-show="!complexConstraintTrueUsage">Empty true usage</span>
-                            </td>
-                            <td class="col-md-1">
-                                <select class="form-control" ng-class="{'form-control-invalid': !complexConstraintFalseUsage}" ng-model="complexConstraintFalseUsage" ng-options="usage for usage in config.conditionalUsage" />
-                                <span style="color:red;" ng-show="!complexConstraintFalseUsage">Empty true usage</span>
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addComplexPredicate()" ng-disabled="erorrForComplexPredicate(compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage, constraints)">
-                                    <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <p ng-show="countPredicateForTemp() == 0" class="warning">Need a predicate</p>
-        <p ng-show="countPredicateForTemp() > 1" class="warning">Just a single predicate allowed</p>
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="countPredicateForTemp() > 1" ng-show="changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
-        &nbsp; </i>Save</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-        &nbsp; </i>Close</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-        &nbsp; </i>Close</span></button>
-    </div>
-</script>
-<script type="text/ng-template" id="ConformanceStatementDatatypeCtrl.html">
-    <div class="modal-header">
-        <h3 ng-show="selectedNode === null" class="header4">Conformance statement for {{::datatype.name}}</h3>
-
-        <h3 ng-show="selectedNode !== null" class="header4">Conformance statement for
-        {{::datatype.name}}-{{::selectedNode.position}}</h3>
-    </div>
-    <div class="modal-body">
-        <form role="form">
-            <div class="table-responsive">
-                <div class="page-header">
-                    <span class="header5">List of conformance statments</span>
-                    <span class="pull-right">
-                        <select class="form-control input-sm" ng-class="{'form-control-invalid': !selectedNode}" ng-model="selectedNode" ng-options="component as (datatype.name + '.' + component.position + ': ' + component.name) for component in datatype.components">
-                            <option value="">Select target location</option>
-                        </select>
-                    </span>
-                </div>
-                <table st-table="displayed" st-safe-src="tempComformanceStatements" class="table table-striped table-bordered">
-                    <thead>
-                        <tr class="tbl-header">
-                            <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
-                            <th st-sort="constraintId" class="col-md-2">ID</th>
-                            <th class="col-md-8">Desciption (
-                                <input type="checkbox" ng-model="viewAssertion"> view assertion )
-                            </th>
-                            <th class="col-md-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="c in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
-                            <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
-                                <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
-                            </td>
-                            <td class="col-md-2">
-                                <input class="form-control form-control-short80" ng-model="c.constraintId" ng-change="setChanged(); targetId = c.constraintId;" type="text" ng-readonly="targetId !== c.constraintId" />
-                                <i class="fa fa-pencil" ng-hide="targetId == c.constraintId" ng-click="targetId = c.constraintId; conformanceStatementIdList.splice(conformanceStatementIdList.indexOf(c.constraintId), 1);"></i>
-                                <i class="fa fa-paper-plane" ng-hide="targetId != c.constraintId || conformanceStatementIdList.indexOf(c.constraintId) != -1" ng-click="conformanceStatementIdList.push(c.constraintId); targetId = ''"></i>
-                                <span style="color:red" ng-show="conformanceStatementIdList.indexOf(c.constraintId) != -1 && targetId == c.constraintId">Duplicated ID</span>
-                            </td>
-                            <td class="col-md-8">
-                                <input class="form-control" ng-model="c.description" ng-change="setChanged()" type="text" />
-                                <span ng-show="viewAssertion">{{c.assertion}}</span>
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatement(c)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <span class="pull-left">
-                    <span class="header5" ng-show="constraintType === 'Free'">Add new Free-Text conformance statement</span>
-                <span class="header5" ng-show="constraintType === 'Plain'">Add new plain conformance statement</span>
-                <span class="header5" ng-show="constraintType === 'Complex'">Add new complex conformance statement</span>
-                </span>
-
-                <span class="pull-right">
-                    <div class="btn-group btn-group-sm" data-toggle="buttons">
-                        <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Free'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, datatype.name + '_' + datatype.ext);" ng-class="{'active':constraintType === 'Free'}">
-                            <input type="radio" ng-value="constraintType">Add new Free-Text Conf.Statement
-                        </label>
-                        <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID(igdocument.metaData.ext, datatype.name + '_' + datatype.ext);" ng-class="{'active':constraintType === 'Plain'}">
-                            <input type="radio" ng-value="constraintType">Add new plain Conf.Statement
-                        </label>
-                        <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID(igdocument.metaData.ext, datatype.name + '_' + datatype.ext);" ng-class="{'active':constraintType === 'Complex'}">
-                            <input type="radio" ng-value="constraintType">Add new complex Conf.Statement
-                        </label>
-                    </div>
-                </span>
-
-                <table class="table table-striped table-bordered" ng-show="constraintType === 'Free'">
-                    <thead>
-                        <tr class="tbl-header">
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-2">ID</th>
-                            <th class="col-md-8">Free-Text (Not supported by validation tool)</th>
-                            <th class="col-md-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                            </td>
-                            <td class="col-md-2">
-                                <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint) || isDuplicatedConstraintID(newConstraint, targetPlainId)}" ng-model="newConstraint.constraintId" ng-change="targetPlainId = newConstraint.constraintId;"
-                                    type="text" ng-readonly="targetPlainId !== newConstraint.constraintId" />
-                                <i class="fa fa-pencil" ng-hide="targetPlainId == newConstraint.constraintId" ng-click="targetPlainId = newConstraint.constraintId;"></i>
-                                <i class="fa fa-paper-plane" ng-hide="targetPlainId != newConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1" ng-click="conformanceStatementIdList.push(newConstraint.constraintId); targetPlainId = ''"></i>
-                                <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
-                                <span style="color:red;" ng-show="isDuplicatedConstraintID(newConstraint, targetPlainId)">ID Duplicated</span>
-                            </td>
-                            <td class="col-md-8">
-                                <input class="form-control" ng-model="newConstraint.freeText" type="text" />
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <table class="table table-striped table-bordered" ng-show="constraintType === 'Plain'">
-                    <thead>
-                        <tr class="tbl-header">
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-2">ID</th>
-                            <th class="col-md-2">Node</th>
-                            <th class="col-md-2">Verb</th>
-                            <th class="col-md-2">Constraint Pattern</th>
-                            <th class="col-md-2">Value</th>
-                            <th class="col-md-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                            </td>
-                            <td class="col-md-2">
-                                <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint) || isDuplicatedConstraintID(newConstraint, targetPlainId)}" ng-model="newConstraint.constraintId" ng-change="targetPlainId = newConstraint.constraintId;"
-                                    type="text" ng-readonly="targetPlainId !== newConstraint.constraintId" />
-                                <i class="fa fa-pencil" ng-hide="targetPlainId == newConstraint.constraintId" ng-click="targetPlainId = newConstraint.constraintId;"></i>
-                                <i class="fa fa-paper-plane" ng-hide="targetPlainId != newConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1" ng-click="conformanceStatementIdList.push(newConstraint.constraintId); targetPlainId = ''"></i>
-                                <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
-                                <span style="color:red;" ng-show="isDuplicatedConstraintID(newConstraint, targetPlainId)">ID Duplicated</span>
-                            </td>
-                            <td class="col-md-2">
-                                <span>{{::newConstraint.datatype}}.</span>
-                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'datatype')}" ng-model="newConstraint.component_1" ng-options="component as component.position for component in datatype.components"
-                                />
-                                <span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
-                                    <select class="form-control form-control-short" ng-model="newConstraint.subComponent_1"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components"/>
-                                </span>
-                                <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'datatype')">Empty node</span>
-                            </td>
-
-                            <td class="col-md-2">
-                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'" />
-                                <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
-                            </td>
-
-                            <td class="col-md-2">
-                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
-                                <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty contraint pattern</span>
-                            </td>
-
-                            <td class="col-md-2">
-                                <span ng-show="newConstraint.contraintType == 'a literal value' || 
-                                       newConstraint.contraintType == 'equal to' ||
-                                       newConstraint.contraintType == 'not-equal to' ||
-                                       newConstraint.contraintType == 'greater than' ||
-                                       newConstraint.contraintType == 'equal to or greater than' ||
-                                       newConstraint.contraintType == 'less than' ||
-                                       newConstraint.contraintType == 'equal to or less than'">
-                                    <input class="form-control"
-                                        ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                                        ng-model="newConstraint.value" type="text"/>
-                                    <span ng-show="newConstraint.contraintType == 'a literal value'">Case Insensitive: </span>
-                                <input ng-show="newConstraint.contraintType == 'a literal value'" type="checkbox" ng-model="newConstraint.ignoreCase" />
-                                <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'one of list values'">
-                                    <input class="form-control"
-                                        ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                                        ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)"
-                                        type="text"/>
-                                    <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'formatted value'">
-                            <select class="form-control"
-                                    ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                                    ng-model="newConstraint.value"
-                                    ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats | orderBy:'toString()'"/>
-                            <div ng-show="newConstraint.value === 'Regular expression'">
-                                <input class="form-control"
-                                       ng-class="{'form-control-invalid': isEmptyConstraintValue2(newConstraint)}"
-                                       ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
-                            </div>
-                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty format</span>
-                                <span style="color:red;" ng-show="newConstraint.value === 'Regular expression' && isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'identical to another node' ||
-                                       newConstraint.contraintType == 'equal to another node' ||
-                                       newConstraint.contraintType == 'not-equal to another node' ||
-                                       newConstraint.contraintType == 'greater than another node' ||
-                                       newConstraint.contraintType == 'equal to or greater than another node' ||
-                                       newConstraint.contraintType == 'less than another node' ||
-                                       newConstraint.contraintType == 'equal to or less than another node'">
-                            <span>{{::newConstraint.datatype}}.</span>
-                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintAnotherNode(newConstraint, 'datatype')}" ng-change="updateComponent_2()" ng-model="newConstraint.component_2" ng-options="component as component.position for component in datatype.components"
-                                />
-                                <span ng-show="datatypesMap[newConstraint.component_2.datatype.id].components.length > 0">.
-                                <select class="form-control form-control-short" ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype.id].components"/>
-                            </span>
-                                <span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'datatype')">Empty another node</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
-                            <span>ValueSet ID: </span>
-                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
-                                    <option ng-repeat="table in tables  track by table.id |orderBy:'+bindingIdentifier'"
-                                            value="{{table.bindingIdentifier}}">
-                                        {{::table.bindingIdentifier}}
-                                    </option>
-                                </select>
-                                <span style="color:red;" ng-show="isEmptyConstraintValueSet(newConstraint)">Empty valueset</span>
-                                <br/>
-                                <span>BindingStrength: </span>
-                                <select name="bindingStrength" class="form-control form-control-short" ng-model="newConstraint.bindingStrength">
-                                    <option value="R">R</option>
-                                    <option value="S">S</option>
-                                    <option value="U">U</option>
-                                </select>
-                                <br/>
-                                <span>BindingLocation: </span>
-                                <input class="form-control form-control-short" ng-model="newConstraint.bindingLocation" type="text" />
-                                </span>
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'datatype', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table table-striped table-bordered" ng-show="constraintType === 'Complex'">
-                    <thead>
-                        <tr class="tbl-header">
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-2">ID</th>
-                            <th class="col-md-2">Complex Type</th>
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-5" ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'">Constraints</th>
-                            <th class="col-md-2" ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'">First Constraint</th>
-                            <th class="col-md-1" ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" style="width: 4.1667%"></th>
-                            <th class="col-md-2" ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'">Second Constraint</th>
-                            <th class="col-md-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                            </td>
-                            <td class="col-md-2">
-                                <input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyComplexConstraintID(newComplexConstraintId) || isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId)}" ng-model="newComplexConstraintId" ng-change="targetComplexId = newComplexConstraintId;"
-                                    type="text" ng-readonly="targetComplexId !== newComplexConstraintId" />
-                                <i class="fa fa-pencil" ng-hide="targetComplexId == newComplexConstraintId" ng-click="targetComplexId = newComplexConstraintId;"></i>
-                                <i class="fa fa-paper-plane" ng-hide="targetComplexId != newComplexConstraintId || conformanceStatementIdList.indexOf(newComplexConstraintId) != -1" ng-click="conformanceStatementIdList.push(newComplexConstraintId); targetComplexId = ''"></i>
-                                <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
-                                <span style="color:red;" ng-show="isDuplicatedConstraintID(newConstraint, targetPlainId)">ID Duplicated</span>
-                            </td>
-                            <td class="col-md-2">
-                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
-                                    <option value="AND">AND</option>
-                                    <option value="OR">OR</option>
-                                    <option value="XOR">XOR</option>
-                                    <option value="IFTHEN">IFTHEN(IMPLY)</option>
-                                    <option value="FORALL">FORALL(True, if all assertions are true)</option>
-                                    <option value="EXIST">EXIST(True, if one of assertions is true)</option>
-                                </select>
-                                <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
-                            </td>
-                            <td class="col-md-1" align="center" style="width: 4.1667%">
-                                <span ng-show="compositeType == 'IFTHEN'">IF</span>
-                                <span ng-show="compositeType == 'FORALL'">FORALL</span>
-                                <span ng-show="compositeType == 'EXIST'">EXIST</span>
-                            </td>
-
-                            <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
-                                <span style="color:red;" ng-hide="constraints.length > 1">Drop two more constraints here!</span>
-                                <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
-                            </td>
-
-                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
-                                <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
-                                <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
-                            </td>
-                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" align="center" style="width: 4.1667%">
-                                <span ng-show="compositeType == 'AND'">AND</span>
-                                <span ng-show="compositeType == 'OR'">OR</span>
-                                <span ng-show="compositeType == 'XOR'">XOR</span>
-                                <span ng-show="compositeType == 'IFTHEN'">THEN</span>
-                            </td>
-                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
-                                <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
-                                <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addComplexConformanceStatement()" ng-disabled="erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints)">
-                                    <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <span class="pull-right">
-        <button class="btn btn-raised btn-primary btn-sm" ng-show="changed" ng-click="saveclose()"><span><i
-                class="fa fa-check fa-fw">&nbsp; </i>Bind</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-show="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-            &nbsp; </i>Cancel</span></button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-hide="changed" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-            &nbsp; </i>Cancel</span></button>
-        </span>
     </div>
 </script>
 <script type="text/ng-template" id="TableMappingDatatypeCtrl.html">
@@ -1959,7 +1388,7 @@
                             </button>
                         </li>
                     </div>
-                    <div ng-if="searchDT.name  && !selectedDT()">
+                    <div ng-show="searchDT.name  && !selectedDT()">
                         <li style="width:30%" class="form-control col-md-4 col-md-offset-6" ng-class="{'active':isDTActive(datatype.id)}" ng-click="selectDT(datatype)" ng-repeat="datatype in datatypes | filter:searchDT">
                             {{::datatype.name}} <span ng-show="datatype.ext">_{{::datatype.ext}}</span>
                         </li>
@@ -1979,7 +1408,7 @@
                             </button>
                         </li>
                     </div>
-                    <div ng-if="searchVS.name && !selectedVS()">
+                    <div ng-show="searchVS.name && !selectedVS()">
                         <li style="width:30%" class="form-control col-md-4 col-md-offset-6" ng-class="{'active':isDTActive(valueSet.id)}" ng-click="selectVS(valueSet)" ng-repeat="valueSet in valueSets | filter:searchVS">
                             {{::valueSet.name}}
                         </li>
@@ -2034,6 +1463,113 @@
         <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
         <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+    </div>
+</script>
+
+
+
+<script type="text/ng-template" id="AddBindingForDatatype.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Add Binding for Datatype : {{::getDatatypeLabel(datatype)}}</h3>
+    </div>
+    <div class="modal-body">
+        <span class="pull-right">
+            <div class="btn-group btn-group-sm" data-toggle="buttons">
+                <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'SEGMENT'; init();" ng-class="{'active':bindingTargetType === 'SEGMENT'}">
+                    <input type="radio" ng-value="SEGMENT" ng-model="bindingTargetType">To Segment
+                </label>
+                <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'DATATYPE'; init();" ng-class="{'active':bindingTargetType === 'DATATYPE'}">
+                    <input type="radio" ng-value="DATATYPE" ng-model="bindingTargetType">To Datatype
+                </label>
+            </div>
+        </span>
+
+        <div ng-show="bindingTargetType === 'SEGMENT'">
+            <table class="table table-striped table-bordered table-condensed">
+                <thead>
+                    <tr class="tbl-header">
+                        <th class="col-md-3">Segment</th>
+                        <th class="col-md-3">Field</th>
+                        <th class="col-md-3">Used Datatype</th>
+                        <th class="col-md-3">Value Set</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-md-3">
+                            <select ng-model='selectedSegmentForBinding' class="form-control" ng-change="selectSegment();" ng-options="seg as getSegmentLabel(seg) for seg in segments | filter:{ scope : 'USER' }" />
+                        </td>
+                        <td class="col-md-3">
+                            <select ng-show='selectedSegmentForBinding != null' ng-model='selectedFieldForBinding' class="form-control" ng-change="selectField()">
+                                <option ng-repeat="f in selectedSegmentForBinding.fields | orderBy:'+position'" value="{{f}}" ng-disabled="datatype.name!==datatypesMap[f.datatype.id].name ||checkDuplicated(getSegmentLabel(selectedSegmentForBinding) + '-' + f.position)">
+                                    {{::f.position}}. {{::f.name}}
+                                </option>
+                            </select>
+                        </td>
+                        <td class="col-md-3">
+                           {{::datatypesMap[currentField.datatype.id].label}}
+                        </td>
+                        <td class="col-md-3">
+                            <span ng-repeat="table in currentField.tables">
+                                {{::getTableLabel(tablesMap[table.id])}}     
+                            </span>
+
+                        </td>
+
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-show="bindingTargetType === 'DATATYPE'">
+            <table class="table table-striped table-bordered table-condensed">
+                <thead>
+                    <tr class="tbl-header">
+                        <th class="col-md-3">Datatype</th>
+                        <th class="col-md-3">Component</th>
+                        <th class="col-md-3">Used Datatype</th>
+                        <th class="col-md-3">Value Set</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-md-3">
+                            <select ng-model='selectedDatatypeForBinding' class="form-control" ng-change="selectDatatype();" ng-options="dt as getDatatypeLabel(dt) for dt in datatypes | filter:{ scope : 'USER' }" />
+                        </td>
+                        <td class="col-md-3">
+                            <select ng-show='selectedDatatypeForBinding != null' ng-model='selectedComponentForBinding' class="form-control" ng-change="selectComp()">
+                            <option ng-repeat="c in selectedDatatypeForBinding.components | orderBy:'+position'" value="{{c}}" ng-disabled="datatype.name!==datatypesMap[c.datatype.id].name ||checkDuplicated(getDatatypeLabel(selectedDatatypeForBinding) + '.' + c.position)">
+                                {{::c.position}}. {{::c.name}}
+                            </option>
+                        </select>
+                        </td>
+                        <td class="col-md-3">
+                           
+                           {{datatypesMap[currentComp.datatype.id].label}}
+                        </td>
+                        <td class="col-md-3">
+                            <span ng-repeat="table in currentComp.tables">
+                                {{getTableLabel(tablesMap[table.id])}}     
+                            </span>
+
+                        </td>
+                        
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-info btn-sm" ng-disabled="selectedComponentForBinding == null && selectedFieldForBinding == null" ng-click="save(bindingTargetType)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span>
         </button>
     </div>
 </script>

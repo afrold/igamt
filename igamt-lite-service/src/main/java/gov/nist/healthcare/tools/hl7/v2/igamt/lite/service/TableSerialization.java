@@ -12,6 +12,8 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import java.util.Date;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -20,24 +22,24 @@ import nu.xom.Document;
 import nu.xom.Element;
 
 public interface TableSerialization {
-  TableLibrary deserializeXMLToTableLibrary(String xmlContents);
+	TableLibrary deserializeXMLToTableLibrary(String xmlContents);
 
-  TableLibrary deserializeXMLToTableLibrary(Document xmlDoc);
+	TableLibrary deserializeXMLToTableLibrary(Document xmlDoc);
 
-  String serializeTableLibraryToXML(TableLibrary tableLibrary, DocumentMetaData metadata);
+	String serializeTableLibraryToXML(TableLibrary tableLibrary, DocumentMetaData metadata, Date dateUpdated);
 
-  String serializeTableLibraryToXML(Profile profile, DocumentMetaData metadata);
+	String serializeTableLibraryToXML(Profile profile, DocumentMetaData metadata, Date dateUpdated);
 
-  String serializeTableLibraryToXML(DatatypeLibrary datatypeLibrary);
+	String serializeTableLibraryToXML(DatatypeLibrary datatypeLibrary);
 
-  Document serializeTableLibraryToDoc(TableLibrary tableLibrary, DocumentMetaData metadata);
+	Document serializeTableLibraryToDoc(TableLibrary tableLibrary, DocumentMetaData metadata, Date dateUpdated);
 
-  Document serializeTableLibraryToDoc(Profile profile, DocumentMetaData metadata);
+	Document serializeTableLibraryToDoc(Profile profile, DocumentMetaData metadata, Date dateUpdated);
 
-  String serializeTableLibraryToGazelleXML(Profile profile);
+	String serializeTableLibraryToGazelleXML(Profile profile);
 
-  Document serializeTableLibraryToGazelleDoc(Profile profile);
+	Document serializeTableLibraryToGazelleDoc(Profile profile);
 
-  Element serializeTableLibraryToElement(Profile profile, DocumentMetaData metadata);
+	Element serializeTableLibraryToElement(Profile profile, DocumentMetaData metadata, Date dateUpdated);
 
 }

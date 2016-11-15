@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.Date;
 import java.util.List;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -22,24 +23,28 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
  */
 public interface IGDocumentOperations {
 
-  public List<IGDocument> findPreloaded();
+	public List<IGDocument> findPreloaded();
 
-  public List<IGDocument> findStandard();
+	public List<IGDocument> findStandard();
 
-  public List<IGDocument> findStandardByVersion(String hl7version);
+	public List<IGDocument> findUser();
 
-  public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	public List<IGDocument> findStandardByVersion(String hl7version);
 
-  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes,
-      String hl7Version);
+	public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-  public List<String> findHl7Versions();
+	public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version);
 
-  List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);
+	public List<String> findHl7Versions();
 
-  List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions);
+	public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);
 
-  List<IGDocument> findAllByScope(IGDocumentScope scope);
+	public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions);
 
+	public List<IGDocument> findAllByScope(IGDocumentScope scope);
+
+	public List<IGDocument> findByParticipantId(Long participantId);
+
+	public Date updateDate(String id, Date date);
 
 }

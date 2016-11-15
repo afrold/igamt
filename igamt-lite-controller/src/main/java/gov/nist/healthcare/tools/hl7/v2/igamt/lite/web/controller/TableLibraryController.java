@@ -162,7 +162,7 @@ public class TableLibraryController extends CommonController {
     TableLibrary saved = tableLibraryService.save(tableLibrary);
     log.debug("saved.getId()=" + saved.getId());
     log.debug("saved.getScope()=" + saved.getScope());
-    return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
+    return new LibrarySaveResponse(saved.getDateCreated(), saved.getScope().name());
   }
 
   @RequestMapping(value = "/{libId}/addChild", method = RequestMethod.POST)

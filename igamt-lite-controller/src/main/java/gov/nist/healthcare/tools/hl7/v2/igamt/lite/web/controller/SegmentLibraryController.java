@@ -41,7 +41,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationExc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.LibraryException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.LibrarySaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.LibraryCreateWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
@@ -170,7 +170,7 @@ public class SegmentLibraryController extends CommonController {
     SegmentLibrary saved = segmentLibraryService.save(segmentLibrary);
     log.debug("saved.getId()=" + saved.getId());
     log.debug("saved.getScope()=" + saved.getScope());
-    return new LibrarySaveResponse(saved.getMetaData().getDate(), saved.getScope().name());
+    return new LibrarySaveResponse(saved.getDateUpdated().getTime() + "", saved.getScope().name());
   }
 
   @RequestMapping(value = "/{segLibId}/addSegment", method = RequestMethod.POST)
@@ -184,8 +184,7 @@ public class SegmentLibraryController extends CommonController {
       STATUS status = segment.getStatus();
       if (Constant.SCOPE.HL7STANDARD.equals(scope) || STATUS.PUBLISHED.equals(status))
         throw new ForbiddenOperationException();
-      segment.setDate(DateUtils.getCurrentTime());
-      segmentService.delete(segment);
+       segmentService.save(segment);
       SegmentLibrary library = segmentLibraryService.findById(segLibId);
       SegmentLink link = library.findOneSegmentById(segId);
       if (link != null) {

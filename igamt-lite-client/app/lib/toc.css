@@ -105,6 +105,11 @@
     font-weight: 400;
 }
 
+.label-PVS {
+	background: #ed0bea;
+	font-weight: 400;
+}
+
 .label-MASTER {
 	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff7400+0,ff7400+100;Orange+Flat */
 	background: #ff7400; /* Old browsers */

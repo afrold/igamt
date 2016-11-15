@@ -72,7 +72,9 @@ angular.module('igl')
         };
         
         $scope.save = function() {
-            var datatype = $scope.datatype;
+            var datatype = $rootScope.datatype;
+            
+            console.log(datatype);
             var ext = datatype.ext;
 
             DatatypeService.save(datatype).then(function(result) {
@@ -81,7 +83,15 @@ angular.module('igl')
                 newLink.ext = ext;
                 DatatypeLibrarySvc.updateChild($scope.datatypeLibrary.id, newLink).then(function(link) {
                     $scope.saving = false;
+                    //$rootScope.datatypesMap[result.id] = result;
+                    console.log("before the merge")
+                    console.log($rootScope.datatypesMap[result.id]);
+                    console.log("After the merge")
+                    console.log($rootScope.datatypesMap[result.id]);
+
                     DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                    DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+
                     cleanState();
                 }, function(error) {
                     $scope.saving = false;
@@ -97,7 +107,47 @@ angular.module('igl')
                 $rootScope.msg().show = true;
             });
         };
+        $scope.confirmPublish = function(datatypeCopy) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmDatatypePublishCtl.html',
+                controller: 'ConfirmDatatypePublishCtl',
+                resolve: {
+                    datatypeToPublish: function() {
+                        return datatypeCopy;
+                    }
+                }
+            });
+            modalInstance.result.then(function(datatypeCopy) {
+                if ($rootScope.datatypesParams) {
+                    $rootScope.datatypesParams.refresh();
+                }
+                $scope.save();
+            });
+        };
+        
 
+        $scope.abortPublish = function(datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AbortPublishCtl.html',
+                controller: 'AbortPublishCtl',
+                resolve: {
+                    datatypeToPublish: function() {
+                        return datatype;
+                    },
+                    unpublishedDatatypes: function() {
+                        return $scope.unpublishedDatatypes;
+                    },
+                    unpublishedTables: function() {
+                        return $scope.unpublishedTables;
+                    }
+
+                }
+            });
+
+        };
+        
+        
+        
         $scope.OtoX = function(message) {
             console.log(message);
             var modalInstance = $modal.open({
@@ -514,7 +564,7 @@ angular.module('igl')
         $scope.reset = function() {
         	console.log("Called reset");
             blockUI.start();
-            $scope.datatype = angular.copy($rootScope.datatypesMap[$scope.datatype.id]);
+            $rootScope.datatype = angular.copy($rootScope.datatypesMap[$scope.datatype.id]);
             cleanState();
             blockUI.stop();
         };
@@ -788,19 +838,14 @@ angular.module('igl')
         };
         
         
-        $rootScope.$on('event:initDatatype', function(event) {
+        $rootScope.$on('event:initDatatypeInLib', function(event) {
 
                 $scope.initt();
             
         });
         
-        $scope.initt = function() {
-            $scope.isDeltaCalled = true;
-            $scope.dataList = [];
-           
+        $scope.initt = function() {       
                 if ($scope.dynamicDt_params) {
-                    $scope.showDelta = false;
-                    $scope.status.isFirstOpen = true;
                     $scope.dynamicDt_params.refresh();
                 }
 
@@ -869,13 +914,6 @@ angular.module('igl')
             });
 
         };
-
-        //        $scope.$watch(function(){
-        //            return $rootScope.datatype;
-        //        }, function() {
-        //            $rootScope.recordChanged();
-        //        }, true);
-
 
     });
 

@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -19,22 +20,24 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 public interface SegmentService {
 
-  Segment findById(String id);
+	Segment findById(String id);
 
-  Segment save(Segment segment);
+	Segment save(Segment segment);
 
-  List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-  void delete(Segment segment);
+	void delete(Segment segment);
 
-  void delete(String id);
+	void delete(String id);
 
-  void save(List<Segment> segments);
+	void save(List<Segment> segments);
 
-  List<Segment> findAll();
+	List<Segment> findAll();
 
-  List<Segment> findByIds(Set<String> ids);
+	List<Segment> findByIds(Set<String> ids);
 
+	public Date updateDate(String id, Date date) throws IGDocumentException;
 
+	Segment save(Segment segment, Date date);
 
 }

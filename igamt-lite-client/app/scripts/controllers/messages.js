@@ -3,7 +3,9 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI) {
+    .controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI,ViewSettings) {
+
+        $scope.viewSettings = ViewSettings;
 
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
@@ -220,9 +222,10 @@ angular.module('igl')
             $scope.saving = true;
             var message = $rootScope.message;
             $rootScope.$emit("event:saveMsgForDelta");
-
             console.log($rootScope.message);
             MessageService.save(message).then(function(result) {
+                $rootScope.message.dateUpdated = result.dateUpdated;
+                $rootScope.$emit("event:updateIgDate");
                 var index = findIndex(message.id);
                 if (index < 0) {
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
@@ -334,28 +337,28 @@ angular.module('igl')
                     return item.id;
                 });
                 $scope.tmpResults = [].concat($scope.results);
-//                SegmentLibrarySvc.findLibrariesByFlavorName(segmentRef.obj.ref.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
-//                    if (libraries != null) {
-//                        _.each(libraries, function(library) {
-//                            $scope.results = $scope.results.concat(filterFlavors(library, segmentRef.obj.ref.name));
-//
-//                        });
-//                    }
-//
-//                    $scope.results = _.uniq($scope.results, function(item, key, a) {
-//                        return item.id;
-//                    });
-//
-//                    $scope.tmpResults = [].concat($scope.results);
-//                    console.log($scope.tmpResults);
-//
-//                    delay.resolve(true);
-//                }, function(error) {
-//                    $rootScope.msg().text = "Sorry could not load the segments";
-//                    $rootScope.msg().type = error.data.type;
-//                    $rootScope.msg().show = true;
-//                    delay.reject(error);
-//                });
+                //                SegmentLibrarySvc.findLibrariesByFlavorName(segmentRef.obj.ref.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
+                //                    if (libraries != null) {
+                //                        _.each(libraries, function(library) {
+                //                            $scope.results = $scope.results.concat(filterFlavors(library, segmentRef.obj.ref.name));
+                //
+                //                        });
+                //                    }
+                //
+                //                    $scope.results = _.uniq($scope.results, function(item, key, a) {
+                //                        return item.id;
+                //                    });
+                //
+                //                    $scope.tmpResults = [].concat($scope.results);
+                //                    console.log($scope.tmpResults);
+                //
+                //                    delay.resolve(true);
+                //                }, function(error) {
+                //                    $rootScope.msg().text = "Sorry could not load the segments";
+                //                    $rootScope.msg().type = error.data.type;
+                //                    $rootScope.msg().show = true;
+                //                    delay.reject(error);
+                //                });
                 blockUI.stop();
                 return delay.promise;
 
@@ -631,6 +634,7 @@ angular.module('igl')
                 templateUrl: 'ConformanceStatementMessageCtrl.html',
                 controller: 'ConformanceStatementMessageCtrl',
                 windowClass: 'app-modal-window',
+                keyboard: false,
                 resolve: {
                     selectedMessage: function() {
                         return message;
@@ -1648,7 +1652,11 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
     //console.log(place);
 
 
-
+    // $scope.segmentss = result.filter(function(current) {
+    //     return segments.filter(function(current_b) {
+    //         return current_b.id == current.id;
+    //     }).length == 0
+    // });
 
     $scope.newSegment = {
         accountId: null,
@@ -1700,6 +1708,16 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
         }
 
     }, true);
+    $scope.isInSegs = function(segment) {
+        console.log(segment);
+        console.log(segments.indexOf(segment));
+        if (segment && segments.indexOf(segment) === -1) {
+            return false;
+        } else {
+            return true;
+        }
+
+    };
     $scope.selectUsage = function(usage) {
         console.log(usage);
         if (usage === 'X' || usage === 'W') {
@@ -2237,6 +2255,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         $scope.loadingSelection = false;
         $rootScope.deltaMsgList = CompareService.cmpMessage(JSON.stringify(msg1), msg2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
         //$scope.dataList = result;
+        console.log($rootScope.deltaMsgList);
 
         if ($scope.dynamicMsg_params) {
             console.log($rootScope.deltaMsgList);

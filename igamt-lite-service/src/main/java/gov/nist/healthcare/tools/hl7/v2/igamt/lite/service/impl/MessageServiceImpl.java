@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -19,15 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NamesAndStruct;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 /**
  * @author gcr1
@@ -36,62 +33,80 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 @Service
 public class MessageServiceImpl implements MessageService {
 
-  Logger log = LoggerFactory.getLogger(MessageServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(MessageServiceImpl.class);
 
-  @Autowired
-  private MessageRepository messageRepository;
+	@Autowired
+	private MessageRepository messageRepository;
 
+	@Override
+	public Message findById(String id) {
+		log.info("MessageServiceImpl.findById=" + id);
+		return messageRepository.findOne(id);
+	}
 
-  @Override
-  public Message findById(String id) {
-    log.info("MessageServiceImpl.findById=" + id);
-    return messageRepository.findOne(id);
-  }
-  @Override
-  public List<Message> findByIds(Set<String> ids) {
-    log.info("MessageServiceImpl.findByIds=" + ids);
-    return messageRepository.findByIds(ids);
-  }
+	@Override
+	public List<Message> findByIds(Set<String> ids) {
+		log.info("MessageServiceImpl.findByIds=" + ids);
+		return messageRepository.findByIds(ids);
+	}
 
+	@Override
+	public void save(Set<Message> messages) {
+		// TODO Auto-generated method stub
+		messageRepository.save(messages);
+	}
 
+	@Override
+	public Message save(Message message) {
+		return save(message, DateUtils.getCurrentDate());
+	}
 
-  @Override
-  public void save(Set<Message> messages) {
-    // TODO Auto-generated method stub
-    messageRepository.save(messages);
-  }
+	@Override
+	public Message save(Message message, Date dateUpdated) {
+		message.setDateUpdated(dateUpdated);
+		return messageRepository.save(message);
+	}
 
-  @Override
-  public Message save(Message segment) {
-    return messageRepository.save(segment);
-  }
+	@Override
+	public void delete(Message segment) {
+		messageRepository.delete(segment);
+	}
 
-  @Override
-  public void delete(Message segment) {
-    messageRepository.delete(segment);
-  }
+	@Override
+	public void delete(String id) {
+		messageRepository.delete(id);
+	}
 
-  @Override
-  public void delete(String id) {
-    messageRepository.delete(id);
-  }
-@Override
-public List<Message> findByNamesScopeAndVersion(String name,String structId, String scope, String hl7Version) {
-	List<Message> messages = messageRepository.findByNamesScopeAndVersion(name,structId,scope, hl7Version);
-    log.info("MessageServiceImpl.findByNamesScopeAndVersion=" + messages.size());
-    return messages;
-}
-public Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version) {
-	Message message = messageRepository.findByStructIdAndScopeAndVersion(structId,scope, hl7Version);
-    log.info("MessageServiceImpl.findByNamesScopeAndVersion=" + message.getId());
-    return message;
-}
-public int findMaxPosition(Messages msgs) {
-    int maxPos = 0;
-    for (Message msg : msgs.getChildren()) {
-      maxPos = Math.max(maxPos, msg.getPosition());
-    }
-    return maxPos;
-  }
+	@Override
+	public List<Message> findByNamesScopeAndVersion(String name, String structId, String scope, String hl7Version) {
+		List<Message> messages = messageRepository.findByNamesScopeAndVersion(name, structId, scope, hl7Version);
+		log.info("MessageServiceImpl.findByNamesScopeAndVersion=" + messages.size());
+		return messages;
+	}
 
+	@Override
+	public Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version) {
+		Message message = messageRepository.findByStructIdAndScopeAndVersion(structId, scope, hl7Version);
+		log.info("MessageServiceImpl.findByNamesScopeAndVersion=" + message.getId());
+		return message;
+	}
+
+	@Override
+	public int findMaxPosition(Messages msgs) {
+		int maxPos = 0;
+		for (Message msg : msgs.getChildren()) {
+			maxPos = Math.max(maxPos, msg.getPosition());
+		}
+		return maxPos;
+	}
+
+	@Override
+	public List<Message> findAll() {
+		return messageRepository.findAll();
+	}
+
+	@Override
+	public Date updateDate(String id, Date date) {
+		return messageRepository.updateDate(id, date);
+	}
 }

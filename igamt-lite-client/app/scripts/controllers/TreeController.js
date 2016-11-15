@@ -8,8 +8,9 @@ angular
             'CloneDeleteSvc',
             'FilteringSvc',
             'SectionSvc',
+            '$cookies',
 
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc) {
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc, $cookies) {
 
                 $scope.collapsedata = false;
                 $scope.collapsePcs=true;
@@ -34,7 +35,24 @@ angular
                     // if($rootScope.references.length===0){
                         return "Delete"
                     // }else return "Show References"
-                } 
+                };
+
+                $scope.exportCSVForTable = function (table){
+                    console.log(table);
+
+                    var form = document.createElement("form");
+
+                    form.action = $rootScope.api('api/tables/exportCSV/' + table.id);
+                    form.method = "POST";
+                    form.target = "_target";
+                    var csrfInput = document.createElement("input");
+                    csrfInput.name = "X-XSRF-TOKEN";
+                    csrfInput.value = $cookies['XSRF-TOKEN'];
+                    form.appendChild(csrfInput);
+                    form.style.display = 'none';
+                    document.body.appendChild(form);
+                    form.submit();
+                };
 
                 $rootScope.switcherDatatypeLibrary = function() {
 
@@ -551,6 +569,12 @@ angular
                             }
                         }
                     ],
+                    null, ['Export CSV',
+                        function($itemScope) {
+                            $scope.exportCSVForTable($itemScope.table);
+
+                        }
+                    ],
                     null, ['Delete',
                         function($itemScope) {
                             CloneDeleteSvc.deleteValueSet($itemScope.table);
@@ -562,22 +586,29 @@ angular
 
                 $scope.ValueSetOptionsINLIB = [
 
+                                               ['Create Flavor',
+                                                   function($itemScope) {
+                                                       if ($rootScope.hasChanges()) {
+                                                           $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                        	   console.log($scope.tableLibrary);
+                                                        	   console.log("table in lib");
+                                                               CloneDeleteSvc.copyTableINLIB($itemScope.table, $scope.tableLibrary);
+                                                           });
+                                                       } else {
+                                                    	   console.log("table in lib");
+                                                           CloneDeleteSvc.copyTableINLIB($itemScope.table,$scope.tableLibrary);
+                                                       }
+                                                   }
+                                               ],
+                                               null, ['Delete',
+                                                   function($itemScope) {
+                                                       CloneDeleteSvc.deleteValueSet($itemScope.table);
 
-                                          ['Copy',
-                                              function($itemScope) {
-                                  
-                                                      $scope.copyTableINLIB($itemScope.table,$scope.tableLibrary.id);
-                                                  
-                                              }
-                                          ],
-                                          null, ['Delete',
-                                              function($itemScope) {
-                                                 $scope.deleteValueSetINLIB($itemScope.table);
+                                                   }
+                                               ]
 
-                                              }
-                                          ]
-
-                                      ];
+                                           ];
+               
 
                 $scope.MessagesOption = [
 
@@ -708,23 +739,7 @@ angular
                         	 $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);                        }
                            
                         }
-                    ],
-                    ['Import HL7 Flavors Datatypes',
-                                          function($itemScope) {
-                    	
-                    	if ($rootScope.hasChanges()) {
-
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                $scope.addMasterDatatype($rootScope.igdocument.profile.metaData.hl7Version);
-                            	
-                                });
-                        } else {
-                        	
-                            $scope.addMasterDatatype($rootScope.igdocument.profile.metaData.hl7Version);
-                           
-                        }
-                                          }
-                                     ]
+                    ]
                 ];
 
                 $scope.DataTypeLibraryOptions = [
@@ -828,12 +843,12 @@ angular
                                                          if ($rootScope.hasChanges()) {
 
                                                              $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                                                 CloneDeleteSvc.createNewTable('MASTER', $scope.tableLibrary);
+                                                                 CloneDeleteSvc.createNewTable($scope.tableLibrary.scope, $scope.tableLibrary);
                                                                  $scope.editTableINLIB($rootScope.table);                                                             	
                                                                  });
                                                          } else {
                                                          	
-                                                             CloneDeleteSvc.createNewTable('MASTER', $scope.tableLibrary);
+                                                             CloneDeleteSvc.createNewTable($scope.tableLibrary.scope, $scope.tableLibrary);
                                                              $scope.editTableINLIB($rootScope.table);                                                            
                                                          }
 
@@ -1112,6 +1127,7 @@ angular
                     var promise = $http(req)
                         .success(function(data, status, headers, config) {
                             // //console.log(data);
+                            $rootScope.$emit("event:updateIgDate", data);
                             return data;
                         })
                         .error(function(data, status, headers, config) {
@@ -1164,7 +1180,7 @@ angular
 
                     var promise = $http(req)
                         .success(function(data, status, headers, config) {
-
+                            $rootScope.$emit("event:updateIgDate", data);
                             return data;
                         })
                         .error(function(data, status, headers, config) {
@@ -1199,7 +1215,7 @@ angular
                     }
                     var promise = $http(req)
                         .success(function(data, status, headers, config) {
-
+                            $rootScope.$emit("event:updateIgDate", data);
                             return data;
                         })
                         .error(function(data, status, headers, config) {
@@ -1233,6 +1249,8 @@ angular
                         return 'MAS';
                     } else if (leaf.scope === 'PRELOADED') {
                         return 'PRL';
+                    } else if (leaf.scope === 'PHINVADS') {
+                        return 'PVS';
                     } else {
                         return "";
 
@@ -1361,7 +1379,7 @@ angular
 
                 $scope.resetLibFilter = function() {
                     console.log("called");
-                    $scope.filteringModeON = false;
+                    $rootScope.filteringModeON = false;
 
                     $scope.datatypes.forEach(function(data, i) {
 
