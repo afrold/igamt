@@ -78,12 +78,12 @@ angular
 
         $scope.confirmShareDocument = function(datatype) {
                 $http.get('api/shareDtconfimation/' + datatype.id).then(function(response) {
-                    $rootScope.msg().text = "igSharedConfirmationSuccessful";
+                    $rootScope.msg().text = "dtSharedConfirmationSuccessful";
                     $rootScope.msg().type ="success";
                     $rootScope.msg().show = true;
                     $scope.getSharedDatatypes();
                 }, function(error) {
-                    $rootScope.msg().text = "igSharedConfirmationFailed";
+                    $rootScope.msg().text = "dtSharedConfirmationFailed";
                     $rootScope.msg().type ="danger";
                     $rootScope.msg().show = true;
                     console.log(error);
@@ -92,12 +92,12 @@ angular
 
             $scope.rejectShareDocument = function(datatype) {
                 $http.get('api/shareDtreject/' + datatype.id).then(function(response) {
-                    $rootScope.msg().text = "igSharedRejectedSuccessfully";
+                    $rootScope.msg().text = "dtSharedRejectedSuccessfully";
                     $rootScope.msg().type ="success";
                     $rootScope.msg().show = true;
                     $scope.getSharedDatatypes();
                 }, function(error) {
-                    $rootScope.msg().text = "igSharedRejectFailed";
+                    $rootScope.msg().text = "dtSharedRejectFailed";
                     $rootScope.msg().type ="danger";
                     $rootScope.msg().show = true;
                     console.log(error);
