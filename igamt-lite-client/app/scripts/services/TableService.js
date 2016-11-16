@@ -98,7 +98,25 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
                     delay.reject(error);
                 });
                 return delay.promise;
-            }
+        },
+        share:function(tableId,shareParticipantIds, accountId){
+            var delay = $q.defer();
+            $http.post('api/tables/' + tableId + '/share', {'accountId': accountId, 'participantsList': shareParticipantIds}).then(function (response) {
+                delay.resolve(response.data);
+            }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+        unshare: function(tableId, participantId){
+            var delay = $q.defer();
+            $http.post('api/tables/' + tableId + '/unshare', participantId).then(function (response) {
+                delay.resolve(response.data);
+             }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
 
     };
     return TableService;

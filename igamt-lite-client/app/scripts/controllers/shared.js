@@ -39,8 +39,11 @@ angular
         });
 
             $scope.init=function(){
-                $rootScope.datatype=null;
+                $rootScope.datatype=[];
+                $rootScope.tables=[];
                 $scope.getSharedDatatypes();
+                $scope.typeOfSharing='datatype';
+                $scope.datatypeTab = { active: true};
                 $scope.SharedtocView='sharedtocView.html';
                 $scope.Sharedsubview = "datatypePending.html";
                 $scope.SharedDataTypeTree=[$scope.library];

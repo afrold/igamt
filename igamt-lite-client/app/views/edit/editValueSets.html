@@ -23,7 +23,19 @@
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span>
                         <span class="pull-right">
 				<button title="publish" type="button" class="btn btn-raised btn-sm btn-success"
-                 ng-click="publishTable(table)" ng-if="table.status !== 'PUBLISHED'">PUBLISH<i class="fa fa-check" aria-hidden="true"></i><span></button> 
+                 ng-click="publishTable(table)" ng-if="table.status !== 'PUBLISHED'"><span><i class="fa fa-check" aria-hidden="true"></i> PUBLISH</span></button>
+
+                   <div class="btn-group" ng-hide="table.scope !== 'USER'" style="margin-bottom: 0px;">
+                     <button type="button" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(table)">
+                       <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+                       <span class="badge" ng-bind="table.shareParticipantIds.length" style="margin-right:5px;"></span>
+                     </button>
+                     <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+                     <ul class="dropdown-menu igl-menu" role="menu">
+                       <li ng-repeat="participant in table.shareParticipantIds"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant.username}} <span ng-if="participant.pendingApproval">(Pending...)</span></a></li>
+                     </ul>
+                   </div>
+
 						<button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
 								ng-disabled="editForm.$invalid || !editForm.$dirty"
                 	 			ng-click="save()">
@@ -200,7 +212,7 @@
                                     </tr>
                                                     <tr class="tbl-header">
                                                         <th class="col-md-1">
-                                                        <input type="checkbox" ng-model="checkAll" ng-change="ProcessChecking(checkAll)"> 
+                                                        <input type="checkbox" ng-model="checkAll" ng-change="ProcessChecking(checkAll)">
                                                         <span ng-if="checkAll">UnCheck All</span>
                                                         <span ng-if="!checkAll"> Check All</span>
                                                         </input>
@@ -215,7 +227,7 @@
                                                                 <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-raised btn-default btn-info">E</button>
                                                             </span></th>
                                                         <th class="col-md-3">Comments</th>
-                                                        
+
                                                     </tr>
                                                 </thead>
 
@@ -442,7 +454,7 @@
                                             <td st-ratio="15">
                                                 <a ng-if="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.path}}</a>
                                                 <a ng-if="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.path}}</a>
-                                                
+
                                             </td>
                                             <td st-ratio="15">
                                                 {{::ref.name}}
@@ -453,7 +465,7 @@
                                             <td st-ratio="10">
                                                 <a ng-click="redirectDT(ref.datatype)">{{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}</a>
                                             </td>
-                                            
+
                                             <td st-ratio="20">
                                                 <span ng-if="ref.target.scope !== 'USER'">
                                                     {{::tablesMap[ref.tableLink.id].bindingIdentifier}}-{{::tablesMap[ref.tableLink.id].description}}
@@ -518,6 +530,18 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span>
                         <span class="pull-right">
+
+                          <div class="btn-group" ng-hide="table.scope !== 'USER'" style="margin-bottom: 0px;">
+                            <button type="button" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(table)">
+                              <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+                              <span class="badge" ng-bind="table.shareParticipantIds.length" style="margin-right:5px;"></span>
+                            </button>
+                            <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
+                            <ul class="dropdown-menu igl-menu" role="menu">
+                              <li ng-repeat="participant in table.shareParticipantIds"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant.username}} <span ng-if="participant.pendingApproval">(Pending...)</span></a></li>
+                            </ul>
+                          </div>
+
 						<button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                                 ng-disabled="!isBindingChanged()"
                                 ng-click="saveBindingForValueSet()">

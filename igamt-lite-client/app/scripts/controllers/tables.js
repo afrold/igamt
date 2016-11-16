@@ -401,6 +401,56 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.delete = function(table) {
         CloneDeleteSvc.deleteValueSet(table);
     };
+
+
+    $scope.shareModal = function (table) {
+      $http.get('api/usernames').then(function (response) {
+        var userList = response.data;
+        var filteredUserList = userList.filter(function(user) {
+          // Add accountId var
+          user.accountId = user.id;
+          var isPresent = false;
+          if(table.shareParticipantIds) {
+            for(var i = 0; i < table.shareParticipantIds.length; i++) {
+              if(table.shareParticipantIds[i].accountId == user.id) {
+                isPresent = true;
+              }
+            }
+          }
+          if(!isPresent) return user;
+        });
+
+        var modalTemplate = "ShareTableErrorModal.html";
+        if(table.status === "PUBLISHED") {
+          modalTemplate = "ShareTableModal.html";
+        }
+        var modalInstance = $modal.open({
+          templateUrl: modalTemplate
+          , controller: 'ShareTableCtrl'
+          , size:'lg'
+          , resolve: {
+            igdocumentSelected: function () {
+              return table;
+            }
+            , userList: function () {
+                return _.filter(filteredUserList, function(user){
+                        return user.id != $rootScope.accountId && table.shareParticipantIds && table.shareParticipantIds != null && table.shareParticipantIds.indexOf(user.id) == -1 ;
+                    });
+              }
+          }
+        });
+
+        modalInstance.result.then(function (result) {
+        }, function () {
+          if(modalTemplate === 'ShareDatatypeModal.html') {
+          }
+          // $log.info('Modal dismissed at: ' + new Date());
+        });
+
+      }, function (error) {
+        console.log(error);
+      });
+    };
 });
 
 angular.module('igl').controller('TableModalCtrl', function($scope) {
@@ -856,4 +906,97 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
+});
+
+angular.module('igl').controller('ShareTableCtrl', function ($scope, $modalInstance, $http, igdocumentSelected, userList,TableService,$rootScope) {
+
+  $scope.igdocumentSelected = igdocumentSelected;
+
+  // Add participants username and fullname
+  // Find share participants
+  if ($scope.igdocumentSelected.shareParticipantIds && $scope.igdocumentSelected.shareParticipantIds.length > 0) {
+      $scope.igdocumentSelected.shareParticipantIds.forEach(function(participant) {
+          $http.get('api/shareparticipant', { params: { id: participant.accountId } })
+              .then(
+                  function(response) {
+                      participant.username = response.data.username;
+                      participant.fullname = response.data.fullname;
+                  },
+                  function(error) {
+                      console.log(error);
+                  }
+              );
+      });
+  }
+	$scope.userList =  userList;
+	$scope.error = "";
+  $scope.tags = [];
+	$scope.ok = function () {
+		var idsTab = $scope.tags.map(function(user) {
+			return user.accountId;
+		});
+
+        TableService.share($scope.igdocumentSelected.id,idsTab, $rootScope.accountId).then(function(result){
+            // Add participants for direct view
+            $scope.igdocumentSelected.shareParticipantIds = $scope.igdocumentSelected.shareParticipantIds || [];
+            $scope.tags.forEach(function(tag) {
+                tag.permission = $scope.selectedItem.selected;
+                tag.pendingApproval = true;
+                $scope.igdocumentSelected.shareParticipantIds.push(tag);
+            });
+            $rootScope.msg().text = "dtSharedSuccessfully";
+            $rootScope.msg().type ="success";
+            $rootScope.msg().show = true;
+            $modalInstance.close();
+        }, function(error){
+            $scope.error = error.data;
+            console.log(error);
+        });
+	};
+	$scope.cancel = function () {
+		$modalInstance.dismiss('cancel');
+	};
+
+	$scope.selectedItem = {
+		selected: "VIEW"
+	};
+	$scope.itemArray = ["VIEW"];
+
+	$scope.loadUsernames = function ($query) {
+		return userList.filter(function (user) {
+			return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
+		});
+	};
+
+    $scope.unshare = function (shareParticipant) {
+        $scope.loading = false;
+        TableService.unshare($scope.igdocumentSelected.id,shareParticipant.accountId).then(function(res){
+            var indexOfId = $scope.igdocumentSelected.shareParticipantIds.indexOf(shareParticipant.accountId);
+            if (indexOfId > -1) {
+                $scope.igdocumentSelected.shareParticipantIds.splice(indexOfId, 1);
+            }
+            var participantIndex = -1;
+            for(var i=0; i <  $scope.igdocumentSelected.shareParticipantIds.length; i++){
+                if($scope.igdocumentSelected.shareParticipantIds[i].accountId === shareParticipant.accountId){
+                    participantIndex =i;
+                    $scope.userList.push($scope.igdocumentSelected.shareParticipantIds[i]);
+                    break;
+                }
+            }
+            if (participantIndex > -1) {
+                $scope.igdocumentSelected.shareParticipantIds.splice(participantIndex, 1);
+            }
+            $scope.loading = false;
+            $rootScope.msg().text = "dtUnSharedSuccessfully";
+            $rootScope.msg().type ="success";
+            $rootScope.msg().show = true;
+         }, function(error){
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+            $scope.loading = false;
+        });
+    };
+
+
 });
