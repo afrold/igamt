@@ -450,20 +450,23 @@ if (self === top) {
                         <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Value Sets <span class="badge">{{tables.length}}</span>
                     </div>
                     <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed">
-                        <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)"  ng-if="table&&datatypeLibrary.scope==='MASTER'">
+                     <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)"  context-menu="ValueSetOptions" ng-if="!canCreateNewVersion(table)">
                            <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}{{displayVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >{{getScopeLabel(table)}}{{displayVersion(table)}}</span>{{table.bindingIdentifier}}-{{table.description}}
                             </span>
                         </div>
-                     <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)"  ng-if="table&&datatypeLibrary.scope!=='MASTER'" context-menu="ValueSetOptionsINLIB">
+
+
+                        <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)" context-menu="TableOptionsForPublished" ng-if="canCreateNewVersion(table)">
                            <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}{{displayVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >{{getScopeLabel(table)}}{{displayVersion(table)}}</span> <span class="badge">v{{versionAndUseMap[table.id].publicationVersion}}</span>{{table.bindingIdentifier}}-{{table.description}}
                             </span>
                         </div>
                     </li>
                 </ol>
+
             </li>
         </ol>
     </div>
@@ -960,6 +963,30 @@ if (self === top) {
 </script>
 
 
+<script type="text/ng-template" id="ConfirmTablePublishCtl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Publish Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to publish this Table?</p>
+        <p>Data Type will no longer be editable.</p>
+        <p>This operation is irreversible.</p>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
+        </button>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
+        </div>
+    </div>
+    </div>
+</script>
 <script type="text/ng-template" id="EditTablesINLIB.html">
     <div ng-controller="TableListCtrlForDtLib" ng-init="init()" class="container">
         <div ng-show="loadingSelection" style="text-align: center; padding-top:20px">
@@ -1759,25 +1786,6 @@ if (self === top) {
         </button>
         <button class="btn btn-raised btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                 class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
-        </button>
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
-        </div>
-    </div>
-    </div>
-</script>
-<script type="text/ng-template" id="cannotPublish.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Redirecting confirmation
-        </h3>
-    </div>
-    <div class="modal-body">
-	<span> You cannot create a new version of {{datatypeTo.name}}_{{datatypeTo.ext}} until you pubish the pervious version </span>
-    </div>
-    </div>
-    <div class="modal-footer">
-            <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />

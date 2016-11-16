@@ -326,7 +326,7 @@ angular.module('igl').factory(
 
                 }else{
                     newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 1000) + 1);
-                    newTable.scope = $rootScope.tableLibrary;
+                    newTable.scope = $rootScope.tableLibrary.scope;
 	
                 }
 
@@ -385,20 +385,19 @@ angular.module('igl').factory(
         
         
         svc.upgradeTable = function (table) {
-            TableService.getOne(table.id).then(function(newTable){
+        		var newTable=angular.copy(table);
                 newTable.participants = [];
                 newTable.status="UNPUBLISHED";
-                newTable.id = null;
                 newTable.libIds = [];
+                newTable.bindingIdentifier = table.bindingIdentifier;
                 newTable.id=new ObjectId().toString()
-                newTable.libIds.push($rootScope.tableLibrary.id);
                 if($rootScope.igdocument){
                     newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
                     newTable.scope = "USER";
 
                 }else{
-                    newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 10000000) + 1);
-                    newTable.scope = $rootScope.tableLibrary;
+                    newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 1000) + 1);
+                    newTable.scope = $rootScope.tableLibrary.scope;
 	
                 }
 
@@ -417,7 +416,7 @@ angular.module('igl').factory(
                     TableLibrarySvc.addChild($rootScope.tableLibrary.id, newLink).then(function (link) {
                         $rootScope.tableLibrary.children.splice(0, 0, newLink);
                         $rootScope.tables.splice(0, 0, newTable);
-                        $rootScope.table = newTable;
+                        $rootScope.table = result;
                         $rootScope.tablesMap[newTable.id] = newTable;
                         var newTableInfo= {};
                         newTableInfo.id=newTable.id;
@@ -456,10 +455,6 @@ angular.module('igl').factory(
                              });
                         	 
                       });
-      
-                    	
-
-
                         $rootScope.codeSystems = [];
 
                         for (var i = 0; i < $rootScope.table.codes.length; i++) {
@@ -487,12 +482,6 @@ angular.module('igl').factory(
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
                 });
-
-            }, function(error){
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
-            });
         };
         
         
@@ -508,7 +497,7 @@ angular.module('igl').factory(
             newTable.id = null;
             newTable.libIds = [];
             
-            newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 10000000) + 1);
+            newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 100) + 1);
 
             if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
                 for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
@@ -723,12 +712,12 @@ angular.module('igl').factory(
         };
 
         svc.deleteTableLink = function (table) {
-            TableLibrarySvc.deleteChild($rootScope.datatypeLibrary.id, table.id).then(function (res) {
+            TableLibrarySvc.deleteChild($rootScope.tableLibrary.id, table.id).then(function (res) {
                 var index = $rootScope.tables.indexOf(table);
                 $rootScope.tables.splice(index, 1);
-                var tmp = TableLibrarySvc.findOneChild(table.id, $rootScope.datatypeLibrary.children);
-                index = $rootScope.datatypeLibrary.children.indexOf(tmp);
-                $rootScope.datatypeLibrary.children.splice(index, 1);
+                var tmp = TableLibrarySvc.findOneChild(table.id, $rootScope.tableLibrary.children);
+                index = $rootScope.tableLibrary.children.indexOf(tmp);
+                $rootScope.tableLibrary.children.splice(index, 1);
                 $rootScope.tablesMap[table.id] = null;
                 $rootScope.references = [];
                 if ($rootScope.table === table) {

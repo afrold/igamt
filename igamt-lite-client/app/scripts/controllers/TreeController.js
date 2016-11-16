@@ -1503,7 +1503,33 @@ angular
                     }
                 }
             };
+            $rootScope.addCSVTables = function (selectedTableLibary) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'AddCSVTableOpenCtrl.html',
+                    controller: 'AddCSVTableOpenCtrl',
+                    windowClass: 'conformance-profiles-modal',
+                    resolve: {
+                        selectedTableLibary: function () {
+                            return selectedTableLibary;
+                        }
+                    }
+                });
+                modalInstance.result.then(function () { }, function () { });
+            };
 
+            $rootScope.addPHINVADSTables = function (selectedTableLibary) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'AddPHINVADSTableOpenCtrl.html',
+                    controller: 'AddPHINVADSTableOpenCtrl',
+                    windowClass: 'conformance-profiles-modal',
+                    resolve: {
+                        selectedTableLibary: function () {
+                            return selectedTableLibary;
+                        }
+                    }
+                });
+                modalInstance.result.then(function () { }, function () { });
+            };
 
             $rootScope.getLabelOfData = function (name, ext) {
 

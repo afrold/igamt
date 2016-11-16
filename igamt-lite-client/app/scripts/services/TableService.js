@@ -86,7 +86,7 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
          publish: function(table) {
                 var delay = $q.defer();
                 table.accountId = userInfoService.getAccountID();
-                table.status="PUBLISHED";
+                //table.status="PUBLISHED";
                 $http.post('api/tables/publish', table).then(function(response) {
                     var saveResponse = angular.fromJson(response.data);
                     table.date = saveResponse.date;

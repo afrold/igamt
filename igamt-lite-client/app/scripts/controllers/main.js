@@ -2887,7 +2887,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
         $rootScope.publishTable = function(table) {
             var modalInstance = $modal.open({
-                templateUrl: 'ConfirmTablePublishCtl.html',
+                templateUrl: 'ConfirmTablePublish.html',
                 controller: 'ConfirmTablePublishCtl',
                 resolve: {
                     tableToPublish: function() {
@@ -2909,10 +2909,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                
                     
                     TableLibrarySvc.updateChild($rootScope.tableLibrary.id, newLink).then(function(link) {
+                    		console.log($rootScope.tablesMap[result.id]);
+                    		
                     		TableService.merge($rootScope.tablesMap[result.id], result);
-                        	$rootScope.tablesMap[result.id]=result;
-                        	$rootScope.table=result;
-
+                    		console.log("after");
+                    		console.log($rootScope.tablesMap[result.id]);
+                    		
+                    		$rootScope.tablesMap[result.id].status="PUBLISHED";
+                    		console.log($rootScope.table);
                             if ($scope.editForm) {
                             	console.log("Cleeaning");
                                 $scope.editForm.$setPristine();
@@ -2921,19 +2925,43 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                                 
                             }
                             $rootScope.clearChanges();
-                            TableService.merge($rootScope.table, result);
+                           // TableService.merge($rootScope.table, result);
                             //$scope.subview = "ReadValueSets.html";
                          	VersionAndUseService.findById(result.id).then(function(inf){
                         		$rootScope.versionAndUseMap[inf.id]=inf;
                         		if($rootScope.versionAndUseMap[inf.sourceId]){
                         			$rootScope.versionAndUseMap[inf.sourceId].deprecated=true;
-                        		}
                         		
+                        		}
+                        		$rootScope.tablesMap[result.id]=result;
+                            	
+                            	$rootScope.table=result;
+                            	 $rootScope.$broadcast('event:openTable', $rootScope.table);
                         	});
                     });
-            });
+                });
             });
         };
+        $rootScope.canCreateNewVersion= function(element){
+        	if(element.scope&&element.scope!=='USER'){
+        		console.log("SCOPE");
+
+        		return false;
+        	}else if(element.status!=="PUBLISHED"){
+        		console.log("I am deprecated");
+
+        		return false;
+        	}
+        	else if($rootScope.versionAndUseMap[element.id]&&$rootScope.versionAndUseMap[element.id].deprectaed){
+        		console.log("I am deprecated");
+        		console.log($rootScope.versionAndUseMap[element.id].deprectaed);
+        		return false;
+        		
+        	}else{
+        		return true;
+        	}
+        
+        }
         $rootScope.publishDatatype = function(datatype) {
 
             $rootScope.containUnpublished = false;
