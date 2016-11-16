@@ -641,7 +641,8 @@ angular.module('igl')
                     },
                 }
             });
-            modalInstance.result.then(function() {
+            modalInstance.result.then(function(message) {
+                $rootScope.message = message;
                 $scope.setDirty();
             }, function() {});
         };
@@ -1346,6 +1347,12 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
 
 angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, $modalInstance, selectedMessage, $rootScope, $q) {
     $scope.selectedMessage = angular.copy(selectedMessage);
+    $scope.constraints = [];
+    $scope.firstConstraint = null;
+    $scope.secondConstraint = null;
+    $scope.compositeType = null;
+    $scope.complexConstraint = null;
+    $scope.newComplexConstraintId = null;
     $scope.targetContext = null;
     $scope.treeDataForMessage = [];
     $scope.treeDataForContext = [];
@@ -1393,25 +1400,62 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         $scope.treeDataForContext[0] = angular.copy($scope.treeDataForContext[0]);
         $scope.treeDataForContext[0].pathInfoSet = [];
         $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
+        $scope.initConformanceStatement();
     };
 
     $scope.afterNodeDrop = function () {
         $scope.draggingStatus = null;
-
-
-        console.log($scope.firstNodeData.pathInfoSet);
-
-        // $scope.newConstraint.position_1 = $scope.firstNodeData.positionPath.replace("..", "");
-        // $scope.newConstraint.location_1 = $scope.firstNodeData.locationPath.replace("..", "") + "(" + $scope.firstNodeData.targetName + ")";
+        $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
+        $scope.generateFirstPositionAndLocationPath();
     };
 
     $scope.afterSecondNodeDrop = function () {
         $scope.draggingStatus = null;
-
-
-        // $scope.newConstraint.position_2 = $scope.secondNodeData.positionPath.replace("..", "");
-        // $scope.newConstraint.location_2 = $scope.secondNodeData.locationPath.replace("..", "") + "(" + $scope.secondNodeData.targetName + ")";
+        $scope.newConstraint.pathInfoSet_2 = $scope.secondNodeData.pathInfoSet;
+        $scope.generateSecondPositionAndLocationPath();
     };
+
+    $scope.generateFirstPositionAndLocationPath = function (){
+        if($scope.newConstraint.pathInfoSet_1){
+            var positionPath = '';
+            var locationPath = '';
+            for (var i in $scope.newConstraint.pathInfoSet_1){
+                if(i>0){
+                    var pathInfo = $scope.newConstraint.pathInfoSet_1[i];
+                    positionPath = positionPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
+                    locationPath = locationPath + "." + pathInfo.locationName + "[" + pathInfo.instanceNumber + "]";
+
+                    if(i == $scope.newConstraint.pathInfoSet_1.length -1){
+                        locationPath = locationPath + " (" + pathInfo.nodeName + ")";
+                    }
+                }
+            }
+
+            $scope.newConstraint.position_1 = positionPath.substr(1);
+            $scope.newConstraint.location_1 = locationPath.substr(1);
+        }
+    }
+
+    $scope.generateSecondPositionAndLocationPath = function (){
+        if($scope.newConstraint.pathInfoSet_2){
+            var positionPath = '';
+            var locationPath = '';
+            for (var i in $scope.newConstraint.pathInfoSet_2){
+                if(i>0){
+                    var pathInfo = $scope.newConstraint.pathInfoSet_2[i];
+                    positionPath = positionPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
+                    locationPath = locationPath + "." + pathInfo.locationName + "[" + pathInfo.instanceNumber + "]";
+
+                    if(i == $scope.newConstraint.pathInfoSet_2.length -1){
+                        locationPath = locationPath + " (" + pathInfo.nodeName + ")";
+                    }
+                }
+            }
+
+            $scope.newConstraint.position_2 = positionPath.substr(1);
+            $scope.newConstraint.location_2 = locationPath.substr(1);
+        }
+    }
 
     $scope.draggingNodeFromMessageTree = function (event, ui, nodeData) {
         $scope.draggingStatus = 'MessageTreeNodeDragging';
@@ -1470,7 +1514,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
                     childInstanceNumber = '*';
                     childisInstanceNumberEditable = true;
                 }
-                var child = $rootScope.datatypesMap[f.datatype.id];
+                var child = angular.copy($rootScope.datatypesMap[f.datatype.id]);
                 child.id = new ObjectId().toString();
                 f.child = child;
                 $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
@@ -1485,7 +1529,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
                 var childNodeName = c.name;
                 var childInstanceNumber = "1";
                 var childisInstanceNumberEditable = false;
-                var child = $rootScope.datatypesMap[c.datatype.id];
+                var child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
                 child.id = new ObjectId().toString();
                 c.child = child;
                 $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
@@ -1495,6 +1539,8 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
 
     $scope.initConformanceStatement = function() {
         $scope.newConstraint = angular.fromJson({
+            pathInfoSet_1: null,
+            pathInfoSet_2: null,
             position_1: null,
             position_2: null,
             location_1: null,
@@ -1512,21 +1558,53 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         });
     };
 
+    $scope.initComplexStatement = function() {
+        $scope.constraints = [];
+        $scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
+        $scope.complexConstraint = null;
+        $scope.newComplexConstraintId = null;
+    }
+
     $scope.addConformanceStatement = function() {
         var cs = $rootScope.generateConformanceStatement('', $scope.newConstraint);
-        $scope.targetContext.comformanceStatements.push(cs);
+        $scope.targetContext.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
 
-    $scope.initConformanceStatement();
+    $scope.deleteConformanceStatement = function(conformanceStatement) {
+        $scope.targetContext.conformanceStatements.splice($scope.targetContext.conformanceStatements.indexOf(conformanceStatement), 1);
+        $scope.changed = true;
+    };
 
+    $scope.addFreeTextConformanceStatement = function() {
+        var cs = $rootScope.generateFreeTextConformanceStatement('', $scope.newConstraint);
+        $scope.targetContext.conformanceStatements.push(cs);
+        $scope.changed = true;
+        $scope.initConformanceStatement();
+    };
 
-
+    $scope.addComplexConformanceStatement = function() {
+        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
+        $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+        $scope.targetContext.conformanceStatements.push($scope.complexConstraint);
+        $scope.initComplexStatement();
+        $scope.changed = true;
+    };
 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
+
+    $scope.saveclose = function() {
+        $rootScope.recordChanged();
+        $modalInstance.close($scope.selectedMessage);
+    };
+
+    $scope.initConformanceStatement();
+    $scope.initComplexStatement();
 
 });
 
