@@ -14,21 +14,19 @@
 <div class="container" ng-init="init()">
 
             <tabset>
-                <tab active="dt" select="select(dtTab)">
+                <tab active="datatypeTab" select="select(dtTab)">
                     <tab-heading ng-click="setTypeOfSharing('datatype');">
                         Datatypes
                     </tab-heading>
-                    <div ng-init="init()">
                     <div ng-include="sharedElementView"></div>
-                    </div>
                 </tab>
-                 <tab active="table" select="select(vsTabe)">
-                    <tab-heading>
+                 <tab active="tableTab" select="select(vsTabe)">
+                    <tab-heading ng-click="setTypeOfSharing('table');">
                         Value Sets
                     </tab-heading>
                     <!--<div ng-include="'views/edit/editIG.html'"></div>-->
                 </tab>
-                <tab active="segment" select="select(segTab)">
+                <tab active="segmentTab" select="select(segTab)">
                   <tab-heading>
                     Segments
                   </tab-heading>

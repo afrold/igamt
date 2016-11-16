@@ -618,10 +618,10 @@ public class DatatypeController extends CommonController {
 	  
 	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
-	    msg.setSubject("NIST IGAMT IGDocument Shared with you.");
+	    msg.setSubject("NIST IGAMT Datatype Shared with you.");
 	    msg.setTo(target.getEmail());
 	    msg.setText("Dear " + target.getUsername() + " \n\n"
-	        + "You have received a request to share the datatype " +  datatype.getName() + ": " + datatype.getDescription() + " by " + source.getFullName() + "(" + source.getUsername() +")"
+	        + "You have received a request to share the Datatype " +  datatype.getName() + ": " + datatype.getDescription() + " by " + source.getFullName() + "(" + source.getUsername() +")"
 	        + "\n" + "If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Elements' tab"
 	        + "\n\n"
 	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
@@ -636,7 +636,7 @@ private void sendUnshareEmail(Datatype datatype, Account target,Account source) 
 	  
 	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
-	    msg.setSubject("NIST IGAMT IGDocument unshare");
+	    msg.setSubject("NIST IGAMT Datatype unshare");
 	    msg.setTo(target.getEmail());
 	    msg.setText("Dear " + target.getUsername() + " \n\n"
 	    	+ "This is an automatic email to let you know that "
