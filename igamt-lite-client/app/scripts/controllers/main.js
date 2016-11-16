@@ -2346,7 +2346,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
         $rootScope.erorrForConfStatement = function(newConstraint, targetId, type, selectedNode) {
-            if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintID(newConstraint)) return true;
             if ($rootScope.isDuplicatedConstraintID(newConstraint, targetId)) return true;
             if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
