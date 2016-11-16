@@ -2,9 +2,9 @@ angular
     .module('igl')
     .controller(
     'shared', ['$scope', '$http', '$rootScope', '$q', '$modal','$timeout','ngTreetableParams', 'DatatypeLibraryDocumentSvc', 'TableLibrarySvc', 'DatatypeService', 'DatatypeLibrarySvc','IGDocumentSvc', 'TableService', 'ViewSettings', 'userInfoService',
-    'blockUI','CompareService','VersionAndUseService',
+    'blockUI','CompareService','VersionAndUseService', 'TableService',
 
-        function ($scope, $http, $rootScope, $q, $modal, $timeout,ngTreetableParams, DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc,IGDocumentSvc, TableService, ViewSettings, userInfoService, blockUI,CompareService,VersionAndUseService) {
+        function ($scope, $http, $rootScope, $q, $modal, $timeout,ngTreetableParams, DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc,IGDocumentSvc, TableService, ViewSettings, userInfoService, blockUI,CompareService,VersionAndUseService,TableService) {
 
             $scope.selectedTab==0;
             $scope.sharedElementView='sharedElementView';
@@ -23,14 +23,15 @@ angular
             });
             $scope.datatypes = [];
             $scope.pendingDatatypes = [];
+            $scope.pendingTables = [];
 
             $scope.setTypeOfSharing=function(type){
                 $scope.typeOfSharing=type;
                 if(type==='datatype'){
-                    console.log("TOCs")
                     $scope.SharedtocView='sharedtocView.html';
-
-
+                } else if(type==='table') {
+                    $scope.SharedtocView='sharedTabletocView.html';
+                    $scope.getSharedTables();
                 }
             }
          $scope.$on('event:openDatatypeonShare', function(event, datatype) {
@@ -47,6 +48,7 @@ angular
                 $scope.SharedtocView='sharedtocView.html';
                 $scope.Sharedsubview = "datatypePending.html";
                 $scope.SharedDataTypeTree=[$scope.library];
+                $scope.SharedTableTree=[$scope.library];
             }
 
             $scope.showPending = function() {
@@ -67,6 +69,16 @@ angular
                 // $scope.library={name:"bla"};
 
 
+            }
+
+            $scope.getSharedTables = function(){
+                TableService.getSharedTables().then(function(result){
+                    $scope.tables = result;
+                });
+
+                TableService.getPendingSharedTables().then(function(result){
+                    $scope.pendingTables = result;
+                });
             }
 
           function processEditDataType(data) {
@@ -110,6 +122,34 @@ angular
                     console.log(error);
                 });
             };
+
+            $scope.confirmShareTable = function(table) {
+                    $http.get('api/shareTableconfimation/' + table.id).then(function(response) {
+                        $rootScope.msg().text = "vsSharedConfirmationSuccessful";
+                        $rootScope.msg().type ="success";
+                        $rootScope.msg().show = true;
+                        $scope.getSharedTables();
+                    }, function(error) {
+                        $rootScope.msg().text = "vsSharedConfirmationFailed";
+                        $rootScope.msg().type ="danger";
+                        $rootScope.msg().show = true;
+                        console.log(error);
+                    });
+                };
+
+                $scope.rejectShareTable = function(table) {
+                    $http.get('api/shareTablereject/' + table.id).then(function(response) {
+                        $rootScope.msg().text = "vsSharedRejectedSuccessfully";
+                        $rootScope.msg().type ="success";
+                        $rootScope.msg().show = true;
+                        $scope.getSharedTables();
+                    }, function(error) {
+                        $rootScope.msg().text = "vsSharedRejectFailed";
+                        $rootScope.msg().type ="danger";
+                        $rootScope.msg().show = true;
+                        console.log(error);
+                    });
+                };
 
             $scope.selectDatatype = function (datatype) {
             $rootScope.datatype = angular.copy(datatype);

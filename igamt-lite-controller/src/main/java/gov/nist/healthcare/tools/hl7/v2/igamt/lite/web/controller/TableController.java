@@ -287,6 +287,48 @@ public class TableController extends CommonController {
     }
   }
   
+  /**
+   * Find shared datatypes
+   */
+  @RequestMapping(value = "/findShared", method = RequestMethod.GET,
+      produces = "application/json")
+  public List<Table> findShared() throws Exception {
+	  List<Table> tables = new ArrayList<Table>();
+      try {
+        User u = userService.getCurrentUser();
+        Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+        if (account == null) {
+          throw new UserAccountNotFoundException();
+        }
+        tables = tableService.findShared(account.getId());
+        
+      } catch (Exception e) {
+          log.error("", e);
+      }
+      return tables;
+  }
+  
+  /**
+   * Find pending shared datatypes
+   */
+  @RequestMapping(value = "/findPendingShared", method = RequestMethod.GET,
+      produces = "application/json")
+  public List<Table> findPendingShared() throws Exception {
+	  List<Table> tables = new ArrayList<Table>();
+      try {
+        User u = userService.getCurrentUser();
+        Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+        if (account == null) {
+          throw new UserAccountNotFoundException();
+        }
+        tables = tableService.findPendingShared(account.getId());
+        
+      } catch (Exception e) {
+          log.error("", e);
+      }
+      return tables;
+  }
+  
   private void sendShareConfirmation(Table table, Account target,Account source) {	  
 	  
 	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);

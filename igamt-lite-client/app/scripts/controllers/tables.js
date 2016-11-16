@@ -944,7 +944,7 @@ angular.module('igl').controller('ShareTableCtrl', function ($scope, $modalInsta
                 tag.pendingApproval = true;
                 $scope.igdocumentSelected.shareParticipantIds.push(tag);
             });
-            $rootScope.msg().text = "dtSharedSuccessfully";
+            $rootScope.msg().text = "vsSharedSuccessfully";
             $rootScope.msg().type ="success";
             $rootScope.msg().show = true;
             $modalInstance.close();
@@ -987,7 +987,7 @@ angular.module('igl').controller('ShareTableCtrl', function ($scope, $modalInsta
                 $scope.igdocumentSelected.shareParticipantIds.splice(participantIndex, 1);
             }
             $scope.loading = false;
-            $rootScope.msg().text = "dtUnSharedSuccessfully";
+            $rootScope.msg().text = "vsUnSharedSuccessfully";
             $rootScope.msg().type ="success";
             $rootScope.msg().show = true;
          }, function(error){
