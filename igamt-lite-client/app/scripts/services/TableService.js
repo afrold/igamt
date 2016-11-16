@@ -89,10 +89,8 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
                 //table.status="PUBLISHED";
                 $http.post('api/tables/publish', table).then(function(response) {
                     var saveResponse = angular.fromJson(response.data);
-                    table.date = saveResponse.date;
-                    table.version = saveResponse.version;
-                    table.id = saveResponse.id;
-                    delay.resolve(table);
+                   
+                    delay.resolve(saveResponse);
                 }, function(error) {
                     //console.log("DatatypeService.save error=" + error);
                     delay.reject(error);

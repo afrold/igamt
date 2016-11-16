@@ -1812,7 +1812,7 @@
 
                  <hr style="border-top: 2px solid #271e1e"/>
 
-            <div class="row container">
+            <div class="row container" ng-if="version1">
 
              <div class="panel panel-primary col-md-5">
                     <div class="panel-heading">Source</div>
@@ -1933,9 +1933,9 @@
 
                  </div>
 
-                 <hr style="border-top: 2px solid #271e1e"/>
+                 <hr style="border-top: 2px solid #271e1e" ng-if="version1"/>
 
-            <div class="row container">
+            <div class="row container" ng-if="version1">
 
              <div class="panel panel-primary col-md-5">
                     <div class="panel-heading">Source</div>
@@ -1964,6 +1964,104 @@
                                                                 <td><a class="pointer" ng-show="!checkExist(datatype)" ng-click="addDt(datatype)"><i class="fa fa-plus fa-fw"></i></a>
                                                                     <p ng-show="checkExist(datatype)">Selected</p>
                                                                 </td>
+                                                                <td><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                </table>
+            </div>
+            </div>
+			</div>
+            <div class="col-md-1"></div>
+                <div class="panel panel-primary col-md-6">
+                    <div class="panel-heading">Selected Data Types</div>
+                    <div class="panel-body container">
+                    <div align="right" class="container" style="margin-top: 8px;">
+                         <i class="icon-search"></i>
+                        <input type="search" class="form-control" placeholder="Search" ng-model="search1.name" />
+                    	</div>
+            <table class="table table-bordered table-stripped container">
+                <thead>
+                                                                    <tr class="tbl-header">
+                                                                        <th>Name</th>
+                                                                        <th>Ext</th>
+                                                                        <th>HL7 Version</th>
+
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="dt in selectedDatatypes">
+                                                                        <td>{{dt.name}}<span class="badge" ng-if="versionAndUseMap[dt.id]">v{{versionAndUseMap[dt.id].publicationVersion}}</span></td>
+                                                                        <td><span ng-show="!edit">{{dt.ext}}</span>
+                                                                            <a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.status!=='PUBLISHED'" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
+                                                                            <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext"/>
+                                                                            <a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
+                                                                            <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
+                                                                            <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>
+                                                                        </td>
+                                                                        <td>{{dt.hl7Version}}</td>
+
+                                                                        <td><a class="pointer" ng-click="deleteDt(dt)"><i
+                                                                                    class="fa fa-times fa-fw"></i></a></td>
+                                                                    </tr>
+                                                                </tbody>
+            </table>
+		</div>
+
+    	</div>
+    	</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
+                    </button>
+                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0"><i class="fa fa-check fa-fw"></i>Add
+                    </button>
+                </div>
+            </form>
+         </div>
+</script>
+
+<script type="text/ng-template" id="AddSharedDatatype.html">
+
+<div class="modal-content">
+           	 <div class="modal-header">
+                <h3 class="modal-title">Add Data Type</h3>
+            </div>
+
+
+            <form name="addDT">
+                <div class="modal-body">
+                            <div class="container" style="margin-bottom: 20px;margin-top: 10px">
+                                    <div class="row" style="padding-top:10px">
+
+            <div class="row container">
+
+             <div class="panel panel-primary col-md-5">
+                    <div class="panel-heading">Source</div>
+                    <div class="panel-body container">
+
+            <div align="right" class="container" style="margin-top: 8px;">
+                <i class="icon-search"></i>
+                <input type="search" class="form-control" placeholder="Search Datatypes" ng-model="search.name" />
+            </div>
+            <div>
+                <table class="table table-bordered table-stripped container">
+                                                            <thead>
+                                                            <tr class="tbl-header">
+
+                                                                <th>Name</th>
+																<th>HL7 Version</th>
+                                                                <th>As Flavor</th>
+
+                                                            </tr>
+
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="datatype in hl7Datatypes | orderBy: 'name' | filter:search:strict">
+															
+                                                                <td>{{datatype.name}}<span class="badge" ng-if="datatype.publicationVersion">{{datatype.publicationVersion}}</span></td>
+																<td>{{datatype.hl7Version}}</td>
                                                                 <td><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
                                                                 </td>
                                                             </tr>
@@ -2521,5 +2619,28 @@
     <div class="share_right-panel">
         <span ng-bind-html="$highlight($getDisplayText())"></span>
         <span>({{data.fullname}})</span>
+    </div>
+</script>
+<script type="text/ng-template" id="confirmSwitch.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to replace {{source.name}}_{{source.ext}}_v{{source.publicationVersion}} by  {{dest.name}}_{{dest.ext}}_v{{dest.publicationVersion}} in your IG Document</p>
+
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-success btn-sm" ng-disabled="loading" ng-click="confirm()"><span><i
+                class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
+        </button>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
+        </div>
+    </div>
     </div>
 </script>

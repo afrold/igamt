@@ -391,16 +391,6 @@ angular.module('igl').factory(
                 newTable.libIds = [];
                 newTable.bindingIdentifier = table.bindingIdentifier;
                 newTable.id=new ObjectId().toString()
-                if($rootScope.igdocument){
-                    newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);
-                    newTable.scope = "USER";
-
-                }else{
-                    newTable.bindingIdentifier = table.bindingIdentifier+(Math.floor(Math.random() * 1000) + 1);
-                    newTable.scope = $rootScope.tableLibrary.scope;
-	
-                }
-
                 if (newTable.codes != undefined && newTable.codes != null && newTable.codes.length != 0) {
                     for (var i = 0, len1 = newTable.codes.length; i < len1; i++) {
                         newTable.codes[i].id = new ObjectId().toString();

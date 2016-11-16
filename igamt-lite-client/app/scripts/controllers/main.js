@@ -1477,7 +1477,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         });
             var refs= angular.copy($rootScope.references);
             angular.forEach($rootScope.references, function(ref){
-                
+                if(ref.target.status!=="PUBLISHED"){
                 if(ref.type=='field'){
                     console.log(ref.target);
                     var segment=angular.copy(ref.target);
@@ -1497,7 +1497,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 });
                   $rootScope.datatypeToUpdate.push(ref.target);  
                 }
-       
+                }
                 
                 SegmentService.saves($rootScope.SegmentsToUpdate).then(function(segs){
                             angular.forEach(segs, function(seg){
@@ -2854,7 +2854,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         $rootScope.getVersionLabel=function(id){
             if($rootScope.versionAndUseMap[id]){
-                return "-(V"+$rootScope.versionAndUseMap[id].publicationVersion+")";
+                return "(v"+$rootScope.versionAndUseMap[id].publicationVersion+")";
             }else{
                 return "";
             }
@@ -2905,17 +2905,18 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         
       
-                TableService.publish($rootScope.table).then(function(result) {
-               
-                    
+                TableService.publish($rootScope.table).then(function(published) {
+                		console.log("published Results");
+                		console.log(published);
                     TableLibrarySvc.updateChild($rootScope.tableLibrary.id, newLink).then(function(link) {
-                    		console.log($rootScope.tablesMap[result.id]);
+
+                    		$rootScope.table=published;
                     		
-                    		TableService.merge($rootScope.tablesMap[result.id], result);
-                    		console.log("after");
-                    		console.log($rootScope.tablesMap[result.id]);
                     		
-                    		$rootScope.tablesMap[result.id].status="PUBLISHED";
+                    		$rootScope.tablesMap[published.id].status="PUBLISHED";
+
+                    		console.log("rootScope"); 
+                    		$rootScope.$broadcast('event:openTable', $rootScope.table);
                     		console.log($rootScope.table);
                             if ($scope.editForm) {
                             	console.log("Cleeaning");
@@ -2925,18 +2926,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                                 
                             }
                             $rootScope.clearChanges();
-                           // TableService.merge($rootScope.table, result);
-                            //$scope.subview = "ReadValueSets.html";
-                         	VersionAndUseService.findById(result.id).then(function(inf){
+                         	VersionAndUseService.findById(published.id).then(function(inf){
                         		$rootScope.versionAndUseMap[inf.id]=inf;
                         		if($rootScope.versionAndUseMap[inf.sourceId]){
                         			$rootScope.versionAndUseMap[inf.sourceId].deprecated=true;
                         		
                         		}
-                        		$rootScope.tablesMap[result.id]=result;
                             	
-                            	$rootScope.table=result;
-                            	 $rootScope.$broadcast('event:openTable', $rootScope.table);
                         	});
                     });
                 });
@@ -2944,16 +2940,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
         $rootScope.canCreateNewVersion= function(element){
         	if(element.scope&&element.scope!=='USER'){
-        		console.log("SCOPE");
 
         		return false;
         	}else if(element.status!=="PUBLISHED"){
-        		console.log("I am deprecated");
 
         		return false;
         	}
         	else if($rootScope.versionAndUseMap[element.id]&&$rootScope.versionAndUseMap[element.id].deprectaed){
-        		console.log("I am deprecated");
         		console.log($rootScope.versionAndUseMap[element.id].deprectaed);
         		return false;
         		
@@ -2977,18 +2970,22 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
             }
         };
-        $rootScope.confirmPublishTable = function(table) {
+        $rootScope.confirmSwitch = function(source, dest) {
             var modalInstance = $modal.open({
-                templateUrl: 'ConfirmTablePublishCtl.html',
-                controller: 'ConfirmTablePublishCtl',
+                templateUrl: 'confirmSwitch.html',
+                controller: 'confirmSwitch',
                 resolve: {
-                    tableToPublish: function() {
-                        return table;
-                    }
+                    source: function() {
+                        return source;
+                    },
+                    dest: function() {
+                        return dest;
+                    },
+                    
                 }
             });
-            modalInstance.result.then(function(table) {
-                TableService.save(table);
+            modalInstance.result.then(function() {
+            	$rootScope.replaceElement(source,dest);
                 
             });
         };
@@ -3412,6 +3409,17 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
         }
 
-
     }
+});
+angular.module('igl').controller('confirmSwitch', function($scope, $rootScope, $http, $modalInstance, source, dest) {
+
+	$scope.source=source;
+	$scope.dest=dest;
+    $scope.confirm = function() {
+    	  $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
 });
