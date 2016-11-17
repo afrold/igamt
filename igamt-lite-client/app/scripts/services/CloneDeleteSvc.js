@@ -22,7 +22,7 @@ angular.module('igl').factory(
 
         svc.copySegment = function (segment) {
             var newSegment = angular.copy(segment);
-            newSegment.participants = [];
+            newSegment.shareParticipantIds = [];
             newSegment.scope = 'USER';
             newSegment.id = null;
             newSegment.libIds = [];
@@ -87,7 +87,7 @@ angular.module('igl').factory(
             }
             newDatatype.scope = $rootScope.datatypeLibrary.scope;
             newDatatype.status='UNPUBLISHED';
-            newDatatype.participants = [];
+            newDatatype.shareParticipantIds = [];
             newDatatype.id = null;
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.datatypeLibrary.id);
@@ -160,7 +160,7 @@ angular.module('igl').factory(
             var newDatatype = angular.copy(datatype, {});
             newDatatype.scope = $rootScope.datatypeLibrary.scope;
             newDatatype.status='UNPUBLISHED';
-            newDatatype.participants = [];
+            newDatatype.shareParticipantIds = [];
             newDatatype.id=new ObjectId().toString()
             var datatypeInfo= {};
             datatypeInfo.id=newDatatype.id;
@@ -269,7 +269,7 @@ angular.module('igl').factory(
 
         svc.createNewTable = function (scope, tableLibrary) {
             var newTable = {};
-            newTable.participants = [];
+            newTable.shareParticipantIds = [];
             newTable.scope = tableLibrary.scope;
             newTable.id = null;
             newTable.libIds = [];
@@ -315,7 +315,7 @@ angular.module('igl').factory(
 
         svc.copyTable = function (table) {
             TableService.getOne(table.id).then(function(newTable){
-                newTable.participants = [];
+                newTable.shareParticipantIds = [];
                 newTable.status="UNPUBLISHED";
                 newTable.id = null;
                 newTable.libIds = [];
@@ -386,7 +386,7 @@ angular.module('igl').factory(
         
         svc.upgradeTable = function (table) {
         		var newTable=angular.copy(table);
-                newTable.participants = [];
+                newTable.shareParticipantIds = [];
                 newTable.status="UNPUBLISHED";
                 newTable.libIds = [];
                 newTable.bindingIdentifier = table.bindingIdentifier;
@@ -481,7 +481,7 @@ angular.module('igl').factory(
         svc.copyTableINLIB = function (table, tableLibrary) {
         	console.log(tableLibrary);
             var newTable = angular.copy(table);
-            newTable.participants = [];
+            newTable.shareParticipantIds = [];
             newTable.scope = tableLibrary.scope;
             newTable.status = "UNPUBLISHED";
             newTable.id = null;
