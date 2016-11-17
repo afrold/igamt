@@ -2059,7 +2059,7 @@
                                                             </thead>
                                                             <tbody>
                                                             <tr ng-repeat="datatype in hl7Datatypes | orderBy: 'name' | filter:search:strict">
-															
+
                                                                 <td>{{datatype.name}}<span class="badge" ng-if="datatype.publicationVersion">{{datatype.publicationVersion}}</span></td>
 																<td>{{datatype.hl7Version}}</td>
                                                                 <td><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
@@ -2562,6 +2562,67 @@
 			</div>
 		</div>
 	</div>
+</script>
+
+<script type="text/ng-template" id="ShareDatatypeModal.html">
+  <div>
+    <div class="modal-header">
+      <h3 class="modal-title">Share Datatype</h3>
+    </div>
+    <div class="modal-body">
+      <div class="container" style="margin-bottom: 20px;margin-top: 20px">
+        <div class="row" ng-if="error != null">
+          <div class="col-md-12">
+            <span ng-bind="error" style="color: red;"></span>
+          </div>
+        </div>
+
+        <div class="row" ng-if="igdocumentSelected.shareParticipantIds.length > 0">
+          <div class="col-md-12">
+            <h5>Shared with</h5>
+            <div class="table-responsive">
+              <table class="table">
+                <tbody>
+                  <tr ng-repeat="participant in igdocumentSelected.shareParticipantIds">
+                    <td><i>{{participant.fullname}} ({{participant.username}})</i></td>
+                    <td>
+                      <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="!participant.pendingApproval"><i class="fa fa-times"></i> Remove</button>
+                      <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request</button>
+                      <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="participant.pendingApproval"><i class="fa fa-times"></i> Cancel</button>
+                    </td>
+                    <td>
+                      {{participant.permission}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-8">
+            <tags-input ng-model="tags" key-property="id" display-property="username" placeholder="Find user" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">
+              <auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
+            </tags-input>
+          </div>
+          <div class="col-md-4">
+            <ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
+              <ui-select-match>{{$select.selected}}</ui-select-match>
+              <ui-select-choices repeat="item in itemArray | filter: $select.search">
+                <div ng-bind-html="item | highlight: $select.search"></div>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i> Cancel </button>
+        <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="tags.length === 0"><i class="fa fa-check"></i>Share</button>
+      </div>
+    </div>
+  </div>
 </script>
 
 <script type="text/ng-template" id="ShareDatatypeErrorModal.html">
