@@ -36,12 +36,17 @@ angular.module('igl')
 
         $scope.findAllGlobalConstraints = function (){
             $scope.listGlobalConformanceStatements = [];
+            $scope.listGlobalPredicates = [];
             $scope.travelMessage($rootScope.message);
         };
 
         $scope.travelMessage = function(current) {
             if(current.conformanceStatements && current.conformanceStatements.length > 0){
                 $scope.listGlobalConformanceStatements.push(current);
+            }
+
+            if(current.predicates && current.predicates.length > 0) {
+                $scope.listGlobalPredicates.push(current);
             }
 
             if (current.type == 'message' || current.type == 'group') {
@@ -141,7 +146,7 @@ angular.module('igl')
         };
 
         $scope.openPredicateDialog = function(node) {
-            if (node.obj.usage == 'C') $scope.managePredicate(node, $rootScope.message);
+            if (node.obj.usage == 'C') $scope.openAddGlobalPredicateDialog(node, $rootScope.message);
         };
 
         $scope.expanded = true;
@@ -667,7 +672,7 @@ angular.module('igl')
             }, function() {});
         };
 
-        $scope.openAddGlobalPredicateDialog = function (message){
+        $scope.openAddGlobalPredicateDialog = function (node, message){
             var modalInstance = $modal.open({
                 templateUrl: 'GlobalPredicateCtrl.html',
                 controller: 'GlobalPredicateCtrl',
@@ -677,6 +682,9 @@ angular.module('igl')
                     selectedMessage: function() {
                         return message;
                     },
+                    selectedNode: function() {
+                        return node;
+                    }
                 }
             });
             modalInstance.result.then(function(message) {
@@ -686,32 +694,14 @@ angular.module('igl')
             }, function() {});
         };
 
-        $scope.managePredicate = function(node, message) {
-            var modalInstance = $modal.open({
-                templateUrl: 'PredicateMessageCtrl.html',
-                controller: 'PredicateMessageCtrl',
-                windowClass: 'app-modal-window',
-                resolve: {
-                    selectedMessage: function() {
-                        return message;
-                    },
-                    selectedNode: function() {
-                        return node;
-                    }
-                }
-            });
-            modalInstance.result.then(function(node) {
-                $scope.selectedNode = node;
-                $scope.setDirty();
-            }, function() {});
-        };
-
         $scope.countPredicate = function(position) {
             var count = 0
-            if ($rootScope.message != null) {
-                for (var i = 0, len1 = $rootScope.message.predicates.length; i < len1; i++) {
-                    if ($rootScope.message.predicates[i].constraintTarget.indexOf(position) === 0)
+            for(var i=0, len1 = $scope.listGlobalPredicates.length; i < len1; i++){
+                for( var j=0, len2 = $scope.listGlobalPredicates[i].predicates.length; j < len2; j++){
+                    var p = $scope.listGlobalPredicates[i].predicates[j];
+                    if(p.id == position){
                         count = count + 1;
+                    }
                 }
             }
             return count;
@@ -1361,8 +1351,9 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
 
 });
 
-angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalInstance, selectedMessage, $rootScope, $q) {
+angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalInstance, selectedMessage, selectedNode, $rootScope, $q) {
     $scope.selectedMessage = angular.copy(selectedMessage);
+    $scope.selectedNode = selectedNode;
     $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -1416,7 +1407,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalI
         $scope.treeDataForContext[0] = angular.copy($scope.treeDataForContext[0]);
         $scope.treeDataForContext[0].pathInfoSet = [];
         $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
-        $scope.initConformanceStatement();
+        $scope.initPredicate();
     };
 
     $scope.afterNodeDrop = function () {
@@ -1553,8 +1544,42 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalI
         }
     };
 
+    $scope.initPredicate = function() {
+        $scope.newConstraint = angular.fromJson({
+            pathInfoSet_1: null,
+            pathInfoSet_2: null,
+            position_1: null,
+            position_2: null,
+            location_1: null,
+            location_2: null,
+            freeText: null,
+            verb: null,
+            ignoreCase: false,
+            constraintId: null,
+            contraintType: null,
+            value: null,
+            value2: null,
+            valueSetId: null,
+            bindingStrength: 'R',
+            bindingLocation: '1',
+            trueUsage: null,
+            falseUsage: null,
+        });
+    };
 
+    $scope.addFreeTextPredicate = function() {
+        var cp = $rootScope.generateFreeTextPredicate('NOT Assigned', $scope.newConstraint);
+        $scope.targetContext.predicates.push(cp);
+        $scope.changed = true;
+        $scope.initPredicate();
+    };
 
+    $scope.addPredicate = function() {
+        var cp = $rootScope.generatePredicate('NOT Assigned', $scope.newConstraint);
+        $scope.tempPredicates.push(cp);
+        $scope.changed = true;
+        $scope.initPredicate();
+    };
 
 
     $scope.cancel = function() {
@@ -1567,7 +1592,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalI
     };
 
 
-
+    $scope.initPredicate();
 
 });
 
@@ -2047,7 +2072,6 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
 
 });
 
-
 angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService, blockUI) {
     $scope.groupParent = place;
 
@@ -2156,10 +2180,6 @@ angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance
 
 });
 
-
-
-
-
 angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $modalInstance, segOrGrpToDelete, $rootScope, MessageService, blockUI) {
     $scope.segOrGrpToDelete = segOrGrpToDelete;
     $scope.loading = false;
@@ -2211,7 +2231,6 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
 
 
 });
-
 
 angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, message, $rootScope, blockUI) {
     console.log(message);
@@ -2282,7 +2301,6 @@ angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, me
 
 });
 
-
 angular.module('igl').controller('redirectCtrl', function($scope, $modalInstance, destination, $rootScope) {
     $scope.destination = destination;
     $scope.loading = false;
@@ -2303,7 +2321,6 @@ angular.module('igl').controller('redirectCtrl', function($scope, $modalInstance
 
 
 });
-
 
 angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, ObjectDiff, orderByFilter, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, CompareService) {
 
@@ -2516,11 +2533,13 @@ angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, 
     $scope.selectedMessage = message;
     $scope.position = position;
     $scope.delete = function() {
-        for (var i = 0, len1 = $scope.selectedMessage.predicates.length; i < len1; i++) {
-            if ($scope.selectedMessage.predicates[i].constraintTarget.indexOf(position) === 0) {
-                $scope.selectedMessage.predicates.splice($scope.selectedMessage.predicates.indexOf($scope.selectedMessage.predicates[i]), 1);
-                $modalInstance.close();
-                return;
+        for (var i = 0, len1 = $scope.listGlobalPredicates.length; i < len1; i++) {
+            for(var j=0, len2 = $scope.listGlobalPredicates[i].predicates.length; j < len2; j++){
+                if ($scope.listGlobalPredicates[i].predicates[j].id == position) {
+                    $scope.listGlobalPredicates[i].predicates.splice($scope.listGlobalPredicates[i].predicates.indexOf($scope.listGlobalPredicates[i].predicates[j]), 1);
+                    $modalInstance.close();
+                    return;
+                }
             }
         }
         $modalInstance.close();

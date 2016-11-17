@@ -2338,8 +2338,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
                 if ($rootScope.isEmptyConstraintValueSet(newConstraint)) return true;
             }
-            if (newConstraint.trueUsage == null) return true;
-            if (newConstraint.falseUsage == null) return true;
 
             return false;
         }
