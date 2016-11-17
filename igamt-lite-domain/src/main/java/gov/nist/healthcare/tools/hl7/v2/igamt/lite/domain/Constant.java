@@ -44,7 +44,7 @@ public class Constant {
 
   public final static String SECTION = "section";
   public final static String Document = "document";
-  public final static DateFormat mdy = new SimpleDateFormat("MMMM dd, yyyy");
+  public final static SimpleDateFormat mdy = new SimpleDateFormat("MMMM dd, yyyy");
   
   public final static int CODESIZELIMIT = 3000;
 

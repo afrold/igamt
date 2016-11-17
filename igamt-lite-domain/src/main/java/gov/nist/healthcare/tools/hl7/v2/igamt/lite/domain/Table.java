@@ -52,6 +52,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 
   protected Long accountId;
 
+  @Deprecated
   protected String date;
 
   protected STATUS status;
@@ -307,10 +308,12 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     this.accountId = accountId;
   }
 
+  @Deprecated
   public String getDate() {
     return date;
   }
-
+  
+  @Deprecated
   public void setDate(String date) {
     this.date = date;
   }

@@ -917,7 +917,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
         }
         SegmentService.save($rootScope.segment).then(function(result) {
-
+            $rootScope.segment.dateUpdated = result.dateUpdated;
+            $rootScope.$emit("event:updateIgDate");
             if ($rootScope.selectedSegment !== null && $rootScope.segment.id === $rootScope.selectedSegment.id) {
                 $rootScope.processSegmentsTree($rootScope.segment, null);
             }

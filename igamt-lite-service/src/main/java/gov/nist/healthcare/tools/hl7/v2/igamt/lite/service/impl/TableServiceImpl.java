@@ -12,6 +12,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +27,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermis
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 /**
  * @author gcr1
@@ -33,6 +35,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
  */
 @Service
 public class TableServiceImpl implements TableService {
+
 
   Logger log = LoggerFactory.getLogger(TableServiceImpl.class);
 
@@ -127,6 +130,24 @@ public class TableServiceImpl implements TableService {
     return tableRepository.findShortAllByIds(ids);
   }
 
+
+
+
+
+
+	@Override
+	public Table save(Table table, Date date) {
+		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
+		table.setDateUpdated(date);
+		return tableRepository.save(table);
+	}
+
+
+
+	@Override
+	public Date updateDate(String id, Date date) {
+		return tableRepository.updateDate(id, date);
+	}
 
 
 }

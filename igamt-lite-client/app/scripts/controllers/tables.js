@@ -156,6 +156,9 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
             TableService.save(table).then(function(result) {
                 var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.tableLibrary.children);
+
+                $rootScope.table.dateUpdated = result.dateUpdated;
+                $rootScope.$emit("event:updateIgDate");
                 TableService.merge($rootScope.tablesMap[result.id], result);
                 // remove unnecessary variables for toc
                 delete $rootScope.tablesMap[result.id].codes;

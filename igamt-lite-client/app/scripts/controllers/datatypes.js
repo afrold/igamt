@@ -1070,6 +1070,9 @@ angular.module('igl')
                             if ($scope.datatypesParams){
                                // $scope.datatypesParams.refresh();   	
                             }
+                $rootScope.datatype.dateUpdated = result.dateUpdated;
+                $rootScope.$emit("event:updateIgDate");
+                DatatypeLibrarySvc.updateChild($rootScope.igdocument.profile.datatypeLibrary.id, newLink).then(function(link) {
                     DatatypeService.saveNewElements().then(function() {
 
 

@@ -2091,6 +2091,11 @@ input.form-control-short {
 	display: initial !important;
 }
 
+input.form-control-veryshort {
+	width: 20px !important;
+	display: initial !important;
+}
+
 input.form-control-short80 {
 	width: 80% !important;
 	display: initial !important;
@@ -2480,4 +2485,20 @@ background-color:#EDE1AF !important;
 .addDatatype .modal-dialog {
 	width: 80%;
 	height: 60%;
+}
+
+
+#nested-table{
+	margin-bottom: 0px;
+}
+#expanded-data {
+	margin-left: 20px;
+}
+
+.blink_me {
+	animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+	50% { opacity: 0; }
 }

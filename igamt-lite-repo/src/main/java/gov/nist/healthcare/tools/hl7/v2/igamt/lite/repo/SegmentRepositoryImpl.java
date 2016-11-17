@@ -10,6 +10,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -19,11 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 public class SegmentRepositoryImpl implements SegmentOperations {
 
@@ -32,29 +32,40 @@ public class SegmentRepositoryImpl implements SegmentOperations {
 	@Autowired
 	private MongoOperations mongo;
 
-	
 	@Override
 	public List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
 		Criteria where = Criteria.where("scope").in(scopes);
 		where.andOperator(Criteria.where("hl7Version").is(hl7Version));
 		Query qry = Query.query(where);
 		return mongo.find(qry, Segment.class);
-	} 
-	
+	}
+
 	@Override
 	public List<Segment> findByIds(Set<String> ids) {
 		Criteria where = Criteria.where("id").in(ids);
 		Query qry = Query.query(where);
- 		List<Segment> segments = mongo.find(qry, Segment.class);
+		List<Segment> segments = mongo.find(qry, Segment.class);
 		return segments;
-	} 
-	
+	}
+
 	@Override
 	public List<Segment> findUserSegmentsByIds(Set<String> ids) {
 		Criteria where = Criteria.where("id").in(ids).andOperator(Criteria.where("scope").is(SCOPE.USER.toString()));
 		Query qry = Query.query(where);
-//		qry = set4Brevis(qry);
+		// qry = set4Brevis(qry);
 		List<Segment> segments = mongo.find(qry, Segment.class);
 		return segments;
 	}
+
+	@Override
+	public Date updateDate(String id, Date date) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("id").is(id));
+		query.fields().include("dateUpdated");
+		Update update = new Update();
+		update.set("dateUpdated", date);
+		mongo.updateFirst(query, update, Segment.class);
+		return date;
+	}
+
 }

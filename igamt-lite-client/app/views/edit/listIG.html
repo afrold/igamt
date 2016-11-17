@@ -45,7 +45,7 @@
 						<th st-ratio="40" st-sort="metaData.title">Document Title</th>
 						<th st-ratio="10" st-sort="cp">#Conformance Profiles</th>
 						<th st-ratio="10" st-sort="metaData.hl7Version">HL7 Version</th>
-						<th st-ratio="10" st-sort="metaData.date">Date</th>
+						<th st-ratio="10" st-sort="dateUpdated">Date Updated</th>
 						<th st-ratio="5" ng-if="igDocumentConfig.selectedType === 'USER' || igDocumentConfig.selectedType === 'SHARED'">#Participants</th>
 						<th st-ratio="20">Actions</th>
 					</tr>
@@ -56,7 +56,9 @@
 						<td st-ratio="40"> {{row.metaData.title}} </td>
 						<td st-ratio="10" st-sort="cp"><span style="margin-left:5px ;    color: white !important;" class="badge" ns-popover ns-popover-template="templateRow.html" ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="right|top" ns-popover-timeout="0">{{row.profile.messages.children.length}} </span></td>
 						<td st-ratio="10" ng-bind="row.profile.metaData.hl7Version"></td>
-						<td st-ratio="10" ng-bind="row.metaData.date"></td>
+						<td st-ratio="10">
+                           {{row.dateUpdated | date:dateFormat}}
+						</td>
 						<td st-ratio="5" ng-if="igDocumentConfig.selectedType === 'USER' || igDocumentConfig.selectedType === 'SHARED'">
 							<span style="margin-left:5px ;    color: white !important;" class="badge">{{row.shareParticipantIds.length}} </span>
 						</td>

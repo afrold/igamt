@@ -157,8 +157,17 @@ angular.module('igl')
                 $scope.selectProfileMetaData(metaData); // Should we open in a dialog ??
             });
 
+            $rootScope.$on('event:updateIgDate', function(event, dateUpdated) {
+                if(!dateUpdated || dateUpdated === null) {
+                    IgDocumentService.updateDate($rootScope.igdocument);
+                }else{
+                    $rootScope.igdocument.dateUpdated = dateUpdated;
+                }
+            });
 
-            $rootScope.$on('event:IgsPushed', function (event, igdocument) {
+
+            $rootScope.$on('event:IgsPushed', function(event, igdocument) {
+
                 //                console.log("event:IgsPushed=" + igdocument)
                 if ($scope.igDocumentConfig.selectedType === 'USER') {
                     var idx = $rootScope.igs.findIndex(function (igd) {
@@ -1535,10 +1544,12 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
         $scope.saving = true;
         $scope.saved = false;
         if ($rootScope.igdocument != null && $rootScope.metaData != null) {
-            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
+
+            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function(dateUpdated) {
                 $scope.saving = false;
                 $scope.saved = true;
                 $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
+                $rootScope.igdocument.dateUpdated = dateUpdated;
                 if ($scope.editForm) {
                     $scope.editForm.$setPristine();
                     $scope.editForm.$dirty = false;
@@ -1575,10 +1586,12 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
         $scope.saving = true;
         $scope.saved = false;
         if ($rootScope.igdocument != null && $rootScope.metaData != null) {
-            ProfileSvc.saveMetaData($rootScope.igdocument.id, $rootScope.metaData).then(function (result) {
+
+            ProfileSvc.saveMetaData($rootScope.igdocument.id, $rootScope.metaData).then(function(dateUpdated) {
                 $scope.saving = false;
                 $scope.saved = true;
                 $rootScope.igdocument.profile.metaData = angular.copy($rootScope.metaData);
+                $rootScope.igdocument.dateUpdated = dateUpdated;
                 $scope.editForm.$setPristine();
                 $scope.editForm.$dirty = false;
                 $rootScope.clearChanges();
