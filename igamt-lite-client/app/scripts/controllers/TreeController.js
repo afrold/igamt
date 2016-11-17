@@ -2222,6 +2222,7 @@ angular
 	                console.log($scope.masterDatatypes);
 	            });
 	        };
+	        
 	        var listHL7Versions = function() {
 	            return $http.get('api/igdocuments/findVersions', {
 	                timeout: 60000

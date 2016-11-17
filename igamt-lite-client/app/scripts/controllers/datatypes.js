@@ -678,7 +678,13 @@ angular.module('igl')
 
                 });
                 modalInstance.result.then(function() {
-                    $rootScope.editTable(valueSet);
+                	if(!$rootScope.SharingScope){
+                		$rootScope.editTable(valueSet);
+                	}
+                	else{
+                		$scope.editTable(valueSet);
+                	}
+                    
                 });
 
 
@@ -950,7 +956,7 @@ angular.module('igl')
             var action = (checkbox.checked ? 'add' : 'remove');
             updateSelected(action, child);
         };
-
+        
 
         $scope.selectAllChildren = function($event) {
             var checkbox = $event.target;

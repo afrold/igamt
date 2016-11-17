@@ -711,7 +711,37 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return undefined;
         };
+        $rootScope.redirectVS = function(valueSet) {
+            TableService.getOne(valueSet.id).then(function(valueSet) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'redirectCtrl.html',
+                    controller: 'redirectCtrl',
+                    size: 'md',
+                    resolve: {
+                        destination: function() {
+                            return valueSet;
+                        }
+                    }
 
+
+
+                });
+                modalInstance.result.then(function() {
+                	if(!$rootScope.SharingScope){
+                		$rootScope.editTable(valueSet);
+                	}
+                	else{
+                		$rootScope.hideToc=true;
+                		$scope.hideToc=true;
+                		$scope.editTable(valueSet);
+                	}
+                    
+                });
+
+
+
+            });
+        };
 
         $rootScope.isNewObject = function(type, command, id) {
             if ($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {

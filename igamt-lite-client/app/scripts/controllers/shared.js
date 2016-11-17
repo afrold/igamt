@@ -7,12 +7,16 @@ angular
         function ($scope, $http, $rootScope, $q, $modal, $timeout,ngTreetableParams, DatatypeLibraryDocumentSvc, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc,IGDocumentSvc, TableService, ViewSettings, userInfoService, blockUI,CompareService,VersionAndUseService,TableService) {
 
             $scope.selectedTab==0;
+            $rootScope.SharingScope=true;
             $scope.sharedElementView='sharedElementView';
+            $scope.sharedElementViewForTables='sharedElementViewForTables.html';
+            $scope.SharedtocViewForTables='';
             $scope.SharedDataTypeTree=[]
             $scope.typeOfSharing="Pending";
             $rootScope.datatype={};
             $rootScope.datatypesMap={};
             $rootScope.TablesMap={};
+            $scope.tableTab=false;
             $scope.$on('event:openTableForShare', function (event, table) {
                 $scope.selectTable(table); // Should we open in a dialog ??
             });
@@ -34,24 +38,21 @@ angular
                 if(type==='datatype'){
                     $scope.SharedtocView='sharedtocView.html';
                 } else if(type==='table') {
-                    $scope.SharedtocView='sharedTabletocView.html';
-                    $scope.getSharedTables();
+                	$scope.SharedtocViewForTables='sharedTabletocView.html';
+                	console.log("Including");
+                    
                 }
             }
+            
          $scope.$on('event:openDatatypeonShare', function(event, datatype) {
 
             $scope.selectDatatype(datatype); // Should we open in a dialog ??
         });
          
-         $scope.editTable=function(table){
-        	 $rootScope.table=table;
-        	 
-        	 
-         }
+
 
             $scope.init=function(){
-                $rootScope.datatype=[];
-                $rootScope.tables=[];
+            	$scope.pending=true;
                 $scope.getSharedDatatypes();
                 $scope.typeOfSharing='datatype';
                 $scope.datatypeTab = { active: true};
@@ -62,16 +63,23 @@ angular
             }
 
             $scope.showPending = function() {
+            	$scope.pending=true;
               $scope.Sharedsubview = "datatypePending.html";
+              $scope.SharedsubviewForTable="datatypePending.html";
             }
 
             $scope.getSharedDatatypes = function(){
+                blockUI.start();
+
+               
                 DatatypeService.getSharedDatatypes().then(function(result){
                     $scope.datatypes = result;
                     angular.forEach($scope.datatypes, function(datatype){
                     	$rootScope.datatypesMap[datatype.id]=datatype;
+                    	
                     });
-                    
+                    $scope.getSharedTables();
+                    blockUI.stop();
                 });
 
                 DatatypeService.getPendingSharedDatatypes().then(function(result){
@@ -114,10 +122,13 @@ angular
         };
 
         $scope.editDatatype = function(data) {
+        	$scope.pending=false;
                 processEditDataType(data);
 
         };
         $scope.editTable = function(table) {
+        	$scope.pending=false;
+        	$scope.tableTab=true;
         	 $scope.$emit('event:openTableForShare',table);
 
         };
@@ -227,8 +238,8 @@ angular
 
         $scope.selectTable = function (t) {
             $rootScope.Activate(t.id);
-            $scope.Sharedsubview = "ReadValueSets.html";
-    
+            $scope.SharedsubviewForTable = "ReadValueSets.html";
+            
             $scope.loadingSelection = true;
             blockUI.start();
 
@@ -246,9 +257,9 @@ angular
 //                    angular.forEach($rootScope.segments, function (segment) {
 //                        $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
 //                    });
-//                    angular.forEach($rootScope.datatypes, function (dt) {
-//                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
-//                    });
+                    angular.forEach($rootScope.datatypes, function (dt) {
+                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
+                    });
                     $scope.loadingSelection = false;
                     $rootScope.$emit("event:initEditArea");
                     blockUI.stop();
