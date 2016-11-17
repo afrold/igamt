@@ -115,6 +115,24 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
             });
             return delay.promise;
         },
+        getSharedTables: function(){
+            var delay = $q.defer();
+            $http.get('api/tables/findShared').then(function (response) {
+                delay.resolve(response.data);
+             }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+        getPendingSharedTables: function(){
+            var delay = $q.defer();
+            $http.get('api/tables/findPendingShared').then(function (response) {
+                delay.resolve(response.data);
+             }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        }
 
     };
     return TableService;

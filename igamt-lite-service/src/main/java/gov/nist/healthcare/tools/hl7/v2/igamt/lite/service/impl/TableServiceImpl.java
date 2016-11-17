@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -55,6 +58,36 @@ public class TableServiceImpl implements TableService {
     List<Table> tables = tableRepository.findByScopesAndVersion(scopes, hl7Version);
     log.info("TableServiceImpl.findByScopeAndVersion=" + tables.size());
     return tables;
+  }
+  
+  @Override
+  public List<Table> findShared(Long accountId) {
+  	// TODO Auto-generated method stub
+  	List<Table> tables = tableRepository.findShared(accountId);
+  	List<Table> sharedWithAccount = new ArrayList<Table>();
+  	for(Table t : tables) {
+  		for(ShareParticipantPermission p : t.getShareParticipantIds()) {
+  			if(p.getAccountId() == accountId && !p.isPendingApproval()) {
+  				sharedWithAccount.add(t);
+  			}
+  		}
+  	}
+  	return sharedWithAccount;
+  }
+
+  @Override
+  public List<Table> findPendingShared(Long accountId) {
+  	// TODO Auto-generated method stub
+  	List<Table> tables = tableRepository.findShared(accountId);
+  	List<Table> sharedWithAccount = new ArrayList<Table>();
+  	for(Table t : tables) {
+  		for(ShareParticipantPermission p : t.getShareParticipantIds()) {
+  			if(p.getAccountId() == accountId && p.isPendingApproval()) {
+  				sharedWithAccount.add(t);
+  			}
+  		}
+  	}
+  	return sharedWithAccount;
   }
 
   @Override
