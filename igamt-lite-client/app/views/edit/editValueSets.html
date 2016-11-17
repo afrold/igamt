@@ -22,8 +22,8 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span>
                         <span class="pull-right">
-				<button title="publish" type="button" class="btn btn-raised btn-sm btn-success"
-                 ng-click="publishTable(table)" ng-if="table.status !== 'PUBLISHED'"><span><i class="fa fa-check" aria-hidden="true"></i> PUBLISH</span></button>
+				<button title="commit" type="button" class="btn btn-raised btn-sm btn-success"
+                 ng-click="publishTable(table)" ng-if="table.status !== 'PUBLISHED'"><span><i class="fa fa-check" aria-hidden="true"></i> Commit</span></button>
 
                    <div class="btn-group" ng-hide="table.scope !== 'USER'" style="margin-bottom: 0px;">
                      <button type="button" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(table)">
