@@ -667,6 +667,25 @@ angular.module('igl')
             }, function() {});
         };
 
+        $scope.openAddGlobalPredicateDialog = function (message){
+            var modalInstance = $modal.open({
+                templateUrl: 'GlobalPredicateCtrl.html',
+                controller: 'GlobalPredicateCtrl',
+                windowClass: 'app-modal-window',
+                keyboard: false,
+                resolve: {
+                    selectedMessage: function() {
+                        return message;
+                    },
+                }
+            });
+            modalInstance.result.then(function(message) {
+                $rootScope.message = message;
+                $scope.findAllGlobalConstraints();
+                $scope.setDirty();
+            }, function() {});
+        };
+
         $scope.managePredicate = function(node, message) {
             var modalInstance = $modal.open({
                 templateUrl: 'PredicateMessageCtrl.html',
@@ -1342,7 +1361,215 @@ angular.module('igl').controller('PredicateMessageCtrl', function($scope, $modal
 
 });
 
+angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalInstance, selectedMessage, $rootScope, $q) {
+    $scope.selectedMessage = angular.copy(selectedMessage);
+    $scope.constraints = [];
+    $scope.firstConstraint = null;
+    $scope.secondConstraint = null;
+    $scope.compositeType = null;
+    $scope.complexConstraint = null;
+    $scope.newComplexConstraintId = null;
+    $scope.targetContext = null;
+    $scope.treeDataForMessage = [];
+    $scope.treeDataForContext = [];
+    $scope.constraintType = 'Plain';
+    $scope.firstNodeData = null;
+    $scope.secondNodeData = null;
+    $scope.changed = false;
+    $scope.treeDataForMessage.push($scope.selectedMessage);
+    $scope.draggingStatus = null;
 
+    $scope.setChanged = function() {
+        $scope.changed = true;
+    };
+
+    $scope.toggleChildren = function(data) {
+        data.childrenVisible = !data.childrenVisible;
+        data.folderClass = data.childrenVisible?"fa-minus":"fa-plus";
+    };
+
+    $scope.beforeContextDrop = function() {
+        var deferred = $q.defer();
+
+        if($scope.draggingStatus === 'MessageTreeNodeDragging') {
+            $scope.treeDataForContext = [];
+            deferred.resolve();
+        }else {
+            deferred.reject();
+        }
+        return deferred.promise;
+    };
+
+    $scope.beforeNodeDrop = function() {
+        var deferred = $q.defer();
+        if($scope.draggingStatus === 'ContextTreeNodeDragging') {
+            deferred.resolve();
+        }else {
+            deferred.reject();
+        }
+        return deferred.promise;
+    };
+
+    $scope.afterContextDrop = function() {
+        $scope.draggingStatus = null;
+        $scope.targetContext = $scope.treeDataForContext[0];
+        $scope.treeDataForContext[0] = angular.copy($scope.treeDataForContext[0]);
+        $scope.treeDataForContext[0].pathInfoSet = [];
+        $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
+        $scope.initConformanceStatement();
+    };
+
+    $scope.afterNodeDrop = function () {
+        $scope.draggingStatus = null;
+        $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
+        $scope.generateFirstPositionAndLocationPath();
+    };
+
+    $scope.afterSecondNodeDrop = function () {
+        $scope.draggingStatus = null;
+        $scope.newConstraint.pathInfoSet_2 = $scope.secondNodeData.pathInfoSet;
+        $scope.generateSecondPositionAndLocationPath();
+    };
+
+    $scope.generateFirstPositionAndLocationPath = function (){
+        if($scope.newConstraint.pathInfoSet_1){
+            var positionPath = '';
+            var locationPath = '';
+            for (var i in $scope.newConstraint.pathInfoSet_1){
+                if(i>0){
+                    var pathInfo = $scope.newConstraint.pathInfoSet_1[i];
+                    positionPath = positionPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
+                    locationPath = locationPath + "." + pathInfo.locationName + "[" + pathInfo.instanceNumber + "]";
+
+                    if(i == $scope.newConstraint.pathInfoSet_1.length -1){
+                        locationPath = locationPath + " (" + pathInfo.nodeName + ")";
+                    }
+                }
+            }
+
+            $scope.newConstraint.position_1 = positionPath.substr(1);
+            $scope.newConstraint.location_1 = locationPath.substr(1);
+        }
+    }
+
+    $scope.generateSecondPositionAndLocationPath = function (){
+        if($scope.newConstraint.pathInfoSet_2){
+            var positionPath = '';
+            var locationPath = '';
+            for (var i in $scope.newConstraint.pathInfoSet_2){
+                if(i>0){
+                    var pathInfo = $scope.newConstraint.pathInfoSet_2[i];
+                    positionPath = positionPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
+                    locationPath = locationPath + "." + pathInfo.locationName + "[" + pathInfo.instanceNumber + "]";
+
+                    if(i == $scope.newConstraint.pathInfoSet_2.length -1){
+                        locationPath = locationPath + " (" + pathInfo.nodeName + ")";
+                    }
+                }
+            }
+
+            $scope.newConstraint.position_2 = positionPath.substr(1);
+            $scope.newConstraint.location_2 = locationPath.substr(1);
+        }
+    }
+
+    $scope.draggingNodeFromMessageTree = function (event, ui, nodeData) {
+        $scope.draggingStatus = 'MessageTreeNodeDragging';
+    };
+
+    $scope.draggingNodeFromContextTree = function (event, ui, nodeData) {
+        $scope.draggingStatus = 'ContextTreeNodeDragging';
+    };
+
+    $scope.generatePathInfo = function(current, positionNumber, locationName, instanceNumber, isInstanceNumberEditable, nodeName) {
+        var pathInfo = {};
+        pathInfo.positionNumber = positionNumber;
+        pathInfo.locationName = locationName;
+        pathInfo.nodeName = nodeName;
+        pathInfo.instanceNumber = instanceNumber;
+        pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
+        current.pathInfoSet.push(pathInfo);
+
+        if(current.type == 'message' || current.type == 'group'){
+            for(var i in current.children){
+                var segGroup = current.children[i];
+                segGroup.pathInfoSet = angular.copy(current.pathInfoSet);
+                var childPositionNumber = segGroup.position;
+                var childLocationName = '';
+                var childNodeName = '';
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
+                if(segGroup.max != '1') {
+                    childInstanceNumber = '*';
+                    childisInstanceNumberEditable = true;
+                }
+                if(segGroup.type == 'group'){
+                    childNodeName = segGroup.name;
+                    childLocationName = segGroup.name.substr(segGroup.name.lastIndexOf('.') + 1);
+                }else {
+                    var s = angular.copy($rootScope.segmentsMap[segGroup.ref.id]);
+                    s.id = new ObjectId().toString();
+                    childLocationName = s.name;
+                    childNodeName = s.name;
+                    segGroup.segment = s;
+                }
+                $scope.generatePathInfo(segGroup, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
+            }
+        }else if(current.type == 'segmentRef'){
+            var seg = current.segment;
+            for(var i in seg.fields){
+                var f = seg.fields[i];
+                f.pathInfoSet = angular.copy(current.pathInfoSet);
+
+                var childPositionNumber = f.position;
+                var childLocationName = f.position;
+                var childNodeName = f.name;
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
+                if(f.max != '1') {
+                    childInstanceNumber = '*';
+                    childisInstanceNumberEditable = true;
+                }
+                var child = angular.copy($rootScope.datatypesMap[f.datatype.id]);
+                child.id = new ObjectId().toString();
+                f.child = child;
+                $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
+            }
+        }else if(current.type == 'field' || current.type == 'component'){
+            var dt = current.child;
+            for(var i in dt.components){
+                var c = dt.components[i];
+                c.pathInfoSet = angular.copy(current.pathInfoSet);
+                var childPositionNumber = c.position;
+                var childLocationName = c.position;
+                var childNodeName = c.name;
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
+                var child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
+                child.id = new ObjectId().toString();
+                c.child = child;
+                $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
+            }
+        }
+    };
+
+
+
+
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.saveclose = function() {
+        $rootScope.recordChanged();
+        $modalInstance.close($scope.selectedMessage);
+    };
+
+
+
+
+});
 
 angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, $modalInstance, selectedMessage, $rootScope, $q) {
     $scope.selectedMessage = angular.copy(selectedMessage);
@@ -1368,7 +1595,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
 
     $scope.toggleChildren = function(data) {
         data.childrenVisible = !data.childrenVisible;
-        data.folderClass = data.childrenVisible?"fa-folder-open-o":"fa-folder-o";
+        data.folderClass = data.childrenVisible?"fa-minus":"fa-plus";
     };
 
     $scope.beforeContextDrop = function() {
