@@ -31,6 +31,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission.Permission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
@@ -238,6 +239,19 @@ public class ShareParticipantsController {
 				 }catch(Exception e) {
 				       log.error("", e);
 				   }
+			 }
+			 
+			 if(!c.getTables().isEmpty()){
+				 for(TableLink link : c.getTables()){
+					 try{
+						 Table temp=tableService.findById(link.getId());
+			    		  temp.getShareParticipantIds().add(new ShareParticipantPermission(accountId, Permission.VIEW, false));
+			    		  tableService.save(temp);
+						 }catch(Exception e) {
+						       log.error("", e);
+						   } 
+					 
+				 }
 			 }
 		 }
 	 }

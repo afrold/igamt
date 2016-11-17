@@ -107,19 +107,6 @@
                         </div>
                     </li>
                 </ol>
-                <ol ui-tree-nodes="" ng-model="tables"  data-type="tables">
-                    <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="addValueSetsInTableLibrary">
-                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Value Sets <span class="badge">{{tables.length}}</span>
-                    </div>
-                    <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed">
-                        <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)"  ng-if="table">
-                           <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
-                                     <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}{{displayVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}
-                            </span>
-                        </div>
-                    </li>
-                </ol>
             </li>
         </ol>
     </div>
@@ -141,7 +128,7 @@
 
                 <ol ui-tree-nodes="" ng-model="tables"  data-type="tables">
                     <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed">
-                        <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)"  ng-if="table">
+                        <div ui-tree-handle data-nodrag ng-click="editTable(table); Activate(table.id)"  ng-if="table">
                            <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}{{displayVersion(table)}}</span> {{table.bindingIdentifier}}-{{table.description}}

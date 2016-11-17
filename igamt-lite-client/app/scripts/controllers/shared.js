@@ -13,6 +13,10 @@ angular
             $rootScope.datatype={};
             $rootScope.datatypesMap={};
             $rootScope.TablesMap={};
+            $scope.$on('event:openTableForShare', function (event, table) {
+                $scope.selectTable(table); // Should we open in a dialog ??
+            });
+
             $scope.datatypesParams = new ngTreetableParams({
               getNodes: function(parent) {
                   return DatatypeService.getNodes(parent, $rootScope.datatype);
@@ -38,6 +42,12 @@ angular
 
             $scope.selectDatatype(datatype); // Should we open in a dialog ??
         });
+         
+         $scope.editTable=function(table){
+        	 $rootScope.table=table;
+        	 
+        	 
+         }
 
             $scope.init=function(){
                 $rootScope.datatype=[];
@@ -58,10 +68,17 @@ angular
             $scope.getSharedDatatypes = function(){
                 DatatypeService.getSharedDatatypes().then(function(result){
                     $scope.datatypes = result;
+                    angular.forEach($scope.datatypes, function(datatype){
+                    	$rootScope.datatypesMap[datatype.id]=datatype;
+                    });
+                    
                 });
 
                 DatatypeService.getPendingSharedDatatypes().then(function(result){
                     $scope.pendingDatatypes = result;
+                    angular.forEach($scope.pendingDatatypes, function(datatype){
+                    	$rootScope.datatypesMap[datatype.id]=datatype;
+                    });
                 });
 
               //  $scope.datatypes=[{id:1, name:"dummy",description:"dummy"},{id:2, name:"dummy",description:"dummy"}];
@@ -74,10 +91,16 @@ angular
             $scope.getSharedTables = function(){
                 TableService.getSharedTables().then(function(result){
                     $scope.tables = result;
+                    angular.forEach($scope.tables, function(table){
+                    	$rootScope.tablesMap[table.id]=table;
+                    });
                 });
 
                 TableService.getPendingSharedTables().then(function(result){
                     $scope.pendingTables = result;
+                    angular.forEach($scope.pendingTables, function(table){
+                    	$rootScope.tablesMap[table.id]=table;
+                    });
                 });
             }
 
@@ -92,6 +115,10 @@ angular
 
         $scope.editDatatype = function(data) {
                 processEditDataType(data);
+
+        };
+        $scope.editTable = function(table) {
+        	 $scope.$emit('event:openTableForShare',table);
 
         };
 
@@ -198,6 +225,37 @@ angular
             }
         };
 
+        $scope.selectTable = function (t) {
+            $rootScope.Activate(t.id);
+            $scope.Sharedsubview = "ReadValueSets.html";
+    
+            $scope.loadingSelection = true;
+            blockUI.start();
+
+                    $rootScope.table = t;
+                    $rootScope.$emit("event:initTable");
+                    $rootScope.codeSystems = [];
+                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
+                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+                            }
+                        }
+                    }
+                    $rootScope.references = [];
+//                    angular.forEach($rootScope.segments, function (segment) {
+//                        $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
+//                    });
+//                    angular.forEach($rootScope.datatypes, function (dt) {
+//                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
+//                    });
+                    $scope.loadingSelection = false;
+                    $rootScope.$emit("event:initEditArea");
+                    blockUI.stop();
+               
+           
+
+        };
 
 
 
