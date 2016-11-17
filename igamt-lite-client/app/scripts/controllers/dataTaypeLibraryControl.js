@@ -339,6 +339,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         }
 
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
+        	 blockUI.stop();
         	
         	$rootScope.libraryDoc= datatypeLibraryDocument;
             $rootScope.accountId=datatypeLibraryDocument.accountId;
@@ -400,6 +401,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
              $scope.DataTypeTree.push($scope.datatypeLibCopy);
 
             DatatypeLibrarySvc.getHL7Versions().then(function(result) {
+            	 blockUI.stop();
                 $scope.hl7Versions = result;
                 $scope.hl7Version=result[0];
                     DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {
@@ -408,12 +410,14 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             	                $scope.loadVersionAndUseInfo().then(function(){
             		                $scope.loadTables().then(function() {
                                                       
-
+            		                	 blockUI.stop();
                                 $rootScope.$emit("event:initEditArea");
+                                blockUI.stop();
                         }, function() {});
             	    })
             }, function() {});
                  });
+                    blockUI.stop();
             });
            
 
@@ -1131,6 +1135,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
             console.log(tableIds);
             console.log(tableIds);
+            blockUI.stop();
                             blockUI.start();
 
             TableService.findAllByIds(tableIds).then(function(tables) {
