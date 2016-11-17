@@ -1100,8 +1100,8 @@ angular.module('igl')
                 $rootScope.msg().show = true;
             });
             $rootScope.saveBindingForDatatype();
-        };
-
+        });
+        }
         $scope.cancel = function() {
             //TODO: remove changes from master ma
             angular.forEach($rootScope.datatype.components, function(child) {
