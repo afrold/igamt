@@ -31,6 +31,8 @@ public interface TableOperations {
 	List<Table> findUserTablesByIds(Set<String> ids);
 
 	List<Table> findAllByIds(Set<String> ids);
+	
+	List<Table> findShared(Long accountId);
 
 	List<Table> findShortAllByIds(Set<String> ids);
 

@@ -119,4 +119,12 @@ public class DataypeServiceImplTest {
     List<Datatype> sut = datatypeService.findByIds(ids);
     assertEquals(ids.size(), sut.size());
   }
+  
+  @Test
+  public void testFindShared() {
+    List<Datatype> sut = datatypeService.findShared(new Long(10));
+   System.out.println(sut);
+    assertNotNull(sut);
+    assertTrue(0 < sut.size());
+  }
 }

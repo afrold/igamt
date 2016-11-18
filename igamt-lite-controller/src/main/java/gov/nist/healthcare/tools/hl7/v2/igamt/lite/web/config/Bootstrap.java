@@ -36,6 +36,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -107,7 +108,119 @@ public class Bootstrap implements InitializingBean {
    */
   @Override
   public void afterPropertiesSet() throws Exception {
+    // Carefully use this. It will delete all of existing IGDocuments and
+    // make new ones converted from the "igdocumentPreLibHL7",
+    // "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
+    // new IGDocumentConverterFromOldToNew().convert();
+    // new DataCorrection().updateSegment();
+    // new DataCorrection().updateDatatype();
+    // new DataCorrection().updateSegmentLibrary();
+    // new DataCorrection().updateDatatypeLibrary();
+    // new DataCorrection().updateTableLibrary();
+    // new DataCorrection().updateMessage();
+    //
+    // dataCorrectionSectionPosition.resetSectionPositions();
+    // new DataCorrection().updateValueSetForSegment();
+    // new DataCorrection().updateValueSetsForDT();
+
+    // addVersionAndScopetoPRELOADEDIG();
+    // addVersionAndScopetoHL7IG();
+    /** to be runned one Time **/
+    // CreateCollectionOfUnchanged();
+    // AddVersionsToDatatypes();
+    // addVersionAndScopetoUSERIG();
+    // addScopeUserToOldClonedPRELOADEDIG();
+    // changeTabletoTablesInNewHl7();
+    // modifyCodeUsage();
+    // modifyFieldUsage();
+    // modifyComponentUsage();
+    // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
+    // to write a code for the message.
+    //Colorate();
+	 // setDtsStatus();
+	 // setTablesStatus();
+    // Colorate();
+	  
+	//  this.modifyConstraint();
+	  
+//	  this.modifyMSH2Constraint();
+//	  createNewSectionIds();
+  }
+
+  private void modifyCodeUsage() {
+    List<Table> allTables = tableService.findAll();
+
+    for (Table t : allTables) {
+      boolean isChanged = false;
+      for (Code c : t.getCodes()) {
+        if (c.getCodeUsage() == null) {
+          c.setCodeUsage("P");
+          isChanged = true;
+        } else if (!c.getCodeUsage().equals("R") && !c.getCodeUsage().equals("P")
+            && !c.getCodeUsage().equals("E")) {
+          c.setCodeUsage("P");
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        tableService.save(t);
+        logger.info("Table " + t.getId() + " has been updated by the codeusage issue.");
+      }
+    }
+  }
+  private void setTablesStatus(){
+	  List<Table> allTables = tableService.findAll();  
+	  for(Table t :allTables ){
+		  if(t.getScope().equals(SCOPE.HL7STANDARD)){
+			  t.setStatus(STATUS.PUBLISHED);
+		  }else if(t.getScope().equals(SCOPE.USER)){
+			  t.setStatus(STATUS.UNPUBLISHED);
+		  }
+	        tableService.save(t);
+	  }
+  }
+  
+  private void setDtsStatus(){
+	  List<Datatype> allDts = datatypeService.findAll();  
+	  for(Datatype d :allDts ){
+		  if(d.getScope().equals(SCOPE.HL7STANDARD)){
+			  d.setStatus(STATUS.PUBLISHED);
+		  }else if(d.getScope().equals(SCOPE.USER)){
+			  d.setStatus(STATUS.UNPUBLISHED);
+		  }
+		  datatypeService.save(d);
+	  }
+  }
+  
+  private void modifyFieldUsage() {
+    List<Segment> allSegments = segmentService.findAll();
+
+    for (Segment s : allSegments) {
+      boolean isChanged = false;
+      for (Field f : s.getFields()) {
+        if (f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)) {
+          f.setUsage(Usage.X);
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        segmentService.save(s);
+        logger.info("Segment " + s.getId() + " has been updated by the usage W/B issue.");
+      }
+    }
+  }
+  private void createNewSectionIds() throws IGDocumentException{
+	  List<IGDocument> igs=documentService.findAll();
+	  for(IGDocument ig: igs){
+		  if(ig.getChildSections()!=null&& !ig.getChildSections().isEmpty()){
+			  for(Section s : ig.getChildSections()){
+			  }
+		  }
+		  documentService.save(ig);
+	  }
+
 	  setUpdatedDates(); // Run only once.
+
   }
   
   @SuppressWarnings("deprecation")

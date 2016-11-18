@@ -40,12 +40,17 @@ public interface DatatypeOperations {
 
 	List<Datatype> findUserDatatypesByIds(Set<String> ids);
 
-	List<Datatype> findByScope(String scope);
+
+  List<Datatype> findByScope(String scope);
+  
+  List<Datatype> findShared(Long accountId);
 
 	Datatype findByNameAndVersionAndScope(String name, String version, String scope);
 
 	Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope);
 
 	public Date updateDate(String id, Date date);
+
+List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String scope);
 
 }

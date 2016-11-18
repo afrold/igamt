@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -54,6 +55,13 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		Criteria where = Criteria.where("scope").is(scope);
 		Query qry = Query.query(where);
 		// qry = set4Brevis(qry);
+		return mongo.find(qry, Datatype.class);
+	}
+
+	@Override
+	public List<Datatype> findShared(Long accountId) {
+		Query qry = new BasicQuery(
+				"{ $and: [{\"shareParticipantIds\": {$exists: true}}, {$where : \"this.scope == 'USER'\"}, {$where : \"this.shareParticipantIds.length > 0\"}]}");
 		return mongo.find(qry, Datatype.class);
 	}
 
@@ -121,6 +129,17 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		Datatype datatype = null;
 
 		return datatype;
+	}
+
+	@Override
+	public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String scope) {
+		Criteria where = Criteria.where("name").is(name);
+		where.andOperator(Criteria.where("hl7versions").is(versions));
+		// where.andOperator(Criteria.where("scope").is(scope));
+
+		Query qry = Query.query(where);
+		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
+		return datatypes;
 	}
 
 	@Override

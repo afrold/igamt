@@ -38,14 +38,24 @@ public interface DatatypeService {
 
 	Set<Datatype> collectDatatypes(Datatype datatype);
 
-	List<Datatype> findByScope(String scope);
+
+  List<Datatype> findByScope(String scope);
+  
+  List<Datatype> findShared(Long accountId);
+  
+  List<Datatype> findPendingShared(Long accountId);
 
 	Datatype findByNameAndVersionAndScope(String name, String version, String scope);
 
 	Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
 
+
+	List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String string);
+
+
 	Date updateDate(String id, Date date) throws IGDocumentException;
 
 	Datatype save(Datatype datatype, Date date);
+
 
 }
