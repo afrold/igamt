@@ -544,7 +544,7 @@ angular.module('igl')
 
 
                     if ($rootScope.datatypesMap[element.datatype.id] && $rootScope.datatypesMap[element.datatype.id]) {
-                        if ($rootScope.datatypesMap[element.datatype.id].status !== "PUBLISHED") {
+                        if ($rootScope.datatypesMap[element.datatype.id].status !== "PUBLISHED" && $rootScope.datatypesMap[element.datatype.id].scope!=="HL7STANDARD") {
                         	console.log("Found Unpublished");
                             console.log($scope.containUnpublished);
                             $scope.containUnpublished = true;

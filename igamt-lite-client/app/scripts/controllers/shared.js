@@ -120,7 +120,7 @@ angular
             $rootScope.currentData =$rootScope.datatype;
             $scope.$emit('event:openDatatypeonShare',$rootScope.datatype);
         };
-
+        
         $scope.editDatatype = function(data) {
         	$scope.pending=false;
                 processEditDataType(data);
