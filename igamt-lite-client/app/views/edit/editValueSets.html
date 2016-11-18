@@ -539,7 +539,7 @@
                 <div class="row" style="margin-left:0px; margin-right: 20px">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span>
-                        <span class="pull-right">
+                        <span class="pull-right" ng-if="!typeOfSharing">
 
                           <div class="btn-group" ng-hide="table.scope !== 'USER'" style="margin-bottom: 0px;">
                             <button type="button" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(table)">
@@ -560,6 +560,10 @@
                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!isBindingChanged()" ng-click="reset()">
 							<span><i class="fa fa-times fa-fw"></i> Reset</span>
 						</button>
+                        </span>
+
+                        <span class="pull-right" ng-if="typeOfSharing && table.owner" style="font-style: italic;">
+                          (Owner: {{table.owner}})
                         </span>
                     </div>
 
