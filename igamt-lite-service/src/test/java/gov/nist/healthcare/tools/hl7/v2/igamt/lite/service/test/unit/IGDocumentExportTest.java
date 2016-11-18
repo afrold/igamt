@@ -38,12 +38,15 @@ public class IGDocumentExportTest {
     @Autowired IGDocumentService igDocumentService;
     @Autowired ExportService exportService;
 
+    private static final String IG_DOCUMENT_TEST_ID = "57c8371a84ae6827fcec5488";
+    private static final String EXPORT_BASE_PATH = "test/ig_test";
+
     @Test
     public void testHtmlExport(){
-        IGDocument igDocument = igDocumentService.findById("57450d0ed4c6f57e694df8d4");
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
-            File htmlFile = new File("test/ig_test.html");
+            File htmlFile = new File(EXPORT_BASE_PATH+".html");
             if(htmlFile.exists()){
                 htmlFile.delete();
             }
@@ -57,9 +60,9 @@ public class IGDocumentExportTest {
     }
     @Test
     public void testDocxExport(){
-        IGDocument igDocument = igDocumentService.findById("57450d0ed4c6f57e694df8d4");
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
-            File wordFile = new File("test/ig_test.docx");
+            File wordFile = new File(EXPORT_BASE_PATH+".docx");
             if(wordFile.exists()){
                 wordFile.delete();
             }
@@ -72,9 +75,9 @@ public class IGDocumentExportTest {
     }
     @Test
     public void testXmlExport(){
-        IGDocument igDocument = igDocumentService.findById("57450d0ed4c6f57e694df8d4");
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
-            File xmlFile = new File("test/ig_test.xml");
+            File xmlFile = new File(EXPORT_BASE_PATH+".xml");
             if(xmlFile.exists()){
                 xmlFile.delete();
             }
