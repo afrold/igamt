@@ -1,22 +1,19 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -29,31 +26,33 @@ import java.util.Date;
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 9/26/16.
+ * Created by Maxence Lefort on 11/14/16.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContextUnit.class})
-public class DataTypeLibraryExportTest  {
+public class IGDocumentExportTest {
 
-    Logger logger = LoggerFactory.getLogger(DataTypeLibraryExportTest.class);
+    //57450d2ed4c6f57e6980e821
 
-    @Autowired
-    DatatypeLibraryDocumentService datatypeLibraryDocumentService;
-
+    @Autowired IGDocumentService igDocumentService;
     @Autowired ExportService exportService;
+
+    private static final String IG_DOCUMENT_TEST_ID = "57c8371a84ae6827fcec5488";
+    private static final String EXPORT_BASE_PATH = "test/ig_test";
 
     @Test
     public void testHtmlExport(){
-        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57b758a884aebc6c9d582cd3");
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
-            File htmlFile = new File("test/dl_test.html");
+            File htmlFile = new File(EXPORT_BASE_PATH+".html");
             if(htmlFile.exists()){
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsHtml(datatypeLibraryDocument), htmlFile);
+                FileUtils.copyInputStreamToFile(exportService
+                    .exportIGDocumentAsHtml(igDocument), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,14 +60,29 @@ public class DataTypeLibraryExportTest  {
     }
     @Test
     public void testDocxExport(){
-        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57b758a884aebc6c9d582cd3");
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
-            File wordFile = new File("test/dl_test.docx");
+            File wordFile = new File(EXPORT_BASE_PATH+".docx");
             if(wordFile.exists()){
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsDocx(datatypeLibraryDocument), wordFile);
+                FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument), wordFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testXmlExport(){
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
+        try {
+            File xmlFile = new File(EXPORT_BASE_PATH+".xml");
+            if(xmlFile.exists()){
+                xmlFile.delete();
+            }
+            if(xmlFile.createNewFile()) {
+                FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsXml(igDocument), xmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
