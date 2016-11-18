@@ -1853,27 +1853,6 @@ angular
 
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             $rootScope.addDatatypeFromMasterLib=function(){
 
                    DatatypeLibrarySvc.getDataTypeLibraryByScope('MASTER').then(function(masterLib) {
@@ -2547,9 +2526,6 @@ angular.module('igl').controller('AddSharedDatatype',
 	        $scope.checkedExt = true;
 	        $scope.NocheckedExt = true;
 	        $scope.selectedDatatypes = [];
-
-                    
-            
 
 	    
 	        var listHL7Versions = function() {
