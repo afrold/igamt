@@ -37,21 +37,12 @@ angular
                 $scope.typeOfSharing=type;
                 if(type==='datatype'){
                     $scope.SharedtocView='sharedtocView.html';
-                    if($scope.pendingDatatypes.length === 0) {
-                      $scope.hasPending = false;
-                    } else {
-                      $scope.hasPending = true;
-                    }
                 } else if(type==='table') {
                 	$scope.SharedtocViewForTables='sharedTabletocView.html';
-                	console.log("Including");
-                    if($scope.pendingTables.length === 0) {
-                      $scope.hasPending = false;
-                    } else {
-                      $scope.hasPending = true;
+                  $scope.SharedsubviewForTable="datatypePending.html";
+                  $scope.getSharedTables();
                 }
-              }
-            }
+            };
 
          $scope.$on('event:openDatatypeonShare', function(event, datatype) {
 
@@ -65,6 +56,9 @@ angular
          };
 
          $scope.getOwnerName = function(element) {
+           if(!element.accountId) {
+             return null;
+           }
            return $http.get('api/shareparticipant', { params: { id: element.accountId } })
                .then(
                    function(response) {
@@ -79,7 +73,7 @@ angular
             $scope.init=function(){
             	$scope.pending=true;
                 $scope.getSharedDatatypes();
-                $scope.typeOfSharing='datatype';
+                $scope.setTypeOfSharing('datatype');
                 $scope.datatypeTab = { active: true};
                 $scope.SharedtocView='sharedtocView.html';
                 $scope.Sharedsubview = "datatypePending.html";
@@ -114,6 +108,12 @@ angular
                       $scope.getOwnerName(datatype);
                     	$rootScope.datatypesMap[datatype.id]=datatype;
                     });
+
+                    if($scope.pendingDatatypes.length === 0) {
+                      $scope.hasPending = false;
+                    } else {
+                      $scope.hasPending = true;
+                    }
                 });
 
               //  $scope.datatypes=[{id:1, name:"dummy",description:"dummy"},{id:2, name:"dummy",description:"dummy"}];
@@ -138,6 +138,12 @@ angular
                       $scope.getOwnerName(table);
                     	$rootScope.tablesMap[table.id]=table;
                     });
+
+                    if($scope.pendingTables.length === 0) {
+                      $scope.hasPending = false;
+                    } else {
+                      $scope.hasPending = true;
+                    }
                 });
             };
 
@@ -149,7 +155,7 @@ angular
             $rootScope.currentData =$rootScope.datatype;
             $scope.$emit('event:openDatatypeonShare',$rootScope.datatype);
         };
-        
+
         $scope.editDatatype = function(data) {
         	$scope.pending=false;
                 processEditDataType(data);
