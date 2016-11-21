@@ -5,6 +5,7 @@
     <xsl:import href="/rendering/templates/profile/datatype.xsl"/>
     <xsl:import href="/rendering/templates/profile/segment.xsl"/>
     <xsl:import href="/rendering/templates/profile/valueSet.xsl"/>
+    <xsl:import href="/rendering/templates/profile/constraints.xsl"/>
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:template name="displayProfileContent">
         <xsl:param name="inlineConstraint"/>
@@ -32,7 +33,8 @@
                 </xsl:apply-templates>
             </xsl:when>
             <xsl:when test="count(Constraints) &gt; 0">
-                <xsl:apply-templates select="Constraints">
+                <xsl:apply-templates select=".">
+                    <xsl:sort select="@position" data-type="number"></xsl:sort>
                 </xsl:apply-templates>
             </xsl:when>
             <xsl:otherwise>
