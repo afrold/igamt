@@ -1455,7 +1455,13 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Add Data Type</h3>
+                <h3 class="modal-title">Add HL7 Data Type</h3>
+                <span class="pull-right">
+                                 <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
+                    </button>
+                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0"><i class="fa fa-check fa-fw"></i>Add
+                    </button>
+                    <span>
             </div>
             <form name="addDT">
                 <div class="modal-body">
@@ -2026,7 +2032,14 @@
 
 <div class="modal-content">
            	 <div class="modal-header">
+                
                 <h3 class="modal-title">Add Data Type</h3>
+                                <span class="pull-right">
+                    <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
+                    </button>
+                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0"><i class="fa fa-check fa-fw"></i>Add
+                    </button>
+                </div>
             </div>
 
 
@@ -2222,12 +2235,7 @@
     	        </div>
     	        </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
-                    </button>
-                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0"><i class="fa fa-check fa-fw"></i>Add
-                    </button>
-                </div>
+
             </form>
          </div>
 </script>
