@@ -107,7 +107,7 @@ public class Bootstrap implements InitializingBean {
    */
   @Override
   public void afterPropertiesSet() throws Exception {
-	  setUpdatedDates(); // Run only once.
+//	  setUpdatedDates(); // Run only once.
   }
   
   @SuppressWarnings("deprecation")
