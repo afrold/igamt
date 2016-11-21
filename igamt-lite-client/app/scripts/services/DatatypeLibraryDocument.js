@@ -85,22 +85,28 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
     };
     
     svc.save = function (datatypeLibrary) {
-        
+        blockUI.start();
+
         return $http.post(
             'api/datatype-library-document/save', angular.toJson(datatypeLibrary)).then(function (response) {
                 return angular.fromJson(response.data)
+                
             });
     };
     svc.getAllDatatypesNames = function (datatypeLibrary) {
-        
+        blockUI.start();
+
         return $http.post(
             'api/datatype-library-document/getAllDatatypesName').then(function (response) {
+                blockUI.stop();
+
                 return angular.fromJson(response.data)
             });
     };
 
     svc.exportAs = function(dataTypeLibraryDocumentId, format) {
-            blockUI.start();
+        blockUI.start();
+
             var form = document.createElement("form");
             form.action = $rootScope.api('api/datatype-library-document/' + dataTypeLibraryDocumentId + '/export/' + format);
             form.method = "POST";

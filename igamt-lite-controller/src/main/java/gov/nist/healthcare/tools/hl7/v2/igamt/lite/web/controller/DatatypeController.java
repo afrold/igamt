@@ -185,7 +185,7 @@ public class DatatypeController extends CommonController {
 	            List<SCOPE> scopes=new ArrayList<SCOPE>();
 	            Datatype d=null;
 	            scopes.add(SCOPE.HL7STANDARD);
- 	    	    List<Datatype> result=null;
+ 	    	    //List<Datatype> result=null;
  	    	    try {
  	    	      User u = userService.getCurrentUser();
  	    	      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
@@ -241,13 +241,7 @@ public class DatatypeController extends CommonController {
 	 return extd+"";
 	 
 	 }
-
-	  
-	  
-	  
-  
-  
-  		
+ 		
   @RequestMapping(value = "/findPublished", method = RequestMethod.POST)
 	public List<Datatype> findPublishedMaster(@RequestBody String version) {
 	  			List<Datatype> published=new ArrayList<Datatype>();
@@ -317,7 +311,7 @@ public class DatatypeController extends CommonController {
           		versionAndUse.save(ancestor);  
           	}
       		versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
-      		datatype.setPublicationVersion(versionInfo.getPublicationVersion()+1);
+      		datatype.setPublicationVersion(versionInfo.getPublicationVersion());
 
       		
       	}

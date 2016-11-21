@@ -138,39 +138,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     			return "#778899";
     		}	
     	}	
-//    	$scope.selectCell=function(dt, version){
-//    		if($scope.selectedRow1 && $scope.selectedVersion1){
-//        		$scope.selectedRow2=dt;
-//        		$scope.selectedVersion2=version;
-//        		var versions1=[];
-//        		versions1.push($scope.selectedVersion1);
-//        		var versions2=[];
-//        		versions2.push($scope.selectedVersion2);
-//                DatatypeService.getOneStandard($scope.selectedRow1.name, $scope.selectedVersion1,versions1).then(function(result1) {
-//                	$scope.cmp1=result1;
-//                    DatatypeService.getOneStandard($scope.selectedRow2.name, $scope.selectedVersion2,versions2).then(function(result2) {
-//                    	$scope.cmp2=result2;
-//                    	
-//                    	
-//                        $scope.loadingSelection = true;
-//                        $scope.dtChanged = false;
-//                        $scope.vsTemplate = false;
-//                        $scope.dataList = CompareService.cmpDatatype(JSON.stringify($scope.cmp1), JSON.stringify($scope.cmp2), [], [], [], []);
-//                        console.log("hg==========");
-//                        $scope.loadingSelection = false;
-//                        if ($scope.dynamicDt_params) {
-//                            console.log($scope.dataList);
-//                            $scope.showDelta = true;
-//                            $scope.dynamicDt_params.refresh();
-//                        }
-//                    });
-//                });
-//        		
-//    		}else{
-//    			$scope.selectedRow1=dt;
-//    			$scope.selectedVersion1=version;
-//    		}
-//    	}
     	$scope.isSelected1=function(dt,version){
     		return $scope.selectedRow===dt&& $scope.selectedVersion1===version ;
 
@@ -301,25 +268,29 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             });
         };
 
-        $scope.openEvolutionModal=function(){}
-
         $scope.saveMetaDataOfLibrary = function() {
             $rootScope.datatypeLibrary.metaData = angular.copy($scope.datatypeLibMetaDataCopy);
+            
             DatatypeLibrarySvc.saveMetaData($rootScope.datatypeLibrary.id, $scope.datatypeLibMetaDataCopy).then(function(metaData){
-                cleanState();
+            
+                     $scope.editForm.$dirty = false;
+                 
                 $rootScope.clearChanges();
+                console.log("called");
             });
             //$scope.clearDirty();
         
 
         };
-
+        $scope.initForm=function(){
+        	$scope.editForm={$dirty:false,
+        			$invalid:false};
+        }
         $scope.resetMetaDataOfLibrary = function() {
 
             $scope.datatypeLibMetaDataCopy = angular.copy($rootScope.datatypeLibrary.metaData);
 
             $scope.DataTypeTree[0].metaData = $scope.datatypeLibMetaDataCopy;
-            cleanState();
             $rootScope.clearChanges();
         };
 
@@ -328,7 +299,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.datatypeLibMetaDataCopy = $scope.DataTypeTree[0].metaData;
             $rootScope.currentData= $scope.datatypeLibMetaDataCopy;
             console.log($scope.datatypeLibMetaDataCopy);
-            $rootScope.$emit("event:initEditArea");
+           // $rootScope.$emit("event:initEditArea");
 
             $scope.subview = "LibraryMetaData.html";
 
@@ -379,9 +350,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.DataTypeTree = [];
             $scope.datatypeLibCopy = angular.copy($rootScope.datatypeLibrary);
             $scope.datatypeLibCopy.children = [];
-
-             console.log("$scope.hl7Versions");
-            console.log($scope.hl7Versions);
             $rootScope.readOnly = readOnly;
 
             if (!readOnly) {
@@ -389,7 +357,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             } else {
                 $scope.datatypeListView = "DatatypeListReadOnly.html";
             }
-           $rootScope.datatype=null;
+            $rootScope.datatype=null;
             $rootScope.filteringModeON = false;
             $rootScope.initMaps();
             $scope.selectDTLibTab(1);
@@ -401,15 +369,14 @@ angular.module('igl').controller('DatatypeLibraryCtl',
              $scope.DataTypeTree.push($scope.datatypeLibCopy);
 
             DatatypeLibrarySvc.getHL7Versions().then(function(result) {
-            	 blockUI.stop();
+            	blockUI.stop();
                 $scope.hl7Versions = result;
                 $scope.hl7Version=result[0];
                     DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {
                         $scope.AllUnchanged = res;
                             $scope.loadDatatypes().then(function() {
             	                $scope.loadVersionAndUseInfo().then(function(){
-            		                $scope.loadTables().then(function() {
-                                                      
+            		                $scope.loadTables().then(function() {              
             		                	 blockUI.stop();
                                 $rootScope.$emit("event:initEditArea");
                                 blockUI.stop();
@@ -420,8 +387,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     blockUI.stop();
             });
            
-
-            
 
         };
 
@@ -1266,32 +1231,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             return delay.promise;
         };
 
-
-//        $scope.editTableINLIB = function(table) {
-//        	$rootScope.references=[];
-//            $scope.table = $rootScope.tablesMap[table.id];
-//            $rootScope.table=$rootScope.tablesMap[table.id];
-//            console.log("Map found");
-//            angular.forEach($scope.datatypes, function(dt) {
-//                console.log(dt);
-//                console.log($rootScope.getDatatypeLabel(dt));
-//                $rootScope.findTableRefsINLIB(table, dt, $rootScope.getDatatypeLabel(dt));
-//            });
-//            // $scope.datatype=null;
-//            $rootScope.currentData=$scope.table;
-//
-//            $scope.Activate(table.id);
-//           if(table.scope==='HL7STANDARD'){
-//        	   $scope.subview = "EditTablesINLIBReadOnly.html";
-//           }else if(table.status&&table.status==='PUBLISHED'){
-//        	   $scope.subview = "EditTablesINLIBReadOnly.html";
-//           }else{
-//            $scope.subview = "EditTablesINLIB.html";
-//           }
-//            //$scope.subview = "EditValueSetsInDtLib.html";
-//
-//        }
-
         $scope.createNewExtension = function(ext) {
             if ($rootScope.datatypeLibrary != null) {
                 var rand = (Math.floor(Math.random() * 10000000) + 1);
@@ -1380,31 +1319,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 });
             });
         };
-        
-//        $scope.redirectDT = function(datatype) {
-//            DatatypeService.getOne(datatype.id).then(function(datatype) {
-//                var modalInstance = $modal.open({
-//                    templateUrl: 'redirectCtrl.html',
-//                    controller: 'redirectCtrl',
-//                    size: 'md',
-//                    resolve: {
-//                        destination: function() {
-//                            return datatype;
-//                        }
-//                    }
-//
-//
-//
-//                });
-//                modalInstance.result.then(function() {
-//                    $scope.editDataType(datatype);
-//                });
-//
-//
-//
-//            });
-//        };
-
         $rootScope.getDatatypeById = function(id) {
             var delay = $q.defer();
             if ($rootScope.datatypesMap[id] === undefined || $rootScope.datatypesMap[id] === null) {
@@ -1437,63 +1351,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             modalInstance.result.then(function() {}, function() {});
 
         }
-//
-//
-//        $scope.editDTLIB = function(field) {
-//            console.log("looking for flavor");
-//            //$scope.editableDTInLib = field.id;
-//
-//            $scope.loadLibrariesByFlavorName = function() {
-//                var delay = $q.defer();
-//                $scope.ext = null;
-//                $scope.results = [];
-//                $scope.tmpResults = [];
-//                $scope.results = $scope.results.concat(filterFlavors($rootScope.datatypeLibrary, field.datatype.name));
-//                $scope.tmpResults = [].concat($scope.results);
-//                DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $scope.hl7Version).then(function(libraries) {
-//                    if (libraries != null) {
-//                        _.each(libraries, function(library) {
-//                            $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
-//                        });
-//                    }
-//
-//                    $scope.results = _.uniq($scope.results, function(item, key, a) {
-//                        return item.id;
-//                    });
-//                    $scope.tmpResults = [].concat($scope.results);
-//
-//                    delay.resolve(true);
-//                }, function(error) {
-//                    $rootScope.msg().text = "Sorry could not load the data types";
-//                    $rootScope.msg().type = error.data.type;
-//                    $rootScope.msg().show = true;
-//                    delay.reject(error);
-//                });
-//                return delay.promise;
-//            };
-//
-//
-//            var filterFlavors = function(library, name) {
-//                var results = [];
-//                _.each(library.children, function(link) {
-//                    if (link.name === name) {
-//                        link.libraryName = library.metaData.name;
-//                        link.hl7Version = library.metaData.hl7Version;
-//                        results.push(link);
-//                    }
-//                });
-//                return results;
-//            };
-//
-//
-//
-//
-//            $scope.loadLibrariesByFlavorName().then(function(done) {
-//                console.log($scope.results);
-//            });
-//        };
-
-
         $scope.backDT = function() {
             $scope.editableDTInLib = '';
         };
@@ -1589,10 +1446,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             	console.log("Cleeaning");
                 $scope.editForm.$setPristine();
                 $scope.editForm.$dirty = false;
-            }
-            //$rootScope.clearChanges();
-            if ($scope.datatypesParams) {
-                //$scope.datatypesParams.refresh();
             }
         };
 //        $scope.datatypesParams = new ngTreetableParams({
@@ -1827,6 +1680,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         // create a data Library by scope
 
         $scope.createDatatypeLibrary = function(scope) {
+        	$rootScope.creatingScope=scope;
             var standardDatatypesInstance = $modal.open({
                 templateUrl: 'standardDatatypeDlg.html',
                 controller: 'StandardDatatypeLibraryInstanceDlgCtl',
@@ -1902,10 +1756,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         $scope.openStandardDataypes = function(scope) {
+        	$rootScope.creatingScope=scope;
             var standardDatatypesInstance = $modal.open({
                 templateUrl: 'standardDatatypeDlg.html',
                 controller: 'StandardDatatypeLibraryInstanceDlgCtl',
-                windowClass: 'app-modal-window',
+                windowClass: 'addDatatype',
                 size:'md',
                 resolve: {
                     hl7Versions: function() {
@@ -1990,7 +1845,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             var datatypesListInstance = $modal.open({
                 templateUrl: 'datatypeListDlg.html',
                 controller: 'DatatypeListInstanceDlgCtl',
-                windowClass: 'app-modal-window',
+                windowClass: 'addDatatype',
                 resolve: {
                     hl7Version: function() {
                         return $scope.hl7Version;

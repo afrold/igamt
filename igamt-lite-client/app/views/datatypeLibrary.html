@@ -373,7 +373,7 @@ if (self === top) {
 
 </div>
 <script type="text/ng-template" id="LibraryMetaData.html">
-    <div class="row" style="margin-left:0px; margin-right: 20px">
+    <div class="row" style="margin-left:0px; margin-right: 20px" ng-init="initForm()">
         <div ng-show="datatypeLibMetaDataCopy !== null">
             <div class="page-header" style="margin-bottom: 20px">
                 <span class="header4">Data Type Library Metadata</span>
@@ -382,9 +382,9 @@ if (self === top) {
           <button type="button" class="btn btn-raised btn-sm btn-success"
                ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="readOnly"
-                ng-click="saveMetaDataOfLibrary()">
+                ng-click="saveMetaDataOfLibrary();editForm.$dirty=false;">
 
-           <span><i class="fa fa-check fa-fw" ng-hide="readOnly" ></i> Save</span>
+           <span><i class="fa fa-check fa-fw" ng-hide="readOnly"></i> Save</span>
                 </button>
                 <button title="Discard changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty||readOnly" ng-click="resetMetaDataOfLibrary()">
                     <span><i class="fa fa-times fa-fw"></i>Reset</span>
@@ -407,7 +407,7 @@ if (self === top) {
                 <div class="form-group">
                     <label class="col-md-2 control-label">Description</label>
                     <div class="col-md-10">
-                        <input type="text" name="description" id= "description" ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.description" >
+                        <textArea type="text" name="description" id= "description" ng-change="recordChanged()" class="form-control" ng-model="datatypeLibMetaDataCopy.description" >
                     </div>
                 </div>
                 <div class="form-group" ng-class="{'igl-has-error' : editForm.date.$invalid}">
@@ -435,12 +435,12 @@ if (self === top) {
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptions" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated">
                           <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span><span ng-if="versionAndUseMap[data.id].deprecated" class="badge">v{{versionAndUseMap[data.id].publicationVersion}}</span>
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}<span ng-if="versionAndUseMap[data.id].deprecated" class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span></span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}<i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
                         </div>
 						<div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForPublished" ng-if="(data.status==='PUBLISHED'&&!versionAndUseMap[data.id].deprecated)&&data.scope!=='HL7STANDARD'">
 						<span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}</span><span class="badge">v{{versionAndUseMap[data.id].publicationVersion}}</span>
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}<span class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span></span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
                         </div>
                     </li>
@@ -461,7 +461,7 @@ if (self === top) {
                         <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)" context-menu="TableOptionsForPublished" ng-if="canCreateNewVersion(table)">
                            <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >{{getScopeLabel(table)}}{{displayVersion(table)}}</span> <span class="badge">v{{versionAndUseMap[table.id].publicationVersion}}</span>{{table.bindingIdentifier}}-{{table.description}}
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >{{getScopeLabel(table)}}{{displayVersion(table)}} <span class="version-badge">v{{versionAndUseMap[table.id].publicationVersion}}</span></span> {{table.bindingIdentifier}}-{{table.description}}
                             </span>
                         </div>
                     </li>
@@ -714,7 +714,7 @@ if (self === top) {
     <div id="standard-datatypelibrary-dialog">
         <div style="padding : 10px 10px 10px 10px;">
             <div class="modal-header">
-                <h3 class="modal-title">New Data Type Library</h3>
+                <h3 class="modal-title">New {{creatingScope}} Data Type Library</h3>
             </div>
             <div class="modal-body">
                 <form>
@@ -732,17 +732,25 @@ if (self === top) {
                             </div>
                             </div> -->
                             <div class="row">
-                                <label for="name" class="control-label col-xs-2">Name</label>
-                                <input type="text" name="name" class="form-control col-xs-10" ng-model="standard.name" required style="width : 350px; height : 30px;" />
+                                <label for="name" class="col-xs-2 col-form-label">Name</label>
+                                <div class="col-xs-10">
+                                <input type="text" name="name" class="form-control" ng-model="standard.name" required />
+                                </div>
                             </div>
                             <div class="row">
-                                <label class="control-label col-xs-2" for="Description">Description</label>
-                                <input type="text" name="description" class="form-control col-xs-10" ng-model="standard.description" style="width : 350px; height : 30px;" />
+                                <label for="Streward" class="col-xs-2 col-form-label">Steward <span tooltip="Datatype Library Owner" class="glyphicon glyphicon-info-sign"></span></label>
+                                <div class="col-xs-10">
+                                <input  type="text" name="Steward" class="form-control" ng-model="standard.orgName"/>
+                                </div>
                             </div>
-							<div class="row">
-                                <label class="control-label col-xs-2" for="Description">Steward</label>
-                                <input type="text" name="Steward" class="form-control col-xs-10" ng-model="standard.orgName"  value="NIST" style="width : 350px; height : 30px;" />
+
+                            <div class="row">
+                                <label class="col-xs-2 col-form-label" for="Description">Description</label>
+                                <div class="col-xs-10">
+                                <textarea type="text" name="description" class="form-control" ng-model="standard.description"/>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -762,7 +770,7 @@ if (self === top) {
                 <h3 class="modal-title">HL7 Standard Datatypes Evolution</h3>
             </div>
             		<div class="modal-body container">
-     				<table class="table-bordered table-fix-header table-condensed igl-list-table container col-md-12">
+     				<table class="table-bordered table-fix-header table-condensed igl-list-table container col-md-12 table-fixed">
 					<thead >
 						<tr class="tbl-header">
 						<th ng-repeat="v in vrs">{{v}}</th>

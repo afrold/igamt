@@ -87,6 +87,9 @@ angular.module('igl').factory(
             }
             newDatatype.scope = $rootScope.datatypeLibrary.scope;
             newDatatype.status='UNPUBLISHED';
+            if(datatype.publicationVersion){
+                newDatatype.publicationVersion=0;
+            }
             newDatatype.shareParticipantIds = [];
             newDatatype.id = null;
             newDatatype.libIds = [];
@@ -165,7 +168,7 @@ angular.module('igl').factory(
             var datatypeInfo= {};
             datatypeInfo.id=newDatatype.id;
             datatypeInfo.sourceId=datatype.id;
-            
+            newDatatype.publicationVersion=0;
             datatypeInfo.derived=[];
             datatypeInfo.ancestors=[];
             

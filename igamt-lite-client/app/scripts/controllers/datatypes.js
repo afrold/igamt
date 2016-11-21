@@ -574,12 +574,20 @@ angular.module('igl')
                 var ext = $rootScope.datatype.ext;
 
                 DatatypeService.publish($rootScope.datatype).then(function(result) {
+                    console.log("returning");
+                    console.log(result);
+                    console.log("In the map")
 
+                    console.log($rootScope.datatypesMap[result.id])
                     var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.datatypeLibrary.children);
                     var newLink = DatatypeService.getDatatypeLink(result);
                     newLink.ext = ext;
                     DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
                         	DatatypeService.merge($rootScope.datatypesMap[result.id], result);
+                            console.log("After Merge")
+                            console.log($rootScope.datatypesMap[result.id]);
+
+                            
                         	$rootScope.datatypesMap[result.id].status="PUBLISHED";
                         	$rootScope.datatype.status="PUBLISHED";
 
