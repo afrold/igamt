@@ -1607,7 +1607,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 										.equals("v")) {
 									td.appendChild(ccv.getValue());
 								} else {
-									if (ccv.getValue().equals("")) {
+									if (ccv.getValue() != null && ccv.getValue().equals("")) {
 										td.appendChild("N/A");
 									} else {
 										if (tableService.findById(ccv.getValue()) != null) {
