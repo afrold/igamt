@@ -2203,7 +2203,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
             $scope.newConstraint.position_1 = positionPath.substr(1);
             $scope.newConstraint.location_1 = locationPath.substr(1);
         }
-    }
+    };
 
     $scope.generateSecondPositionAndLocationPath = function (){
         if($scope.newConstraint.pathInfoSet_2){
@@ -2224,7 +2224,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
             $scope.newConstraint.position_2 = positionPath.substr(1);
             $scope.newConstraint.location_2 = locationPath.substr(1);
         }
-    }
+    };
 
     $scope.draggingNodeFromMessageTree = function (event, ui, nodeData) {
         $scope.draggingStatus = 'MessageTreeNodeDragging';

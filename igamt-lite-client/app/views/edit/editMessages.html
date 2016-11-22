@@ -1332,8 +1332,7 @@
                             <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
                             <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty constraint pattern</span>
                         </td>
-                        <td class="col-md-2"
-                            ng-hide="newConstraint.contraintType == 'identical to another node' ||
+                        <td class="col-md-2" ng-hide="newConstraint.contraintType == 'identical to another node' ||
                                      newConstraint.contraintType == 'equal to another node' ||
                                      newConstraint.contraintType == 'not-equal to another node' ||
                                      newConstraint.contraintType == 'greater than another node' ||

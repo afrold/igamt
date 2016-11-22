@@ -1170,50 +1170,153 @@
         </td>
     </tr>
 </script>
+
+<script type="text/ng-template" id="context_tree_segment.html">
+    <tr style="width:100%">
+        <td ng-if="data.folderClass">
+            <div ng-if="data.type === 'segment'">
+                <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
+            </div>
+            <div ng-if="data.type === 'field' || data.type === 'component'">
+                <div ng-if="data.child.components &&  data.child.components.length > 0">
+                    <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
+                </div>
+                <div ng-if="!data.child.components ||  data.child.components.length == 0">
+                    <i class="fa fa-check"/>
+                </div>
+            </div>
+        </td>
+        <td ng-if="!data.folderClass">
+            <div ng-if="data.type === 'segment'">
+                <i class="fa fa-plus" ng-click="toggleChildren(data)"></i>
+            </div>
+            <div ng-if="data.type === 'field' || data.type === 'component'">
+                <div ng-if="data.child.components &&  data.child.components.length > 0">
+                    <i class="fa fa-plus" ng-click="toggleChildren(data)"></i>
+                </div>
+                <div ng-if="!data.child.components ||  data.child.components.length == 0">
+                    <i class="fa fa-check"/>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div ng-if="data.type === 'segment'">
+                <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
+                    <span class="label label-segment label-icon">S</span>
+                    <span>&nbsp;{{::data.name}}</span>
+                </div>
+                <div id="expanded-data" ng-if="data.childrenVisible">
+                    <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.fields" ng-include="'context_tree_segment.html'"></div>
+                    </table>
+                </div>
+            </div>
+            <div ng-if="data.type === 'field'">
+                <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
+                    <span class="label label-field label-icon">F</span>
+                    <span>&nbsp;{{::data.position}}. &nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}] {{::data.name}}</span>
+                </div>
+                <div id="expanded-data" ng-if="data.childrenVisible">
+                    <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.child.components" ng-include="'context_tree_segment.html'"></div>
+                    </table>
+                </div>
+            </div>
+            <div ng-if="data.type === 'component'">
+                <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
+                    <span class="label label-component label-icon">C</span>
+                    <span>&nbsp;{{::data.position}}. &nbsp;[{{::data.usage}}] {{::data.name}}</span>
+                </div>
+                <div id="expanded-data" ng-if="data.childrenVisible">
+                    <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.child.components" ng-include="'context_tree_segment.html'"></div>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+</script>
+
+
 <script type="text/ng-template" id="ConformanceStatementSegmentCtrl.html">
     <div class="modal-header">
         <h3 ng-show="selectedNode === null" class="header4">Conformance statement for {{::segment.name}}</h3>
-        <h3 ng-show="selectedNode !== null" class="header4">Conformance statement for {{::segment.name}}-{{::selectedNode.position}}</h3>
+        <h3 ng-show="selectedNode !== null" class="header4">Conformance statement for {{::segment.name}}-{{selectedNode.position}}</h3>
     </div>
     <div class="modal-body">
         <form role="form">
-            <div class="table-responsive">
-                <div class="page-header">
-                    <span class="header5">List of conformance statements</span>
-                    <span class="pull-right">
-                        <select class="form-control input-sm" ng-class="{'form-control-invalid': !selectedNode}" ng-model="selectedNode" ng-options="field as (segment.name + '-' + field.position + ': ' + field.name) for field in segment.fields">
-                            <option value="">Select target location</option>
-                        </select>
-                    </span>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Selected Segment Tree</div>
+                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
+                        <table class="table table-striped">
+                            <tbody ng-repeat="data in treeDataForContext" ng-include="'context_tree_segment.html'">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <table st-table="displayed" st-safe-src="tempComformanceStatements" class="table table-striped table-bordered">
-                    <thead>
-                        <tr class="tbl-header">
-                            <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
-                            <th st-sort="constraintId" class="col-md-2">ID</th>
-                            <th class="col-md-8">Description (<input type="checkbox" ng-model="viewAssertion"> view assertion)</th>
-                            <th class="col-md-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="c in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
-                            <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
-                                <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
-                            </td>
-                            <td class="col-md-2">
-                                <input class="form-control" ng-model="c.constraintId" ng-change="setChanged();" type="text" />
-                                <span style="color:red;" ng-show="isEmptyConstraintID(c)">ID Empty</span>
-                            </td>
-                            <td class="col-md-8">
-                                <input class="form-control" ng-model="c.description" ng-change="setChanged()" type="text" />
-                                <textarea ng-show="viewAssertion" class="form-control" ng-model="c.assertion" ng-change="setChanged()" />
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatement(c)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default" data-drop="true"  data-jqyoui-options ng-model="selectedNode" jqyoui-droppable="{beforeDrop: 'beforeFieldDrop', onDrop: 'afterFieldDrop'}">
+                    <div class="panel-heading">Selected Field Info</div>
+                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
+                        <div ng-hide="selectedNode">
+                            <span style="color:red;">No Selected Field, Please select field from the Segment Tree</span>
+                        </div>
+                        <div ng-show="selectedNode">
+                            <div class="form-group control-group">
+                                <label class="col-md-2 control-label">Path</label>
+                                <div class="controls col-md-10">
+                                    <span>{{::segment.name}}-{{selectedNode.position}}</span>
+                                </div>
+                            </div>
+                            <div class="form-group control-group">
+                                <label class="col-md-2 control-label">Name</label>
+                                <div class="controls col-md-10">
+                                    <span>{{selectedNode.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12" style="margin-top: 10px">
+                <div class="panel panel-default">
+                    <div class="panel-heading">List of Conformance Statements</div>
+                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
+                        <table st-table="displayed" st-safe-src="tempComformanceStatements" class="table table-striped table-bordered">
+                            <thead>
+                            <tr class="tbl-header">
+                                <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
+                                <th st-sort="constraintId" class="col-md-2">ID</th>
+                                <th class="col-md-8">Description (<input type="checkbox" ng-model="viewAssertion"> view assertion)</th>
+                                <th class="col-md-1"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="c in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
+                                <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
+                                    <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
+                                </td>
+                                <td class="col-md-2">
+                                    <input class="form-control" ng-model="c.constraintId" ng-change="setChanged();" type="text" />
+                                    <span style="color:red;" ng-show="isEmptyConstraintID(c)">ID Empty</span>
+                                </td>
+                                <td class="col-md-8">
+                                    <input class="form-control" ng-model="c.description" ng-change="setChanged()" type="text" />
+                                    <textarea ng-show="viewAssertion" class="form-control" ng-model="c.assertion" ng-change="setChanged()" />
+                                </td>
+                                <td class="col-md-1" align="center">
+                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatement(c)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
                 <span class="pull-left">
                     <span class="header5" ng-show="constraintType === 'Free'">Add new Free-Text conformance statement</span>
                     <span class="header5" ng-show="constraintType === 'Plain'">Add new plain conformance statement</span>
@@ -1236,17 +1339,13 @@
                 <table class="table table-striped table-bordered" ng-show="constraintType === 'Free'">
                     <thead>
                     <tr class="tbl-header">
-                        <th class="col-md-1" style="width: 4.1667%"></th>
                         <th class="col-md-2">ID</th>
                         <th class="col-md-8">Free-Text (Not supported by validation tool)</th>
-                        <th class="col-md-1"></th>
+                        <th class="col-md-2"></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td class="col-md-1" style="width: 4.1667%" align="center">
-                            <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                        </td>
                         <td class="col-md-2">
                             <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text"/>
                             <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
@@ -1254,7 +1353,8 @@
                         <td class="col-md-8">
                             <input class="form-control" ng-model="newConstraint.freeText" type="text"/>
                         </td>
-                        <td class="col-md-1" align="center">
+                        <td class="col-md-2" align="center">
+                            <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                             <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                         </td>
                     </tr>
@@ -1264,110 +1364,95 @@
 
                 <table class="table table-striped table-bordered" ng-show="constraintType === 'Plain'">
                     <thead>
-                        <tr class="tbl-header">
-                            <th class="col-md-1" style="width: 4.1667%"></th>
-                            <th class="col-md-2">ID</th>
-                            <th class="col-md-2">Node</th>
-                            <th class="col-md-2">Verb</th>
-                            <th class="col-md-2">Constraint Pattern</th>
-                            <th class="col-md-2">Value</th>
-                            <th class="col-md-1"></th>
-                        </tr>
+                    <tr class="tbl-header">
+                        <th class="col-md-2">ID</th>
+                        <th class="col-md-2">Node</th>
+                        <th class="col-md-2">Verb</th>
+                        <th class="col-md-2">Constraint Pattern</th>
+                        <th class="col-md-2">Value</th>
+                        <th class="col-md-2"></th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="col-md-1" style="width: 4.1667%" align="center">
-                                <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                            </td>
-                            <td class="col-md-2">
-                                <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text"/>
-                                <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
-                            </td>
-                            <td class="col-md-2">
-                                <span>{{newConstraint.segment}}-</span>
-                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, 'segment')}" ng-change="updateField_1()" ng-model="newConstraint.field_1" placeholder="Field" ng-options="field as field.position for field in segment.fields"/>
-                                <span ng-show="datatypesMap[newConstraint.field_1.datatype.id].components.length > 0">.
-                            <select class="form-control form-control-short"
-                                    placeholder="Component"
-                                    ng-change="updateComponent_1()"
-                                    ng-model="newConstraint.component_1"
-                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype.id].components">
-                            </select>
-                        </span>
-                                <span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
-                            <select class="form-control form-control-short"
-                                    placeholder="SubComponent"
-                                    ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components">
-                            </select>
-                        </span>
-                                <span style="color:red;" ng-show="isEmptyConstraintNode(newConstraint, 'segment')">Empty node</span>
-                            </td>
-                            <td class="col-md-2">
-                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'" />
-                                <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
-                            </td>
-                            <td class="col-md-2">
-                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
-                                <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty contraint pattern</span>
-                            </td>
-                            <td class="col-md-2">
-                                <span ng-show="newConstraint.contraintType == 'a literal value' ||
-                                       newConstraint.contraintType == 'equal to' ||
-                                       newConstraint.contraintType == 'not-equal to' ||
-                                       newConstraint.contraintType == 'greater than' ||
-                                       newConstraint.contraintType == 'equal to or greater than' ||
-                                       newConstraint.contraintType == 'less than' ||
-                                       newConstraint.contraintType == 'equal to or less than'">
-                                    <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" type="text"/>
-                                    <span ng-show="newConstraint.contraintType == 'a literal value'">Case Insensitive: </span>
-                                    <input ng-show="newConstraint.contraintType == 'a literal value'" type="checkbox" ng-model="newConstraint.ignoreCase"/>
-                                    <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'one of list values'">
-                            <input class="form-control" ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
-                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'formatted value'">
-                            <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
-                                    ng-model="newConstraint.value" ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats | orderBy:'toString()'" />
-                            <div ng-show="newConstraint.value === 'Regular expression'">
-                                <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue2(newConstraint)}" ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
+                    <tr>
+                        <td class="col-md-2">
+                            <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text"/>
+                            <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
+                        </td>
+                        <td class="col-md-2" data-drop="true"  data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterNodeDrop'}">
+                            <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
+                                <span style="color:red;" class="blink_me">You can drop here!!</span>
                             </div>
-                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty format</span>
+                            <div ng-show="newConstraint.location_1">
+                                <span>{{::segment.name}}-</span>
+                                <span>
+                                    <span ng-repeat="info in newConstraint.pathInfoSet_1">
+                                        <span ng-show="$index == 1 && info.isInstanceNumberEditable">
+                                            {{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateFirstPositionAndLocationPath();" type="text"/>]
+                                        </span>
+                                        <span ng-show="$index == 1 && !info.isInstanceNumberEditable">
+                                            {{info.locationName}}[{{info.instanceNumber}}]
+                                        </span>
+                                        <span ng-show="$index > 1 && info.isInstanceNumberEditable">
+                                            .{{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateFirstPositionAndLocationPath();" type="text"/>]
+                                        </span>
+                                        <span ng-show="$index > 1 && !info.isInstanceNumberEditable">
+                                            .{{info.locationName}}[{{info.instanceNumber}}]
+                                        </span>
+                                        <span ng-show="$index == newConstraint.pathInfoSet_1.length - 1">
+                                            ({{info.nodeName}})
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                            <div ng-show="!newConstraint.location_1">
+                                <span style="color:red;">Drop the node!</span>
+                            </div>
+                        </td>
+                        <td class="col-md-2">
+                            <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'" />
+                            <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
+                        </td>
+                        <td class="col-md-2">
+                            <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
+                            <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty contraint pattern</span>
+                        </td>
+                        <td class="col-md-2" ng-hide="newConstraint.contraintType == 'identical to another node' ||
+                                     newConstraint.contraintType == 'equal to another node' ||
+                                     newConstraint.contraintType == 'not-equal to another node' ||
+                                     newConstraint.contraintType == 'greater than another node' ||
+                                     newConstraint.contraintType == 'equal to or greater than another node' ||
+                                     newConstraint.contraintType == 'less than another node' ||
+                                     newConstraint.contraintType == 'equal to or less than another node'">
+                            <span ng-show="newConstraint.contraintType == 'a literal value' ||
+                                           newConstraint.contraintType == 'equal to' ||
+                                           newConstraint.contraintType == 'not-equal to' ||
+                                           newConstraint.contraintType == 'greater than' ||
+                                           newConstraint.contraintType == 'equal to or greater than' ||
+                                           newConstraint.contraintType == 'less than' ||
+                                           newConstraint.contraintType == 'equal to or less than'">
+                                <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" type="text"/>
+                                <span ng-show="newConstraint.contraintType == 'a literal value'">Case Insensitive: </span>
+                                <input ng-show="newConstraint.contraintType == 'a literal value'" type="checkbox" ng-model="newConstraint.ignoreCase"/>
+                                <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
+                            </span>
+                            <span ng-show="newConstraint.contraintType == 'one of list values'">
+                                <input class="form-control" ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
+                                <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
+                            </span>
+                            <span ng-show="newConstraint.contraintType == 'formatted value'">
+                                <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
+                                    ng-model="newConstraint.value" ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats | orderBy:'toString()'" />
+                                <div ng-show="newConstraint.value === 'Regular expression'">
+                                    <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue2(newConstraint)}" ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
+                                </div>
+                                <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty format</span>
                                 <span style="color:red;" ng-show="newConstraint.value === 'Regular expression' &&  isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'identical to another node' ||
-                                       newConstraint.contraintType == 'equal to another node' ||
-                                       newConstraint.contraintType == 'not-equal to another node' ||
-                                       newConstraint.contraintType == 'greater than another node' ||
-                                       newConstraint.contraintType == 'equal to or greater than another node' ||
-                                       newConstraint.contraintType == 'less than another node' ||
-                                       newConstraint.contraintType == 'equal to or less than another node'">
-                            <span>{{newConstraint.segment}}-</span>
-                                <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintAnotherNode(newConstraint, 'segment')}" ng-change="updateField_2()" ng-model="newConstraint.field_2" ng-options="field as field.position for field in segment.fields">
-                                </select>
-                                <span ng-show="datatypesMap[newConstraint.field_2.datatype.id].components.length > 0">.
-                                <select class="form-control form-control-short"
-                                        ng-change="updateComponent_2()"
-                                        ng-model="newConstraint.component_2"
-                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype.id].components">
-                                </select>
                             </span>
-                                <span ng-show="datatypesMap[newConstraint.component_2.datatype.id].components.length > 0">.
-                                <select class="form-control form-control-short"
-                                        ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype.id].components">
-                                </select>
-                            </span>
-                                <span style="color:red;" ng-show="isEmptyConstraintAnotherNode(newConstraint, 'segment')">Empty another node</span>
-                                </span>
-                                <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
-                            <span>ValueSet ID: </span>
+                            <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
+                                <span>ValueSet ID: </span>
                                 <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
-                                    <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">
-                                        {{getTableLabel(tablesMap[table.id])}}
-                                    </option>
+                                    <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">{{getTableLabel(tablesMap[table.id])}}</option>
                                 </select>
                                 <span style="color:red;" ng-show="isEmptyConstraintValueSet(newConstraint)">Empty valueset</span>
                                 <br/>
@@ -1380,18 +1465,55 @@
                                 <br/>
                                 <span>BindingLocation: </span>
                                 <input class="form-control form-control-short" ng-model="newConstraint.bindingLocation" type="text" />
+                            </span>
+                        </td>
+                        <td class="col-md-2" data-drop="true"  data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
+                            ng-show="newConstraint.contraintType == 'identical to another node' ||
+                                     newConstraint.contraintType == 'equal to another node' ||
+                                     newConstraint.contraintType == 'not-equal to another node' ||
+                                     newConstraint.contraintType == 'greater than another node' ||
+                                     newConstraint.contraintType == 'equal to or greater than another node' ||
+                                     newConstraint.contraintType == 'less than another node' ||
+                                     newConstraint.contraintType == 'equal to or less than another node'">
+                            <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
+                                <span style="color:red;" class="blink_me">You can drop Here!!</span>
+                            </div>
+                            <div ng-show="newConstraint.location_2">
+                                <span>
+                                    <span>{{::segment.name}}-</span>
+                                    <span ng-repeat="info in newConstraint.pathInfoSet_2">
+                                        <span ng-show="$index == 1 && info.isInstanceNumberEditable">
+                                            {{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateSecondPositionAndLocationPath();" type="text"/>]
+                                        </span>
+                                        <span ng-show="$index == 1 && !info.isInstanceNumberEditable">
+                                            {{info.locationName}}[{{info.instanceNumber}}]
+                                        </span>
+                                        <span ng-show="$index > 1 && info.isInstanceNumberEditable">
+                                            .{{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateSecondPositionAndLocationPath();" type="text"/>]
+                                        </span>
+                                        <span ng-show="$index > 1 && !info.isInstanceNumberEditable">
+                                            .{{info.locationName}}[{{info.instanceNumber}}]
+                                        </span>
+                                        <span ng-show="$index == newConstraint.pathInfoSet_1.length - 1">
+                                            ({{info.nodeName}})
+                                        </span>
+                                    </span>
                                 </span>
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'segment', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
-                            </td>
-                        </tr>
+                            </div>
+                            <div ng-show="!newConstraint.location_2">
+                                <span style="color:red;">Drop the node!</span>
+                            </div>
+                        </td>
+                        <td class="col-md-1" align="center">
+                            <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                            <button class="btn btn-raised btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'segment', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
                 <table class="table table-striped table-bordered" ng-show="constraintType === 'Complex'">
                     <thead>
                     <tr class="tbl-header">
-                        <th class="col-md-1" style="width: 4.1667%"></th>
                         <th class="col-md-2">ID</th>
                         <th class="col-md-2">Complex Type</th>
                         <th class="col-md-1" style="width: 4.1667%"></th>
@@ -1399,14 +1521,11 @@
                         <th ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2">First Constraint</th>
                         <th ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" style="width: 4.1667%"></th>
                         <th ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2">Second Constraint</th>
-                        <th class="col-md-1"></th>
+                        <th class="col-md-2"></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td class="col-md-1" style="width: 4.1667%" align="center">
-                            <button class="btn btn-raised btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                        </td>
                         <td class="col-md-2">
                             <input class="form-control" ng-class="{'form-control-invalid': isEmptyComplexConstraintID(newComplexConstraintId)}" ng-model="newComplexConstraintId" type="text"/>
                             <span style="color:red;" ng-show="isEmptyComplexConstraintID(newComplexConstraintId)">ID Empty</span>
@@ -1446,6 +1565,7 @@
                             <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                         </td>
                         <td class="col-md-1" align="center">
+                            <button class="btn btn-raised btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                             <button class="btn btn-raised btn-primary btn-xxs" ng-click="addComplexConformanceStatement()" ng-disabled="erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                         </td>
                     </tr>
@@ -1455,11 +1575,8 @@
         </form>
     </div>
     <div class="modal-footer">
-
-        <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-        &nbsp; </i>Close</span></button>
-        <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
-            &nbsp; </i>Save</span></button>
+        <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+        <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
     </div>
 </script>
 <script type="text/ng-template" id="PredicateSegmentCtrl.html">
