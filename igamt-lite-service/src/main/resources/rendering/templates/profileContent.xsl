@@ -11,7 +11,7 @@
         <xsl:param name="inlineConstraint"/>
         <xsl:choose>
             <xsl:when test="count(MessageDisplay) &gt; 0">
-                <xsl:apply-templates select="Message">
+                <xsl:apply-templates select="MessageDisplay">
                     <xsl:sort select="@position" data-type="number"></xsl:sort>
                 </xsl:apply-templates>
             </xsl:when>

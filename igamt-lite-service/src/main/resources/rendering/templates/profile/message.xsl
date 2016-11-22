@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:include href="/rendering/templates/profile/element.xsl"/>
     <xsl:include href="/rendering/templates/profile/constraint.xsl"/>
-    <xsl:template match="Message">
+    <xsl:template match="MessageDisplay">
         <xsl:value-of select="@Comment"/>
         <xsl:element name="p">
             <xsl:element name="table">
