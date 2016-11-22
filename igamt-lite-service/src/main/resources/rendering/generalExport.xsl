@@ -13,12 +13,11 @@
     <xsl:param name="includeTOC" select="'false'"/>
     <xsl:param name="targetFormat" select="'html'"/>
     <xsl:param name="documentTitle" select="'Implementation Guide'"/>
-
+    <xsl:variable name="inlineConstraintsVar" select="$inlineConstraints"/>
     <xsl:output method="html"/>
 
 
     <xsl:template match="/">
-
         <xsl:element name="html">
             <!--xsl:attribute name="xmlns"><xsl:text>http://www.w3.org/1999/xhtml</xsl:text></xsl:attribute-->
             <!-- Content of the head tag -->
@@ -37,6 +36,8 @@
                     </xsl:attribute>
                     <!-- Add CSS shared by word and html exports -->
                     <xsl:call-template name="globalStyle"/>
+                    <!--Add the Froala Editor style-->
+                    <xsl:call-template name="froalaEditorStyle"/>
                     <!-- Check the target format to include specific style -->
                     <xsl:choose>
                         <xsl:when test="$targetFormat='html'">
@@ -46,8 +47,6 @@
                         <xsl:when test="$targetFormat='word'">
                             <!-- Add Word specific style-->
                             <xsl:call-template name="wordStyle"/>
-                            <!--Add the Froala Editor style-->
-                            <xsl:call-template name="froalaEditorStyle"/>
                         </xsl:when>
                     </xsl:choose>
                 </xsl:element>
