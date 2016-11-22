@@ -2,6 +2,7 @@
 
     <xsl:template name="ConstraintContent">
         <xsl:param name="mode"/>
+        <xsl:param name="type"/>
         <xsl:choose>
             <xsl:when test="$mode='inlineSegment' or $mode='inlineDatatype'">
                 <xsl:variable name="predicateColSpan" select="4"></xsl:variable>
@@ -20,7 +21,7 @@
                     <xsl:element name="td"/>
                     <xsl:element name="td"/>
                     <xsl:element name="td"/>
-                    <xsl:if test="./@Type='pre'">
+                    <xsl:if test="$type='pre'">
                         <xsl:element name="td">
                             <xsl:value-of select="@Usage"/>
                         </xsl:element>
@@ -28,10 +29,10 @@
                     <xsl:element name="td">
                         <xsl:attribute name="colspan">
                             <xsl:choose>
-                                <xsl:when test="./@Type='pre'">
+                                <xsl:when test="$type='pre'">
                                     <xsl:value-of select="predicateColSpan"/>
                                 </xsl:when>
-                                <xsl:when test="./@Type='cs'">
+                                <xsl:when test="$type='cs'">
                                     <xsl:value-of select="number(conformanceStatementColSpan)"/>
                                 </xsl:when>
                             </xsl:choose>
@@ -43,10 +44,10 @@
             </xsl:when>
             <xsl:when test="$mode='standalone'">
                 <xsl:element name="tr">
-                    <xsl:element name="class">
+                    <xsl:attribute name="class">
                         <xsl:text>.contentTr</xsl:text>
-                    </xsl:element>
-                    <xsl:if test="./@Type='cs'">
+                    </xsl:attribute>
+                    <xsl:if test="$type='cs'">
                         <xsl:element name="td">
                             <xsl:value-of select="@Id" />
                         </xsl:element>
@@ -54,7 +55,7 @@
                     <xsl:element name="td">
                         <xsl:value-of select="concat(@LocationName, @Location)" />
                     </xsl:element>
-                    <xsl:if test="./@Type='pre'">
+                    <xsl:if test="$type='pre'">
                         <xsl:element name="td">
                             <xsl:value-of select="@Usage" />
                         </xsl:element>

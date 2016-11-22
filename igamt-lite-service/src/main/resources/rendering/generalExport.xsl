@@ -13,12 +13,11 @@
     <xsl:param name="includeTOC" select="'false'"/>
     <xsl:param name="targetFormat" select="'html'"/>
     <xsl:param name="documentTitle" select="'Implementation Guide'"/>
-
+    <xsl:variable name="inlineConstraintsVar" select="$inlineConstraints"/>
     <xsl:output method="html"/>
 
 
     <xsl:template match="/">
-
         <xsl:element name="html">
             <!--xsl:attribute name="xmlns"><xsl:text>http://www.w3.org/1999/xhtml</xsl:text></xsl:attribute-->
             <!-- Content of the head tag -->

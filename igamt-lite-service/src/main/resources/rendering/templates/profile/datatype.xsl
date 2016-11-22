@@ -1,10 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="/rendering/templates/profile/component.xsl"/>
-    <xsl:import href="/rendering/templates/profile/predicateHeader.xsl"/>
-    <xsl:import href="/rendering/templates/profile/conformanceStatementHeader.xsl"/>
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:template match="Datatype">
-        <xsl:param name="inlineConstraints"/>
         <xsl:if test="count(Text[@Type='PurposeAndUse']) &gt; 0">
             <xsl:element name="p">
                 <xsl:value-of disable-output-escaping="yes"
@@ -107,7 +104,7 @@
             </xsl:element>
         </xsl:element>
         <xsl:if test="count(./Constraint) &gt; 0">
-            <xsl:if test="normalize-space($inlineConstraints) = 'false'">
+            <xsl:if test="normalize-space($inlineConstraintsVar) = 'false'">
                 <xsl:call-template name="Constraint">
                     <xsl:with-param name="title">
                         <xsl:text>Conformance statements</xsl:text>
@@ -117,9 +114,6 @@
                     </xsl:with-param>
                     <xsl:with-param name="type">
                         <xsl:text>cs</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="constraintPath">
-                        <xsl:text>./Constraint[@Type='cs']</xsl:text>
                     </xsl:with-param>
                 </xsl:call-template>
                 <xsl:call-template name="Constraint">
@@ -131,9 +125,6 @@
                     </xsl:with-param>
                     <xsl:with-param name="type">
                         <xsl:text>pre</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="constraintPath">
-                        <xsl:text>./Constraint[@Type='pre']</xsl:text>
                     </xsl:with-param>
                 </xsl:call-template>
             </xsl:if>
