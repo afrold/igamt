@@ -37,6 +37,7 @@ angular
                 $scope.typeOfSharing=type;
                 if(type==='datatype'){
                     $scope.SharedtocView='sharedtocView.html';
+                    $scope.getSharedDatatypes();
                 } else if(type==='table') {
                 	$scope.SharedtocViewForTables='sharedTabletocView.html';
                   $scope.SharedsubviewForTable="datatypePending.html";
@@ -90,6 +91,8 @@ angular
             $scope.getSharedDatatypes = function(){
                 blockUI.start();
 
+                // Reset has pending
+                $scope.hasPending = false;
 
                 DatatypeService.getSharedDatatypes().then(function(result){
                     $scope.datatypes = result;
@@ -98,7 +101,6 @@ angular
                     	$rootScope.datatypesMap[datatype.id]=datatype;
 
                     });
-                    $scope.getSharedTables();
                     blockUI.stop();
                 });
 
@@ -109,9 +111,7 @@ angular
                     	$rootScope.datatypesMap[datatype.id]=datatype;
                     });
 
-                    if($scope.pendingDatatypes.length === 0) {
-                      $scope.hasPending = false;
-                    } else {
+                    if($scope.pendingDatatypes.length > 0) {
                       $scope.hasPending = true;
                     }
                 });
@@ -124,6 +124,10 @@ angular
             };
 
             $scope.getSharedTables = function(){
+
+              // Reset has pending
+              $scope.hasPending = false;
+
                 TableService.getSharedTables().then(function(result){
                     $scope.tables = result;
                     angular.forEach($scope.tables, function(table){
@@ -139,9 +143,7 @@ angular
                     	$rootScope.tablesMap[table.id]=table;
                     });
 
-                    if($scope.pendingTables.length === 0) {
-                      $scope.hasPending = false;
-                    } else {
+                    if($scope.pendingTables.length > 0) {
                       $scope.hasPending = true;
                     }
                 });
