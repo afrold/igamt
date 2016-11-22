@@ -1197,9 +1197,9 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		elmGroup2.addAttribute(new Attribute("IdGpe", group.getId()));
 		elmGroup2.addAttribute(new Attribute("Name", "END " + group.getName() + " GROUP"));
 		elmGroup2.addAttribute(new Attribute("Description", "END " + group.getName() + " GROUP"));
-		elmGroup2.addAttribute(new Attribute("Usage", group.getUsage().value()));
-		elmGroup2.addAttribute(new Attribute("Min", group.getMin() + ""));
-		elmGroup2.addAttribute(new Attribute("Max", group.getMax()));
+		elmGroup2.addAttribute(new Attribute("Usage", ""));
+		elmGroup2.addAttribute(new Attribute("Min", ""));
+		elmGroup2.addAttribute(new Attribute("Max", ""));
 		elmGroup2.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "]"));
 		elmGroup2.addAttribute(new Attribute("Depth", String.valueOf(depth)));
 		elmGroup2.addAttribute(new Attribute("Position", group.getPosition().toString()));
