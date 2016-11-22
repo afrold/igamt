@@ -143,7 +143,14 @@ angular.module('igl').factory(
                     $rootScope.filteredDatatypesList.push(newDatatype);
                     $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
                     $rootScope.Activate(newDatatype.id);
-                    $rootScope.$broadcast('event:openDatatype', newDatatype);
+                    if($rootScope.igdocument){
+                    	  $rootScope.$broadcast('event:openDatatype',  $rootScope.datatypesMap[newDatatype.id]);
+                    }else{
+                    	 $rootScope.$broadcast('event:openDatatypeInLib',  $rootScope.datatypesMap[newDatatype.id]);
+                    }
+                
+                  
+                    
                 }, function (error) {
                     $rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;
@@ -254,7 +261,12 @@ angular.module('igl').factory(
                     $rootScope.filteredDatatypesList.push(newDatatype);
                     $rootScope.filteredDatatypesList = _.uniq($rootScope.filteredDatatypesList);
                     $rootScope.Activate(newDatatype.id);
-                    $rootScope.$emit('event:openDatatype', newDatatype);
+                    if($rootScope.igdocument){
+                  	  $rootScope.$broadcast('event:openDatatype',  $rootScope.datatypesMap[newDatatype.id]);
+                  }else{
+                  	 $rootScope.$broadcast('event:openDatatypeInLib',  $rootScope.datatypesMap[newDatatype.id]);
+                  }
+      
                 }, function (error) {
                     $rootScope.saving = false;
                     $rootScope.msg().text = error.data.text;

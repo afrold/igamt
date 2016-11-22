@@ -9,58 +9,30 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
         this.children = children;
     };
 
-    
-    
-    svc.getDataTypeLibraryDocumentByScopesAndVersion = function (scopes, hl7Version) {
-        console.log("datatype-library-document/findByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
-        var scopesAndVersion = {
-            "scopes": scopes,
-            "hl7Version": hl7Version
-        };
-        return $http.post(
-            'api/datatype-library-document/findByScopesAndVersion', angular.toJson(scopesAndVersion))
-            .then(function (response) {
-                console.log("getDataTypeLibraryByScopesAndVersion response size=" + response.data.length);
-                return angular.fromJson(response);
-            });
-    };
+    svc.getDataTypeLibraryDocumentByScope= function(scope) {
+        var delay = $q.defer();
+        $http.post('api/datatype-library-document/findByScope',scope).then(function(response) {
+            var saveResponse = angular.fromJson(response);
+            delay.resolve(saveResponse);
+        }, function(error) {
+            //console.log("DatatypeService.save error=" + error);
+            delay.reject(error);
+        });
+        return delay.promise;
+    },
+
     
 
-    svc.getDataTypeLibraryDocumentByScopesAndVersion = function (scopes, hl7Version) {
-        console.log("datatype-library-document/findByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
-        var scopesAndVersion = {
-            "scopes": scopes,
-            "hl7Version": hl7Version
-        };
-        return $http.post(
-            'api/datatype-library-document/findByScopesAndVersion', angular.toJson(scopesAndVersion))
-            .then(function (response) {
-                console.log("getDataTypeLibraryByScopesAndVersion response size=" + response.data.length);
-                return angular.fromJson(response);
-            });
-    };
-    
-    
-    svc.getDataTypeLibraryDocumentByScope = function (scope) {
-        console.log("datatype-library-document/findByScope scope=" + scope);
-        return $http.post(
-            'api/datatype-library-document/findByScope', scope)
-            .then(function (response) {
-                console.log("getDataTypeLibraryByScope response=" + response.data.length);
-                return angular.fromJson(response);
-            });
-    };
-    
-    svc.getDataTypeLibraryDocumentByScopeForAll = function (scope) {
-        console.log("datatype-library-document/findByScopeForAll scope=" + scope);
-        return $http.post(
-            'api/datatype-library-document/findByScopeForAll', scope)
-            .then(function (response) {
-                console.log("getDataTypeLibraryByScope response=" + response.data.length);
-                return angular.fromJson(response);
-            });
-    };
-
+//    svc.getDataTypeLibraryDocumentByScopeForAll = function (scope) {
+//        console.log("datatype-library-document/findByScopeForAll scope=" + scope);
+//        return $http.post(
+//            'api/datatype-library-document/findByScopeForAll', scope)
+//            .then(function (response) {
+//                console.log("getDataTypeLibraryByScope response=" + response.data.length);
+//                return angular.fromJson(response);
+//            });
+//    };
+//
 
     svc.create = function (hl7Version, scope, name, ext,description, orgName) {
         var dtlcw = { "hl7Version": hl7Version,
@@ -94,15 +66,30 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
             });
     };
     svc.getAllDatatypesNames = function (datatypeLibrary) {
-        blockUI.start();
+    	 var delay = $q.defer();
 
-        return $http.post(
-            'api/datatype-library-document/getAllDatatypesName').then(function (response) {
-                blockUI.stop();
-
-                return angular.fromJson(response.data)
-            });
-    };
+        $http.post('api/datatype-library-document/getAllDatatypesName').then(function (response) {
+                delay.resolve(response.data);
+            
+            } , function(error) {
+                    //console.log("DatatypeService.save error=" + error);
+                    delay.reject(error);
+                });
+                return delay.promise;
+    },
+    
+    svc.getDataTypeLibraryDocumentByScope= function(scope) {
+        var delay = $q.defer();
+        $http.post('api/datatype-library-document/findByScope',scope).then(function(response) {
+            var saveResponse = angular.fromJson(response);
+            delay.resolve(saveResponse);
+        }, function(error) {
+            //console.log("DatatypeService.save error=" + error);
+            delay.reject(error);
+        });
+        return delay.promise;
+    },
+    
 
     svc.exportAs = function(dataTypeLibraryDocumentId, format) {
         blockUI.start();

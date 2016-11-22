@@ -25,7 +25,7 @@
 				<button title="commit" type="button" class="btn btn-raised btn-sm btn-success"
                  ng-click="publishTable(table)" ng-if="table.status !== 'PUBLISHED'"><span><i class="fa fa-check" aria-hidden="true"></i> Commit</span></button>
 
-                   <div class="btn-group" ng-hide="table.scope !== 'USER'" style="margin-bottom: 0px;">
+                   <div class="btn-group" ng-hide="table.scope !== 'USER'" style="margin-bottom: 0px;" ng-if="igdocument">
                      <button type="button" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(table)">
                        <i class="fa fa-share-alt" aria-hidden="true"></i> Share
                        <span class="badge" ng-bind="table.shareParticipantIds.length" style="margin-right:5px;"></span>
@@ -58,7 +58,7 @@
                                         <label class="col-md-2 control-label">Mapping Identifier*</label>
 
                                         <div class="controls col-md-10">
-                                            <input type="text" name="tableIndentifier" class="form-control" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
+                                            <input ng-disabled="versionAndUseMap[table.id].sourceId" type="text" name="tableIndentifier" class="form-control" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
                                         </div>
                                     </div>
 
@@ -66,7 +66,7 @@
                                         <label class="col-md-2 control-label">Name*</label>
 
                                         <div class="controls col-md-10">
-                                            <input type="text" name="name" class="form-control" ng-model="table.name" required ng-change="setDirty()">
+                                            <input type="text"  ng-disabled="versionAndUseMap[table.id].sourceId" name="name" class="form-control" ng-model="table.name" required ng-change="setDirty()">
                                         </div>
                                     </div>
 
@@ -74,7 +74,7 @@
                                         <label class="col-md-2 control-label">Description</label>
 
                                         <div class="controls col-md-10">
-                                            <input type="text" name="description" class="form-control" ng-model="table.description" ng-change="setDirty()">
+                                            <input type="text" name="description" ng-disabled="versionAndUseMap[table.id].sourceId"  class="form-control" ng-model="table.description" ng-change="setDirty()">
                                         </div>
                                     </div>
 
@@ -83,17 +83,17 @@
                                         <label class="col-md-2 control-label">OID</label>
 
                                         <div class="controls col-md-10">
-                                            <input type="text" name="oid" class="form-control" ng-model="table.oid" ng-change="setDirty()">
+                                            <input type="text" name="oid" ng-disabled="versionAndUseMap[table.id].sourceId" class="form-control" ng-model="table.oid" ng-change="setDirty()">
                                         </div>
                                     </div>
 
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.version.$invalid}">
+                                    <!--<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.version.$invalid}">
                                         <label class="col-md-2 control-label">Version</label>
 
                                         <div class="controls col-md-10">
                                             <input type="text" name="version" class="form-control" ng-model="table.version" ng-change="setDirty()">
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.version.$invalid}">
                                         <label class="col-md-2 control-label">Hl7 Version</label>
 
@@ -160,7 +160,6 @@
 
                                     <div class="form-group control-group">
                                         <label class="col-md-2 control-label">Date Updated</label>
-
                                         <div class="controls col-md-10">
                                            <span
                                                    class="form-control">{{table.dateUpdated | date:dateFormat}}</span>

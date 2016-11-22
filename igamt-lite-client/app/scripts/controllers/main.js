@@ -2577,7 +2577,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
             return false;
         }
-
+        $rootScope.getVersionToSelect=function(element){
+        	if(element.publicationVersion){
+        		return"(v"+element.publicationVersion+")";
+        	}else{
+        		return "";
+        	}
+        }
         $rootScope.isDuplicatedConstraintID = function(newConstraint, targetId) {
             if ($rootScope.conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1 && targetId == newConstraint.constraintId) return true;
 

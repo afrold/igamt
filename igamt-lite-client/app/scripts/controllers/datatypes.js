@@ -395,8 +395,8 @@ angular.module('igl')
         };
 
 
-                        $scope.editDT = function(field) {
-                           $scope.editableDT = field.id;
+         $scope.editDT = function(field) {
+         $scope.editableDT = field.id;
             
                            $scope.results = [];
                            angular.forEach($rootScope.datatypeLibrary.children ,function(dtLink){
@@ -404,7 +404,7 @@ angular.module('igl')
                                    $scope.results.push(dtLink);
                                }
                            });
-                       };
+           };
             
 
 

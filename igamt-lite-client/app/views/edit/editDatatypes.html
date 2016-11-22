@@ -24,12 +24,12 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}<span class="version-badge-label" ng-if="datatype.publicationVersion">v{{datatype.publicationVersion}}</span></span>
                         <span class="pull-right" ng-if="!typeOfSharing">
-                            <button title="commit" type="button" class="btn btn-raised btn-sm btn-success"
+                            <button title="commit" type="button" class="btn btn-raised btn-sm btn-info"
                               ng-click="publishDatatype(datatype)" ng-if="datatype.status !== 'PUBLISHED'">
                               <i class="fa fa-check" aria-hidden="true"></i>
                               <span> Commit </span>
                             </button>
-                            <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" style="margin-bottom: 0px;">
+                            <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" style="margin-bottom: 0px;" ng-if="igdocument">
                               <button type="button" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(datatype)">
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
                                 <span class="badge" ng-bind="datatype.shareParticipantIds.length" style="margin-right:5px;"></span>
@@ -600,7 +600,7 @@
                                                         <select ng-show="ref.target.scope == 'USER'" class="form-control" ng-change="changeDatatypeLink(ref.datatypeLink)" ng-model="ref.datatypeLink.id">
                                                             <option value="">No Value Set</option>
                                                             <option ng-repeat="dt in datatypes |orderBy:'+name'" value="{{dt.id}}">
-                                                                {{::getDatatypeLabel(dt)}} <span class="version-badge-label" ng-if="datatypesMap[dt.id].publicationVersion">v{{datatypesMap[dt.id].publicationVersion}}</span>
+                                                                {{::getDatatypeLabel(dt)}} {{getVersionToSelect(datatypesMap[dt.id])}}
                                                             </option>
                                                         </select>
                                                     </td>
@@ -659,21 +659,22 @@
 
                                 <span class ="badge" ng-class="{'selected2' :checked===inf.id}" style="color:black !important" ng-if="inf.id !==datatype.id">v{{inf.publicationVersion}}</span>
  								<span class ="badge selected1" style="color:black !important" ng-if="inf.id ===datatype.id">v{{inf.publicationVersion}}</span>
-                                <span ng-if ="datatype.id===inf.id"><strong>(current)</strong></span>
+                                <span ng-if ="datatype.id===inf.id" tooltip="This is the version of the current datatype"><strong>(current)</strong></span>
 
                             </td>
                             <td class="col-md-4">
  							<span>{{inf.publicationDate}}</span>
                             </td>
                             <td class="col-md-5">
- 							    <button title="Open" type="button" class="btn btn-raised btn-raised btn-xs btn-default" ng-if="datatypesMap[inf.id]&&inf.id!==datatype.id" ng-click="redirectDT(datatypesMap[inf.id])"> <span><i class="fa fa-eye fa-fw"></i></span>Open</button>
+ 							    <button title="Open" type="button" class="btn btn-raised btn-raised btn-xs btn-default" ng-if="datatypesMap[inf.id]&&inf.id!==datatype.id" ng-click="redirectDT(datatypesMap[inf.id])"> <span><i class="fa fa-eye fa-fw"></i></span>View</button>
 
 
-                                <button title="Add" ng-if="!datatypesMap[inf.id]" ng-click="addOneDatatypeById(inf.id)" type="button" class="btn btn-raised btn-raised btn-xs btn-info"> <span><i class="fa fa-plus fa-fw"></i></span>Import</button>
+                                <button title="Add" ng-if="!datatypesMap[inf.id]" ng-click="addOneDatatypeById(inf.id)" type="button" class="btn btn-raised btn-raised btn-xs btn-info"> <span><i class="fa fa-plus fa-fw" tooltip="Import this data type "></i></span>Add</button>
                                 <button ng-if="datatypesMap[inf.id]&&inf.id!==datatype.id && references.length>0" ng-click="confirmSwitch(datatype,datatypesMap[inf.id]);" type="button" class="btn btn-raised btn-raised btn-xs btn-success"><span>
                                     <i class="fa fa-refresh fa-fw"></i>
 
-                                      Replace By
+                                        <span ng-if="inf.publicationVersion>datatype.publicationVersion">Upgrade To<span>
+                                        <span ng-if="inf.publicationVersion<datatype.publicationVersion">Downgrade To<span>
                                     </span> </button>
                             </td>
                         </tr>
@@ -869,7 +870,7 @@
                     <div ng-if="editableDT===node.id">
                         <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                             <option ng-repeat="datatype in results" value="{{datatype}}"
-                                    ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}} <span class="version-badge-label" ng-if="datatypesMap[datatype.id].publicationVersion">v{{datatypesMap[datatype.id].publicationVersion}}</span>
+                                    ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatype.hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
                             </option>
                             <!--<option ng-click="otherDT(node)" value=""> Others-->
                         </select>
