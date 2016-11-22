@@ -37,6 +37,8 @@
                     </xsl:attribute>
                     <!-- Add CSS shared by word and html exports -->
                     <xsl:call-template name="globalStyle"/>
+                    <!--Add the Froala Editor style-->
+                    <xsl:call-template name="froalaEditorStyle"/>
                     <!-- Check the target format to include specific style -->
                     <xsl:choose>
                         <xsl:when test="$targetFormat='html'">
@@ -46,8 +48,6 @@
                         <xsl:when test="$targetFormat='word'">
                             <!-- Add Word specific style-->
                             <xsl:call-template name="wordStyle"/>
-                            <!--Add the Froala Editor style-->
-                            <xsl:call-template name="froalaEditorStyle"/>
                         </xsl:when>
                     </xsl:choose>
                 </xsl:element>
