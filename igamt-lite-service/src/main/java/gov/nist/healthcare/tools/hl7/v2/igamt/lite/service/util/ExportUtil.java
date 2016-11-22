@@ -147,7 +147,7 @@ public class ExportUtil {
         File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
         // Generate xml file containing profile
         File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
-        // File tmpXmlFile = new File("temp + UUID.randomUUID().toString().xml");
+        // File tmpXmlFile = new File("temp" + UUID.randomUUID().toString() + ".xml");
         FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
         TransformerFactory factoryTf = TransformerFactory.newInstance();
         factoryTf.setURIResolver(new XsltIncludeUriResover());

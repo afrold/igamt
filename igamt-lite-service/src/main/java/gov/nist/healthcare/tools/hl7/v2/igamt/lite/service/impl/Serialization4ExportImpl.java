@@ -562,6 +562,8 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				// segmentRefOrGroups.put(segmentRefOrGroup.getPosition(),
 				// segmentRefOrGroup);
 				// }
+				
+				serializeMessageConstraints(m, csinfo, cpinfo);
 
 				List<SegmentRefOrGroup> children = m.getChildren();
 				for (int i = 0; i < children.size(); i++) {
@@ -755,6 +757,24 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 					constraint.getConstraintClassification() == null ? "" : constraint.getConstraintClassification()));
 		}
 		return elmConstraint;
+	}
+	
+	private void serializeMessageConstraints(Message m, nu.xom.Element csinfo, nu.xom.Element cpinfo){
+		List<ConformanceStatement> conformances = m.getConformanceStatements();
+		if (conformances != null && !conformances.isEmpty()) {
+			for (Constraint constraint : conformances) {
+				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, m.getName() + ".");
+				csinfo.appendChild(elmConstraint);
+			}
+		}
+		List<Predicate> predicates = m.getPredicates();
+		if (predicates != null && !predicates.isEmpty()) {
+			for (Constraint constraint : predicates) {
+				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, m.getName() + ".");
+				cpinfo.appendChild(elmConstraint);
+			}
+		}
+		
 	}
 
 	private void serializeSegmentRefOrGroupConstraint(Integer i, SegmentRefOrGroup segmentRefOrGroup,
@@ -1169,6 +1189,21 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		// }
 		// }
 
+		List<ConformanceStatement> conformances = m.getConformanceStatements();
+		if (conformances != null && !conformances.isEmpty()) {
+			for (Constraint constraint : conformances) {
+				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, m.getName() + ".");
+				elmMessage.appendChild(elmConstraint);
+			}
+		}
+		List<Predicate> predicates = m.getPredicates();
+		if (predicates != null && !predicates.isEmpty()) {
+			for (Constraint constraint : predicates) {
+				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, m.getName() + ".");
+				elmMessage.appendChild(elmConstraint);
+			}
+		}
+		
 		sect.appendChild(elmMessage);
 		return sect;
 	}
