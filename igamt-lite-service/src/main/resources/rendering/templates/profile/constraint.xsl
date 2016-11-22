@@ -1,43 +1,31 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-    <xsl:import href="/rendering/templates/profile/conformanceStatementHeader.xsl"/>
-    <xsl:import href="/rendering/templates/profile/predicateHeader.xsl"/>
-    <xsl:import href="/rendering/templates/profile/constraintContent.xsl"/>
+    <xsl:import href="/rendering/templates/profile/displayConstraint.xsl"/>
     <xsl:template name="Constraint">
         <xsl:param name="title" />
         <xsl:param name="type" />
         <xsl:param name="constraintMode" />
-        <xsl:param name="constraintPath" />
-        <xsl:if test="count($constraintPath) &gt; 0">
-            <xsl:element name="p">
-                <xsl:element name="strong">
-                    <xsl:element name="u">
-                        <xsl:value-of select="$title"/>
-                    </xsl:element>
-                </xsl:element>
-                <xsl:element name="table">
-                    <xsl:attribute name="class">
-                        <xsl:text>contentTable</xsl:text>
-                    </xsl:attribute>
-                    <xsl:choose>
-                        <xsl:when test="$type='cs'">
-                            <xsl:call-template name="conformanceStatementHeader"/>
-                        </xsl:when>
-                        <xsl:when test="$type='pre'">
-                            <xsl:call-template name="predicateHeader"/>
-                        </xsl:when>
-                    </xsl:choose>
-                    <xsl:element name="tbody">
-                        <xsl:for-each select="$constraintPath">
-                            <xsl:sort select="@Position" data-type="number"></xsl:sort>
-                            <xsl:call-template name="ConstraintContent">
-                                <xsl:with-param name="mode" select="$constraintMode"/>
-                                <xsl:with-param name="type" select="$type"/>
-                            </xsl:call-template>
-                        </xsl:for-each>
-                    </xsl:element>
-                </xsl:element>
-            </xsl:element>
-        </xsl:if>
+
+        <xsl:choose>
+            <xsl:when test="$type='pre'">
+                <xsl:if test="count(./Constraint[@Type='pre'])">
+                    <xsl:call-template name="displayConstraint">
+                        <xsl:with-param name="constraintMode" select="$constraintMode"/>
+                        <xsl:with-param name="title" select="$title"/>
+                        <xsl:with-param name="type" select="$type"/>
+                    </xsl:call-template>
+                </xsl:if>
+            </xsl:when>
+            <xsl:when test="$type='cs'">
+                <xsl:if test="count(./Constraint[@Type='cs'])">
+                    <xsl:call-template name="displayConstraint">
+                        <xsl:with-param name="constraintMode" select="$constraintMode"/>
+                        <xsl:with-param name="title" select="$title"/>
+                        <xsl:with-param name="type" select="$type"/>
+                    </xsl:call-template>
+                </xsl:if>
+            </xsl:when>
+        </xsl:choose>
+
+
     </xsl:template>
 </xsl:stylesheet>

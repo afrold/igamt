@@ -3,7 +3,6 @@
     <xsl:include href="/rendering/templates/profile/element.xsl"/>
     <xsl:include href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:template match="Message">
-        <xsl:param name="inlineConstraint"/>
         <xsl:value-of select="@Comment"/>
         <xsl:element name="p">
             <xsl:element name="table">
@@ -75,7 +74,7 @@
             </xsl:element>
 
             <xsl:if test="count(./Constraint) &gt; 0">
-                <xsl:if test="normalize-space($inlineConstraint) = 'false'">
+                <xsl:if test="normalize-space($inlineConstraintsVar) = 'false'">
                     <xsl:call-template name="Constraint">
                         <xsl:with-param name="title">
                             <xsl:text>Conformance statements</xsl:text>
@@ -85,9 +84,6 @@
                         </xsl:with-param>
                         <xsl:with-param name="type">
                             <xsl:text>cs</xsl:text>
-                        </xsl:with-param>
-                        <xsl:with-param name="constraintPath">
-                            <xsl:text>./Constraint[@Type='cs']</xsl:text>
                         </xsl:with-param>
                     </xsl:call-template>
                     <xsl:call-template name="Constraint">
@@ -99,9 +95,6 @@
                         </xsl:with-param>
                         <xsl:with-param name="type">
                             <xsl:text>pre</xsl:text>
-                        </xsl:with-param>
-                        <xsl:with-param name="constraintPath">
-                            <xsl:text>./Constraint[@Type='pre']</xsl:text>
                         </xsl:with-param>
                     </xsl:call-template>
                 </xsl:if>
