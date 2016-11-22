@@ -5,6 +5,7 @@
     <xsl:import href="/rendering/templates/profile/datatype.xsl"/>
     <xsl:import href="/rendering/templates/profile/segment.xsl"/>
     <xsl:import href="/rendering/templates/profile/valueSet.xsl"/>
+    <xsl:import href="/rendering/templates/profile/constraints.xsl"/>
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:template name="displayProfileContent">
         <xsl:param name="inlineConstraint"/>
@@ -12,7 +13,6 @@
             <xsl:when test="count(MessageDisplay) &gt; 0">
                 <xsl:apply-templates select="Message">
                     <xsl:sort select="@position" data-type="number"></xsl:sort>
-                    <xsl:with-param name="inlineConstraint"><xsl:value-of select="$inlineConstraint"/></xsl:with-param>
                 </xsl:apply-templates>
             </xsl:when>
             <xsl:when test="count(Segment) &gt; 0">
@@ -23,7 +23,6 @@
             <xsl:when test="count(Datatype) &gt; 0">
                 <xsl:apply-templates select="Datatype">
                     <xsl:sort select="@position" data-type="number"></xsl:sort>
-                    <xsl:with-param name="inlineConstraint"><xsl:value-of select="$inlineConstraint"/></xsl:with-param>
                 </xsl:apply-templates>
             </xsl:when>
             <xsl:when test="count(ValueSetDefinition) &gt; 0">
@@ -32,7 +31,8 @@
                 </xsl:apply-templates>
             </xsl:when>
             <xsl:when test="count(Constraints) &gt; 0">
-                <xsl:apply-templates select="Constraints">
+                <xsl:apply-templates select=".">
+                    <xsl:sort select="@position" data-type="number"></xsl:sort>
                 </xsl:apply-templates>
             </xsl:when>
             <xsl:otherwise>
