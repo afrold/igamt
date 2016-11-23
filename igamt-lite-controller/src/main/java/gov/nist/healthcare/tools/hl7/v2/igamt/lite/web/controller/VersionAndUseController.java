@@ -41,6 +41,7 @@ public class VersionAndUseController {
 	  }
 	  @RequestMapping(value = "/findAll", method = RequestMethod.POST, produces = "application/json")
 	  public List<VersionAndUse> findByIds() {
+		 
 	    List<VersionAndUse> result = versionAndUseService.findAll();
 	    return result;
 	  }

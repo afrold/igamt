@@ -257,9 +257,17 @@ angular
                                 }
                                 $rootScope.references = [];
                                 $rootScope.tmpReferences = [].concat($rootScope.references);
+                                   angular.forEach($scope.datatypes, function (dt) {
+                                    if (dt && dt != null && dt.id !== $rootScope.datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt), dt);
+                                });
+
+                                $rootScope.tmpReferences = [].concat($rootScope.references);
                                 $rootScope.tmpReferences = [].concat($rootScope.references);
 
                                 $rootScope.$emit("event:initEditArea");
+
+
+
 
                                 blockUI.stop();
 
@@ -290,13 +298,12 @@ angular
                     }
                 }
             }
-            $rootScope.references = [];
-//                    angular.forEach($rootScope.segments, function (segment) {
-//                        $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
-//                    });
-            angular.forEach($rootScope.datatypes, function (dt) {
-                $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
-            });
+                    $rootScope.references = [];
+
+                    angular.forEach($scope.datatypes, function (dt) {
+                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
+                    });
+
             $scope.loadingSelection = false;
             $rootScope.$emit("event:initEditArea");
             blockUI.stop();
@@ -304,4 +311,153 @@ angular
 
 
 
+        $scope.unshareDatatype=[
+          ['Remove',
+                    function ($itemScope) {
+                       $rootScope.refsForDelete=[];
+                angular.forEach($scope.datatypes, function (dt) {
+                if (dt && dt != null && dt.id !== $itemScope.data.id) $rootScope.findTempDatatypeRefs($itemScope.data, dt, $rootScope.getDatatypeLabel(dt),dt);
+                  });
+                        if($rootScope.refsForDelete.length>0){
+                            $scope.abortUnshare($itemScope.data);
+                        }else{
+                            $scope.confirmUnshare($itemScope.data);
+                        }
+                    }
+                          
+                ]
+        ];
+
+        $scope.unshareTable=[
+          ['Remove',
+                    function ($itemScope) {
+                       $rootScope.refsForDelete=[];
+                angular.forEach($scope.datatypes, function (dt) {
+                if (dt && dt != null && dt.id !== $itemScope.table.id) $rootScope.findTableRefsForDelete($itemScope.table, dt,$rootScope.getDatatypeLabel(dt),dt);
+                  });
+                        if($rootScope.refsForDelete.length>0){
+                            $scope.abortUnshare($itemScope.table);
+                        }else{
+                            $scope.confirmUnshareTable($itemScope.table);
+                        }
+                    }
+                          
+                ]
+        ];
+
+
+
+        $scope.removeDatatype=function(datatype){
+            var accountId=userInfoService.getAccountID();
+            var accountId=userInfoService.getAccountID();
+            console.log(accountId);
+                        DatatypeService.unshare(datatype.id,accountId).then(function(res){
+                            console.log("unshared");
+
+                            var index = $scope.datatypes.indexOf(datatype);
+                                console.log(index);
+	                         if (index > -1){
+
+                                 $scope.datatypes.splice(index, 1);
+                             } 
+                        });
+
+        }
+
+            $scope.removeTable=function(table){
+             var accountId=userInfoService.getAccountID();
+            var accountId=userInfoService.getAccountID();
+            console.log(accountId);
+                        TableService.unshare(table.id,accountId).then(function(res){
+                            console.log("unshared");
+
+                            var index = $scope.tables.indexOf(table);
+                                console.log(index);
+	                         if (index > -1){
+
+                                 $scope.tables.splice(index, 1);
+                             } 
+                        });
+
+        }
+
+          $rootScope.confirmUnshare = function(datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'confirmUnshare.html',
+                controller: 'confirmUnshare',
+                resolve: {
+                    datatypeTo: function() {
+                        return datatype;
+                    }
+                    
+                }
+            });
+            modalInstance.result.then(function(datatype) {
+            	 $scope.removeDatatype(datatype);
+                
+            });
+        };
+
+        $rootScope.confirmUnshareTable = function(table) {
+            var modalInstance = $modal.open({
+                templateUrl: 'confirmUnshare.html',
+                controller: 'confirmUnshare',
+                resolve: {
+                    datatypeTo: function() {
+                        return table;
+                    }
+                    
+                }
+            });
+            modalInstance.result.then(function(table) {
+            	 $scope.removeTable(table);
+                
+            });
+        };
+
+          $rootScope.abortUnshare = function(datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'abortDeleteDatatype.html',
+                controller: 'abortUnshare',
+                resolve: {
+                    datatypeTo: function() {
+                        return datatype;
+                    }
+                 
+        
+                }
+            });
+            modalInstance.result.then(function() {
+                
+            });
+        };
+
+
+
 }]);
+
+angular.module('igl').controller('confirmUnshare', function($scope, $rootScope, $http, $modalInstance,datatypeTo) {
+    $scope.datatypeTo=datatypeTo;
+
+    $scope.confirm = function() {
+    	  $modalInstance.close($scope.datatypeTo);
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('igl').controller('abortUnshare', function($scope, $rootScope, $http, $modalInstance,datatypeTo) {
+    $scope.datatypeTo=datatypeTo;
+    $scope.Message=function(){
+        if($scope.datatypeTo.type='table'){
+            return "Table";
+        }else{
+            return "Data Type"
+        }
+    };
+    $scope.ok = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});

@@ -295,8 +295,9 @@ public class DatatypeController extends CommonController {
       log.debug("datatypeLibrary=" + datatype);
       log.debug("datatypeLibrary.getId()=" + datatype.getId());
       	VersionAndUse versionInfo= versionAndUse.findById(datatype.getId());
-      	
-      	
+        
+       
+        
       	if(versionInfo==null){
       		versionInfo= new VersionAndUse();
       		versionInfo.setPublicationVersion(1);
@@ -310,8 +311,11 @@ public class DatatypeController extends CommonController {
           		ancestor.setDeprecated(true);
           		versionAndUse.save(ancestor);  
           	}
-      		versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
-      		datatype.setPublicationVersion(versionInfo.getPublicationVersion());
+          	 User u = userService.getCurrentUser();
+          	 	Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+             	versionInfo.setAccountId(account.getId());
+      			versionInfo.setPublicationVersion(versionInfo.getPublicationVersion()+1);
+      			datatype.setPublicationVersion(versionInfo.getPublicationVersion());
 
       		
       	}

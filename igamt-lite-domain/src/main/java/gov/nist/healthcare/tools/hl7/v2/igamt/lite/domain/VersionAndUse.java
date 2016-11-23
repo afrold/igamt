@@ -9,6 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "versionAndUse")
 public class VersionAndUse{
 	  private String sourceId=null;
+	  
+	  private Long accountId;
+
 	  @Id
 	  private String id;
 	  private List<String> derived= new ArrayList<String>();
@@ -95,6 +98,12 @@ public class VersionAndUse{
 
 	public VersionAndUse() {
 		// TODO Auto-generated constructor stub
+	}
+	public Long getAccountId() {
+		return accountId;
+	}
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
 	}
 
 }

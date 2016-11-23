@@ -1228,6 +1228,31 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         };
 
+            $rootScope.findTempDatatypeRefs = function(datatype, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.datatype.id === datatype.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        found.target = angular.copy(target);
+                        found.datatypeLink = angular.copy(obj.datatype);
+                        $rootScope.refsForDelete.push(found);
+                    }
+                    $rootScope.findTempDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path, target);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findTempDatatypeRefs(datatype, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                            $rootScope.findTempDatatypeRefs(datatype, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
+
         $rootScope.findSegmentRefs = function(segment, obj, path, positionPath, target) {
             if (obj != null && obj != undefined) {
                 if (angular.equals(obj.type, 'message')) {
@@ -1281,6 +1306,39 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 }
             }
         };
+
+        $rootScope.findTableRefsForDelete = function(table, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.tables != undefined && obj.tables.length > 0) {
+                        angular.forEach(obj.tables, function(tableInside) {
+                            if (tableInside.id === table.id) {
+                                var found = angular.copy(obj);
+                                found.path = path;
+                                found.target = angular.copy(target);
+                                found.tableLink = angular.copy(tableInside);
+                                $rootScope.refsForDelete.push(found);
+                            }
+                        });
+                    }
+                    // $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findTableRefsForDelete(table, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                             $rootScope.findTableRefsForDelete(table, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
+
+
+
+
 
         $rootScope.saveBindingForSegment = function() {
             var segmentBindingUpdateParameterList = [];

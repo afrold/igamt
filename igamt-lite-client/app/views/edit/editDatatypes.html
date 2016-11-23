@@ -29,7 +29,7 @@
                               <i class="fa fa-check" aria-hidden="true"></i>
                               <span> Commit </span>
                             </button>
-                            <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" style="margin-bottom: 0px;" ng-if="igdocument">
+                            <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" style="margin-bottom: 0px;" ng-if="!igdocument">
                               <button type="button" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(datatype)">
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
                                 <span class="badge" ng-bind="datatype.shareParticipantIds.length" style="margin-right:5px;"></span>
@@ -554,7 +554,7 @@
                                </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
 
-                                    <span class="pull-right" style="margin-bottom:10px">
+                                    <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary">
                                         <button type="button" ng-click="AddBindingForDatatype(datatype)" class="btn btn-raised btn-info btn-md"><i class="fa fa-plus"></i> Add Binding</button>
                                     </span>
 
