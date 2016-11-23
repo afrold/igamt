@@ -2596,7 +2596,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $rootScope.getPredicateAsString = function(constraint) {
-            return constraint.description;
+            if(constraint) return constraint.description;
+            return null;
         };
 
         $rootScope.getTextValue = function(value) {
