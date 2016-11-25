@@ -562,6 +562,8 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				// segmentRefOrGroups.put(segmentRefOrGroup.getPosition(),
 				// segmentRefOrGroup);
 				// }
+				
+				serializeMessageConstraints(m, csinfo, cpinfo);
 
 				List<SegmentRefOrGroup> children = m.getChildren();
 				for (int i = 0; i < children.size(); i++) {
@@ -755,6 +757,24 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 					constraint.getConstraintClassification() == null ? "" : constraint.getConstraintClassification()));
 		}
 		return elmConstraint;
+	}
+	
+	private void serializeMessageConstraints(Message m, nu.xom.Element csinfo, nu.xom.Element cpinfo){
+		List<ConformanceStatement> conformances = m.getConformanceStatements();
+		if (conformances != null && !conformances.isEmpty()) {
+			for (Constraint constraint : conformances) {
+				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, m.getName() + ".");
+				csinfo.appendChild(elmConstraint);
+			}
+		}
+		List<Predicate> predicates = m.getPredicates();
+		if (predicates != null && !predicates.isEmpty()) {
+			for (Constraint constraint : predicates) {
+				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, m.getName() + ".");
+				cpinfo.appendChild(elmConstraint);
+			}
+		}
+		
 	}
 
 	private void serializeSegmentRefOrGroupConstraint(Integer i, SegmentRefOrGroup segmentRefOrGroup,
@@ -1169,6 +1189,21 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		// }
 		// }
 
+		List<ConformanceStatement> conformances = m.getConformanceStatements();
+		if (conformances != null && !conformances.isEmpty()) {
+			for (Constraint constraint : conformances) {
+				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, m.getName() + ".");
+				elmMessage.appendChild(elmConstraint);
+			}
+		}
+		List<Predicate> predicates = m.getPredicates();
+		if (predicates != null && !predicates.isEmpty()) {
+			for (Constraint constraint : predicates) {
+				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, m.getName() + ".");
+				elmMessage.appendChild(elmConstraint);
+			}
+		}
+		
 		sect.appendChild(elmMessage);
 		return sect;
 	}
@@ -1197,9 +1232,9 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		elmGroup2.addAttribute(new Attribute("IdGpe", group.getId()));
 		elmGroup2.addAttribute(new Attribute("Name", "END " + group.getName() + " GROUP"));
 		elmGroup2.addAttribute(new Attribute("Description", "END " + group.getName() + " GROUP"));
-		elmGroup2.addAttribute(new Attribute("Usage", group.getUsage().value()));
-		elmGroup2.addAttribute(new Attribute("Min", group.getMin() + ""));
-		elmGroup2.addAttribute(new Attribute("Max", group.getMax()));
+		elmGroup2.addAttribute(new Attribute("Usage", ""));
+		elmGroup2.addAttribute(new Attribute("Min", ""));
+		elmGroup2.addAttribute(new Attribute("Max", ""));
 		elmGroup2.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "]"));
 		elmGroup2.addAttribute(new Attribute("Depth", String.valueOf(depth)));
 		elmGroup2.addAttribute(new Attribute("Position", group.getPosition().toString()));
@@ -1607,7 +1642,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 										.equals("v")) {
 									td.appendChild(ccv.getValue());
 								} else {
-									if (ccv.getValue().equals("")) {
+									if (ccv.getValue() != null && ccv.getValue().equals("")) {
 										td.appendChild("N/A");
 									} else {
 										if (tableService.findById(ccv.getValue()) != null) {
