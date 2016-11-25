@@ -137,8 +137,8 @@ public class Bootstrap implements InitializingBean {
     // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
     // to write a code for the message.
     //Colorate();
-	 // setDtsStatus();
-	 // setTablesStatus();
+	setDtsStatus();
+	 setTablesStatus();
     // Colorate();
 	  
 	//  this.modifyConstraint();
@@ -171,9 +171,9 @@ public class Bootstrap implements InitializingBean {
   private void setTablesStatus(){
 	  List<Table> allTables = tableService.findAll();  
 	  for(Table t :allTables ){
-		  if(t.getScope().equals(SCOPE.HL7STANDARD)){
+		  if(t.getScope().equals(SCOPE.HL7STANDARD)&&!t.getPublicationDate().isEmpty()){
 			  t.setStatus(STATUS.PUBLISHED);
-		  }else if(t.getScope().equals(SCOPE.USER)){
+		  }else if(t.getScope().equals(SCOPE.USER)&&t.getPublicationDate().isEmpty()){
 			  t.setStatus(STATUS.UNPUBLISHED);
 		  }
 	        tableService.save(t);
@@ -183,9 +183,9 @@ public class Bootstrap implements InitializingBean {
   private void setDtsStatus(){
 	  List<Datatype> allDts = datatypeService.findAll();  
 	  for(Datatype d :allDts ){
-		  if(d.getScope().equals(SCOPE.HL7STANDARD)){
+		  if(d.getScope().equals(SCOPE.HL7STANDARD)&&!d.getPublicationDate().isEmpty() ){
 			  d.setStatus(STATUS.PUBLISHED);
-		  }else if(d.getScope().equals(SCOPE.USER)){
+		  }else if(d.getScope().equals(SCOPE.USER)&& d.getPublicationDate().isEmpty() ){
 			  d.setStatus(STATUS.UNPUBLISHED);
 		  }
 		  datatypeService.save(d);

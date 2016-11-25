@@ -535,8 +535,6 @@ angular.module('igl')
                             }
                         }
                 	});
-
-
                 }
                 if (element.datatype !== null || element.datatype !== undefined) {
 

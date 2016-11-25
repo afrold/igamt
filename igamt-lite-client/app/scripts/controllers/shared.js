@@ -438,6 +438,13 @@ angular
 
 angular.module('igl').controller('confirmUnshare', function($scope, $rootScope, $http, $modalInstance,datatypeTo) {
     $scope.datatypeTo=datatypeTo;
+        $scope.getMessage=function(){
+        if($scope.datatypeTo.type==='table'){
+            return "Value Set";
+        }else{
+            return "Data Type"
+        }
+    };
 
     $scope.confirm = function() {
     	  $modalInstance.close($scope.datatypeTo);
@@ -450,9 +457,9 @@ angular.module('igl').controller('confirmUnshare', function($scope, $rootScope, 
 
 angular.module('igl').controller('abortUnshare', function($scope, $rootScope, $http, $modalInstance,datatypeTo) {
     $scope.datatypeTo=datatypeTo;
-    $scope.Message=function(){
-        if($scope.datatypeTo.type='table'){
-            return "Table";
+    $scope.getMessage=function(){
+        if($scope.datatypeTo.type==='table'){
+            return "Value Set";
         }else{
             return "Data Type"
         }
