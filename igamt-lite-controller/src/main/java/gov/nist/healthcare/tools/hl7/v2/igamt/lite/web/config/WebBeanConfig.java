@@ -46,6 +46,7 @@ public class WebBeanConfig {
 		config.setTableContentDefinitions(toSet(new String[] { "Extensional", "Intensional" }));
 		config.setTableExtensibilities(toSet(new String[] { "Open", "Closed" }));
 		config.setConstraintVerbs(toSet(new String[] { "SHALL be", "SHALL NOT be", "should be", "should not be", "may be", "may not be", "is", "is not" }));
+		config.setConditionalConstraintVerbs(toSet(new String[] { "is", "is not" }));
 		config.setConstraintTypes(toSet(new String[] { 
 				"valued",
 				"a literal value", 

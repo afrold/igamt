@@ -137,8 +137,8 @@ public class Bootstrap implements InitializingBean {
     // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
     // to write a code for the message.
     //Colorate();
-	setDtsStatus();
-	 setTablesStatus();
+	//setDtsStatus();
+	 //setTablesStatus();
     // Colorate();
 	  
 	//  this.modifyConstraint();
@@ -222,6 +222,8 @@ public class Bootstrap implements InitializingBean {
 	  setUpdatedDates(); // Run only once.
 
   }
+   
+
   
   @SuppressWarnings("deprecation")
 private void setUpdatedDates() throws IGDocumentException {

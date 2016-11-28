@@ -937,10 +937,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     } else if (element.type === "group" && element.children) {
                         var g = {};
                         g.path = element.position + "[1]";
+                        g.locationPath = element.name.substr(element.name.lastIndexOf('.') + 1) + '[1]';
                         g.obj = element;
                         g.children = [];
                         if (parent.path) {
-                            g.path = parent.path + "." + element.position + "[1]";
+                            g.path = parent.path + "." + g.path;
+                            g.locationPath = parent.locationPath + "." + g.locationPath;
                         }
                         parent.children.push(g);
                         angular.forEach(element.children, function(segmentRefOrGroup) {
@@ -949,10 +951,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     } else if (element.type === "segmentRef") {
                         var s = {};
                         s.path = element.position + "[1]";
+                        s.locationPath = $rootScope.segmentsMap[element.ref.id].name + '[1]';
                         s.obj = element;
                         s.children = [];
                         if (parent.path) {
                             s.path = parent.path + "." + element.position + "[1]";
+                            s.locationPath = parent.locationPath + "." + s.locationPath;
                         }
 
                         if ($rootScope.segmentsMap[s.obj.ref.id] == undefined) {
@@ -970,6 +974,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                             var s = {};
                             s.obj = element;
                             s.path = element.name;
+                            s.locationPath = element.name;
                             s.children = [];
                             parent = s;
                         }
@@ -984,6 +989,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         var f = {};
                         f.obj = element;
                         f.path = parent.path + "." + element.position + "[1]";
+                        f.locationPath = parent.locationPath + "." + element.position + "[1]";
                         f.children = [];
                         var d = $rootScope.datatypesMap[f.obj.datatype.id];
                         if (d === undefined) {
@@ -1013,6 +1019,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
                         c.obj = element;
                         c.path = parent.path + "." + element.position + "[1]";
+                        c.locationPath = parent.locationPath + "." + element.position + "[1]";
                         c.children = [];
                         var d = $rootScope.datatypesMap[c.obj.datatype.id];
                         if (d === undefined) {
@@ -1036,6 +1043,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                             var d = {};
                             d.obj = element;
                             d.path = element.name;
+                            d.locationPath = element.name;
                             d.children = [];
                             parent = d;
                         }
@@ -2542,10 +2550,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         $rootScope.erorrForComplexPredicate = function(compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage, constraints) {
             if ($rootScope.isEmptyCompositeType(compositeType)) return true;
-            if (complexConstraintTrueUsage == null) return true;
-            if (complexConstraintFalseUsage == null) return true;
-
-
             if (compositeType == 'FORALL' || compositeType == 'EXIST') {
                 if (constraints.length < 2) return true;
             } else {
@@ -2583,8 +2587,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
                 if ($rootScope.isEmptyConstraintValueSet(newConstraint)) return true;
             }
-            if (newConstraint.trueUsage == null) return true;
-            if (newConstraint.falseUsage == null) return true;
 
             return false;
         }

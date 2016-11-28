@@ -52,8 +52,7 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 	@Override
 	public IGDocument save(IGDocument ig) throws IGDocumentException {
 		try {
-			save(ig, DateUtils.getCurrentDate());
-			return documentRepository.save(ig);
+			return save(ig, DateUtils.getCurrentDate());
 		} catch (MongoException e) {
 			throw new IGDocumentException(e);
 		}
@@ -62,6 +61,7 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 	@Override
 	public IGDocument save(IGDocument ig, Date date) throws IGDocumentException {
 		try {
+			ig.setDateUpdated(date);
 			return documentRepository.save(ig);
 		} catch (MongoException e) {
 			throw new IGDocumentException(e);
