@@ -74,30 +74,28 @@
             </xsl:element>
 
             <xsl:if test="count(./Constraint) &gt; 0">
-                <xsl:if test="normalize-space($inlineConstraintsVar) = 'false'">
-                    <xsl:call-template name="Constraint">
-                        <xsl:with-param name="title">
-                            <xsl:text>Conformance statements</xsl:text>
-                        </xsl:with-param>
-                        <xsl:with-param name="constraintMode">
-                            <xsl:text>standalone</xsl:text>
-                        </xsl:with-param>
-                        <xsl:with-param name="type">
-                            <xsl:text>cs</xsl:text>
-                        </xsl:with-param>
-                    </xsl:call-template>
-                    <xsl:call-template name="Constraint">
-                        <xsl:with-param name="title">
-                            <xsl:text>Conditional predicates</xsl:text>
-                        </xsl:with-param>
-                        <xsl:with-param name="constraintMode">
-                            <xsl:text>standalone</xsl:text>
-                        </xsl:with-param>
-                        <xsl:with-param name="type">
-                            <xsl:text>pre</xsl:text>
-                        </xsl:with-param>
-                    </xsl:call-template>
-                </xsl:if>
+                <xsl:call-template name="Constraint">
+                    <xsl:with-param name="title">
+                        <xsl:text>Conformance statements</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="constraintMode">
+                        <xsl:text>standalone</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="type">
+                        <xsl:text>cs</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="Constraint">
+                    <xsl:with-param name="title">
+                        <xsl:text>Conditional predicates</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="constraintMode">
+                        <xsl:text>standalone</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="type">
+                        <xsl:text>pre</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
             </xsl:if>
         </xsl:element>
         <xsl:value-of disable-output-escaping="yes"
