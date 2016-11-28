@@ -606,8 +606,8 @@ angular
                     }
                 ]
             ];
-            
-            
+
+
             $scope.TableOptionsForPublished = [
                                                   ['Create New Version',
                                                       function ($itemScope) {
@@ -633,15 +633,15 @@ angular
                                                           }
                                                       }
                                                   ],
-                                                  
+
                                                   ['Export CSV',
                                                          function ($itemScope) {
                                                              $rootScope.exportCSVForTable($itemScope.table);
 
                                                          }
                                                      ],
-                                                  
-                                                  
+
+
                                                   ['Create Flavor',
                                                       function ($itemScope) {
 
@@ -663,10 +663,10 @@ angular
                                                       }
                                                   ]
                                               ];
-            
-            
-            
-            
+
+
+
+
 
             $rootScope.readyForNewVersion = function (element) {
                 var ready = true;
@@ -885,17 +885,17 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
-                     
+
                                      $rootScope.addDatatypesFromUserLib("2.1");
-                                
-                                
+
+
 
                             });
 
                         } else {
-                  
+
                                      $rootScope.addDatatypesFromUserLib("2.1");
-                                
+
                         }
                     }
                 ],
@@ -905,17 +905,17 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
-                     
+
                                     $rootScope.addDatatypeFromMasterLib("2.1");
-                                
-                                
+
+
 
                             });
 
                         } else {
-                  
+
                                      $rootScope.addDatatypeFromMasterLib("2.1");
-                                
+
                         }
                     }
                 ],
@@ -925,17 +925,17 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
-                     
+
                                     $rootScope.addSharedDatatypes();
-                                
-                                
+
+
 
                             });
 
                         } else {
-                  
+
                                      $rootScope.addSharedDatatypes();
-                                
+
                         }
                     }
                 ]
@@ -949,14 +949,14 @@ angular
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
                                     $scope.addMasterDt();
-                               
-                                
+
+
 
                             });
 
                         } else {
                                     $scope.addMasterDt();
-                
+
                         }
                     }
                 ]
@@ -969,17 +969,17 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
-                     
+
                                      $scope.addDatatypeForUser("2.1");
-                                
-                                
+
+
 
                             });
 
                         } else {
-                  
+
                                      $scope.addDatatypeForUser("2.1");
-                                
+
                         }
                     }
                 ],
@@ -989,17 +989,17 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
-                     
+
                                      $rootScope.addDatatypesFromUserLib("2.1");
-                                
-                                
+
+
 
                             });
 
                         } else {
-                  
+
                                      $rootScope.addDatatypesFromUserLib("2.1");
-                                
+
                         }
                     }
                 ],
@@ -1009,17 +1009,17 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
-                     
+
                                     $rootScope.addDatatypeFromMasterLib("2.1");
-                                
-                                
+
+
 
                             });
 
                         } else {
-                  
+
                                      $rootScope.addDatatypeFromMasterLib("2.1");
-                                
+
                         }
                     }
                 ],['Add Shared Datatypes',
@@ -1028,17 +1028,17 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function () {
-                     
+
                                     $rootScope.addSharedDatatypes();
-                                
-                                
+
+
 
                             });
 
                         } else {
-                  
+
                                      $rootScope.addSharedDatatypes();
-                                
+
                         }
                     }
                 ]
@@ -1049,7 +1049,7 @@ angular
 
 
 
-                
+
             ];
 
 
@@ -1314,16 +1314,34 @@ angular
 
                 console.log("editDataType");
 
-                if ($rootScope.hasChanges()) {
-                    console.log("found changes");
+                // Find share participants
+          			if (data.shareParticipantIds && data.shareParticipantIds.length > 0) {
+          					data.shareParticipantIds.forEach(function (participant) {
+          							$http.get('api/shareparticipant', { params: { id: participant.accountId } })
+          									.then(
+          									function (response) {
+          											participant.username = response.data.username;
+          											participant.fullname = response.data.fullname;
 
-                    $rootScope.openConfirmLeaveDlg().result.then(function () {
-                        console.log("dialog opened");
-                        processEditDataType(data);
-                    });
-                } else {
-                    processEditDataType(data);
-                }
+                                // Proceed with next
+                                if ($rootScope.hasChanges()) {
+                                  console.log("found changes");
+
+                                  $rootScope.openConfirmLeaveDlg().result.then(function () {
+                                    console.log("dialog opened");
+                                    processEditDataType(data);
+                                  });
+                                } else {
+                                  processEditDataType(data);
+                                }
+          									},
+          									function (error) {
+          											console.log(error);
+          									}
+          									);
+          					});
+          			}
+
 
             };
 
@@ -1742,14 +1760,14 @@ angular
             }
 
             $scope.showCannotPublish=function(datatype){
-        	
+
         	$scope.unpublishedChild=[];
         	angular.forEach($rootScope.versionAndUseMap[datatype.id].derived, function(derived){
         		if($rootScope.datatypesMap[derived].status=="UNPUBLISHED"){
         			$scope.unpublishedChild.push($rootScope.datatypesMap[derived]);
-        			
+
         		}
-        		
+
         	});
         	 var addDatatypeInstance = $modal.open({
                  templateUrl: 'cannotPublish.html',
@@ -1757,7 +1775,7 @@ angular
                  size: 'lg',
                  windowClass: 'conformance-profiles-modal',
                  resolve: {
-                    
+
                      datatype: function() {
 
                          return datatype;
@@ -1767,15 +1785,15 @@ angular
 
                          return $scope.unpublishedChild;
                      }
-                    
+
                  }
              }).result.then(function(results) {
-                 
+
              });
         };
             $rootScope.addDatatypesFromUserLib=function(){
                 var scopes = ['HL7STANDARD'];
-            
+
 
                     DatatypeLibrarySvc.getDataTypeLibraryByScope('USER').then(function(userDtLib) {
                     	var dtlibs=[];
@@ -1817,14 +1835,14 @@ angular
                                 ids.push(result.id);
                             });
                         });
-          
+
             });
 
             }
 
                     $rootScope.addSharedDatatypes=function(){
                     var scopes = ['HL7STANDARD'];
-            
+
 
                         var addDatatypeInstance = $modal.open({
                             templateUrl: 'AddSharedDatatype.html',
@@ -1835,7 +1853,7 @@ angular
                                 hl7Version: function() {
                                     return $scope.hl7Version;
                                 },
-                             
+
                                 datatypeLibrary: function(){
                                 	return $rootScope.datatypeLibrary;
                                 },
@@ -1847,8 +1865,8 @@ angular
                                 }
                             }
                         }).result.then(function(results) {
-                            
-          
+
+
             });
 
             }
@@ -1891,7 +1909,7 @@ angular
                                 ids.push(result.id);
                             });
                         });
-          
+
             });
 
             }
@@ -1909,7 +1927,7 @@ angular
 	        $scope.selectUserDtLib = function(usrLib) {
 	            console.log(usrLib);
 	            DatatypeLibrarySvc.getDatatypesByLibrary(usrLib.id).then(function(datatypes) {
-                    
+
 	                $scope.userDatatypes = datatypes;
 
 	                console.log($scope.userDatatypes);
@@ -1999,13 +2017,13 @@ angular
 	        };
 	        $scope.addDtFlv = function(datatype) {
 	                $scope.newDatatype = angular.copy(datatype);
-	        	    
+
 	            	$scope.newDatatype.ext=Math.floor(Math.random() * 1000);
 
                 	console.log($scope.newDatatype.ext);
        	            $scope.newDatatype.scope =datatypeLibrary.scope;
                   	$scope.newDatatype.status="UNPUBLISHED";
-                  	
+
        	            $scope.newDatatype.participants = [];
        	            $scope.newDatatype.id = new ObjectId().toString();
        	            $scope.newDatatype.libIds = [];
@@ -2082,7 +2100,7 @@ angular
 	                return false;
 	            }
 	        };
-            
+
 	        $scope.ok = function() {
 	            console.log($scope.selectedDatatypes);
 	            $scope.selectFlv = [];
@@ -2164,7 +2182,7 @@ angular
 	                    $rootScope.msg().text = "datatypeAdded";
 	                    $rootScope.msg().type = "success";
 	                    $rootScope.msg().show = true;
-	                  
+
 	                });
 
 	            }, function(error) {
@@ -2182,7 +2200,7 @@ angular
 	        };
 	    });
 
-        
+
     angular.module('igl').controller('addMAsterInLibrary',
     function($scope, $rootScope, $modalInstance, hl7Version, masterLib,DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http,datatypeLibrary,tableLibrary,versionAndUseMap) {
 			$scope.versionAndUseMap=versionAndUseMap;
@@ -2196,12 +2214,12 @@ angular
 	            console.log(masLib);
 	            DatatypeLibrarySvc.getDatatypesByLibrary(masLib.id).then(function(datatypes) {
 	            	console.log(datatypes);
-	            	
+
 	                $scope.masterDatatypes = _.where(datatypes, {scope:"MASTER",status:"PUBLISHED"}) ;
 	                console.log($scope.masterDatatypes);
 	            });
 	        };
-	        
+
 	        var listHL7Versions = function() {
 	            return $http.get('api/igdocuments/findVersions', {
 	                timeout: 60000
@@ -2285,7 +2303,7 @@ angular
 	        $scope.addDtFlv = function(datatype) {
 	                $scope.newDatatype = angular.copy(datatype);
 	        	    if($rootScope.igdocument){
-               
+
                 console.log("merging");
                 //newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
                 var temp = [];
@@ -2297,7 +2315,7 @@ angular
                     console.log("MERGING");
                 });
                  }
-                 
+
                  if($rootScope.libraryDoc){
                      console.log("HERRRRE");
                 var temp = [];
@@ -2310,14 +2328,14 @@ angular
                         });
 
                  }
-                        
-                    
+
+
 	            	$scope.newDatatype.ext=Math.floor(Math.random() * 1000);
 
                 	console.log($scope.newDatatype.ext);
        	            $scope.newDatatype.scope =datatypeLibrary.scope;
                   	$scope.newDatatype.status="UNPUBLISHED";
-                  	
+
        	            $scope.newDatatype.participants = [];
        	            $scope.newDatatype.id = new ObjectId().toString();
        	            $scope.newDatatype.libIds = [];
@@ -2466,7 +2484,7 @@ angular
 	                                }
                                     $modalInstance.close(datatypes);
 	                            });
-                              
+
 	                        });
 	                    });
 	                    $rootScope.msg().text = "datatypeAdded";
@@ -2527,7 +2545,7 @@ angular.module('igl').controller('AddSharedDatatype',
 	        $scope.NocheckedExt = true;
 	        $scope.selectedDatatypes = [];
 
-	    
+
 	        var listHL7Versions = function() {
 	            return $http.get('api/igdocuments/findVersions', {
 	                timeout: 60000
@@ -2611,13 +2629,13 @@ angular.module('igl').controller('AddSharedDatatype',
 	        };
 	        $scope.addDtFlv = function(datatype) {
 	                $scope.newDatatype = angular.copy(datatype);
-	        	    
+
 	            	$scope.newDatatype.ext=Math.floor(Math.random() * 1000);
 
                 	console.log($scope.newDatatype.ext);
        	            $scope.newDatatype.scope =datatypeLibrary.scope;
                   	$scope.newDatatype.status="UNPUBLISHED";
-                  	
+
        	            $scope.newDatatype.participants = [];
        	            $scope.newDatatype.id = new ObjectId().toString();
        	            $scope.newDatatype.libIds = [];
@@ -2694,7 +2712,7 @@ angular.module('igl').controller('AddSharedDatatype',
 	                return false;
 	            }
 	        };
-            
+
 	        $scope.ok = function() {
 	            console.log($scope.selectedDatatypes);
 	            $scope.selectFlv = [];
@@ -2776,7 +2794,7 @@ angular.module('igl').controller('AddSharedDatatype',
 	                    $rootScope.msg().text = "datatypeAdded";
 	                    $rootScope.msg().type = "success";
 	                    $rootScope.msg().show = true;
-	                  
+
 	                });
 
 	            }, function(error) {
