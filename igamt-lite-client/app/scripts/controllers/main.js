@@ -1235,6 +1235,30 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 }
             }
         };
+        $rootScope.findDatatypeRefsForMenu = function(datatype, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.datatype.id === datatype.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        found.target = angular.copy(target);
+                        found.datatypeLink = angular.copy(obj.datatype);
+                        $rootScope.referencesForMenu.push(found);
+                    }
+                    $rootScope.findDatatypeRefsForMenu(datatype, $rootScope.datatypesMap[obj.datatype.id], path, target);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findDatatypeRefsForMenu(datatype, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                            $rootScope.findDatatypeRefsForMenu(datatype, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
 
             $rootScope.findTempDatatypeRefs = function(datatype, obj, path, target) {
             if (obj != null && obj != undefined) {
@@ -1285,6 +1309,31 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 }
             }
         };
+        
+        $rootScope.findSegmentRefsForMenu = function(segment, obj, path, positionPath, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'message')) {
+                    angular.forEach(obj.children, function(child) {
+                        $rootScope.findSegmentRefsForMenu(segment, child, obj.name + '-' + obj.identifier, obj.name + '-' + obj.identifier, target);
+                    });
+                } else if (angular.equals(obj.type, 'group')){
+                    angular.forEach(obj.children, function(child) {
+                        var groupNames = obj.name.split(".");
+                        var groupName = groupNames[groupNames.length - 1];
+                        $rootScope.findSegmentRefsForMenu(segment, child, path + '.' + groupName, positionPath + '.' + obj.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'segmentRef')) {
+                    if (obj.ref.id === segment.id) {
+                        var found = angular.copy(obj);
+                        found.path = path + '.' + segment.name;
+                        found.positionPath = positionPath + '.' + obj.position;
+                        found.target = angular.copy(target);
+                        found.segmentLink = angular.copy(obj.ref);
+                        $rootScope.referencesForMenu.push(found);
+                    }
+                }
+            }
+        };
 
         $rootScope.findTableRefs = function(table, obj, path, target) {
             if (obj != null && obj != undefined) {
@@ -1315,6 +1364,37 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         };
 
+        $rootScope.findTableRefsForMenu = function(table, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.tables != undefined && obj.tables.length > 0) {
+                        angular.forEach(obj.tables, function(tableInside) {
+                            if (tableInside.id === table.id) {
+                                var found = angular.copy(obj);
+                                found.path = path;
+                                found.target = angular.copy(target);
+                                found.tableLink = angular.copy(tableInside);
+                                $rootScope.referencesForMenu.push(found);
+                            }
+                        });
+                    }
+                    // $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findTableRefsForMenu(table, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                            $rootScope.findTableRefsForMenu(table, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
+        
+        
+        
         $rootScope.findTableRefsForDelete = function(table, obj, path, target) {
             if (obj != null && obj != undefined) {
                 if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
