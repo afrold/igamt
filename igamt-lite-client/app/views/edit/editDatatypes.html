@@ -191,13 +191,13 @@
                                                     <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
                                                 </div>
 
-                                                <div ng-show="datatype.components && datatype.components.length > 0" class=igl-def-table-container ">
+                                                <div ng-show="datatype.components && datatype.components.length > 0" class="igl-def-table-container">
             <table id="treeTable" tt-table tt-params="datatypesParams " class="table table-bordered table-fix-header table-condensed profile-table ">
                 <thead>
                 <tr class="tbl-header " style=" ">
                     <th class="col-md-2 col-fixed-250 ">Name</th>
                     <th class="col-md-1 col-fixed-80 ">Usage
-                        <button type="button " class="btn btn-raised btn-info btn-xs " ng-show="(datatype.scope==='USER' )&& !viewSettings.tableReadonly && (datatype.components.length>0)" ng-click="OtoX(datatype)">O to X
+                        <button type="button " class="btn btn-raised btn-info btn-xs " ng-show="(datatype.scope==='USER' )&& !viewSettings.tableReadonly && (datatype.components.length>0)" ng-hide="typeOfSharing" ng-click="OtoX(datatype)">O to X
                                                     </button>
                                                     </th>
                                                     <th class="col-md-1 col-fixed-100">Length
@@ -554,7 +554,7 @@
                                </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
 
-                                    <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary">
+                                    <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary" ng-hide="typeOfSharing">
                                         <button type="button" ng-click="AddBindingForDatatype(datatype)" class="btn btn-raised btn-info btn-md"><i class="fa fa-plus"></i> Add Binding</button>
                                     </span>
 
