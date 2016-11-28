@@ -2529,7 +2529,7 @@ display: inline-block;
 
 .badge{
 display: inline-block;
-	
+
     padding: 3px 3px !important;
 
 }
@@ -2549,4 +2549,33 @@ display: inline-block;
 .table-fixed tbody td, .table-fixed thead > tr> th {
 //   float: left;
 //   border-bottom-width: 0;
+}
+
+ul.drop-accordian-menu {
+    max-height: 250px;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-family: Arial, Helvetica, Sans-Serif;
+    font-size: 9pt;
+    width: auto;
+}
+ul.drop-accordian-menu li {
+    border-bottom: 1px solid #ccc;
+    margin: 0;
+}
+
+ul.drop-accordian-menu li a {
+    display: block;
+    padding: 5px 5px 5px 20px;
+    text-decoration: none;
+  	font-size: 8pt;
+    font-style: normal;
+    width: auto;
+}
+
+ul.drop-accordian-menu a:hover {
+    background-color: #0277bd;
 }
