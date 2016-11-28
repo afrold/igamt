@@ -107,8 +107,7 @@ public class Bootstrap implements InitializingBean {
    */
   @Override
   public void afterPropertiesSet() throws Exception {
-//	  setUpdatedDates(); // Run only once.
-  }
+   }
   
   @SuppressWarnings("deprecation")
 private void setUpdatedDates() throws IGDocumentException {

@@ -37,7 +37,7 @@
                 <xsl:text>text/javascript</xsl:text>
             </xsl:attribute>
             <xsl:text disable-output-escaping="yes">
-                function unhide(divID, btnID) {
+                function unhide(divID, txtID) {
 					var oLimit = document.querySelector("#sidebar");
 					var divs = document.querySelectorAll("div");
 					for (var i = 0; i &lt; divs.length; i++) {
@@ -45,7 +45,7 @@
 					        divs[i].className = (divs[i].className=='hidden')?'unhidden':'hidden';
 					    }
 					}
-					document.getElementById(btnID).innerHTML = ((document.getElementById(divID).className=='hidden')? "[Show]":"[Hide]");
+					document.getElementById(txtID).innerHTML = ((document.getElementById(divID).className=='hidden')? "[Show]":"[Hide]");
                 }
             </xsl:text>
         </xsl:element>
