@@ -3132,6 +3132,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         
         }
         $rootScope.publishDatatype = function(datatype) {
+        	console.log("publisheing")
 
             $rootScope.containUnpublished = false;
             $rootScope.unpublishedTables = [];

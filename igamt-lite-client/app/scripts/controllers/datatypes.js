@@ -518,6 +518,7 @@ angular.module('igl')
             if (element && element.type && element.type === "datatype") {
 
                 angular.forEach(element.components, function(component) {
+                	component.location= element.name+"_"+element.ext+"."+component.position
                     $scope.ContainUnpublished(component);
                 });
 
@@ -529,8 +530,7 @@ angular.module('igl')
                 		if ($rootScope.tablesMap[table.id] && $rootScope.tablesMap[table.id]) {
                             if ($rootScope.tablesMap[table.id].scope!=="HL7STANDARD" && $rootScope.tablesMap[table.id].status !== "PUBLISHED" ) {
                                 $scope.containUnpublished = true;
-                                console.log("Fouuund Unpublished");
-                                $scope.unpublishedTables.push({ table: table, location: element });
+                                $scope.unpublishedTables.push({ table: table, location: element.location });
                                 console.log($scope.unpublishedTables);
                             }
                         }
@@ -544,7 +544,7 @@ angular.module('igl')
                         	console.log("Found Unpublished");
                             console.log($scope.containUnpublished);
                             $scope.containUnpublished = true;
-                            $scope.unpublishedDatatypes.push({ datatype: element.datatype, location: element });
+                            $scope.unpublishedDatatypes.push({ datatype: element.datatype, location: element.location });
                         }
                     }
 
