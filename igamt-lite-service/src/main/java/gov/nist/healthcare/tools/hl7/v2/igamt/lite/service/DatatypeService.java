@@ -16,46 +16,45 @@ import java.util.List;
 import java.util.Set;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 public interface DatatypeService {
 
-	Datatype findById(String id);
+	public Datatype findById(String id);
 
-	Datatype save(Datatype datatype);
+	public Datatype save(Datatype datatype);
 
-	List<Datatype> findAll();
+	public List<Datatype> findAll();
 
-	List<Datatype> findByIds(Set<String> ids);
+	public List<Datatype> findByIds(Set<String> ids);
 
-	List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-	void delete(Datatype dt);
+	public void delete(Datatype dt);
 
-	void delete(String id);
+	public void delete(String id);
 
-	void save(List<Datatype> datatypes);
+	public void save(List<Datatype> datatypes);
 
-	Set<Datatype> collectDatatypes(Datatype datatype);
+	public Set<Datatype> collectDatatypes(Datatype datatype);
 
+	public List<Datatype> findByScope(String scope);
 
-  List<Datatype> findByScope(String scope);
-  
-  List<Datatype> findShared(Long accountId);
-  
-  List<Datatype> findPendingShared(Long accountId);
+	public List<Datatype> findShared(Long accountId);
 
-	Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+	public List<Datatype> findPendingShared(Long accountId);
 
-	Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
+	public Datatype findByNameAndVersionAndScope(String name, String version, String scope);
 
+	public Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
 
-	List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String string);
+	public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String string);
 
+	public Date updateDate(String id, Date date) throws IGDocumentException;
 
-	Date updateDate(String id, Date date) throws IGDocumentException;
+	public Datatype save(Datatype datatype, Date date);
 
-	Datatype save(Datatype datatype, Date date);
-
+	public void updateStatus(String id, STATUS status);
 
 }

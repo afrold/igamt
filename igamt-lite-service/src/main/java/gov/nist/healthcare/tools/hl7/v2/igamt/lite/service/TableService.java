@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 public interface TableService {
@@ -27,14 +27,11 @@ public interface TableService {
 
 	List<Table> findAll();
 
+	List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-  List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
-  
-  List<Table> findShared(Long accountId);
-  
-  List<Table> findPendingShared(Long accountId);
+	List<Table> findShared(Long accountId);
 
-
+	List<Table> findPendingShared(Long accountId);
 
 	void delete(Table table);
 
@@ -49,5 +46,7 @@ public interface TableService {
 	Date updateDate(String id, Date date);
 
 	Table save(Table table, Date date);
+
+	void updateStatus(String id, STATUS status);
 
 }

@@ -25,6 +25,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 public class DatatypeRepositoryImpl implements DatatypeOperations {
@@ -74,11 +75,10 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		Query qry = Query.query(where);
 		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
 		for (Datatype dt : datatypes) {
-			if (dt.getScope().toString().equals(scope)){
+			if (dt.getScope().toString().equals(scope)) {
 				return dt;
 			}
-				
-			
+
 		}
 		Datatype datatype = null;
 
@@ -153,6 +153,16 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 		update.set("dateUpdated", date);
 		mongo.updateFirst(query, update, Datatype.class);
 		return date;
+	}
+
+	@Override
+	public void updateStatus(String id, STATUS status) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("id").is(id));
+		query.fields().include("status");
+		Update update = new Update();
+		update.set("status", status);
+		mongo.updateFirst(query, update, Datatype.class);
 	}
 
 	// Query set4Brevis(Query qry) {

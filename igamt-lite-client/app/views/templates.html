@@ -2154,21 +2154,20 @@
 
 <script type="text/ng-template" id="ConfirmDatatypePublishCtl.html">
     <div class="modal-header">
-        <h3 class="modal-title">Publish Confirmation
+        <h3 class="modal-title">Commit Confirmation
         </h3>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want to publish this Data Type?</p>
-        <p>Data Type will no longer be editable.</p>
-        <p>This operation is irreversible.</p>
+        <p>Are You Sure You Want To Commit This Data Type ? A Committed Data Type Is Assigned A Version And Cannot Be Edited.</p>
+        <p>This Operation is Irreversible.</p>
     </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-success btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
-                class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                class="fa fa-check fa-fw">&nbsp; </i>Confirm</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
@@ -2198,21 +2197,20 @@
 
 <script type="text/ng-template" id="ConfirmTablePublish.html">
     <div class="modal-header">
-        <h3 class="modal-title">Publish Confirmation
+        <h3 class="modal-title">Commit Confirmation
         </h3>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want to publish this Table?</p>
-        <p>This Value Set  no longer be editable.</p>
-        <p>This operation is irreversible.</p>
+        <p>Are You Sure You Want To Commit This Value Set? A Committed Value Set Is Assigned A Version And Cannot Be Edited.</p>
+        <p>This Operation is Irreversible.</p>
     </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-success btn-sm" ng-disabled="loading" ng-click="confirm()"><span><i
-                class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="confirm()"><span><i
+                class="fa fa-check fa-fw">&nbsp; </i>Confirm</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
@@ -2351,7 +2349,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<span style="color: red;">
-              Please publish this datatype before sharing it. You cannot share a datatype that is not published.
+              Please Commit this datatype before sharing it. You cannot share a datatype that is not commited.
             </span>
 					</div>
 				</div>
@@ -2374,7 +2372,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<span style="color: red;">
-              Please publish this Value Set before sharing it. You cannot share a Value Set that is not published.
+              Please Commit this Value Set before sharing it. You cannot share a Value Set that is not commited.
             </span>
 					</div>
 				</div>

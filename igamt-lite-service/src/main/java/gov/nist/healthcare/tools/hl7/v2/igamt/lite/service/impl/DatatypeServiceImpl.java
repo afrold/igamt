@@ -24,13 +24,12 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 /**
  * @author gcr1
@@ -39,125 +38,122 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 @Service
 public class DatatypeServiceImpl implements DatatypeService {
 
-  Logger log = LoggerFactory.getLogger(DatatypeServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(DatatypeServiceImpl.class);
 
-  @Autowired
-  private DatatypeRepository datatypeRepository;
+	@Autowired
+	private DatatypeRepository datatypeRepository;
 
-  @Override
-  public List<Datatype> findAll() {
-    List<Datatype> datatypes = datatypeRepository.findAll();
-    log.info("DataypeServiceImpl.findAll=" + datatypes.size());
-    return datatypes;
-  }
+	@Override
+	public List<Datatype> findAll() {
+		List<Datatype> datatypes = datatypeRepository.findAll();
+		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
+		return datatypes;
+	}
 
-  @Override
-  public Datatype findById(String id) {
-    log.info("DataypeServiceImpl.findById=" + id);
-    Datatype datatype;
-    datatype = datatypeRepository.findOne(id);
-    return datatype;
-  }
+	@Override
+	public Datatype findById(String id) {
+		log.info("DataypeServiceImpl.findById=" + id);
+		Datatype datatype;
+		datatype = datatypeRepository.findOne(id);
+		return datatype;
+	}
 
-  @Override
-  public List<Datatype> findByIds(Set<String> ids) {
-    log.info("DataypeServiceImpl.findByIds=" + ids);
-    return datatypeRepository.findByIds(ids);
-  }
+	@Override
+	public List<Datatype> findByIds(Set<String> ids) {
+		log.info("DataypeServiceImpl.findByIds=" + ids);
+		return datatypeRepository.findByIds(ids);
+	}
 
+	@Override
+	public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		List<Datatype> datatypes = datatypeRepository.findByScopesAndVersion(scopes, hl7Version);
+		log.info("DataypeServiceImpl.findByScopesAndVersion=" + datatypes.size());
+		return datatypes;
+	}
 
-  @Override
-  public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-    List<Datatype> datatypes = datatypeRepository.findByScopesAndVersion(scopes, hl7Version);
-    log.info("DataypeServiceImpl.findByScopesAndVersion=" + datatypes.size());
-    return datatypes;
-  }
+	@Override
+	public Datatype save(Datatype datatype) {
+		log.info("DataypeServiceImpl.save=" + datatype.getId());
+		return datatypeRepository.save(datatype);
+	}
 
-  @Override
-  public Datatype save(Datatype datatype) {
-    log.info("DataypeServiceImpl.save=" + datatype.getId());
-    return datatypeRepository.save(datatype);
-  }
+	@Override
+	public void delete(Datatype dt) {
+		datatypeRepository.delete(dt);
+	}
 
-  @Override
-  public void delete(Datatype dt) {
-    datatypeRepository.delete(dt);
-  }
+	@Override
+	public void delete(String id) {
+		datatypeRepository.delete(id);
+	}
 
-  @Override
-  public void delete(String id) {
-    datatypeRepository.delete(id);
-  }
+	@Override
+	public void save(List<Datatype> datatypes) {
+		// TODO Auto-generated method stub
+		datatypeRepository.save(datatypes);
+	}
 
-  @Override
-  public void save(List<Datatype> datatypes) {
-    // TODO Auto-generated method stub
-    datatypeRepository.save(datatypes);
-  }
-
-  @Override
-  public Set<Datatype> collectDatatypes(Datatype datatype) {
-    Set<Datatype> datatypes = new HashSet<Datatype>();
-    if (datatype != null) {
-      datatypes.add(datatype);
-      List<Component> components = datatype.getComponents();
-      for (Component component : components) {
-        DatatypeLink link = component.getDatatype();
-        datatypes.addAll(collectDatatypes(this.findById(link.getId())));
-      }
-    }
-    return datatypes;
-  }
-
-@Override
-public List<Datatype> findByScope(String scope) {
-	// TODO Auto-generated method stub
-	return datatypeRepository.findByScope(scope);
-}
-
-@Override
-public List<Datatype> findShared(Long accountId) {
-	// TODO Auto-generated method stub
-	List<Datatype> datatypes = datatypeRepository.findShared(accountId);
-	List<Datatype> sharedWithAccount = new ArrayList<Datatype>();
-	for(Datatype d : datatypes) {
-		for(ShareParticipantPermission p : d.getShareParticipantIds()) {
-			if(p.getAccountId() == accountId && !p.isPendingApproval()) {
-				sharedWithAccount.add(d);
+	@Override
+	public Set<Datatype> collectDatatypes(Datatype datatype) {
+		Set<Datatype> datatypes = new HashSet<Datatype>();
+		if (datatype != null) {
+			datatypes.add(datatype);
+			List<Component> components = datatype.getComponents();
+			for (Component component : components) {
+				DatatypeLink link = component.getDatatype();
+				datatypes.addAll(collectDatatypes(this.findById(link.getId())));
 			}
 		}
+		return datatypes;
 	}
-	return sharedWithAccount;
-}
 
-@Override
-public List<Datatype> findPendingShared(Long accountId) {
-	// TODO Auto-generated method stub
-	List<Datatype> datatypes = datatypeRepository.findShared(accountId);
-	List<Datatype> sharedWithAccount = new ArrayList<Datatype>();
-	for(Datatype d : datatypes) {
-		for(ShareParticipantPermission p : d.getShareParticipantIds()) {
-			if(p.getAccountId() == accountId && p.isPendingApproval()) {
-				sharedWithAccount.add(d);
+	@Override
+	public List<Datatype> findByScope(String scope) {
+		// TODO Auto-generated method stub
+		return datatypeRepository.findByScope(scope);
+	}
+
+	@Override
+	public List<Datatype> findShared(Long accountId) {
+		// TODO Auto-generated method stub
+		List<Datatype> datatypes = datatypeRepository.findShared(accountId);
+		List<Datatype> sharedWithAccount = new ArrayList<Datatype>();
+		for (Datatype d : datatypes) {
+			for (ShareParticipantPermission p : d.getShareParticipantIds()) {
+				if (p.getAccountId() == accountId && !p.isPendingApproval()) {
+					sharedWithAccount.add(d);
+				}
 			}
 		}
+		return sharedWithAccount;
 	}
-	return sharedWithAccount;
-}
 
-@Override
-public Datatype findByNameAndVersionAndScope(String name, String version,String scope) {
-	// TODO Auto-generated method stub
-	return datatypeRepository.findByNameAndVersionAndScope(name,version, scope);
-}
+	@Override
+	public List<Datatype> findPendingShared(Long accountId) {
+		// TODO Auto-generated method stub
+		List<Datatype> datatypes = datatypeRepository.findShared(accountId);
+		List<Datatype> sharedWithAccount = new ArrayList<Datatype>();
+		for (Datatype d : datatypes) {
+			for (ShareParticipantPermission p : d.getShareParticipantIds()) {
+				if (p.getAccountId() == accountId && p.isPendingApproval()) {
+					sharedWithAccount.add(d);
+				}
+			}
+		}
+		return sharedWithAccount;
+	}
 
-@Override
-public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope) {
-	// TODO Auto-generated method stub
-	return datatypeRepository.findByNameAndVersionsAndScope(name,versions, scope);
-}
+	@Override
+	public Datatype findByNameAndVersionAndScope(String name, String version, String scope) {
+		// TODO Auto-generated method stub
+		return datatypeRepository.findByNameAndVersionAndScope(name, version, scope);
+	}
 
-
+	@Override
+	public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope) {
+		// TODO Auto-generated method stub
+		return datatypeRepository.findByNameAndVersionsAndScope(name, versions, scope);
+	}
 
 	@Override
 	public Datatype save(Datatype datatype, Date date) {
@@ -166,16 +162,18 @@ public Datatype findByNameAndVersionsAndScope(String name, String[] versions, St
 		return datatypeRepository.save(datatype);
 	}
 
-	
-@Override
-public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String string) {
-	return datatypeRepository.findAllByNameAndVersionsAndScope( name, versions,  string) ;
-}
+	@Override
+	public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String string) {
+		return datatypeRepository.findAllByNameAndVersionsAndScope(name, versions, string);
+	}
 
+	@Override
+	public Date updateDate(String id, Date date) {
+		return datatypeRepository.updateDate(id, date);
+	}
 
-@Override
-public Date updateDate(String id, Date date) {
-	return datatypeRepository.updateDate(id, date);
-}
-
+	@Override
+	public void updateStatus(String id, STATUS status) {
+		datatypeRepository.updateStatus(id, status);
+	}
 }
