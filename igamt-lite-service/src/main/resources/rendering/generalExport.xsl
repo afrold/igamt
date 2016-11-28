@@ -22,10 +22,10 @@
             <!--xsl:attribute name="xmlns"><xsl:text>http://www.w3.org/1999/xhtml</xsl:text></xsl:attribute-->
             <!-- Content of the head tag -->
             <xsl:element name="head">
-                <!--xsl:element name="meta">
+                <xsl:element name="meta">
                     <xsl:attribute name="http-equiv"><xsl:text>Content-Type</xsl:text></xsl:attribute>
                     <xsl:attribute name="content"><xsl:text>text/html; charset=utf-8</xsl:text></xsl:attribute>
-                </xsl:element-->
+                </xsl:element>
                 <xsl:element name="title">
                     <xsl:value-of select="$documentTitle"/>
                 </xsl:element>
