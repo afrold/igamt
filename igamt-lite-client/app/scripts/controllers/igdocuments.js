@@ -1373,6 +1373,14 @@ angular.module('igl')
             });
         };
 
+        $scope.customExportModal = function () {
+            var modalInstance = $modal.open({
+                templateUrl: 'CustomExportModal.html'
+                , controller: 'CustomExportCtrl'
+                , resolve: {}
+            });
+        };
+
     });
 
 
@@ -2870,4 +2878,28 @@ angular.module('igl').controller('UnShareIGDocumentCtrl', function ($scope, $mod
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+});
+
+angular.module('igl').controller('CustomExportCtrl', function ($scope, $modalInstance, $http, IgDocumentService, $rootScope) {
+  $scope.selectedType = {};
+  $scope.exportType = [{
+    type: "XML",
+    layout:["Layout 1", "Layout 2"]
+  }, {
+    type: "Word",
+    layout:["Layout 1", "Layout 2"]
+  }, {
+    type: "HTML", 
+    layout:["Layout 1", "Layout 2"]
+  }];
+
+  $scope.selectedLayout = {};
+
+
+  $scope.ok = function () {
+      $modalInstance.close();
+  };
+  $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+  };
 });
