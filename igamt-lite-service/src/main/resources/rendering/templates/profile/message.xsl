@@ -68,15 +68,17 @@
                     <xsl:for-each select="Elt">
                         <xsl:call-template name="element">
                         </xsl:call-template>
-
                     </xsl:for-each>
                 </xsl:element>
             </xsl:element>
+            <xsl:if test="count(./Constraint[@Type='cs'])+count(./Elt/Constraint[@Type='cs']) &gt; 0">
+                <xsl:element name="p">
+                    <xsl:text>Conformance statements</xsl:text>
+                </xsl:element>
 
-            <xsl:if test="count(./Constraint) &gt; 0">
                 <xsl:call-template name="Constraint">
                     <xsl:with-param name="title">
-                        <xsl:text>Conformance statements</xsl:text>
+                        <xsl:text>Message:</xsl:text>
                     </xsl:with-param>
                     <xsl:with-param name="constraintMode">
                         <xsl:text>standalone</xsl:text>
@@ -85,9 +87,31 @@
                         <xsl:text>cs</xsl:text>
                     </xsl:with-param>
                 </xsl:call-template>
+
+                <xsl:for-each select="Elt">
+                    <xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
+                        <xsl:call-template name="Constraint">
+                            <xsl:with-param name="title">
+                                <xsl:text>Group:</xsl:text>
+                            </xsl:with-param>
+                            <xsl:with-param name="constraintMode">
+                                <xsl:text>standalone</xsl:text>
+                            </xsl:with-param>
+                            <xsl:with-param name="type">
+                                <xsl:text>cs</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="count(./Constraint[@Type='pre'])+count(./Elt/Constraint[@Type='pre']) &gt; 0">
+                <xsl:element name="p">
+                    <xsl:text>Conditional predicates</xsl:text>
+                </xsl:element>
+
                 <xsl:call-template name="Constraint">
                     <xsl:with-param name="title">
-                        <xsl:text>Conditional predicates</xsl:text>
+                        <xsl:text>Message:</xsl:text>
                     </xsl:with-param>
                     <xsl:with-param name="constraintMode">
                         <xsl:text>standalone</xsl:text>
@@ -96,6 +120,22 @@
                         <xsl:text>pre</xsl:text>
                     </xsl:with-param>
                 </xsl:call-template>
+
+                <xsl:for-each select="Elt">
+                    <xsl:if test="count(./Constraint[@Type='pre']) &gt; 0">
+                        <xsl:call-template name="Constraint">
+                            <xsl:with-param name="title">
+                                <xsl:text>Group:</xsl:text>
+                            </xsl:with-param>
+                            <xsl:with-param name="constraintMode">
+                                <xsl:text>standalone</xsl:text>
+                            </xsl:with-param>
+                            <xsl:with-param name="type">
+                                <xsl:text>pre</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
+                    </xsl:if>
+                </xsl:for-each>
             </xsl:if>
         </xsl:element>
         <xsl:value-of disable-output-escaping="yes"
