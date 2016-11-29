@@ -4,7 +4,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
+import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.fields.FieldUpdater;
 import org.docx4j.openpackaging.contenttype.ContentType;
@@ -83,7 +85,7 @@ public class ExportUtil {
                 e1.printStackTrace();
             }
 
-            AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName("/hw.html"));
+            /*AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName("/hw.html"));
             afiPart.setBinaryData(html.getBytes());
             afiPart.setContentType(new ContentType("text/html"));
             Relationship altChunkRel = wordMLPackage.getMainDocumentPart().addTargetPart(afiPart);
@@ -94,12 +96,32 @@ public class ExportUtil {
             wordMLPackage.getMainDocumentPart().addObject(ac);
 
             // .. content type
-            wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");
+            wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");*/
+
+            Tidy tidy = new Tidy();
+            tidy.setWraplen(Integer.MAX_VALUE);
+            tidy.setXHTML(true);
+            tidy.setShowWarnings(false); // to hide errors
+            tidy.setQuiet(true); // to hide warning
+            tidy.setMakeClean(true);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            tidy.parse(IOUtils.toInputStream(html), baos);
+            html = baos.toString();
+            XHTMLImporterImpl xHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
+            wordMLPackage.getMainDocumentPart().getContent().addAll(xHTMLImporter.convert(html, null));
 
             docxExportUtil.loadTemplateForDocx4j(wordMLPackage); // Repeats the lines above but necessary; don't delete
 
             File tmpFile;
             tmpFile = File.createTempFile("IgDocument" + UUID.randomUUID().toString(), ".docx");
+
+
+            /*XHTMLImporterImpl XHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
+
+            wordMLPackage.getMainDocumentPart().getContent().addAll(
+                XHTMLImporter.convert( html, null) );*/
+
+
             wordMLPackage.save(tmpFile);
 
             return FileUtils.openInputStream(tmpFile);
