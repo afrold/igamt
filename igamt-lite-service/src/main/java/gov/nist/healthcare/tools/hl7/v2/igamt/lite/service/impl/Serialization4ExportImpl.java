@@ -1238,7 +1238,26 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		elmGroup2.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "]"));
 		elmGroup2.addAttribute(new Attribute("Depth", String.valueOf(depth)));
 		elmGroup2.addAttribute(new Attribute("Position", group.getPosition().toString()));
-		elmDisplay.appendChild(elmGroup2);
+
+			List<ConformanceStatement> conformanceStatements = group.getConformanceStatements();
+			if (conformanceStatements != null && !conformanceStatements.isEmpty()) {
+					for (Constraint constraint : conformanceStatements) {
+							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, group.getName() + ".");
+							elmGroup2.appendChild(elmConstraint);
+					}
+			}
+			List<Predicate> predicates = group.getPredicates();
+			if (predicates != null && !predicates.isEmpty()) {
+					for (Constraint constraint : predicates) {
+							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, group.getName() + ".");
+							elmGroup2.appendChild(elmConstraint);
+					}
+			}
+
+			elmDisplay.appendChild(elmGroup2);
+
+
+
 
 	}
 
@@ -1756,6 +1775,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				elmDatatype.addAttribute(new Attribute("Name", d.getName()));
 				elmDatatype.addAttribute(new Attribute("Label", d.getLabel()));
 				elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));
+				elmDatatype.addAttribute(new Attribute("PurposeAndUse", d.getPurposeAndUse()));
 				elmDatatype.addAttribute(new Attribute("Comment", d.getComment()));
 				elmDatatype
 						.addAttribute(new Attribute("Hl7Version", d.getHl7Version() == null ? "" : d.getHl7Version()));// TODO
