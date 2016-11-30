@@ -1036,12 +1036,9 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
 });
-
 angular.module('igl').controller('SegmentRowCtrl', function($scope, $filter) {
     $scope.formName = "form_" + new Date().getTime();
 });
-
-
 angular.module('igl').controller('DynamicMappingCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.changed = false;
     $scope.selectedNode = selectedNode;
@@ -1094,7 +1091,6 @@ angular.module('igl').controller('DynamicMappingCtrl', function($scope, $modalIn
     };
 
 });
-
 angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.changed = false;
     $scope.selectedNode = selectedNode;
@@ -1122,8 +1118,6 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mo
     };
 
 });
-
-
 angular.module('igl').controller('ManageCoConstraintsTableCtrl', function($scope, $modalInstance, segment, $rootScope) {
     $scope.newColumnField = '';
     $scope.newColumnConstraintType = '';
@@ -1184,10 +1178,6 @@ angular.module('igl').controller('ManageCoConstraintsTableCtrl', function($scope
     };
 
 });
-
-
-
-
 angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
@@ -1371,8 +1361,6 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
     };
 
 });
-
-
 angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope, $q) {
     $scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
@@ -1454,7 +1442,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     $scope.beforeFieldDrop = function() {
         var deferred = $q.defer();
 
-        if($scope.draggingStatus === 'ContextTreeNodeDragging') {
+        if($scope.draggingStatus === 'ContextTreeNodeDragging_Field') {
             deferred.resolve();
         }else {
             deferred.reject();
@@ -1464,11 +1452,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
 
     $scope.beforeNodeDrop = function() {
         var deferred = $q.defer();
-        if($scope.draggingStatus === 'ContextTreeNodeDragging') {
-            deferred.resolve();
-        }else {
-            deferred.reject();
-        }
+        deferred.resolve();
         return deferred.promise;
     };
 
@@ -1489,10 +1473,11 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $scope.generateSecondPositionAndLocationPath();
     };
 
-
-
-    $scope.draggingNodeFromContextTree = function (event, ui, nodeData) {
-        $scope.draggingStatus = 'ContextTreeNodeDragging';
+    $scope.draggingNodeFromContextTree = function (event, ui, data) {
+        $scope.draggingStatus = 'ContextTreeNodeDragging_Component';
+        for(var f in $scope.treeDataForContext[0].fields){
+            if($scope.treeDataForContext[0].fields[f].id == data.nodeData.id) $scope.draggingStatus = 'ContextTreeNodeDragging_Field';
+        }
     };
 
     $scope.initConformanceStatement = function() {
@@ -1514,7 +1499,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
             bindingStrength: 'R',
             bindingLocation: '1'
         });
-    }
+    };
 
     $scope.initComplexStatement = function() {
         $scope.constraints = [];
@@ -1522,7 +1507,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $scope.secondConstraint = null;
         $scope.compositeType = null;
         $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.segment.name + "_" + $rootScope.segment.ext);
-    }
+    };
 
     $scope.initConformanceStatement();
 
@@ -1569,14 +1554,12 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     };
 
     $scope.deleteConformanceStatement = function(conformanceStatement) {
-        $rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf($scope.tempComformanceStatements.constraintId), 1);
         $scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };
 
     $scope.addComplexConformanceStatement = function() {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
-        $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
         $scope.tempComformanceStatements.push($scope.complexConstraint);
         $scope.initComplexStatement();
         $scope.changed = true;
@@ -1606,9 +1589,6 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $modalInstance.close($scope.selectedNode);
     };
 });
-
-
-
 angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
@@ -1628,7 +1608,6 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $r
         $modalInstance.dismiss('cancel');
     };
 });
-
 angular.module('igl').controller('SegmentReferencesCtrl', function($scope, $modalInstance, segToDelete) {
 
     $scope.segToDelete = segToDelete;
@@ -1641,8 +1620,6 @@ angular.module('igl').controller('SegmentReferencesCtrl', function($scope, $moda
         $modalInstance.dismiss('cancel');
     };
 });
-
-
 angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance, datatypes, segment, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService, blockUI) {;
 
 
@@ -1852,8 +1829,6 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
 
 
 });
-
-
 angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInstance, fieldToDelete, segment, $rootScope, SegmentService, blockUI) {
     $scope.fieldToDelete = fieldToDelete;
     $scope.loading = false;
@@ -1890,10 +1865,6 @@ angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInsta
 
 
 });
-
-
-
-
 angular.module('igl').controller('EditVSCtrl', function($scope, $modalInstance, valueSets, field, $rootScope, SegmentService, blockUI) {
 
     $scope.vsChanged = false;
@@ -1953,8 +1924,6 @@ angular.module('igl').controller('EditVSCtrl', function($scope, $modalInstance, 
 
 
 });
-
-
 angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance, datatypes, field, $rootScope, SegmentService, blockUI) {
 
     $scope.dtChanged = false;
@@ -2009,7 +1978,6 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance,
 
 
 });
-
 angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, ObjectDiff, orderByFilter, $rootScope, $q, $interval, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, CompareService) {
 
 
@@ -2273,7 +2241,6 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
 
 
 });
-
 angular.module('igl').controller('DeleteSegmentPredicateCtrl', function($scope, $modalInstance, position, segment, $rootScope) {
     $scope.selectedSegment = segment;
     $scope.position = position;
@@ -2292,7 +2259,6 @@ angular.module('igl').controller('DeleteSegmentPredicateCtrl', function($scope, 
         $modalInstance.dismiss('cancel');
     };
 });
-
 angular.module('igl').controller('AddBindingForSegment', function($scope, $modalInstance, $rootScope, segment) {
     // console.log($rootScope.references);
     $scope.segment = segment;
