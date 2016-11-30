@@ -1324,27 +1324,32 @@ angular
           											participant.fullname = response.data.fullname;
 
                                 // Proceed with next
-                                if ($rootScope.hasChanges()) {
-                                  console.log("found changes");
-
-                                  $rootScope.openConfirmLeaveDlg().result.then(function () {
-                                    console.log("dialog opened");
-                                    processEditDataType(data);
-                                  });
-                                } else {
-                                  processEditDataType(data);
-                                }
+                                editDatatypeNext(data);
           									},
           									function (error) {
           											console.log(error);
           									}
           									);
           					});
-          			}
+          			} else {
+                  editDatatypeNext(data);
+                }
 
 
             };
 
+            function editDatatypeNext(data) {
+              if ($rootScope.hasChanges()) {
+                console.log("found changes");
+
+                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                  console.log("dialog opened");
+                  processEditDataType(data);
+                });
+              } else {
+                processEditDataType(data);
+              }
+            };
 
             function processEditTable(table) {
                 $scope.Activate(table.id);

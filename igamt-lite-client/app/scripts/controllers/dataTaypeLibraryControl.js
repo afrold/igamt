@@ -1462,24 +1462,30 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                           participant.fullname = response.data.fullname;
 
                           //Proceed with next
-                          if ($rootScope.hasChanges()) {
-                            console.log("found changes");
-
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
-                              console.log("dialog opened");
-                              processEditDataType(data);
-                            });
-                          } else {
-                            processEditDataType(data);
-                          }
+                          $scope.editDatatypeNext(data);
                       },
                       function (error) {
                           console.log(error);
                       }
                       );
               });
+          } else {
+            $scope.editDatatypeNext(data);
           }
 
+        };
+
+        $scope.editDatatypeNext = function(data) {
+          if ($rootScope.hasChanges()) {
+            console.log("found changes");
+
+            $rootScope.openConfirmLeaveDlg().result.then(function() {
+              console.log("dialog opened");
+              processEditDataType(data);
+            });
+          } else {
+            processEditDataType(data);
+          }
         };
 
 
