@@ -1238,7 +1238,26 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		elmGroup2.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "]"));
 		elmGroup2.addAttribute(new Attribute("Depth", String.valueOf(depth)));
 		elmGroup2.addAttribute(new Attribute("Position", group.getPosition().toString()));
-		elmDisplay.appendChild(elmGroup2);
+
+			List<ConformanceStatement> conformanceStatements = group.getConformanceStatements();
+			if (conformanceStatements != null && !conformanceStatements.isEmpty()) {
+					for (Constraint constraint : conformanceStatements) {
+							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, group.getName() + ".");
+							elmGroup2.appendChild(elmConstraint);
+					}
+			}
+			List<Predicate> predicates = group.getPredicates();
+			if (predicates != null && !predicates.isEmpty()) {
+					for (Constraint constraint : predicates) {
+							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, group.getName() + ".");
+							elmGroup2.appendChild(elmConstraint);
+					}
+			}
+
+			elmDisplay.appendChild(elmGroup2);
+
+
+
 
 	}
 
