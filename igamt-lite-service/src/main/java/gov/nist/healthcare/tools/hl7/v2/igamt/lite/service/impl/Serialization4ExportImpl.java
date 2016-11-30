@@ -1775,6 +1775,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				elmDatatype.addAttribute(new Attribute("Name", d.getName()));
 				elmDatatype.addAttribute(new Attribute("Label", d.getLabel()));
 				elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));
+				elmDatatype.addAttribute(new Attribute("PurposeAndUse", d.getPurposeAndUse()));
 				elmDatatype.addAttribute(new Attribute("Comment", d.getComment()));
 				elmDatatype
 						.addAttribute(new Attribute("Hl7Version", d.getHl7Version() == null ? "" : d.getHl7Version()));// TODO
