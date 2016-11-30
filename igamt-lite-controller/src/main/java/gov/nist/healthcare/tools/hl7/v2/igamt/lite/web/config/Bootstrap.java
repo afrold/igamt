@@ -171,26 +171,24 @@ public class Bootstrap implements InitializingBean {
   private void setTablesStatus(){
 	  List<Table> allTables = tableService.findAll();  
 	  for(Table t :allTables ){
-		  STATUS status = null;
-		  if(t.getScope().equals(SCOPE.HL7STANDARD)&&t.getPublicationDate() != null){
+		  STATUS status = STATUS.UNPUBLISHED;
+		  if(t.getScope().equals(SCOPE.HL7STANDARD) || (t.getPublicationDate() != null)){
  			  status = STATUS.PUBLISHED;
-		  }else if(t.getPublicationDate() == null){
- 			  status = STATUS.UNPUBLISHED;
 		  }
-	        tableService.updateStatus(t.getId(), status);
+	      tableService.updateStatus(t.getId(), status);
 	  }
   }
   
   private void setDtsStatus(){
 	  List<Datatype> allDts = datatypeService.findAll();  
 	  for(Datatype d :allDts ){
-		  STATUS status = null;
-		  if(d.getScope().equals(SCOPE.HL7STANDARD)&&d.getPublicationDate() != null){
+		  STATUS status = STATUS.UNPUBLISHED;
+		  if(d.getScope().equals(SCOPE.HL7STANDARD) && (d.getPublicationDate() == null)){
 			  status = STATUS.PUBLISHED;
 		  }else if(d.getPublicationDate() == null ){
 			  status = STATUS.UNPUBLISHED;
 		  }
-		  datatypeService.updateStatus(d.getId(), status);
+ 		  datatypeService.updateStatus(d.getId(), status);
 	  }
   }
   

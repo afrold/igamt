@@ -33,8 +33,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   private String bindingIdentifier;
   private String name;  
   private boolean newTable;
-  private String publicationDate;
-  private int publicationVersion=0;
+ 
 
   private String description;
   private String version;
@@ -69,6 +68,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   public Table() {
     super();
     this.type = Constant.TABLE;
+    this.status = STATUS.UNPUBLISHED;
   }
 
   public String getId() {
@@ -342,21 +342,6 @@ public void setNewTable(boolean newTable) {
 	this.newTable = newTable;
 }
 
-public String getPublicationDate() {
-	return publicationDate;
-}
-
-public void setPublicationDate(String publicationDate) {
-	this.publicationDate = publicationDate;
-}
-
-public int getPublicationVersion() {
-	return publicationVersion;
-}
-
-public void setPublicationVersion(int publicationVersion) {
-	this.publicationVersion = publicationVersion;
-}
  
 
 public Set<ShareParticipantPermission> getShareParticipantIds() {

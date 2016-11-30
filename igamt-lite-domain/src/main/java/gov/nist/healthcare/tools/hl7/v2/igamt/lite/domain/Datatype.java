@@ -34,24 +34,9 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   private String ext="";
   
   private String purposeAndUse = "";
-  private String publicationDate;
-  private int publicationVersion=0;
+ 
 
-  public int getPublicationVersion() {
-	return publicationVersion;
-}
-
-public void setPublicationVersion(int publicationVersion) {
-	this.publicationVersion = publicationVersion;
-}
-
-public String getPublicationDate() {
-	return publicationDate;
-}
-
-public void setPublicationDate(String publicationDate) {
-	this.publicationDate = publicationDate;
-}
+  
 
 protected List<Component> components = new ArrayList<Component>();
 
