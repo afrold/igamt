@@ -743,8 +743,13 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
 		elmConstraint.addAttribute(
 				new Attribute("Id", constraint.getConstraintId() == null ? "" : constraint.getConstraintId()));
-		elmConstraint.addAttribute(new Attribute("Location",
-				constraint.getConstraintTarget().substring(0, constraint.getConstraintTarget().indexOf('['))));
+			if(null!=constraint.getConstraintTarget()&&constraint.getConstraintTarget().length()>"[".length()) {
+					elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()
+							.substring(0, constraint.getConstraintTarget().indexOf('['))));
+			} else {
+					//TODO report the error correctly
+					elmConstraint.addAttribute(new Attribute("Location",""));
+			}
 		elmConstraint.addAttribute(new Attribute("LocationName", locationName));
 		elmConstraint.appendChild(constraint.getDescription());
 		if (constraint instanceof Predicate) {
