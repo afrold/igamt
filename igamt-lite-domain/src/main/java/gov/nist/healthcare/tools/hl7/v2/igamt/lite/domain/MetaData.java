@@ -67,12 +67,12 @@ private String ext;
     this.hl7Version = hl7Version;
   }
   
-  @Deprecated 
+
   public String getDate() {
     return date;
   }
 
-  @Deprecated 
+
   public void setDate(String date) {
     this.date = date;
   }

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 /**
@@ -32,10 +33,14 @@ public interface TableOperations {
 
 	List<Table> findAllByIds(Set<String> ids);
 
+	List<Table> findShared(Long accountId);
+
 	List<Table> findShortAllByIds(Set<String> ids);
 
 	Table findByBindingIdentifierAndHL7VersionAndScope(String bindingIdentifier, String hl7Version, SCOPE scope);
 
 	public Date updateDate(String id, Date date);
+
+	public void updateStatus(String id, STATUS status);
 
 }

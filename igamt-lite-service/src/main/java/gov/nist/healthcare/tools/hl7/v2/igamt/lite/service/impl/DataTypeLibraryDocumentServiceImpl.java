@@ -33,6 +33,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 /**
  * @author gcr1
@@ -135,6 +136,7 @@ public class DataTypeLibraryDocumentServiceImpl implements DatatypeLibraryDocume
 		metaData.setOrgName(orgName);
 		metaData.setDatatypeLibId(UUID.randomUUID().toString());
 		metaData.setExt(ext);
+		metaData.setDate(DateUtils.getCurrentTime());
 		DatatypeLibraryDocument datatypeLibraryDocument = new DatatypeLibraryDocument();
 		datatypeLibraryDocument.setMetaData(metaData);
 		datatypeLibraryDocument.setScope(scope);

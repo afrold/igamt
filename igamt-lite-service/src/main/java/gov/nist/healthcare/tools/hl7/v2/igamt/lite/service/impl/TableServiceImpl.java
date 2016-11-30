@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -21,10 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 /**
  * @author gcr1
@@ -60,15 +62,38 @@ public class TableServiceImpl implements TableService {
 	}
 
 	@Override
-	public Table save(Table table) {
-		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
-		return save(table, DateUtils.getCurrentDate());
+	public List<Table> findShared(Long accountId) {
+		// TODO Auto-generated method stub
+		List<Table> tables = tableRepository.findShared(accountId);
+		List<Table> sharedWithAccount = new ArrayList<Table>();
+		for (Table t : tables) {
+			for (ShareParticipantPermission p : t.getShareParticipantIds()) {
+				if (p.getAccountId() == accountId && !p.isPendingApproval()) {
+					sharedWithAccount.add(t);
+				}
+			}
+		}
+		return sharedWithAccount;
 	}
 
 	@Override
-	public Table save(Table table, Date date) {
+	public List<Table> findPendingShared(Long accountId) {
+		// TODO Auto-generated method stub
+		List<Table> tables = tableRepository.findShared(accountId);
+		List<Table> sharedWithAccount = new ArrayList<Table>();
+		for (Table t : tables) {
+			for (ShareParticipantPermission p : t.getShareParticipantIds()) {
+				if (p.getAccountId() == accountId && p.isPendingApproval()) {
+					sharedWithAccount.add(t);
+				}
+			}
+		}
+		return sharedWithAccount;
+	}
+
+	@Override
+	public Table save(Table table) {
 		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
-		table.setDateUpdated(date);
 		return tableRepository.save(table);
 	}
 
@@ -103,8 +128,20 @@ public class TableServiceImpl implements TableService {
 	}
 
 	@Override
+	public Table save(Table table, Date date) {
+		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
+		table.setDateUpdated(date);
+		return tableRepository.save(table);
+	}
+
+	@Override
 	public Date updateDate(String id, Date date) {
 		return tableRepository.updateDate(id, date);
+	}
+
+	@Override
+	public void updateStatus(String id, STATUS status) {
+		tableRepository.updateStatus(id, status);
 	}
 
 }
