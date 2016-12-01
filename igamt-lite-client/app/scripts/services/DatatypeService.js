@@ -51,7 +51,8 @@ angular.module('igl').factory('DatatypeService',
                 return template;
             },
             getTemplate: function(node, root) {
-                if (ViewSettings.tableReadonly || root != null && (root.status === 'PUBLISHED')|| root.scope === null) {
+                var userAccountId = userInfoService.getAccountID().toString();
+                if (ViewSettings.tableReadonly || root != null && (root.status === 'PUBLISHED')|| root.scope === null||(root.accountId && root.accountId !== userAccountId)) {
                     return DatatypeService.getReadTemplate(node, root);
                 } else {
                     //console.log("INTO THE NODES ")
