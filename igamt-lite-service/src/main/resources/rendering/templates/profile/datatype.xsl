@@ -4,7 +4,7 @@
     <xsl:template match="Datatype">
         <xsl:if test="not(@PurposeAndUse='')">
             <xsl:element name="p">
-                <xsl:element name="b"><xsl:text>Purpose and Use: </xsl:text></xsl:element>
+                <xsl:element name="h4"><xsl:text>Purpose and Use</xsl:text></xsl:element>
                 <xsl:value-of disable-output-escaping="yes"
                               select="@PurposeAndUse"/>
             </xsl:element>
@@ -12,9 +12,18 @@
         <xsl:value-of select="@Comment"></xsl:value-of>
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
             <xsl:element name="p">
-                <xsl:element name="b"><xsl:text>Usage note: </xsl:text></xsl:element>
+                <xsl:element name="h4"><xsl:text>Usage note</xsl:text></xsl:element>
                 <xsl:value-of disable-output-escaping="yes"
                               select="Text[@Type='UsageNote']"/>
+            </xsl:element>
+        </xsl:if>
+        <xsl:if test="count(./Text[@Type='PreText']) &gt; 0">
+            <xsl:element name="h4">
+                <xsl:text>Pre-definition:</xsl:text>
+            </xsl:element>
+            <xsl:element name="p">
+                <xsl:value-of disable-output-escaping="yes"
+                              select="./Text[@Type='PreText']" />
             </xsl:element>
         </xsl:if>
         <xsl:element name="p">
@@ -146,7 +155,7 @@
                 </xsl:if>
             </xsl:for-each>
         </xsl:if>
-        <xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
+        <xsl:if test="count(./Text[@Type='PostText']) &gt; 0">
             <xsl:element name="h4">
                 <xsl:text>Post-definition:</xsl:text>
             </xsl:element>
@@ -160,7 +169,7 @@
                 </xsl:element>
             </xsl:if>
             <xsl:element name="p">
-                <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text2']"/>
+                <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='PostText']"/>
             </xsl:element>
         </xsl:if>
     </xsl:template>
