@@ -1,6 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="/rendering/templates/profile/component.xsl"/>
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
+    <xsl:import href="/rendering/templates/profile/definitionText.xsl"/>
     <xsl:template match="Datatype">
         <xsl:if test="not(@PurposeAndUse='')">
             <xsl:element name="p">
@@ -17,14 +18,12 @@
                               select="Text[@Type='UsageNote']"/>
             </xsl:element>
         </xsl:if>
-        <xsl:if test="count(./Text[@Type='PreText']) &gt; 0">
-            <xsl:element name="h4">
-                <xsl:text>Pre-definition:</xsl:text>
-            </xsl:element>
-            <xsl:element name="p">
-                <xsl:value-of disable-output-escaping="yes"
-                              select="./Text[@Type='PreText']" />
-            </xsl:element>
+        <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
+            <xsl:call-template name="definitionText">
+                <xsl:with-param name="type">
+                    <xsl:text>pre</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
         </xsl:if>
         <xsl:element name="p">
             <xsl:element name="table">
@@ -155,22 +154,12 @@
                 </xsl:if>
             </xsl:for-each>
         </xsl:if>
-        <xsl:if test="count(./Text[@Type='PostText']) &gt; 0">
-            <xsl:element name="h4">
-                <xsl:text>Post-definition:</xsl:text>
-            </xsl:element>
-            <xsl:if test="count(./Text[@Type='Text']) &gt; 0">
-                <xsl:element name="p">
-                    <xsl:element name="u">
-                        <xsl:value-of select="./Text[@Type='Name']"/>
-                        <xsl:text>:</xsl:text>
-                    </xsl:element>
-                    <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']"/>
-                </xsl:element>
-            </xsl:if>
-            <xsl:element name="p">
-                <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='PostText']"/>
-            </xsl:element>
+        <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+            <xsl:call-template name="definitionText">
+                <xsl:with-param name="type">
+                    <xsl:text>post</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
         </xsl:if>
     </xsl:template>
 

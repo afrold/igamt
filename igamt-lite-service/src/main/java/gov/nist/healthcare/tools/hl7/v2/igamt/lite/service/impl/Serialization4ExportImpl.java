@@ -1030,6 +1030,14 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 						elmTableDefinition.appendChild(elmTableElement);
 					}
 				}
+					if ((t != null && !t.getDefPreText().isEmpty()) || (t != null && !t.getDefPostText().isEmpty())) {
+							if (t.getDefPreText() != null && !t.getDefPreText().isEmpty()) {
+									elmTableDefinition.appendChild(this.serializeRichtext("DefPreText", t.getDefPreText()));
+							}
+							if (t.getDefPostText() != null && !t.getDefPostText().isEmpty()) {
+									elmTableDefinition.appendChild(this.serializeRichtext("DefPostText", t.getDefPostText()));
+							}
+					}
 				sect.appendChild(elmTableDefinition);
 				return sect;
 			} else {
@@ -1109,10 +1117,10 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 				if ((t != null && !t.getDefPreText().isEmpty()) || (t != null && !t.getDefPostText().isEmpty())) {
 					if (t.getDefPreText() != null && !t.getDefPreText().isEmpty()) {
-						elmTableDefinition.appendChild(this.serializeRichtext("Text1", t.getDefPreText()));
+						elmTableDefinition.appendChild(this.serializeRichtext("DefPreText", t.getDefPreText()));
 					}
 					if (t.getDefPostText() != null && !t.getDefPostText().isEmpty()) {
-						elmTableDefinition.appendChild(this.serializeRichtext("Text2", t.getDefPostText()));
+						elmTableDefinition.appendChild(this.serializeRichtext("DefPostText", t.getDefPostText()));
 					}
 				}
 
@@ -1544,10 +1552,10 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				if ((s.getText1() != null && !s.getText1().isEmpty())
 						|| (s.getText2() != null && !s.getText2().isEmpty())) {
 					if (s.getText1() != null && !s.getText1().isEmpty()) {
-						elmSegment.appendChild(this.serializeRichtext("Text1", s.getText1()));
+						elmSegment.appendChild(this.serializeRichtext("DefPreText", s.getText1()));
 					}
 					if (s.getText2() != null && !s.getText2().isEmpty()) {
-						elmSegment.appendChild(this.serializeRichtext("Text2", s.getText2()));
+						elmSegment.appendChild(this.serializeRichtext("DefPostText", s.getText2()));
 					}
 				}
 
@@ -1864,10 +1872,10 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 					if ((d != null && !d.getDefPreText().isEmpty()) || (d != null && !d.getDefPostText().isEmpty())) {
 						if (d.getDefPreText() != null && !d.getDefPreText().isEmpty()) {
-							elmDatatype.appendChild(this.serializeRichtext("PreText", d.getDefPreText()));
+							elmDatatype.appendChild(this.serializeRichtext("DefPreText", d.getDefPreText()));
 						}
 						if (d.getDefPostText() != null && !d.getDefPostText().isEmpty()) {
-							elmDatatype.appendChild(this.serializeRichtext("PostText", d.getDefPostText()));
+							elmDatatype.appendChild(this.serializeRichtext("DefPostText", d.getDefPostText()));
 						}
 					}
 					if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()) {
