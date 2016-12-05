@@ -9,8 +9,10 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
             isFirstOpen: true,
-            isSecondOpen: true,
-            isThirdOpen: true,
+            isSecondOpen: false,
+            isThirdOpen: false,
+            isFifthOpen: false,
+            isSixOpen: false,
             isFirstDisabled: false
         };
         $scope.tabStatus = {
@@ -21,8 +23,10 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             $scope.accordStatus = {
                 isCustomHeaderOpen: false,
                 isFirstOpen: true,
-                isSecondOpen: true,
-                isThirdOpen: true,
+                isSecondOpen: false,
+                isThirdOpen: false,
+                isFifthOpen: false,
+                isSixOpen: false,
                 isFirstDisabled: false
             };
             $scope.tabStatus = {

@@ -125,6 +125,21 @@
                                 </tab-heading>
                                 <div class="el-def" style="margin-top: 5px">
                                     <accordion>
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isFifthOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div ng-show="!viewSettings.tableReadonly">
+                                                    <textarea froala="froalaEditorOptions" ng-model="message.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
+                                                </div>
+                                                <div ng-show="viewSettings.tableReadonly">
+                                                    <div class="fr-view">
+                                                        <div froala-view="message.defPreText"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
                                                 <span style="color:white;"> Conformance Profile Definition</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
@@ -172,6 +187,20 @@
                                                     </thead>
                                                     <tbody></tbody>
                                                 </table>
+                                            </div>
+                                        </div>
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isSixOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div ng-show="!viewSettings.tableReadonly">
+                                                    <textarea froala="froalaEditorOptions" ng-model="message.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
+                                                </div>
+                                                <div ng-show="viewSettings.tableReadonly">
+                                                    <div class="fr-view">
+                                                        <div froala-view="message.defPostText"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
