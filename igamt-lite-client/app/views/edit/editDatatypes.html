@@ -119,7 +119,7 @@
 
                                         <div class="controls col-md-10">
 
-                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeAndUse" />
+                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')|| datatype.status==='PUBLISHED'" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeAndUse" />
                                         </div>
                                     </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.comment.$invalid}">
@@ -134,7 +134,7 @@
                                         <label class="col-md-2 control-label">Usage Note </label>
 
                                         <div class="controls col-md-10">
-                                            <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
+                                            <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER' && datatype.status!=='PUBLISHED'">
                                                 <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>
                                             </div>
                                             <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
@@ -170,7 +170,7 @@
                                             <accordion-heading>
                                                 <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
-                                                <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
+                                                <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER' && datatype.status!=='PUBLISHED'">
                                                     <textarea froala="froalaEditorOptions" ng-model="datatype.defPreText" name="text" id="text" ng-change="setDirty()"></textarea>
                                                 </div>
                                                 <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
@@ -198,7 +198,7 @@
                 <tr class="tbl-header " style=" ">
                     <th class="col-md-2 col-fixed-250 ">Name</th>
                     <th class="col-md-1 col-fixed-80 ">Usage
-                        <button type="button " class="btn btn-raised btn-info btn-xs " ng-show="(datatype.scope==='USER' )&& !viewSettings.tableReadonly && (datatype.components.length>0)" ng-hide="typeOfSharing" ng-click="OtoX(datatype)">O to X
+                        <button type="button " class="btn btn-raised btn-info btn-xs " ng-show="(datatype.scope==='USER' )&& !viewSettings.tableReadonly && (datatype.components.length>0)" ng-hide="typeOfSharing || datatype.status==='PUBLISHED'" ng-click="OtoX(datatype)">O to X
                                                     </button>
                                                     </th>
                                                     <th class="col-md-1 col-fixed-100">Length
@@ -302,7 +302,7 @@
                                             <accordion-heading>
                                                 <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
-                                                <div ng-show="!viewSettings.tableReadonly && datatype.scope==='USER'">
+                                                <div ng-show="!viewSettings.tableReadonly && datatype.scope==='USER' && datatype.status!=='PUBLISHED'">
                                                     <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="text" ng-change="setDirty()"></textarea>
                                                 </div>
                                                 <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
@@ -555,7 +555,7 @@
                                </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
 
-                                    <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary" ng-hide="typeOfSharing">
+                                    <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary && datatype.status!=='PUBLISHED'"" ng-hide="typeOfSharing">
                                         <button type="button" ng-click="AddBindingForDatatype(datatype)" class="btn btn-raised btn-info btn-md"><i class="fa fa-plus"></i> Add Binding</button>
                                     </span>
 
@@ -1738,4 +1738,3 @@
         </div>
     </div>
 </script>
-

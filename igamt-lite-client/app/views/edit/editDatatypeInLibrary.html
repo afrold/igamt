@@ -21,7 +21,7 @@
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right">
 		<label for="publish" style="margin : 0 10px 0 0">
-         <input name="publish" id ="publish" type="checkbox" ng-click="publishDatatype(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'"  ng-disabled="editForm.$dirty||datatype.status === 'PUBLISHED'"|| readOnly" style="margin-right : 8px"/>Published</label>
+         <input name="publish" id ="publish" type="checkbox" ng-click="publishDatatype(datatype)" ng-model="datatype.status" ng-true-value="'PUBLISHED'"  ng-disabled="editForm.$dirty||datatype.status === 'PUBLISHED'|| readOnly" style="margin-right : 8px"/>Published</label>
          <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                  ng-disabled="editForm.$invalid||!editForm.$dirty||readOnly||datatype.status === 'PUBLISHED'"
                  ng-click="save()">
@@ -522,7 +522,7 @@
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl">
                 <div ng-show="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                     <a class="point" ng-show="editableDT!==node.id" ng-click="redirectDT(node.datatype)">
-                        {{getDatatypeLabel(datatypesMap[node.datatype.id])}} 
+                        {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                     </a>
 
                     <div ng-show="editableDT===node.id">
