@@ -11,6 +11,13 @@
     </xsl:template>
 
     <xsl:template match="ValueSetDefinition">
+        <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
+            <xsl:call-template name="definitionText">
+                <xsl:with-param name="type">
+                    <xsl:text>pre</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
         <xsl:if test="@Stability != ''">
             <xsl:element name="p">
                 <xsl:text>Stability: </xsl:text>
@@ -88,6 +95,13 @@
             </xsl:element>
 
         </xsl:element>
+        <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+            <xsl:call-template name="definitionText">
+                <xsl:with-param name="type">
+                    <xsl:text>post</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
 
     </xsl:template>
 

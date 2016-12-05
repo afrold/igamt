@@ -4,6 +4,13 @@
     <xsl:include href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:template match="MessageDisplay">
         <xsl:value-of select="@Comment"/>
+        <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
+            <xsl:element name="p">
+                <xsl:element name="h4"><xsl:text>Definition text</xsl:text></xsl:element>
+                <xsl:value-of disable-output-escaping="yes"
+                              select="Text[@Type='UsageNote']"/>
+            </xsl:element>
+        </xsl:if>
         <xsl:element name="p">
             <xsl:element name="table">
                 <xsl:attribute name="class">
