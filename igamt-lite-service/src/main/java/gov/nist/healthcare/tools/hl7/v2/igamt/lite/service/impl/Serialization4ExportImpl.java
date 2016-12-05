@@ -1030,6 +1030,14 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 						elmTableDefinition.appendChild(elmTableElement);
 					}
 				}
+					if ((t != null && !t.getDefPreText().isEmpty()) || (t != null && !t.getDefPostText().isEmpty())) {
+							if (t.getDefPreText() != null && !t.getDefPreText().isEmpty()) {
+									elmTableDefinition.appendChild(this.serializeRichtext("DefPreText", t.getDefPreText()));
+							}
+							if (t.getDefPostText() != null && !t.getDefPostText().isEmpty()) {
+									elmTableDefinition.appendChild(this.serializeRichtext("DefPostText", t.getDefPostText()));
+							}
+					}
 				sect.appendChild(elmTableDefinition);
 				return sect;
 			} else {
