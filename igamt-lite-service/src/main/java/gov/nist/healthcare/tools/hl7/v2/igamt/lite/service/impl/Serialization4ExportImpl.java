@@ -236,7 +236,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				elmMetaData.addAttribute(new Attribute("Status", metaDataObj.getStatus()));
 			if (metaDataObj.getTopics() != null)
 				elmMetaData.addAttribute(new Attribute("Topics", metaDataObj.getTopics()));
-			if (metaDataObj.getVersion() != null)
+			if (metaDataObj.getHl7Version() != null)
 				elmMetaData.addAttribute(new Attribute("HL7Version", metaDataObj.getHl7Version()));
 		}
 		return elmMetaData;
