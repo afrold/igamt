@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import nu.xom.Document;
+import nu.xom.Element;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,11 @@ public class SerializableStructure {
     }
 
     public Document serializeStructure(){
-        return null;
+        nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
+        nu.xom.Document doc = new nu.xom.Document(e);
+        for(SerializableElement serializableElement:serializableElementList){
+            e.appendChild(serializableElement.serializeElement());
+        }
+        return doc;
     }
 }

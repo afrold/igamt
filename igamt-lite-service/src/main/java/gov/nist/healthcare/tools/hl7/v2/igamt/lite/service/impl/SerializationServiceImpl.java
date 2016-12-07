@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMetadata;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import nu.xom.Document;
@@ -22,6 +23,9 @@ import nu.xom.Document;
 public class SerializationServiceImpl implements SerializationService {
 
     @Override public Document serializeIGDocument(IGDocument igDocument) {
+        SerializableStructure serializableStructure = new SerializableStructure();
+        SerializableMetadata serializableMetadata = new SerializableMetadata(igDocument.getMetaData(),igDocument.getProfile().getMetaData(),igDocument.getDateUpdated());
+        serializableStructure.addSerializableElement(serializableMetadata);
         return null;
     }
 

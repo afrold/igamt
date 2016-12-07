@@ -26,7 +26,7 @@ public abstract class SerializableElement {
     private static final String FORMAT = "yyyy/MM/dd HH:mm:ss";
 
 
-    public abstract Element serializeElement(Object... arguments);
+    public abstract Element serializeElement();
 
     public String getPrefix() {
         return prefix;
