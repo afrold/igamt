@@ -1,7 +1,10 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
+import nu.xom.Element;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -16,8 +19,28 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
  * <p>
  * Created by Maxence Lefort on 12/7/16.
  */
-public interface SerializationService {
-    public nu.xom.Document serializeIGDocument(IGDocument igDocument);
-    public nu.xom.Document serializeDatatypeLibrary(IGDocument igDocument);
-    public nu.xom.Document serializeElement(SerializableElement element);
+public abstract class SerializableElement {
+
+    private String prefix;
+
+    private static final String FORMAT = "yyyy/MM/dd HH:mm:ss";
+
+
+    public abstract Element serializeElement(Object... arguments);
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    protected static String format(Date date) {
+        if (date != null) {
+            DateFormat dateFormat = new SimpleDateFormat(FORMAT);
+            return dateFormat.format(date);
+        }
+        return null;
+    }
 }

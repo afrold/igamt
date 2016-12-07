@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import nu.xom.Document;
 

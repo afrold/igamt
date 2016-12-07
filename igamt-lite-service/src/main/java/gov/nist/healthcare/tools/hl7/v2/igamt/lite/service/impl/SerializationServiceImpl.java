@@ -1,8 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SerializableElement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SerializableStructure;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import nu.xom.Document;
 

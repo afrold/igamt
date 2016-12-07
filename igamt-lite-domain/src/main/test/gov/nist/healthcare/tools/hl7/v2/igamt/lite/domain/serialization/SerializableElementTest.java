@@ -1,6 +1,10 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import nu.xom.Element;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -15,6 +19,13 @@ import nu.xom.Element;
  * <p>
  * Created by Maxence Lefort on 12/7/16.
  */
-public interface SerializableElement {
-    public Element serializeElement();
+public class SerializableElementTest {
+    @Test
+    public void testFormat(){
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String formattedDate = SerializableElement.format(date);
+        String curTime = String.format("%d/%02d/%02d %d:%02d:%02d",cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH),cal.get(Calendar.HOUR_OF_DAY),cal.get(Calendar.MINUTE),cal.get(Calendar.SECOND));
+        assertEquals(formattedDate, curTime);
+    }
 }
