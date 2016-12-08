@@ -1529,10 +1529,16 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $
 angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootScope, $http, IgDocumentService, blockUI) {
     $scope.saving = false;
     $scope.saved = false;
-
+    
     $scope.successUpload = function($file, $message, $data) {
       $scope.editForm.$dirty = true;
-      console.log(JSON.parse($message));
+      var link = JSON.parse($message);
+      $rootScope.metaData.coverPicture = link.link;
+    };
+
+    $scope.removeCover = function() {
+      $scope.editForm.$dirty = true;
+      $rootScope.metaData.coverPicture = null;
     };
 
     $scope.save = function() {
