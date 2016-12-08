@@ -1,11 +1,9 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import nu.xom.Element;
+
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -20,22 +18,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * <p>
  * Created by Maxence Lefort on 12/7/16.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PersistenceContextUnit.class})
-public class SerializationServiceTest {
-    @Autowired
-    private SerializationService serializationService;
+public abstract class SerializableSection extends SerializableElement {
 
-    @Test
-    public void testSerializeIGDocument(){
+    private Set<SerializableSection> serializableSectionSet;
 
+    public void addSection(SerializableSection serializableSection){
+        this.serializableSectionSet.add(serializableSection);
     }
-    @Test
-    public void testSerializeDatatypeLibrary(){
 
+    public SerializableSection() {
+        this.serializableSectionSet = new TreeSet<>();
     }
-    @Test
-    public void testSerializeElement(){
 
-    }
 }
