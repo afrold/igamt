@@ -1530,6 +1530,11 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootS
     $scope.saving = false;
     $scope.saved = false;
 
+    $scope.successUpload = function($file, $message, $data) {
+      $scope.editForm.$dirty = true;
+      console.log(JSON.parse($message));
+    };
+
     $scope.save = function() {
         $scope.saving = true;
         $scope.saved = false;
@@ -2010,7 +2015,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
     function($scope, $rootScope, $modalInstance, hl7Version, datatypes, masterLib, userDtLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http) {
 
         //$scope.hl7Version = hl7Version;
-        //$scope.hl7Datatypes = datatypes;        
+        //$scope.hl7Datatypes = datatypes;
 
         $scope.newDts = [];
         $scope.checkedExt = true;
@@ -2783,7 +2788,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $modal
 		selected: "VIEW"
 	};
 	$scope.itemArray = ["VIEW"];
-	
+
 	$scope.tags = [];
 	$scope.loadUsernames = function ($query) {
 		return userList.filter(function (user) {
