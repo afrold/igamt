@@ -19,11 +19,13 @@ import java.util.TreeSet;
  * <p>
  * Created by Maxence Lefort on 12/7/16.
  */
-public abstract class SerializableSection extends SerializableElement {
+public class SerializableSection extends SerializableElement {
 
     private Set<SerializableSection> serializableSectionSet;
 
     protected Element sectionElement;
+
+    protected String id,prefix,position,title;
 
 
     public void addSection(SerializableSection serializableSection){
@@ -31,6 +33,10 @@ public abstract class SerializableSection extends SerializableElement {
     }
 
     public SerializableSection(String id,String prefix,String position, String title) {
+        this.id = id;
+        this.prefix = prefix;
+        this.position = position;
+        this.title = title;
         this.serializableSectionSet = new TreeSet<>();
         this.sectionElement = new Element("Section");
         this.sectionElement.addAttribute(new Attribute("id", id));
@@ -40,7 +46,8 @@ public abstract class SerializableSection extends SerializableElement {
         this.sectionElement.addAttribute(new Attribute("title", title));
     }
 
-    @Override public Element serializeElement() {
+    @Override
+    public Element serializeElement() {
         for(SerializableSection serializableSection : serializableSectionSet){
             sectionElement.appendChild(serializableSection.serializeElement());
         }

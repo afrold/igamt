@@ -1,12 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
-import nu.xom.Attribute;
 import nu.xom.Element;
-
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -19,26 +13,17 @@ import java.util.TreeSet;
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 12/7/16.
+ * Created by Maxence Lefort on 12/9/16.
  */
-public class SerializableSections extends SerializableElement {
+public class SerializableSegment extends SerializableSection{
 
-    private Set<SerializableSection> serializableSectionSet;
 
-    public void addSection(SerializableSection serializableSection){
-        this.serializableSectionSet.add(serializableSection);
+
+    public SerializableSegment(String id, String prefix, String position, String title) {
+        super(id, prefix, position, title);
     }
 
-    public SerializableSections() {
-        this.serializableSectionSet = new TreeSet<>();
-    }
-
-    @Override
-    public Element serializeElement() {
-        nu.xom.Element rootSections = new nu.xom.Element("Sections");
-        for(SerializableSection serializableSection : serializableSectionSet){
-            rootSections.appendChild(serializableSection.serializeElement());
-        }
-        return rootSections;
+    @Override public Element serializeElement() {
+        return null;
     }
 }
