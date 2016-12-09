@@ -28,6 +28,7 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
     private SegmentRefOrGroup segmentRefOrGroup;
     private Segment segment;
     private List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups;
+    private List<SerializableConstraint> groupConstraintList;
 
     //SegmentRef constructor
     public SerializableSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup,Segment segment) {
@@ -35,9 +36,10 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         this.segment = segment;
     }
     //SegmentRef constructor
-    public SerializableSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup,List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups) {
+    public SerializableSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup,List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> groupConstraintList) {
         this(segmentRefOrGroup);
         this.serializableSegmentRefOrGroups = serializableSegmentRefOrGroups;
+        this.groupConstraintList = groupConstraintList;
     }
 
     private SerializableSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup) {
@@ -71,7 +73,7 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         for (SerializableSegmentRefOrGroup serializableSegmentRefOrGroup : this.serializableSegmentRefOrGroups) {
             elementGroup.appendChild(serializableSegmentRefOrGroup.serializeElement());
         }
-        nu.xom.Element elementGroupEnd = new nu.xom.Element("Element");
+        nu.xom.Element elementGroupEnd = new nu.xom.Element("MessageSegment");
         elementGroupEnd.addAttribute(new Attribute("IdGpe", group.getId()));
         elementGroupEnd.addAttribute(new Attribute("Name", "END " + group.getName() + " GROUP"));
         elementGroupEnd.addAttribute(new Attribute("Description", "END " + group.getName() + " GROUP"));
@@ -82,6 +84,11 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         elementGroupEnd.addAttribute(new Attribute("Depth", String.valueOf(depth)));
         elementGroupEnd.addAttribute(new Attribute("Position", group.getPosition().toString()));
         elementGroup.appendChild(elementGroupEnd);
+        if(groupConstraintList!=null&&!groupConstraintList.isEmpty()){
+            for(SerializableConstraint serializableConstraint : groupConstraintList){
+                elementGroup.appendChild(serializableConstraint.serializeElement());
+            }
+        }
         return elementGroup;
     }
 

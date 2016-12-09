@@ -81,6 +81,7 @@ public class SerializableMessage extends SerializableSection {
                 messageElement.appendChild(serializableConstraint.serializeElement());
             }
         }
-        return messageElement;
+        super.sectionElement.appendChild(messageElement);
+        return super.sectionElement;
     }
 }

@@ -37,7 +37,6 @@ public class SerializableConstraint extends SerializableElement{
             elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()
                 .substring(0, constraint.getConstraintTarget().indexOf('['))));
         } else {
-            //TODO report the error correctly
             elmConstraint.addAttribute(new Attribute("Location",""));
         }
         elmConstraint.addAttribute(new Attribute("LocationName", locationName));

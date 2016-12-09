@@ -38,7 +38,13 @@ public abstract class SerializableSection extends SerializableElement {
         this.sectionElement.addAttribute(new Attribute("position", position));
         this.sectionElement.addAttribute(new Attribute("h", String.valueOf(3)));
         this.sectionElement.addAttribute(new Attribute("title", title));
+    }
 
+    @Override public Element serializeElement() {
+        for(SerializableSection serializableSection : serializableSectionSet){
+            sectionElement.appendChild(serializableSection.serializeElement());
+        }
+        return sectionElement;
     }
 
 }
