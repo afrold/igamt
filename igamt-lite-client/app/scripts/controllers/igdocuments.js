@@ -1529,7 +1529,8 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $
 angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootScope, $http, IgDocumentService, blockUI) {
     $scope.saving = false;
     $scope.saved = false;
-    
+    $scope.uploader = {};
+
     $scope.successUpload = function($file, $message, $data) {
       $scope.editForm.$dirty = true;
       var link = JSON.parse($message);
@@ -1573,6 +1574,7 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootS
         blockUI.start();
         $scope.editForm.$dirty = false;
         $scope.editForm.$setPristine();
+        $scope.uploader.flow.cancel();
         $rootScope.clearChanges();
         $rootScope.metaData = angular.copy($rootScope.igdocument.metaData);
         blockUI.stop();
