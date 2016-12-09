@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 
 import java.text.DateFormat;
@@ -42,5 +43,12 @@ public abstract class SerializableElement {
             return dateFormat.format(date);
         }
         return null;
+    }
+
+    protected Element createTextElement(String type, String content){
+        Element textElement = new Element("Text");
+        textElement.addAttribute(new Attribute("Type", type));
+        textElement.appendChild(content);
+        return textElement;
     }
 }

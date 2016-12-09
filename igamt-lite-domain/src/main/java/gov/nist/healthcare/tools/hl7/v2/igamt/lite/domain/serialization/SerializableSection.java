@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 
 import java.util.Set;
@@ -22,12 +23,22 @@ public abstract class SerializableSection extends SerializableElement {
 
     private Set<SerializableSection> serializableSectionSet;
 
+    protected Element sectionElement;
+
+
     public void addSection(SerializableSection serializableSection){
         this.serializableSectionSet.add(serializableSection);
     }
 
-    public SerializableSection() {
+    public SerializableSection(String id,String prefix,String position, String title) {
         this.serializableSectionSet = new TreeSet<>();
+        this.sectionElement = new Element("Section");
+        this.sectionElement.addAttribute(new Attribute("id", id));
+        this.sectionElement.addAttribute(new Attribute("prefix", prefix));
+        this.sectionElement.addAttribute(new Attribute("position", position));
+        this.sectionElement.addAttribute(new Attribute("h", String.valueOf(3)));
+        this.sectionElement.addAttribute(new Attribute("title", title));
+
     }
 
 }
