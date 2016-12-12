@@ -7,7 +7,6 @@
             <xsl:attribute name="href">
                 <xsl:value-of select="concat('#{',@id,'}')"/>
             </xsl:attribute>
-            <xsl:element name="br"/>
             <xsl:value-of select="concat(@Name,' - ',@Description)"/>
         </xsl:element>
     </xsl:template>
@@ -21,7 +20,6 @@
                               select="./Text[@Type='Text1']" />
             </xsl:element>
         </xsl:if>
-        <xsl:element name="p">
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
@@ -106,7 +104,6 @@
                     </xsl:for-each>
                 </xsl:element>
             </xsl:element>
-        </xsl:element>
         <xsl:if test="normalize-space($inlineConstraintsVar) = 'false'">
             <xsl:if test="count(Field//Constraint) &gt; 0">
                 <xsl:if test="count(Field//Constraint[@Type='cs']) &gt; 0">
@@ -176,7 +173,7 @@
             <xsl:if test="count(Text) &gt; 0">
                 <xsl:element name="p">
                     <xsl:element name="b">
-                        <xsl:value-of select="concat(../@Name,' - ',./@Position,' ',./@Name,'(',./@Datatype,')')" />
+                        <xsl:value-of select="concat(../@Name,' - ',./@Position,' : ',./@Name,'(',./@Datatype,')')" />
                     </xsl:element>
                     <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
                 </xsl:element>
