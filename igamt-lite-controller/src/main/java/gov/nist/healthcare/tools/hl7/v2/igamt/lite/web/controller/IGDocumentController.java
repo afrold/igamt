@@ -756,20 +756,10 @@ public class IGDocumentController extends CommonController {
       produces = "application/json")
   public Set<Table> findHl7Tables(@PathVariable("hl7Version") String hl7Version) {
     log.info("Fetching all Tables for " + hl7Version);
-
-    Set<Table> result = new HashSet<Table>();
-
-    List<IGDocument> igDocuments = igDocumentCreation.findIGDocumentsByHl7Versions();
-    for (IGDocument igd : igDocuments) {
-      if (igd.getProfile().getMetaData().getHl7Version().equals(hl7Version)) {
-        for (TableLink link : igd.getProfile().getTableLibrary().getChildren()) {
-          Table t = tableService.findById(link.getId());
-          t.setBindingIdentifier(link.getBindingIdentifier());
-          result.add(t);
-        }
-      }
-    }
-    return result;
+    List<SCOPE> scopes = new ArrayList<SCOPE>();
+    scopes.add(SCOPE.HL7STANDARD);
+   
+	return new HashSet<Table>(tableService.findByScopesAndVersion(scopes, hl7Version));
   }
 
   @RequestMapping(value = "/PHINVADS/tables", method = RequestMethod.GET,
