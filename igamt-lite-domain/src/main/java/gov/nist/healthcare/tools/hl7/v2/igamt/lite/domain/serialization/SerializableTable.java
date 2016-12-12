@@ -83,8 +83,9 @@ public class SerializableTable extends SerializableSection {
                 valueSetDefinitionElement.appendChild(
                     this.createTextElement("DefPostText", this.table.getDefPostText()));
             }
-
         }
-        return valueSetDefinitionElement;
+        Element sectionElement = super.getSectionElement();
+        sectionElement.appendChild(valueSetDefinitionElement);
+        return sectionElement;
     }
 }

@@ -228,29 +228,17 @@ public class SerializableSegment extends SerializableSection {
                 segmentElement.appendChild(coConstraintsElement);
             }
         }
+
         return segmentElement;
     }
 
     private String getFullUsage(Segment segment, int i) {
-        List<Predicate> predicates = findPredicate(i + 1, segment.getPredicates());
+        List<Predicate> predicates = super.findPredicate(i + 1, segment.getPredicates());
         if (predicates == null || predicates.isEmpty()) {
             return segment.getFields().get(i).getUsage().toString();
         } else {
             Predicate p = predicates.get(0);
             return segment.getFields().get(i).getUsage().toString() + "(" + p.getTrueUsage() + "/" + p.getFalseUsage() + ")";
         }
-    }
-
-    private List<Predicate> findPredicate(Integer target, List<Predicate> predicates) {
-        List<Predicate> constraints = new ArrayList<>();
-        for (Predicate pre : predicates) {
-            if (pre.getConstraintTarget().indexOf('[') != -1) {
-                if (target == Integer
-                    .parseInt(pre.getConstraintTarget().substring(0, pre.getConstraintTarget().indexOf('[')))) {
-                    constraints.add(pre);
-                }
-            }
-        }
-        return constraints;
     }
 }

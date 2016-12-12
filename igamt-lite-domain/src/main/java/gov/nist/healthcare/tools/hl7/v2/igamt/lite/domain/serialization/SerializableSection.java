@@ -1,8 +1,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -26,7 +29,6 @@ public class SerializableSection extends SerializableElement {
     protected Element sectionElement;
 
     protected String id,prefix,position,title;
-
 
     public void addSection(SerializableSection serializableSection){
         this.serializableSectionSet.add(serializableSection);
@@ -54,4 +56,20 @@ public class SerializableSection extends SerializableElement {
         return sectionElement;
     }
 
+    public Element getSectionElement() {
+        return sectionElement;
+    }
+
+    protected List<Predicate> findPredicate(Integer target, List<Predicate> predicates) {
+        List<Predicate> constraints = new ArrayList<>();
+        for (Predicate pre : predicates) {
+            if (pre.getConstraintTarget().indexOf('[') != -1) {
+                if (target == Integer
+                    .parseInt(pre.getConstraintTarget().substring(0, pre.getConstraintTarget().indexOf('[')))) {
+                    constraints.add(pre);
+                }
+            }
+        }
+        return constraints;
+    }
 }
