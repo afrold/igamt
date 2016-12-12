@@ -29,9 +29,9 @@
                 <xsl:value-of select="@ContentDefinition"/>
             </xsl:element>
         </xsl:if>
-        <xsl:if test="@Oid != ''">
+        <xsl:if test="@Oid != '' and @Oid != 'UNSPECIFIED'">
             <xsl:element name="p">
-                <xsl:text>Oid: </xsl:text>
+                <xsl:text>OID: </xsl:text>
                 <xsl:value-of select="@Oid"/>
             </xsl:element>
         </xsl:if>
