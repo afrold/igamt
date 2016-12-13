@@ -1,7 +1,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
+import nu.xom.Document;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,12 +27,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContextUnit.class})
 public class SerializationServiceTest {
+
+    private static final String IG_DOCUMENT_TEST_ID = "57c8371a84ae6827fcec5488";
+
     @Autowired
-    private SerializationService serializationService;
+    SerializationService serializationService;
+
+    @Autowired
+    IGDocumentService igDocumentService;
 
     @Test
     public void testSerializeIGDocument(){
-
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
+        assertTrue(igDocument!=null);
+        Document document = serializationService.serializeIGDocument(igDocument);
+        String xmlDocument = document.toXML();
+        System.out.println(xmlDocument);
     }
     @Test
     public void testSerializeDatatypeLibrary(){

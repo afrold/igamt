@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -18,9 +19,15 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+@Service
 public class SerializationUtil {
 
-    @Autowired private static FileStorageService fileStorageService;
+    private static FileStorageService fileStorageService;
+
+    @Autowired
+    public void setFileStorageService(FileStorageService fileStorageService){
+        this.fileStorageService = fileStorageService;
+    }
 
     public static String str(String value) {
         return value != null ? value : "";

@@ -72,4 +72,10 @@ public class SerializableSection extends SerializableElement {
         }
         return constraints;
     }
+    
+    public void addSectionContent(String content){
+        Element sectionContentElement = new nu.xom.Element("SectionContent");
+        sectionContentElement.appendChild(content);
+        sectionElement.appendChild(sectionContentElement);
+    }
 }
