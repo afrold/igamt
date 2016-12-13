@@ -1269,7 +1269,7 @@
 
     <div class="modal-body">
         <form role="form">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Full Message</div>
                     <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
@@ -1278,25 +1278,6 @@
                             </tbody>
 
                         </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default" data-drop="true"  data-jqyoui-options ng-model="treeDataForContext" jqyoui-droppable="{beforeDrop: 'beforeContextDrop', onDrop: 'afterContextDrop'}">
-                    <div class="panel-heading">Selected Context</div>
-                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
-                        <div ng-show="draggingStatus == 'MessageTreeNodeDragging'">
-                            <span style="color:red;" class="blink_me">You can drop here!!</span>
-                        </div>
-                        <div ng-show="treeDataForContext.length > 0">
-                            <table class="table table-striped">
-                                <tbody ng-repeat="data in treeDataForContext" ng-include="'context_tree_item.html'">
-                                </tbody>
-                            </table>
-                        </div>
-                        <div ng-show="treeDataForContext.length == 0">
-                            <span style="color:red;">No Selected Context</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1608,7 +1589,7 @@
             &nbsp; </i>Save</span></button>
     </div>
 </script>
-<script type="text/ng-template" id="context_tree_item.html">
+<script type="text/ng-template" id="message_tree_item.html">
     <tr style="width:100%">
         <td ng-if="data.folderClass">
             <div ng-if="data.type === 'message' || data.type === 'group' || data.type === 'segmentRef'">
@@ -1644,7 +1625,7 @@
                 </div>
                 <div id="expanded-data" ng-if="data.childrenVisible">
                     <table class="table table-striped" id="nested-table">
-                        <div ng-repeat="data in data.children" ng-include="'context_tree_item.html'"></div>
+                        <div ng-repeat="data in data.children" ng-include="'message_tree_item.html'"></div>
                     </table>
                 </div>
             </div>
@@ -1655,7 +1636,7 @@
                 </div>
                 <div id="expanded-data" ng-if="data.childrenVisible">
                     <table class="table table-striped" id="nested-table">
-                        <div ng-repeat="data in data.children" ng-include="'context_tree_item.html'"></div>
+                        <div ng-repeat="data in data.children" ng-include="'message_tree_item.html'"></div>
                     </table>
                 </div>
             </div>
@@ -1666,7 +1647,7 @@
                 </div>
                 <div id="expanded-data" ng-if="data.childrenVisible">
                     <table class="table table-striped" id="nested-table">
-                        <div ng-repeat="data in data.segment.fields" ng-include="'context_tree_item.html'"></div>
+                        <div ng-repeat="data in data.segment.fields" ng-include="'message_tree_item.html'"></div>
                     </table>
                 </div>
             </div>
@@ -1677,7 +1658,7 @@
                 </div>
                 <div id="expanded-data" ng-if="data.childrenVisible">
                     <table class="table table-striped" id="nested-table">
-                        <div ng-repeat="data in data.child.components" ng-include="'context_tree_item.html'"></div>
+                        <div ng-repeat="data in data.child.components" ng-include="'message_tree_item.html'"></div>
                     </table>
                 </div>
             </div>
@@ -1688,41 +1669,9 @@
                 </div>
                 <div id="expanded-data" ng-if="data.childrenVisible">
                     <table class="table table-striped" id="nested-table">
-                        <div ng-repeat="data in data.child.components" ng-include="'context_tree_item.html'"></div>
+                        <div ng-repeat="data in data.child.components" ng-include="'message_tree_item.html'"></div>
                     </table>
                 </div>
-            </div>
-        </td>
-    </tr>
-</script>
-<script type="text/ng-template" id="message_tree_item.html">
-    <tr style="width:100%">
-        <td ng-if="data.type !== 'segmentRef' && data.folderClass">
-            <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
-        </td>
-        <td ng-if="data.type !== 'segmentRef' && !data.folderClass">
-            <i class="fa fa-plus" ng-click="toggleChildren(data)"></i>
-        </td>
-        <td ng-if="data.type === 'segmentRef'">
-            <i class="fa fa-check"/>
-        </td>
-        <td>
-            <div ng-if="data.type !== 'segmentRef'" >
-                <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromMessageTree({nodeData: data})'}">
-                    <span ng-show="data.type === 'group'" class="label label-success label-icon">G</span>
-                    <span ng-show="data.type === 'group'">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::data.name}}</span>
-                    <span ng-show="data.type === 'message'" class="label label-success label-icon">M</span>
-                    <span ng-show="data.type === 'message'">&nbsp;{{::data.name}}</span>
-                    <i class="glyphicon glyphicon-move cursorMove"></i>
-                </div>
-                <div id="expanded-data" ng-if="data.childrenVisible">
-                    <table class="table table-striped" id="nested-table">
-                        <div ng-repeat="data in data.children" ng-include="'message_tree_item.html'"></div>
-                    </table>
-                </div>
-            </div>
-            <div ng-if="data.type === 'segmentRef'" ><span class="label label-segment label-icon">S</span>
-                &nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::segmentsMap[data.ref.id].name}}
             </div>
         </td>
     </tr>
@@ -1770,12 +1719,11 @@
 
 <script type="text/ng-template" id="ConformanceStatementSegmentCtrl.html">
     <div class="modal-header">
-        <h3 ng-show="selectedNode === null" class="header4">Conformance statement for {{::segment.name}}</h3>
-        <h3 ng-show="selectedNode !== null" class="header4">Conformance statement for {{::segment.name}}-{{selectedNode.position}}</h3>
+        <h3 class="header4">Conformance statement for {{::segment.name}}</h3>
     </div>
     <div class="modal-body">
         <form role="form">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Selected Segment Tree</div>
                     <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
@@ -1786,31 +1734,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="panel panel-default" data-drop="true"  data-jqyoui-options ng-model="selectedNode" jqyoui-droppable="{beforeDrop: 'beforeFieldDrop', onDrop: 'afterFieldDrop'}">
-                    <div class="panel-heading">Selected Field Info</div>
-                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
-                        <div ng-hide="selectedNode">
-                            <span style="color:red;">No Selected Field, Please select field from the Segment Tree</span>
-                        </div>
-                        <div ng-show="selectedNode">
-                            <div class="form-group control-group">
-                                <label class="col-md-2 control-label">Path</label>
-                                <div class="controls col-md-10">
-                                    <span>{{::segment.name}}-{{selectedNode.position}}</span>
-                                </div>
-                            </div>
-                            <div class="form-group control-group">
-                                <label class="col-md-2 control-label">Name</label>
-                                <div class="controls col-md-10">
-                                    <span>{{selectedNode.name}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="col-md-12" style="margin-top: 10px">
                 <div class="panel panel-default">
                     <div class="panel-heading">List of Conformance Statements</div>
@@ -1825,7 +1748,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="c in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
+                            <tr ng-repeat="c in displayed">
                                 <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                     <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                                 </td>
@@ -2449,7 +2372,7 @@
         </td>
         <td>
             <div ng-if="data.type === 'segment'">
-                <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
+                <div>
                     <span class="label label-segment label-icon">S</span>
                     <span>&nbsp;{{::data.name}}</span>
                 </div>
@@ -2487,12 +2410,11 @@
 
 <script type="text/ng-template" id="ConformanceStatementDatatypeCtrl.html">
     <div class="modal-header">
-        <h3 ng-show="selectedNode === null" class="header4">Conformance statement for {{::datatype.name}}</h3>
-        <h3 ng-show="selectedNode !== null" class="header4">Conformance statement for {{::datatype.name}}-{{::selectedNode.position}}</h3>
+        <h3 class="header4">Conformance statement for {{::datatype.name}}</h3>
     </div>
     <div class="modal-body">
         <form role="form">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Selected Datatype Tree</div>
                     <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
@@ -2503,31 +2425,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="panel panel-default" data-drop="true"  data-jqyoui-options ng-model="selectedNode" jqyoui-droppable="{beforeDrop: 'beforeComponentDrop', onDrop: 'afterComponentDrop'}">
-                    <div class="panel-heading">Selected Component Info</div>
-                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
-                        <div ng-hide="selectedNode">
-                            <span style="color:red;">No Selected Component, Please select component from the Datatype Tree</span>
-                        </div>
-                        <div ng-show="selectedNode">
-                            <div class="form-group control-group">
-                                <label class="col-md-2 control-label">Path</label>
-                                <div class="controls col-md-10">
-                                    <span>{{::datatype.name}}-{{selectedNode.position}}</span>
-                                </div>
-                            </div>
-                            <div class="form-group control-group">
-                                <label class="col-md-2 control-label">Name</label>
-                                <div class="controls col-md-10">
-                                    <span>{{selectedNode.name}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="col-md-12" style="margin-top: 10px">
                 <div class="panel panel-default">
                     <div class="panel-heading">List of Conformance Statements</div>
@@ -2542,7 +2439,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="c in displayed | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
+                            <tr ng-repeat="c in displayed">
                                 <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                     <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                                 </td>
@@ -3163,7 +3060,7 @@
         </td>
         <td>
             <div ng-if="data.type === 'datatype'">
-                <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
+                <div>
                     <span class="label label-datatype label-icon">D</span>
                     <span>&nbsp;{{::data.name}}</span>
                 </div>

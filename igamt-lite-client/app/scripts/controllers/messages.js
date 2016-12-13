@@ -2126,9 +2126,8 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.compositeType = null;
     $scope.complexConstraint = null;
     $scope.newComplexConstraintId = null;
-    $scope.targetContext = null;
+    $scope.selectedContext = null;
     $scope.treeDataForMessage = [];
-    $scope.treeDataForContext = [];
     $scope.constraintType = 'Plain';
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
@@ -2145,35 +2144,14 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         data.folderClass = data.childrenVisible?"fa-minus":"fa-plus";
     };
 
-    $scope.beforeContextDrop = function() {
-        var deferred = $q.defer();
-
-        if($scope.draggingStatus === 'MessageTreeNodeDragging') {
-            $scope.treeDataForContext = [];
-            deferred.resolve();
-        }else {
-            deferred.reject();
-        }
-        return deferred.promise;
-    };
-
     $scope.beforeNodeDrop = function() {
         var deferred = $q.defer();
-        if($scope.draggingStatus === 'ContextTreeNodeDragging') {
+        if($scope.draggingStatus === 'MessageTreeNodeDragging') {
             deferred.resolve();
         }else {
             deferred.reject();
         }
         return deferred.promise;
-    };
-
-    $scope.afterContextDrop = function() {
-        $scope.draggingStatus = null;
-        $scope.targetContext = $scope.treeDataForContext[0];
-        $scope.treeDataForContext[0] = angular.copy($scope.treeDataForContext[0]);
-        $scope.treeDataForContext[0].pathInfoSet = [];
-        $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
-        $scope.initConformanceStatement();
     };
 
     $scope.afterNodeDrop = function () {
@@ -2186,6 +2164,12 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_2 = $scope.secondNodeData.pathInfoSet;
         $scope.generateSecondPositionAndLocationPath();
+    };
+
+    $scope.updateContext = function(selectedContext) {
+        $scope.selectedContext = selectedContext;
+        $scope.generatePathInfo($scope.selectedContext, ".", ".", "1", false);
+        $scope.initConformanceStatement();
     };
 
     $scope.generateFirstPositionAndLocationPath = function (){
@@ -2232,10 +2216,6 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
 
     $scope.draggingNodeFromMessageTree = function (event, ui, nodeData) {
         $scope.draggingStatus = 'MessageTreeNodeDragging';
-    };
-
-    $scope.draggingNodeFromContextTree = function (event, ui, nodeData) {
-        $scope.draggingStatus = 'ContextTreeNodeDragging';
     };
 
     $scope.generatePathInfo = function(current, positionNumber, locationName, instanceNumber, isInstanceNumberEditable, nodeName) {
@@ -2341,20 +2321,20 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     }
 
     $scope.addConformanceStatement = function() {
-        var cs = $rootScope.generateConformanceStatement('', $scope.newConstraint);
-        $scope.targetContext.conformanceStatements.push(cs);
+        var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
+        $scope.selectedContext.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
 
     $scope.deleteConformanceStatement = function(conformanceStatement) {
-        $scope.targetContext.conformanceStatements.splice($scope.targetContext.conformanceStatements.indexOf(conformanceStatement), 1);
+        $scope.selectedContext.conformanceStatements.splice($scope.selectedContext.conformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };
 
     $scope.addFreeTextConformanceStatement = function() {
-        var cs = $rootScope.generateFreeTextConformanceStatement('', $scope.newConstraint);
-        $scope.targetContext.conformanceStatements.push(cs);
+        var cs = $rootScope.generateFreeTextConformanceStatement($scope.newConstraint);
+        $scope.selectedContext.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
@@ -2362,7 +2342,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.addComplexConformanceStatement = function() {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
-        $scope.targetContext.conformanceStatements.push($scope.complexConstraint);
+        $scope.selectedContext.conformanceStatements.push($scope.complexConstraint);
         $scope.initComplexStatement();
         $scope.changed = true;
     };
