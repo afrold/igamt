@@ -33,7 +33,8 @@ public class SerializableMetadata extends SerializableElement{
         this.dateUpdated = dateUpdated;
     }
 
-    @Override public Element serializeElement(Object... arguments) {
+    @Override
+    public Element serializeElement() {
         nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
         if(this.documentMetaData!=null){
             if (documentMetaData.getTitle() != null)

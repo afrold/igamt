@@ -24,6 +24,7 @@ import java.util.TreeSet;
 public class SerializableSections extends SerializableElement {
 
     private Set<SerializableSection> serializableSectionSet;
+    private Element rootSections;
 
     public void addSection(SerializableSection serializableSection){
         this.serializableSectionSet.add(serializableSection);
@@ -31,11 +32,15 @@ public class SerializableSections extends SerializableElement {
 
     public SerializableSections() {
         this.serializableSectionSet = new TreeSet<>();
+        this.rootSections = new Element("Sections");
+    }
+
+    public Element getRootSections() {
+        return rootSections;
     }
 
     @Override
     public Element serializeElement() {
-        nu.xom.Element rootSections = new nu.xom.Element("Sections");
         for(SerializableSection serializableSection : serializableSectionSet){
             rootSections.appendChild(serializableSection.serializeElement());
         }

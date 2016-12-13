@@ -4,9 +4,11 @@ import com.mongodb.gridfs.GridFSDBFile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMetadata;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSections;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import nu.xom.Document;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
@@ -36,11 +38,20 @@ public class SerializationServiceImpl implements SerializationService {
     @Autowired
     FileStorageService fileStorageService;
 
+    @Autowired
+    SerializationUtil serializationUtil;
+
+
     @Override public Document serializeIGDocument(IGDocument igDocument) {
         SerializableStructure serializableStructure = new SerializableStructure();
         SerializableMetadata serializableMetadata = new SerializableMetadata(igDocument.getMetaData(),igDocument.getProfile().getMetaData(),igDocument.getDateUpdated());
         serializableStructure.addSerializableElement(serializableMetadata);
-        return null;
+        SerializableSections serializableSections = new SerializableSections();
+        String prefix = "";
+        Integer depth = 1;
+        serializationUtil.setSectionsPrefixes(igDocument.getChildSections(),prefix,depth,serializableSections.getRootSections());
+
+        return serializableStructure.serializeStructure();
     }
 
     @Override public Document serializeDatatypeLibrary(IGDocument igDocument) {
@@ -52,6 +63,7 @@ public class SerializationServiceImpl implements SerializationService {
         serializableStructure.addSerializableElement(element);
         return serializableStructure.serializeStructure();
     }
+
 
     private String cleanRichtext(String richtext) {
         org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
