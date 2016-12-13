@@ -14,6 +14,9 @@
                     <xsl:attribute name="class">
                         <xsl:text>contentTable</xsl:text>
                     </xsl:attribute>
+	                <xsl:attribute name="summary">
+	                    <xsl:value-of select="@Type"></xsl:value-of>
+	                </xsl:attribute>
                     <xsl:choose>
                         <xsl:when test="@Type='ConformanceStatement'">
                             <xsl:call-template name="conformanceStatementHeader"/>

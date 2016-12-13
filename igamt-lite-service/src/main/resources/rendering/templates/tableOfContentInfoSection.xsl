@@ -31,16 +31,19 @@
             </xsl:element>
             <xsl:choose>
                 <xsl:when test="count(Section) &gt; 0">
+	                <xsl:variable name="apos">'</xsl:variable>
+	                <xsl:variable name="comma">,</xsl:variable>
                     <xsl:element name="div">
                         <xsl:attribute name="id">
                             <xsl:value-of
                                     select="concat(@id, '_btn')"/>
                         </xsl:attribute>
-                        <xsl:attribute name="class">unhidden btn</xsl:attribute>
+                        <xsl:attribute name="class">
+                        <xsl:text>unhidden btn</xsl:text>
+                        </xsl:attribute>
                         <xsl:element name="a">
-                            <xsl:attribute name="href">javascript:unhide('<xsl:value-of
-                                select="concat(@id, '_toc')"/>', '<xsl:value-of
-                                select="concat(@id, '_txt')"/>');
+                            <xsl:attribute name="href"><xsl:value-of
+                                select="concat('javascript:unhide(', $apos, @id, '_toc', $apos, $comma, $apos, @id, '_txt', $apos, ');')"/>
                             </xsl:attribute>
                             <xsl:element name="span">
                                 <xsl:attribute name="id">
