@@ -1,12 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -29,12 +23,12 @@ public class SerializableMessage extends SerializableSection {
 
     private Message message;
     private List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups;
-    private List<SerializableConstraint> serializableConstraints;
+    private SerializableConstraints serializableConformanceStatements;
+    private SerializableConstraints serializablePredicates;
     private String usageNote;
     private String defPreText;
     private String defPostText;
-
-    public SerializableMessage(Message message, String prefix, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> serializableConstraints,String usageNote,String defPreText,String defPostText) {
+    public SerializableMessage(Message message, String prefix, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, SerializableConstraints serializableConformanceStatements, SerializableConstraints serializablePredicates, String usageNote,String defPreText,String defPostText) {
         super(message.getId(),
             prefix + "." + String.valueOf(message.getPosition()),
             String.valueOf(message.getPosition() + 1),
@@ -43,7 +37,8 @@ public class SerializableMessage extends SerializableSection {
                 : message.getMessageType() + "^" + message.getEvent() + "^" + message.getStructID() + " - " + message.getIdentifier() + " - " + message.getDescription()
             );
         this.message = message;
-        this.serializableConstraints = serializableConstraints;
+        this.serializableConformanceStatements = serializableConformanceStatements;
+        this.serializablePredicates = serializablePredicates;
         this.serializableSegmentRefOrGroups = serializableSegmentRefOrGroups;
         this.usageNote = usageNote;
         this.defPreText = defPreText;
@@ -81,12 +76,8 @@ public class SerializableMessage extends SerializableSection {
         for (SerializableSegmentRefOrGroup serializableSegmentRefOrGroup : this.serializableSegmentRefOrGroups) {
             messageElement.appendChild(serializableSegmentRefOrGroup.serializeElement());
         }
-
-        if(this.serializableConstraints != null && !this.serializableConstraints.isEmpty()){
-            for(SerializableConstraint serializableConstraint : this.serializableConstraints){
-                messageElement.appendChild(serializableConstraint.serializeElement());
-            }
-        }
+        messageElement.appendChild(serializableConformanceStatements.serializeElement());
+        messageElement.appendChild(serializablePredicates.serializeElement());
         super.sectionElement.appendChild(messageElement);
         return super.sectionElement;
     }

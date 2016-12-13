@@ -1,17 +1,24 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMessage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeMessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
+import nu.xom.Attribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -33,30 +40,47 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
     SegmentService segmentService;
     @Autowired
     SerializeConstraintService serializeConstraintService;
+    @Autowired
+    SerializationUtil serializationUtil;
 
     @Override public SerializableMessage serializeMessage(Message message, String prefix) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup;
-            if(segmentRefOrGroup instanceof SegmentRef){
-                SegmentLink segmentLink = ((SegmentRef)segmentRefOrGroup).getRef();
-                if(segmentLink != null) {
-                    Segment segment = segmentService.findById(segmentLink.getId());
-                    serializableSegmentRefOrGroup =
-                        new SerializableSegmentRefOrGroup((SegmentRef)segmentRefOrGroup, segment);
-                    serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
-                }
-            } else if (segmentRefOrGroup instanceof Group){
-
-            }
+            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup);
+            serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
         }
-        List<SerializableConstraint> serializableConstraints = new ArrayList<>();
+
+        String type = "ConformanceStatement";
+        SerializableConstraints serializableConformanceStatements = serializeConstraints(message.getConformanceStatements(),message,type);
+        type = "ConditionPredicate";
+        SerializableConstraints serializablePredicates = serializeConstraints(message.getPredicates(),message,type);
+
         String usageNote, defPreText, defPostText;
         usageNote = defPreText = defPostText = "";
-
-        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConstraints,usageNote,defPreText,defPostText);
-
+        if(message.getUsageNote()!=null&&!message.getUsageNote().isEmpty()){
+            usageNote = serializationUtil.cleanRichtext(message.getUsageNote());
+        }
+        if(message.getDefPreText()!=null&&!message.getDefPreText().isEmpty()){
+            defPreText = serializationUtil.cleanRichtext(message.getDefPreText());
+        }
+        if(message.getDefPostText()!=null&&!message.getDefPostText().isEmpty()){
+            defPostText = serializationUtil.cleanRichtext(message.getDefPostText());
+        }
+        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText);
         return serializableMessage;
+    }
+
+    private SerializableConstraints serializeConstraints(List<? extends Constraint> constraints,Message message,String type){
+        List<SerializableConstraint> serializableConstraintList = new ArrayList<>();
+        for(Constraint constraint : constraints){
+            SerializableConstraint serializableConstraint = new SerializableConstraint(constraint, message.getName());
+            serializableConstraintList.add(serializableConstraint);
+        }
+        String id = UUID.randomUUID().toString();
+        String position = String.valueOf(message.getPosition());
+        String title = message.getName();
+        SerializableConstraints serializableConstraints = new SerializableConstraints(serializableConstraintList,id,position,title,type);
+        return serializableConstraints;
     }
 
     private SerializableSegmentRefOrGroup serializeSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup){

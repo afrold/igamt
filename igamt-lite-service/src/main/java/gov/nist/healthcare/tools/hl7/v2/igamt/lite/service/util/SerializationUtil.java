@@ -22,18 +22,14 @@ import java.util.TreeSet;
 @Service
 public class SerializationUtil {
 
-    private static FileStorageService fileStorageService;
-
     @Autowired
-    public void setFileStorageService(FileStorageService fileStorageService){
-        this.fileStorageService = fileStorageService;
-    }
+    private FileStorageService fileStorageService;
 
-    public static String str(String value) {
+    public String str(String value) {
         return value != null ? value : "";
     }
 
-    public static String cleanRichtext(String richtext) {
+    public String cleanRichtext(String richtext) {
         org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
         Elements elements1 = doc.select("h1");
         elements1.tagName("p").attr("style",
@@ -87,7 +83,7 @@ public class SerializationUtil {
         return "<div class=\"fr-view\">" + doc.body().html() + "</div>";
     }
 
-    public static void setSectionsPrefixes(Set<Section> sections, String prefix, Integer depth,
+    public void setSectionsPrefixes(Set<Section> sections, String prefix, Integer depth,
         nu.xom.Element element) {
         SortedSet<Section> sortedSections = sortSections(sections);
         for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section s : sortedSections) {
@@ -117,7 +113,7 @@ public class SerializationUtil {
         }
     }
 
-    private static SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortSections(Set<Section> s) {
+    private SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortSections(Set<Section> s) {
         SortedSet<Section> sortedSet = new TreeSet<Section>();
         Iterator<Section> setIt = s.iterator();
         while (setIt.hasNext()) {

@@ -24,14 +24,14 @@ import java.util.TreeSet;
  */
 public class SerializableSection extends SerializableElement {
 
-    private Set<SerializableSection> serializableSectionSet;
+    private List<SerializableSection> serializableSectionList;
 
     protected Element sectionElement;
 
     protected String id,prefix,position,title;
 
     public void addSection(SerializableSection serializableSection){
-        this.serializableSectionSet.add(serializableSection);
+        this.serializableSectionList.add(serializableSection);
     }
 
     public SerializableSection(String id,String prefix,String position, String title) {
@@ -39,7 +39,7 @@ public class SerializableSection extends SerializableElement {
         this.prefix = prefix;
         this.position = position;
         this.title = title;
-        this.serializableSectionSet = new TreeSet<>();
+        this.serializableSectionList = new ArrayList<>();
         this.sectionElement = new Element("Section");
         this.sectionElement.addAttribute(new Attribute("id", id));
         this.sectionElement.addAttribute(new Attribute("prefix", prefix));
@@ -50,7 +50,7 @@ public class SerializableSection extends SerializableElement {
 
     @Override
     public Element serializeElement() {
-        for(SerializableSection serializableSection : serializableSectionSet){
+        for(SerializableSection serializableSection : serializableSectionList){
             sectionElement.appendChild(serializableSection.serializeElement());
         }
         return sectionElement;

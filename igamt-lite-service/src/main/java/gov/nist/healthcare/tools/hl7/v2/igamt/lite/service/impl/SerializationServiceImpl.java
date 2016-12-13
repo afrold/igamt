@@ -65,55 +65,6 @@ public class SerializationServiceImpl implements SerializationService {
             serializableSection.addSectionContent("<div class=\"fr-view\">" + profile.getSectionContents() + "</div>");
         }
 
-        //TODO Check with Olivier if it's still used
-
-        /*nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
-        e.addAttribute(new Attribute("ID", profile.getId()));
-        ProfileMetaData metaData = profile.getMetaData();
-        if (metaData.getType() != null && !metaData.getType().isEmpty())
-            e.addAttribute(new Attribute("Type", metaData.getType()));
-        if (metaData.getHl7Version() != null && !metaData.getHl7Version().equals(""))
-            e.addAttribute(new Attribute("HL7Version", metaData.getHl7Version()));
-        if (metaData.getSchemaVersion() != null && !metaData.getSchemaVersion().equals(""))
-            e.addAttribute(new Attribute("SchemaVersion", metaData.getSchemaVersion()));
-
-        if (profile.getMetaData() != null) {
-            nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
-            ProfileMetaData metaDataObj = profile.getMetaData();
-            if (metaDataObj.getName() != null)
-                elmMetaData.addAttribute(new Attribute("Name", metaDataObj.getName()));
-            if (metaDataObj.getOrgName() != null)
-                elmMetaData.addAttribute(new Attribute("OrgName", metaDataObj.getOrgName()));
-            if (metaDataObj.getStatus() != null)
-                elmMetaData.addAttribute(new Attribute("Status", metaDataObj.getStatus()));
-            if (metaDataObj.getTopics() != null)
-                elmMetaData.addAttribute(new Attribute("Topics", metaDataObj.getTopics()));
-            if (metaDataObj.getSubTitle() != null)
-                elmMetaData.addAttribute(new Attribute("Subtitle", metaDataObj.getSubTitle()));
-            if (metaDataObj.getVersion() != null)
-                elmMetaData.addAttribute(new Attribute("Version", metaDataObj.getVersion()));
-            if (igdoc.getDateUpdated() != null)
-                elmMetaData.addAttribute(new Attribute("Date", DateUtils.format(igdoc.getDateUpdated())));
-            if (metaDataObj.getExt() != null)
-                elmMetaData.addAttribute(new Attribute("Ext", metaDataObj.getExt()));
-            if (profile.getComment() != null && !profile.getComment().equals("")) {
-                elmMetaData.addAttribute(new Attribute("Comment", profile.getComment()));
-            }
-
-            e.appendChild(elmMetaData);
-
-            if (profile.getMetaData().getEncodings() != null && profile.getMetaData().getEncodings().size() > 0) {
-                nu.xom.Element elmEncodings = new nu.xom.Element("Encodings");
-                for (String encoding : profile.getMetaData().getEncodings()) {
-                    nu.xom.Element elmEncoding = new nu.xom.Element("Encoding");
-                    elmEncoding.appendChild(encoding);
-                    elmEncodings.appendChild(elmEncoding);
-                }
-                e.appendChild(elmEncodings);
-            }
-        }
-        */
-
         if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
             nu.xom.Element textElement = new nu.xom.Element("Text");
             if (profile.getUsageNote() != null && !profile.getUsageNote().equals("")) {
@@ -139,12 +90,14 @@ public class SerializationServiceImpl implements SerializationService {
             serializableSectionMessages.addSectionContent("<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
         }
         for (Message message : profile.getMessages().getChildren()) {
-            SerializableMessage serializableMessage = serializeMessageService.serializeMessage(message,prefix)
+            SerializableMessage serializableMessage = serializeMessageService.serializeMessage(message,prefix);
             serializableSectionMessages.addSection(serializableMessage);
         }
-
+        serializableSections.addSection(serializableSectionMessages);
+        serializableStructure.addSerializableElement(serializableSections);
+        //TODO Refactor below
         // nu.xom.Element ss = new nu.xom.Element("Segments");
-        nu.xom.Element ss = new nu.xom.Element("Section");
+        /*nu.xom.Element ss = new nu.xom.Element("Section");
         ss.addAttribute(new Attribute("id", profile.getSegmentLibrary().getId()));
         ss.addAttribute(new Attribute("position", String.valueOf(profile.getSegmentLibrary().getSectionPosition())));
         prefix = String.valueOf(profile.getSectionPosition() + 1) + "."
@@ -167,11 +120,12 @@ public class SerializationServiceImpl implements SerializationService {
         List<SegmentLink> sgtList = new ArrayList<SegmentLink>(profile.getSegmentLibrary().getChildren());
         Collections.sort(sgtList);
         for (SegmentLink link : sgtList) {
+
+
             this.serializeSegment(ss, link, profile.getTableLibrary(), profile.getDatatypeLibrary(),
                 prefix + "." + String.valueOf(sgtList.indexOf(link) + 1), sgtList.indexOf(link));
         }
         xsect.appendChild(ss);
-        //TODO Refactor below
         // nu.xom.Element ds = new nu.xom.Element("Datatypes");
         nu.xom.Element ds = new nu.xom.Element("Section");
         ds.addAttribute(new Attribute("id", profile.getDatatypeLibrary().getId()));
@@ -486,6 +440,7 @@ public class SerializationServiceImpl implements SerializationService {
 
         xsect.appendChild(e);
         return xsect;
+        */
 
         return serializableStructure.serializeStructure();
     }
