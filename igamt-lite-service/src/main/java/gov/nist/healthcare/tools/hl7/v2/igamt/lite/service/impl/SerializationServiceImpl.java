@@ -49,20 +49,34 @@ public class SerializationServiceImpl implements SerializationService {
         Integer depth = 1;
         serializationUtil.setSectionsPrefixes(igDocument.getChildSections(),prefix,depth,serializableSections.getRootSections());
         Profile profile = igDocument.getProfile();
-        nu.xom.Element xsect = new nu.xom.Element("Section");
-        xsect.addAttribute(new Attribute("id", profile.getId()));
-
-        xsect.addAttribute(new Attribute("h", String.valueOf(1)));
+        //Create base section node for the profile serialization
         String id = profile.getId();
         String position = String.valueOf(profile.getSectionPosition());
         prefix = String.valueOf(profile.getSectionPosition() + 1);
+        String headerLevel = String.valueOf(1);
         String title = "";
-        if (profile.getSectionTitle() != null) {
+        if (profile.getMessages().getSectionTitle() != null) {
             title = profile.getSectionTitle();
         }
-        SerializableSection serializableSection = new SerializableSection(id,prefix,position,title);
-        if (profile.getSectionContents() != null && !profile.getSectionContents().isEmpty()) {
-            serializableSection.addSectionContent("<div class=\"fr-view\">" + profile.getSectionContents() + "</div>");
+        SerializableSection profileSectionElement = new SerializableSection(id,prefix,position,headerLevel,title);
+        if(profile.getSectionContents()!=null && !profile.getSectionContents().isEmpty()){
+            profileSectionElement.addSectionContent(profile.getSectionContents());
+        }
+
+        //Message Serialization
+        id = profile.getMessages().getId();
+        position = String.valueOf(profile.getMessages().getSectionPosition());
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "."
+            + String.valueOf(profile.getMessages().getSectionPosition() + 1);
+        headerLevel = String.valueOf(2);
+        title = "";
+        if (profile.getMessages().getSectionTitle() != null) {
+            title = profile.getMessages().getSectionTitle();
+        }
+        SerializableSection messageSectionElement = new SerializableSection(id,prefix,position,headerLevel,title);
+        if (profile.getMessages().getSectionContents() != null
+            && !profile.getMessages().getSectionContents().isEmpty()) {
+            messageSectionElement.addSectionContent("<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
         }
 
         if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
@@ -75,26 +89,12 @@ public class SerializationServiceImpl implements SerializationService {
             serializableSections.getRootSections().appendChild(textElement);
         }
 
-        id = profile.getMessages().getId();
-        position = String.valueOf(profile.getMessages().getSectionPosition());
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "."
-            + String.valueOf(profile.getMessages().getSectionPosition() + 1);
-        if (profile.getMessages().getSectionTitle() != null) {
-            title = profile.getMessages().getSectionTitle();
-        } else {
-            title = "";
-        }
-        SerializableSection serializableSectionMessages = new SerializableSection(id,prefix,position,title);
-        if (profile.getMessages().getSectionContents() != null
-            && !profile.getMessages().getSectionContents().isEmpty()) {
-            serializableSectionMessages.addSectionContent("<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
-        }
         for (Message message : profile.getMessages().getChildren()) {
             SerializableMessage serializableMessage = serializeMessageService.serializeMessage(message,prefix);
-            serializableSectionMessages.addSection(serializableMessage);
+            messageSectionElement.addSection(serializableMessage);
         }
-        serializableSections.addSection(serializableSectionMessages);
-        serializableStructure.addSerializableElement(serializableSections);
+        profileSectionElement.addSection(messageSectionElement);
+
         //TODO Refactor below
         // nu.xom.Element ss = new nu.xom.Element("Segments");
         /*nu.xom.Element ss = new nu.xom.Element("Section");
@@ -442,6 +442,8 @@ public class SerializationServiceImpl implements SerializationService {
         return xsect;
         */
 
+        serializableSections.addSection(profileSectionElement);
+        serializableStructure.addSerializableElement(serializableSections);
         return serializableStructure.serializeStructure();
     }
 

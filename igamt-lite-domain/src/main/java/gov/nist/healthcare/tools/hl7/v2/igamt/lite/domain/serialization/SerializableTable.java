@@ -23,9 +23,9 @@ public class SerializableTable extends SerializableSection {
     private Table table;
     private String bindingIdentifier;
 
-    public SerializableTable(String id, String prefix, String position, String title, Table table,
+    public SerializableTable(String id, String prefix, String position, String headerLevel, String title, Table table,
         String bindingIdentifier) {
-        super(id, prefix, position, title);
+        super(id, prefix, position, headerLevel, title);
         this.table = table;
         this.bindingIdentifier = bindingIdentifier;
     }

@@ -32,6 +32,7 @@ public class SerializableMessage extends SerializableSection {
         super(message.getId(),
             prefix + "." + String.valueOf(message.getPosition()),
             String.valueOf(message.getPosition() + 1),
+            String.valueOf("4"),
             message.getName() != null ?
                 message.getName() + " - " + message.getIdentifier() + " - " + message.getDescription()
                 : message.getMessageType() + "^" + message.getEvent() + "^" + message.getStructID() + " - " + message.getIdentifier() + " - " + message.getDescription()

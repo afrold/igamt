@@ -33,9 +33,9 @@ public class SerializableDatatype extends SerializableSection {
     private Map<Component,Datatype> componentDatatypeMap;
     private Map<Component,List<Table>> componentTableMap;
 
-    public SerializableDatatype(String id, String prefix, String position, String title,
+    public SerializableDatatype(String id, String prefix, String position, String headerLevel, String title,
         Datatype datatype, List<SerializableConstraint> constraints,Map<Component,Datatype> componentDatatypeMap,Map<Component,List<Table>> componentTableMap) {
-        super(id, prefix, position, title);
+        super(id, prefix, position, headerLevel, title);
         this.datatype = datatype;
         this.constraints = constraints;
         this.componentDatatypeMap = componentDatatypeMap;

@@ -5,8 +5,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.*;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
-import javax.xml.crypto.Data;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,14 +31,14 @@ public class SerializableSegment extends SerializableSection {
     private List<SerializableDatatype> datatypes;
     private List<SerializableTable> valueSets;
 
-    public SerializableSegment(String id, String prefix, String position, String title,
+    public SerializableSegment(String id, String prefix, String position, String headerLevel, String title,
         Segment segment,List<SerializableConstraint> constraints,Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap) {
-        this(id,prefix,position,title,segment,constraints,fieldDatatypeMap,fieldTableMap,coConstraintValueTableMap,null,null);
+        this(id,prefix,position,headerLevel,title,segment,constraints,fieldDatatypeMap,fieldTableMap,coConstraintValueTableMap,null,null);
     }
 
-    public SerializableSegment(String id, String prefix, String position, String title,
+    public SerializableSegment(String id, String prefix, String position, String headerLevel, String title,
         Segment segment, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap, List<SerializableDatatype> datatypes,List<SerializableTable> valueSets) {
-        super(id, prefix, position, title);
+        super(id, prefix, position, headerLevel, title);
         this.segment = segment;
         this.constraints = constraints;
         this.fieldDatatypeMap = fieldDatatypeMap;
