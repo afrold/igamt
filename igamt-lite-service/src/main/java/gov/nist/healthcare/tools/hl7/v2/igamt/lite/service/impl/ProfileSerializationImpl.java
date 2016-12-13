@@ -109,6 +109,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	@Autowired
 	private ConstraintsSerialization constraintsSerializationService;
 
+		@Autowired
+		private SerializationUtil serializationUtil;
+
 	private HashMap<String, Datatype> datatypesMap;
 	private HashMap<String, Segment> segmentsMap;
 	private Constraints conformanceStatement;
@@ -235,23 +238,23 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private nu.xom.Document serializeProfileGazelleToDoc(Profile profile) {
 		nu.xom.Element e = new nu.xom.Element("HL7v2xConformanceProfile");
-		e.addAttribute(new Attribute("HL7Version", SerializationUtil.str(profile.getMetaData().getHl7Version())));
-		e.addAttribute(new Attribute("ProfileType", SerializationUtil.str(profile.getMetaData().getType())));
+		e.addAttribute(new Attribute("HL7Version", serializationUtil.str(profile.getMetaData().getHl7Version())));
+		e.addAttribute(new Attribute("ProfileType", serializationUtil.str(profile.getMetaData().getType())));
 		// e.addAttribute(new Attribute("Identifier",
-		// SerializationUtil.str(profile.getMetaData().getProfileID())));
+		// serializationUtil.str(profile.getMetaData().getProfileID())));
 
 		nu.xom.Element metadataElm = new nu.xom.Element("MetaData");
-		metadataElm.addAttribute(new Attribute("Name", SerializationUtil.str(profile.getMetaData().getName())));
-		metadataElm.addAttribute(new Attribute("OrgName", SerializationUtil.str(profile.getMetaData().getOrgName())));
-		metadataElm.addAttribute(new Attribute("Version", SerializationUtil.str(profile.getMetaData().getVersion())));
+		metadataElm.addAttribute(new Attribute("Name", serializationUtil.str(profile.getMetaData().getName())));
+		metadataElm.addAttribute(new Attribute("OrgName", serializationUtil.str(profile.getMetaData().getOrgName())));
+		metadataElm.addAttribute(new Attribute("Version", serializationUtil.str(profile.getMetaData().getVersion())));
 		// metadataElm.addAttribute(new Attribute("Status",
-		// SerializationUtil.str(profile.getMetaData().getStatus())));
+		// serializationUtil.str(profile.getMetaData().getStatus())));
 		// metadataElm.addAttribute(new Attribute("Topics",
-		// SerializationUtil.str(profile.getMetaData().getTopics())));
+		// serializationUtil.str(profile.getMetaData().getTopics())));
 		e.appendChild(metadataElm);
 
 		nu.xom.Element impNoteElm = new nu.xom.Element("ImpNote");
-		impNoteElm.appendChild(SerializationUtil.str(profile.getMetaData().getName()));
+		impNoteElm.appendChild(serializationUtil.str(profile.getMetaData().getName()));
 		e.appendChild(impNoteElm);
 
 		nu.xom.Element useCaseElm = new nu.xom.Element("UseCase");
@@ -271,17 +274,17 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		for (Message message : profile.getMessages().getChildren()) {
 			nu.xom.Element hL7v2xStaticDefElm = new nu.xom.Element("HL7v2xStaticDef");
-			hL7v2xStaticDefElm.addAttribute(new Attribute("MsgType", SerializationUtil.str(message.getMessageType())));
-			hL7v2xStaticDefElm.addAttribute(new Attribute("EventType", SerializationUtil.str(message.getEvent())));
-			hL7v2xStaticDefElm.addAttribute(new Attribute("MsgStructID", SerializationUtil.str(message.getStructID())));
-			hL7v2xStaticDefElm.addAttribute(new Attribute("EventDesc", SerializationUtil.str(message.getDescription())));
+			hL7v2xStaticDefElm.addAttribute(new Attribute("MsgType", serializationUtil.str(message.getMessageType())));
+			hL7v2xStaticDefElm.addAttribute(new Attribute("EventType", serializationUtil.str(message.getEvent())));
+			hL7v2xStaticDefElm.addAttribute(new Attribute("MsgStructID", serializationUtil.str(message.getStructID())));
+			hL7v2xStaticDefElm.addAttribute(new Attribute("EventDesc", serializationUtil.str(message.getDescription())));
 			// hL7v2xStaticDefElm.addAttribute(new Attribute("Identifier",
-			// SerializationUtil.str(message.getMessageID())));
+			// serializationUtil.str(message.getMessageID())));
 
 			nu.xom.Element metadataMessageElm = new nu.xom.Element("MetaData");
-			metadataMessageElm.addAttribute(new Attribute("Name", SerializationUtil.str(message.getName())));
+			metadataMessageElm.addAttribute(new Attribute("Name", serializationUtil.str(message.getName())));
 			metadataMessageElm
-					.addAttribute(new Attribute("OrgName", SerializationUtil.str(profile.getMetaData().getOrgName())));
+					.addAttribute(new Attribute("OrgName", serializationUtil.str(profile.getMetaData().getOrgName())));
 			hL7v2xStaticDefElm.appendChild(metadataMessageElm);
 
 			Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
@@ -341,29 +344,29 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		e.addAttribute(new Attribute("ID", profile.getId()));
 		ProfileMetaData metaData = profile.getMetaData();
 		if (metaData.getType() != null && !metaData.getType().equals(""))
-			e.addAttribute(new Attribute("Type", SerializationUtil.str(metaData.getType())));
+			e.addAttribute(new Attribute("Type", serializationUtil.str(metaData.getType())));
 		if (metaData.getHl7Version() != null && !metaData.getHl7Version().equals(""))
-			e.addAttribute(new Attribute("HL7Version", SerializationUtil.str(metaData.getHl7Version())));
+			e.addAttribute(new Attribute("HL7Version", serializationUtil.str(metaData.getHl7Version())));
 		if (metaData.getSchemaVersion() != null && !metaData.getSchemaVersion().equals(""))
-			e.addAttribute(new Attribute("SchemaVersion", SerializationUtil.str(metaData.getSchemaVersion())));
+			e.addAttribute(new Attribute("SchemaVersion", serializationUtil.str(metaData.getSchemaVersion())));
 
 		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
-		elmMetaData.addAttribute(new Attribute("Name", !SerializationUtil.str(igMetaData.getTitle()).equals("")
-				? SerializationUtil.str(igMetaData.getTitle()) : "No Title Info"));
-		elmMetaData.addAttribute(new Attribute("OrgName", !SerializationUtil.str(igMetaData.getOrgName()).equals("")
-				? SerializationUtil.str(igMetaData.getOrgName()) : "No Org Info"));
-		elmMetaData.addAttribute(new Attribute("Version", !SerializationUtil.str(igMetaData.getVersion()).equals("")
-				? SerializationUtil.str(igMetaData.getVersion()) : "No Version Info"));
-		elmMetaData.addAttribute(new Attribute("Date", !SerializationUtil.str(igMetaData.getDate()).equals("")
-				? SerializationUtil.str(igMetaData.getDate()) : "No Date Info"));
+		elmMetaData.addAttribute(new Attribute("Name", !serializationUtil.str(igMetaData.getTitle()).equals("")
+				? serializationUtil.str(igMetaData.getTitle()) : "No Title Info"));
+		elmMetaData.addAttribute(new Attribute("OrgName", !serializationUtil.str(igMetaData.getOrgName()).equals("")
+				? serializationUtil.str(igMetaData.getOrgName()) : "No Org Info"));
+		elmMetaData.addAttribute(new Attribute("Version", !serializationUtil.str(igMetaData.getVersion()).equals("")
+				? serializationUtil.str(igMetaData.getVersion()) : "No Version Info"));
+		elmMetaData.addAttribute(new Attribute("Date", !serializationUtil.str(igMetaData.getDate()).equals("")
+				? serializationUtil.str(igMetaData.getDate()) : "No Date Info"));
 
 		if (metaData.getSpecificationName() != null && !metaData.getSpecificationName().equals(""))
 			elmMetaData
-					.addAttribute(new Attribute("SpecificationName", SerializationUtil.str(metaData.getSpecificationName())));
+					.addAttribute(new Attribute("SpecificationName", serializationUtil.str(metaData.getSpecificationName())));
 		if (metaData.getStatus() != null && !metaData.getStatus().equals(""))
-			elmMetaData.addAttribute(new Attribute("Status", SerializationUtil.str(metaData.getStatus())));
+			elmMetaData.addAttribute(new Attribute("Status", serializationUtil.str(metaData.getStatus())));
 		if (metaData.getTopics() != null && !metaData.getTopics().equals(""))
-			elmMetaData.addAttribute(new Attribute("Topics", SerializationUtil.str(metaData.getTopics())));
+			elmMetaData.addAttribute(new Attribute("Topics", serializationUtil.str(metaData.getTopics())));
 
 		e.appendChild(elmMetaData);
 	}
@@ -524,14 +527,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmMessage = new nu.xom.Element("Message");
 		elmMessage.addAttribute(new Attribute("ID", m.getId()));
 		if (m.getIdentifier() != null && !m.getIdentifier().equals(""))
-			elmMessage.addAttribute(new Attribute("Identifier", SerializationUtil.str(m.getIdentifier())));
+			elmMessage.addAttribute(new Attribute("Identifier", serializationUtil.str(m.getIdentifier())));
 		if (m.getName() != null && !m.getName().equals(""))
-			elmMessage.addAttribute(new Attribute("Name", SerializationUtil.str(m.getName())));
-		elmMessage.addAttribute(new Attribute("Type", SerializationUtil.str(m.getMessageType())));
-		elmMessage.addAttribute(new Attribute("Event", SerializationUtil.str(m.getEvent())));
-		elmMessage.addAttribute(new Attribute("StructID", SerializationUtil.str(m.getStructID())));
+			elmMessage.addAttribute(new Attribute("Name", serializationUtil.str(m.getName())));
+		elmMessage.addAttribute(new Attribute("Type", serializationUtil.str(m.getMessageType())));
+		elmMessage.addAttribute(new Attribute("Event", serializationUtil.str(m.getEvent())));
+		elmMessage.addAttribute(new Attribute("StructID", serializationUtil.str(m.getStructID())));
 		if (m.getDescription() != null && !m.getDescription().equals(""))
-			elmMessage.addAttribute(new Attribute("Description", SerializationUtil.str(m.getDescription())));
+			elmMessage.addAttribute(new Attribute("Description", serializationUtil.str(m.getDescription())));
 
 		Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
 
@@ -554,12 +557,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private nu.xom.Element serializeDisplayMessage(Message m, Profile profile) {
 		nu.xom.Element elmMessage = new nu.xom.Element("Message");
 		if (m.getName() != null && !m.getName().equals(""))
-			elmMessage.addAttribute(new Attribute("Name", SerializationUtil.str(m.getName())));
-		elmMessage.addAttribute(new Attribute("Type", SerializationUtil.str(m.getMessageType())));
-		elmMessage.addAttribute(new Attribute("Event", SerializationUtil.str(m.getEvent())));
-		elmMessage.addAttribute(new Attribute("StructID", SerializationUtil.str(m.getStructID())));
+			elmMessage.addAttribute(new Attribute("Name", serializationUtil.str(m.getName())));
+		elmMessage.addAttribute(new Attribute("Type", serializationUtil.str(m.getMessageType())));
+		elmMessage.addAttribute(new Attribute("Event", serializationUtil.str(m.getEvent())));
+		elmMessage.addAttribute(new Attribute("StructID", serializationUtil.str(m.getStructID())));
 		if (m.getDescription() != null && !m.getDescription().equals(""))
-			elmMessage.addAttribute(new Attribute("Description", SerializationUtil.str(m.getDescription())));
+			elmMessage.addAttribute(new Attribute("Description", serializationUtil.str(m.getDescription())));
 
 		Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
 		for (SegmentRefOrGroup segmentRefOrGroup : m.getChildren()) {
@@ -582,11 +585,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private nu.xom.Element serializeGroup(Group group, SegmentLibrary segments) {
 		nu.xom.Element elmGroup = new nu.xom.Element("Group");
-		elmGroup.addAttribute(new Attribute("ID", SerializationUtil.str(group.getName())));
-		elmGroup.addAttribute(new Attribute("Name", SerializationUtil.str(group.getName())));
-		elmGroup.addAttribute(new Attribute("Usage", SerializationUtil.str(group.getUsage().value())));
-		elmGroup.addAttribute(new Attribute("Min", SerializationUtil.str(group.getMin() + "")));
-		elmGroup.addAttribute(new Attribute("Max", SerializationUtil.str(group.getMax())));
+		elmGroup.addAttribute(new Attribute("ID", serializationUtil.str(group.getName())));
+		elmGroup.addAttribute(new Attribute("Name", serializationUtil.str(group.getName())));
+		elmGroup.addAttribute(new Attribute("Usage", serializationUtil.str(group.getUsage().value())));
+		elmGroup.addAttribute(new Attribute("Min", serializationUtil.str(group.getMin() + "")));
+		elmGroup.addAttribute(new Attribute("Max", serializationUtil.str(group.getMax())));
 
 		Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
 
@@ -610,22 +613,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmSegGroup = new nu.xom.Element("SegGroup");
 		if (group.getName().contains(".")) {
 			elmSegGroup.addAttribute(new Attribute("Name",
-					SerializationUtil.str(group.getName().substring(group.getName().lastIndexOf(".") + 1))));
+					serializationUtil.str(group.getName().substring(group.getName().lastIndexOf(".") + 1))));
 		} else {
-			elmSegGroup.addAttribute(new Attribute("Name", SerializationUtil.str(group.getName())));
+			elmSegGroup.addAttribute(new Attribute("Name", serializationUtil.str(group.getName())));
 		}
 
-		elmSegGroup.addAttribute(new Attribute("LongName", SerializationUtil.str(group.getName())));
+		elmSegGroup.addAttribute(new Attribute("LongName", serializationUtil.str(group.getName())));
 		if (group.getUsage().value().equals("B")) {
 			elmSegGroup.addAttribute(new Attribute("Usage", "X"));
 		} else {
-			elmSegGroup.addAttribute(new Attribute("Usage", SerializationUtil.str(group.getUsage().value())));
+			elmSegGroup.addAttribute(new Attribute("Usage", serializationUtil.str(group.getUsage().value())));
 		}
-		elmSegGroup.addAttribute(new Attribute("Min", SerializationUtil.str(group.getMin() + "")));
+		elmSegGroup.addAttribute(new Attribute("Min", serializationUtil.str(group.getMin() + "")));
 		if (group.getMax().equals("0")) {
 			elmSegGroup.addAttribute(new Attribute("Max", "" + 1));
 		} else {
-			elmSegGroup.addAttribute(new Attribute("Max", SerializationUtil.str(group.getMax())));
+			elmSegGroup.addAttribute(new Attribute("Max", serializationUtil.str(group.getMax())));
 		}
 		List<ConformanceStatement> groupConformanceStatements = this.findConformanceStatements(null, null,
 				message.getConformanceStatements(), path);
@@ -671,11 +674,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private nu.xom.Element serializeDisplayGroup(Group group, Profile profile, Message message, String path) {
 		nu.xom.Element elmGroup = new nu.xom.Element("Group");
-		elmGroup.addAttribute(new Attribute("ID", SerializationUtil.str(group.getName())));
-		elmGroup.addAttribute(new Attribute("Name", SerializationUtil.str(group.getName())));
-		elmGroup.addAttribute(new Attribute("Usage", SerializationUtil.str(group.getUsage().value())));
-		elmGroup.addAttribute(new Attribute("Min", SerializationUtil.str(group.getMin() + "")));
-		elmGroup.addAttribute(new Attribute("Max", SerializationUtil.str(group.getMax())));
+		elmGroup.addAttribute(new Attribute("ID", serializationUtil.str(group.getName())));
+		elmGroup.addAttribute(new Attribute("Name", serializationUtil.str(group.getName())));
+		elmGroup.addAttribute(new Attribute("Usage", serializationUtil.str(group.getUsage().value())));
+		elmGroup.addAttribute(new Attribute("Min", serializationUtil.str(group.getMin() + "")));
+		elmGroup.addAttribute(new Attribute("Max", serializationUtil.str(group.getMax())));
 
 		Predicate groupPredicate = this.findPredicate(null, null, message.getPredicates(), path);
 		if (groupPredicate != null) {
@@ -744,10 +747,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private nu.xom.Element serializeSegmentRef(SegmentRef segmentRef, SegmentLibrary segments) {
 		Segment s = segmentService.findById(segmentRef.getRef().getId());
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
-		elmSegment.addAttribute(new Attribute("Ref", SerializationUtil.str(s.getLabel())));
-		elmSegment.addAttribute(new Attribute("Usage", SerializationUtil.str(segmentRef.getUsage().value())));
-		elmSegment.addAttribute(new Attribute("Min", SerializationUtil.str(segmentRef.getMin() + "")));
-		elmSegment.addAttribute(new Attribute("Max", SerializationUtil.str(segmentRef.getMax())));
+		elmSegment.addAttribute(new Attribute("Ref", serializationUtil.str(s.getLabel())));
+		elmSegment.addAttribute(new Attribute("Usage", serializationUtil.str(segmentRef.getUsage().value())));
+		elmSegment.addAttribute(new Attribute("Min", serializationUtil.str(segmentRef.getMin() + "")));
+		elmSegment.addAttribute(new Attribute("Max", serializationUtil.str(segmentRef.getMax())));
 		return elmSegment;
 	}
 
@@ -797,19 +800,19 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 
 		Segment segment = segmentService.findById(segmentRef.getRef().getId());
-		elmSegment.addAttribute(new Attribute("Name", SerializationUtil.str(segment.getName())));
-		elmSegment.addAttribute(new Attribute("LongName", SerializationUtil.str(segment.getDescription())));
+		elmSegment.addAttribute(new Attribute("Name", serializationUtil.str(segment.getName())));
+		elmSegment.addAttribute(new Attribute("LongName", serializationUtil.str(segment.getDescription())));
 		if (segmentRef.getUsage().value().equals("B")) {
 			elmSegment.addAttribute(new Attribute("Usage", "X"));
 		} else {
-			elmSegment.addAttribute(new Attribute("Usage", SerializationUtil.str(segmentRef.getUsage().value())));
+			elmSegment.addAttribute(new Attribute("Usage", serializationUtil.str(segmentRef.getUsage().value())));
 		}
-		elmSegment.addAttribute(new Attribute("Min", SerializationUtil.str(segmentRef.getMin() + "")));
+		elmSegment.addAttribute(new Attribute("Min", serializationUtil.str(segmentRef.getMin() + "")));
 
 		if (segmentRef.getMax().equals("0")) {
 			elmSegment.addAttribute(new Attribute("Max", "" + 1));
 		} else {
-			elmSegment.addAttribute(new Attribute("Max", SerializationUtil.str(segmentRef.getMax())));
+			elmSegment.addAttribute(new Attribute("Max", serializationUtil.str(segmentRef.getMax())));
 		}
 
 		List<ConformanceStatement> segmentConformanceStatements = this.findConformanceStatements(null, null,
@@ -854,12 +857,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		Segment segment = segmentService.findById(segmentRef.getRef().getId());
 
-		elmSegment.addAttribute(new Attribute("ID", SerializationUtil.str(segment.getLabel())));
-		elmSegment.addAttribute(new Attribute("Usage", SerializationUtil.str(segmentRef.getUsage().value())));
-		elmSegment.addAttribute(new Attribute("Min", SerializationUtil.str(segmentRef.getMin() + "")));
-		elmSegment.addAttribute(new Attribute("Max", SerializationUtil.str(segmentRef.getMax())));
-		elmSegment.addAttribute(new Attribute("Name", SerializationUtil.str(segment.getName())));
-		elmSegment.addAttribute(new Attribute("Description", SerializationUtil.str(segment.getDescription())));
+		elmSegment.addAttribute(new Attribute("ID", serializationUtil.str(segment.getLabel())));
+		elmSegment.addAttribute(new Attribute("Usage", serializationUtil.str(segmentRef.getUsage().value())));
+		elmSegment.addAttribute(new Attribute("Min", serializationUtil.str(segmentRef.getMin() + "")));
+		elmSegment.addAttribute(new Attribute("Max", serializationUtil.str(segmentRef.getMax())));
+		elmSegment.addAttribute(new Attribute("Name", serializationUtil.str(segment.getName())));
+		elmSegment.addAttribute(new Attribute("Description", serializationUtil.str(segment.getDescription())));
 
 		Predicate segmentPredicate = this.findPredicate(null, null, message.getPredicates(), path);
 		if (segmentPredicate != null) {
@@ -921,12 +924,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			} else {
 				nu.xom.Element elmDynamicField = new nu.xom.Element("DynamicField");
 
-				elmDynamicField.addAttribute(new Attribute("Name", SerializationUtil.str(f.getName())));
+				elmDynamicField.addAttribute(new Attribute("Name", serializationUtil.str(f.getName())));
 				elmDynamicField.addAttribute(new Attribute("Reference", mapping.getReference() + ""));
 
 				for (Case ca : mapping.getCases()) {
 					nu.xom.Element elmCase = new nu.xom.Element("Case");
-					elmCase.addAttribute(new Attribute("Value", SerializationUtil.str(ca.getValue())));
+					elmCase.addAttribute(new Attribute("Value", serializationUtil.str(ca.getValue())));
 					this.serializeDisplayField(f, datatypeService.findById(ca.getDatatype()), elmCase, profile, message,
 							segment, fieldPath);
 					elmDynamicField.appendChild(elmCase);
@@ -942,17 +945,17 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmField = new nu.xom.Element("Field");
 		elmParent.appendChild(elmField);
 
-		elmField.addAttribute(new Attribute("Name", SerializationUtil.str(f.getName())));
+		elmField.addAttribute(new Attribute("Name", serializationUtil.str(f.getName())));
 		if (f.getUsage().value().equals("B")) {
 			elmField.addAttribute(new Attribute("Usage", "X"));
 		} else {
-			elmField.addAttribute(new Attribute("Usage", SerializationUtil.str(f.getUsage().value())));
+			elmField.addAttribute(new Attribute("Usage", serializationUtil.str(f.getUsage().value())));
 		}
 		elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 		if (f.getMax().equals("0")) {
 			elmField.addAttribute(new Attribute("Max", "" + 1));
 		} else {
-			elmField.addAttribute(new Attribute("Max", SerializationUtil.str(f.getMax())));
+			elmField.addAttribute(new Attribute("Max", serializationUtil.str(f.getMax())));
 		}
 
 		if (f.getMaxLength() != null && !f.getMaxLength().equals("")) {
@@ -961,10 +964,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			} else if (f.getMaxLength().equals("0")) {
 				elmField.addAttribute(new Attribute("Length", "" + 1));
 			} else {
-				elmField.addAttribute(new Attribute("Length", SerializationUtil.str(f.getMaxLength())));
+				elmField.addAttribute(new Attribute("Length", serializationUtil.str(f.getMaxLength())));
 			}
 		}
-		elmField.addAttribute(new Attribute("Datatype", SerializationUtil.str(fieldDatatype.getName())));
+		elmField.addAttribute(new Attribute("Datatype", serializationUtil.str(fieldDatatype.getName())));
 		if (f.getTables() != null) {
 			if (f.getTables().size() > 0) {
 				String bindingString = "";
@@ -983,7 +986,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		}
 
 		if (f.getItemNo() != null && !f.getItemNo().equals(""))
-			elmField.addAttribute(new Attribute("ItemNo", SerializationUtil.str(f.getItemNo())));
+			elmField.addAttribute(new Attribute("ItemNo", serializationUtil.str(f.getItemNo())));
 
 		List<ConformanceStatement> fieldConformanceStatements = this.findConformanceStatements(
 				segment.getConformanceStatements(), f.getPosition() + "[1]", message.getConformanceStatements(),
@@ -1027,15 +1030,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmField = new nu.xom.Element("Field");
 		elmParent.appendChild(elmField);
 
-		elmField.addAttribute(new Attribute("Name", SerializationUtil.str(f.getName())));
-		elmField.addAttribute(new Attribute("Usage", SerializationUtil.str(f.getUsage().toString())));
-		elmField.addAttribute(new Attribute("Datatype", SerializationUtil.str(fieldDatatype.getName())));
-		elmField.addAttribute(new Attribute("Flavor", SerializationUtil.str(fieldDatatype.getLabel())));
+		elmField.addAttribute(new Attribute("Name", serializationUtil.str(f.getName())));
+		elmField.addAttribute(new Attribute("Usage", serializationUtil.str(f.getUsage().toString())));
+		elmField.addAttribute(new Attribute("Datatype", serializationUtil.str(fieldDatatype.getName())));
+		elmField.addAttribute(new Attribute("Flavor", serializationUtil.str(fieldDatatype.getLabel())));
 		elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
 		if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-			elmField.addAttribute(new Attribute("MaxLength", SerializationUtil.str(f.getMaxLength())));
+			elmField.addAttribute(new Attribute("MaxLength", serializationUtil.str(f.getMaxLength())));
 		if (f.getConfLength() != null && !f.getConfLength().equals(""))
-			elmField.addAttribute(new Attribute("ConfLength", SerializationUtil.str(f.getConfLength())));
+			elmField.addAttribute(new Attribute("ConfLength", serializationUtil.str(f.getConfLength())));
 
 		if (f.getTables() != null) {
 			if (f.getTables().size() > 0) {
@@ -1071,7 +1074,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 		elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
 		if (f.getItemNo() != null && !f.getItemNo().equals(""))
-			elmField.addAttribute(new Attribute("ItemNo", SerializationUtil.str(f.getItemNo())));
+			elmField.addAttribute(new Attribute("ItemNo", serializationUtil.str(f.getItemNo())));
 
 		Predicate fieldPredicate = this.findPredicate(segment.getPredicates(), f.getPosition() + "[1]",
 				message.getPredicates(), fieldPath);
@@ -1137,20 +1140,20 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private void serializeGazelleComponent(Component c, Datatype componentDatatype, nu.xom.Element elmParent,
 			Profile profile, Message message, Datatype fieldDatatype, String componentPath) {
 		nu.xom.Element elmComponent = new nu.xom.Element("Component");
-		elmComponent.addAttribute(new Attribute("Name", SerializationUtil.str(c.getName())));
+		elmComponent.addAttribute(new Attribute("Name", serializationUtil.str(c.getName())));
 		if (c.getUsage().value().equals("B")) {
 			elmComponent.addAttribute(new Attribute("Usage", "X"));
 		} else {
-			elmComponent.addAttribute(new Attribute("Usage", SerializationUtil.str(c.getUsage().value())));
+			elmComponent.addAttribute(new Attribute("Usage", serializationUtil.str(c.getUsage().value())));
 		}
-		elmComponent.addAttribute(new Attribute("Datatype", SerializationUtil.str(componentDatatype.getName())));
+		elmComponent.addAttribute(new Attribute("Datatype", serializationUtil.str(componentDatatype.getName())));
 		if (c.getMaxLength() != null && !c.getMaxLength().equals("")) {
 			if (c.getMaxLength().equals("*")) {
 				elmComponent.addAttribute(new Attribute("Length", "" + 225));
 			} else if (c.getMaxLength().equals("0")) {
 				elmComponent.addAttribute(new Attribute("Length", "" + 1));
 			} else {
-				elmComponent.addAttribute(new Attribute("Length", SerializationUtil.str(c.getMaxLength())));
+				elmComponent.addAttribute(new Attribute("Length", serializationUtil.str(c.getMaxLength())));
 			}
 		}
 
@@ -1211,15 +1214,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private void serializeDisplayComponent(Component c, Datatype componentDatatype, nu.xom.Element elmParent,
 			Profile profile, Message message, Datatype fieldDatatype, String componentPath) {
 		nu.xom.Element elmComponent = new nu.xom.Element("Component");
-		elmComponent.addAttribute(new Attribute("Name", SerializationUtil.str(c.getName())));
-		elmComponent.addAttribute(new Attribute("Usage", SerializationUtil.str(c.getUsage().toString())));
-		elmComponent.addAttribute(new Attribute("Datatype", SerializationUtil.str(componentDatatype.getName())));
-		elmComponent.addAttribute(new Attribute("Flavor", SerializationUtil.str(componentDatatype.getLabel())));
+		elmComponent.addAttribute(new Attribute("Name", serializationUtil.str(c.getName())));
+		elmComponent.addAttribute(new Attribute("Usage", serializationUtil.str(c.getUsage().toString())));
+		elmComponent.addAttribute(new Attribute("Datatype", serializationUtil.str(componentDatatype.getName())));
+		elmComponent.addAttribute(new Attribute("Flavor", serializationUtil.str(componentDatatype.getLabel())));
 		elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
 		if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
-			elmComponent.addAttribute(new Attribute("MaxLength", SerializationUtil.str(c.getMaxLength())));
+			elmComponent.addAttribute(new Attribute("MaxLength", serializationUtil.str(c.getMaxLength())));
 		if (c.getConfLength() != null && !c.getConfLength().equals(""))
-			elmComponent.addAttribute(new Attribute("ConfLength", SerializationUtil.str(c.getConfLength())));
+			elmComponent.addAttribute(new Attribute("ConfLength", serializationUtil.str(c.getConfLength())));
 		if (c.getTables() != null) {
 			if (c.getTables().size() > 0) {
 				String bindingString = "";
@@ -1315,20 +1318,20 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private void serializeGazelleSubComponent(Component sc, Datatype subComponentDatatype, nu.xom.Element elmParent,
 			Profile profile, Message message, Datatype componentDatatype, String subComponentPath) {
 		nu.xom.Element elmSubComponent = new nu.xom.Element("SubComponent");
-		elmSubComponent.addAttribute(new Attribute("Name", SerializationUtil.str(sc.getName())));
+		elmSubComponent.addAttribute(new Attribute("Name", serializationUtil.str(sc.getName())));
 		if (sc.getUsage().value().equals("B")) {
 			elmSubComponent.addAttribute(new Attribute("Usage", "X"));
 		} else {
-			elmSubComponent.addAttribute(new Attribute("Usage", SerializationUtil.str(sc.getUsage().value())));
+			elmSubComponent.addAttribute(new Attribute("Usage", serializationUtil.str(sc.getUsage().value())));
 		}
-		elmSubComponent.addAttribute(new Attribute("Datatype", SerializationUtil.str(subComponentDatatype.getName())));
+		elmSubComponent.addAttribute(new Attribute("Datatype", serializationUtil.str(subComponentDatatype.getName())));
 		if (sc.getMaxLength() != null && !sc.getMaxLength().equals("")) {
 			if (sc.getMaxLength().equals("*")) {
 				elmSubComponent.addAttribute(new Attribute("Length", "" + 225));
 			} else if (sc.getMaxLength().equals("0")) {
 				elmSubComponent.addAttribute(new Attribute("Length", "" + 1));
 			} else {
-				elmSubComponent.addAttribute(new Attribute("Length", SerializationUtil.str(sc.getMaxLength())));
+				elmSubComponent.addAttribute(new Attribute("Length", serializationUtil.str(sc.getMaxLength())));
 			}
 		}
 
@@ -1377,15 +1380,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private void serializeDisplaySubComponent(Component sc, Datatype subComponentDatatype, nu.xom.Element elmParent,
 			Profile profile, Message message, Datatype componentDatatype, String subComponentPath) {
 		nu.xom.Element elmSubComponent = new nu.xom.Element("SubComponent");
-		elmSubComponent.addAttribute(new Attribute("Name", SerializationUtil.str(sc.getName())));
-		elmSubComponent.addAttribute(new Attribute("Usage", SerializationUtil.str(sc.getUsage().toString())));
-		elmSubComponent.addAttribute(new Attribute("Datatype", SerializationUtil.str(subComponentDatatype.getName())));
-		elmSubComponent.addAttribute(new Attribute("Flavor", SerializationUtil.str(subComponentDatatype.getLabel())));
+		elmSubComponent.addAttribute(new Attribute("Name", serializationUtil.str(sc.getName())));
+		elmSubComponent.addAttribute(new Attribute("Usage", serializationUtil.str(sc.getUsage().toString())));
+		elmSubComponent.addAttribute(new Attribute("Datatype", serializationUtil.str(subComponentDatatype.getName())));
+		elmSubComponent.addAttribute(new Attribute("Flavor", serializationUtil.str(subComponentDatatype.getLabel())));
 		elmSubComponent.addAttribute(new Attribute("MinLength", "" + sc.getMinLength()));
 		if (sc.getMaxLength() != null && !sc.getMaxLength().equals(""))
-			elmSubComponent.addAttribute(new Attribute("MaxLength", SerializationUtil.str(sc.getMaxLength())));
+			elmSubComponent.addAttribute(new Attribute("MaxLength", serializationUtil.str(sc.getMaxLength())));
 		if (sc.getConfLength() != null && !sc.getConfLength().equals(""))
-			elmSubComponent.addAttribute(new Attribute("ConfLength", SerializationUtil.str(sc.getConfLength())));
+			elmSubComponent.addAttribute(new Attribute("ConfLength", serializationUtil.str(sc.getConfLength())));
 
 		if (sc.getTables() != null) {
 			if (sc.getTables().size() > 0) {
@@ -1489,9 +1492,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private nu.xom.Element serializeSegment(Segment s, TableLibrary tables, DatatypeLibrary datatypes) {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		elmSegment.addAttribute(new Attribute("ID", s.getLabel()));
-		elmSegment.addAttribute(new Attribute("Name", SerializationUtil.str(s.getName())));
-		elmSegment.addAttribute(new Attribute("Label", SerializationUtil.str(s.getLabel())));
-		elmSegment.addAttribute(new Attribute("Description", SerializationUtil.str(s.getDescription())));
+		elmSegment.addAttribute(new Attribute("Name", serializationUtil.str(s.getName())));
+		elmSegment.addAttribute(new Attribute("Label", serializationUtil.str(s.getLabel())));
+		elmSegment.addAttribute(new Attribute("Description", serializationUtil.str(s.getDescription())));
 
 		if (s.getDynamicMapping() != null && s.getDynamicMapping().getMappings().size() > 0) {
 			nu.xom.Element elmDynamicMapping = new nu.xom.Element("DynamicMapping");
@@ -1531,14 +1534,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			Field f = fields.get(i);
 			Datatype d = datatypeService.findById(f.getDatatype().getId());
 			nu.xom.Element elmField = new nu.xom.Element("Field");
-			elmField.addAttribute(new Attribute("Name", SerializationUtil.str(f.getName())));
-			elmField.addAttribute(new Attribute("Usage", SerializationUtil.str(f.getUsage().toString())));
-			elmField.addAttribute(new Attribute("Datatype", SerializationUtil.str(d.getLabel())));
+			elmField.addAttribute(new Attribute("Name", serializationUtil.str(f.getName())));
+			elmField.addAttribute(new Attribute("Usage", serializationUtil.str(f.getUsage().toString())));
+			elmField.addAttribute(new Attribute("Datatype", serializationUtil.str(d.getLabel())));
 			elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
 			if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-				elmField.addAttribute(new Attribute("MaxLength", SerializationUtil.str(f.getMaxLength())));
+				elmField.addAttribute(new Attribute("MaxLength", serializationUtil.str(f.getMaxLength())));
 			if (f.getConfLength() != null && !f.getConfLength().equals(""))
-				elmField.addAttribute(new Attribute("ConfLength", SerializationUtil.str(f.getConfLength())));
+				elmField.addAttribute(new Attribute("ConfLength", serializationUtil.str(f.getConfLength())));
 			if (f.getTables() != null) {
 				if (f.getTables().size() > 0) {
 					String bindingString = "";
@@ -1574,7 +1577,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 			elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
 			if (f.getItemNo() != null && !f.getItemNo().equals(""))
-				elmField.addAttribute(new Attribute("ItemNo", SerializationUtil.str(f.getItemNo())));
+				elmField.addAttribute(new Attribute("ItemNo", serializationUtil.str(f.getItemNo())));
 			elmSegment.appendChild(elmField);
 		}
 
@@ -1583,10 +1586,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private nu.xom.Element serializeDatatypeForValidation(Datatype d, TableLibrary tables, DatatypeLibrary datatypes) {
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
-		elmDatatype.addAttribute(new Attribute("ID", SerializationUtil.str(d.getLabel())));
-		elmDatatype.addAttribute(new Attribute("Name", SerializationUtil.str(d.getName())));
-		elmDatatype.addAttribute(new Attribute("Label", SerializationUtil.str(d.getLabel())));
-		elmDatatype.addAttribute(new Attribute("Description", SerializationUtil.str(d.getDescription())));
+		elmDatatype.addAttribute(new Attribute("ID", serializationUtil.str(d.getLabel())));
+		elmDatatype.addAttribute(new Attribute("Name", serializationUtil.str(d.getName())));
+		elmDatatype.addAttribute(new Attribute("Label", serializationUtil.str(d.getLabel())));
+		elmDatatype.addAttribute(new Attribute("Description", serializationUtil.str(d.getDescription())));
 
 		if (d.getComponents() != null) {
 
@@ -1600,14 +1603,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				Component c = components.get(i);
 				Datatype componentDatatype = datatypeService.findById(c.getDatatype().getId());
 				nu.xom.Element elmComponent = new nu.xom.Element("Component");
-				elmComponent.addAttribute(new Attribute("Name", SerializationUtil.str(c.getName())));
-				elmComponent.addAttribute(new Attribute("Usage", SerializationUtil.str(c.getUsage().toString())));
-				elmComponent.addAttribute(new Attribute("Datatype", SerializationUtil.str(componentDatatype.getLabel())));
+				elmComponent.addAttribute(new Attribute("Name", serializationUtil.str(c.getName())));
+				elmComponent.addAttribute(new Attribute("Usage", serializationUtil.str(c.getUsage().toString())));
+				elmComponent.addAttribute(new Attribute("Datatype", serializationUtil.str(componentDatatype.getLabel())));
 				elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
 				if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
-					elmComponent.addAttribute(new Attribute("MaxLength", SerializationUtil.str(c.getMaxLength())));
+					elmComponent.addAttribute(new Attribute("MaxLength", serializationUtil.str(c.getMaxLength())));
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
-					elmComponent.addAttribute(new Attribute("ConfLength", SerializationUtil.str(c.getConfLength())));
+					elmComponent.addAttribute(new Attribute("ConfLength", serializationUtil.str(c.getConfLength())));
 				if (c.getTables() != null) {
 					if (c.getTables().size() > 0) {
 						String bindingString = "";
@@ -1651,9 +1654,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private nu.xom.Element serializeDatatypeWithConstraints(DatatypeLink dl, Datatype d, TableLibrary tables,
 			DatatypeLibrary datatypeLib) {
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
-		elmDatatype.addAttribute(new Attribute("Name", SerializationUtil.str(d.getName())));
-		elmDatatype.addAttribute(new Attribute("Flavor", SerializationUtil.str(d.getLabel())));
-		elmDatatype.addAttribute(new Attribute("Description", SerializationUtil.str(d.getDescription())));
+		elmDatatype.addAttribute(new Attribute("Name", serializationUtil.str(d.getName())));
+		elmDatatype.addAttribute(new Attribute("Flavor", serializationUtil.str(d.getLabel())));
+		elmDatatype.addAttribute(new Attribute("Description", serializationUtil.str(d.getDescription())));
 
 		if (d.getComponents() != null) {
 
@@ -1667,15 +1670,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				Component c = components.get(i);
 				Datatype componentDatatype = datatypeService.findById(c.getDatatype().getId());
 				nu.xom.Element elmComponent = new nu.xom.Element("Component");
-				elmComponent.addAttribute(new Attribute("Name", SerializationUtil.str(c.getName())));
-				elmComponent.addAttribute(new Attribute("Usage", SerializationUtil.str(c.getUsage().toString())));
-				elmComponent.addAttribute(new Attribute("Datatype", SerializationUtil.str(componentDatatype.getName())));
-				elmComponent.addAttribute(new Attribute("Flavor", SerializationUtil.str(componentDatatype.getLabel())));
+				elmComponent.addAttribute(new Attribute("Name", serializationUtil.str(c.getName())));
+				elmComponent.addAttribute(new Attribute("Usage", serializationUtil.str(c.getUsage().toString())));
+				elmComponent.addAttribute(new Attribute("Datatype", serializationUtil.str(componentDatatype.getName())));
+				elmComponent.addAttribute(new Attribute("Flavor", serializationUtil.str(componentDatatype.getLabel())));
 				elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
 				if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
-					elmComponent.addAttribute(new Attribute("MaxLength", SerializationUtil.str(c.getMaxLength())));
+					elmComponent.addAttribute(new Attribute("MaxLength", serializationUtil.str(c.getMaxLength())));
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
-					elmComponent.addAttribute(new Attribute("ConfLength", SerializationUtil.str(c.getConfLength())));
+					elmComponent.addAttribute(new Attribute("ConfLength", serializationUtil.str(c.getConfLength())));
 
 				if (c.getTables() != null) {
 					if (c.getTables().size() > 0) {
