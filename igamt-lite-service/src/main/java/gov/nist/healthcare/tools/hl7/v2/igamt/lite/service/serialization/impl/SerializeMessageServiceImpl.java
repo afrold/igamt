@@ -5,6 +5,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMessage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
 
     @Autowired
     SegmentService segmentService;
+    @Autowired
+    SerializeConstraintService serializeConstraintService;
 
     @Override public SerializableMessage serializeMessage(Message message, String prefix) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
@@ -78,6 +81,13 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
     }
 
     private SerializableSegmentRefOrGroup serializeGroup(Group group){
-        
+        SerializableSegmentRefOrGroup serializableGroup;
+        List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
+        for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
+            serializableSegmentRefOrGroups.add(serializeSegmentRefOrGroup(segmentRefOrGroup));
+        }
+        List<SerializableConstraint> groupConstraints = serializeConstraintService.serializeConstraints(group.getConformanceStatements(),group.getPredicates(),group.getName());
+        serializableGroup = new SerializableSegmentRefOrGroup(group,serializableSegmentRefOrGroups,groupConstraints);
+        return serializableGroup;
     }
 }
