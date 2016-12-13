@@ -743,8 +743,13 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
 		elmConstraint.addAttribute(
 				new Attribute("Id", constraint.getConstraintId() == null ? "" : constraint.getConstraintId()));
-		elmConstraint.addAttribute(new Attribute("Location",
-				constraint.getConstraintTarget().substring(0, constraint.getConstraintTarget().indexOf('['))));
+			if(null!=constraint.getConstraintTarget()&&constraint.getConstraintTarget().length()>"[".length()) {
+					elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()
+							.substring(0, constraint.getConstraintTarget().indexOf('['))));
+			} else {
+					//TODO report the error correctly
+					elmConstraint.addAttribute(new Attribute("Location",""));
+			}
 		elmConstraint.addAttribute(new Attribute("LocationName", locationName));
 		elmConstraint.appendChild(constraint.getDescription());
 		if (constraint instanceof Predicate) {
@@ -1025,6 +1030,14 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 						elmTableDefinition.appendChild(elmTableElement);
 					}
 				}
+					if ((t != null && !t.getDefPreText().isEmpty()) || (t != null && !t.getDefPostText().isEmpty())) {
+							if (t.getDefPreText() != null && !t.getDefPreText().isEmpty()) {
+									elmTableDefinition.appendChild(this.serializeRichtext("DefPreText", t.getDefPreText()));
+							}
+							if (t.getDefPostText() != null && !t.getDefPostText().isEmpty()) {
+									elmTableDefinition.appendChild(this.serializeRichtext("DefPostText", t.getDefPostText()));
+							}
+					}
 				sect.appendChild(elmTableDefinition);
 				return sect;
 			} else {
@@ -1104,10 +1117,10 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 				if ((t != null && !t.getDefPreText().isEmpty()) || (t != null && !t.getDefPostText().isEmpty())) {
 					if (t.getDefPreText() != null && !t.getDefPreText().isEmpty()) {
-						elmTableDefinition.appendChild(this.serializeRichtext("Text1", t.getDefPreText()));
+						elmTableDefinition.appendChild(this.serializeRichtext("DefPreText", t.getDefPreText()));
 					}
 					if (t.getDefPostText() != null && !t.getDefPostText().isEmpty()) {
-						elmTableDefinition.appendChild(this.serializeRichtext("Text2", t.getDefPostText()));
+						elmTableDefinition.appendChild(this.serializeRichtext("DefPostText", t.getDefPostText()));
 					}
 				}
 
@@ -1159,6 +1172,15 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		// String.valueOf(m.getSectionPosition()+1)));
 		if (m.getUsageNote() != null && !m.getUsageNote().isEmpty()) {
 			elmMessage.appendChild(this.serializeRichtext("UsageNote", m.getUsageNote()));
+		}
+
+		if ((m != null && !m.getDefPreText().isEmpty()) || (m != null && !m.getDefPostText().isEmpty())) {
+				if (m.getDefPreText() != null && !m.getDefPreText().isEmpty()) {
+					elmMessage.appendChild(this.serializeRichtext("DefPreText", m.getDefPreText()));
+				}
+				if (m.getDefPostText() != null && !m.getDefPostText().isEmpty()) {
+					elmMessage.appendChild(this.serializeRichtext("DefPostText", m.getDefPostText()));
+				}
 		}
 
 		List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
@@ -1238,7 +1260,26 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		elmGroup2.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "]"));
 		elmGroup2.addAttribute(new Attribute("Depth", String.valueOf(depth)));
 		elmGroup2.addAttribute(new Attribute("Position", group.getPosition().toString()));
-		elmDisplay.appendChild(elmGroup2);
+
+			List<ConformanceStatement> conformanceStatements = group.getConformanceStatements();
+			if (conformanceStatements != null && !conformanceStatements.isEmpty()) {
+					for (Constraint constraint : conformanceStatements) {
+							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, group.getName() + ".");
+							elmGroup2.appendChild(elmConstraint);
+					}
+			}
+			List<Predicate> predicates = group.getPredicates();
+			if (predicates != null && !predicates.isEmpty()) {
+					for (Constraint constraint : predicates) {
+							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, group.getName() + ".");
+							elmGroup2.appendChild(elmConstraint);
+					}
+			}
+
+			elmDisplay.appendChild(elmGroup2);
+
+
+
 
 	}
 
@@ -1520,10 +1561,10 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				if ((s.getText1() != null && !s.getText1().isEmpty())
 						|| (s.getText2() != null && !s.getText2().isEmpty())) {
 					if (s.getText1() != null && !s.getText1().isEmpty()) {
-						elmSegment.appendChild(this.serializeRichtext("Text1", s.getText1()));
+						elmSegment.appendChild(this.serializeRichtext("DefPreText", s.getText1()));
 					}
 					if (s.getText2() != null && !s.getText2().isEmpty()) {
-						elmSegment.appendChild(this.serializeRichtext("Text2", s.getText2()));
+						elmSegment.appendChild(this.serializeRichtext("DefPostText", s.getText2()));
 					}
 				}
 
@@ -1756,6 +1797,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				elmDatatype.addAttribute(new Attribute("Name", d.getName()));
 				elmDatatype.addAttribute(new Attribute("Label", d.getLabel()));
 				elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));
+				elmDatatype.addAttribute(new Attribute("PurposeAndUse", d.getPurposeAndUse()));
 				elmDatatype.addAttribute(new Attribute("Comment", d.getComment()));
 				elmDatatype
 						.addAttribute(new Attribute("Hl7Version", d.getHl7Version() == null ? "" : d.getHl7Version()));// TODO
@@ -1839,10 +1881,10 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 					if ((d != null && !d.getDefPreText().isEmpty()) || (d != null && !d.getDefPostText().isEmpty())) {
 						if (d.getDefPreText() != null && !d.getDefPreText().isEmpty()) {
-							elmDatatype.appendChild(this.serializeRichtext("Text1", d.getDefPreText()));
+							elmDatatype.appendChild(this.serializeRichtext("DefPreText", d.getDefPreText()));
 						}
 						if (d.getDefPostText() != null && !d.getDefPostText().isEmpty()) {
-							elmDatatype.appendChild(this.serializeRichtext("Text2", d.getDefPostText()));
+							elmDatatype.appendChild(this.serializeRichtext("DefPostText", d.getDefPostText()));
 						}
 					}
 					if (d.getUsageNote() != null && !d.getUsageNote().isEmpty()) {

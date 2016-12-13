@@ -94,7 +94,7 @@
                                         <label class="col-md-2 control-label">Purpose and Use</label>
 
                                         <div class="controls col-md-10">
-                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeUse" />
+                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeAndUse" />
                                         </div>
                                     </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.comment.$invalid}">
@@ -146,7 +146,7 @@
                                                 <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
                                                 <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
-                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPreText" name="text" id="text" ng-change="setDirty()"></textarea>
+                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
                                                 </div>
                                                 <div ng-show="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
                                                     <div class="fr-view">
@@ -277,7 +277,7 @@
                                                 <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
                                                 <div ng-show="!viewSettings.tableReadonly && datatype.scope==='USER'">
-                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="text" ng-change="setDirty()"></textarea>
+                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
                                                 </div>
                                                 <div ng-show="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' )">
                                                     <div class="fr-view">
@@ -1450,7 +1450,6 @@
         </button>
     </div>
 </script>
-
 <script type="text/ng-template" id="DeleteDatatypePredicate.html">
     <div class="modal-header">
         <h3 class="modal-title">Delete Confirmation</h3>
@@ -1466,9 +1465,6 @@
         </button>
     </div>
 </script>
-
-
-
 <script type="text/ng-template" id="AddBindingForDatatype.html">
     <div class="modal-header">
         <h3 class="modal-title">Add Binding for Datatype : {{::getDatatypeLabel(datatype)}}</h3>
