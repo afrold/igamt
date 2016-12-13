@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModelWithConstraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -27,7 +28,9 @@ import java.util.List;
 public class SerializeConstraintServiceImpl implements SerializeConstraintService {
 
     @Override public List<SerializableConstraint> serializeConstraints(
-        List<ConformanceStatement> conformanceStatements, List<Predicate> predicates, String location) {
+        DataModelWithConstraints dataModelWithConstraints, String location) {
+        List<ConformanceStatement> conformanceStatements = dataModelWithConstraints.getConformanceStatements();
+        List<Predicate> predicates = dataModelWithConstraints.getPredicates();
         List<SerializableConstraint> serializableConstraints = new ArrayList<>();
         if (conformanceStatements != null && !conformanceStatements.isEmpty()) {
             for (Constraint constraint : conformanceStatements) {

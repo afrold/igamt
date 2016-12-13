@@ -1,11 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModelWithConstraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
-
-import java.util.List;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableTable;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -20,6 +16,7 @@ import java.util.List;
  * <p>
  * Created by Maxence Lefort on 12/13/16.
  */
-public interface SerializeConstraintService {
-    public List<SerializableConstraint> serializeConstraints(DataModelWithConstraints dataModelWithConstraints, String location);
+public interface SerializeTableService {
+
+    public SerializableTable serializeTable(TableLink tableLink);
 }

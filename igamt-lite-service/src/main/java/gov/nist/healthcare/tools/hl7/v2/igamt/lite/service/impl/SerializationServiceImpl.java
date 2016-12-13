@@ -1,14 +1,14 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeMessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeSegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
-import nu.xom.Attribute;
 import nu.xom.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -40,14 +39,20 @@ public class SerializationServiceImpl implements SerializationService {
     @Autowired
     SerializeMessageService serializeMessageService;
 
+    @Autowired
+    SerializeSegmentService serializeSegmentService;
+
     @Override public Document serializeIGDocument(IGDocument igDocument) {
         SerializableStructure serializableStructure = new SerializableStructure();
-        SerializableMetadata serializableMetadata = new SerializableMetadata(igDocument.getMetaData(),igDocument.getProfile().getMetaData(),igDocument.getDateUpdated());
+        SerializableMetadata serializableMetadata =
+            new SerializableMetadata(igDocument.getMetaData(), igDocument.getProfile().getMetaData(),
+                igDocument.getDateUpdated());
         serializableStructure.addSerializableElement(serializableMetadata);
         SerializableSections serializableSections = new SerializableSections();
         String prefix = "";
         Integer depth = 1;
-        serializationUtil.setSectionsPrefixes(igDocument.getChildSections(),prefix,depth,serializableSections.getRootSections());
+        serializationUtil.setSectionsPrefixes(igDocument.getChildSections(), prefix, depth,
+            serializableSections.getRootSections());
         Profile profile = igDocument.getProfile();
         //Create base section node for the profile serialization
         String id = profile.getId();
@@ -58,25 +63,28 @@ public class SerializationServiceImpl implements SerializationService {
         if (profile.getMessages().getSectionTitle() != null) {
             title = profile.getSectionTitle();
         }
-        SerializableSection profileSectionElement = new SerializableSection(id,prefix,position,headerLevel,title);
-        if(profile.getSectionContents()!=null && !profile.getSectionContents().isEmpty()){
-            profileSectionElement.addSectionContent(profile.getSectionContents());
+        SerializableSection profileSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+        if (profile.getSectionContents() != null && !profile.getSectionContents().isEmpty()) {
+            profileSection.addSectionContent(profile.getSectionContents());
         }
 
         //Message Serialization
         id = profile.getMessages().getId();
         position = String.valueOf(profile.getMessages().getSectionPosition());
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "."
-            + String.valueOf(profile.getMessages().getSectionPosition() + 1);
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
+            .valueOf(profile.getMessages().getSectionPosition() + 1);
         headerLevel = String.valueOf(2);
         title = "";
         if (profile.getMessages().getSectionTitle() != null) {
             title = profile.getMessages().getSectionTitle();
         }
-        SerializableSection messageSectionElement = new SerializableSection(id,prefix,position,headerLevel,title);
-        if (profile.getMessages().getSectionContents() != null
-            && !profile.getMessages().getSectionContents().isEmpty()) {
-            messageSectionElement.addSectionContent("<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
+        SerializableSection messageSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+        if (profile.getMessages().getSectionContents() != null && !profile.getMessages()
+            .getSectionContents().isEmpty()) {
+            messageSection.addSectionContent(
+                "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
         }
 
         if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
@@ -90,42 +98,47 @@ public class SerializationServiceImpl implements SerializationService {
         }
 
         for (Message message : profile.getMessages().getChildren()) {
-            SerializableMessage serializableMessage = serializeMessageService.serializeMessage(message,prefix);
-            messageSectionElement.addSection(serializableMessage);
+            SerializableMessage serializableMessage =
+                serializeMessageService.serializeMessage(message, prefix);
+            messageSection.addSection(serializableMessage);
         }
-        profileSectionElement.addSection(messageSectionElement);
+        profileSection.addSection(messageSection);
+
+        //Segments serialization
+        id = profile.getSegmentLibrary().getId();
+        position = String.valueOf(profile.getSegmentLibrary().getSectionPosition());
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
+            .valueOf(profile.getSegmentLibrary().getSectionPosition() + 1);
+        headerLevel = String.valueOf(2);
+        title = "";
+        if (profile.getSegmentLibrary().getSectionTitle() != null) {
+            title = profile.getSegmentLibrary().getSectionTitle();
+        }
+        SerializableSection segmentsSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+        if (profile.getSegmentLibrary().getSectionContents() != null && !profile.getSegmentLibrary()
+            .getSectionContents().isEmpty()) {
+            segmentsSection.addSectionContent(
+                "<div class=\"fr-view\">" + profile.getSegmentLibrary().getSectionContents()
+                    + "</div>");
+        }
+
+        List<SegmentLink> segmentLinkList = new ArrayList<>(profile.getSegmentLibrary().getChildren());
+        Collections.sort(segmentLinkList);
+        for (SegmentLink segmentLink : segmentLinkList) {
+            if (segmentLink.getId() != null) {
+                segmentsSection.addSection(serializeSegmentService
+                    .serializeSegment(segmentLink, profile.getTableLibrary(),
+                        profile.getDatatypeLibrary(),
+                        prefix + "." + String.valueOf(segmentLinkList.indexOf(segmentLink) + 1),
+                        segmentLinkList.indexOf(segmentLink), true));
+
+            }
+        }
+        profileSection.addSection(segmentsSection);
 
         //TODO Refactor below
-        // nu.xom.Element ss = new nu.xom.Element("Segments");
-        /*nu.xom.Element ss = new nu.xom.Element("Section");
-        ss.addAttribute(new Attribute("id", profile.getSegmentLibrary().getId()));
-        ss.addAttribute(new Attribute("position", String.valueOf(profile.getSegmentLibrary().getSectionPosition())));
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "."
-            + String.valueOf(profile.getSegmentLibrary().getSectionPosition() + 1);
-        ss.addAttribute(new Attribute("prefix", prefix));
-        ss.addAttribute(new Attribute("h", String.valueOf(2)));
-        if (profile.getSegmentLibrary().getSectionTitle() != null) {
-            ss.addAttribute(new Attribute("title", profile.getSegmentLibrary().getSectionTitle()));
-        } else {
-            ss.addAttribute(new Attribute("title", ""));
-        }
-        if (profile.getSegmentLibrary().getSectionContents() != null
-            && !profile.getSegmentLibrary().getSectionContents().isEmpty()) {
-            nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
-            sectCont.appendChild(
-                "<div class=\"fr-view\">" + profile.getSegmentLibrary().getSectionContents() + "</div>");
-            ss.appendChild(sectCont);
-        }
-
-        List<SegmentLink> sgtList = new ArrayList<SegmentLink>(profile.getSegmentLibrary().getChildren());
-        Collections.sort(sgtList);
-        for (SegmentLink link : sgtList) {
-
-
-            this.serializeSegment(ss, link, profile.getTableLibrary(), profile.getDatatypeLibrary(),
-                prefix + "." + String.valueOf(sgtList.indexOf(link) + 1), sgtList.indexOf(link));
-        }
-        xsect.appendChild(ss);
+        /*
         // nu.xom.Element ds = new nu.xom.Element("Datatypes");
         nu.xom.Element ds = new nu.xom.Element("Section");
         ds.addAttribute(new Attribute("id", profile.getDatatypeLibrary().getId()));
@@ -442,11 +455,10 @@ public class SerializationServiceImpl implements SerializationService {
         return xsect;
         */
 
-        serializableSections.addSection(profileSectionElement);
+        serializableSections.addSection(profileSection);
         serializableStructure.addSerializableElement(serializableSections);
         return serializableStructure.serializeStructure();
     }
-
     @Override public Document serializeDatatypeLibrary(IGDocument igDocument) {
         return null;
     }

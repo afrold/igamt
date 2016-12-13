@@ -1,11 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModelWithConstraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 
-import java.util.List;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -20,6 +19,6 @@ import java.util.List;
  * <p>
  * Created by Maxence Lefort on 12/13/16.
  */
-public interface SerializeConstraintService {
-    public List<SerializableConstraint> serializeConstraints(DataModelWithConstraints dataModelWithConstraints, String location);
+public interface SerializeSegmentService {
+    public SerializableSection serializeSegment(SegmentLink segmentLink, TableLibrary tableLibrary, DatatypeLibrary datatypeLibrary, String prefix, Integer position, boolean includeDatatypeAndTable);
 }

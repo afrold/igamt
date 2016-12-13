@@ -1,11 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModelWithConstraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMetadata;
 
-import java.util.List;
+import java.util.Date;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -18,8 +17,8 @@ import java.util.List;
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 12/13/16.
+ * Created by Maxence Lefort on 12/12/16.
  */
-public interface SerializeConstraintService {
-    public List<SerializableConstraint> serializeConstraints(DataModelWithConstraints dataModelWithConstraints, String location);
+public interface SerializeMetadataService {
+    public SerializableMetadata serializeMetadata(DocumentMetaData documentMetaData, ProfileMetaData profileMetaData, Date dateUpdated);
 }

@@ -24,6 +24,7 @@ import java.util.Map;
 public class SerializableSegment extends SerializableSection {
 
     private Segment segment;
+    private String defPreText,defPostText,name,label,description,comment;
     private List<SerializableConstraint> constraints;
     private Map<Field,Datatype> fieldDatatypeMap;
     private Map<Field,List<Table>> fieldTableMap;
@@ -32,14 +33,15 @@ public class SerializableSegment extends SerializableSection {
     private List<SerializableTable> valueSets;
 
     public SerializableSegment(String id, String prefix, String position, String headerLevel, String title,
-        Segment segment,List<SerializableConstraint> constraints,Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap) {
-        this(id,prefix,position,headerLevel,title,segment,constraints,fieldDatatypeMap,fieldTableMap,coConstraintValueTableMap,null,null);
-    }
-
-    public SerializableSegment(String id, String prefix, String position, String headerLevel, String title,
-        Segment segment, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap, List<SerializableDatatype> datatypes,List<SerializableTable> valueSets) {
+        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap, List<SerializableDatatype> datatypes,List<SerializableTable> valueSets) {
         super(id, prefix, position, headerLevel, title);
         this.segment = segment;
+        this.name = name;
+        this.label = label;
+        this.description = description;
+        this.comment = comment;
+        this.defPreText = defPreText;
+        this.defPostText = defPostText;
         this.constraints = constraints;
         this.fieldDatatypeMap = fieldDatatypeMap;
         this.fieldTableMap = fieldTableMap;
@@ -53,28 +55,24 @@ public class SerializableSegment extends SerializableSection {
     @Override public Element serializeElement() {
         nu.xom.Element segmentElement = new nu.xom.Element("Segment");
         if (segment != null) {
-            segmentElement.addAttribute(new Attribute("ID", segment.getId() + ""));
             segmentElement.addAttribute(new Attribute("id", segment.getId()));
-            segmentElement.addAttribute(new Attribute("Name", segment.getName()));
-            segmentElement.addAttribute(new Attribute("Label",
-                segment.getExt() == null || segment.getExt().isEmpty() ?
-                    segment.getName() :
-                    segment.getLabel()));
+            segmentElement.addAttribute(new Attribute("Name", this.name));
+            segmentElement.addAttribute(new Attribute("Label", this.label));
             segmentElement.addAttribute(new Attribute("Position", ""));
-            segmentElement.addAttribute(new Attribute("Description", segment.getDescription()));
-            if (segment.getComment() != null && !segment.getComment().isEmpty()) {
-                segmentElement.addAttribute(new Attribute("Comment", segment.getComment()));
+            segmentElement.addAttribute(new Attribute("Description", this.description));
+            if (this.comment != null && !this.comment.isEmpty()) {
+                segmentElement.addAttribute(new Attribute("Comment", this.comment));
             }
 
             if ((segment.getText1() != null && !segment.getText1().isEmpty()) || (
                 segment.getText2() != null && !segment.getText2().isEmpty())) {
-                if (segment.getText1() != null && !segment.getText1().isEmpty()) {
+                if (this.defPreText != null && !this.defPreText.isEmpty()) {
                     segmentElement
-                        .appendChild(this.createTextElement("DefPreText", segment.getText1()));
+                        .appendChild(this.createTextElement("DefPreText", this.defPreText));
                 }
-                if (segment.getText2() != null && !segment.getText2().isEmpty()) {
+                if (this.defPostText != null && !this.defPostText.isEmpty()) {
                     segmentElement
-                        .appendChild(this.createTextElement("DefPostText", segment.getText2()));
+                        .appendChild(this.createTextElement("DefPostText", this.defPostText));
                 }
             }
 

@@ -110,7 +110,7 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
             serializableSegmentRefOrGroups.add(serializeSegmentRefOrGroup(segmentRefOrGroup));
         }
-        List<SerializableConstraint> groupConstraints = serializeConstraintService.serializeConstraints(group.getConformanceStatements(),group.getPredicates(),group.getName());
+        List<SerializableConstraint> groupConstraints = serializeConstraintService.serializeConstraints(group,group.getName());
         serializableGroup = new SerializableSegmentRefOrGroup(group,serializableSegmentRefOrGroups,groupConstraints);
         return serializableGroup;
     }
