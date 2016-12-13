@@ -1,27 +1,18 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import com.mongodb.gridfs.GridFSDBFile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeMessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import nu.xom.Attribute;
 import nu.xom.Document;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +37,8 @@ public class SerializationServiceImpl implements SerializationService {
     @Autowired
     SerializationUtil serializationUtil;
 
+    @Autowired
+    SerializeMessageService serializeMessageService;
 
     @Override public Document serializeIGDocument(IGDocument igDocument) {
         SerializableStructure serializableStructure = new SerializableStructure();
@@ -72,9 +65,9 @@ public class SerializationServiceImpl implements SerializationService {
             serializableSection.addSectionContent("<div class=\"fr-view\">" + profile.getSectionContents() + "</div>");
         }
 
-        //TODO Refactor below
+        //TODO Check with Olivier if it's still used
 
-        nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
+        /*nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
         e.addAttribute(new Attribute("ID", profile.getId()));
         ProfileMetaData metaData = profile.getMetaData();
         if (metaData.getType() != null && !metaData.getType().isEmpty())
@@ -119,49 +112,36 @@ public class SerializationServiceImpl implements SerializationService {
                 e.appendChild(elmEncodings);
             }
         }
+        */
 
         if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
-            nu.xom.Element ts = new nu.xom.Element("Text");
+            nu.xom.Element textElement = new nu.xom.Element("Text");
             if (profile.getUsageNote() != null && !profile.getUsageNote().equals("")) {
-                nu.xom.Element elmUsageNote = new nu.xom.Element("UsageNote");
-                elmUsageNote.appendChild(profile.getUsageNote());
-                ts.appendChild(elmUsageNote);
+                nu.xom.Element usageNoteElement = new nu.xom.Element("UsageNote");
+                usageNoteElement.appendChild(profile.getUsageNote());
+                textElement.appendChild(usageNoteElement);
             }
-            e.appendChild(ts);
+            serializableSections.getRootSections().appendChild(textElement);
         }
 
-        String prefix = "";
-
-        // nu.xom.Element msd = new nu.xom.Element("MessagesDisplay");
-        nu.xom.Element msd = new nu.xom.Element("Section");
-        msd.addAttribute(new Attribute("id", profile.getMessages().getId()));
-        msd.addAttribute(new Attribute("position", String.valueOf(profile.getMessages().getSectionPosition())));
+        id = profile.getMessages().getId();
+        position = String.valueOf(profile.getMessages().getSectionPosition());
         prefix = String.valueOf(profile.getSectionPosition() + 1) + "."
             + String.valueOf(profile.getMessages().getSectionPosition() + 1);
-        msd.addAttribute(new Attribute("prefix", prefix));
-        msd.addAttribute(new Attribute("h", String.valueOf(2)));
         if (profile.getMessages().getSectionTitle() != null) {
-            msd.addAttribute(new Attribute("title", profile.getMessages().getSectionTitle()));
+            title = profile.getMessages().getSectionTitle();
         } else {
-            msd.addAttribute(new Attribute("title", ""));
+            title = "";
         }
+        SerializableSection serializableSectionMessages = new SerializableSection(id,prefix,position,title);
         if (profile.getMessages().getSectionContents() != null
             && !profile.getMessages().getSectionContents().isEmpty()) {
-            nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
-            sectCont.appendChild("<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
-            msd.appendChild(sectCont);
+            serializableSectionMessages.addSectionContent("<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
         }
-
-        // profile.getMessages().setPositionsOrder();
-        // List<Message> msgList = new
-        // ArrayList<>(profile.getMessages().getChildren());
-        // Collections.sort(msgList);
-        //
-        // for (Message m : msgList) {
-        for (Message m : profile.getMessages().getChildren()) {
-            msd.appendChild(this.serializeMessageDisplay(m, profile.getSegmentLibrary(), prefix));
+        for (Message message : profile.getMessages().getChildren()) {
+            SerializableMessage serializableMessage = serializeMessageService.serializeMessage(message,prefix)
+            serializableSectionMessages.addSection(serializableMessage);
         }
-        xsect.appendChild(msd);
 
         // nu.xom.Element ss = new nu.xom.Element("Segments");
         nu.xom.Element ss = new nu.xom.Element("Section");
@@ -191,7 +171,7 @@ public class SerializationServiceImpl implements SerializationService {
                 prefix + "." + String.valueOf(sgtList.indexOf(link) + 1), sgtList.indexOf(link));
         }
         xsect.appendChild(ss);
-
+        //TODO Refactor below
         // nu.xom.Element ds = new nu.xom.Element("Datatypes");
         nu.xom.Element ds = new nu.xom.Element("Section");
         ds.addAttribute(new Attribute("id", profile.getDatatypeLibrary().getId()));

@@ -31,13 +31,13 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
     private List<SerializableConstraint> groupConstraintList;
 
     //SegmentRef constructor
-    public SerializableSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup,Segment segment) {
-        this(segmentRefOrGroup);
+    public SerializableSegmentRefOrGroup(SegmentRef segmentRef,Segment segment) {
+        this(segmentRef);
         this.segment = segment;
     }
     //SegmentRef constructor
-    public SerializableSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup,List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> groupConstraintList) {
-        this(segmentRefOrGroup);
+    public SerializableSegmentRefOrGroup(Group group,List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> groupConstraintList) {
+        this(group);
         this.serializableSegmentRefOrGroups = serializableSegmentRefOrGroups;
         this.groupConstraintList = groupConstraintList;
     }

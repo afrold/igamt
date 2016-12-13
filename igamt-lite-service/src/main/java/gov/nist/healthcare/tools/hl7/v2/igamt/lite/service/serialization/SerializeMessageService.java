@@ -1,9 +1,7 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeDatatypeService;
-import org.springframework.stereotype.Service;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMessage;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -16,11 +14,10 @@ import org.springframework.stereotype.Service;
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 12/12/16.
+ * Created by Maxence Lefort on 12/13/16.
  */
-@Service
-public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
-    @Override public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink) {
-        return null;
-    }
+public interface SerializeMessageService {
+
+    public SerializableMessage serializeMessage(Message message, String prefix);
+
 }

@@ -30,8 +30,11 @@ public class SerializableMessage extends SerializableSection {
     private Message message;
     private List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups;
     private List<SerializableConstraint> serializableConstraints;
+    private String usageNote;
+    private String defPreText;
+    private String defPostText;
 
-    public SerializableMessage(Message message, String prefix, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> serializableConstraints) {
+    public SerializableMessage(Message message, String prefix, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> serializableConstraints,String usageNote,String defPreText,String defPostText) {
         super(message.getId(),
             prefix + "." + String.valueOf(message.getPosition()),
             String.valueOf(message.getPosition() + 1),
@@ -42,6 +45,9 @@ public class SerializableMessage extends SerializableSection {
         this.message = message;
         this.serializableConstraints = serializableConstraints;
         this.serializableSegmentRefOrGroups = serializableSegmentRefOrGroups;
+        this.usageNote = usageNote;
+        this.defPreText = defPreText;
+        this.defPostText = defPostText;
     }
 
     @Override public Element serializeElement() {
@@ -57,18 +63,18 @@ public class SerializableMessage extends SerializableSection {
         if (this.message.getComment() != null && !this.message.getComment().isEmpty()) {
             messageElement.addAttribute(new Attribute("Comment", this.message.getComment()));
         }
-        if (this.message.getUsageNote() != null && !this.message.getUsageNote().isEmpty()) {
-            messageElement.appendChild(super.createTextElement("UsageNote", this.message.getUsageNote()));
+        if (this.usageNote != null && !this.usageNote.isEmpty()) {
+            messageElement.appendChild(super.createTextElement("UsageNote", this.usageNote));
         }
 
-        if ((this.message != null && !this.message.getDefPreText().isEmpty()) || (this.message != null && !this.message.getDefPostText().isEmpty())) {
-            if (this.message.getDefPreText() != null && !this.message.getDefPreText().isEmpty()) {
+        if ((this.message != null && !this.defPreText.isEmpty()) || (this.message != null && !this.defPostText.isEmpty())) {
+            if (this.defPreText != null && !this.defPreText.isEmpty()) {
                 messageElement.appendChild(super.createTextElement("DefPreText",
-                    this.message.getDefPreText()));
+                    this.defPreText));
             }
-            if (this.message.getDefPostText() != null && !this.message.getDefPostText().isEmpty()) {
+            if (this.defPostText != null && !this.defPostText.isEmpty()) {
                 messageElement.appendChild(super.createTextElement("DefPostText",
-                    this.message.getDefPostText()));
+                    this.defPostText));
             }
         }
 
