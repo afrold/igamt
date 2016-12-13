@@ -98,15 +98,7 @@ public class ExportUtil {
             // .. content type
             wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");*/
 
-            Tidy tidy = new Tidy();
-            tidy.setWraplen(Integer.MAX_VALUE);
-            tidy.setXHTML(true);
-            tidy.setShowWarnings(false); // to hide errors
-            tidy.setQuiet(true); // to hide warning
-            tidy.setMakeClean(true);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            tidy.parse(IOUtils.toInputStream(html), baos);
-            html = baos.toString();
+            html = cleanHtml(IOUtils.toInputStream(html)).toString();
             XHTMLImporterImpl xHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
             wordMLPackage.getMainDocumentPart().getContent().addAll(xHTMLImporter.convert(html, null));
 
@@ -136,14 +128,8 @@ public class ExportUtil {
 
         try {
             File tmpHtmlFile = doTransformToTempHtml(xmlString,xslPath,exportParameters);
-            Tidy tidy = new Tidy();
-            tidy.setWraplen(Integer.MAX_VALUE);
-            tidy.setXHTML(true);
-            tidy.setShowWarnings(false); // to hide errors
-            tidy.setQuiet(true); // to hide warning
-            tidy.setMakeClean(true);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            tidy.parseDOM(FileUtils.openInputStream(tmpHtmlFile), outputStream);
+            
+            ByteArrayOutputStream outputStream = cleanHtml(FileUtils.openInputStream(tmpHtmlFile));
             return new ByteArrayInputStream(outputStream.toByteArray());
 
         } catch (TransformerException | IOException e) {
@@ -183,6 +169,20 @@ public class ExportUtil {
         }
         transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
         return tmpHtmlFile;
+    }
+    
+    private ByteArrayOutputStream cleanHtml(InputStream html){
+        Tidy tidy = new Tidy();
+        tidy.setWraplen(Integer.MAX_VALUE);
+        tidy.setDropEmptyParas(true);
+        tidy.setCharEncoding(org.w3c.tidy.Configuration.UTF8);
+        tidy.setXHTML(true);
+        tidy.setShowWarnings(true); // to hide errors
+        tidy.setQuiet(false); // to hide warning
+        tidy.setMakeClean(true);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        tidy.parseDOM(html, outputStream);
+        return outputStream;
     }
 
 
