@@ -18,6 +18,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
  */
 public interface SerializeDatatypeService {
 
-    public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink);
+    public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix, Integer position);
 
 }

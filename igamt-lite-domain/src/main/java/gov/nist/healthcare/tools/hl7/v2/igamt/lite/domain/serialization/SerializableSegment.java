@@ -29,11 +29,9 @@ public class SerializableSegment extends SerializableSection {
     private Map<Field,Datatype> fieldDatatypeMap;
     private Map<Field,List<Table>> fieldTableMap;
     private Map<CCValue,Table> coConstraintValueTableMap;
-    private List<SerializableDatatype> datatypes;
-    private List<SerializableTable> valueSets;
 
     public SerializableSegment(String id, String prefix, String position, String headerLevel, String title,
-        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap, List<SerializableDatatype> datatypes,List<SerializableTable> valueSets) {
+        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap) {
         super(id, prefix, position, headerLevel, title);
         this.segment = segment;
         this.name = name;
@@ -45,8 +43,6 @@ public class SerializableSegment extends SerializableSection {
         this.constraints = constraints;
         this.fieldDatatypeMap = fieldDatatypeMap;
         this.fieldTableMap = fieldTableMap;
-        this.datatypes = datatypes;
-        this.valueSets = valueSets;
         this.coConstraintValueTableMap = coConstraintValueTableMap;
     }
 

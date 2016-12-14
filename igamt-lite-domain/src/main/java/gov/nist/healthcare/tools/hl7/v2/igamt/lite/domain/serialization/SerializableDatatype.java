@@ -32,14 +32,20 @@ public class SerializableDatatype extends SerializableSection {
     private List<SerializableConstraint> constraints;
     private Map<Component,Datatype> componentDatatypeMap;
     private Map<Component,List<Table>> componentTableMap;
+    private String defPreText, defPostText, usageNote;
+    private Map<Component,String> componentTextMap;
 
     public SerializableDatatype(String id, String prefix, String position, String headerLevel, String title,
-        Datatype datatype, List<SerializableConstraint> constraints,Map<Component,Datatype> componentDatatypeMap,Map<Component,List<Table>> componentTableMap) {
+        Datatype datatype, String defPreText, String defPostText, String usageNote, List<SerializableConstraint> constraints,Map<Component,Datatype> componentDatatypeMap,Map<Component,List<Table>> componentTableMap, Map<Component,String> componentTextMap) {
         super(id, prefix, position, headerLevel, title);
         this.datatype = datatype;
+        this.defPreText = defPreText;
+        this.defPostText = defPostText;
+        this.usageNote = usageNote;
         this.constraints = constraints;
         this.componentDatatypeMap = componentDatatypeMap;
         this.componentTableMap = componentTableMap;
+        this.componentTextMap = componentTextMap;
     }
 
     @Override public Element serializeElement() {
@@ -99,11 +105,11 @@ public class SerializableDatatype extends SerializableSection {
                         componentElement.addAttribute(new Attribute("Comment", component.getComment()));
                     componentElement
                         .addAttribute(new Attribute("Position", component.getPosition().toString()));
-                    if (component.getText() != null & !component.getText().isEmpty()) {
+                    String componentText = componentTextMap.get(component);
+                    if (componentText != null && !componentText.isEmpty()) {
                         componentElement.appendChild(
-                            this.createTextElement("Text", component.getText()));
+                            this.createTextElement("Text", componentText));
                     }
-
                     if (component.getTables() != null && (component.getTables().size() > 0)) {
                         String bindingIdentifiers = "";
                         for(Table table:componentTableMap.get(component)){
@@ -123,20 +129,19 @@ public class SerializableDatatype extends SerializableSection {
                     datatypeElement.appendChild(componentElement);
                 }
 
-                if ((datatype != null && !datatype.getDefPreText().isEmpty()) || (datatype != null
-                    && !datatype.getDefPostText().isEmpty())) {
-                    if (datatype.getDefPreText() != null && !datatype.getDefPreText().isEmpty()) {
+                if ((datatype != null && (!this.defPreText.isEmpty()) || !this.defPostText.isEmpty())) {
+                    if (this.defPreText != null && !this.defPreText.isEmpty()) {
                         datatypeElement.appendChild(
-                            this.createTextElement("DefPreText", datatype.getDefPreText()));
+                            this.createTextElement("DefPreText", this.defPreText));
                     }
-                    if (datatype.getDefPostText() != null && !datatype.getDefPostText().isEmpty()) {
+                    if (this.defPostText != null && !this.defPostText.isEmpty()) {
                         datatypeElement.appendChild(
-                            this.createTextElement("DefPostText", datatype.getDefPostText()));
+                            this.createTextElement("DefPostText", this.defPostText));
                     }
                 }
-                if (datatype.getUsageNote() != null && !datatype.getUsageNote().isEmpty()) {
+                if (this.usageNote != null && !this.usageNote.isEmpty()) {
                     datatypeElement
-                        .appendChild(this.createTextElement("UsageNote", datatype.getUsageNote()));
+                        .appendChild(this.createTextElement("UsageNote", this.usageNote));
                 }
             }
         }

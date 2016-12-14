@@ -1,11 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeDatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeMessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeSegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
@@ -41,6 +39,9 @@ public class SerializationServiceImpl implements SerializationService {
 
     @Autowired
     SerializeSegmentService serializeSegmentService;
+
+    @Autowired
+    SerializeDatatypeService serializeDatatypeService;
 
     @Override public Document serializeIGDocument(IGDocument igDocument) {
         SerializableStructure serializableStructure = new SerializableStructure();
@@ -131,12 +132,37 @@ public class SerializationServiceImpl implements SerializationService {
                     .serializeSegment(segmentLink, profile.getTableLibrary(),
                         profile.getDatatypeLibrary(),
                         prefix + "." + String.valueOf(segmentLinkList.indexOf(segmentLink) + 1),
-                        segmentLinkList.indexOf(segmentLink), true));
+                        segmentLinkList.indexOf(segmentLink)));
 
             }
         }
         profileSection.addSection(segmentsSection);
 
+        //Datatypes serialization
+        id = profile.getDatatypeLibrary().getId();
+        position = String.valueOf(profile.getDatatypeLibrary().getSectionPosition());
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
+            .valueOf(profile.getDatatypeLibrary().getSectionPosition() + 1);
+        headerLevel = String.valueOf(2);
+        title = "";
+        if (profile.getDatatypeLibrary().getSectionTitle() != null) {
+            title = profile.getDatatypeLibrary().getSectionTitle();
+        }
+        SerializableSection datatypeSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+        if (profile.getDatatypeLibrary().getSectionContents() != null && !profile.getDatatypeLibrary()
+            .getSectionContents().isEmpty()) {
+            datatypeSection.addSectionContent(
+                "<div class=\"fr-view\">" + profile.getDatatypeLibrary().getSectionContents() + "</div>");
+        }
+        List<DatatypeLink> datatypeLinkList = new ArrayList<>(profile.getDatatypeLibrary().getChildren());
+        Collections.sort(datatypeLinkList);
+        for (DatatypeLink datatypeLink : datatypeLinkList) {
+            SerializableDatatype serializableDatatype = serializeDatatypeService.serializeDatatype(datatypeLink,
+                prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),datatypeLinkList.indexOf(datatypeLink));
+            datatypeSection.addSection(serializableDatatype);
+        }
+        profileSection.addSection(datatypeSection);
         //TODO Refactor below
         /*
         // nu.xom.Element ds = new nu.xom.Element("Datatypes");
