@@ -1512,7 +1512,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		}
 
 		for (org.jsoup.nodes.Element elementTbl : doc.select("table")) {
-			if (elementTbl.attr("summary") != null && !"".equals(elementTbl.attr("summary"))) {
+			if (elementTbl.attr("summary") == null || elementTbl.attr("summary").isEmpty()) {
 				elementTbl.attr("alt", ".");
 			}
 		}
