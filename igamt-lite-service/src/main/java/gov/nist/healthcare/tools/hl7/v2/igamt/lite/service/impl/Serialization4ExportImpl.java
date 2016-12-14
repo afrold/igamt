@@ -1494,13 +1494,14 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 						String texEncImg = "data:image/" + ext + ";base64," + imgEnc;
 						elementImg.attr("src", texEncImg);
 					}
-					if (elementImg.attr("alt") == null){
-						elementImg.attr("alt", "");
-					}
-					String imgStyle = elementImg.attr("style");
-					elementImg.attr("style", imgStyle.replace("px;", ";"));
-//					style="width: 300px;
 				}
+				if (elementImg.attr("alt") == null || elementImg.attr("alt").isEmpty()){
+					elementImg.attr("alt", ".");
+				}
+				String imgStyle = elementImg.attr("style");
+				elementImg.attr("style", imgStyle.replace("px;", ";"));
+//				style="width: 300px;
+
 			} catch (RuntimeException e) {
 				e.printStackTrace(); // If error, we leave the original document
 										// as is.

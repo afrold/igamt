@@ -23,6 +23,9 @@
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
                 </xsl:attribute>
+                <xsl:attribute name="summary">
+                    <xsl:value-of select="@Description"></xsl:value-of>
+                </xsl:attribute>
                 <xsl:element name="col">
                     <xsl:attribute name="width">
                         <xsl:text>10%</xsl:text>
