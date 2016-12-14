@@ -4,13 +4,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMessage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeMessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeSegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import nu.xom.Attribute;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +41,20 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
     @Autowired
     SerializationUtil serializationUtil;
 
-    @Override public SerializableMessage serializeMessage(Message message, String prefix) {
+    @Autowired
+    SerializeSegmentService serializeSegmentService;
+
+    @Override public SerializableMessage serializeMessage(Message message, String prefix, boolean includeSegments) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
+        List<SerializableSection> messageSegments = new ArrayList<>();
+        Integer position = 1;
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
             SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
+            if(includeSegments){
+                messageSegments.add(serializeSegment(segmentRefOrGroup,prefix + "." + String.valueOf(message.getPosition()) + "."+String.valueOf(position),position));
+                position+=1;
+            }
         }
 
         String type = "ConformanceStatement";
@@ -67,7 +74,28 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
             defPostText = serializationUtil.cleanRichtext(message.getDefPostText());
         }
         SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText);
+        if(!messageSegments.isEmpty()){
+            for(SerializableSection messageSegment : messageSegments){
+                serializableMessage.addSection(messageSegment);
+            }
+        }
         return serializableMessage;
+    }
+
+    private SerializableSection serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, Integer position) {
+        if(segmentRefOrGroup instanceof SegmentRef){
+            return serializeSegmentService.serializeSegment(((SegmentRef) segmentRefOrGroup).getRef(),prefix,position,5);
+        } else if (segmentRefOrGroup instanceof Group){
+            String id = UUID.randomUUID().toString();
+            String headerLevel = String.valueOf(4);
+            String title = ((Group) segmentRefOrGroup).getName();
+            SerializableSection serializableSection = new SerializableSection(id,prefix,String.valueOf(position),headerLevel,title);
+            for(SegmentRefOrGroup groupSegmentRefOrGroup : ((Group) segmentRefOrGroup).getChildren()){
+                serializableSection.addSection(serializeSegment(groupSegmentRefOrGroup,prefix,position));
+            }
+            return serializableSection;
+        }
+        return null;
     }
 
     private SerializableConstraints serializeConstraints(List<? extends Constraint> constraints,Message message,String type){

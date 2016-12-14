@@ -20,5 +20,5 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
  * Created by Maxence Lefort on 12/13/16.
  */
 public interface SerializeSegmentService {
-    public SerializableSection serializeSegment(SegmentLink segmentLink, TableLibrary tableLibrary, DatatypeLibrary datatypeLibrary, String prefix, Integer position);
+    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel);
 }

@@ -21,13 +21,15 @@ import nu.xom.Element;
 public class SerializableTable extends SerializableSection {
 
     private Table table;
-    private String bindingIdentifier;
+    private String bindingIdentifier, defPreText, defPostText;
 
     public SerializableTable(String id, String prefix, String position, String headerLevel, String title, Table table,
-        String bindingIdentifier) {
+        String bindingIdentifier, String defPreText, String defPostText) {
         super(id, prefix, position, headerLevel, title);
         this.table = table;
         this.bindingIdentifier = bindingIdentifier;
+        this.defPreText = defPreText;
+        this.defPostText = defPostText;
     }
 
     @Override public Element serializeElement() {
@@ -75,13 +77,13 @@ public class SerializableTable extends SerializableSection {
                     valueSetDefinitionElement.appendChild(valueElement);
                 }
             }
-            if (this.table.getDefPreText() != null && !this.table.getDefPreText().isEmpty()) {
+            if (this.defPreText != null && !this.defPreText.isEmpty()) {
                 valueSetDefinitionElement
-                    .appendChild(this.createTextElement("DefPreText", this.table.getDefPreText()));
+                    .appendChild(this.createTextElement("DefPreText", this.defPreText));
             }
-            if (this.table.getDefPostText() != null && !this.table.getDefPostText().isEmpty()) {
+            if (this.defPostText != null && !this.defPostText.isEmpty()) {
                 valueSetDefinitionElement.appendChild(
-                    this.createTextElement("DefPostText", this.table.getDefPostText()));
+                    this.createTextElement("DefPostText", this.defPostText));
             }
         }
         Element sectionElement = super.getSectionElement();

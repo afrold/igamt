@@ -79,6 +79,12 @@ public class SerializableMessage extends SerializableSection {
         }
         messageElement.appendChild(serializableConformanceStatements.serializeElement());
         messageElement.appendChild(serializablePredicates.serializeElement());
+        List<SerializableSection> segmentsSections = super.getSerializableSectionList();
+        if(!segmentsSections.isEmpty()){
+            for(SerializableSection segmentSection : segmentsSections){
+                messageElement.appendChild(segmentSection.serializeElement());
+            }
+        }
         super.sectionElement.appendChild(messageElement);
         return super.sectionElement;
     }

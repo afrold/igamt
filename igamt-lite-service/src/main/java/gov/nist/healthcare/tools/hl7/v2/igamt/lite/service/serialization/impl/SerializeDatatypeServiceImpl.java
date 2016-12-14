@@ -3,7 +3,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
@@ -12,7 +11,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -152,7 +152,8 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 	@Override
 	public String serializeIGDocumentToXML(IGDocument igdoc) {
-			return serializationService.serializeIGDocument(igdoc).toXML();
+			String xml = serializationService.serializeIGDocument(igdoc).toXML();
+			return xml;
 		//return serializeIGDocumentToDoc(igdoc).toXML();
 	}
 

@@ -1,9 +1,17 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableTable;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeTableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -20,7 +28,35 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SerializeTableServiceImpl implements SerializeTableService {
-    @Override public SerializableTable serializeTable(TableLink tableLink) {
+
+    @Autowired
+    TableService tableService;
+
+    @Autowired
+    SerializationUtil serializationUtil;
+
+    @Override public SerializableTable serializeTable(TableLink tableLink, String prefix, Integer position) {
+        if(tableLink!=null && tableLink.getId()!=null) {
+            Table table = tableService.findById(tableLink.getId());
+            String id = tableLink.getId();
+            String title = "ID not found: "+tableLink.getId();
+            String headerLevel = String.valueOf(3);
+            if(table!=null) {
+                id = table.getId();
+                title = table.getBindingIdentifier()+" - "+table.getDescription();
+            }
+            String defPreText,defPostText;
+            defPreText = defPostText = "";
+            if(table.getDefPreText()!=null && !table.getDefPreText().isEmpty()){
+                defPreText = serializationUtil.cleanRichtext(table.getDefPreText());
+            }
+            if(table.getDefPostText()!=null && !table.getDefPostText().isEmpty()){
+                defPostText = serializationUtil.cleanRichtext(table.getDefPostText());
+            }
+
+            SerializableTable serializedTable = new SerializableTable(id,prefix,String.valueOf(position),headerLevel,title,table,tableLink.getBindingIdentifier(),defPreText,defPostText);
+            return serializedTable;
+        }
         return null;
     }
 }

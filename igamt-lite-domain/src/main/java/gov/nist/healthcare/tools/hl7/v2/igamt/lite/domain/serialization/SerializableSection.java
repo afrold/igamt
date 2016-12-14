@@ -79,4 +79,8 @@ public class SerializableSection extends SerializableElement {
         sectionContentElement.appendChild(content);
         sectionElement.appendChild(sectionContentElement);
     }
+
+    public List<SerializableSection> getSerializableSectionList() {
+        return serializableSectionList;
+    }
 }

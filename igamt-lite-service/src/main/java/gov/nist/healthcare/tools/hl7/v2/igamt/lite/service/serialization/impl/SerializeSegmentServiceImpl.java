@@ -51,16 +51,15 @@ import java.util.Map;
     @Autowired SerializeTableService serializeTableService;
 
     @Override
-    public SerializableSection serializeSegment(SegmentLink segmentLink, TableLibrary tableLibrary,
-        DatatypeLibrary datatypeLibrary, String prefix, Integer position) {
+    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel) {
         Segment segment = segmentService.findById(segmentLink.getId());
         if (segment != null) {
             //Create section node
             String id = segment.getId();
             String segmentPosition = String.valueOf(position);
-            String headerLevel = String.valueOf(3);
+            String sectionHeaderLevel = String.valueOf(headerLevel);
             String title = segmentLink.getLabel() + " - " + segment.getDescription();
-            SerializableSection serializableSegmentSection = new SerializableSection(id,prefix,segmentPosition,headerLevel,title);
+            SerializableSection serializableSegmentSection = new SerializableSection(id,prefix,segmentPosition,sectionHeaderLevel,title);
             //create segment node
             id = segment.getId();
             String name = segmentLink.getName();
@@ -68,7 +67,7 @@ import java.util.Map;
                 segmentLink.getName() :
                 segmentLink.getLabel();
             segmentPosition = "";
-            headerLevel = String.valueOf(4);
+            sectionHeaderLevel = String.valueOf(headerLevel+1);
             title = segment.getName();
             String description = segment.getDescription();
             String comment = "";
@@ -125,7 +124,7 @@ import java.util.Map;
                     }
                 }
             }
-            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, headerLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldTableMap, coConstraintValueTableMap);
+            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldTableMap, coConstraintValueTableMap);
             serializableSegmentSection.addSection(serializableSegment);
             return serializableSegmentSection;
         }
