@@ -1510,7 +1510,14 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				// as is.
 			}
 		}
-		// Tidy tidy = new Tidy();
+
+		for (org.jsoup.nodes.Element elementTbl : doc.select("table")) {
+			if (elementTbl.attr("summary") != null && !"".equals(elementTbl.attr("summary"))) {
+				elementTbl.attr("alt", ".");
+			}
+		}
+
+					// Tidy tidy = new Tidy();
 		// tidy.setWraplen(Integer.MAX_VALUE);
 		// tidy.setXHTML(true);
 		// tidy.setShowWarnings(false); // to hide errors
