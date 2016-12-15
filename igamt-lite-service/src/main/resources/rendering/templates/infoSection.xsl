@@ -56,7 +56,6 @@
                         </xsl:element>
                     </xsl:when>
                 </xsl:choose>
-<!--             <xsl:element name="br"/> -->
             <xsl:call-template name="displaySectionContent"/>
             <xsl:call-template name="displayProfileContent">
                 <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>

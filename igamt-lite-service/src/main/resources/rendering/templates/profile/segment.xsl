@@ -22,7 +22,6 @@
                 </xsl:with-param>
             </xsl:call-template>
         </xsl:if>
-        <xsl:element name="p">
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
@@ -110,7 +109,6 @@
                     </xsl:for-each>
                 </xsl:element>
             </xsl:element>
-        </xsl:element>
         <xsl:if test="count(Field//Constraint) &gt; 0">
             <xsl:if test="count(Field//Constraint[@Type='cs']) &gt; 0">
                 <xsl:element name="strong">
