@@ -46,6 +46,11 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
   protected String comment = "";
 
   protected String usageNote = "";
+  
+  protected String defPreText= "";
+  
+  protected String defPostText = "";
+  
 
   public String getId() {
     return id;
@@ -346,4 +351,23 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
   public void setMessageID(String messageID) {
     this.messageID = messageID;
   }
+
+public String getDefPreText() {
+	return defPreText;
+}
+
+public void setDefPreText(String defPreText) {
+	this.defPreText = defPreText;
+}
+
+public String getDefPostText() {
+	return defPostText;
+}
+
+public void setDefPostText(String defPostText) {
+	this.defPostText = defPostText;
+}
+  
+  
+  
 }
