@@ -710,12 +710,16 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         }, function() {});
     };
 
-    $scope.manageConformanceStatement = function() {
+    $scope.manageConformanceStatement = function(node) {
         var modalInstance = $modal.open({
             templateUrl: 'ConformanceStatementSegmentCtrl.html',
             controller: 'ConformanceStatementSegmentCtrl',
             windowClass: 'app-modal-window',
-            resolve: {}
+            resolve: {
+                selectedNode: function() {
+                    return node;
+                }
+            }
         });
         modalInstance.result.then(function(node) {
             $scope.selectedNode = node;
@@ -1357,8 +1361,9 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
     };
 
 });
-angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, $modalInstance, $rootScope, $q) {
+angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope, $q) {
     $scope.constraintType = 'Plain';
+    $scope.selectedNode = selectedNode;
     $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -1434,10 +1439,26 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         data.folderClass = data.childrenVisible?"fa-minus":"fa-plus";
     };
 
+    $scope.beforeFieldDrop = function() {
+        var deferred = $q.defer();
+
+        if($scope.draggingStatus === 'ContextTreeNodeDragging_Field') {
+            deferred.resolve();
+        }else {
+            deferred.reject();
+        }
+        return deferred.promise;
+    };
+
     $scope.beforeNodeDrop = function() {
         var deferred = $q.defer();
         deferred.resolve();
         return deferred.promise;
+    };
+
+    $scope.afterFieldDrop = function() {
+        $scope.draggingStatus = null;
+        $scope.initConformanceStatement();
     };
 
     $scope.afterNodeDrop = function () {
@@ -1453,7 +1474,10 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     };
 
     $scope.draggingNodeFromContextTree = function (event, ui, data) {
-        $scope.draggingStatus = 'ContextTreeNodeDragging';
+        $scope.draggingStatus = 'ContextTreeNodeDragging_Component';
+        for(var f in $scope.treeDataForContext[0].fields){
+            if($scope.treeDataForContext[0].fields[f].id == data.nodeData.id) $scope.draggingStatus = 'ContextTreeNodeDragging_Field';
+        }
     };
 
     $scope.initConformanceStatement = function() {
@@ -1542,27 +1566,27 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     };
 
     $scope.addFreeTextConformanceStatement = function() {
-        var cs = $rootScope.generateFreeTextConformanceStatement($scope.newConstraint);
+        var cs = $rootScope.generateFreeTextConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
         $scope.tempComformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
 
     $scope.addConformanceStatement = function() {
-        var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
+        var cs = $rootScope.generateConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
         $scope.tempComformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
 
     $scope.ok = function() {
-        $modalInstance.close();
+        $modalInstance.close($scope.selectedNode);
     };
 
     $scope.saveclose = function() {
         angular.copy($scope.tempComformanceStatements, $rootScope.segment.conformanceStatements);
         $rootScope.recordChanged();
-        $modalInstance.close();
+        $modalInstance.close($scope.selectedNode);
     };
 });
 angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
