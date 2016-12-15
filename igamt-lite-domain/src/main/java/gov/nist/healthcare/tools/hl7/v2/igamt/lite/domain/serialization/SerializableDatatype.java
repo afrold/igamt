@@ -166,4 +166,8 @@ public class SerializableDatatype extends SerializableSection {
                 + ")";
         }
     }
+
+    public Datatype getDatatype() {
+        return datatype;
+    }
 }

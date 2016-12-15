@@ -237,4 +237,8 @@ public class SerializableSegment extends SerializableSection {
     public List<SerializableConstraint> getConstraints() {
         return constraints;
     }
+
+    public Segment getSegment() {
+        return segment;
+    }
 }
