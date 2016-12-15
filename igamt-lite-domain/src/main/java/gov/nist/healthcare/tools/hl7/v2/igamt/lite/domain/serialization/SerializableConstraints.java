@@ -19,13 +19,19 @@ import java.util.UUID;
  * <p>
  * Created by Maxence Lefort on 12/13/16.
  */
-public class SerializableConstraints extends SerializableElement {
+public class SerializableConstraints extends SerializableSection {
 
     private List<SerializableConstraint> constraints;
     private String id,position,title,type;
 
     public SerializableConstraints(List<SerializableConstraint> constraints, String id,
         String position, String title, String type) {
+        this(constraints, id, "", position, String.valueOf(5), title, type);
+    }
+
+    public SerializableConstraints(List<SerializableConstraint> constraints, String id,String prefix,
+        String position, String headerLevel, String title, String type) {
+        super(id,prefix,position,headerLevel,title);
         this.constraints = constraints;
         this.id = id;
         this.position = position;
@@ -44,5 +50,13 @@ public class SerializableConstraints extends SerializableElement {
             constraintsElement.appendChild(constraint.serializeElement());
         }
         return constraintsElement;
+    }
+
+    public List<SerializableConstraint> getConstraints() {
+        return constraints;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

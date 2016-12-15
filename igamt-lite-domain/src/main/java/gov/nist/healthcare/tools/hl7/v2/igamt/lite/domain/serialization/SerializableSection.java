@@ -6,8 +6,6 @@ import nu.xom.Element;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -30,23 +28,28 @@ public class SerializableSection extends SerializableElement {
 
     protected String id,prefix,position,headerLevel,title;
 
+    private Attribute prefixAttribute,headerAttribute,titleAttribute;
+
     public void addSection(SerializableSection serializableSection){
         this.serializableSectionList.add(serializableSection);
     }
 
     public SerializableSection(String id,String prefix,String position, String headerLevel, String title) {
         this.id = id;
+        this.sectionElement = new Element("Section");
+        this.sectionElement.addAttribute(new Attribute("id", id));
+        this.serializableSectionList = new ArrayList<>();
         this.prefix = prefix;
         this.position = position;
         this.headerLevel = headerLevel;
         this.title = title;
-        this.serializableSectionList = new ArrayList<>();
-        this.sectionElement = new Element("Section");
-        this.sectionElement.addAttribute(new Attribute("id", id));
-        this.sectionElement.addAttribute(new Attribute("prefix", prefix));
+        this.prefixAttribute = new Attribute("prefix", prefix);
+        this.sectionElement.addAttribute(this.prefixAttribute);
         this.sectionElement.addAttribute(new Attribute("position", position));
-        this.sectionElement.addAttribute(new Attribute("h", headerLevel));
-        this.sectionElement.addAttribute(new Attribute("title", title));
+        this.headerAttribute = new Attribute("h", headerLevel);
+        this.sectionElement.addAttribute(headerAttribute);
+        this.titleAttribute = new Attribute("title", title);
+        this.sectionElement.addAttribute(titleAttribute);
     }
 
     @Override

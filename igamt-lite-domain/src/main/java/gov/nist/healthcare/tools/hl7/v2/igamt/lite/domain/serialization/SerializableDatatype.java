@@ -35,6 +35,10 @@ public class SerializableDatatype extends SerializableSection {
     private String defPreText, defPostText, usageNote;
     private Map<Component,String> componentTextMap;
 
+    public List<SerializableConstraint> getConstraints() {
+        return constraints;
+    }
+
     public SerializableDatatype(String id, String prefix, String position, String headerLevel, String title,
         Datatype datatype, String defPreText, String defPostText, String usageNote, List<SerializableConstraint> constraints,Map<Component,Datatype> componentDatatypeMap,Map<Component,List<Table>> componentTableMap, Map<Component,String> componentTextMap) {
         super(id, prefix, position, headerLevel, title);

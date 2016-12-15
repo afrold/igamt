@@ -29,6 +29,10 @@ public class SerializableConstraint extends SerializableElement{
         this.locationName = locationName;
     }
 
+    public Constraint getConstraint() {
+        return constraint;
+    }
+
     @Override public Element serializeElement() {
         nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
         elmConstraint.addAttribute(

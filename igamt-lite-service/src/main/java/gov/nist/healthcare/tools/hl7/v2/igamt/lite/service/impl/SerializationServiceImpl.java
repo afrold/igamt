@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -29,29 +30,33 @@ import java.util.List;
  * <p>
  * Created by Maxence Lefort on 12/7/16.
  */
-@Service
-public class SerializationServiceImpl implements SerializationService {
+@Service public class SerializationServiceImpl implements SerializationService {
 
-    @Autowired
-    SerializationUtil serializationUtil;
+    @Autowired SerializationUtil serializationUtil;
 
-    @Autowired
-    SerializeMessageService serializeMessageService;
+    @Autowired SerializeMessageService serializeMessageService;
 
-    @Autowired
-    SerializeSegmentService serializeSegmentService;
+    @Autowired SerializeSegmentService serializeSegmentService;
 
-    @Autowired
-    SerializeDatatypeService serializeDatatypeService;
+    @Autowired SerializeDatatypeService serializeDatatypeService;
 
-    @Autowired
-    SerializeTableService serializeTableService;
+    @Autowired SerializeTableService serializeTableService;
+
+    @Override public Document serializeDatatypeLibrary(IGDocument igDocument) {
+        return null;
+    }
+
+    @Override public Document serializeElement(SerializableElement element) {
+        SerializableStructure serializableStructure = new SerializableStructure();
+        serializableStructure.addSerializableElement(element);
+        return serializableStructure.serializeStructure();
+    }
 
     @Override public Document serializeIGDocument(IGDocument igDocument) {
         SerializableStructure serializableStructure = new SerializableStructure();
         SerializableMetadata serializableMetadata =
-            new SerializableMetadata(igDocument.getMetaData(), igDocument.getProfile().getMetaData(),
-                igDocument.getDateUpdated());
+            new SerializableMetadata(igDocument.getMetaData(),
+                igDocument.getProfile().getMetaData(), igDocument.getDateUpdated());
         serializableStructure.addSerializableElement(serializableMetadata);
         SerializableSections serializableSections = new SerializableSections();
         String prefix = "";
@@ -83,37 +88,15 @@ public class SerializationServiceImpl implements SerializationService {
             serializableSections.getRootSections().appendChild(textElement);
         }
         //Message Serialization
-        SerializableSection messageSection = this.serializeMessage(profile);
+        SerializableSection messageSection = this.serializeMessages(profile);
         profileSection.addSection(messageSection);
 
         //Segments serialization
-        SerializableSection segmentsSection = this.serializeSegment(profile);
+        SerializableSection segmentsSection = this.serializeSegments(profile);
         profileSection.addSection(segmentsSection);
 
         //Datatypes serialization
-        id = profile.getDatatypeLibrary().getId();
-        position = String.valueOf(profile.getDatatypeLibrary().getSectionPosition());
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
-            .valueOf(profile.getDatatypeLibrary().getSectionPosition() + 1);
-        headerLevel = String.valueOf(2);
-        title = "";
-        if (profile.getDatatypeLibrary().getSectionTitle() != null) {
-            title = profile.getDatatypeLibrary().getSectionTitle();
-        }
-        SerializableSection datatypeSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
-        if (profile.getDatatypeLibrary().getSectionContents() != null && !profile.getDatatypeLibrary()
-            .getSectionContents().isEmpty()) {
-            datatypeSection.addSectionContent(
-                "<div class=\"fr-view\">" + profile.getDatatypeLibrary().getSectionContents() + "</div>");
-        }
-        List<DatatypeLink> datatypeLinkList = new ArrayList<>(profile.getDatatypeLibrary().getChildren());
-        Collections.sort(datatypeLinkList);
-        for (DatatypeLink datatypeLink : datatypeLinkList) {
-            SerializableDatatype serializableDatatype = serializeDatatypeService.serializeDatatype(datatypeLink,
-                prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),datatypeLinkList.indexOf(datatypeLink));
-            datatypeSection.addSection(serializableDatatype);
-        }
+        SerializableSection datatypeSection = this.serializeDatatypes(profile);
         profileSection.addSection(datatypeSection);
 
         //Value sets serialization
@@ -131,7 +114,8 @@ public class SerializationServiceImpl implements SerializationService {
         if (profile.getTableLibrary().getSectionContents() != null && !profile.getTableLibrary()
             .getSectionContents().isEmpty()) {
             valueSetsSection.addSectionContent(
-                "<div class=\"fr-view\">" + profile.getTableLibrary().getSectionContents() + "</div>");
+                "<div class=\"fr-view\">" + profile.getTableLibrary().getSectionContents()
+                    + "</div>");
         }
         List<TableLink> tableLinkList = new ArrayList<>(profile.getTableLibrary().getChildren());
         Collections.sort(tableLinkList);
@@ -143,52 +127,241 @@ public class SerializationServiceImpl implements SerializationService {
         }
         profileSection.addSection(valueSetsSection);
 
-        //TODO Refactor below
-        /*
-        nu.xom.Element cnts = new nu.xom.Element("Section");
-        cnts.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-        cnts.addAttribute(new Attribute("position", String.valueOf(5)));
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5);
-        cnts.addAttribute(new Attribute("prefix", prefix));
-        cnts.addAttribute(new Attribute("h", String.valueOf(2)));
-        cnts.addAttribute(new Attribute("title", "Conformance information"));
+        SerializableSection constraintInformationSection =
+            this.serializeConstraints(profile, messageSection.getSerializableSectionList(), null,
+                null);
+        profileSection.addSection(constraintInformationSection);
 
-        nu.xom.Element cs = new nu.xom.Element("Section");
-        cs.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-        cs.addAttribute(new Attribute("position", String.valueOf(1)));
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "." + String.valueOf(1);
-        cs.addAttribute(new Attribute("prefix", prefix));
-        cs.addAttribute(new Attribute("h", String.valueOf(3)));
-        cs.addAttribute(new Attribute("title", "Conformance statements"));
 
-        nu.xom.Element cp = new nu.xom.Element("Section");
-        cp.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-        cp.addAttribute(new Attribute("position", String.valueOf(2)));
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "." + String.valueOf(2);
-        cp.addAttribute(new Attribute("prefix", prefix));
-        cp.addAttribute(new Attribute("h", String.valueOf(3)));
-        cp.addAttribute(new Attribute("title", "Conditional predicates"));
 
-        // * Messages
-        nu.xom.Element csmsg = new nu.xom.Element("Section");
-        csmsg.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-        csmsg.addAttribute(new Attribute("position", String.valueOf(3)));
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "." + String.valueOf(1)
-            + "." + String.valueOf(profile.getMessages().getSectionPosition() + 1);
-        csmsg.addAttribute(new Attribute("prefix", prefix));
-        csmsg.addAttribute(new Attribute("h", String.valueOf(4)));
-        csmsg.addAttribute(new Attribute("title", "Conformance profile level"));
+        serializableSections.addSection(profileSection);
+        serializableStructure.addSerializableElement(serializableSections);
+        return serializableStructure.serializeStructure();
+    }
 
-        nu.xom.Element cpmsg = new nu.xom.Element("Section");
-        cpmsg.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-        cpmsg.addAttribute(new Attribute("position", String.valueOf(3)));
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "." + String.valueOf(2)
-            + "." + String.valueOf(profile.getMessages().getSectionPosition() + 1);
-        cpmsg.addAttribute(new Attribute("prefix", prefix));
-        cpmsg.addAttribute(new Attribute("h", String.valueOf(4)));
-        cpmsg.addAttribute(new Attribute("title", "Conformance profile level"));
+    private SerializableSection serializeDatatypes(Profile profile) {
+        String id = profile.getDatatypeLibrary().getId();
+        String position = String.valueOf(profile.getDatatypeLibrary().getSectionPosition());
+        String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
+            .valueOf(profile.getDatatypeLibrary().getSectionPosition() + 1);
+        String headerLevel = String.valueOf(2);
+        String title = "";
+        if (profile.getDatatypeLibrary().getSectionTitle() != null) {
+            title = profile.getDatatypeLibrary().getSectionTitle();
+        }
+        SerializableSection datatypeSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+        if (profile.getDatatypeLibrary().getSectionContents() != null && !profile
+            .getDatatypeLibrary().getSectionContents().isEmpty()) {
+            datatypeSection.addSectionContent(
+                "<div class=\"fr-view\">" + profile.getDatatypeLibrary().getSectionContents()
+                    + "</div>");
+        }
+        List<DatatypeLink> datatypeLinkList =
+            new ArrayList<>(profile.getDatatypeLibrary().getChildren());
+        Collections.sort(datatypeLinkList);
+        for (DatatypeLink datatypeLink : datatypeLinkList) {
+            SerializableDatatype serializableDatatype = serializeDatatypeService
+                .serializeDatatype(datatypeLink,
+                    prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
+                    datatypeLinkList.indexOf(datatypeLink));
+            datatypeSection.addSection(serializableDatatype);
+        }
+        return datatypeSection;
+    }
 
-        for (Message m : profile.getMessages().getChildren()) {
+
+
+    private SerializableSection serializeMessages(Profile profile) {
+        String id = profile.getMessages().getId();
+        String position = String.valueOf(profile.getMessages().getSectionPosition());
+        String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
+            .valueOf(profile.getMessages().getSectionPosition() + 1);
+        String headerLevel = String.valueOf(2);
+        String title = "";
+        if (profile.getMessages().getSectionTitle() != null) {
+            title = profile.getMessages().getSectionTitle();
+        }
+        SerializableSection messageSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+        if (profile.getMessages().getSectionContents() != null && !profile.getMessages()
+            .getSectionContents().isEmpty()) {
+            messageSection.addSectionContent(
+                "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
+        }
+
+        for (Message message : profile.getMessages().getChildren()) {
+            SerializableMessage serializableMessage =
+                serializeMessageService.serializeMessage(message, prefix, true);
+            messageSection.addSection(serializableMessage);
+        }
+        return messageSection;
+    }
+
+    private SerializableSection serializeSegments(Profile profile) {
+        String id = profile.getSegmentLibrary().getId();
+        String position = String.valueOf(profile.getSegmentLibrary().getSectionPosition());
+        String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
+            .valueOf(profile.getSegmentLibrary().getSectionPosition() + 1);
+        String headerLevel = String.valueOf(2);
+        String title = "";
+        if (profile.getSegmentLibrary().getSectionTitle() != null) {
+            title = profile.getSegmentLibrary().getSectionTitle();
+        }
+        SerializableSection segmentsSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+        if (profile.getSegmentLibrary().getSectionContents() != null && !profile.getSegmentLibrary()
+            .getSectionContents().isEmpty()) {
+            segmentsSection.addSectionContent(
+                "<div class=\"fr-view\">" + profile.getSegmentLibrary().getSectionContents()
+                    + "</div>");
+        }
+
+        List<SegmentLink> segmentLinkList =
+            new ArrayList<>(profile.getSegmentLibrary().getChildren());
+        Collections.sort(segmentLinkList);
+        for (SegmentLink segmentLink : segmentLinkList) {
+            if (segmentLink.getId() != null) {
+                segmentsSection.addSection(serializeSegmentService.serializeSegment(segmentLink,
+                    prefix + "." + String.valueOf(segmentLinkList.indexOf(segmentLink) + 1),
+                    segmentLinkList.indexOf(segmentLink), 3));
+
+            }
+        }
+        return segmentsSection;
+    }
+
+    private SerializableSection serializeConstraints(Profile profile,
+        List<SerializableSection> messages, List<SerializableSegment> segments,
+        List<SerializableDatatype> datatypes) {
+
+        String id = UUID.randomUUID().toString();
+        String position = String.valueOf(5);
+        String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5);
+        String headerLevel = String.valueOf(2);
+        String title = "Conformance information";
+        SerializableSection conformanceInformationSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+
+        id = UUID.randomUUID().toString();
+        position = String.valueOf(1);
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+            + String.valueOf(1);
+        headerLevel = String.valueOf(3);
+        title = "Conformance statements";
+        SerializableSection conformanceStatementsSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+
+        id = UUID.randomUUID().toString();
+        position = String.valueOf(2);
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+            + String.valueOf(2);
+        headerLevel = String.valueOf(3);
+        title = "Conditional predicates";
+        SerializableSection conditionalPredicatesSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+
+        id = UUID.randomUUID().toString();
+        position = String.valueOf(1);
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+            + String.valueOf(1) + "." + String.valueOf(1);
+        headerLevel = String.valueOf(4);
+        title = "Conformance profile level";
+        SerializableSection profileLevelConformanceStatementsSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+
+        id = UUID.randomUUID().toString();
+        position = String.valueOf(1);
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+            + String.valueOf(2) + "." + String.valueOf(1);
+        headerLevel = String.valueOf(4);
+        title = "Conformance profile level";
+        SerializableSection profileLevelPredicatesSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+
+        id = UUID.randomUUID().toString();
+        position = String.valueOf(2);
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+            + String.valueOf(1) + "." + String.valueOf(2);
+        headerLevel = String.valueOf(4);
+        title = "Segment level";
+        SerializableSection segmentLevelConformanceStatementSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+
+        id = UUID.randomUUID().toString();
+        position = String.valueOf(2);
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+            + String.valueOf(2) + "." + String.valueOf(2);
+        headerLevel = String.valueOf(4);
+        title = "Segment level";
+        SerializableSection segmentLevelPredicatesSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+
+        id = UUID.randomUUID().toString();
+        position = String.valueOf(2);
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+            + String.valueOf(1) + "." + String.valueOf(3);
+        headerLevel = String.valueOf(4);
+        title = "Datatype level";
+        SerializableSection datatypeLevelConformanceStatementSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+
+        id = UUID.randomUUID().toString();
+        position = String.valueOf(2);
+        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+            + String.valueOf(2) + "." + String.valueOf(3);
+        headerLevel = String.valueOf(4);
+        title = "Datatype level";
+        SerializableSection datatypeLevelPredicatesSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+
+        for (SerializableSection serializableMessageSection : messages) {
+            if (serializableMessageSection instanceof SerializableMessage) {
+                SerializableMessage serializableMessage =
+                    (SerializableMessage) serializableMessageSection;
+                id = UUID.randomUUID().toString();
+                position = String.valueOf(1);
+                prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+                    + String.valueOf(1) + "." + String.valueOf(1) + "." + String.valueOf(1);
+                headerLevel = String.valueOf(5);
+                title = serializableMessage.getMessage().getName();
+                SerializableConstraints serializableConformanceStatement = serializableMessage.getSerializableConformanceStatements();
+                if(serializableConformanceStatement.getConstraints().size()>0) {
+                    SerializableSection
+                        conformanceStatementsProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, position, headerLevel, title);
+                    serializableConformanceStatement.setTitle("");
+                    conformanceStatementsProfileLevelConformanceStatementsSection
+                        .addSection(serializableConformanceStatement);
+                    profileLevelConformanceStatementsSection
+                        .addSection(conformanceStatementsProfileLevelConformanceStatementsSection);
+                }
+                id = UUID.randomUUID().toString();
+                position = String.valueOf(1);
+                prefix =
+                    String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+                        + String.valueOf(1) + "." + String.valueOf(2) + "." + String.valueOf(1);
+                headerLevel = String.valueOf(5);
+                title = serializableMessage.getMessage().getName();
+                SerializableConstraints serializablePredicate = serializableMessage.getSerializablePredicates();
+                if(serializablePredicate.getConstraints().size()>0) {
+                    SerializableSection predicatesProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, position, headerLevel, title);
+                    serializablePredicate.setTitle("");
+                    predicatesProfileLevelConformanceStatementsSection
+                        .addSection(serializablePredicate);
+                    profileLevelPredicatesSection
+                        .addSection(predicatesProfileLevelConformanceStatementsSection);
+                }
+            }
+        }
+
+        conformanceStatementsSection.addSection(profileLevelConformanceStatementsSection);
+        conditionalPredicatesSection.addSection(profileLevelPredicatesSection);
+
+        conformanceInformationSection.addSection(conformanceStatementsSection);
+        conformanceInformationSection.addSection(conditionalPredicatesSection);
+
+
+        /*for (Message m : profile.getMessages().getChildren()) {
             if (m.getChildren() != null) {
 
                 nu.xom.Element csinfo = new nu.xom.Element("Constraints");
@@ -383,82 +556,7 @@ public class SerializationServiceImpl implements SerializationService {
         cnts.appendChild(cp);
         cnts.appendChild(cs);
 
-        xsect.appendChild(cnts);
-
-        xsect.appendChild(e);
-        return xsect;
-        */
-
-        serializableSections.addSection(profileSection);
-        serializableStructure.addSerializableElement(serializableSections);
-        return serializableStructure.serializeStructure();
-    }
-    @Override public Document serializeDatatypeLibrary(IGDocument igDocument) {
-        return null;
-    }
-
-    @Override public Document serializeElement(SerializableElement element) {
-        SerializableStructure serializableStructure = new SerializableStructure();
-        serializableStructure.addSerializableElement(element);
-        return serializableStructure.serializeStructure();
-    }
-
-    private SerializableSection serializeMessage(Profile profile){
-        String id = profile.getMessages().getId();
-        String position = String.valueOf(profile.getMessages().getSectionPosition());
-        String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
-            .valueOf(profile.getMessages().getSectionPosition() + 1);
-        String headerLevel = String.valueOf(2);
-        String title = "";
-        if (profile.getMessages().getSectionTitle() != null) {
-            title = profile.getMessages().getSectionTitle();
-        }
-        SerializableSection messageSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
-        if (profile.getMessages().getSectionContents() != null && !profile.getMessages()
-            .getSectionContents().isEmpty()) {
-            messageSection.addSectionContent(
-                "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
-        }
-
-        for (Message message : profile.getMessages().getChildren()) {
-            SerializableMessage serializableMessage =
-                serializeMessageService.serializeMessage(message, prefix,true);
-            messageSection.addSection(serializableMessage);
-        }
-        return messageSection;
-    }
-
-    private SerializableSection serializeSegment(Profile profile){
-        String id = profile.getSegmentLibrary().getId();
-        String position = String.valueOf(profile.getSegmentLibrary().getSectionPosition());
-        String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
-            .valueOf(profile.getSegmentLibrary().getSectionPosition() + 1);
-        String headerLevel = String.valueOf(2);
-        String title = "";
-        if (profile.getSegmentLibrary().getSectionTitle() != null) {
-            title = profile.getSegmentLibrary().getSectionTitle();
-        }
-        SerializableSection segmentsSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
-        if (profile.getSegmentLibrary().getSectionContents() != null && !profile.getSegmentLibrary()
-            .getSectionContents().isEmpty()) {
-            segmentsSection.addSectionContent(
-                "<div class=\"fr-view\">" + profile.getSegmentLibrary().getSectionContents()
-                    + "</div>");
-        }
-
-        List<SegmentLink> segmentLinkList = new ArrayList<>(profile.getSegmentLibrary().getChildren());
-        Collections.sort(segmentLinkList);
-        for (SegmentLink segmentLink : segmentLinkList) {
-            if (segmentLink.getId() != null) {
-                segmentsSection.addSection(serializeSegmentService
-                    .serializeSegment(segmentLink,
-                        prefix + "." + String.valueOf(segmentLinkList.indexOf(segmentLink) + 1),
-                        segmentLinkList.indexOf(segmentLink),3));
-
-            }
-        }
-        return segmentsSection;
+        xsect.appendChild(cnts);*/
+        return conformanceInformationSection;
     }
 }

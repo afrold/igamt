@@ -88,4 +88,16 @@ public class SerializableMessage extends SerializableSection {
         super.sectionElement.appendChild(messageElement);
         return super.sectionElement;
     }
+
+    public SerializableConstraints getSerializableConformanceStatements() {
+        return serializableConformanceStatements;
+    }
+
+    public SerializableConstraints getSerializablePredicates() {
+        return serializablePredicates;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
 }

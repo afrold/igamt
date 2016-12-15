@@ -233,4 +233,8 @@ public class SerializableSegment extends SerializableSection {
             return segment.getFields().get(i).getUsage().toString() + "(" + p.getTrueUsage() + "/" + p.getFalseUsage() + ")";
         }
     }
+
+    public List<SerializableConstraint> getConstraints() {
+        return constraints;
+    }
 }
