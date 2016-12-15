@@ -188,9 +188,9 @@
                                                     <th class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
                                                         Predicate
                                                     </th>
-                                                    <th class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-                                                        Conformance Statement
-                                                    </th>
+                                                    <!--<th class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">-->
+                                                        <!--Conformance Statement-->
+                                                    <!--</th>-->
                                                     <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
                                                     </th>
                                                     <th class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
@@ -307,8 +307,8 @@
                                                         <thead>
                                                             <tr class="tbl-header">
                                                                 <th st-sort="constraintId" class="col-md-1">ID</th>
-                                                                <th st-sort="constraintTarget" class="col-md-3">Location</th>
-                                                                <th class="col-md-7">Description</th>
+                                                                <!--<th st-sort="constraintTarget" class="col-md-3">Location</th>-->
+                                                                <th class="col-md-10">Description</th>
                                                                 <th class="col-md-1"></th>
                                                             </tr>
                                                         </thead>
@@ -317,15 +317,14 @@
                                                                 <td class="col-md-1">
                                                                     {{c.constraintId}}
                                                                 </td>
-                                                                <td class="col-md-3">
-                                                                    <span ng-bind="displayLocationForDatatype(datatype, c.constraintTarget)" />
-                                                                </td>
+                                                                <!--<td class="col-md-3">-->
+                                                                    <!--<span ng-bind="displayLocationForDatatype(datatype, c.constraintTarget)" />-->
+                                                                <!--</td>-->
                                                                 <td class="col-md-7">
                                                                     {{c.description}}
                                                                 </td>
                                                                 <td class="col-md-1" align="center">
-                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">
-                            &nbsp; </i>Del</span></button>
+                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -639,8 +638,8 @@
         </td>
         <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
         </td>
-        <td class="col-md-2 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-        </td>
+        <!--<td class="col-md-2 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">-->
+        <!--</td>-->
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
         </td>
         <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
@@ -665,8 +664,8 @@
         </td>
         <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
         </td>
-        <td class="col-md-2 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-        </td>
+        <!--<td class="col-md-2 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">-->
+        <!--</td>-->
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
         </td>
         <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
@@ -817,18 +816,18 @@
                 </div>
             </div>
         </td>
-        <td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <div>
-                <div ng-show="countConformanceStatements(node.position) == 0">
-                    <a ng-click="manageConformanceStatement(node)" class="point">
-                        <i class="fa fa-plus fa-fw"></i>
-                    </a>
-                </div>
-                <p ng-repeat="c in datatype.conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true">
-                    <a ng-click="manageConformanceStatement(node)" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
-                </p>
-            </div>
-        </td>
+        <!--<td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">-->
+            <!--<div>-->
+                <!--<div ng-show="countConformanceStatements(node.position) == 0">-->
+                    <!--<a ng-click="manageConformanceStatement(node)" class="point">-->
+                        <!--<i class="fa fa-plus fa-fw"></i>-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<p ng-repeat="c in datatype.conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true">-->
+                    <!--<a ng-click="manageConformanceStatement(node)" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</td>-->
         <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">
             <div>
                 <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)" class="point">
@@ -895,11 +894,11 @@
                 <span tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </p>
         </td>
-        <td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <p ng-repeat="c in datatype.conformanceStatements    | filter:{constraintTarget:node.position + '[1]'}:true">
-                <span tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
-            </p>
-        </td>
+        <!--<td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">-->
+            <!--<p ng-repeat="c in datatype.conformanceStatements    | filter:{constraintTarget:node.position + '[1]'}:true">-->
+                <!--<span tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>-->
+            <!--</p>-->
+        <!--</td>-->
         <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-show="node.text && node.text !== '' && node.text !== null" ng-click="openRichTextDlg(node, 'text','Definition Text', true)" class="point">
                 <i class="fa fa-eye fa-fw"></i>
@@ -957,11 +956,11 @@
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
-        <td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <p ng-repeat="c in parentsMap[node.id].conformanceStatements     | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)"
-                tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-            </p>
-        </td>
+        <!--<td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">-->
+            <!--<p ng-repeat="c in parentsMap[node.id].conformanceStatements     | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)"-->
+                <!--tooltip-trigger tooltip-animation="false" tooltip-placement="left">-->
+            <!--</p>-->
+        <!--</td>-->
         <td class="col-md-1 col-fixed-80">
             <div ng-show="node.text && node.text !== '' && node.text !== null">
                 <a ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="point">
@@ -1018,11 +1017,11 @@
                 tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </p>
         </td>
-        <td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <p ng-repeat="c in parentsMap[node.id].conformanceStatements   | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)"
-                tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-            </p>
-        </td>
+        <!--<td class="col-md-2" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">-->
+            <!--<p ng-repeat="c in parentsMap[node.id].conformanceStatements   | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(c)"-->
+                <!--tooltip-trigger tooltip-animation="false" tooltip-placement="left">-->
+            <!--</p>-->
+        <!--</td>-->
         <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-show="node.text && node.text !== '' && node.text !== null" ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="point">
                 <i class="fa fa-eye fa-fw"></i>

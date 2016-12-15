@@ -650,16 +650,12 @@ angular.module('igl').controller('DatatypeListCtrl', function($scope, $rootScope
             }, function() {});
         };
 
-        $scope.manageConformanceStatement = function(node) {
+        $scope.manageConformanceStatement = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'ConformanceStatementDatatypeCtrl.html',
                 controller: 'ConformanceStatementDatatypeCtrl',
                 windowClass: 'app-modal-window',
-                resolve: {
-                    selectedNode: function() {
-                        return node;
-                    }
-                }
+                resolve: {}
             });
             modalInstance.result.then(function(node) {
                 $scope.selectedNode = node;
@@ -1266,9 +1262,8 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
     };
 
 });
-angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope, $q) {
+angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($scope, $modalInstance, $rootScope, $q) {
     $scope.constraintType = 'Plain';
-    $scope.selectedNode = selectedNode;
     $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -1356,11 +1351,6 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         return deferred.promise;
     };
 
-    $scope.afterComponentDrop = function() {
-        $scope.draggingStatus = null;
-        $scope.initConformanceStatement();
-    };
-
     $scope.afterNodeDrop = function () {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
@@ -1374,10 +1364,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     };
 
     $scope.draggingNodeFromContextTree = function (event, ui, data) {
-        $scope.draggingStatus = 'ContextTreeNodeDragging_Child';
-        for(var c in $scope.treeDataForContext[0].components){
-            if($scope.treeDataForContext[0].components[c].id == data.nodeData.id) $scope.draggingStatus = 'ContextTreeNodeDragging';
-        }
+        $scope.draggingStatus = 'ContextTreeNodeDragging';
     };
 
     $scope.initConformanceStatement = function() {
@@ -1464,27 +1451,27 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     };
 
     $scope.addFreeTextConformanceStatement = function() {
-        var cs = $rootScope.generateFreeTextConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
+        var cs = $rootScope.generateFreeTextConformanceStatement($scope.newConstraint);
         $scope.tempComformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
 
     $scope.addConformanceStatement = function() {
-        var cs = $rootScope.generateConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
+        var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
         $scope.tempComformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
 
     $scope.ok = function() {
-        $modalInstance.close($scope.selectedNode);
+        $modalInstance.close();
     };
 
     $scope.saveclose = function() {
         angular.copy($scope.tempComformanceStatements, $rootScope.datatype.conformanceStatements);
         $rootScope.recordChanged();
-        $modalInstance.close($scope.selectedNode);
+        $modalInstance.close();
     };
 });
 angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
