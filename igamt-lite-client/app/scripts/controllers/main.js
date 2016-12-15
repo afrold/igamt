@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc',
-    function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc) {
+angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc','VersionAndUseService','$q','DatatypeLibrarySvc','CloneDeleteSvc'
+,'TableService','TableLibrarySvc', function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc,VersionAndUseService,$q,DatatypeLibrarySvc,CloneDeleteSvc,TableService,TableLibrarySvc) {
         // This line fetches the info from the server if the user is currently
         // logged in.
         // If success, the app is updated according to the role.
@@ -18,6 +18,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         //         }
         //     }
         // });
+		$rootScope.versionAndUseMap={};
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
 
@@ -45,7 +46,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.activeWhen = function(value) {
             return value ? 'active' : '';
         };
-
         $scope.activeIfInList = function(value, pathsList) {
             var found = false;
             if (angular.isArray(pathsList) === false) {
@@ -72,12 +72,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
 
         };
-
-
         $scope.path = function() {
             return $location.url();
         };
-
+        
         $scope.login = function() {
             // ////console.log("in login");
             $scope.$emit('event:loginRequest', $scope.username, $scope.password);
@@ -120,7 +118,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 $location.url('/ig');
             }
         };
-
+        
         $scope.cancel = function() {
             $scope.$emit('event:loginCancel');
         };
@@ -158,7 +156,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.getAccountID = function(accountId) {
             return userInfoService.getAccountID();
         };
-
+        
 
         $scope.getRoleAsString = function() {
             if ($scope.isAuthor() === true) {
@@ -405,7 +403,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         };
 
-
+ 
         $rootScope.readonly = false;
         $rootScope.igdocument = null; // current igdocument
         $rootScope.message = null; // current message
@@ -531,7 +529,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }, function(newLocation, oldLocation) {
             $rootScope.setActive(newLocation);
         });
-
+        
+        $rootScope.isPublishedMaster= function(dtLink){
+        	DatatypeService.getOneDatatype(dtLink.id).then(function(datatype){
+        		console.log("called")
+        		return datatype.status=="PUBLISHED"&& datatype.scope=="MASTER";
+        	});
+        }
 
         $rootScope.api = function(value) {
             return value;
@@ -707,7 +711,37 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return undefined;
         };
+        $rootScope.redirectVS = function(valueSet) {
+            TableService.getOne(valueSet.id).then(function(valueSet) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'redirectCtrl.html',
+                    controller: 'redirectCtrl',
+                    size: 'md',
+                    resolve: {
+                        destination: function() {
+                            return valueSet;
+                        }
+                    }
 
+
+
+                });
+                modalInstance.result.then(function() {
+                	if(!$rootScope.SharingScope){
+                		$rootScope.editTable(valueSet);
+                	}
+                	else{
+                		$rootScope.hideToc=true;
+                		$scope.hideToc=true;
+                		$scope.editTable(valueSet);
+                	}
+                    
+                });
+
+
+
+            });
+        };
 
         $rootScope.isNewObject = function(type, command, id) {
             if ($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
@@ -1201,6 +1235,55 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 }
             }
         };
+        $rootScope.findDatatypeRefsForMenu = function(datatype, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.datatype.id === datatype.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        found.target = angular.copy(target);
+                        found.datatypeLink = angular.copy(obj.datatype);
+                        $rootScope.referencesForMenu.push(found);
+                    }
+                    $rootScope.findDatatypeRefsForMenu(datatype, $rootScope.datatypesMap[obj.datatype.id], path, target);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findDatatypeRefsForMenu(datatype, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                            $rootScope.findDatatypeRefsForMenu(datatype, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
+
+            $rootScope.findTempDatatypeRefs = function(datatype, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.datatype.id === datatype.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        found.target = angular.copy(target);
+                        found.datatypeLink = angular.copy(obj.datatype);
+                        $rootScope.refsForDelete.push(found);
+                    }
+                    $rootScope.findTempDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path, target);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findTempDatatypeRefs(datatype, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                            $rootScope.findTempDatatypeRefs(datatype, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
 
         $rootScope.findSegmentRefs = function(segment, obj, path, positionPath, target) {
             if (obj != null && obj != undefined) {
@@ -1222,6 +1305,31 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         found.target = angular.copy(target);
                         found.segmentLink = angular.copy(obj.ref);
                         $rootScope.references.push(found);
+                    }
+                }
+            }
+        };
+        
+        $rootScope.findSegmentRefsForMenu = function(segment, obj, path, positionPath, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'message')) {
+                    angular.forEach(obj.children, function(child) {
+                        $rootScope.findSegmentRefsForMenu(segment, child, obj.name + '-' + obj.identifier, obj.name + '-' + obj.identifier, target);
+                    });
+                } else if (angular.equals(obj.type, 'group')){
+                    angular.forEach(obj.children, function(child) {
+                        var groupNames = obj.name.split(".");
+                        var groupName = groupNames[groupNames.length - 1];
+                        $rootScope.findSegmentRefsForMenu(segment, child, path + '.' + groupName, positionPath + '.' + obj.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'segmentRef')) {
+                    if (obj.ref.id === segment.id) {
+                        var found = angular.copy(obj);
+                        found.path = path + '.' + segment.name;
+                        found.positionPath = positionPath + '.' + obj.position;
+                        found.target = angular.copy(target);
+                        found.segmentLink = angular.copy(obj.ref);
+                        $rootScope.referencesForMenu.push(found);
                     }
                 }
             }
@@ -1255,6 +1363,70 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 }
             }
         };
+
+        $rootScope.findTableRefsForMenu = function(table, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.tables != undefined && obj.tables.length > 0) {
+                        angular.forEach(obj.tables, function(tableInside) {
+                            if (tableInside.id === table.id) {
+                                var found = angular.copy(obj);
+                                found.path = path;
+                                found.target = angular.copy(target);
+                                found.tableLink = angular.copy(tableInside);
+                                $rootScope.referencesForMenu.push(found);
+                            }
+                        });
+                    }
+                    // $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findTableRefsForMenu(table, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                            $rootScope.findTableRefsForMenu(table, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
+        
+        
+        
+        $rootScope.findTableRefsForDelete = function(table, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.tables != undefined && obj.tables.length > 0) {
+                        angular.forEach(obj.tables, function(tableInside) {
+                            if (tableInside.id === table.id) {
+                                var found = angular.copy(obj);
+                                found.path = path;
+                                found.target = angular.copy(target);
+                                found.tableLink = angular.copy(tableInside);
+                                $rootScope.refsForDelete.push(found);
+                            }
+                        });
+                    }
+                    // $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findTableRefsForDelete(table, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                             $rootScope.findTableRefsForDelete(table, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
+
+
+
+
 
         $rootScope.saveBindingForSegment = function() {
             var segmentBindingUpdateParameterList = [];
@@ -1437,7 +1609,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         });
                         var index = $rootScope.segments.indexOf(oldSegment);
                         if (index > -1) $rootScope.segments[index] = targetSegment;
-
+                        
                         var segmentUpdateParameter = {};
                         segmentUpdateParameter.segmentId = targetSegment.id;
                         segmentUpdateParameter.fieldId = targetField.id;
@@ -1446,6 +1618,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         segmentUpdateParameterList.push(segmentUpdateParameter);
                     }
                 }
+                console.log("clearing");
+                $rootScope.clearChanges();
             }
 
             SegmentService.updateDatatypeBinding(segmentUpdateParameterList).then(function(result) {}, function(error) {
@@ -1469,7 +1643,158 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             });
         };
 
+        $rootScope.replaceElement= function(source, dest){
+            $rootScope.SegmentsToUpdate=[];
+            $rootScope.datatypeToUpdate=[];
+             var newLink = angular.fromJson({
+                            id: dest.id,
+                            name: dest.name,
+                            ext: dest.ext
+                        });
+            var refs= angular.copy($rootScope.references);
+            angular.forEach($rootScope.references, function(ref){
+                if(ref.target.status!=="PUBLISHED"){
+                if(ref.type=='field'){
+                    console.log(ref.target);
+                    var segment=angular.copy(ref.target);
+                angular.forEach(ref.target.fields, function(field){
+                    if(field.position==ref.position){
+                        field.datatype.id=dest.id;
+                    }
+                });
+                $rootScope.SegmentsToUpdate.push(ref.target);  
+                
+                }
+                else if(ref.type=='component'){
+                angular.forEach(ref.target.components, function(component){
+                    if(component.position==ref.position){
+                        component.datatype.id=dest.id;
+                    }
+                });
+                  $rootScope.datatypeToUpdate.push(ref.target);  
+                }
+                }
+                
+                SegmentService.saves($rootScope.SegmentsToUpdate).then(function(segs){
+                            angular.forEach(segs, function(seg){
+                            SegmentService.merge($rootScope.segmentsMap[seg.id], seg);
+                            
+                        
+                    });
+                            DatatypeService.saves($rootScope.datatypeToUpdate).then(function(dts){
+                            
+                            angular.forEach(dts, function(dt){
+                            DatatypeService.merge($rootScope.datatypesMap[dt.id], dt);
+                                             });
+                                                $rootScope.editDataType(dest);
 
+                                                CloneDeleteSvc.deleteDatatype(source);
+                                           });
+                    
+                                  });
+                         })
+            //
+        };
+
+        
+
+
+        $rootScope.addOneDatatypeById=function(id){
+            $scope.selectedDatatypes=[];
+
+
+        DatatypeService.getOneDatatype(id).then(function(datatype){
+
+             $scope.selectedDatatypes.push(datatype);
+
+                
+	            $scope.selectFlv = [];
+	            var newLinks = [];
+	            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	   
+	                    newLinks.push({
+	                        id: $scope.selectedDatatypes[i].id,
+	                        name: $scope.selectedDatatypes[i].name
+	                    })
+	                
+	            }
+	            $rootScope.usedDtLink = [];
+	            $rootScope.usedVsLink = [];
+	            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	                $rootScope.fillMaps($scope.selectedDatatypes[i]);
+	            }
+	            DatatypeService.saves($scope.selectFlv).then(function(result) {
+	                for (var i = 0; i < result.length; i++) {
+	                    newLinks.push({
+	                        id: result[i].id,
+	                        name: result[i].name,
+	                        ext: result[i].ext
+	                    })
+	                }
+	                DatatypeLibrarySvc.addChildren($rootScope.datatypeLibrary.id, newLinks).then(function(link) {
+	                    for (var i = 0; i < newLinks.length; i++) {
+	                        $rootScope.datatypeLibrary.children.splice(0, 0, newLinks[i]);
+	                    }
+	                    for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	                        $rootScope.datatypes.splice(0, 0, $scope.selectedDatatypes[i]);
+	                    }
+	                    for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	                        $rootScope.datatypesMap[$scope.selectedDatatypes[i].id] = $scope.selectedDatatypes[i];
+	                    }
+	                    var usedDtId1 = _.map($rootScope.usedDtLink, function(num, key) {
+	                        return num.id;
+	                    });
+
+	                    DatatypeService.get(usedDtId1).then(function(datatypes) {
+	                        for (var j = 0; j < datatypes.length; j++) {
+	                            if (!$rootScope.datatypesMap[datatypes[j].id]) {
+
+	                                $rootScope.datatypesMap[datatypes[j].id] = datatypes[j];
+	                                $rootScope.datatypes.push(datatypes[j]);
+	                                //$rootScope.getDerived(datatypes[j]);
+	                            }
+	                        }
+
+	                        var usedVsId = _.map($rootScope.usedVsLink, function(num, key) {
+	                            return num.id;
+	                        });
+	                        console.log("$rootScope.usedVsLink");
+
+	                        console.log($rootScope.usedVsLink);
+	                        var newTablesLink = _.difference($rootScope.usedVsLink,$rootScope.tableLibrary.children);
+	                        console.log(newTablesLink);
+
+	                        TableLibrarySvc.addChildren($rootScope.tableLibrary.id, newTablesLink).then(function() {
+	                          $rootScope.tableLibrary.children = _.union(newTablesLink, $rootScope.tableLibrary.children);
+
+	                            TableService.get(usedVsId).then(function(tables) {
+	                                for (var j = 0; j < tables.length; j++) {
+	                                    if (!$rootScope.tablesMap[tables[j].id]) {
+	                                        $rootScope.tablesMap[tables[j].id] = tables[j];
+	                                        $rootScope.tables.push(tables[j]);
+
+	                                    }
+	                                }
+	                            });
+                              
+	                        });
+	                    });
+	                    $rootScope.msg().text = "datatypeAdded";
+	                    $rootScope.msg().type = "success";
+	                    $rootScope.msg().show = true;
+	                });
+
+	            }, function(error) {
+	                $rootScope.saving = false;
+	                $rootScope.msg().text = error.data.text;
+	                $rootScope.msg().type = error.data.type;
+	                $rootScope.msg().show = true;
+	            });
+
+        });
+
+	        
+        };
         $rootScope.saveBindingForValueSet = function() {
             var datatypeUpdateParameterList = [];
             var segmentUpdateParameterList = [];
@@ -1620,6 +1945,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             angular.forEach($rootScope.datatypes, function(dt) {
                 $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
             });
+            console.log("clearing");
+            $rootScope.clearChanges();
         };
 
         $rootScope.genRegex = function(format) {
@@ -2311,8 +2638,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return false;
         };
-
-
         $rootScope.erorrForPredicate = function(newConstraint, type, selectedNode) {
             if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
@@ -2393,7 +2718,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
             return false;
         }
-
+        $rootScope.getVersionToSelect=function(element){
+        	if(element.publicationVersion){
+        		return"(v"+element.publicationVersion+")";
+        	}else{
+        		return "";
+        	}
+        }
         $rootScope.isDuplicatedConstraintID = function(newConstraint, targetId) {
             if ($rootScope.conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1 && targetId == newConstraint.constraintId) return true;
 
@@ -2544,12 +2875,34 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 }
             });
         };
+        $rootScope.mergeEmptyProperty= function(to, from){
+        	Object.keys(to).forEach(function(key,index) {
+        		if(!to[key]&&from[key])
+        			to[key]=from[key];
+        	    // key: the name of the object key
+        	    // index: the ordinal position of the key within the object 
+        	});
 
+        }
         $scope.init = function() {
+            VersionAndUseService.findAll().then(function(result) {
+            	console.log("LOADING INFO VERSION");
+
+            
+                angular.forEach(result, function(info) {
+                	console.log("LOADING INFO VERSION");
+                	console.log($rootScope.versionAndUseMap[info.id]);
+                    $rootScope.versionAndUseMap[info.id] = info;
+                });
+            });
             $http.get('api/igdocuments/config', { timeout: 60000 }).then(function(response) {
                 $rootScope.config = angular.fromJson(response.data);
+                var delay = $q.defer();
+
             }, function(error) {});
+            
         };
+
 
         $scope.getFullName = function() {
             if (userInfoService.isAuthenticated() === true) {
@@ -2660,11 +3013,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $rootScope.getDatatypeExtension = function(datatype) {
-            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary, "ext");
+            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.datatypeLibrary, "ext");
         };
 
         $rootScope.getTableBindingIdentifier = function(table) {
-            return $rootScope.getExtensionInLibrary(table.id, $rootScope.igdocument.profile.tableLibrary, "bindingIdentifier");
+            return $rootScope.getExtensionInLibrary(table.id, $rootScope.tableLibrary, "bindingIdentifier");
         };
 
 
@@ -2676,6 +3029,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return "";
         };
 
+        $rootScope.getVersionLabel=function(id){
+            if($rootScope.versionAndUseMap[id]){
+                return "(v"+$rootScope.versionAndUseMap[id].publicationVersion+")";
+            }else{
+                return "";
+            }
+             
+        }
         $rootScope.hasSameVersion = function(element) {
 
             return element.hl7Version;
@@ -2683,6 +3044,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         $rootScope.getTableLabel = function(table) {
+        	
             if (table && table.bindingIdentifier) {
                 return $rootScope.getLabel(table.bindingIdentifier, table.ext);
             }
@@ -2700,7 +3062,111 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return "";
         };
+        $rootScope.publishTable = function(table) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmTablePublish.html',
+                controller: 'ConfirmTablePublishCtl',
+                resolve: {
+                    tableToPublish: function() {
+                        return table;
+                    }
+                }
+            });
+            modalInstance.result.then(function(table) {
+                
+                var newLink={
+                    name:table.name,
+                    ext:table.ext,
+                    id:table.id
+                }
 
+        
+      
+                TableService.publish($rootScope.table).then(function(published) {
+                		console.log("published Results");
+                		console.log(published);
+                    TableLibrarySvc.updateChild($rootScope.tableLibrary.id, newLink).then(function(link) {
+
+                    		$rootScope.table=published;
+                    		
+                    		
+                    		$rootScope.tablesMap[published.id].status="PUBLISHED";
+
+                    		console.log("rootScope"); 
+                    		$rootScope.$broadcast('event:openTable', $rootScope.table);
+                    		console.log($rootScope.table);
+                            if ($scope.editForm) {
+                            	console.log("Cleeaning");
+                                $scope.editForm.$setPristine();
+                                $scope.editForm.$dirty = false;
+                                $scope.editForm.$invalid = false;
+                                
+                            }
+                            $rootScope.clearChanges();
+                         	VersionAndUseService.findById(published.id).then(function(inf){
+                        		$rootScope.versionAndUseMap[inf.id]=inf;
+                        		if($rootScope.versionAndUseMap[inf.sourceId]){
+                        			$rootScope.versionAndUseMap[inf.sourceId].deprecated=true;
+                        		
+                        		}
+                            	
+                        	});
+                    });
+                });
+            });
+        };
+        $rootScope.canCreateNewVersion= function(element){
+        	if(element.scope&&element.scope!=='USER'){
+
+        		return false;
+        	}else if(element.status!=="PUBLISHED"){
+
+        		return false;
+        	}
+        	else if($rootScope.versionAndUseMap[element.id]&&$rootScope.versionAndUseMap[element.id].deprectaed){
+        		console.log($rootScope.versionAndUseMap[element.id].deprectaed);
+        		return false;
+        		
+        	}else{
+        		return true;
+        	}
+        
+        }
+        $rootScope.publishDatatype = function(datatype) {
+        	console.log("publisheing")
+
+            $rootScope.containUnpublished = false;
+            $rootScope.unpublishedTables = [];
+            $rootScope.unpublishedDatatypes = [];
+            $rootScope.ContainUnpublished(datatype);
+
+            if ($rootScope.containUnpublished) {
+                $rootScope.abortPublish(datatype);
+                datatype.status = "UNPUBLISHED";
+            } else {
+                $rootScope.confirmPublish(datatype);
+
+            }
+        };
+        $rootScope.confirmSwitch = function(source, dest) {
+            var modalInstance = $modal.open({
+                templateUrl: 'confirmSwitch.html',
+                controller: 'confirmSwitch',
+                resolve: {
+                    source: function() {
+                        return source;
+                    },
+                    dest: function() {
+                        return dest;
+                    },
+                    
+                }
+            });
+            modalInstance.result.then(function() {
+            	$rootScope.replaceElement(source,dest);
+                
+            });
+        };
 
         $rootScope.getGroupNodeName = function(node) {
             return node.position + "." + node.name;
@@ -3026,8 +3492,8 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                         children = $rootScope.libraryDoc.datatypeLibrary.children;
 
                     } else if ($rootScope.igdocument && $rootScope.igdocument !== null) {
-                        libId = $rootScope.igdocument.profile.datatypeLibrary.id;
-                        children = $rootScope.igdocument.profile.datatypeLibrary.children;
+                        libId = $rootScope.datatypeLibrary.id;
+                        children = $rootScope.datatypeLibrary.children;
                     }
                     var oldLink = DatatypeLibrarySvc.findOneChild(result.id, children);
                     var newLink = DatatypeService.getDatatypeLink(result);
@@ -3067,8 +3533,8 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                     children = $rootScope.libraryDoc.tableLibrary.children;
 
                 } else if ($rootScope.igdocument && $rootScope.igdocument !== null) {
-                    libId = $rootScope.igdocument.profile.tableLibrary.id;
-                    children = $rootScope.igdocument.profile.tableLibrary.children;
+                    libId = $rootScope.tableLibrary.id;
+                    children = $rootScope.tableLibrary.children;
                 }
                 TableService.save(table).then(function(result) {
                     var oldLink = TableLibrarySvc.findOneChild(result.id, children);
@@ -3096,7 +3562,6 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
 
             }
 
-
         } else if (data.type === "document") {
 
             IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function(result) {
@@ -3122,6 +3587,17 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
         }
 
-
     }
+});
+angular.module('igl').controller('confirmSwitch', function($scope, $rootScope, $http, $modalInstance, source, dest) {
+
+	$scope.source=source;
+	$scope.dest=dest;
+    $scope.confirm = function() {
+    	  $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
 });

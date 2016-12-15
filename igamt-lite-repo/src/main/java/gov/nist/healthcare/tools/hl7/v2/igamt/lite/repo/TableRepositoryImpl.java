@@ -19,11 +19,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 public class TableRepositoryImpl implements TableOperations {
@@ -67,6 +69,13 @@ public class TableRepositoryImpl implements TableOperations {
 	}
 
 	@Override
+	public List<Table> findShared(Long accountId) {
+		Query qry = new BasicQuery(
+				"{ $and: [{\"shareParticipantIds\": {$exists: true}}, {$where : \"this.scope == 'USER'\"}, {$where : \"this.shareParticipantIds.length > 0\"}]}");
+		return mongo.find(qry, Table.class);
+	}
+
+	@Override
 	public List<Table> findShortAllByIds(Set<String> ids) {
 		Criteria where = Criteria.where("id").in(ids);
 		Query qry = Query.query(where);
@@ -100,6 +109,16 @@ public class TableRepositoryImpl implements TableOperations {
 		update.set("dateUpdated", date);
 		mongo.updateFirst(query, update, Table.class);
 		return date;
+	}
+
+	@Override
+	public void updateStatus(String id, STATUS status) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("id").is(id));
+		query.fields().include("status");
+		Update update = new Update();
+		update.set("status", status);
+		mongo.updateFirst(query, update, Table.class);
 	}
 
 	// Query set4Brevis(Query qry) {

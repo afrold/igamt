@@ -33,6 +33,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   private String bindingIdentifier;
   private String name;  
   private boolean newTable;
+ 
 
   private String description;
   private String version;
@@ -61,10 +62,13 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   protected String defPreText= "";
   
   protected String defPostText = "";
+  
+  private Set<ShareParticipantPermission> shareParticipantIds = new HashSet<ShareParticipantPermission>();
 
   public Table() {
     super();
     this.type = Constant.TABLE;
+    this.status = STATUS.UNPUBLISHED;
   }
 
   public String getId() {
@@ -337,7 +341,15 @@ public boolean isNewTable() {
 public void setNewTable(boolean newTable) {
 	this.newTable = newTable;
 }
+
  
 
+public Set<ShareParticipantPermission> getShareParticipantIds() {
+	return shareParticipantIds;
+}
+
+public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
+	this.shareParticipantIds = shareParticipantIds;
+}
   
 }
