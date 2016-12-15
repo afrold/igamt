@@ -146,7 +146,7 @@
                                                 <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
                                                 <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
-                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
+                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPreText" name="text" id="text" ng-change="setDirty()"></textarea>
                                                 </div>
                                                 <div ng-show="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')">
                                                     <div class="fr-view">
@@ -277,7 +277,7 @@
                                                 <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
                                                 <div ng-show="!viewSettings.tableReadonly && datatype.scope==='USER'">
-                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
+                                                    <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="text" ng-change="setDirty()"></textarea>
                                                 </div>
                                                 <div ng-show="viewSettings.tableReadonly || (datatype.scope==='HL7STANDARD' || datatype.scope==='MASTER' )">
                                                     <div class="fr-view">

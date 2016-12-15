@@ -1175,15 +1175,6 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 			elmMessage.appendChild(this.serializeRichtext("UsageNote", m.getUsageNote()));
 		}
 
-		if ((m != null && !m.getDefPreText().isEmpty()) || (m != null && !m.getDefPostText().isEmpty())) {
-				if (m.getDefPreText() != null && !m.getDefPreText().isEmpty()) {
-					elmMessage.appendChild(this.serializeRichtext("DefPreText", m.getDefPreText()));
-				}
-				if (m.getDefPostText() != null && !m.getDefPostText().isEmpty()) {
-					elmMessage.appendChild(this.serializeRichtext("DefPostText", m.getDefPostText()));
-				}
-		}
-
 		List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
 		for (SegmentRefOrGroup srog : segRefOrGroups) {
 			if (srog instanceof SegmentRef) {
