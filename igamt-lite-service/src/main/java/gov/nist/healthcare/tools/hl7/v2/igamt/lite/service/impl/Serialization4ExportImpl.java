@@ -37,6 +37,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1457,6 +1458,8 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 	}
 
 	private String cleanRichtext(String richtext) {
+		richtext = richtext.replace("<br>", "<br></br>");
+		richtext = richtext.replace("<p style=\"\"><br></p>", "<p></p>");
 		org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
 		Elements elements1 = doc.select("h1");
 		elements1.tagName("p").attr("style",
@@ -1471,7 +1474,11 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		Elements elements4 = doc.select("h4");
 		elements4.tagName("p").attr("style",
 				"display: block;font-size: 12.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
-
+		Elements elementsPre = doc.select("pre");
+		elementsPre.tagName("span").attr("style",
+				"display: block; font-family: monospace; background-color: rgb(209, 213, 216);");
+				// froala css => "white-space: pre-wrap; word-wrap: break-word;"
+		
 		for (org.jsoup.nodes.Element elementImg : doc.select("img")) {
 			try {
 				if (elementImg.attr("src") != null && !"".equals(elementImg.attr("src"))) {
