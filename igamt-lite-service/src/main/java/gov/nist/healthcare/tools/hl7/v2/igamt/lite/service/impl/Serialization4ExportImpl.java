@@ -161,8 +161,11 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
 
 		nu.xom.Element metadata = this.serializeIGDocumentMetadataToDoc(igdoc);
+		metadata.addAttribute(new Attribute("id", "ID_" + UUID.randomUUID().toString().replaceAll("-", "")));
 		nu.xom.Element rootSections = this.serializeIGDocumentSectionsToDoc(igdoc);
+		rootSections.addAttribute(new Attribute("id", "ID_" + UUID.randomUUID().toString().replaceAll("-", "")));
 		nu.xom.Element profileSections = this.serializeProfileToDoc(igdoc);
+		profileSections.addAttribute(new Attribute("id", "ID_" + UUID.randomUUID().toString().replaceAll("-", "")));
 		nu.xom.Document doc = new nu.xom.Document(e);
 		e.appendChild(metadata);
 		e.appendChild(rootSections);
@@ -1513,11 +1516,14 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 		for (org.jsoup.nodes.Element elementTbl : doc.select("table")) {
 			if (elementTbl.attr("summary") == null || elementTbl.attr("summary").isEmpty()) {
-				elementTbl.attr("alt", ".");
+				elementTbl.attr("summary", ".");
 			}
 		}
+				
+		//Renaming strong to work as html4 
+		doc.select("strong").tagName("b");
 
-					// Tidy tidy = new Tidy();
+		// Tidy tidy = new Tidy();
 		// tidy.setWraplen(Integer.MAX_VALUE);
 		// tidy.setXHTML(true);
 		// tidy.setShowWarnings(false); // to hide errors
