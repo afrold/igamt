@@ -14,7 +14,13 @@
     <xsl:param name="targetFormat" select="'html'"/>
     <xsl:param name="documentTitle" select="'Implementation Guide'"/>
     <xsl:variable name="inlineConstraintsVar" select="$inlineConstraints"/>
-    <xsl:output method="html"/>
+<!--     <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/loose.dtd" 
+   doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" />
+ -->
+<!--      <xsl:output method="html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
+   doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" /> -->
+    <xsl:output method="html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" 
+   doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" />
 
 
     <xsl:template match="/">
@@ -22,10 +28,10 @@
             <!--xsl:attribute name="xmlns"><xsl:text>http://www.w3.org/1999/xhtml</xsl:text></xsl:attribute-->
             <!-- Content of the head tag -->
             <xsl:element name="head">
-                <xsl:element name="meta">
+                <!-- <xsl:element name="meta">
                     <xsl:attribute name="http-equiv"><xsl:text>Content-Type</xsl:text></xsl:attribute>
                     <xsl:attribute name="content"><xsl:text>text/html; charset=utf-8</xsl:text></xsl:attribute>
-                </xsl:element>
+                </xsl:element> -->
                 <xsl:element name="title">
                     <xsl:value-of select="$documentTitle"/>
                 </xsl:element>

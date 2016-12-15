@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
@@ -17,6 +18,8 @@ import org.docx4j.openpackaging.parts.WordprocessingML.AlternativeFormatInputPar
 import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.CTAltChunk;
 import org.docx4j.wml.ObjectFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
@@ -156,7 +160,7 @@ public class ExportUtil {
     	File tmpHtmlFile = new File("temp_" + UUID.randomUUID().toString() + ".html");
         // Generate xml file containing profile
 //        File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
-         File tmpXmlFile = new File("temp_" + UUID.randomUUID().toString() + ".xml");
+        File tmpXmlFile = new File("temp_" + UUID.randomUUID().toString() + ".xml");
         FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
         TransformerFactory factoryTf = TransformerFactory.newInstance();
         factoryTf.setURIResolver(new XsltIncludeUriResover());
@@ -172,7 +176,7 @@ public class ExportUtil {
         return tmpHtmlFile;
     }
     
-    private ByteArrayOutputStream cleanHtml(InputStream html){
+    private ByteArrayOutputStream cleanHtml(InputStream html){     	
         Tidy tidy = new Tidy();
         tidy.setWraplen(Integer.MAX_VALUE);
         tidy.setDropEmptyParas(true);
@@ -181,8 +185,11 @@ public class ExportUtil {
         tidy.setShowWarnings(true); // to hide errors
         tidy.setQuiet(false); // to hide warning
         tidy.setMakeClean(true);
+        tidy.setTidyMark(false);
+        tidy.setHideEndTags(false);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         tidy.parseDOM(html, outputStream);
+        tidy.setBreakBeforeBR(true);
         return outputStream;
     }
 

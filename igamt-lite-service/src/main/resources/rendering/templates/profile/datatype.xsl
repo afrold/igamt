@@ -167,9 +167,12 @@
     </xsl:template>
 
     <xsl:template match="Datatype" mode="toc">
-        <a href="#{@id}">
-            <xsl:element name="br"/>
-            <xsl:text>concat(@Label," - ",@Description)</xsl:text>
-        </a>
+        <xsl:element name="a">
+        	<xsl:attribute name="href">
+	        	<xsl:value-of select="concat('#', @id)"></xsl:value-of>
+        	</xsl:attribute>
+            <xsl:element name="br"></xsl:element>
+            <xsl:value-of select="concat(@Label,' - ',@Description)"></xsl:value-of>
+        </xsl:element>
     </xsl:template>
 </xsl:stylesheet>

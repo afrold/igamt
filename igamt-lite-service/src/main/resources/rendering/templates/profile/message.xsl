@@ -18,7 +18,7 @@
                 </xsl:with-param>
             </xsl:call-template>
         </xsl:if>
-        <xsl:element name="p">
+        <!-- <xsl:element name="p"> -->
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
@@ -88,8 +88,9 @@
                     </xsl:for-each>
                 </xsl:element>
             </xsl:element>
+        <!-- </xsl:element> -->
             <xsl:if test="count(./Constraint[@Type='cs'])+count(./Elt/Constraint[@Type='cs']) &gt; 0">
-                <xsl:element name="p">
+                <xsl:element name="h4">
                     <xsl:text>Conformance statements</xsl:text>
                 </xsl:element>
 
@@ -122,7 +123,7 @@
                 </xsl:for-each>
             </xsl:if>
             <xsl:if test="count(./Constraint[@Type='pre'])+count(./Elt/Constraint[@Type='pre']) &gt; 0">
-                <xsl:element name="p">
+                <xsl:element name="h4">
                     <xsl:text>Conditional predicates</xsl:text>
                 </xsl:element>
 
@@ -154,7 +155,6 @@
                     </xsl:if>
                 </xsl:for-each>
             </xsl:if>
-        </xsl:element>
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
             <xsl:call-template name="definitionText">
                 <xsl:with-param name="type">

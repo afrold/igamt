@@ -2,8 +2,7 @@
 
     <xsl:template match="Constraints">
         <xsl:if test="count(./Constraint) &gt; 0">
-            <xsl:element name="p">
-                <xsl:element name="strong">
+                <xsl:element name="b">
                     <xsl:element name="u">
                         <xsl:value-of
                                 select="@title"/>
@@ -37,9 +36,7 @@
                         </xsl:for-each>
                     </xsl:element>
                 </xsl:element>
-            </xsl:element>
         </xsl:if>
-
     </xsl:template>
 
 </xsl:stylesheet>
