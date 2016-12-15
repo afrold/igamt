@@ -9,7 +9,7 @@
                 <xsl:value-of select="concat(@id, '_toc')"/>
             </xsl:attribute>
             <xsl:attribute name="class">unhidden</xsl:attribute>
-            <xsl:for-each select="*">
+            <xsl:for-each select="child::node()">
                 <xsl:sort select="@position" data-type="number"></xsl:sort>
                 <xsl:call-template name="displayTableOfContentSection"/>
             </xsl:for-each>

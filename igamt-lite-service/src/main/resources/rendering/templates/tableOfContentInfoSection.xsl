@@ -4,6 +4,7 @@
     <xsl:param name="displayMasterDatatypeLabel" select="'false'"></xsl:param>
     <xsl:template name="displayTableOfContentInfoSection">
         <xsl:if test="name() = 'Section'">
+        
             <xsl:element name="a">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat('#',@id)"/>
@@ -11,29 +12,35 @@
                 <xsl:attribute name="class">
                     <xsl:value-of select="concat('divh', @h)"/>
                 </xsl:attribute>
-                <xsl:if test="@prefix != ''">
-                    <xsl:value-of select="concat(@prefix,' - ')"/>
-                </xsl:if>
-                <xsl:if test="$displayMasterDatatypeLabel='true'">
-                    <xsl:if test="@scope = 'MASTER'">
-                        <xsl:element name="span">
-                            <xsl:attribute name="class">
-                                <xsl:text>masterDatatypeLabel</xsl:text>
-                            </xsl:attribute>
-                            <xsl:text>MAS</xsl:text>
-                        </xsl:element>
-                        <xsl:element name="span">
+                
+           <xsl:choose>
+                <xsl:when test="@prefix != ''">
+                	<xsl:value-of select="concat(@prefix,' - ', @title)"/>
+                </xsl:when>
+                <xsl:when test="$displayMasterDatatypeLabel='true' and @scope = 'MASTER'">
+                	<xsl:value-of select="concat(@prefix,' - ')"/>
+                	<xsl:element name="span">
+	                    <xsl:attribute name="class">
+                            <xsl:text>masterDatatypeLabel</xsl:text>
+                        </xsl:attribute>
+	                    <xsl:text>MAS</xsl:text>
+	                    <xsl:element name="span">
                             <xsl:text> - </xsl:text>
                         </xsl:element>
-                    </xsl:if>
-                </xsl:if>
-                <xsl:value-of select="@title"/>
-            </xsl:element>
+                    </xsl:element>
+                    <xsl:value-of select="@title"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="@title"/>
+                </xsl:otherwise>
+          </xsl:choose>
+          </xsl:element>
+            
             <xsl:choose>
                 <xsl:when test="count(Section) &gt; 0">
 	                <xsl:variable name="apos">'</xsl:variable>
 	                <xsl:variable name="comma">,</xsl:variable>
-                    <xsl:element name="div">
+                    <xsl:element name="span">
                         <xsl:attribute name="id">
                             <xsl:value-of
                                     select="concat(@id, '_btn')"/>
@@ -50,9 +57,7 @@
                                     <xsl:value-of
                                             select="concat(@id, '_txt')"/>
                                 </xsl:attribute>
-                                <xsl:text>
-                                    [Hide]
-                                </xsl:text>
+                                <xsl:text>[Hide]</xsl:text>
                             </xsl:element>
                         </xsl:element>
                     </xsl:element>
