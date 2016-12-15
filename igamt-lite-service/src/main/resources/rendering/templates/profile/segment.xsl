@@ -22,10 +22,12 @@
                 </xsl:with-param>
             </xsl:call-template>
         </xsl:if>
-        <xsl:element name="p">
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="summary">
+                    <xsl:value-of select="@Description"></xsl:value-of>
                 </xsl:attribute>
                 <xsl:element name="col">
                     <xsl:attribute name="width">
@@ -107,7 +109,6 @@
                     </xsl:for-each>
                 </xsl:element>
             </xsl:element>
-        </xsl:element>
         <xsl:if test="count(Field//Constraint) &gt; 0">
             <xsl:if test="count(Field//Constraint[@Type='cs']) &gt; 0">
                 <xsl:element name="strong">
@@ -166,6 +167,8 @@
                 </xsl:element>
             </xsl:if>
         </xsl:if>
+        
+        <xsl:value-of disable-output-escaping="yes" select="./coconstraints"></xsl:value-of>
 
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
             <xsl:call-template name="definitionText">

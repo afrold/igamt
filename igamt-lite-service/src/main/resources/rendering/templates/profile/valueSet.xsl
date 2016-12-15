@@ -36,17 +36,19 @@
                 <xsl:value-of select="@ContentDefinition"/>
             </xsl:element>
         </xsl:if>
-        <xsl:if test="@Oid != ''">
+        <xsl:if test="@Oid != '' and @Oid != 'UNSPECIFIED'">
             <xsl:element name="p">
-                <xsl:text>Oid: </xsl:text>
+                <xsl:text>OID: </xsl:text>
                 <xsl:value-of select="@Oid"/>
             </xsl:element>
         </xsl:if>
 
         <xsl:element name="table">
-
             <xsl:attribute name="class">
                 <xsl:text>contentTable</xsl:text>
+            </xsl:attribute>
+            <xsl:attribute name="summary">
+                <xsl:value-of select="@Description"></xsl:value-of>
             </xsl:attribute>
             <xsl:element name="col">
                 <xsl:attribute name="width">
@@ -92,6 +94,26 @@
                     <xsl:sort select="@Value" data-type="number"></xsl:sort>
                     <xsl:call-template name="ValueSetContent"/>
                 </xsl:for-each>
+                <xsl:if test="count(ValueElement) = 0">
+                        <xsl:element name="tr">
+				            <xsl:attribute name="class">
+				                <xsl:text>contentTr</xsl:text>
+				            </xsl:attribute>
+				            <xsl:element name="td">
+				                <xsl:text></xsl:text>
+				            </xsl:element>
+				            <xsl:element name="td">
+				                <xsl:text></xsl:text>
+				            </xsl:element>
+				            <xsl:element name="td">
+				                <xsl:text></xsl:text>
+				            </xsl:element>
+				            <xsl:element name="td">
+				                <xsl:text></xsl:text>
+				            </xsl:element>
+				        </xsl:element>
+                
+                </xsl:if>
             </xsl:element>
 
         </xsl:element>
