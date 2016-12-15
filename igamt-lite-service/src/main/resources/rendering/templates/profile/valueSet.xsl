@@ -94,6 +94,26 @@
                     <xsl:sort select="@Value" data-type="number"></xsl:sort>
                     <xsl:call-template name="ValueSetContent"/>
                 </xsl:for-each>
+                <xsl:if test="count(ValueElement) = 0">
+                        <xsl:element name="tr">
+				            <xsl:attribute name="class">
+				                <xsl:text>contentTr</xsl:text>
+				            </xsl:attribute>
+				            <xsl:element name="td">
+				                <xsl:text></xsl:text>
+				            </xsl:element>
+				            <xsl:element name="td">
+				                <xsl:text></xsl:text>
+				            </xsl:element>
+				            <xsl:element name="td">
+				                <xsl:text></xsl:text>
+				            </xsl:element>
+				            <xsl:element name="td">
+				                <xsl:text></xsl:text>
+				            </xsl:element>
+				        </xsl:element>
+                
+                </xsl:if>
             </xsl:element>
 
         </xsl:element>
