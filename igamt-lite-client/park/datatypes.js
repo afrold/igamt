@@ -663,7 +663,8 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
 
 });
 
-angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($scope, $modalInstance, $rootScope) {
+angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+    $scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
@@ -765,7 +766,8 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 
         if ($scope.newConstraint.position_1 != null) {
             $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
-            var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
+            var positionPath = $scope.selectedNode.position + '[1]';
+            var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
             $scope.tempComformanceStatements.push(cs);
             $scope.changed = true;
             if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
