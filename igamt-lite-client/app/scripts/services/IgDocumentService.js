@@ -41,7 +41,7 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
         exportAsWithLayout: function(igDocument, format, layout) {
             blockUI.start();
             var form = document.createElement("form");
-            form.action = $rootScope.api('api/igdocuments/' + igDocument.id + '/export/' + format);
+            form.action = $rootScope.api('api/igdocuments/' + igDocument.id + '/export/' + format + '/' +layout);
             form.method = "POST";
             form.target = "_blank";
             var layoutParameter = document.createElement("input");

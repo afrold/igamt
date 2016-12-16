@@ -2896,10 +2896,10 @@ angular.module('igl').controller('CustomExportCtrl', function ($scope, $modalIns
         layout:[]
       }, {
         type: "Word",
-        layout:["Layout 1", "Layout 2"]
+        layout:["Compact", "Verbose"]
       }, {
         type: "HTML", 
-        layout:["Layout 1", "Layout 2"]
+        layout:["Compact", "Verbose"]
       }];
 
       $scope.selectedLayout = {};

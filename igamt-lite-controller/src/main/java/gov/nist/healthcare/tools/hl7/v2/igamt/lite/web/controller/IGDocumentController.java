@@ -541,17 +541,16 @@ public class IGDocumentController extends CommonController {
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
-  @RequestMapping(value = "/{id}/export/html", method = RequestMethod.POST, produces = "text/html",
+  @RequestMapping(value = "/{id}/export/html/{layout}", method = RequestMethod.POST, produces = "text/html",
       consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportHtml(@PathVariable("id") String id, HttpServletRequest request,
+  public void exportHtml(@PathVariable("id") String id, @PathVariable("layout") String layout, HttpServletRequest request,
       HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
     log.info("Exporting as html file IGDcoument with id=" + id);
     IGDocument d = this.findIGDocument(id);
     InputStream content = null;
     boolean includeSegmentsInMessage = false;
-    if(request.getParameterMap().containsKey("layout")){
-      String layout = new String(request.getParameterMap().get("layout")[0]);
-      if(layout.length()>"Layout ".length() && layout.substring("Layout ".length()).equals("2")){
+    if(layout!=null&&!layout.isEmpty()){
+      if(layout.equals("Verbose")){
         includeSegmentsInMessage = true;
       }
     }
@@ -645,18 +644,17 @@ public class IGDocumentController extends CommonController {
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
-  @RequestMapping(value = "/{id}/export/docx", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/export/docx/{layout}", method = RequestMethod.POST,
       produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportDocx(@PathVariable("id") String id, HttpServletRequest request,
+  public void exportDocx(@PathVariable("id") String id, @PathVariable("layout") String layout, HttpServletRequest request,
       HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
     log.info("Exporting as docx file profile with id=" + id);
     IGDocument d = findIGDocument(id);
     InputStream content = null;
     boolean includeSegmentsInMessage = false;
-    if(request.getParameterMap().containsKey("layout")){
-      String layout = new String(request.getParameterMap().get("layout")[0]);
-      if(layout.length()>"Layout ".length() && layout.substring("Layout ".length()).equals("2")){
+    if(layout!=null&&!layout.isEmpty()){
+      if(layout.equals("Verbose")){
         includeSegmentsInMessage = true;
       }
     }
