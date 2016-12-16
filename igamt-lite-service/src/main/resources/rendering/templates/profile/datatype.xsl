@@ -30,9 +30,6 @@
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
                 </xsl:attribute>
-                <xsl:attribute name="summary">
-                    <xsl:value-of select="@Description"></xsl:value-of>
-                </xsl:attribute>
                 <xsl:element name="col">
                     <xsl:attribute name="width">
                         <xsl:text>5%</xsl:text>
@@ -167,12 +164,9 @@
     </xsl:template>
 
     <xsl:template match="Datatype" mode="toc">
-        <xsl:element name="a">
-        	<xsl:attribute name="href">
-	        	<xsl:value-of select="concat('#', @id)"></xsl:value-of>
-        	</xsl:attribute>
-            <xsl:element name="br"></xsl:element>
-            <xsl:value-of select="concat(@Label,' - ',@Description)"></xsl:value-of>
-        </xsl:element>
+        <a href="#{@id}">
+            <xsl:element name="br"/>
+            <xsl:text>concat(@Label," - ",@Description)</xsl:text>
+        </a>
     </xsl:template>
 </xsl:stylesheet>

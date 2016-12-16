@@ -1711,6 +1711,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + compositeType + ' [' + secondConstraint.description + ']',
                     assertion: '<Assertion><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Assertion>'
                 };
@@ -1723,6 +1724,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
                     description: 'IF [' + firstConstraint.description + '] THEN [' + secondConstraint.description + ']',
                     assertion: '<Assertion><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Assertion>'
                 };
@@ -1730,16 +1732,19 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 var forALLExistId = compositeType;
                 var forALLExistAssertion = '';
                 var forALLExistDescription = compositeType;
+                var forALLExistConstraintTarget = '';
 
                 angular.forEach(constraints, function(c) {
                     forALLExistAssertion = forALLExistAssertion + c.assertion.replace("<Assertion>", "").replace("</Assertion>", "");
                     forALLExistDescription = forALLExistDescription + '[' + c.description + ']';
                     forALLExistId = forALLExistId + '(' + c.constraintId + ')';
+                    forALLExistConstraintTarget = c.constraintTarget;
                 });
 
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: forALLExistId,
+                    constraintTarget: forALLExistConstraintTarget,
                     description: forALLExistDescription,
                     assertion: '<Assertion><' + compositeType + '>' + forALLExistAssertion + '</' + compositeType + '></Assertion>'
                 };
@@ -1805,10 +1810,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return cp;
         };
 
-        $rootScope.generateFreeTextConformanceStatement = function(newConstraint) {
+        $rootScope.generateFreeTextConformanceStatement = function(positionPath, newConstraint) {
             var cs = {
                 id: new ObjectId().toString(),
                 constraintId: newConstraint.constraintId,
+                constraintTarget: positionPath,
                 description: newConstraint.freeText,
                 assertion: null
             };
@@ -1816,12 +1822,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return cs;
         };
 
-        $rootScope.generateConformanceStatement = function(newConstraint) {
+        $rootScope.generateConformanceStatement = function(positionPath, newConstraint) {
             var cs = null;
             if (newConstraint.contraintType === 'valued') {
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + '.',
                     assertion: '<Assertion><Presence Path=\"' + newConstraint.position_1 + '\"/></Assertion>'
                 };
@@ -1830,6 +1837,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     cs = {
                         id: new ObjectId().toString(),
                         constraintId: newConstraint.constraintId,
+                        constraintTarget: positionPath,
                         description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
                         assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Assertion>'
                     };
@@ -1839,6 +1847,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         cs = {
                             id: new ObjectId().toString(),
                             constraintId: newConstraint.constraintId,
+                            constraintTarget: positionPath,
                             description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'^~\\&amp;\'.',
                             assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"^~\\&amp;\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Assertion>'
                         };
@@ -1861,6 +1870,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         cs = {
                             id: new ObjectId().toString(),
                             constraintId: newConstraint.constraintId,
+                            constraintTarget: positionPath,
                             description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
                             assertion: '<Assertion>' + assertionScript + '</Assertion>'
                         };
@@ -1870,6 +1880,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.value + '.',
                     assertion: '<Assertion><StringList Path=\"' + newConstraint.position_1 + '\" CSV=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1877,6 +1888,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.valueSetId + '.',
                     assertion: '<Assertion><ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/></Assertion>'
                 };
@@ -1885,6 +1897,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     cs = {
                         id: new ObjectId().toString(),
                         constraintId: newConstraint.constraintId,
+                        constraintTarget: positionPath,
                         description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value2 + '\'.',
                         assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Assertion>'
                     };
@@ -1892,6 +1905,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     cs = {
                         id: new ObjectId().toString(),
                         constraintId: newConstraint.constraintId,
+                        constraintTarget: positionPath,
                         description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value + '\'.',
                         assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Assertion>'
                     };
@@ -1900,6 +1914,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' identical to the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1907,6 +1922,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1914,6 +1930,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="NE" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1921,6 +1938,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GT" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1928,6 +1946,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GE" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1935,6 +1954,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LT" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1942,6 +1962,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LE" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1949,6 +1970,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="EQ" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1956,6 +1978,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="NE" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1963,6 +1986,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GT" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1970,6 +1994,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GE" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1977,6 +2002,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LT" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1984,6 +2010,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LE" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1991,6 +2018,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + " valued sequentially starting with the value '1'.",
                     assertion: '<Assertion><SetID Path=\"' + newConstraint.position_1 + '\"/></Assertion>'
                 };
