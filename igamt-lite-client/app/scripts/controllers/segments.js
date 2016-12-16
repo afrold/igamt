@@ -102,6 +102,18 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     };
 
+    $scope.deleteConformanceStatementFromList = function (c){
+        $rootScope.segment.conformanceStatements.splice($rootScope.segment.conformanceStatements.indexOf(c), 1);
+
+        $scope.setDirty();
+    };
+
+    $scope.deletePredicateFromList = function (p){
+        $rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf(p), 1);
+
+        $scope.setDirty();
+    };
+
     $scope.AddBindingForSegment = function(segment) {
         var modalInstance = $modal.open({
             templateUrl: 'AddBindingForSegment.html',
