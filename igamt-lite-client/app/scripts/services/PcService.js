@@ -21,6 +21,8 @@ angular.module('igl').factory('PcService', ['$rootScope', 'ViewSettings', 'Eleme
         getPc: function(pcId) {
             var delay = $q.defer();
             $http.get('api/profile-components/' + pcId).then(function(response) {
+                console.log("-----------------------");
+                console.log(response);
                 var pc = angular.fromJson(response.data);
                 console.log(pc);
                 delay.resolve(pc);

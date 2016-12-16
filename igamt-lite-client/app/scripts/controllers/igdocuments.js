@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService) {
+    .controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService) {
 
 
         $scope.loading = false;
@@ -143,6 +143,10 @@ angular.module('igl')
                 $rootScope.pcTree = null;
                 $scope.selectPc(); // Should we open in a dialog ??
             });
+            $scope.$on('event:openCm', function(event) {
+                $rootScope.cmTree = null;
+                $scope.selectCm(); // Should we open in a dialog ??
+            });
 
             $scope.$on('event:openTable', function(event, table) {
                 $scope.selectTable(table); // Should we open in a dialog ??
@@ -162,9 +166,9 @@ angular.module('igl')
 
 
             $rootScope.$on('event:updateIgDate', function(event, dateUpdated) {
-                if(!dateUpdated || dateUpdated === null) {
+                if (!dateUpdated || dateUpdated === null) {
                     IgDocumentService.updateDate($rootScope.igdocument);
-                }else{
+                } else {
                     $rootScope.igdocument.dateUpdated = dateUpdated;
                 }
             });
@@ -240,6 +244,7 @@ angular.module('igl')
                 $scope.loading = true;
                 StorageService.setSelectedIgDocumentType($scope.igDocumentConfig.selectedType);
                 $http.get('api/igdocuments', { params: { "type": $scope.igDocumentConfig.selectedType } }).then(function(response) {
+                    console.log(response);
                     $rootScope.igs = angular.fromJson(response.data);
                     $scope.tmpIgs = [].concat($rootScope.igs);
                     $scope.loading = false;
@@ -418,10 +423,12 @@ angular.module('igl')
                     $rootScope.selectedMessagesIDS = [];
                     igdocument.childSections = $scope.orderSectionsByPosition(igdocument.childSections);
                     igdocument.profile.messages.children = $scope.orderMesagesByPositon(igdocument.profile.messages.children);
+
                     $rootScope.selectedMessages = angular.copy(igdocument.profile.messages.children);
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
+                    $scope.loadCm();
                     if (igdocument.profile.metaData.hl7Version != undefined || igdocument.profile.metaData.hl7Version != null) {
                         $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     }
@@ -534,22 +541,34 @@ angular.module('igl')
             var delay = $q.defer();
             if ($rootScope.igdocument.profile.profileComponentLibrary) {
                 PcLibraryService.getProfileComponentLibrary($rootScope.igdocument.profile.profileComponentLibrary.id).then(function(lib) {
-                    $rootScope.profileComponentLib = lib
-                    $rootScope.profileComponents = lib.children;
-                    $rootScope.profileComponentsMap = {};
-                    angular.forEach(lib.children, function(child) {
-                        this[child.id] = child;
-                    }, $rootScope.profileComponentsMap);
-                    delay.resolve(true);
-                }, function(error) {
-                    $rootScope.msg().text = "ProfileComplonentLoadFail";
-                    $rootScope.msg().type = "danger";
-                    $rootScope.msg().show = true;
-                    delay.reject(false);
+                    PcLibraryService.getProfileComponentsByLibrary($rootScope.igdocument.profile.profileComponentLibrary.id).then(function(pcs) {
+                        console.log("++++++++++++++++++++++++++++++++++");
+                        console.log(pcs);
+                        $rootScope.profileComponentLib = lib
+                        $rootScope.profileComponents = pcs;
+                        $rootScope.profileComponentsMap = {};
+                        angular.forEach(lib.children, function(child) {
+                            this[child.id] = child;
+                        }, $rootScope.profileComponentsMap);
+                        delay.resolve(true);
+                    }, function(error) {
+                        $rootScope.msg().text = "ProfileComplonentLoadFail";
+                        $rootScope.msg().type = "danger";
+                        $rootScope.msg().show = true;
+                        delay.reject(false);
+                    });
                 });
             }
 
             return delay.promise;
+        };
+        $scope.loadCm = function() {
+
+            if ($rootScope.igdocument.profile.compositeMessages) {
+                $rootScope.compositeMessages = $rootScope.igdocument.profile.compositeMessages.children;
+            }
+
+
         };
 
 
@@ -902,9 +921,10 @@ angular.module('igl')
         };
         $scope.createProfileComponent = function() {
 
-            var addDatatypeInstance = $modal.open({
+            var createPCInstance = $modal.open({
                 templateUrl: 'createProfileComponent.html',
                 controller: 'createProfileComponentCtrl',
+
                 resolve: {
                     // PcLibrary: function() {
                     //     return $rootScope.igdocument.profile.profileComponentLibrary;
@@ -919,6 +939,29 @@ angular.module('igl')
                     $scope.profileComponentParams.refresh();
                 if ($scope.applyPcToParams)
                     $scope.applyPcToParams.refresh();
+            });
+
+        };
+        $scope.createCompositeMessage = function() {
+            var createCMInstance = $modal.open({
+                templateUrl: 'createCompositeMessage.html',
+                controller: 'createCompositeMessageCtrl',
+                size: 'lg',
+                windowClass: 'conformance-profiles-modal',
+                resolve: {
+                    // PcLibrary: function() {
+                    //     return $rootScope.igdocument.profile.profileComponentLibrary;
+                    // }
+
+                }
+            }).result.then(function(results) {
+                console.log("results");
+                console.log(results);
+                $rootScope.editCM(results)
+                    // if ($scope.profileComponentParams)
+                    //     $scope.profileComponentParams.refresh();
+                    // if ($scope.applyPcToParams)
+                    //     $scope.applyPcToParams.refresh();
             });
 
         };
@@ -1321,6 +1364,95 @@ angular.module('igl')
                     }
                 }, 100);
         };
+        $scope.compositeMessageParams = new ngTreetableParams({
+            getNodes: function(parent) {
+                if ($rootScope.igdocument.profile.compositeMessages !== undefined) {
+                    console.log("$rootScope.compositeMessages");
+
+                    console.log($rootScope.compositeMessage);
+
+                    if (parent) {
+                        if (parent.ref) {
+                            return parent.ref.fields;
+                        } else if (parent.datatype) {
+                            return parent.datatype.components;
+                        } else if (parent.children) {
+                            return parent.children
+                        }
+
+                    } else {
+                        return $rootScope.compositeMessage.children;
+                    }
+                    // return $rootScope.profileComponent.children;
+                    // if (parent) {
+                    //     if (parent.fields) {
+                    //         return parent.fields;
+                    //     } else if (parent.components) {
+                    //         return parent.components;
+                    //     } else if (parent.segments) {
+                    //         return parent.segments;
+                    //     } else if (parent.codes) {
+                    //         return parent.codes;
+                    //     }
+
+                    // } else {
+                    // console.log($rootScope.igdocument.profile.profileComponentLibrary.children);
+                    // return $rootScope.igdocument.profile.profileComponentLibrary.children;
+                    // }
+
+                }
+            },
+            getTemplate: function(node) {
+                return 'compositeMessageTable';
+            }
+        });
+        $scope.selectCm = function() {
+            CompositeMessageService.getSegOrGrp($rootScope.compositeMessage.children).then(function(children) {
+                console.log("=++++++++=/////////////////===");
+                $rootScope.compositeMessage.children = children;
+                console.log($rootScope.compositeMessage);
+                $rootScope.Activate($rootScope.compositeMessage.id);
+                $rootScope.subview = "EditCompositeMessage.html";
+                $scope.loadingSelection = true;
+                blockUI.start();
+                $timeout(
+                    function() {
+                        try {
+
+
+
+                            // $rootScope.originalCmLib = $rootScope.igdocument.profile.profileComponentLibrary;
+                            //$rootScope.profileComponentLib = angular.copy($rootScope.igdocument.profile.profileComponentLibrary);
+                            // $rootScope.currentData = $rootScope.profileComponentLib;
+                            //$rootScope.processMessageTree($rootScope.message);
+                            $rootScope.tableWidth = null;
+                            $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                            $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                            $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                            $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                            $scope.loadingSelection = false;
+                            try {
+                                if ($scope.compositeMessageParams)
+                                    $scope.compositeMessageParams.refresh();
+                                // if ($scope.applyPcToParams)
+                                //     $scope.applyPcToParams.refresh();
+                            } catch (e) {
+
+                            }
+                            $rootScope.$emit("event:initEditArea");
+                            blockUI.stop();
+                        } catch (e) {
+                            $scope.loadingSelection = false;
+                            $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                            $rootScope.msg().type = "danger";
+                            $rootScope.msg().show = true;
+                            blockUI.stop();
+                        }
+                    }, 100);
+            });
+
+
+        };
 
         $scope.selectTable = function(t) {
             $rootScope.Activate(t.id);
@@ -1490,12 +1622,12 @@ angular.module('igl')
         $scope.confirmShareDocument = function(igdocument) {
             $http.get('api/shareconfimation/' + igdocument.id).then(function(response) {
                 $rootScope.msg().text = "igSharedConfirmationSuccessful";
-                $rootScope.msg().type ="success";
+                $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 $scope.loadIGDocuments();
             }, function(error) {
                 $rootScope.msg().text = "igSharedConfirmationFailed";
-                $rootScope.msg().type ="danger";
+                $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
                 console.log(error);
             });
@@ -1504,18 +1636,18 @@ angular.module('igl')
         $scope.rejectShareDocument = function(igdocument) {
             $http.get('api/sharereject/' + igdocument.id).then(function(response) {
                 $rootScope.msg().text = "igSharedRejectedSuccessfully";
-                $rootScope.msg().type ="success";
+                $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 $scope.loadIGDocuments();
             }, function(error) {
                 $rootScope.msg().text = "igSharedRejectFailed";
-                $rootScope.msg().type ="danger";
+                $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
                 console.log(error);
             });
         };
 
-});
+    });
 
 
 angular.module('igl').controller('ViewIGChangesCtrl', function($scope, $modalInstance, changes, $rootScope, $http) {
@@ -2957,13 +3089,13 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalI
 
     $scope.igdocumentSelected = igdocumentSelected;
 
-	$scope.userList =  userList;
-	$scope.error = "";
-	$scope.ok = function () {
-		var idsTab = $scope.tags.map(function(user) {
-			return user.id;
-		});
-        IgDocumentService.share($scope.igdocumentSelected.id,idsTab).then(function(result){
+    $scope.userList = userList;
+    $scope.error = "";
+    $scope.ok = function() {
+        var idsTab = $scope.tags.map(function(user) {
+            return user.id;
+        });
+        IgDocumentService.share($scope.igdocumentSelected.id, idsTab).then(function(result) {
             // Add participants for direct view
             $scope.igdocumentSelected.shareParticipants = $scope.igdocumentSelected.shareParticipants || [];
             $scope.tags.forEach(function(tag) {
@@ -2980,24 +3112,24 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalI
             console.log(error);
         });
 
-	};
-	$scope.cancel = function () {
-		$modalInstance.dismiss('cancel');
-	};
-	$scope.tags = [];
-	$scope.selectedItem = {
-		selected: "VIEW"
-	};
-	$scope.itemArray = ["VIEW"];
-	
-	$scope.tags = [];
-	$scope.loadUsernames = function ($query) {
-		return userList.filter(function (user) {
-			return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
-		});
-	};
+    };
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+    $scope.tags = [];
+    $scope.selectedItem = {
+        selected: "VIEW"
+    };
+    $scope.itemArray = ["VIEW"];
 
-    $scope.unshare = function (shareParticipant) {
+    $scope.tags = [];
+    $scope.loadUsernames = function($query) {
+        return userList.filter(function(user) {
+            return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
+        });
+    };
+
+    $scope.unshare = function(shareParticipant) {
         $scope.loading = false;
         IgDocumentService.unshare($scope.igdocumentSelected.id, shareParticipant.id).then(function(res) {
             var indexOfId = $scope.igdocumentSelected.shareParticipantIds.indexOf(shareParticipant.id);
@@ -3088,14 +3220,350 @@ angular.module('igl').controller('createProfileComponentCtrl',
                 console.log(profileC);
 
                 $rootScope.igdocument.profile.profileComponentLibrary.children.push(profileC);
+                $rootScope.profileComponents.push(profileC);
                 $scope.Activate(profileC.id);
+                $modalInstance.close(profileC);
 
             });
 
 
-            $modalInstance.close(newPC);
 
 
+
+
+
+        };
+
+        $scope.cancel = function() {
+            $modalInstance.dismiss('cancel');
+        };
+    });
+
+
+angular.module('igl').controller('createCompositeMessageCtrl',
+    function($scope, $rootScope, $modalInstance, $http, $filter, PcService, IgDocumentService, CompositeMessageService) {
+
+
+
+
+        $scope.pcList = [];
+        $scope.baseProfiles = $rootScope.messages.children;
+        $scope.pcs = $rootScope.profileComponents;
+        $scope.position = 1;
+
+        // $scope.start = function(event, ui, bp) {
+        //     $scope.compositeMessage = bp;
+        // };
+        // $scope.baseProfileOption = {
+        //     activate: function(event, ui) {
+        //     }
+        // };
+
+        $scope.selectBaseProfile = function(baseP) {
+            $scope.baseP = angular.copy(baseP);
+        };
+        $scope.checkExist = function(pc) {
+            for (var i = 0; i < $scope.pcList.length; i++) {
+                if ($scope.pcList[i].id === pc.id) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        $scope.removePc = function(pc) {
+            var positionToRemove = pc.position;
+            var index = $scope.pcList.indexOf(pc);
+            if (index > -1) $scope.pcList.splice(index, 1);
+            for (var i = 0; i < $scope.pcList.length; i++) {
+                if ($scope.pcList[i].position >= positionToRemove) {
+                    $scope.pcList[i].position = $scope.pcList[i].position - 1;
+                }
+            }
+            $scope.position = $scope.position - 1;
+
+        };
+        $scope.selectPC = function(pc) {
+            console.log(pc);
+            pc.position = angular.copy($scope.position);
+            $scope.pcList.push(pc);
+            $scope.position = $scope.position + 1;
+        };
+
+
+        $scope.create = function() {
+            $scope.baseP.id = new ObjectId().toString();
+
+            var processFields = function(fields) {
+                for (var i = 0; i < fields.length; i++) {
+                    fields[i].datatype = angular.copy($rootScope.datatypesMap[fields[i].datatype.id]);
+                    if (fields[i].datatype.components.length > 0) {
+                        fields[i].datatype.components = processFields(fields[i].datatype.components);
+                    }
+                    for (var j = 0; j < fields[i].tables.length; j++) {
+                        fields[i].tables[j] = angular.copy($rootScope.tablesMap[fields[i].tables[j].id]);
+                    }
+
+                }
+                return fields;
+            };
+            var processMessage = function(message) {
+                for (var i = 0; i < message.children.length; i++) {
+                    message.children[i].id = new ObjectId().toString();
+                    if (message.children[i].type === "segmentRef") {
+                        message.children[i].ref = angular.copy($rootScope.segmentsMap[message.children[i].ref.id]);
+                        message.children[i].ref.fields = processFields(message.children[i].ref.fields);
+                    } else if (message.children[i].type === "group") {
+                        processMessage(message.children[i]);
+                    }
+
+                }
+                return message;
+            };
+
+            var message = angular.copy($scope.baseP);
+
+            var getObjectFromPath = function(pathType, path, message) {
+                var splitPath = path.split(".");
+                if (pathType === "pathExp") {
+                    console.log("exp");
+                    console.log(splitPath);
+                    for (var i = 1; i < splitPath.length; i++) {
+                        console.log(splitPath[i]);
+                    }
+                } else {
+                    console.log("noExp");
+                    console.log(splitPath);
+                    if (splitPath[0] === message.structID) {
+                        console.log("can");
+                    } else {
+                        console.log("cant");
+
+                    }
+                    for (var i = 1; i < splitPath.length; i++) {
+                        console.log(splitPath[i]);
+
+                    }
+
+                }
+            };
+
+            $scope.Map = [];
+            var buildMap = function(parentPath, element) {
+                var path = "";
+                if (element.type === "segmentRef") {
+                    path = parentPath + '.' + element.position;
+                    $scope.Map[path] = element;
+                } else if (element.type === "group" || element.type === "message") {
+                    for (var i = 0; i < element.children.length; i++) {
+                        if (element.children[i].type === "group") {
+                            grpPath = parentPath + '.' + element.children[i].position;
+                            path = parentPath + '.' + element.children[i].name;
+
+                            $scope.Map[grpPath] = element.children[i];
+                            buildMap(path, element.children[i]);
+                        } else if (element.children[i].type === "segmentRef") {
+                            segPath = parentPath + '.' + element.children[i].position;
+                            path = parentPath + '.' + element.children[i].ref.label;
+                            $scope.Map[segPath] = element.children[i];
+                            buildMap(path, element.children[i].ref);
+                            // buildMap(path, element.children[i]);
+                        }
+                    }
+                } else if (element.type === "segment") {
+                    for (var i = 0; i < element.fields.length; i++) {
+                        fieldPath = parentPath + '.' + element.fields[i].position;
+                        $scope.Map[fieldPath] = element.fields[i];
+                        buildMap(fieldPath, element.fields[i].datatype);
+                    }
+                } else if (element.type === "datatype") {
+                    for (var i = 0; i < element.components.length; i++) {
+                        componentPath = parentPath + '.' + element.components[i].position;
+                        $scope.Map[componentPath] = element.components[i];
+                        buildMap(componentPath, element.components[i].datatype);
+                    }
+                }
+                // for (var i = 0; i < element.children.length; i++) {
+                //     if (element.children[i].type === "group") {
+                //         $scope.Map[path] = element.children[i];
+                //         buildMap(path, element.children[i]);
+                //     } else if (element.children[i].type === "segmentRef") {
+                //         $scope.Map[path] = element.children[i];
+
+                //     }
+                // }
+            };
+
+            var processedMsg = processMessage(message);
+            buildMap(processedMsg.structID, processedMsg);
+
+            var getSegs = function(list, segLabel, resultList) {
+
+
+                for (var i = 0; i < list.children.length; i++) {
+                    if (list.children[i].type === "segmentRef") {
+                        if (list.children[i].ref.label === segLabel) {
+                            resultList.push(list.children[i]);
+                        }
+
+                    } else {
+                        getSegs(list.children[i], segLabel, resultList);
+                    }
+                }
+                return resultList;
+            };
+
+
+
+            var orderedList = $filter('orderBy')($scope.pcList, 'position');
+            for (var i = 0; i < orderedList.length; i++) {
+                for (var j = 0; j < orderedList[i].children.length; j++) {
+                    if (orderedList[i].children[j].pathExp) {
+                        var resultList = [];
+                        var label = orderedList[i].children[j].path.split('.');
+                        var segList = getSegs(processedMsg, label[0], resultList);
+                        for (var k = 0; k < segList.length; k++) {
+                            if (orderedList[i].children[j].type === "segment") {
+                                if (orderedList[i].children[j].attributes.usage) {
+                                    segList[k].usage = orderedList[i].children[j].attributes.usage;
+                                }
+                                if (orderedList[i].children[j].attributes.min) {
+                                    segList[k].min = orderedList[i].children[j].attributes.min;
+                                }
+                                if (orderedList[i].children[j].attributes.max) {
+                                    segList[k].max = orderedList[i].children[j].attributes.max;
+                                }
+                            } else if (orderedList[i].children[j].type === "field") {
+
+                                if (orderedList[i].children[j].attributes.usage) {
+                                    segList[k].ref.fields[label[1] - 1].usage = orderedList[i].children[j].attributes.usage;
+                                }
+                                if (orderedList[i].children[j].attributes.min) {
+                                    segList[k].ref.fields[label[1] - 1].min = orderedList[i].children[j].attributes.min;
+                                }
+                                if (orderedList[i].children[j].attributes.max) {
+                                    segList[k].ref.fields[label[1] - 1].max = orderedList[i].children[j].attributes.max;
+                                }
+                                if (orderedList[i].children[j].attributes.confLength) {
+                                    segList[k].ref.fields[label[1] - 1].confLength = orderedList[i].children[j].attributes.confLength;
+                                }
+                                if (orderedList[i].children[j].attributes.minLength) {
+                                    segList[k].ref.fields[label[1] - 1].minLength = orderedList[i].children[j].attributes.minLength;
+                                }
+                                if (orderedList[i].children[j].attributes.maxLength) {
+                                    segList[k].ref.fields[label[1] - 1].maxLength = orderedList[i].children[j].attributes.maxLength;
+                                }
+                                if (orderedList[i].children[j].attributes.minLength) {
+                                    segList[k].ref.fields[label[1] - 1].minLength = orderedList[i].children[j].attributes.minLength;
+                                }
+                                if (orderedList[i].children[j].attributes.datatype) {
+                                    segList[k].ref.fields[label[1] - 1].datatype = angular.copy($rootScope.datatypesMap[orderedList[i].children[j].attributes.datatype.id]);
+                                }
+                                if (orderedList[i].children[j].attributes.tables) {
+                                    segList[k].ref.fields[label[1] - 1].tables = [];
+                                    for (var k = 0; k < orderedList[i].children[j].attributes.tables.length; k++) {
+                                        segList[k].ref.fields[label[1] - 1].tables.push(angular.copy($rootScope.tablesMap[orderedList[i].children[j].attributes.tables[k].id]));
+
+                                    }
+                                }
+                            } else if (orderedList[i].children[j].type === "component") {
+
+                                if (label.length === 3) {
+                                    var comp = segList[k].ref.fields[label[1] - 1].datatype.components[label[2] - 1];
+                                } else if (label.length === 4) {
+                                    var comp = segList[k].ref.fields[label[1] - 1].datatype.components[label[2] - 1].datatype.components[label[3] - 1];
+                                }
+                                if (orderedList[i].children[j].attributes.usage) {
+                                    comp.usage = orderedList[i].children[j].attributes.usage;
+                                }
+                                if (orderedList[i].children[j].attributes.min) {
+                                    comp.min = orderedList[i].children[j].attributes.min;
+                                }
+                                if (orderedList[i].children[j].attributes.max) {
+                                    comp.max = orderedList[i].children[j].attributes.max;
+                                }
+                                if (orderedList[i].children[j].attributes.confLength) {
+                                    comp.confLength = orderedList[i].children[j].attributes.confLength;
+                                }
+                                if (orderedList[i].children[j].attributes.minLength) {
+                                    comp.minLength = orderedList[i].children[j].attributes.minLength;
+                                }
+                                if (orderedList[i].children[j].attributes.maxLength) {
+                                    comp.maxLength = orderedList[i].children[j].attributes.maxLength;
+                                }
+                                if (orderedList[i].children[j].attributes.minLength) {
+                                    comp.minLength = orderedList[i].children[j].attributes.minLength;
+                                }
+                                if (orderedList[i].children[j].attributes.datatype) {
+                                    comp.datatype = angular.copy($rootScope.datatypesMap[orderedList[i].children[j].attributes.datatype.id]);
+                                }
+                                if (orderedList[i].children[j].attributes.tables) {
+                                    comp.tables = [];
+                                    for (var k = 0; k < orderedList[i].children[j].attributes.tables.length; k++) {
+                                        comp.tables.push(angular.copy($rootScope.tablesMap[orderedList[i].children[j].attributes.tables[k].id]));
+
+                                    }
+                                }
+
+                            }
+                        }
+
+
+
+                        //getObjectFromPath("pathExp", orderedList[i].children[j].pathExp, processedMsg);
+                    } else {
+                        //getObjectFromPath("path", orderedList[i].children[j].path, processedMsg);
+
+
+                        if (orderedList[i].children[j].attributes.usage) {
+                            console.log($scope.Map[orderedList[i].children[j].path]);
+                            $scope.Map[orderedList[i].children[j].path].usage = orderedList[i].children[j].attributes.usage;
+                        }
+                        if (orderedList[i].children[j].attributes.min) {
+                            $scope.Map[orderedList[i].children[j].path].min = orderedList[i].children[j].attributes.min;
+                        }
+                        if (orderedList[i].children[j].attributes.max) {
+                            $scope.Map[orderedList[i].children[j].path].max = orderedList[i].children[j].attributes.max;
+                        }
+                        if (orderedList[i].children[j].attributes.confLength) {
+                            $scope.Map[orderedList[i].children[j].path].confLength = orderedList[i].children[j].attributes.confLength;
+                        }
+                        if (orderedList[i].children[j].attributes.minLength) {
+                            $scope.Map[orderedList[i].children[j].path].minLength = orderedList[i].children[j].attributes.minLength;
+                        }
+                        if (orderedList[i].children[j].attributes.maxLength) {
+                            $scope.Map[orderedList[i].children[j].path].maxLength = orderedList[i].children[j].attributes.maxLength;
+                        }
+                        if (orderedList[i].children[j].attributes.minLength) {
+                            $scope.Map[orderedList[i].children[j].path].minLength = orderedList[i].children[j].attributes.minLength;
+                        }
+                        if (orderedList[i].children[j].attributes.datatype) {
+                            $scope.Map[orderedList[i].children[j].path].datatype = angular.copy($rootScope.datatypesMap[orderedList[i].children[j].attributes.datatype.id]);
+                        }
+                        if (orderedList[i].children[j].attributes.tables) {
+                            $scope.Map[orderedList[i].children[j].path].tables = [];
+                            for (var k = 0; k < orderedList[i].children[j].attributes.tables.length; k++) {
+                                $scope.Map[orderedList[i].children[j].path].tables.push(angular.copy($rootScope.tablesMap[orderedList[i].children[j].attributes.tables[k].id]));
+
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            processedMsg.id = new ObjectId().toString();
+
+            CompositeMessageService.SaveGroupOrSegment(processedMsg.children).then(function(grpOrSeg) {
+                console.log("=================================");
+
+                console.log(grpOrSeg);
+                CompositeMessageService.create(processedMsg, $rootScope.igdocument.id).then(function(compositeM) {
+
+                    $rootScope.igdocument.profile.compositeMessages.children.push(compositeM);
+                    $modalInstance.close(compositeM);
+
+                });
+            });
 
 
         };

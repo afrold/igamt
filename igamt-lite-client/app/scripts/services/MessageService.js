@@ -275,6 +275,15 @@ angular.module('igl').factory('MessageService',
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+            updateProfileComponentBinding: function(profileComponentBindingUpdateParameterList) {
+                var delay = $q.defer();
+                $http.post('api/messages/updateProfileComponent/', profileComponentBindingUpdateParameterList).then(function(response) {
+                    delay.resolve(true);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
 

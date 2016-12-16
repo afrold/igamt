@@ -44,8 +44,11 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
   private DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
 
   private Messages messages = new Messages();
+  private CompositeMessages compositeMessages=new CompositeMessages();
 
-  @DBRef
+  
+
+@DBRef
   private TableLibrary tableLibrary = new TableLibrary();
   
   @DBRef
@@ -121,6 +124,13 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
   public void setMessages(Messages messages) {
     this.messages = messages;
   }
+  public CompositeMessages getCompositeMessages() {
+		return compositeMessages;
+	}
+
+	public void setCompositeMessages(CompositeMessages compositeMessages) {
+		this.compositeMessages = compositeMessages;
+	}
 
   public String getConstraintId() {
     return constraintId;

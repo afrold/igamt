@@ -89,6 +89,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PhinvadsWSCallService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
@@ -142,6 +143,8 @@ public class IGDocumentController extends CommonController {
   private ProfileComponentRepository profileComponentRepository;
   @Autowired
   private ProfileComponentLibraryRepository profileComponentLibraryRepository;
+  @Autowired
+  private ProfileComponentLibraryService profileComponentLibraryService;
   @Autowired
   private DatatypeLibraryService datatypeLibraryService;
 
@@ -315,10 +318,13 @@ public class IGDocumentController extends CommonController {
       DatatypeLibrary datatypeLibrary = igDocument.getProfile().getDatatypeLibrary();
       SegmentLibrary segmentLibrary = igDocument.getProfile().getSegmentLibrary();
       TableLibrary tableLibrary = igDocument.getProfile().getTableLibrary();
+      ProfileComponentLibrary profileComponentLibrary =igDocument.getProfile().getProfileComponentLibrary();
 
       DatatypeLibrary clonedDatatypeLibrary = datatypeLibrary.clone();
       SegmentLibrary clonedSegmentLibrary = segmentLibrary.clone();
       TableLibrary clonedTableLibrary = tableLibrary.clone();
+      ProfileComponentLibrary clonedProfileComponentLibrary =profileComponentLibrary.clone();
+
 
       clonedDatatypeLibrary.setChildren(new HashSet<DatatypeLink>());
       clonedSegmentLibrary.setChildren(new HashSet<SegmentLink>());
@@ -327,6 +333,8 @@ public class IGDocumentController extends CommonController {
       datatypeLibraryService.save(clonedDatatypeLibrary);
       segmentLibraryService.save(clonedSegmentLibrary);
       tableLibraryService.save(clonedTableLibrary);
+      profileComponentLibraryService.save(clonedProfileComponentLibrary);
+      
 
       List<Datatype> datatypes = datatypeLibraryService.findDatatypesById(datatypeLibrary.getId());
       if (datatypes != null) {

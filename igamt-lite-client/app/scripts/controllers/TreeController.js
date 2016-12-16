@@ -10,8 +10,9 @@ angular
             'SectionSvc',
             'PcService',
             '$cookies',
+            'CompositeMessageService',
 
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc, PcService, $cookies) {
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, SectionSvc, PcService, $cookies,CompositeMessageService) {
 
                 $scope.collapsedata = false;
                 $scope.collapsePcs = true;
@@ -686,6 +687,19 @@ angular
 
                     }]
                 ];
+                $scope.CompositeMessagesRootOption = [
+                    ['Create Composite Profile', function($itemScope) {
+                        if ($rootScope.hasChanges()) {
+
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $scope.createCompositeMessage();
+                            });
+                        } else {
+                            $scope.createCompositeMessage();
+                        }
+
+                    }]
+                ];
 
                 $scope.ProfileComponentsOption = [
 
@@ -1149,13 +1163,26 @@ angular
                 };
 
                 function processEditPC(pc) {
-
+                    console.log("================================");
+                    console.log(pc);
                     PcService.getPc(pc.id).then(function(profileC) {
                         console.log("HEEEERE");
                         console.log(profileC);
                         $scope.Activate(pc.id);
                         $rootScope.profileComponent = profileC;
                         $scope.$emit('event:openPc');
+                    });
+
+                };
+                function processEditCM(cm) {
+                    console.log("================================");
+                    console.log(cm);
+                    CompositeMessageService.getCm(cm.id).then(function(compositeM) {
+                        console.log("HEEEERE");
+                        console.log(compositeM);
+                        $scope.Activate(cm.id);
+                        $rootScope.compositeMessage = compositeM;
+                        $scope.$emit('event:openCm');
                     });
 
                 };
@@ -1167,6 +1194,17 @@ angular
                         });
                     } else {
                         processEditPC(pc);
+                    }
+
+                };
+                $rootScope.editCM = function(cm) {
+
+                    if ($rootScope.hasChanges()) {
+                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            processEditCM(cm);
+                        });
+                    } else {
+                        processEditCM(cm);
                     }
 
                 };

@@ -24,7 +24,15 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable{
 	}
 	private HashMap<String,Object> attributes=new HashMap<String,Object>();
 	  private String path;
-	  private String type;
+	  private String pathExp;
+	  public String getPathExp() {
+		return pathExp;
+	}
+
+	public void setPathExp(String pathExp) {
+		this.pathExp = pathExp;
+	}
+	private String type;
 	  private String name;
 	  
 	public String getName() {

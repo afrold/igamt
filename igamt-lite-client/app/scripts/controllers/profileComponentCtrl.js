@@ -1,4 +1,4 @@
-angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $modal, orderByFilter, $rootScope, $q, $interval, PcLibraryService, PcService, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc) {
+angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $modal, orderByFilter, $rootScope, $q, $interval, PcLibraryService, PcService, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService) {
     $scope.changes = false;
 
     $scope.editProfileComponent = false;
@@ -74,11 +74,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             $scope.applyPcToParams.refresh();
         }
         $scope.setDirty();
-        // PcService.save($rootScope.profileComponent).then(function(result) {
-        //     if ($scope.applyPcToParams) {
-        //         $scope.applyPcToParams.refresh();
-        //     }
-        // });
+
 
     };
     $scope.addPComponents = function() {
@@ -176,47 +172,27 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.save = function() {
         console.log($rootScope.profileComponent);
         var children = $rootScope.profileComponent.children;
-        var childrenToSave = [];
+        var bindingParam = $rootScope.profileComponent.appliedTo;
+
+
         PcService.save($rootScope.igdocument.profile.profileComponentLibrary.id, $rootScope.profileComponent).then(function(result) {
+            // MessageService.updateProfileComponentBinding(bindingParam).then(function(messages) {
             for (var i = 0; i < $rootScope.igdocument.profile.profileComponentLibrary.children.length; i++) {
                 if ($rootScope.igdocument.profile.profileComponentLibrary.children[i].id === $rootScope.profileComponent.id) {
                     $rootScope.igdocument.profile.profileComponentLibrary.children[i].name = $rootScope.profileComponent.name;
                 }
                 $rootScope.profileComponent = result;
             }
+            for (var i = 0; i < $rootScope.profileComponents.length; i++) {
+                if ($rootScope.profileComponents[i].id === $rootScope.profileComponent.id) {
+                    $rootScope.profileComponents[i] = $rootScope.profileComponent;
+                }
+            }
             $scope.changes = false;
             $scope.clearDirty();
             console.log(result);
-
-
         });
-        // for (var i = 0; i < children.length; i++) {
-        //     var subPcToSave = {
-        //         path: children[i].path,
-        //         name: children[i].name
-        //     };
-        //     if (children[i].newUsage && children[i].newUsage !== null) {
-        //         subPcToSave.usage = children[i].newUsage;
-        //     }
-        //     if (children[i].newMinCard && children[i].newMinCard !== null) {
-        //         subPcToSave.min = children[i].newMinCard;
-        //     }
-        //     if (children[i].newMaxCard && children[i].newMaxCard !== null) {
-        //         subPcToSave.max = children[i].newMaxCard;
-        //     }
-        //     if (children[i].newMinLength && children[i].newMinLength !== null) {
-        //         subPcToSave.minLength = children[i].newMinLength;
-        //     }
-        //     if (children[i].newMaxLength && children[i].newMaxLength !== null) {
-        //         subPcToSave.maxLength = children[i].newMaxLength;
-        //     }
-        //     if (children[i].newConfLength && children[i].newConfLength !== null) {
-        //         subPcToSave.confLength = children[i].newConfLength;
-        //     }
-        //     childrenToSave.push(subPcToSave);
-
-        // }
-        // console.log(childrenToSave);
+        // });
     };
 
     $scope.editUsage = function(field) {
@@ -227,11 +203,17 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
     $scope.setUsage = function(field) {
         //field.newUsage = field.usage;
-        field.attributes.usage = field;
+        if (field.attributes.usage) {
+            field.attributes.usage = field.attributes.usage;
+        } else {
+            field.attributes.usage = field.attributes.oldUsage;
+        }
+
+        $scope.setDirty();
     };
     $scope.cancelUsage = function(field) {
         //field.usage = field.oldUsage;
-        field.attributes.usage = null;
+        field.attributes.usage = field.attributes.oldUsage;
         $scope.setDirty();
     };
     $scope.editMinCard = function(field) {
@@ -241,7 +223,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.newMinCard = field.min;
     };
     $scope.cancelMinCard = function(field) {
-        field.attributes.min = null;
+        field.attributes.min = field.attributes.oldMin;
         $scope.setDirty();
 
         //field.newMinCard = null;
@@ -253,7 +235,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.newMaxCard = field.max;
     };
     $scope.cancelMaxCard = function(field) {
-        field.attributes.max = null;
+        field.attributes.max = field.attributes.oldMax;
         $scope.setDirty();
 
         //field.newMaxCard = null;
@@ -265,7 +247,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.newMinLength = field.minLength;
     };
     $scope.cancelMinL = function(field) {
-        field.attributes.minLength = null;
+        field.attributes.minLength = field.attributes.oldMinLength;
         $scope.setDirty();
 
         //field.newMinLength = null;
@@ -277,7 +259,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.newMaxLength = field.maxLength;
     };
     $scope.cancelMaxL = function(field) {
-        field.attributes.maxLength = null;
+        field.attributes.maxLength = field.attributes.oldMaxLength;
         $scope.setDirty();
 
         //field.newMaxLength = null;
@@ -289,7 +271,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.newConfLength = field.confLength;
     };
     $scope.cancelConfL = function(field) {
-        field.attributes.confLength = null;
+        field.attributes.confLength = field.attributes.oldConfLength;
         $scope.setDirty();
 
         //field.newconfLength = null;
@@ -299,18 +281,22 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         $scope.setDirty();
     };
     $scope.cancelTables = function(field) {
-        field.attributes.tables = null;
+        field.attributes.tables = field.attributes.oldTables;
         $scope.setDirty();
     };
     $scope.cancelDatatype = function(field) {
-        field.attributes.datatype = null;
+        field.attributes.datatype = field.attributes.oldDatatype;
         $scope.editableDT = '';
         $scope.setDirty();
     };
     $scope.cancelComment = function(field) {
-        field.attributes.comment = null;
+        field.attributes.comment = field.attributes.oldComment;
         $scope.setDirty();
     };
+    $scope.cancelRef = function(field) {
+        field.attributes.ref = field.attributes.oldRef;
+        $scope.setDirty();
+    }
     $scope.editableDT = '';
 
     $scope.selectDT = function(field, datatype) {
@@ -537,15 +523,11 @@ angular.module('igl').controller('addDefTextCtrl',
 
 
 angular.module('igl').controller('applyPcToCtrl',
-    function($scope, $rootScope, $modalInstance, pc, PcService, messages, $http, SegmentLibrarySvc, ngTreetableParams) {
+    function($scope, $rootScope, $modalInstance, pc, PcService, messages, $http, SegmentLibrarySvc, ngTreetableParams, CompositeMessageService) {
         if (pc.appliedTo === null) {
             pc.appliedTo = [];
         }
         $scope.applyToList = [];
-
-
-
-
         $scope.messages = messages;
         $scope.msgs = [];
         for (var i = 0; i < $scope.messages.length; i++) {
@@ -560,7 +542,6 @@ angular.module('igl').controller('applyPcToCtrl',
                     $scope.msgs.splice(i, 1);
                 }
             }
-
         };
         $scope.ApplyToComponentParams = new ngTreetableParams({
             getNodes: function(parent) {
@@ -599,13 +580,11 @@ angular.module('igl').controller('applyPcToCtrl',
             if ($scope.ApplyToComponentParams) {
                 $scope.ApplyToComponentParams.refresh();
             }
-
         };
         $scope.apply = function() {
-            // pc.appliedTo.push({
-            //     id: $scope.applyTo.id,
-            //     name: $scope.applyTo.name
-            // });
+            console.log("$scope.applyToList");
+
+            console.log($scope.applyToList);
             for (var j = 0; j < $scope.applyToList.length; j++) {
                 $rootScope.profileComponent.appliedTo.push({
                     id: $scope.applyToList[j].id,
@@ -625,20 +604,41 @@ angular.module('igl').controller('applyPcToCtrl',
 
 
             }
-            console.log("$rootScope.messages");
-            console.log($rootScope.messages);
 
+            var processFields = function(fields) {
+                for (var i = 0; i < fields.length; i++) {
+                    fields[i].datatype = $rootScope.datatypesMap[fields[i].datatype.id];
+                    if (fields[i].datatype.components.length > 0) {
+                        fields[i].datatype.components = processFields(fields[i].datatype.components);
+                    }
 
-            $modalInstance.close();
-            // PcService.save(pc).then(function(result) {
-            //     console.log(result);
+                }
+                return fields;
+            };
+            var processMessage = function(message) {
+                for (var i = 0; i < message.children.length; i++) {
+                    if (message.children[i].type === "segmentRef") {
+                        message.children[i].ref = $rootScope.segmentsMap[message.children[i].ref.id];
+                        message.children[i].ref.fields = processFields(message.children[i].ref.fields);
+                    } else if (message.children[i].type === "group") {
+                        processMessage(message.children[i]);
+                    }
+                }
+                return message;
+            };
 
-            //     $modalInstance.close();
+            var message = angular.copy($rootScope.messages.children[0]);
 
-            // });
+            var processedMsg = processMessage(message);
+
+            CompositeMessageService.create(processedMsg).then(function(result) {
+                console.log(result);
+                $modalInstance.close();
+            });
 
 
         };
+
         $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
         };
@@ -674,6 +674,11 @@ angular.module('igl').controller('addComponentsCtrl',
                                 } else if (parent.type === 'segmentRef') {
                                     parent.children[i].parent = parent.parent + '.' + segmentsMap[parent.ref.id].label;
                                     parent.children[i].children = datatypesMap[parent.children[i].datatype.id].components;
+                                } else if (parent.type === 'field' || parent.type === 'component') {
+                                    console.log("--------------------//////////////////-------------");
+                                    console.log(parent);
+                                    parent.children[i].parent = parent.parent + '.' + parent.position;
+                                    parent.children[i].children = datatypesMap[parent.children[i].datatype.id].components;
                                 }
 
                             }
@@ -708,13 +713,28 @@ angular.module('igl').controller('addComponentsCtrl',
                     type: pc.type,
                     path: pc.parent + '.' + pc.position,
                     attributes: {
+                        oldRef: {
+                            id: $rootScope.segmentsMap[pc.ref.id].id,
+                            name: $rootScope.segmentsMap[pc.ref.id].name,
+                            ext: $rootScope.segmentsMap[pc.ref.id].ext,
+                            label: $rootScope.segmentsMap[pc.ref.id].label,
+
+                        },
                         ref: {
                             id: $rootScope.segmentsMap[pc.ref.id].id,
                             name: $rootScope.segmentsMap[pc.ref.id].name,
                             ext: $rootScope.segmentsMap[pc.ref.id].ext,
                             label: $rootScope.segmentsMap[pc.ref.id].label,
 
-                        }
+                        },
+                        oldUsage: pc.usage,
+                        usage: pc.usage,
+                        oldMin: pc.min,
+                        min: pc.min,
+                        oldMax: pc.max,
+                        max: pc.max,
+                        oldComment: pc.comment,
+                        comment: pc.comment,
                     },
                     appliedTo: [],
                     version: ""
@@ -725,7 +745,16 @@ angular.module('igl').controller('addComponentsCtrl',
                     name: pc.name,
                     type: pc.type,
                     path: pc.parent + '.' + pc.position,
-                    attributes: {},
+                    attributes: {
+                        oldUsage: pc.usage,
+                        usage: pc.usage,
+                        oldMin: pc.min,
+                        min: pc.min,
+                        oldMax: pc.max,
+                        max: pc.max,
+                        oldComment: pc.comment,
+                        comment: pc.comment,
+                    },
                     appliedTo: [],
                     version: ""
                 };
@@ -736,9 +765,25 @@ angular.module('igl').controller('addComponentsCtrl',
                         name: pc.name,
                         type: pc.type,
                         path: parent.label + '.' + pc.position,
+                        pathExp: parent.label + '.' + pc.position,
                         attributes: {
                             oldDatatype: pc.datatype,
-                            oldTables: pc.tables
+                            oldTables: pc.tables,
+                            oldUsage: pc.usage,
+                            usage: pc.usage,
+                            oldMin: pc.min,
+                            min: pc.min,
+                            oldMax: pc.max,
+                            max: pc.max,
+                            oldMinLength: pc.minLength,
+                            minLength: pc.minLength,
+                            oldMaxLength: pc.maxLength,
+                            maxLength: pc.maxLength,
+                            oldConfLength: pc.confLength,
+                            confLength: pc.confLength,
+                            oldComment: pc.comment,
+                            comment: pc.comment,
+                            text: pc.text
                         },
                         appliedTo: [],
                         version: ""
@@ -751,29 +796,33 @@ angular.module('igl').controller('addComponentsCtrl',
                         path: parent.parent + '.' + $rootScope.segmentsMap[parent.ref.id].label + '.' + pc.position,
                         attributes: {
                             oldDatatype: pc.datatype,
-                            oldTables: pc.tables
+                            oldTables: pc.tables,
+                            oldUsage: pc.usage,
+                            usage: pc.usage,
+                            oldMin: pc.min,
+                            min: pc.min,
+                            oldMax: pc.max,
+                            max: pc.max,
+                            oldMinLength: pc.minLength,
+                            minLength: pc.minLength,
+                            oldMaxLength: pc.maxLength,
+                            maxLength: pc.maxLength,
+                            oldConfLength: pc.confLength,
+                            confLength: pc.confLength,
+                            oldComment: pc.comment,
+                            comment: pc.comment,
+                            text: pc.text
                         },
                         appliedTo: [],
                         version: ""
                     };
                 }
-
             } else if (pc.type === 'component') {
-                if (parent.type === "datatype") {
-                    var newPc = {
-                        id: new ObjectId().toString(),
-                        name: pc.name,
-                        type: pc.type,
-                        path: parent.label + '.' + pc.position,
-                        attributes: {
-                            oldDatatype: pc.datatype,
-                            oldTables: pc.tables
-                        },
-                        appliedTo: [],
-                        version: ""
-                    };
-
-                } else {
+                var splitParent = parent.parent.split(".");
+                console.log(splitParent);
+                console.log(parent);
+                console.log(pc);
+                if ((splitParent.length > 1 && parent.type !== "component") || (splitParent.length > 2 && parent.type === "component")) {
                     var newPc = {
                         id: new ObjectId().toString(),
                         name: pc.name,
@@ -781,7 +830,54 @@ angular.module('igl').controller('addComponentsCtrl',
                         path: parent.parent + '.' + parent.position + '.' + pc.position,
                         attributes: {
                             oldDatatype: pc.datatype,
-                            oldTables: pc.tables
+                            oldTables: pc.tables,
+                            oldUsage: pc.usage,
+                            usage: pc.usage,
+                            oldMin: pc.min,
+                            min: pc.min,
+                            oldMax: pc.max,
+                            max: pc.max,
+                            oldMinLength: pc.minLength,
+                            minLength: pc.minLength,
+                            oldMaxLength: pc.maxLength,
+                            maxLength: pc.maxLength,
+                            oldConfLength: pc.confLength,
+                            confLength: pc.confLength,
+                            oldComment: pc.comment,
+                            comment: pc.comment,
+                            text: pc.text
+                        },
+                        appliedTo: [],
+                        version: ""
+                    };
+
+                } else {
+                    console.log("-------");
+                    console.log(parent);
+                    var newPc = {
+                        id: new ObjectId().toString(),
+                        name: pc.name,
+                        type: pc.type,
+                        path: parent.parent + '.' + parent.position + '.' + pc.position,
+                        pathExp: parent.parent + '.' + parent.position + '.' + pc.position,
+                        attributes: {
+                            oldDatatype: pc.datatype,
+                            oldTables: pc.tables,
+                            oldUsage: pc.usage,
+                            usage: pc.usage,
+                            oldMin: pc.min,
+                            min: pc.min,
+                            oldMax: pc.max,
+                            max: pc.max,
+                            oldMinLength: pc.minLength,
+                            minLength: pc.minLength,
+                            oldMaxLength: pc.maxLength,
+                            maxLength: pc.maxLength,
+                            oldConfLength: pc.confLength,
+                            confLength: pc.confLength,
+                            oldComment: pc.comment,
+                            comment: pc.comment,
+                            text: pc.text
                         },
                         appliedTo: [],
                         version: ""
@@ -796,10 +892,17 @@ angular.module('igl').controller('addComponentsCtrl',
                     ext: $rootScope.segmentsMap[pc.id].ex,
                     type: pc.type,
                     path: $rootScope.segmentsMap[pc.id].label,
+                    pathExp: $rootScope.segmentsMap[pc.id].label,
                     attributes: {
                         ref: {
                             id: $rootScope.segmentsMap[pc.id].id,
+                            name: $rootScope.segmentsMap[pc.id].name,
+                            ext: $rootScope.segmentsMap[pc.id].ex,
+                            label: $rootScope.segmentsMap[pc.id].label,
 
+                        },
+                        oldRef: {
+                            id: $rootScope.segmentsMap[pc.id].id,
                             name: $rootScope.segmentsMap[pc.id].name,
                             ext: $rootScope.segmentsMap[pc.id].ex,
                             label: $rootScope.segmentsMap[pc.id].label,
@@ -825,6 +928,7 @@ angular.module('igl').controller('addComponentsCtrl',
 
             };
             $scope.selectedPC.push(newPc);
+            console.log(newPc);
         };
 
         $scope.SegProfileComponentParams = new ngTreetableParams({
@@ -833,7 +937,6 @@ angular.module('igl').controller('addComponentsCtrl',
                     if (parent) {
                         if (parent.fields) {
                             for (var i = 0; i < parent.fields.length; i++) {
-                                console.log(parent.fields[i]);
                                 if (parent.type === "segment") {
                                     parent.fields[i].parent = parent.label;
                                 }

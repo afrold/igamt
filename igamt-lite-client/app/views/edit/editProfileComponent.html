@@ -50,17 +50,12 @@
                                 <i class="fa fa-info-circle fa-fw " aria-hidden="true "></i> Edit Profile Component
                             </tab-heading>
                             <div style="margin-top: 20px ">
-
                                 <div class="col-md-12 ">
                                     <div class="pull-left " style="margin-right:20px ">
                                         <button type="button " class="btn btn-raised btn-info btn-xs " style="padding-top:10px " ng-click="addPComponents() "><i class="fa fa-plus "></i> Add Items </button>
                                     </div>
-
-
-
                                 </div>
                                 <div class="col-md-12 " ng-show="profileComponent.children.length>0">
-
                                     <table id="profileComponentTable" tt-table tt-params="profileComponentParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                         <thead>
                                             <tr class="tbl-header" style="">
@@ -153,6 +148,7 @@
 
     <tr tt-node is-branch="false">
         <td class="col-md-1 col-fixed-250">
+            <span ng-if="node.type=='datatype'" class="label label-default label-icon">D</span>
             <span ng-if="node.type=='group'" class="label label-success label-icon">G</span>
             <span ng-if="node.type=='segmentRef'||node.type=='segment'" class="label label-segment label-icon">S</span>
             <span class="label label-field label-icon" ng-if="node.type==='field'">F</span>
@@ -162,72 +158,72 @@
         </td>
 
 
-        <td class="col-md-2 col-fixed-40" ng-if="node.type==='segment' || node.type==='segmentRef'">
-            <span ng-show="editableRef!==node.id">
+        <td ng-class="{'col-md-2 col-fixed-40 input-change ':node.attributes.ref.id!==node.attributes.oldRef.id,'col-md-2 col-fixed-40':node.attributes.ref.id===node.attributes.oldRef.id}" ng-if="node.type==='segment' || node.type==='segmentRef'">
+            <span ng-show="editableRef!==node.id && !node.attributes.ref">
+                <span>{{node.attributes.oldRef.name}}</span><span ng-if="node.attributes.oldRef.ext && node.attributes.oldRef.ext!==null">_{{node.attributes.oldRef.ext}}</span>
+            </span>
+            <span ng-show="editableRef!==node.id && node.attributes.ref">
                 <span>{{node.attributes.ref.name}}</span><span ng-if="node.attributes.ref.ext && node.attributes.ref.ext!==null">_{{node.attributes.ref.ext}}</span>
             </span>
             <a ng-show="editableRef!==node.id" ng-click="editRef(node)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
             <select ng-change="selectFlavor(node,segFlavor)" ng-show="editableRef===node.id" class="form-control input-sm" name="flavor" ng-model="segFlavor" ng-options="segFlavor as segFlavor.label for segFlavor in segFlavors" />
-
+            <a ng-click="cancelRef(node)"><i class="fa fa-remove fa-fw"></i></a>
         </td>
         <td class="col-md-2 col-fixed-40" ng-if="node.type!=='segment' &&  node.type!=='segmentRef'">
             <span ng-bind="node.name"></span>
 
 
         </td>
+        <td ng-class="{'col-md-1 col-fixed-80 select-change':node.attributes.usage!==node.attributes.oldUsage,'col-md-1 col-fixed-80':node.attributes.usage===node.attributes.oldUsage}">
+            <!--<a ng-click="edit=true;" ng-hide="edit || node.attributes.usage "><i class="fa fa-plus fa-fw"></i></a>-->
+            <select ng-change="setDirty()" class="form-control input-sm" ng-model="node.attributes.usage" name="usage" ng-options="usage for usage in config.usages" ng-selected="node.attributes.usage">
+            </select>
 
-        <td class="col-md-1 col-fixed-80">
-            <a ng-click="edit=true;" ng-hide="edit || node.attributes.usage "><i class="fa fa-plus fa-fw"></i></a>
-            <select ng-change="setDirty()" ng-show="edit || node.attributes.usage" class="form-control input-sm" name="usage" ng-model="node.attributes.usage" ng-options="usage for usage in config.usages" />
-            <a ng-click="edit=false;cancelUsage(node)" ng-show="edit|| node.attributes.usage"><i class="fa fa-remove fa-fw"></i></a>
+
+            <a ng-click="cancelUsage(node)"><i class="fa fa-remove fa-fw"></i></a>
         </td>
 
 
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component'">
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="node.type!=='component'">
-            <a ng-click="editMin=true;" ng-hide="editMin ||node.attributes.min"><i class="fa fa-plus fa-fw"></i></a>
-            <input ng-change="setDirty()" ng-show="editMin||node.attributes.min" class="form-control" name="min" ng-pattern="/^\d+$/" ng-model="node.attributes.min" ng-minlength="1">
-            <a ng-click="editMin=false;cancelMinCard(node)" ng-show="editMin ||node.attributes.min"><i class="fa fa-remove fa-fw"></i></a>
+        <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.min!==node.attributes.oldMin,'col-md-1 col-fixed-100':node.attributes.min===node.attributes.oldMin}" ng-if="node.type!=='component'">
+            <input ng-change="setDirty()" class="form-control" name="min" ng-pattern="/^\d+$/" ng-model="node.attributes.min" ng-minlength="1">
+            <a ng-click="cancelMinCard(node)"><i class="fa fa-remove fa-fw"></i></a>
         </td>
 
 
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component'">
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="node.type!=='component'">
-            <a ng-click="editMax=true;" ng-hide="editMax||node.attributes.max"><i class="fa fa-plus fa-fw"></i></a>
-            <input ng-change="setDirty()" ng-show="editMax||node.attributes.max" class="form-control" name="max" ng-pattern="/^\d+$|^\*?$/" ng-model="node.attributes.max">
-            <a ng-click="editMax=false;cancelMaxCard(node)" ng-show="editMax ||node.attributes.max"><i class="fa fa-remove fa-fw"></i></a>
+        <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.max!==node.attributes.oldMax,'col-md-1 col-fixed-100':node.attributes.max===node.attributes.oldMax}" ng-if="node.type!=='component'">
+            <input ng-change="setDirty()" class="form-control" name="max" ng-pattern="/^\d+$|^\*?$/" ng-model="node.attributes.max">
+            <a ng-click="cancelMaxCard(node)"><i class="fa fa-remove fa-fw"></i></a>
         </td>
 
 
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
 
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="node.type==='field' || node.type==='component'">
-            <a ng-click="editMinLength=true;" ng-hide="editMinLength||node.attributes.minLength"><i class="fa fa-plus fa-fw"></i></a>
-            <input ng-change="setDirty()" ng-show="editMinLength||node.attributes.minLength" class="form-control" name="minL" ng-model="node.attributes.minLength">
-            <a ng-click="editMinLength=false;cancelMinL(node)" ng-show="editMinLength ||node.attributes.minLength"><i class="fa fa-remove fa-fw"></i></a>
+        <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.minLength!==node.attributes.oldMinLength,'col-md-1 col-fixed-100':node.attributes.minLength===node.attributes.oldMinLength}" ng-if="node.type==='field' || node.type==='component'">
+            <input ng-change="setDirty()" class="form-control" name="minL" ng-model="node.attributes.minLength">
+            <a ng-click="cancelMinL(node)"><i class="fa fa-remove fa-fw"></i></a>
         </td>
 
 
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
         </td>
-        <td class="col-md-1 col-fixed-100" ng-if="node.type==='field' || node.type==='component'">
-            <a ng-click="editMaxLength=true;" ng-hide="editMaxLength||node.attributes.maxLength"><i class="fa fa-plus fa-fw"></i></a>
-            <input ng-change="setDirty()" ng-show="editMaxLength||node.attributes.maxLength" class="form-control" name="maxL" ng-model="node.attributes.maxLength">
-            <a ng-click="editMaxLength=false;cancelMaxL(node)" ng-show="editMaxLength||node.attributes.maxLength"><i class="fa fa-remove fa-fw"></i></a>
+        <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.maxLength!==node.attributes.oldMaxLength,'col-md-1 col-fixed-100':node.attributes.maxLength===node.attributes.oldMaxLength}" ng-if="node.type==='field' || node.type==='component'">
+            <input ng-change="setDirty()" class="form-control" name="maxL" ng-model="node.attributes.maxLength">
+            <a ng-click="cancelMaxL(node)"><i class="fa fa-remove fa-fw"></i></a>
         </td>
 
 
         <td class="col-md-1 col-fixed-30 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
         </td>
-        <td class="col-md-1 col-fixed-30" ng-if="node.type==='field' || node.type==='component'">
-            <a ng-click="editConfLength=true;" ng-hide="editConfLength||node.attributes.confLength"><i class="fa fa-plus fa-fw"></i></a>
-            <input ng-change="setDirty()" ng-show="editConfLength||node.attributes.confLength" class="form-control" name="maxL" ng-model="node.attributes.confLength">
-            <a ng-click="editConfLength=false;cancelConfL(node)" ng-show="editConfLength||node.attributes.confLength"><i class="fa fa-remove fa-fw"></i></a>
+        <td ng-class="{'col-md-1 col-fixed-30 input-change ':node.attributes.confLength!==node.attributes.oldConfLength,'col-md-1 col-fixed-30':node.attributes.confLength===node.attributes.oldConfLength}" ng-if="node.type==='field' || node.type==='component'">
+            <input ng-change="setDirty()" class="form-control" name="confL" ng-model="node.attributes.confLength">
+            <a ng-click="cancelConfL(node)"><i class="fa fa-remove fa-fw"></i></a>
         </td>
 
 
@@ -526,7 +522,7 @@
                         </div>
 
                     </tab>
-                    <tab>
+                    <!--<tab>
                         <tab-heading>Datatype</tab-heading>
                         <div class="col-md-6">
                             <h5>Source</h5>
@@ -542,7 +538,7 @@
                             </table>
                         </div>
 
-                    </tab>
+                    </tab>-->
                 </tabset>
 
 
@@ -565,6 +561,8 @@
                             <tbody>
                                 <tr ng-repeat="pc in selectedPC">
                                     <td class="col-md-3">
+                                        <span ng-if="pc.type=='datatype'" class="label label-default label-icon">D</span>
+
                                         <span ng-if="pc.type=='group'" class="label label-success label-icon">G</span>
                                         <span ng-if="pc.type=='segmentRef'||pc.type=='segment'" class="label label-segment label-icon">S</span>
                                         <span class="label label-field label-icon" ng-if="pc.type==='field'">F</span>
@@ -572,7 +570,7 @@
                                     </td>
                                     <td class="col-md-2"><span>
                                         
-                                        <span ng-if="pc.type==='segmentRef'">{{pc.attributes.ref.name}}</span>
+                                        <span ng-if="pc.type==='segmentRef'">{{pc.attributes.oldRef.name}}</span>
                                         <span ng-if="pc.type!=='segmentRef'">{{pc.name}}</span>
 
                                         </span>
@@ -613,6 +611,7 @@
 
         <td>
             <a ng-if="node.type==='group'||node.type==='segmentRef'||node.type==='field'||node.type==='component'" class="pointer " ng-click="addElementPc(node,$event) "><i class="fa fa-plus fa-fw "></i></a>
+
             <span ng-if="node.type==='group'" class="label label-success label-icon">G</span>
             <span ng-if="node.type==='segmentRef'" class="label label-segment label-icon">S</span>
             <span ng-if="node.type==='field'" class="label label-field label-icon">F</span>
@@ -653,6 +652,8 @@
 
         <td>
             <a class="pointer " ng-click="addElementPc(node,$event) "><i class="fa fa-plus fa-fw "></i></a>
+            <span ng-if="node.type=='datatype' " class="label label-default label-icon ">D</span>
+
             <span ng-if="node.type=='component' " class="label label-component label-icon ">C</span>
 
             <span ng-if="node.position " ng-bind="node.position "></span><span ng-if="node.position ">.</span>
