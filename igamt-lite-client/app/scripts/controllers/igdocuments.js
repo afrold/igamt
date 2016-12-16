@@ -2906,14 +2906,14 @@ angular.module('igl').controller('CustomExportCtrl', function ($scope, $modalIns
 
 
       $scope.ok = function () {
-          if($scope.selectedType.type){
-            if($scope.selectedType.type === "XML"){
-                $scope.exportAs($scope.selectedType.type);
+          if($scope.selectedType.selected){
+            if($scope.selectedType.selected === "XML"){
+                $scope.exportAs($scope.selectedType.selected);
             } else {
-                if($scope.selectedLayout){
-                    $scope.exportAsWithLayout($scope.selectedType.type,$scope.selectedLayout);
+                if($scope.selectedLayout.selected){
+                    $scope.exportAsWithLayout($scope.selectedType.selected,$scope.selectedLayout.selected);
                 } else {
-                    $scope.exportAs($scope.selectedType.type);
+                    $scope.exportAs($scope.selectedType.selected);
                 }
             }
           }
